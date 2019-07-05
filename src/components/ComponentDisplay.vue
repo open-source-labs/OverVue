@@ -1,6 +1,6 @@
 <template>
   <div class="component-display">
-    <VueDraggableResizable
+    <!-- <VueDraggableResizable
       class-name="component-box"
       v-for="componentData in activeRouteArray"
       :key="componentData.componentName"
@@ -9,6 +9,7 @@
       :w="componentData.w"
       :h="componentData.h"
       :parent="true"
+      class-name-resizable="my-resizable-class"
       @activated="onActivated(componentData)"
       @deactivated="onDeactivated(componentData)"
       @dragging="onDrag"
@@ -16,17 +17,35 @@
       @dblclick.native="onDoubleClick(componentData)"
     >
       <h3>{{ componentData.componentName }}</h3>
-    </VueDraggableResizable>
+    </VueDraggableResizable> -->
+    <VueDragResize
+      :isActive="true"
+      v-for="componentData in activeRouteArray"
+      :key="componentData.componentName"
+      :x="componentData.x"
+      :y="componentData.y"
+      :w="componentData.w"
+      :h="componentData.h"
+      @resizing="onResize"
+      @dragging="onDrag"
+      @activated="onActivated(componentData)"
+      @deactivated="onDeactivated(componentData)"
+      @dblclick.native="onDoubleClick(componentData)"
+    >
+      <h3>{{ componentData.componentName }}</h3>
+    </VueDragResize>
   </div>
 </template>
 <script>
 import { mapState, mapActions } from 'vuex'
-import VueDraggableResizable from 'vue-draggable-resizable'
+// import VueDraggableResizable from 'vue-draggable-resizable'
+import VueDragResize from 'vue-drag-resize'
 
 export default {
   name: 'ComponentDisplay',
   components: {
-    VueDraggableResizable
+    // VueDraggableResizable
+    VueDragResize
   },
   data () {
     return {
@@ -59,15 +78,25 @@ export default {
   },
   methods: {
     ...mapActions(['setActiveComponent', 'updateOpenModal']),
-    onResize: function (x, y, width, height) {
-      this.activeComponentData.x = x
-      this.activeComponentData.y = y
-      this.activeComponentData.w = width
-      this.activeComponentData.h = height
+    // onResize: function (x, y, width, height) {
+    //   this.activeComponentData.x = x
+    //   this.activeComponentData.y = y
+    //   this.activeComponentData.w = width
+    //   this.activeComponentData.h = height
+    // },
+    onResize (rectangle) {
+      this.activeComponentData.y = rectangle.top
+      this.activeComponentData.x = rectangle.left
+      this.activeComponentData.w = rectangle.width
+      this.activeComponentData.h = rectangle.height
     },
-    onDrag: function (x, y) {
-      this.activeComponentData.x = x
-      this.activeComponentData.y = y
+    // onDrag: function (x, y) {
+    //   this.activeComponentData.x = x
+    //   this.activeComponentData.y = y
+    // },
+    onDrag (rectangle) {
+      this.activeComponentData.y = rectangle.top
+      this.activeComponentData.x = rectangle.left
     },
     onActivated (componentData) {
       this.setActiveComponent(componentData.componentName)
@@ -96,5 +125,9 @@ export default {
 .component-box {
   color: white;
   border: 1px solid salmon;
+}
+
+h3 {
+  text-align: center;
 }
 </style>

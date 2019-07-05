@@ -35,6 +35,7 @@
 
 <script>
 export default {
+  name: 'FooterTabView.vue',
   data () {
     return {
       tab: 'tree'
