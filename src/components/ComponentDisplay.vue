@@ -1,5 +1,8 @@
 <template>
   <div class="component-display">
+    <context-menu ref="component-options">
+      <context-menu-item>Add a Child</context-menu-item>
+    </context-menu>
     <VueDraggableResizable
       class-name="component-box"
       v-for="componentData in activeRouteArray"
@@ -14,6 +17,7 @@
       @dragging="onDrag"
       @resizing="onResize"
       @dblclick.native="onDoubleClick(componentData)"
+      @contextmenu.native.prevent="'component-options'"
     >
       <h3>{{ componentData.componentName }}</h3>
     </VueDraggableResizable>
@@ -22,11 +26,13 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import VueDraggableResizable from 'vue-draggable-resizable'
+import VCCM from 'vue-custom-context-menu'
 
 export default {
   name: 'ComponentDisplay',
   components: {
-    VueDraggableResizable
+    VueDraggableResizable,
+    VCCM,
   },
   data () {
     return {
@@ -79,6 +85,9 @@ export default {
     onDoubleClick (compData) {
       this.setActiveComponent(compData.componentName)
       this.activeComponentData.isActive = true
+    },
+    onRightClick () {
+      alert('Holy fucc, u right clicc')
     }
   }
 }

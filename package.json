@@ -16,6 +16,7 @@
     "localforage": "^1.7.3",
     "mousetrap": "^1.6.3",
     "quasar": "^1.0.0",
+    "vue-custom-context-menu": "^3.0.1",
     "vue-draggable-resizable": "^2.0.0-rc2",
     "vue-multiselect": "^2.1.6",
     "vued3tree": "^3.7.1"
