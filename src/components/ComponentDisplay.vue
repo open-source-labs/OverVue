@@ -87,88 +87,40 @@ export default {
 
 <style scoped>
 .component-display {
-  border: 2px dotted rgb(14, 14, 14);
-  background-color: rgba(242, 234, 228, 0.61);
-  height: 500px;
-  width: 500px;
-  /* height: 70vh; */
-  /* width: 70vw; */
+  /* border: 3px dashed rgb(159, 122, 122); */
+  /* height: 500px; */
+  /* width: 500px; */
+  height: 70vh;
+  width: 70vw;
   position: relative;
+  background-color: rgba(124, 126, 145, 0.44);
+  /* background-color: #269; */
+background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
+background-image: -webkit-linear-gradient(white 2px, transparent 2px),
+                  -webkit-linear-gradient(0, white 2px, transparent 2px),
+                  -webkit-linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px),
+                  -webkit-linear-gradient(0, rgba(255,255,255,.3) 1px, transparent 1px);
+background-image: -moz-linear-gradient(white 2px, transparent 2px),
+                  -moz-linear-gradient(0, white 2px, transparent 2px),
+                  -moz-linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px),
+                  -moz-linear-gradient(0, rgba(255,255,255,.3) 1px, transparent 1px);
+background-image: linear-gradient(white 2px, transparent 2px),
+                  linear-gradient(90deg, white 2px, transparent 2px),
+                  linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px),
+                  linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px);
+-pie-background: linear-gradient(white 2px, transparent 2px) -2px -2px / 100px,
+                 linear-gradient(90deg, white 2px, transparent 2px) -2px -2px / 100px,
+                 linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px) -1px -1px / 20px,
+                 linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px) -1px -1px / 20px,
+                 #269;
+behavior: url(/pie/PIE.htc);
 }
 
 .component-box {
   color: white;
-  border: 1px solid salmon;
-}
-.my-handle-class {
-    position: absolute;
-    background-color: pink;
-    border: 1px solid black;
-    border-radius: 50%;
-    height: 14px;
-    width: 14px;
-    -webkit-transition: all 300ms linear;
-    -ms-transition: all 300ms linear;
-    transition: all 300ms linear;
+  border: 3px dashed rgb(227, 203, 71);
+  background-color: rgba(186, 99, 99, 0.529);
 }
 
-.my-handle-class-tl {
-  top: -14px;
-  left: -14px;
-  cursor: nw-resize;
-}
-
-.my-handle-class-tm {
-  top: -14px;
-  left: 50%;
-  margin-left: -7px;
-  cursor: n-resize;
-}
-
-.my-handle-class-tr {
-  top: -14px;
-  right: -14px;
-  cursor: ne-resize;
-}
-
-.my-handle-class-ml {
-  top: 50%;
-  margin-top: -7px;
-  left: -14px;
-  cursor: w-resize;
-}
-
-.my-handle-class-mr {
-  top: 50%;
-  margin-top: -7px;
-  right: -14px;
-  cursor: e-resize;
-}
-
-.my-handle-class-bl {
-  bottom: -14px;
-  left: -14px;
-  cursor: sw-resize;
-}
-
-.my-handle-class-bm {
-  bottom: -14px;
-  left: 50%;
-  margin-left: -7px;
-  cursor: s-resize;
-}
-
-.my-handle-class-br {
-  bottom: -14px;
-  right: -14px;
-  cursor: se-resize;
-}
-
-.my-handle-class-tl:hover,
-.my-handle-class-tr:hover,
-.my-handle-class-bl:hover,
-.my-handle-class-br:hover {
-    background-color: red;
-    transform: scale(1.4);
-}
 </style>
