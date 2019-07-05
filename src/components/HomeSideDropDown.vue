@@ -17,6 +17,7 @@
                   <q-btn round dense flat icon="add" />
                 </template>
               </q-input>
+              <ComponentList />
             </div>
           </q-card-section>
         </q-card>
@@ -82,10 +83,12 @@
 </template>
 <script>
 import RouteDisplay from '../components/RouteDisplay'
+import ComponentList from './HomeSideDropDownItems/ComponentList'
 
 export default {
   components: {
-    RouteDisplay
+    RouteDisplay,
+    ComponentList
   }
 }
 </script>
