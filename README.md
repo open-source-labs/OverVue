@@ -1,9 +1,11 @@
 # PreVue 2.0
 
-> WIP
+**WIP**
 
 #### Authors
+```
 - Joseph 
 - Dean 
 - Dean 
 - Drew
+```
