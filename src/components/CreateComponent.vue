@@ -13,7 +13,6 @@
       >
       </q-input>
     </form>
-
     <div class="icon-container">
       <Icons @getClickedIcon="addToSelectedElementList" />
     </div>

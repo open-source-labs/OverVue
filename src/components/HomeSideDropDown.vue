@@ -26,18 +26,8 @@
         <q-card>
           <q-card-section>
             <div class="input-container">
-              <q-input
-                standout="bg-teal text-white"
-                bottom-slots
-                v-model="text"
-                label="Add Route"
-                :dense="dense"
-                class="input-add"
-              >
-                <template v-slot:append>
-                  <q-btn round dense flat icon="add" />
-                </template>
-              </q-input>
+              <RouteDisplay />
+              <br>
             </div>
           </q-card-section>
         </q-card>
@@ -90,6 +80,15 @@
     </q-list>
   </div>
 </template>
+<script>
+import RouteDisplay from '../components/RouteDisplay'
+
+export default {
+  components: {
+    RouteDisplay
+  }
+}
+</script>
 
 <style lang="stylus" scoped>
 .input-add {
