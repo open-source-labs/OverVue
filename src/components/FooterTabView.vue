@@ -3,8 +3,8 @@
     <q-tabs
       v-model="tab"
       dense
-      class="text-grey"
-      active-color="primary"
+      class="text-white"
+      active-color="secondary"
       indicator-color="primary"
       align="justify"
       narrow-indicator
