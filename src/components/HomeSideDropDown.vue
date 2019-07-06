@@ -22,6 +22,7 @@
               -->
               <a v-for="componentData in activeRouteDisplay"
                 :key="componentData.componentName"
+                 v-on:click="onActivated(componentData)"
                 >
    <q-list bordered separator>
       <q-item clickable v-ripple>
@@ -96,7 +97,7 @@
 </template>
 <script>
 import RouteDisplay from '../components/RouteDisplay'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   components: {
@@ -108,8 +109,22 @@ export default {
     activeRouteDisplay () {
       // console.log('active route array method', this.routes[this.activeRoute])
       let component = this.routes[this.activeRoute]
-      console.log('component:', component)
+      // console.log('component:', component)
       return component
+    },
+    activeComponentData () {
+      // find out what this does
+      return this.activeRouteDisplay.filter(componentData => {
+        return componentData.componentName === this.activeComponent
+      })[0]
+    }
+  },
+  methods: {
+    ...mapActions(['setActiveComponent']),
+    onActivated (componentData) {
+      this.setActiveComponent(componentData.componentName)
+      this.activeComponentData.isActive = true
+      console.log('this.activeComponent', this.activeComponent)
     }
   }
 }

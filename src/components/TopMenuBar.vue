@@ -87,3 +87,17 @@
     </q-bar>
   </div>
 </template>
+
+<script>
+export default {
+  name: 'TopMenuBar',
+  components: {
+    QMenu,
+    QItem,
+    QSeparator,
+    QItemSection,
+    QList,
+    QBtn
+  }
+}
+</script>
