@@ -52,7 +52,10 @@ module.exports = function (ctx) {
         'QTabs',
         'QTab',
         'QRouteTab',
-        'QTabPanels'
+        'QTabPanels',
+        'QTabPanel',
+        'QFab',
+        'QFabAction'
       ],
 
       directives: [

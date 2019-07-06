@@ -18,7 +18,10 @@
   <q-list>
     <q-tab-panels v-model="tab" animated>
       <q-tab-panel name="Tree">
-        <div class="text-h6">Tree</div>Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        <div class="text-h6">Tree</div>
+        <q-card>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+        </q-card>
       </q-tab-panel>
 
       <q-tab-panel name="Code">
