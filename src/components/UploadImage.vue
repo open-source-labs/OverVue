@@ -7,6 +7,7 @@
       flat
       bordered
       style="max-width: 100%"
+      accept=".jpg, image/*"
     />
   </div>
 </template>
