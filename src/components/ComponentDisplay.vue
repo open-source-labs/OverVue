@@ -93,9 +93,10 @@ export default {
   /* height: 500px; */
   /* width: 500px; */
   /* original is 70vh */
-  height: 87vh;
+  height: 95vh;
   width: 100vw;
   position: relative;
+  background: darkslategray;
   background-color: rgba(124, 126, 145, 0.44);
   /* background-color: #269; */
   background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
