@@ -23,9 +23,11 @@
 
       <q-tab-panels v-model="tab" animated class="bg-primary text-white">
         <q-tab-panel name="code">
+          <CodeSnippet />
         </q-tab-panel>
 
         <q-tab-panel name="detail">
+          <div class="text-h6">Component Deets</div>Component Info Here
         </q-tab-panel>
 
         <q-tab-panel name="tree">
@@ -42,12 +44,12 @@
 
 <script>
 import Tree from './Tree'
-// import CodeSnippet from './CodeSnippet'
+import CodeSnippet from './CodeSnippet'
 
 export default {
   components: {
-    Tree
-    // CodeSnippet
+    Tree,
+    CodeSnippet
   },
   data () {
     return {
@@ -60,7 +62,9 @@ export default {
   },
   methods: {
     openBottomDrawer () {
-      let minHeight = (window.outerHeight < 900) ? 4.5 : 2.5
+      // 15in mb pro - 1027 px 3.75
+      // big ass screens 2.5
+      let minHeight = (window.outerHeight < 900) ? 4.5 : (window.outerHeight < 1035) ? 3.75 : 2.5
       this.height === 35 ? (this.height = minHeight) : (this.height = 35)
       this.open === true ? this.open = false : this.open = true
     }
