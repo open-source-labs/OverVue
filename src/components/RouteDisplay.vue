@@ -1,6 +1,6 @@
 <template>
-  <div class="route-display">
-     <q-input
+<div>
+       <q-input
         @keyup.enter.native="handleEnterKeyPress"
         standout="bg-teal text-white"
         bottom-slots
@@ -10,6 +10,10 @@
         class="input-add"
       >
       </q-input>
+  <!--<div class="route-display">-->
+    <!--
+
+    -->
     <Routes></Routes>
   </div>
 </template>
@@ -32,12 +36,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['addRouteToRouteMap']),
+    ...mapActions(['addRouteToRouteMap', 'setRoutes']),
     handleEnterKeyPress () {
       this.addRouteToRouteMap(this.newRoute)
         .then(() => {
           this.newRoute = ''
         })
+
         .catch(err => console.log(err))
     }
   }

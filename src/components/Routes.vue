@@ -1,17 +1,29 @@
 <template>
-  <div class="route-view">
+<div>
+  <!--<div class="route-view">-->
     <a
       :class="route === activeRoute ? 'panel-block is-active' : 'panel-block'"
       v-for="route in Object.keys(routes)"
       :key="route"
       @click="handleClick(route)"
+      v-on:keyup.delete="deleteSelectedRoute(route)"
     >
+<!--
       <span class="panel-icon">
         <i class="fas fa-location-arrow" aria-hidden="true"></i>
       </span>
-      {{ route }}
+      -->
+         <q-list bordered separator>
+      <q-item clickable v-ripple>
+        <q-item-section>{{route}}</q-item-section>
+
+      </q-item>
+
+    </q-list>
+
     </a>
   </div>
+
 </template>
 
 <script>
@@ -23,9 +35,13 @@ export default {
     ...mapState(['routes', 'activeRoute'])
   },
   methods: {
-    ...mapActions(['setActiveRoute']),
+    ...mapActions(['setActiveRoute', 'deleteRoute']),
     handleClick (route) {
       this.setActiveRoute(route)
+    },
+    deleteSelectedRoute (route) {
+      this.deleteRoute(route)
+      this.setActiveRoute('')
     }
   }
 }

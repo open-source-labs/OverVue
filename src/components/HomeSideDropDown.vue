@@ -51,7 +51,6 @@ export default {
 .input-add {
   margin: 0em 1em 0em 1em;
 }
-
 .input-container {
   margin-top: 1rem;
 }
