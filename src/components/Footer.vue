@@ -22,8 +22,6 @@
 
       <q-tab-panels v-model="tab" animated class="bg-primary text-white">
         <q-tab-panel name="code">
-          <div class="text-h6">Code Snippet</div>Code Snippet Component Here
-          <br />asdfadsfasdf
         </q-tab-panel>
 
         <q-tab-panel name="tree">
@@ -40,10 +38,12 @@
 
 <script>
 import Tree from './Tree'
+// import CodeSnippet from './CodeSnippet'
 
 export default {
   components: {
     Tree
+    // CodeSnippet
   },
   data () {
     return {

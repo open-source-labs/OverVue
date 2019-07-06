@@ -13,6 +13,7 @@
     <q-drawer v-model="left" side="left" behavior="desktop" bordered>
       <!-- drawer content -->
       <q-list>
+        <UploadImage />
         <HomeSideDropDown />
         <CreateComponent />
       </q-list>
@@ -29,6 +30,7 @@
 import HomeSideDropDown from '../components/HomeSideDropDown'
 import Footer from '../components/Footer'
 import CreateComponent from '../components/CreateComponent'
+import UploadImage from '../components/UploadImage'
 
 export default {
   data () {
@@ -40,7 +42,8 @@ export default {
   components: {
     HomeSideDropDown,
     Footer,
-    CreateComponent
+    CreateComponent,
+    UploadImage
   }
 }
 </script>

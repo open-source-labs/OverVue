@@ -1,9 +1,5 @@
 <template>
   <div class="component-display">
-    <!-- <context-menu ref="component-options">
-      <context-menu-item :action="handleAddChild"><button>Add a Child</button></context-menu-item>
-      <context-menu-item><button>Delete a Child</button></context-menu-item>
-    </context-menu> -->
     <VueDraggableResizable
       class-name="component-box"
       v-for="componentData in activeRouteArray"
@@ -18,43 +14,56 @@
       @dragging="onDrag"
       @resizing="onResize"
       @dblclick.native="onDoubleClick(componentData)"
-      v-context-menu="'component-options'"
     >
       <h3>{{ componentData.componentName }}</h3>
       <q-menu context-menu>
         <q-list>
-          <q-item clickable v-ripple @click="handleAddChild">
+          <q-item clickable v-ripple v-close-popup @click="handleAddChild">
             <q-item-section>Add Children</q-item-section>
             <q-item-section avatar><q-icon color="primary" name="add"/></q-item-section>
           </q-item>
-          <q-item clickable v-ripple>
+          <q-item clickable v-ripple v-close-popup auto-close>
             <q-item-section>Delete Children</q-item-section>
             <q-item-section avatar><q-icon color="primary" name="delete"/></q-item-section>
           </q-item>
         </q-list>
       </q-menu>
     </VueDraggableResizable>
-    <q-dialog id="select-child-modal" v-model="modalOpen">
-      <ChildrenMultiselect />
-    </q-dialog>
+    <div>
+      <q-dialog v-model="modalOpen">
+        <q-select
+          @input="handleSelect"
+          id="dropdown"
+          filled
+          v-model="testModel"
+          multiple
+          :options="options"
+          use-chips
+          stack-label
+          label="Select children"
+          style="width: 250px"
+        />
+      </q-dialog>
+    </div>
   </div>
 </template>
 <script>
 import { mapState, mapActions } from 'vuex'
 import VueDraggableResizable from 'vue-draggable-resizable'
-import ChildrenMultiselect from '../components/ChildrenMultiselect'
+// import ChildrenMultiselect from '../components/ChildrenMultiselect'
 import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
 
 export default {
   name: 'ComponentDisplay',
   components: {
-    VueDraggableResizable,
-    ChildrenMultiselect
+    VueDraggableResizable
   },
   data () {
     return {
       modalOpen: false,
-      abilityToDelete: false
+      abilityToDelete: false,
+      testOptions: ['parent', 'child', 'grandchild'],
+      testModel: []
     }
   },
   mounted () {
@@ -68,7 +77,7 @@ export default {
     })
   },
   computed: {
-    ...mapState(['routes', 'activeRoute', 'activeComponent', 'componentMap']),
+    ...mapState(['routes', 'activeRoute', 'activeComponent', 'componentMap', 'componentChildrenMultiselectValue']),
     // used in VueDraggableResizeable component
     activeRouteArray () {
       // console.log('active route array method', this.routes[this.activeRoute])
@@ -80,10 +89,21 @@ export default {
       return this.activeRouteArray.filter(componentData => {
         return componentData.componentName === this.activeComponent
       })[0]
+    },
+    options () {
+      // PROBLEM: the objects on childrenmultiselectvalue are applied
+      const routes = Object.keys(this.routes)
+      const exceptions = new Set(['App', this.activeComponent, ...routes])
+      return Object.keys(this.componentMap).filter(component => {
+        if (!exceptions.has(component)) return component
+      })
     }
   },
   methods: {
-    ...mapActions(['setActiveComponent']),
+    ...mapActions([
+      'setActiveComponent',
+      'updateComponentChildrenMultiselectValue',
+      'updateActiveComponentChildrenValue']),
     onResize: function (x, y, width, height) {
       this.activeComponentData.x = x
       this.activeComponentData.y = y
@@ -108,6 +128,12 @@ export default {
     handleAddChild () {
       // render modal with childrenmultiselect in it
       this.modalOpen = true
+    },
+    handleSelect (value) {
+      // if (this.modalOpen) this.updateActiveComponentChildrenValue(value)
+      console.log('Multiselect: ', value)
+      this.updateActiveComponentChildrenValue(value)
+      // this.updateComponentChildrenMultiselectValue(value)
     }
     //       @dblclick.native="onDoubleClick(componentData)"
     // onDoubleClick (compData) {
@@ -155,11 +181,10 @@ export default {
 
 .component-box {
   color: white;
-  border: 3px dashed rgb(227, 203, 71);
+  border: 1px dashed rgb(227, 203, 71);
   background-color: rgba(186, 99, 99, 0.529);
 }
-
-.select-child-modal {
-  background-color: red;
+.active {
+  background-color: rgba(57, 63, 84, 0.5);
 }
 </style>
