@@ -91,31 +91,34 @@ export default {
   /* border: 3px dashed rgb(159, 122, 122); */
   /* height: 500px; */
   /* width: 500px; */
-  height: 70vh;
-  width: 70vw;
+  /* original is 70vh */
+  height: 87vh;
+  width: 100vw;
   position: relative;
   background-color: rgba(124, 126, 145, 0.44);
   /* background-color: #269; */
-background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
-background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
-background-image: -webkit-linear-gradient(white 2px, transparent 2px),
-                  -webkit-linear-gradient(0, white 2px, transparent 2px),
-                  -webkit-linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px),
-                  -webkit-linear-gradient(0, rgba(255,255,255,.3) 1px, transparent 1px);
-background-image: -moz-linear-gradient(white 2px, transparent 2px),
-                  -moz-linear-gradient(0, white 2px, transparent 2px),
-                  -moz-linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px),
-                  -moz-linear-gradient(0, rgba(255,255,255,.3) 1px, transparent 1px);
-background-image: linear-gradient(white 2px, transparent 2px),
-                  linear-gradient(90deg, white 2px, transparent 2px),
-                  linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px),
-                  linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px);
--pie-background: linear-gradient(white 2px, transparent 2px) -2px -2px / 100px,
-                 linear-gradient(90deg, white 2px, transparent 2px) -2px -2px / 100px,
-                 linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px) -1px -1px / 20px,
-                 linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px) -1px -1px / 20px,
-                 #269;
-behavior: url(/pie/PIE.htc);
+  background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+  background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
+  background-image: -webkit-linear-gradient(white 2px, transparent 2px),
+    -webkit-linear-gradient(0, white 2px, transparent 2px),
+    -webkit-linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+    -webkit-linear-gradient(0, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
+  background-image: -moz-linear-gradient(white 2px, transparent 2px),
+    -moz-linear-gradient(0, white 2px, transparent 2px),
+    -moz-linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+    -moz-linear-gradient(0, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
+  background-image: linear-gradient(white 2px, transparent 2px),
+    linear-gradient(90deg, white 2px, transparent 2px),
+    linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
+  -pie-background: linear-gradient(white 2px, transparent 2px) -2px -2px / 100px,
+    linear-gradient(90deg, white 2px, transparent 2px) -2px -2px / 100px,
+    linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px) -1px -1px /
+      20px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px) -1px -1px /
+      20px,
+    #269;
+  behavior: url(/pie/PIE.htc);
 }
 
 .component-box {
@@ -123,5 +126,4 @@ behavior: url(/pie/PIE.htc);
   border: 3px dashed rgb(227, 203, 71);
   background-color: rgba(186, 99, 99, 0.529);
 }
-
 </style>

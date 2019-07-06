@@ -1,6 +1,6 @@
 <template>
   <q-layout view="hHh LpR lFf">
-    <q-header elevated class="bg-primary text-black">
+    <q-header elevated class="gradient text-white">
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="left = !left" />
 
@@ -44,3 +44,7 @@ export default {
   }
 }
 </script>
+
+<style lang="stylus">
+
+</style>
