@@ -71,11 +71,11 @@ export default {
 }
 
 .q-tab-panel {
-  background: #454d66;
+  background: rgb(69,77,102);
+  background: linear-gradient(180deg, rgba(69,77,102,1) 0%, rgba(54,60,78,1) 100%);
 }
 
 .q-tab-panels {
-  background: yellow;
   height: 24vh;
 }
 
