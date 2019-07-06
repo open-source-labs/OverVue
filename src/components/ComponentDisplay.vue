@@ -94,7 +94,7 @@ export default {
   /* width: 500px; */
   /* original is 70vh */
   height: 95vh;
-  width: 100vw;
+  width: 100%;
   position: relative;
   background: darkslategray;
   background-color: rgba(124, 126, 145, 0.44);
