@@ -137,5 +137,4 @@ export default {
 .input-container {
     margin-top: 1rem;
   }
-
 </style>
