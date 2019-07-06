@@ -38,15 +38,10 @@ export default {
     ...mapActions(['setActiveRoute', 'deleteRoute']),
     handleClick (route) {
       this.setActiveRoute(route)
-      console.log(this.routes)
     },
     deleteSelectedRoute (route) {
-      for (let key in this.routes) {
-        if (key === route) {
-          delete this.routes.route
-        }
-      }
       this.deleteRoute(route)
+      this.setActiveRoute('')
     }
   }
 }

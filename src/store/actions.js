@@ -113,8 +113,8 @@ const actions = {
   [types.parentSelected]: ({ commit }, payload) => {
     commit(types.PARENT_SELECTED, payload)
   },
-  [types.deleteRoute]: ({ commit }, payload) => {
-    console.log('actionspayload:', payload)
+  [types.deleteRoute]: ({ state, commit }, payload) => {
+    console.log('stat in actions:', state)
     commit(types.DELETE_ROUTE, payload)
   }
 }

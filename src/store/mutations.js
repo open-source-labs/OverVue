@@ -103,6 +103,7 @@ const mutations = {
       ...state.routes,
       [payload]: []
     }
+    console.log('payload in add_route', payload)
   },
   // Changes the component map
   [types.ADD_ROUTE_TO_COMPONENT_MAP]: (state, payload) => {
@@ -128,6 +129,7 @@ const mutations = {
     state.activeComponent = payload
   },
   [types.SET_ROUTES]: (state, payload) => {
+    console.log('setroutespayload:', payload)
     state.routes = Object.assign({}, payload)
   },
   // invoked when a component is deleted
@@ -181,10 +183,11 @@ const mutations = {
     state.parentSelected = payload
   },
   [types.DELETE_ROUTE]: (state, payload) => {
-    console.log('payload in mutations', payload)
-    const newState = delete state.routes[payload]
-    console.log('new state', newState)
-    state = newState
+    const stateCopy = state
+    delete stateCopy.routes[payload]
+    delete stateCopy.componentMap[payload]
+    state = stateCopy
+    console.log('aftermutations state', state)
   }
 }
 
