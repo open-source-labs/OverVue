@@ -36,12 +36,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['addRouteToRouteMap']),
+    ...mapActions(['addRouteToRouteMap', 'setRoutes']),
     handleEnterKeyPress () {
       this.addRouteToRouteMap(this.newRoute)
         .then(() => {
           this.newRoute = ''
         })
+
         .catch(err => console.log(err))
     }
   }

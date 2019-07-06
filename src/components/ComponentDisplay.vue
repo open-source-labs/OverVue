@@ -109,10 +109,18 @@ export default {
       this.activeComponentData.y = y
       this.activeComponentData.w = width
       this.activeComponentData.h = height
+
+      this.componentMap[this.activeComponent].x = x
+      this.componentMap[this.activeComponent].y = y
+      this.componentMap[this.activeComponent].w = width
+      this.componentMap[this.activeComponent].h = height
     },
     onDrag: function (x, y) {
       this.activeComponentData.x = x
       this.activeComponentData.y = y
+
+      this.componentMap[this.activeComponent].x = x
+      this.componentMap[this.activeComponent].y = y
     },
     onActivated (componentData) {
       this.setActiveComponent(componentData.componentName)
@@ -150,9 +158,10 @@ export default {
   /* height: 500px; */
   /* width: 500px; */
   /* original is 70vh */
-  height: 87vh;
-  width: 100vw;
+  height: 95vh;
+  width: 100%;
   position: relative;
+  background: darkslategray;
   background-color: rgba(124, 126, 145, 0.44);
   /* background-color: #269; */
   background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;

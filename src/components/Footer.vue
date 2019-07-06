@@ -1,8 +1,8 @@
 <template>
-  <q-footer reveal elevated class="gradient text-white" :style="{ height: `${height}vh` }">
+  <q-footer reveal class="gradient text-white" :style="{ height: `${height}vh` }">
     <q-toolbar>
-      <q-btn flat color="subaccentbtn" round @click="openBottomDrawer">
-        <i :class="[open ? down : up]"></i>
+      <q-btn flat color="subaccent" round @click="openBottomDrawer">
+        <i :class="[open ? down : up]" id="btn" ></i>
       </q-btn>
       <q-toolbar-title>Dashboard</q-toolbar-title>
     </q-toolbar>
@@ -15,13 +15,17 @@
         indicator-color="secondary"
         align="left"
       >
-        <q-tab name="code" label="Code" />
-        <q-tab name="tree" label="Tree" />
-        <q-tab name="html" label="HTML Elements" />
+        <q-tab name="code" label="Code" id="label-text"/>
+        <q-tab name="detail" label="Component Details" id="label-text"/>
+        <q-tab name="tree" label="Tree" id="label-text"/>
+        <q-tab name="html" label="HTML Elements" id="label-text"/>
       </q-tabs>
 
       <q-tab-panels v-model="tab" animated class="bg-primary text-white">
         <q-tab-panel name="code">
+        </q-tab-panel>
+
+        <q-tab-panel name="detail">
         </q-tab-panel>
 
         <q-tab-panel name="tree">
@@ -56,27 +60,60 @@ export default {
   },
   methods: {
     openBottomDrawer () {
-      this.height === 35 ? (this.height = 6.5) : (this.height = 35)
+      let minHeight = (window.outerHeight < 900) ? 4.5 : 2.5
+      this.height === 35 ? (this.height = minHeight) : (this.height = 35)
       this.open === true ? this.open = false : this.open = true
     }
   }
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
+i {
+  font-size: 11px;
+}
+.q-btn {
+  background: $secondary;
+  font-size: 8px;
+  margin: 5px;
+}
+// styling for the entire footer
 .q-footer {
   // height: 35vh;
   transition-timing-function: ease-in;
   transition: 0.2s;
+  background: #313131;
 }
-
+// changes the footer toolbar height
+.q-toolbar {
+  min-height: 25px !important;
+  padding: 0 6px !important;
+}
+.q-toolbar__title {
+  font-size 14px;
+  text-transform: uppercase;
+  // font-weight: 700;
+  padding: 5px;
+}
+// this class selector does not change anything
+.q-tab__label {
+  // font-size not changing
+    font-size: 10px !important;
+    line-height: 1.718em;
+    font-weight: 500;
+}
+// changes the tab label styling
+#label-text {
+  font-size: 4px !important;
+  text-transform: capitalize;
+}
 .q-tab-panel {
   background: rgb(69,77,102);
   background: linear-gradient(180deg, rgba(69,77,102,1) 0%, rgba(54,60,78,1) 100%);
 }
-
+// changes the length of the tab panels
 .q-tab-panels {
-  height: 24vh;
+  height: 31vh;
 }
 
 .q-tabs {
