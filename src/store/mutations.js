@@ -157,9 +157,6 @@ const mutations = {
   // additionally addes children to the component
   [types.UPDATE_COMPONENT_CHILDREN_VALUE]: (state, payload) => {
     const { component, value } = payload
-    console.log('IN MUTATIONS: ', value)
-    console.log('Type: ', typeof value)
-
     state.componentMap[component].children = value
   },
   [types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE]: (state, payload) => {
@@ -179,6 +176,9 @@ const mutations = {
   // invoked when element is double clicked, changing the boolean value
   [types.UPDATE_OPEN_MODAL]: (state, payload) => {
     state.modalOpen = payload
+  },
+  [types.PARENT_SELECTED]: (state, payload) => {
+    state.parentSelected = payload
   }
 }
 

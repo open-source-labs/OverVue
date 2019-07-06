@@ -54,7 +54,11 @@ module.exports = function (ctx) {
         'QRouteTab',
         'QTabPanels',
         'QDialog',
-        'QSelect'
+        'QSelect',
+        'QTabPanel',
+        'QFab',
+        'QFabAction',
+        'QMenu'
       ],
 
       directives: [

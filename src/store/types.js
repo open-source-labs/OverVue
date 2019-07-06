@@ -38,6 +38,7 @@ export const UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE =
 export const ADD_COMPONENT_TO_COMPONENT_CHILDREN =
   'ADD_COMPONENT_TO_COMPONENT_CHILDREN'
 export const UPDATE_OPEN_MODAL = 'UPDATE_OPEN_MODAL'
+export const PARENT_SELECTED = 'PARENT_SELECTED'
 
 // Actions
 export const registerComponent = 'registerComponent'
@@ -69,3 +70,4 @@ export const updateActiveComponentChildrenValue =
 export const updateComponentChildrenValue = 'updateComponentChildrenValue'
 export const updateComponentNameInputValue = 'updateComponentNameInputValue'
 export const updateOpenModal = 'updateOpenModal'
+export const parentSelected = 'parentSelected'
