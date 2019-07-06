@@ -1,8 +1,8 @@
 <template>
   <div class="q-pa-md" style="max-width: 350px">
-    <q-list padding bordered class="rounded-borders">
+    <q-list padding bordered class="rounded-borders drawer-menu">
       <q-expansion-item dense dense-toggle expand-separator label="Components">
-        <q-card>
+        <q-card >
           <q-card-section>
             <div class="input-container">
               <ComponentList />
@@ -47,11 +47,16 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 .input-add {
   margin: 0em 1em 0em 1em;
 }
 .input-container {
   margin-top: 1rem;
+  // background: $primary;
 }
+.red {
+  background: red;
+}
+
 </style>

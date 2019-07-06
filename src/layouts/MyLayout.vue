@@ -49,5 +49,14 @@ export default {
 </script>
 
 <style lang="stylus">
-
+.drawer-menu {
+  background: white;
+}
+.q-list {
+  // background: gray;
+}
+.q-drawer {
+  background: white;
+  // background: #313131;
+}
 </style>
