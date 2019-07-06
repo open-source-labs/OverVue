@@ -27,7 +27,7 @@
         </q-tab-panel>
 
         <q-tab-panel name="tree">
-          <div class="text-h6">Tree</div>Tree Component Here
+          <Tree />
         </q-tab-panel>
 
         <q-tab-panel name="html">
@@ -39,7 +39,12 @@
 </template>
 
 <script>
+import Tree from './Tree'
+
 export default {
+  components: {
+    Tree
+  },
   data () {
     return {
       tab: 'code',
@@ -66,12 +71,12 @@ export default {
 }
 
 .q-tab-panel {
-  background: #454d66;
+  background: rgb(69,77,102);
+  background: linear-gradient(180deg, rgba(69,77,102,1) 0%, rgba(54,60,78,1) 100%);
 }
 
 .q-tab-panels {
-  background: yellow;
-  height: 100%;
+  height: 24vh;
 }
 
 .q-tabs {

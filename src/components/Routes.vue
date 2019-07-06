@@ -34,5 +34,7 @@ export default {
 <style scoped>
 .route-view {
   margin: 1rem;
+  display: flex;
+  flex-direction: column;
 }
 </style>
