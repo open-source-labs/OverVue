@@ -22,7 +22,7 @@
     >
       <h3>{{ componentData.componentName }}</h3>
     </VueDraggableResizable>
-    <q-dialog v-model="modalOpen" style="width: 700px">
+    <q-dialog v-model="modalOpen">
       <ChildrenMultiselect />
     </q-dialog>
   </div>
