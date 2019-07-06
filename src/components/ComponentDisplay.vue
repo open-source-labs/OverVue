@@ -66,10 +66,18 @@ export default {
       this.activeComponentData.y = y
       this.activeComponentData.w = width
       this.activeComponentData.h = height
+
+      this.componentMap[this.activeComponent].x = x
+      this.componentMap[this.activeComponent].y = y
+      this.componentMap[this.activeComponent].w = width
+      this.componentMap[this.activeComponent].h = height
     },
     onDrag: function (x, y) {
       this.activeComponentData.x = x
       this.activeComponentData.y = y
+
+      this.componentMap[this.activeComponent].x = x
+      this.componentMap[this.activeComponent].y = y
     },
     onActivated (componentData) {
       this.setActiveComponent(componentData.componentName)

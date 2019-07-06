@@ -6,10 +6,13 @@ const actions = {
     const { componentName } = payload
     if (!state.componentMap[componentName]) {
       commit(types.ADD_COMPONENT_TO_COMPONENT_MAP, payload)
-      commit(
-        types.ADD_COMPONENT_TO_ACTIVE_ROUTE_CHILDREN,
-        payload.componentName
-      )
+      if (!state.parentSelected) {
+        commit(
+          types.ADD_COMPONENT_TO_ACTIVE_ROUTE_CHILDREN,
+          payload.componentName
+        )
+      }
+
       commit(types.ADD_COMPONENT_TO_ACTIVE_ROUTE_IN_ROUTE_MAP, payload)
 
       let component = state.componentNameInputValue
