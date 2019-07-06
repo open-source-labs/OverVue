@@ -82,7 +82,8 @@ i {
   // height: 35vh;
   transition-timing-function: ease-in;
   transition: 0.2s;
-  background: #313131;
+  // background: #313131;
+  background: black;
 }
 // changes the footer toolbar height
 .q-toolbar {
