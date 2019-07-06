@@ -6,6 +6,7 @@
       v-for="route in Object.keys(routes)"
       :key="route"
       @click="handleClick(route)"
+      v-on:keyup.delete="deleteRoute(route)"
     >
 <!--
       <span class="panel-icon">
@@ -37,6 +38,10 @@ export default {
     ...mapActions(['setActiveRoute']),
     handleClick (route) {
       this.setActiveRoute(route)
+    },
+    deleteRoute (route) {
+      console.log('routes', route)
+      console.log('this', this)
     }
   }
 }
