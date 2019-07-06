@@ -9,6 +9,7 @@
       :w="componentData.w"
       :h="componentData.h"
       :parent="true"
+      class-name-resizable="my-resizable-class"
       @activated="onActivated(componentData)"
       @deactivated="onDeactivated(componentData)"
       @dragging="onDrag"

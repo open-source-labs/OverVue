@@ -16,10 +16,17 @@ const actions = {
       let value = state.componentChildrenMultiselectValue.map(component => {
         return state.componentMap[component]
       })
+
+      if (state.parentSelected) {
+        commit(types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE, [...state.componentMap[state.activeComponent].children, payload.componentName])
+      }
+
       commit(types.UPDATE_COMPONENT_CHILDREN_VALUE, { component, value })
       commit(types.UPDATE_COMPONENT_CHILDREN_MULTISELECT_VALUE, [])
       commit(types.UPDATE_COMPONENT_NAME_INPUT_VALUE, '')
       commit(types.SET_SELECTED_ELEMENT_LIST, [])
+      commit(types.SET_ACTIVE_COMPONENT, '')
+      commit(types.PARENT_SELECTED, false)
     }
   },
   // sets component inside componentDisplay
@@ -102,6 +109,9 @@ const actions = {
   },
   [types.updateOpenModal]: ({ commit }, payload) => {
     commit(types.UPDATE_OPEN_MODAL, payload)
+  },
+  [types.parentSelected]: ({ commit }, payload) => {
+    commit(types.PARENT_SELECTED, payload)
   }
 }
 
