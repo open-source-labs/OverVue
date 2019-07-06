@@ -5,6 +5,7 @@
         <q-card>
           <q-card-section>
             <div class="input-container">
+              <!--
               <q-input
                 standout="bg-teal text-white"
                 bottom-slots
@@ -13,11 +14,24 @@
                 :dense="dense"
                 class="input-add"
               >
+
                 <template v-slot:append>
                   <q-btn round dense flat icon="add" />
                 </template>
               </q-input>
-              <ComponentList />
+              -->
+              <a v-for="componentData in activeRouteDisplay"
+                :key="componentData.componentName"
+                 v-on:click="onActivated(componentData)"
+                >
+   <q-list bordered separator>
+      <q-item clickable v-ripple>
+        <q-item-section>{{componentData.componentName}}</q-item-section>
+
+      </q-item>
+
+    </q-list>
+    </a>
             </div>
           </q-card-section>
         </q-card>
@@ -83,12 +97,35 @@
 </template>
 <script>
 import RouteDisplay from '../components/RouteDisplay'
-import ComponentList from './HomeSideDropDownItems/ComponentList'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   components: {
-    RouteDisplay,
-    ComponentList
+    RouteDisplay
+  },
+  computed: {
+    ...mapState(['routes', 'activeRoute', 'activeComponent', 'componentMap']),
+    // used in VueDraggableResizeable component
+    activeRouteDisplay () {
+      // console.log('active route array method', this.routes[this.activeRoute])
+      let component = this.routes[this.activeRoute]
+      // console.log('component:', component)
+      return component
+    },
+    activeComponentData () {
+      // find out what this does
+      return this.activeRouteDisplay.filter(componentData => {
+        return componentData.componentName === this.activeComponent
+      })[0]
+    }
+  },
+  methods: {
+    ...mapActions(['setActiveComponent']),
+    onActivated (componentData) {
+      this.setActiveComponent(componentData.componentName)
+      this.activeComponentData.isActive = true
+      console.log('this.activeComponent', this.activeComponent)
+    }
   }
 }
 </script>

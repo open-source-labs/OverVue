@@ -48,6 +48,7 @@ export default {
     ...mapState(['routes', 'activeRoute', 'activeComponent', 'componentMap']),
     // used in VueDraggableResizeable component
     activeRouteArray () {
+      // console.log('active route array method', this.routes[this.activeRoute])
       return this.routes[this.activeRoute]
     },
     // used to delete components
