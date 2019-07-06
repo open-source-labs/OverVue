@@ -103,6 +103,7 @@ const mutations = {
       ...state.routes,
       [payload]: []
     }
+    console.log('payload in add_route', payload)
   },
   // Changes the component map
   [types.ADD_ROUTE_TO_COMPONENT_MAP]: (state, payload) => {
@@ -128,6 +129,7 @@ const mutations = {
     state.activeComponent = payload
   },
   [types.SET_ROUTES]: (state, payload) => {
+    console.log('setroutespayload:', payload)
     state.routes = Object.assign({}, payload)
   },
   // invoked when a component is deleted
@@ -157,9 +159,6 @@ const mutations = {
   // additionally addes children to the component
   [types.UPDATE_COMPONENT_CHILDREN_VALUE]: (state, payload) => {
     const { component, value } = payload
-    console.log('IN MUTATIONS: ', value)
-    console.log('Type: ', typeof value)
-
     state.componentMap[component].children = value
   },
   [types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE]: (state, payload) => {
@@ -179,6 +178,16 @@ const mutations = {
   // invoked when element is double clicked, changing the boolean value
   [types.UPDATE_OPEN_MODAL]: (state, payload) => {
     state.modalOpen = payload
+  },
+  [types.PARENT_SELECTED]: (state, payload) => {
+    state.parentSelected = payload
+  },
+  [types.DELETE_ROUTE]: (state, payload) => {
+    const stateCopy = state
+    delete stateCopy.routes[payload]
+    delete stateCopy.componentMap[payload]
+    state = stateCopy
+    console.log('aftermutations state', state)
   }
 }
 

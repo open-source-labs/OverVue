@@ -1,14 +1,11 @@
 <template>
   <q-layout view="hHh LpR lFf">
-
-    <q-header elevated class="bg-primary text-black">
+    <q-header elevated class="gradient text-white">
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="left = !left" />
 
         <q-toolbar-title>
-          <q-avatar>
-          </q-avatar>
-          PreVue 2.0
+          <q-avatar></q-avatar>PreVue 2.0
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
@@ -16,6 +13,7 @@
     <q-drawer v-model="left" side="left" behavior="desktop" bordered>
       <!-- drawer content -->
       <q-list>
+        <UploadImage />
         <HomeSideDropDown />
         <CreateComponent />
       </q-list>
@@ -24,34 +22,32 @@
     <q-page-container>
       <router-view />
     </q-page-container>
-
-    <q-footer reveal elevated class="bg-grey-8 text-white">
-      <q-toolbar>
-        <q-toolbar-title>
-          Dashboard
-        </q-toolbar-title>
-          <FooterTabView />
-      </q-toolbar>
-    </q-footer>
-
+      <Footer />
   </q-layout>
 </template>
 
 <script>
 import HomeSideDropDown from '../components/HomeSideDropDown'
-import FooterTabView from '../components/FooterTabView'
+import Footer from '../components/Footer'
 import CreateComponent from '../components/CreateComponent'
+import UploadImage from '../components/UploadImage'
 
 export default {
   data () {
     return {
-      left: true
+      left: true,
+      bottom: true
     }
   },
   components: {
     HomeSideDropDown,
-    FooterTabView,
-    CreateComponent
+    Footer,
+    CreateComponent,
+    UploadImage
   }
 }
 </script>
+
+<style lang="stylus">
+
+</style>

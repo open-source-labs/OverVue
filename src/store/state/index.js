@@ -34,7 +34,8 @@ const newState = {
   projectNumber: 2,
   activeTab: 0,
   componentChildrenMultiselectValue: [],
-  modalOpen: false
+  modalOpen: false,
+  parentSelected: false
 }
 
 export default newState

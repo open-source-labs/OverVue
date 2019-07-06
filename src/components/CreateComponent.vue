@@ -13,33 +13,25 @@
       >
       </q-input>
     </form>
-
     <div class="icon-container">
       <Icons @getClickedIcon="addToSelectedElementList" />
     </div>
-    <!-- <ChildrenMultiselect /> -->
+    <ParentMultiselect />
     <br />
-    <!-- <button
-      class="button is-primary"
-      id="add-component-btn"
-      @click="handleClick"
-      :disabled="!componentNameInputValue"
-    >Add Component</button> -->
     <q-btn id="add-component-btn" class="primary" color="secondary" label="Create Component" icon-right="add" @click="handleClick" :disabled="!componentNameInputValue" />
   </div>
 </template>
 
 <script>
 import Icons from './Icons'
-// import ChildrenMultiselect from '@/components/ChildrenMultiselect';
+import ParentMultiselect from '../components/ParentMultiselect'
 import { mapState, mapActions } from 'vuex'
-// import * as types from '../store/types.js'
 
 export default {
   name: 'HomeSidebar',
   components: {
-    // ChildrenMultiselect,
-    Icons
+    Icons,
+    ParentMultiselect
   },
   computed: {
     ...mapState(['componentMap', 'selectedElementList']),
