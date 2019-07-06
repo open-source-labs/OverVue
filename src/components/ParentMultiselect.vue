@@ -27,14 +27,12 @@ export default {
     ...mapState([
       'routes',
       'componentMap',
-      'activeComponent'
+      'activeComponent',
+      'activeRoute',
+      'routes'
     ]),
     options () {
-      const routes = Object.keys(this.routes)
-      const exceptions = new Set(['App', ...routes])
-      return Object.keys(this.componentMap).filter(component => {
-        if (!exceptions.has(component)) return component
-      })
+      return this.routes[this.activeRoute].map(component => component.componentName)
     }
   },
   methods: {
