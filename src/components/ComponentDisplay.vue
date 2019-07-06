@@ -1,7 +1,8 @@
 <template>
   <div class="component-display">
     <context-menu ref="component-options">
-      <context-menu-item>Add a Child</context-menu-item>
+      <context-menu-item :action="handleAddChild">Add a Child</context-menu-item>
+      <context-menu-item><button>Delete a Child</button></context-menu-item>
     </context-menu>
     <VueDraggableResizable
       class-name="component-box"
@@ -17,25 +18,29 @@
       @dragging="onDrag"
       @resizing="onResize"
       @dblclick.native="onDoubleClick(componentData)"
-      @contextmenu.native.prevent="'component-options'"
+      v-context-menu="'component-options'"
     >
       <h3>{{ componentData.componentName }}</h3>
     </VueDraggableResizable>
+    <q-dialog v-model="modalOpen" style="width: 700px">
+      <ChildrenMultiselect />
+    </q-dialog>
   </div>
 </template>
 <script>
 import { mapState, mapActions } from 'vuex'
 import VueDraggableResizable from 'vue-draggable-resizable'
-import VCCM from 'vue-custom-context-menu'
+import ChildrenMultiselect from '../components/ChildrenMultiselect'
 
 export default {
   name: 'ComponentDisplay',
   components: {
     VueDraggableResizable,
-    VCCM,
+    ChildrenMultiselect
   },
   data () {
     return {
+      modalOpen: false,
       abilityToDelete: false
     }
   },
@@ -86,8 +91,9 @@ export default {
       this.setActiveComponent(compData.componentName)
       this.activeComponentData.isActive = true
     },
-    onRightClick () {
-      alert('Holy fucc, u right clicc')
+    handleAddChild () {
+      // render modal with childrenmultiselect in it
+      this.modalOpen = true
     }
   }
 }
