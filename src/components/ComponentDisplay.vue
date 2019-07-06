@@ -124,7 +124,11 @@ export default {
 
 .component-box {
   color: white;
-  border: 3px dashed rgb(227, 203, 71);
+  border: 1px dashed rgb(227, 203, 71);
   background-color: rgba(186, 99, 99, 0.529);
+}
+
+.active {
+  background-color: rgba(57, 63, 84, 0.5);
 }
 </style>
