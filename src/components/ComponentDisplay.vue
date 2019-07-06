@@ -9,11 +9,11 @@
       :w="componentData.w"
       :h="componentData.h"
       :parent="true"
+      class-name-resizable="my-resizable-class"
       @activated="onActivated(componentData)"
       @deactivated="onDeactivated(componentData)"
       @dragging="onDrag"
       @resizing="onResize"
-      @dblclick.native="onDoubleClick(componentData)"
     >
       <h3>{{ componentData.componentName }}</h3>
     </VueDraggableResizable>
@@ -22,6 +22,7 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import VueDraggableResizable from 'vue-draggable-resizable'
+import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
 
 export default {
   name: 'ComponentDisplay',
@@ -59,7 +60,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setActiveComponent', 'updateOpenModal']),
+    ...mapActions(['setActiveComponent']),
     onResize: function (x, y, width, height) {
       this.activeComponentData.x = x
       this.activeComponentData.y = y
@@ -76,26 +77,52 @@ export default {
     },
     onDeactivated () {
       this.activeComponentData.isActive = false
-    },
-    onDoubleClick (compData) {
-      this.setActiveComponent(compData.componentName)
-      this.activeComponentData.isActive = true
     }
+    //       @dblclick.native="onDoubleClick(componentData)"
+    // onDoubleClick (compData) {
+    //   this.setActiveComponent(compData.componentName)
+    //   this.activeComponentData.isActive = true
+    // }
   }
 }
 </script>
 
 <style scoped>
 .component-display {
-  border: 2px dotted rgb(14, 14, 14);
-  background-color: rgba(242, 234, 228, 0.61);
+  /* border: 3px dashed rgb(159, 122, 122); */
+  /* height: 500px; */
+  /* width: 500px; */
   height: 70vh;
   width: 70vw;
   position: relative;
+  background-color: rgba(124, 126, 145, 0.44);
+  /* background-color: #269; */
+background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
+background-image: -webkit-linear-gradient(white 2px, transparent 2px),
+                  -webkit-linear-gradient(0, white 2px, transparent 2px),
+                  -webkit-linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px),
+                  -webkit-linear-gradient(0, rgba(255,255,255,.3) 1px, transparent 1px);
+background-image: -moz-linear-gradient(white 2px, transparent 2px),
+                  -moz-linear-gradient(0, white 2px, transparent 2px),
+                  -moz-linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px),
+                  -moz-linear-gradient(0, rgba(255,255,255,.3) 1px, transparent 1px);
+background-image: linear-gradient(white 2px, transparent 2px),
+                  linear-gradient(90deg, white 2px, transparent 2px),
+                  linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px),
+                  linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px);
+-pie-background: linear-gradient(white 2px, transparent 2px) -2px -2px / 100px,
+                 linear-gradient(90deg, white 2px, transparent 2px) -2px -2px / 100px,
+                 linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px) -1px -1px / 20px,
+                 linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px) -1px -1px / 20px,
+                 #269;
+behavior: url(/pie/PIE.htc);
 }
 
 .component-box {
   color: white;
-  border: 1px solid salmon;
+  border: 3px dashed rgb(227, 203, 71);
+  background-color: rgba(186, 99, 99, 0.529);
 }
+
 </style>
