@@ -179,6 +179,12 @@ const mutations = {
   },
   [types.PARENT_SELECTED]: (state, payload) => {
     state.parentSelected = payload
+  },
+  [types.DELETE_ROUTE]: (state, payload) => {
+    console.log('payload in mutations', payload)
+    const newState = delete state.routes[payload]
+    console.log('new state', newState)
+    state = newState
   }
 }
 

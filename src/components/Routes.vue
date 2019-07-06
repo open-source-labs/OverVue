@@ -6,7 +6,7 @@
       v-for="route in Object.keys(routes)"
       :key="route"
       @click="handleClick(route)"
-      v-on:keyup.delete="deleteRoute(route)"
+      v-on:keyup.delete="deleteSelectedRoute(route)"
     >
 <!--
       <span class="panel-icon">
@@ -35,13 +35,18 @@ export default {
     ...mapState(['routes', 'activeRoute'])
   },
   methods: {
-    ...mapActions(['setActiveRoute']),
+    ...mapActions(['setActiveRoute', 'deleteRoute']),
     handleClick (route) {
       this.setActiveRoute(route)
+      console.log(this.routes)
     },
-    deleteRoute (route) {
-      console.log('routes', route)
-      console.log('this', this)
+    deleteSelectedRoute (route) {
+      for (let key in this.routes) {
+        if (key === route) {
+          delete this.routes.route
+        }
+      }
+      this.deleteRoute(route)
     }
   }
 }
@@ -50,5 +55,7 @@ export default {
 <style scoped>
 .route-view {
   margin: 1rem;
+  display: flex;
+  flex-direction: column;
 }
 </style>

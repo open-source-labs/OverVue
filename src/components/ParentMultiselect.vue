@@ -2,7 +2,7 @@
   <div id="parent-select">
     <br />
     <multiselect
-      placeholder="Choose Parent (if applicable)"
+      placeholder="Parent Component"
       :multiple="false"
       :close-on-select="true"
       :options="options"
@@ -52,5 +52,9 @@ export default {
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
-
+  #parent-select{
+    height: 30px;
+    margin: 0.75rem;
+    width: 90%;
+  }
 </style>
