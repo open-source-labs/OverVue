@@ -49,6 +49,13 @@ export default {
 </script>
 
 <style lang="stylus">
+.q-toolbar {
+  min-height:  30px;
+}
+.deano-size {
+  min-height: 2in
+  height: 3in
+}
 // css styling for the drawer items
 .drawer-menu {
   background: white;
