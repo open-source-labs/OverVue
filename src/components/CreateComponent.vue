@@ -4,7 +4,7 @@
     <br />
     <form v-on:submit.prevent="handleClick">
       <q-input
-        standout="bg-teal text-white"
+        standout="bg-secondary text-white"
         bottom-slots
         v-model="componentNameInputValue"
         label="Component Name"

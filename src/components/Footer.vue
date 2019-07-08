@@ -113,8 +113,10 @@ i {
   text-transform: capitalize;
 }
 .q-tab-panel {
-  background: rgb(69,77,102);
-  background: linear-gradient(180deg, rgba(69,77,102,1) 0%, rgba(54,60,78,1) 100%);
+  // matchs the code editor bg
+  background: #272822
+  // background: rgb(69,77,102);
+  // background: linear-gradient(180deg, rgba(69,77,102,1) 0%, rgba(54,60,78,1) 100%);
 }
 // changes the length of the tab panels
 .q-tab-panels {
@@ -122,6 +124,6 @@ i {
 }
 
 .q-tabs {
-  background: #2c384d;
+  background: #11120F;
 }
 </style>
