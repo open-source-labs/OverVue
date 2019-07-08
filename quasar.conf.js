@@ -55,8 +55,7 @@ module.exports = function (ctx) {
         'QTabPanels',
         'QTabPanel',
         'QFab',
-        'QFabAction',
-        'QUploader'
+        'QFabAction'
       ],
 
       directives: [
