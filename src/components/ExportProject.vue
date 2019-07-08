@@ -12,9 +12,20 @@ const ipc = require("electron").ipcRenderer;
 export default {
   name: "ExportProjectComponent",
   methods: {
+    showExportDialog() {
+      remote.dialog.showSaveDialog({
+        title: 'Choose location to save folder in',
+        defaultPath: remote.app.getPath('desktop'),
+        message: 'Choose location to save folder in',
+        nameFieldLabel: 'Application Name'
+      },
+      result => {
+        this.exportFile(result);
+      });
+    },
     exportProject: function() {
-      console.log('export project method clicked!')
-      ipc.send("show-export-dialog");
+      // ipc.send("show-export-dialog")
+      this.showExportDialog();
     },
     /**
      * @description creates the router.js file
@@ -314,15 +325,8 @@ export default {
       str += `\n\t]`;
       str += `\n}`;
       fs.writeFileSync(path.join(location, "package.json"), str);
-    }
-  },
-  computed: {
-    ...mapState(["componentMap"])
-  },
-  mounted() {
-    // executed when export button is clicked
-    // allows user to pick a path to export their vue prototype
-    ipc.on("export-project-location", (event, data) => {
+    },
+    exportFile(data){
       if (!fs.existsSync(data)) {
         fs.mkdirSync(data);
         console.log("FOLDER CREATED!");
@@ -333,14 +337,6 @@ export default {
         fs.mkdirSync(path.join(data, "src", "components"));
         fs.mkdirSync(path.join(data, "src", "views"));
       }
-      /*
-        fs.copySync(
-          path.join(remote.app.getAppPath(), '../vue-boiler-plate-routes/'),
-          data
-        );
-        .then(() => console.log('success!'))
-        .catch(err => console.err(err));
-      */
       // creating basic boilerplate for vue app
       this.createIndexFile(data);
       this.createMainFile(data);
@@ -371,7 +367,10 @@ export default {
           );
         }
       }
-    });
+    }
+  },
+  computed: {
+    ...mapState(["componentMap"])
   }
 };
 </script>
