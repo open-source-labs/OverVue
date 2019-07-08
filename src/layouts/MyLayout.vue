@@ -52,14 +52,18 @@ export default {
 </script>
 
 <style lang="stylus">
+// css styling for the drawer items
 .drawer-menu {
   background: white;
+  // background: #27282268;
 }
+// css styling for the drawer list (not entire bg)
 .q-list {
   // background: gray;
 }
+// css styling for entire drawer
 .q-drawer {
-  background: white;
-  // background: #313131;
+  // background: white;
+  background: #272822;
 }
 </style>
