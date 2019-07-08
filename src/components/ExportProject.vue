@@ -1,5 +1,5 @@
 <template>
-  <q-btn class="glossy" color="teal" label="Export Project" />
+  <q-btn class="glossy" color="teal" label="Export Project" @click="exportProject"/>
 </template>
 
 <script>
@@ -13,6 +13,7 @@ export default {
   name: "ExportProjectComponent",
   methods: {
     exportProject: function() {
+      console.log('export project method clicked!')
       ipc.send("show-export-dialog");
     },
     /**
