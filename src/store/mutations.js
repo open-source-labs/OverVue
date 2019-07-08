@@ -37,7 +37,7 @@ const mutations = {
       children: []
     })
   },
-  [types.DELETE_FROM_COMPONENT_HTML_LIST]: (state, id) => {
+  [types.DELETE_FROM_COMPONENT_HTML_LIST]: (state, idx) => {
     const componentName = state.activeComponent
     const htmlList = state.componentMap[componentName].htmlList
 
@@ -46,9 +46,9 @@ const mutations = {
         if (element.children.length > 0) {
           parseAndDelete(element.children)
         }
-        if (id === element._id) {
-          htmlList.splice(index, 1)
-        }
+        // if (id === element._id) {
+        htmlList.splice(idx, 1)
+        // }
       })
 
       let copied = htmlList.slice(0)

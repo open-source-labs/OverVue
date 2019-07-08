@@ -33,7 +33,7 @@
         </q-tab-panel>
 
         <q-tab-panel name="html">
-          <div class="text-h6">HTML Elements</div>HTML Element Component Here
+          <HomeQueue />
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
@@ -43,10 +43,12 @@
 <script>
 import Tree from './Tree'
 // import CodeSnippet from './CodeSnippet'
+import HomeQueue from './HomeQueue'
 
 export default {
   components: {
-    Tree
+    Tree,
+    HomeQueue
     // CodeSnippet
   },
   data () {
@@ -60,7 +62,7 @@ export default {
   },
   methods: {
     openBottomDrawer () {
-      let minHeight = (window.outerHeight < 900) ? 4.5 : 2.5
+      let minHeight = (window.outerHeight < 900) ? 4.5 : (window.outerHeight < 1035) ? 3.75 : 2.5
       this.height === 35 ? (this.height = minHeight) : (this.height = 35)
       this.open === true ? this.open = false : this.open = true
     }
