@@ -1,7 +1,7 @@
 <template>
   <div class="input-container">
     <q-input
-      standout="bg-teal text-white"
+      standout="bg-secondary text-white"
       bottom-slots
       v-model="text"
       label="Add Vuex"
@@ -13,7 +13,7 @@
       </template>
     </q-input>
     <q-input
-      standout="bg-teal text-white"
+      standout="bg-secondary text-white"
       bottom-slots
       v-model="text"
       label="Add Action"
@@ -25,7 +25,7 @@
       </template>
     </q-input>
     <q-input
-      standout="bg-teal text-white"
+      standout="bg-secondary text-white"
       bottom-slots
       v-model="text"
       label="Add Mutation"
