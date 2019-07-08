@@ -1,6 +1,5 @@
 <template>
   <section class="home-queue">
-    <p class="panel-heading">Selected Elements</p>
     <draggable
       v-model="renderList"
       group="people"
@@ -57,27 +56,29 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="stylus" scoped>
 .home-queue {
-  border: 1px solid white;
-  background-color: hsl(222, 15%, 26%);
   height: 100%;
 }
 li {
   list-style-type: none;
 }
 .list-group-item {
-  margin: 2px;
-  border: 1px solid black;
+  display: inline-block;
+  margin: 2px 1.5%;
+  width: 30%;
   border-radius: 0.5cm;
-  background-color: #e7d5bc;
+  background-color: $secondary;
   height: 35px;
-  padding-top: 2px;
+  padding-top: 6px;
   text-align: center;
 }
-
 .fa-trash:hover {
   cursor: pointer;
   color: red;
+}
+.fa-trash {
+  position: relative;
+  left: 20px;
 }
 </style>
