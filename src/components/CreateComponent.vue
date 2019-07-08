@@ -1,5 +1,5 @@
 <template>
-  <div class="home-sidebar">
+  <div class="home-sidebar drawer-menu">
     <!-- <p class="panel-heading">Create a component</p> -->
     <br />
     <form v-on:submit.prevent="handleClick">

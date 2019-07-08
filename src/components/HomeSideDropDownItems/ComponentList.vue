@@ -10,11 +10,12 @@
           <q-item-section>
             <div class="component-container">
               <div class="component-info">
-                <q-item-label overline class="component">{{componentData.componentName}}</q-item-label>
-                <q-item-label>Child Components Here</q-item-label>
-                <!-- {{componentData.componentName}} -->
+                <!-- <q-item-label overline class="component">Parent</q-item-label> -->
+                <!-- <q-item-label>Child Components Here</q-item-label> -->
+                {{componentData.componentName}}
+                <!-- <br> -->
               </div>
-              <q-btn round flat icon="delete_forever" />
+              <q-btn round flat icon="highlight_off" />
             </div>
           </q-item-section>
         </q-item>
@@ -56,8 +57,8 @@ export default {
 <style>
 /* modifies entire container */
 .home-sidebar {
-  margin: 1rem;
-  padding-bottom: 1rem;
+  /* margin: 1rem; */
+  padding: 0.5rem;
   border-radius: 5px;
 }
 /* modifies top label */
@@ -68,6 +69,9 @@ export default {
 .q-list {
   margin-bottom: 0.5rem;
   border-radius: 5px;
+}
+.component-info {
+  margin: auto 0;
 }
 /* modifies content in list element */
 .component-container {
