@@ -15,7 +15,7 @@
                 {{componentData.componentName}}
                 <!-- <br> -->
               </div>
-              <q-btn round flat icon="highlight_off" />
+              <q-btn round flat icon="highlight_off" v-on:click.stop='handleClick(componentData)'/>
             </div>
           </q-item-section>
         </q-item>
@@ -44,11 +44,14 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setActiveComponent']),
+    ...mapActions(['setActiveComponent','deleteComponent']),
     onActivated (componentData) {
       this.setActiveComponent(componentData.componentName)
       this.activeComponentData.isActive = true
-      console.log('this.activeComponent', this.activeComponent)
+    },
+    handleClick (componentData) {
+      this.deleteComponent(componentData)
+      this.setActiveComponent('')
     }
   }
 }

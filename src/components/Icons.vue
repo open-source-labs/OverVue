@@ -18,11 +18,12 @@ import { mapState } from 'vuex'
 export default {
   name: 'Icons',
   computed: {
-    ...mapState(['icons'])
+    ...mapState(['icons', 'activeComponent'])
   },
   methods: {
     changeState (elementName) {
-      this.$emit('getClickedIcon', elementName)
+      if (this.activeComponent === '') this.$emit('getClickedIcon', elementName)
+      else this.$emit('activeElement', elementName)
     }
   }
 }

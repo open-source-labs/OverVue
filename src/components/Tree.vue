@@ -65,7 +65,7 @@ export default {
       this.tree = build['App']
     }
   },
-  mounted () {
+  created () {
     this.buildTree()
   }
 }

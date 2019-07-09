@@ -43,7 +43,7 @@ export default {
     // calls createTemplate and createBoiler to generate snippet
     createCodeSnippet (componentName, children) {
       let result = `${this.createTemplate(componentName, children)}${this.createBoiler(componentName, children)}`
-      console.log(`createCodeSnippet result: ${result}`)
+      //console.log(`createCodeSnippet result: ${result}`)
       return result
     },
     createTemplate (componentName, children) {
@@ -57,7 +57,7 @@ export default {
       return `<template>\n ${output}${templateTagStr}  </div>\n</template>`
     },
     writeTemplateTag (componentName) {
-      console.log('writeTemplateTag invoked!')
+      //console.log('writeTemplateTag invoked!')
       // create reference object
       const htmlElementMap = {
         div: ['<div>', '</div>'],
@@ -81,7 +81,7 @@ export default {
         outputStr += htmlElementMap[el.text][1]
         outputStr += `  \n`
       }
-      console.log(`outputStr from writeTemplateTag: ${outputStr}`)
+      //console.log(`outputStr from writeTemplateTag: ${outputStr}`)
       return outputStr
     },
     createBoiler (componentName, children) {
@@ -109,7 +109,7 @@ export default {
   },
   // updates code snippet, but broken cause children undefined, shows `function () { [native code] }`
   updated () {
-    console.log(`code: ${this.createCodeSnippet(this.activeComponent, this.componentMap[this.activeComponent].children)}`)
+    //console.log(`code: ${this.createCodeSnippet(this.activeComponent, this.componentMap[this.activeComponent].children)}`)
     this.code = `${this.createCodeSnippet(this.activeComponent, this.componentMap[this.activeComponent].children)}`
   },
   beforeDestroy () {
