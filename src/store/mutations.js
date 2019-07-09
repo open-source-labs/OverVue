@@ -133,7 +133,6 @@ const mutations = {
     state.routes = Object.assign({}, payload)
   },
   // invoked when a component is deleted
-  //
   [types.SET_ACTIVE_ROUTE_ARRAY]: (state, payload) => {
     state.routes[state.activeRoute] = payload
   },
@@ -187,7 +186,19 @@ const mutations = {
     delete stateCopy.routes[payload]
     delete stateCopy.componentMap[payload]
     state = stateCopy
-    console.log('aftermutations state', state)
+  },
+  [types.DELETE_COMPONENT]: (state,payload) => {
+    const stateCopy = state
+    let compArr = stateCopy.routes[stateCopy.activeRoute]
+    for (let i = 0; i < compArr.length;i++){
+      if (compArr[i].componentName==payload.componentName){
+        compArr.splice(i,1)
+      }
+    }
+    delete state.componentMap[payload.componentName]
+    state.routes[state.activeRoute] = compArr
+    console.log('new state', state)
+    
   }
 }
 
