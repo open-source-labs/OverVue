@@ -35,7 +35,7 @@
         </q-tab-panel>
 
         <q-tab-panel name="html">
-          <div class="text-h6">HTML Elements</div>HTML Element Component Here
+          <HomeQueue />
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
@@ -44,11 +44,13 @@
 
 <script>
 import Tree from './Tree'
+import HomeQueue from './HomeQueue'
 import CodeSnippet from './CodeSnippet'
 
 export default {
   components: {
     Tree,
+    HomeQueue,
     CodeSnippet
   },
   data () {

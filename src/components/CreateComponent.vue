@@ -2,7 +2,7 @@
   <div class="home-sidebar drawer-menu">
     <!-- <p class="panel-heading">Create a component</p> -->
     <br />
-    <form v-on:submit.prevent="handleClick">
+    <form v-on:submit.prevent="handleClick" v-on:click="resetActiveComponent">
       <q-input
         standout="bg-secondary text-white"
         bottom-slots
@@ -14,7 +14,7 @@
       </q-input>
     </form>
     <div class="icon-container">
-      <Icons @getClickedIcon="addToSelectedElementList" />
+      <Icons @getClickedIcon="addToSelectedElementList" @activeElement="addToComponentElementList"/>
     </div>
     <ParentMultiselect />
     <br />
@@ -34,7 +34,7 @@ export default {
     ParentMultiselect
   },
   computed: {
-    ...mapState(['componentMap', 'selectedElementList']),
+    ...mapState(['componentMap', 'selectedElementList', 'activeComponent']),
     componentNameInputValue: {
       get () {
         return this.$store.state.componentNameInputValue
@@ -48,7 +48,9 @@ export default {
     ...mapActions([
       'registerComponent',
       'addToSelectedElementList',
-      'updateComponentNameInputValue'
+      'updateComponentNameInputValue',
+      'setActiveComponent',
+      'addToComponentElementList'
     ]),
     handleClick () {
       const component = {
@@ -63,6 +65,13 @@ export default {
       }
 
       this.registerComponent(component)
+    },
+    resetActiveComponent () {
+      this.setActiveComponent('')
+    },
+    handleIconClick () {
+      if (this.activeComponent === '') this.setClickedElementList()
+      else this.setComponentHtmlList()
     }
   }
 }
