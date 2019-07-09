@@ -1,5 +1,5 @@
 <template>
-  <q-btn class="glossy" color="teal" label="Export Project" @click="exportProject"/>
+  <q-btn class=" export-btn" color="secondary" label="Export Project" @click="exportProject"/>
 </template>
 
 <script>
@@ -10,7 +10,7 @@
 // import path from "path";
 // const ipc = require("electron").ipcRenderer;
 export default {
-  name: "ExportProjectComponent",
+  name: 'ExportProjectComponent'
 }
 //   methods: {
 //     showExportDialog() {
@@ -377,4 +377,10 @@ export default {
 </script>
 
 <style>
+.export-btn {
+  min-height: 10px !important;
+  font-size: 11px;
+  text-transform: capitalize;
+  padding: 3px 8px;
+}
 </style>

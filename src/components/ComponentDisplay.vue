@@ -5,7 +5,7 @@
       v-for="componentData in activeRouteArray"
       :key="componentData.componentName"
       :x="componentData.x"
-      :y="componentData.y"
+      :y="componentData.y + 20"
       :w="componentData.w"
       :h="componentData.h"
       :parent="true"
@@ -15,7 +15,14 @@
       @resizing="onResize"
       @dblclick.native="onDoubleClick(componentData)"
     >
-      <h3>{{ componentData.componentName }}</h3>
+     <div class="component-title">
+        <p>{{ componentData.componentName }}</p>
+      </div>
+      <div class="component-children">
+        <p># of children: {{ componentMap[componentData.componentName].children.length }} </p>
+        <p>children: {{ componentMap[componentData.componentName].children }}</p>
+         <!-- <p v-for="child in childList" :key="childList.indexOf(child)"> {{ child.text }}</p> -->
+      </div>
       <q-menu context-menu>
         <q-list>
           <q-item clickable v-ripple v-close-popup @click="handleAddChild">
@@ -80,16 +87,18 @@ export default {
     ...mapState(['routes', 'activeRoute', 'activeComponent', 'componentMap', 'componentChildrenMultiselectValue']),
     // used in VueDraggableResizeable component
     activeRouteArray () {
-      // console.log('active route array method', this.routes[this.activeRoute])
+      console.log('active route array method', this.routes[this.activeRoute])
       return this.routes[this.activeRoute]
     },
     // used to delete components
     activeComponentData () {
-      // find out what this does
       return this.activeRouteArray.filter(componentData => {
         return componentData.componentName === this.activeComponent
       })[0]
     },
+    childList () {
+      return this.componentMap[componentData.componentName].children
+    }, 
     options () {
       // PROBLEM: the objects on childrenmultiselectvalue are applied
       const routes = Object.keys(this.routes)
@@ -153,6 +162,24 @@ export default {
 </script>
 
 <style scoped>
+.component-title {
+  position: relative;
+  font-size: 16px;
+  top: -18px;
+  left: 2px;
+  color: black;
+  font-weight: 800;
+  /* background: rgba(0, 0, 0, 0.678); */
+  /* width: 1rem; */
+  line-height: 1.2;
+  /* margin: 10px; */
+}
+.component-children {
+  position: absolute;
+  top: 0rem;
+  left: 2px;
+  color: black;
+}
 .component-display {
   /* border: 3px dashed rgb(159, 122, 122); */
   /* height: 500px; */
@@ -187,13 +214,16 @@ export default {
     #269;
   behavior: url(/pie/PIE.htc);
 }
-
 .component-box {
   color: white;
   border: 1px dashed rgb(227, 203, 71);
   background-color: rgba(186, 99, 99, 0.529);
+  -webkit-transition: background-color 200ms linear;
+  -ms-transition: background-color 200ms linear;
+  transition: background-color 200ms linear;
 }
 .active {
   background-color: rgba(57, 63, 84, 0.5);
+  border: 1px dashed rgb(227, 203, 71);
 }
 </style>
