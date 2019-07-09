@@ -7,7 +7,8 @@
       language="js"
       :line-numbers="lineNumbers"
       class="code-editor"
-      :style="{ height: `${height}vh` }"
+      :style="{ height: `${height}vh`}"
+      readonly="true"
     />
   </div>
 </template>
@@ -121,5 +122,6 @@ export default {
 <style lang="stylus" scoped>
 // resize handled by vue lifecycle methods
 .code-editor {
+  font-size: 11px;
 }
 </style>
