@@ -37,7 +37,7 @@ const mutations = {
       children: []
     })
   },
-  [types.DELETE_FROM_COMPONENT_HTML_LIST]: (state, id) => {
+  [types.DELETE_FROM_COMPONENT_HTML_LIST]: (state, idx) => {
     const componentName = state.activeComponent
     const htmlList = state.componentMap[componentName].htmlList
 
@@ -46,9 +46,9 @@ const mutations = {
         if (element.children.length > 0) {
           parseAndDelete(element.children)
         }
-        if (id === element._id) {
-          htmlList.splice(index, 1)
-        }
+        // if (id === element._id) {
+        htmlList.splice(idx, 1)
+        // }
       })
 
       let copied = htmlList.slice(0)
@@ -164,7 +164,6 @@ const mutations = {
   [types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE]: (state, payload) => {
     // original line
     state.componentMap[state.activeComponent].children = payload
-    // state.componentMap[state.activeRoute].children = state.componentMap[state.activeRoute].children.filter(el => el !== payload[0])
     state.componentMap[state.activeRoute].children = state.componentMap[state.activeRoute].children.filter(el => !payload.includes(el))
   },
   // allows usr to change the name of component!!
