@@ -15,9 +15,9 @@
         indicator-color="secondary"
         align="left"
       >
-        <q-tab name="code" label="Code" id="label-text"/>
+        <q-tab name="code" label="Code Snippet" id="label-text"/>
         <q-tab name="detail" label="Component Details" id="label-text"/>
-        <q-tab name="tree" label="Tree" id="label-text"/>
+        <q-tab name="tree" label="Project Tree" id="label-text"/>
         <q-tab name="html" label="HTML Elements" id="label-text"/>
       </q-tabs>
 
