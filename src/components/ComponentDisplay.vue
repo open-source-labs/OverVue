@@ -18,11 +18,11 @@
      <div class="component-title">
         <p>{{ componentData.componentName }}</p>
       </div>
-      <div class="component-children">
-        <p># of children: {{ componentMap[componentData.componentName].children.length }} </p>
-        <p>children: {{ componentMap[componentData.componentName].children }}</p>
+      <ul class="component-children">
+        <li># of children: {{ componentMap[componentData.componentName].children.length }} </li>
+        <li>children: {{ componentMap[componentData.componentName].children }}</li>
          <!-- <p v-for="child in childList" :key="childList.indexOf(child)"> {{ child.text }}</p> -->
-      </div>
+      </ul>
       <q-menu context-menu>
         <q-list>
           <q-item clickable v-ripple v-close-popup @click="handleAddChild">
@@ -179,13 +179,14 @@ export default {
   top: 0rem;
   left: 2px;
   color: black;
+  list-style: none;
 }
 .component-display {
   /* border: 3px dashed rgb(159, 122, 122); */
   /* height: 500px; */
   /* width: 500px; */
-  /* original is 70vh */
-  height: 95vh;
+  /* original is 70 */
+  height: 90vh;
   width: 100%;
   position: relative;
   background: darkslategray;
