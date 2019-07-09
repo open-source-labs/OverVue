@@ -122,4 +122,7 @@ export default {
 // resize handled by vue lifecycle methods
 .code-editor {
 }
+::-webkit-scrollbar {
+    display: none;
+}
 </style>

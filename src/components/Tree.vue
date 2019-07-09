@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <tree
-      :data="tree"
+      :data="computedTree"
       node-text="name"
       layoutType="euclidean"
       type="tree"
@@ -21,10 +21,11 @@ export default {
   },
   computed: {
     ...mapState(['componentMap']),
-    componentMap: {
-      get () {
-        return this.$store.state.componentMap
-      }
+    // getComponentMap () {
+    //   return this.$store.state.componentMap
+    // },
+    computedTree () {
+      return this.buildTree()
     }
   },
   data () {
@@ -34,6 +35,7 @@ export default {
   },
   methods: {
     formatComponentMap (compMap) {
+      console.log('compMap', compMap)
       let result = []
       Object.values(compMap).forEach(compData => {
         result.push({
@@ -62,7 +64,7 @@ export default {
     },
     buildTree () {
       let build = this.transformToTree(this.componentMap)
-      this.tree = build['App']
+      return build['App']
     }
   },
   mounted () {
@@ -70,6 +72,7 @@ export default {
   }
 }
 </script>
+
 <style>
 .container {
   height: 100%;
