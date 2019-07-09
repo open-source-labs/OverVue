@@ -1,6 +1,5 @@
 <template>
-<div>
-  <!--<div class="route-view">-->
+  <div class="home-sidebar" >
     <a
       :class="route === activeRoute ? 'panel-block is-active' : 'panel-block'"
       v-for="route in Object.keys(routes)"
@@ -8,22 +7,13 @@
       @click="handleClick(route)"
       v-on:keyup.delete="deleteSelectedRoute(route)"
     >
-<!--
-      <span class="panel-icon">
-        <i class="fas fa-location-arrow" aria-hidden="true"></i>
-      </span>
-      -->
-         <q-list bordered separator>
-      <q-item clickable v-ripple>
-        <q-item-section>{{route}}</q-item-section>
-
-      </q-item>
-
-    </q-list>
-
+      <q-list bordered separator>
+        <q-item clickable v-ripple>
+          <q-item-section>{{route}}</q-item-section>
+        </q-item>
+      </q-list>
     </a>
   </div>
-
 </template>
 
 <script>

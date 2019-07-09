@@ -69,6 +69,7 @@ export default {
 .q-list {
   margin-bottom: 0.5rem;
   border-radius: 5px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 3px 6px 0 rgba(0, 0, 0, 0.13);
 }
 .component-info {
   margin: auto 0;

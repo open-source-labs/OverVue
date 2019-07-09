@@ -139,5 +139,6 @@ export default {
 
 .active {
   background-color: rgba(57, 63, 84, 0.5);
+  border: 10px dashed rgb(227, 203, 71);
 }
 </style>
