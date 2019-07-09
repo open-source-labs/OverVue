@@ -7,6 +7,7 @@
         <q-toolbar-title>
           <q-avatar></q-avatar>PreVue 2.0
         </q-toolbar-title>
+        <ExportProjectComponent />
       </q-toolbar>
     </q-header>
 
@@ -30,6 +31,7 @@
 import HomeSideDropDown from '../components/HomeSideDropDown'
 import Footer from '../components/Footer'
 import CreateComponent from '../components/CreateComponent'
+import ExportProjectComponent from '../components/ExportProject'
 // import UploadImage from '../components/UploadImage'
 
 export default {
@@ -42,12 +44,33 @@ export default {
   components: {
     HomeSideDropDown,
     Footer,
-    CreateComponent
+    CreateComponent,
+    ExportProjectComponent
     // UploadImage
   }
 }
 </script>
 
 <style lang="stylus">
-
+.q-toolbar {
+  min-height:  30px;
+}
+.deano-size {
+  min-height: 2in
+  height: 3in
+}
+// css styling for the drawer items
+.drawer-menu {
+  background: white;
+  // background: #27282268;
+}
+// css styling for the drawer list (not entire bg)
+.q-list {
+  // background: gray;
+}
+// css styling for entire drawer
+.q-drawer {
+  // background: white;
+  background: #272822;
+}
 </style>

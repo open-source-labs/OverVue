@@ -41,7 +41,7 @@
           use-chips
           stack-label
           label="Select children"
-          style="width: 250px"
+          style="width: 250px; background-color: #fd5f00"
         />
       </q-dialog>
     </div>

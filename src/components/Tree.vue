@@ -60,13 +60,12 @@ export default {
       })
       return result
     },
-
     buildTree () {
       let build = this.transformToTree(this.componentMap)
       this.tree = build['App']
     }
   },
-  created () {
+  mounted () {
     this.buildTree()
   }
 }
