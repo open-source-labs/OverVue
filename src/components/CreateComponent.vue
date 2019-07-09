@@ -18,7 +18,7 @@
     </div>
     <ParentMultiselect />
     <br />
-    <q-btn id="add-component-btn" class="primary" color="secondary" label="Create Component" icon-right="add" @click="handleClick" :disabled="!componentNameInputValue" />
+    <q-btn id="add-component-btn" class="glossy" color="teal" label="Create Component" icon-right="add" @click="handleClick" :disabled="!componentNameInputValue" />
   </div>
 </template>
 
