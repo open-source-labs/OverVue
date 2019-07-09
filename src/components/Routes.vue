@@ -1,5 +1,7 @@
 <template>
-  <div class="home-sidebar" >
+
+<div>
+  <!--<div class="route-view">-->
     <a
       :class="route === activeRoute ? 'panel-block is-active' : 'panel-block'"
       v-for="route in Object.keys(routes)"

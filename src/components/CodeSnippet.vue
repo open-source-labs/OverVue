@@ -8,6 +8,7 @@
       :line-numbers="lineNumbers"
       class="code-editor"
       :style="{ height: `${height}vh`}"
+      readonly="true"
     />
   </div>
 </template>
