@@ -115,9 +115,9 @@ module.exports = function (ctx) {
       // workboxPluginMode: 'InjectManifest',
       // workboxOptions: {}, // only for NON InjectManifest
       manifest: {
-        // name: 'PreVue 2.0',
-        // short_name: 'PreVue 2.0',
-        // description: 'Vue Prototype DevTool',
+        // name: 'Quasar App',
+        // short_name: 'Quasar App',
+        // description: 'A Quasar Framework app',
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',
@@ -158,7 +158,7 @@ module.exports = function (ctx) {
     },
 
     electron: {
-      bundler: 'builder', // or 'packager'
+      // bundler: 'builder', // or 'packager'
 
       extendWebpack (cfg) {
         // do something with Electron main process Webpack cfg
@@ -181,7 +181,7 @@ module.exports = function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        // appId: 'prevue2'
+        // appId: 'quasar-example'
       }
     }
   }
