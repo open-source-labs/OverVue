@@ -7,13 +7,16 @@
         <q-toolbar-title>
           <q-avatar></q-avatar>PreVue 2.0
         </q-toolbar-title>
+        <OpenProjectComponent />
+        <SaveProjectComponent />
+        <ExportProjectComponent />
       </q-toolbar>
     </q-header>
 
     <q-drawer v-model="left" side="left" behavior="desktop" bordered>
       <!-- drawer content -->
       <q-list>
-        <UploadImage />
+        <!-- <UploadImage /> -->
         <HomeSideDropDown />
         <CreateComponent />
       </q-list>
@@ -30,7 +33,10 @@
 import HomeSideDropDown from '../components/HomeSideDropDown'
 import Footer from '../components/Footer'
 import CreateComponent from '../components/CreateComponent'
-import UploadImage from '../components/UploadImage'
+import ExportProjectComponent from '../components/ExportProject'
+import SaveProjectComponent from '../components/SaveProjectComponent'
+import OpenProjectComponent from '../components/OpenProjectComponent'
+// import UploadImage from '../components/UploadImage'
 
 export default {
   data () {
@@ -43,11 +49,46 @@ export default {
     HomeSideDropDown,
     Footer,
     CreateComponent,
-    UploadImage
+    ExportProjectComponent,
+    SaveProjectComponent,
+    OpenProjectComponent
+    // UploadImage
   }
 }
 </script>
 
 <style lang="stylus">
+.q-toolbar {
+  min-height:  30px;
+}
+.deano-size {
+  min-height: 2in
+  height: 3in
+}
+// css styling for the drawer items
+.drawer-menu {
+  background: white;
+  // background: #27282268;
+}
+// css styling for the drawer list (not entire bg)
+.q-list {
+  // background: gray;
+}
+// css styling for entire drawer
+.q-drawer {
+  // background: white;
+  background: #272822;
+}
+body::-webkit-scrollbar {
+    width: 1em;
+}
 
+body::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
 </style>

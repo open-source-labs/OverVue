@@ -2,7 +2,7 @@
 <div>
        <q-input
         @keyup.enter.native="handleEnterKeyPress"
-        standout="bg-teal text-white"
+        standout="bg-secondary text-white"
         bottom-slots
         v-model="newRoute"
         label="Enter new route"
