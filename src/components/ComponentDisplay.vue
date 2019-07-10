@@ -5,23 +5,59 @@
       v-for="componentData in activeRouteArray"
       :key="componentData.componentName"
       :x="componentData.x"
-      :y="componentData.y"
+      :y="componentData.y + 20"
       :w="componentData.w"
       :h="componentData.h"
       :parent="true"
-      class-name-resizable="my-resizable-class"
       @activated="onActivated(componentData)"
       @deactivated="onDeactivated(componentData)"
       @dragging="onDrag"
       @resizing="onResize"
+      @dblclick.native="onDoubleClick(componentData)"
     >
-      <h3>{{ componentData.componentName }}</h3>
+     <div class="component-title">
+        <p>{{ componentData.componentName }}</p>
+      </div>
+      <div class="component-children">
+        <p># of children: {{ componentMap[componentData.componentName].children.length }} </p>
+        <p>children: {{ componentMap[componentData.componentName].children }}</p>
+         <!-- <p v-for="child in childList" :key="childList.indexOf(child)"> {{ child.text }}</p> -->
+      </div>
+      <q-menu context-menu>
+        <q-list>
+          <q-item clickable v-ripple v-close-popup @click="handleAddChild">
+            <q-item-section>Add Children</q-item-section>
+            <q-item-section avatar><q-icon color="primary" name="add"/></q-item-section>
+          </q-item>
+          <q-item clickable v-ripple v-close-popup auto-close>
+            <q-item-section>Delete Children</q-item-section>
+            <q-item-section avatar><q-icon color="primary" name="delete"/></q-item-section>
+          </q-item>
+        </q-list>
+      </q-menu>
     </VueDraggableResizable>
+    <div>
+      <q-dialog v-model="modalOpen">
+        <q-select
+          @input="handleSelect"
+          id="dropdown"
+          filled
+          v-model="testModel"
+          multiple
+          :options="options"
+          use-chips
+          stack-label
+          label="Select children"
+          style="width: 250px; background-color: #fd5f00"
+        />
+      </q-dialog>
+    </div>
   </div>
 </template>
 <script>
 import { mapState, mapActions } from 'vuex'
 import VueDraggableResizable from 'vue-draggable-resizable'
+// import ChildrenMultiselect from '../components/ChildrenMultiselect'
 import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
 
 export default {
@@ -31,7 +67,10 @@ export default {
   },
   data () {
     return {
-      abilityToDelete: false
+      modalOpen: false,
+      abilityToDelete: false,
+      testOptions: ['parent', 'child', 'grandchild'],
+      testModel: []
     }
   },
   mounted () {
@@ -45,31 +84,52 @@ export default {
     })
   },
   computed: {
-    ...mapState(['routes', 'activeRoute', 'activeComponent', 'componentMap']),
+    ...mapState(['routes', 'activeRoute', 'activeComponent', 'componentMap', 'componentChildrenMultiselectValue']),
     // used in VueDraggableResizeable component
     activeRouteArray () {
-      // console.log('active route array method', this.routes[this.activeRoute])
+      console.log('active route array method', this.routes[this.activeRoute])
       return this.routes[this.activeRoute]
     },
     // used to delete components
     activeComponentData () {
-      // find out what this does
       return this.activeRouteArray.filter(componentData => {
         return componentData.componentName === this.activeComponent
       })[0]
+    },
+    childList () {
+      return this.componentMap[componentData.componentName].children
+    }, 
+    options () {
+      // PROBLEM: the objects on childrenmultiselectvalue are applied
+      const routes = Object.keys(this.routes)
+      const exceptions = new Set(['App', this.activeComponent, ...routes])
+      return Object.keys(this.componentMap).filter(component => {
+        if (!exceptions.has(component)) return component
+      })
     }
   },
   methods: {
-    ...mapActions(['setActiveComponent']),
+    ...mapActions([
+      'setActiveComponent',
+      'updateComponentChildrenMultiselectValue',
+      'updateActiveComponentChildrenValue']),
     onResize: function (x, y, width, height) {
       this.activeComponentData.x = x
       this.activeComponentData.y = y
       this.activeComponentData.w = width
       this.activeComponentData.h = height
+
+      this.componentMap[this.activeComponent].x = x
+      this.componentMap[this.activeComponent].y = y
+      this.componentMap[this.activeComponent].w = width
+      this.componentMap[this.activeComponent].h = height
     },
     onDrag: function (x, y) {
       this.activeComponentData.x = x
       this.activeComponentData.y = y
+
+      this.componentMap[this.activeComponent].x = x
+      this.componentMap[this.activeComponent].y = y
     },
     onActivated (componentData) {
       this.setActiveComponent(componentData.componentName)
@@ -77,6 +137,20 @@ export default {
     },
     onDeactivated () {
       this.activeComponentData.isActive = false
+    },
+    onDoubleClick (compData) {
+      this.setActiveComponent(compData.componentName)
+      this.activeComponentData.isActive = true
+    },
+    handleAddChild () {
+      // render modal with childrenmultiselect in it
+      this.modalOpen = true
+    },
+    handleSelect (value) {
+      // if (this.modalOpen) this.updateActiveComponentChildrenValue(value)
+      console.log('Multiselect: ', value)
+      this.updateActiveComponentChildrenValue(value)
+      // this.updateComponentChildrenMultiselectValue(value)
     }
     //       @dblclick.native="onDoubleClick(componentData)"
     // onDoubleClick (compData) {
@@ -88,14 +162,33 @@ export default {
 </script>
 
 <style scoped>
+.component-title {
+  position: relative;
+  font-size: 16px;
+  top: -18px;
+  left: 2px;
+  color: black;
+  font-weight: 800;
+  /* background: rgba(0, 0, 0, 0.678); */
+  /* width: 1rem; */
+  line-height: 1.2;
+  /* margin: 10px; */
+}
+.component-children {
+  position: absolute;
+  top: 0rem;
+  left: 2px;
+  color: black;
+}
 .component-display {
   /* border: 3px dashed rgb(159, 122, 122); */
   /* height: 500px; */
   /* width: 500px; */
   /* original is 70vh */
-  height: 87vh;
-  width: 100vw;
+  height: 95vh;
+  width: 100%;
   position: relative;
+  background: darkslategray;
   background-color: rgba(124, 126, 145, 0.44);
   /* background-color: #269; */
   background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
@@ -121,10 +214,16 @@ export default {
     #269;
   behavior: url(/pie/PIE.htc);
 }
-
 .component-box {
   color: white;
-  border: 3px dashed rgb(227, 203, 71);
+  border: 1px dashed rgb(227, 203, 71);
   background-color: rgba(186, 99, 99, 0.529);
+  -webkit-transition: background-color 200ms linear;
+  -ms-transition: background-color 200ms linear;
+  transition: background-color 200ms linear;
+}
+.active {
+  background-color: rgba(57, 63, 84, 0.5);
+  border: 1px dashed rgb(227, 203, 71);
 }
 </style>

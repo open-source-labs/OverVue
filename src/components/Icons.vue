@@ -18,11 +18,12 @@ import { mapState } from 'vuex'
 export default {
   name: 'Icons',
   computed: {
-    ...mapState(['icons'])
+    ...mapState(['icons', 'activeComponent'])
   },
   methods: {
     changeState (elementName) {
-      this.$emit('getClickedIcon', elementName)
+      if (this.activeComponent === '') this.$emit('getClickedIcon', elementName)
+      else this.$emit('activeElement', elementName)
     }
   }
 }
@@ -42,6 +43,7 @@ export default {
     grid-template-columns: 50% 50%;
     grid-row-gap: 1em;
     width: 100%;
+
   }
 }
 
@@ -51,9 +53,10 @@ button {
 }
 button:hover {
   cursor: pointer;
-  color: #00d1b2;
+  color: #00FFFF
 }
 button:focus {
   outline: none;
 }
+
 </style>
