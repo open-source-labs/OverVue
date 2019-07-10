@@ -7,6 +7,8 @@
         <q-toolbar-title>
           <q-avatar></q-avatar>PreVue 2.0
         </q-toolbar-title>
+        <OpenProjectComponent />
+        <SaveProjectComponent />
         <ExportProjectComponent />
       </q-toolbar>
     </q-header>
@@ -32,6 +34,8 @@ import HomeSideDropDown from '../components/HomeSideDropDown'
 import Footer from '../components/Footer'
 import CreateComponent from '../components/CreateComponent'
 import ExportProjectComponent from '../components/ExportProject'
+import SaveProjectComponent from '../components/SaveProjectComponent'
+import OpenProjectComponent from '../components/OpenProjectComponent'
 // import UploadImage from '../components/UploadImage'
 
 export default {
@@ -45,7 +49,9 @@ export default {
     HomeSideDropDown,
     Footer,
     CreateComponent,
-    ExportProjectComponent
+    ExportProjectComponent,
+    SaveProjectComponent,
+    OpenProjectComponent
     // UploadImage
   }
 }

@@ -15,7 +15,7 @@
                 {{componentData.componentName}}
                 <!-- <br> -->
               </div>
-              <q-btn round flat icon="highlight_off" />
+              <q-btn round flat icon="highlight_off" v-on:click.stop='handleClick(componentData)'/>
             </div>
           </q-item-section>
         </q-item>
@@ -44,11 +44,14 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setActiveComponent']),
+    ...mapActions(['setActiveComponent','deleteComponent']),
     onActivated (componentData) {
       this.setActiveComponent(componentData.componentName)
       this.activeComponentData.isActive = true
-      console.log('this.activeComponent', this.activeComponent)
+    },
+    handleClick (componentData) {
+      this.deleteComponent(componentData)
+      this.setActiveComponent('')
     }
   }
 }
@@ -69,6 +72,7 @@ export default {
 .q-list {
   margin-bottom: 0.5rem;
   border-radius: 5px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 3px 6px 0 rgba(0, 0, 0, 0.13);
 }
 .component-info {
   margin: auto 0;
