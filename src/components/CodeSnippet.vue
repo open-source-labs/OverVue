@@ -122,6 +122,6 @@ export default {
 <style lang="stylus" scoped>
 // resize handled by vue lifecycle methods
 .code-editor {
-  font-size: 11px;
+  font-size: 12px;
 }
 </style>
