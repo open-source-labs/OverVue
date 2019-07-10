@@ -43,6 +43,7 @@ export default {
     grid-template-columns: 50% 50%;
     grid-row-gap: 1em;
     width: 100%;
+
   }
 }
 
@@ -52,9 +53,10 @@ button {
 }
 button:hover {
   cursor: pointer;
-  color: #00d1b2;
+  color: #00FFFF
 }
 button:focus {
   outline: none;
 }
+
 </style>
