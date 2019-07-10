@@ -1,17 +1,22 @@
 <template>
-  <q-btn class=" export-btn" color="secondary" label="Export Project" @click="exportProject"/>
+<!-- electron build
+  <q-btn class="glossy" color="secondary" label="Export Project" @click="exportProject"/>
+  -->
+  <q-btn class="glossy" color="secondary" label="Export Project"/>
 </template>
 
 <script>
 // Where all of the boilerplate is exported
 import { mapState } from "vuex";
-const { remote } = require("electron");
-import fs from "fs-extra";
-import path from "path";
-const ipc = require("electron").ipcRenderer;
+//const { remote } = require("electron");
+//import fs from "fs-extra";
+//import path from "path";
+//const ipc = require("electron").ipcRenderer;
 export default {
-  name: 'ExportProjectComponent'
+
+  name: "ExportProjectComponent",
 }
+
 //   methods: {
 //     showExportDialog() {
 //       remote.dialog.showSaveDialog({
@@ -374,13 +379,20 @@ export default {
 //     ...mapState(["componentMap"])
 //   }
 // };
+
+
+
 </script>
 
 <style>
+
 .export-btn {
   min-height: 10px !important;
   font-size: 11px;
   text-transform: capitalize;
   padding: 3px 8px;
 }
+
 </style>
+
+
