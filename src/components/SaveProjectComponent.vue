@@ -4,10 +4,10 @@
 </template>
 
 <script>
-import localforage from 'localforage';
-import fs from 'fs-extra';
-const { remote } = require("electron");
-const Mousetrap = require('mousetrap');
+// import localforage from 'localforage';
+// import fs from 'fs-extra';
+// const { remote } = require("electron");
+// const Mousetrap = require('mousetrap');
 
 export default {
   name: 'SaveProjetComponent',
