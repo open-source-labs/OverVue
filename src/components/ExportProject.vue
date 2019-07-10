@@ -10,7 +10,6 @@ import fs from "fs-extra";
 import path from "path";
 const ipc = require("electron").ipcRenderer;
 export default {
-
   name: "ExportProjectComponent",
 
   methods: {
