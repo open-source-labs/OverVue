@@ -7,6 +7,8 @@
         <q-toolbar-title>
           <q-avatar></q-avatar>PreVue 2.0
         </q-toolbar-title>
+        <OpenProjectComponent />
+        <SaveProjectComponent />
         <ExportProjectComponent />
       </q-toolbar>
     </q-header>
@@ -32,6 +34,8 @@ import HomeSideDropDown from '../components/HomeSideDropDown'
 import Footer from '../components/Footer'
 import CreateComponent from '../components/CreateComponent'
 import ExportProjectComponent from '../components/ExportProject'
+import SaveProjectComponent from '../components/SaveProjectComponent'
+import OpenProjectComponent from '../components/OpenProjectComponent'
 // import UploadImage from '../components/UploadImage'
 
 export default {
@@ -45,7 +49,9 @@ export default {
     HomeSideDropDown,
     Footer,
     CreateComponent,
-    ExportProjectComponent
+    ExportProjectComponent,
+    SaveProjectComponent,
+    OpenProjectComponent
     // UploadImage
   }
 }
@@ -72,5 +78,17 @@ export default {
 .q-drawer {
   // background: white;
   background: #272822;
+}
+body::-webkit-scrollbar {
+    width: 1em;
+}
+
+body::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
 }
 </style>

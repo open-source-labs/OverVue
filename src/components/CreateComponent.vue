@@ -2,9 +2,9 @@
   <div class="home-sidebar drawer-menu">
     <!-- <p class="panel-heading">Create a component</p> -->
     <br />
-    <form v-on:submit.prevent="handleClick">
+    <form v-on:submit.prevent="handleClick" v-on:click="resetActiveComponent">
       <q-input
-        standout="bg-secondary text-white"
+        standout="secondary text-secondary"
         bottom-slots
         v-model="componentNameInputValue"
         label="Component Name"
@@ -14,11 +14,13 @@
       </q-input>
     </form>
     <div class="icon-container">
-      <Icons @getClickedIcon="addToSelectedElementList" />
+      <Icons class = 'icons' @getClickedIcon="addToSelectedElementList" @activeElement="addToComponentElementList"/>
     </div>
     <ParentMultiselect />
     <br />
-    <q-btn id="add-component-btn" class="glossy" color="teal" label="Create Component" icon-right="add" @click="handleClick" :disabled="!componentNameInputValue" />
+
+    <q-btn id="add-component-btn" color="secondary" label="Create Component" @click="handleClick" :disabled="!componentNameInputValue" />
+
   </div>
 </template>
 
@@ -34,7 +36,7 @@ export default {
     ParentMultiselect
   },
   computed: {
-    ...mapState(['componentMap', 'selectedElementList']),
+    ...mapState(['componentMap', 'selectedElementList', 'activeComponent']),
     componentNameInputValue: {
       get () {
         return this.$store.state.componentNameInputValue
@@ -48,7 +50,9 @@ export default {
     ...mapActions([
       'registerComponent',
       'addToSelectedElementList',
-      'updateComponentNameInputValue'
+      'updateComponentNameInputValue',
+      'setActiveComponent',
+      'addToComponentElementList'
     ]),
     handleClick () {
       const component = {
@@ -63,6 +67,13 @@ export default {
       }
 
       this.registerComponent(component)
+    },
+    resetActiveComponent () {
+      this.setActiveComponent('')
+    },
+    handleIconClick () {
+      if (this.activeComponent === '') this.setClickedElementList()
+      else this.setComponentHtmlList()
     }
   }
 }

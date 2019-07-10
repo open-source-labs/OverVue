@@ -15,9 +15,9 @@
         indicator-color="secondary"
         align="left"
       >
-        <q-tab name="code" label="Code" id="label-text"/>
+        <q-tab name="code" label="Code Snippet" id="label-text"/>
         <q-tab name="detail" label="Component Details" id="label-text"/>
-        <q-tab name="tree" label="Tree" id="label-text"/>
+        <q-tab name="tree" label="Project Tree" id="label-text"/>
         <q-tab name="html" label="HTML Elements" id="label-text"/>
       </q-tabs>
 
@@ -27,7 +27,8 @@
         </q-tab-panel>
 
         <q-tab-panel name="detail">
-          <div class="text-h6">Component Deets</div>Component Info Here
+          <div class="text-h6">Vuex</div>
+          Component Info Here
         </q-tab-panel>
 
         <q-tab-panel name="tree">
@@ -35,7 +36,7 @@
         </q-tab-panel>
 
         <q-tab-panel name="html">
-          <div class="text-h6">HTML Elements</div>HTML Element Component Here
+          <HomeQueue />
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
@@ -44,11 +45,13 @@
 
 <script>
 import Tree from './Tree'
+import HomeQueue from './HomeQueue'
 import CodeSnippet from './CodeSnippet'
 
 export default {
   components: {
     Tree,
+    HomeQueue,
     CodeSnippet
   },
   data () {
