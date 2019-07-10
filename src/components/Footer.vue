@@ -4,7 +4,7 @@
       <q-btn flat color="subaccent" round @click="openBottomDrawer">
         <i :class="[open ? down : up]" id="btn" ></i>
       </q-btn>
-      <q-toolbar-title>Dashboard</q-toolbar-title>
+      <q-toolbar-title >Dashboard</q-toolbar-title>
     </q-toolbar>
     <q-card>
       <q-tabs
@@ -21,7 +21,7 @@
         <q-tab name="html" label="HTML Elements" id="label-text"/>
       </q-tabs>
 
-      <q-tab-panels v-model="tab" animated class="bg-primary text-white">
+      <q-tab-panels v-model="tab" animated class="bg-primary text-white full-footer">
         <q-tab-panel name="code">
           <CodeSnippet />
         </q-tab-panel>
@@ -80,7 +80,7 @@ i {
   font-size: 11px;
 }
 .q-btn {
-  background: $secondary;
+  // background: $secondary;
   font-size: 8px;
   margin: 5px;
 }
@@ -124,9 +124,12 @@ i {
 // changes the length of the tab panels
 .q-tab-panels {
   height: 31vh;
+  padding: 0px !important;
 }
-
 .q-tabs {
   background: #11120F;
+}
+.full-footer {
+  height: 100vh;  
 }
 </style>
