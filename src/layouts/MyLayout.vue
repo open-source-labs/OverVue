@@ -77,6 +77,10 @@ export default {
 .q-list {
   // background: gray;
 }
+// styling between input and elements in q-list drawer
+.q-field--with-bottom {
+  padding-bottom: 5px;  
+}
 // css styling for entire drawer
 .q-drawer {
   // background: white;

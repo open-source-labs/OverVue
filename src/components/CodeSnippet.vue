@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- <input type="checkbox" v-model="lineNumbers"> Linenumbers -->
-    <p v-if="activeComponent === ''">Select a Component</p>
+    <p v-if="activeComponent === ''">Select a component</p>
     <p v-else >{{ `${activeComponent}.vue` }}</p>
     <prism-editor
       v-model="code"
@@ -24,7 +24,7 @@ import 'vue-prism-editor/dist/VuePrismEditor.css'
 export default {
   data () {
     return {
-      code: `Your component boilerplate will be displayed here`,
+      code: `Your component boilerplate will be displayed here.`,
       lineNumbers: true,
       height: null
     }
