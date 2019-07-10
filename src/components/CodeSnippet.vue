@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="codesnippet-container">
     <!-- <input type="checkbox" v-model="lineNumbers"> Linenumbers -->
-    <p v-if="activeComponent === ''">Select a component</p>
-    <p v-else >{{ `${activeComponent}.vue` }}</p>
+    <div class="top-p" v-if="activeComponent === ''" >Select a component</div>
+    <div v-else >{{ `${activeComponent}.vue` }}</div>
     <prism-editor
       v-model="code"
       language="js"
@@ -121,7 +121,11 @@ export default {
 .code-editor {
   font-size: 12px;
 }
+.codesnippet-container {
+  margin-bottom: 1rem;  
+}
 ::-webkit-scrollbar {
     display: none;
 }
+
 </style>

@@ -15,7 +15,7 @@
 
     <q-drawer v-model="left" side="left" behavior="desktop" bordered>
       <!-- drawer content -->
-      <q-list>
+      <q-list class="q-list-drawer">
         <!-- <UploadImage /> -->
         <HomeSideDropDown />
         <CreateComponent />
@@ -74,12 +74,15 @@ export default {
   // background: #27282268;
 }
 // css styling for the drawer list (not entire bg)
-.q-list {
+.q-list-drawer {
   // background: gray;
+  height: 100vh;
+  border-radius: 5px;
+  box-shadow: none;
 }
 // styling between input and elements in q-list drawer
 .q-field--with-bottom {
-  padding-bottom: 5px;  
+  // pading-bottom:  
 }
 // css styling for entire drawer
 .q-drawer {

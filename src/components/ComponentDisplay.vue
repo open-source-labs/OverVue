@@ -218,13 +218,13 @@ export default {
 .component-box {
   color: white;
   border: 1px dashed rgb(227, 203, 71);
-  background-color: rgba(186, 99, 99, 0.529);
+  background-color: rgba(186, 99, 99, 0.420);
   -webkit-transition: background-color 200ms linear;
   -ms-transition: background-color 200ms linear;
   transition: background-color 200ms linear;
 }
 .active {
-  background-color: rgba(57, 63, 84, 0.5);
+  background-color: rgba(39, 78, 223, 0.3);
   border: 1px dashed rgb(227, 203, 71);
 }
 </style>

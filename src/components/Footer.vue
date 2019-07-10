@@ -58,7 +58,7 @@ export default {
     return {
       tab: 'code',
       open: true,
-      height: 35,
+      height: 40,
       up: 'fas fa-chevron-up',
       down: 'fas fa-chevron-down'
     }
@@ -68,7 +68,7 @@ export default {
       // 15in mb pro - 1027 px 3.75
       // big ass screens 2.5
       let minHeight = (window.outerHeight < 900) ? 4.5 : (window.outerHeight < 1035) ? 3.75 : 2.5
-      this.height === 35 ? (this.height = minHeight) : (this.height = 35)
+      this.height === 40 ? (this.height = minHeight) : (this.height = 40)
       this.open === true ? this.open = false : this.open = true
     }
   }
