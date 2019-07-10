@@ -124,4 +124,7 @@ export default {
 .code-editor {
   font-size: 12px;
 }
+::-webkit-scrollbar {
+    display: none;
+}
 </style>
