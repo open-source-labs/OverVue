@@ -1,5 +1,5 @@
 <template>
-  <q-btn class="glossy mr-sm" color="secondary" label="Save"/>
+  <q-btn class="glossy export-btn" color="secondary" label="Save"/>
   <!--<q-btn class="glossy mr-sm" color="secondary" label="Save" @click="saveProjectJSON"/>  Uncomment and delete line above for electron build-->
 </template>
 

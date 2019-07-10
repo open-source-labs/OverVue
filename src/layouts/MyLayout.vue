@@ -58,6 +58,9 @@ export default {
 </script>
 
 <style lang="stylus">
+.export-btn {
+  margin-left: 0.3rem;
+}
 .q-toolbar {
   min-height:  30px;
 }
