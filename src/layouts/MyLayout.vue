@@ -2,8 +2,9 @@
   <q-layout view="hHh LpR lFf">
     <q-header elevated class="gradient text-white">
       <q-toolbar>
-        <q-btn dense flat round icon="menu" @click="left = !left" />
-
+        <q-btn dense flat color="subaccent" round @click="left = !left" >
+          <i :class="[left ? 'fas fa-chevron-left' : 'fas fa-list-ul']" id="btn" ></i>
+        </q-btn>
         <q-toolbar-title>
           <q-avatar></q-avatar>PreVue 2.0
         </q-toolbar-title>
@@ -58,6 +59,10 @@ export default {
 </script>
 
 <style lang="stylus">
+.q-layout {
+  transition-timing-function: ease-in;
+  transition: 0.2s;
+}
 .export-btn {
   margin-left: 0.3rem;
 }
