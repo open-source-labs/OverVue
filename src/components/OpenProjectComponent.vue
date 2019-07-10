@@ -1,5 +1,5 @@
 <template>
-  <q-btn class="glossy mr-sm" color="secondary" label="Open Project"/>
+  <q-btn class=" export-btn" color="secondary" label="Open Project"/>
   <!--<q-btn class="glossy mr-sm" color="secondary" label="Open Project" @click="openProjectJSON"/>-->
 </template>
 
