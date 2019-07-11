@@ -2,7 +2,7 @@
 <!-- electron build
   <q-btn class="glossy" color="secondary" label="Export Project" @click="exportProject"/>
   -->
-  <q-btn class="glossy" color="secondary" label="Export Project"/>
+  <q-btn class=" export-btn" color="secondary" label="Export Project"/>
 </template>
 
 <script>

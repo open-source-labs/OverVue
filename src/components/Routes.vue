@@ -1,6 +1,6 @@
 <template>
 
-<div>
+<div class="home-sidebar">
   <!--<div class="route-view">-->
     <a
       :class="route === activeRoute ? 'panel-block is-active' : 'panel-block'"
