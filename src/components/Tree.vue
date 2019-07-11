@@ -91,7 +91,7 @@ export default {
 /* changes the stroke color */
 .treeclass .linktree {
   stroke: $secondary !important;
-  stroke-opacity: 1;
+  stroke-opacity: 0.4;
   stroke-width: 8px;
 }
 </style>
