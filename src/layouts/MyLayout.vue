@@ -6,7 +6,8 @@
           <i :class="[left ? 'fas fa-chevron-left' : 'fas fa-list-ul']" id="btn" ></i>
         </q-btn>
         <q-toolbar-title>
-          <q-avatar></q-avatar>PreVue 2.0
+          <!-- <q-avatar></q-avatar> -->
+          PreVue 2.0
         </q-toolbar-title>
         <OpenProjectComponent />
         <SaveProjectComponent />
@@ -61,7 +62,6 @@ export default {
 <style lang="stylus">
 .q-layout {
   transition-timing-function: ease-in;
-  transition: 0.2s;
 }
 .export-btn {
   margin-left: 0.3rem;
