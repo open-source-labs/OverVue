@@ -62,7 +62,6 @@ export default {
 <style lang="stylus">
 .q-layout {
   transition-timing-function: ease-in;
-  transition: 0.2s;
 }
 .export-btn {
   margin-left: 0.3rem;

@@ -1,6 +1,6 @@
 <template>
   <q-footer reveal class="gradient text-white" :style="{ height: `${height}vh` }">
-    <q-toolbar>
+    <q-toolbar class="toolbar-background">
       <q-btn flat color="subaccent" round @click="openBottomDrawer">
         <i :class="[open ? down : up]" id="btn" ></i>
       </q-btn>
@@ -90,7 +90,7 @@ i {
   transition-timing-function: ease-in;
   transition: 0.2s;
   // background: #313131;
-  background: black;
+  background: #272822;
 }
 // changes the footer toolbar height
 .q-toolbar {
@@ -106,9 +106,9 @@ i {
 // this class selector does not change anything
 .q-tab__label {
   // font-size not changing
-    font-size: 10px !important;
-    line-height: 1.718em;
-    font-weight: 500;
+  font-size: 10px !important;
+  line-height: 1.718em;
+  font-weight: 500;
 }
 // changes the tab label styling
 #label-text {
@@ -129,7 +129,11 @@ i {
 .q-tabs {
   background: #11120F;
 }
+.toolbar-background {
+  background: black;  
+}
 .full-footer {
-  height: 100vh;  
+  // height: 100vh;
+  padding-bottom: 0px;  
 }
 </style>
