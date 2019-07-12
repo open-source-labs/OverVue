@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <tree
-      :data="tree"
+      :data="computedTree"
       node-text="name"
       layoutType="euclidean"
       type="tree"
@@ -21,10 +21,8 @@ export default {
   },
   computed: {
     ...mapState(['componentMap']),
-    componentMap: {
-      get () {
-        return this.$store.state.componentMap
-      }
+    computedTree () {
+      return this.buildTree()
     }
   },
   data () {
@@ -34,6 +32,7 @@ export default {
   },
   methods: {
     formatComponentMap (compMap) {
+      console.log('compMap', compMap)
       let result = []
       Object.values(compMap).forEach(compData => {
         result.push({
@@ -62,15 +61,13 @@ export default {
     },
     buildTree () {
       let build = this.transformToTree(this.componentMap)
-      this.tree = build['App']
+      return build['App']
     }
-  },
-  created () {
-    this.buildTree()
   }
 }
 </script>
-<style>
+
+<style lang="stylus">
 .container {
   height: 100%;
   width: 100%;
@@ -89,12 +86,12 @@ export default {
 }
   /* changes the circle node color */
 .treeclass .nodetree circle {
-  fill: rgb(232, 225, 16);
+  fill: #A2D9FF;
 }
 /* changes the stroke color */
 .treeclass .linktree {
-  stroke: rgb(232, 225, 16) !important;
-  stroke-opacity: .4;
-  stroke-width: 2px;
+  stroke: $secondary !important;
+  stroke-opacity: 0.4;
+  stroke-width: 8px;
 }
 </style>

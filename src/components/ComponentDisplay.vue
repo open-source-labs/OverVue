@@ -18,13 +18,13 @@
      <div class="component-title">
         <p>{{ componentData.componentName }}</p>
       </div>
-      <div class="component-children">
-        <p># of children: {{ componentMap[componentData.componentName].children.length }} </p>
-        <p>children: {{ componentMap[componentData.componentName].children }}</p>
+      <ul class="component-children">
+        <li># of children: {{ componentMap[componentData.componentName].children.length }} </li>
+        <li>children: {{ componentMap[componentData.componentName].children }}</li>
          <!-- <p v-for="child in childList" :key="childList.indexOf(child)"> {{ child.text }}</p> -->
-      </div>
-      <q-menu context-menu>
-        <q-list>
+      </ul>
+      <q-menu context-menu >
+        <q-list class="menu">
           <q-item clickable v-ripple v-close-popup @click="handleAddChild">
             <q-item-section>Add Children</q-item-section>
             <q-item-section avatar><q-icon color="primary" name="add"/></q-item-section>
@@ -78,6 +78,7 @@ export default {
     window.addEventListener('keyup', event => {
       if (event.key === 'Backspace') {
         if (this.activeComponent && this.activeComponentData.isActive) {
+          // console.log('this:', this)
           this.$store.dispatch('deleteActiveComponent')
         }
       }
@@ -179,13 +180,14 @@ export default {
   top: 0rem;
   left: 2px;
   color: black;
+  list-style: none;
 }
 .component-display {
   /* border: 3px dashed rgb(159, 122, 122); */
   /* height: 500px; */
   /* width: 500px; */
-  /* original is 70vh */
-  height: 95vh;
+  /* original is 70 */
+  height: 90vh;
   width: 100%;
   position: relative;
   background: darkslategray;
@@ -214,16 +216,19 @@ export default {
     #269;
   behavior: url(/pie/PIE.htc);
 }
+.menu {
+  margin-bottom: 0px !important;
+}
 .component-box {
   color: white;
-  border: 1px dashed rgb(227, 203, 71);
-  background-color: rgba(186, 99, 99, 0.529);
+  border: 1.2px dashed rgb(231, 203, 75);
+  background-color: rgba(172, 83, 83, 0.42);
   -webkit-transition: background-color 200ms linear;
   -ms-transition: background-color 200ms linear;
   transition: background-color 200ms linear;
 }
 .active {
-  background-color: rgba(57, 63, 84, 0.5);
+  background-color: rgba(105, 179, 190, 0.514);
   border: 1px dashed rgb(227, 203, 71);
 }
 </style>

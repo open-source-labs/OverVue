@@ -4,7 +4,7 @@
     <br />
     <form v-on:submit.prevent="handleClick" v-on:click="resetActiveComponent">
       <q-input
-        standout="secondary text-secondary"
+        standout="bg-secondary text-white"
         bottom-slots
         v-model="componentNameInputValue"
         label="Component Name"
