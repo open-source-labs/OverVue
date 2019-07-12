@@ -23,8 +23,8 @@
         <li>children: {{ componentMap[componentData.componentName].children }}</li>
          <!-- <p v-for="child in childList" :key="childList.indexOf(child)"> {{ child.text }}</p> -->
       </ul>
-      <q-menu context-menu>
-        <q-list>
+      <q-menu context-menu >
+        <q-list class="menu">
           <q-item clickable v-ripple v-close-popup @click="handleAddChild">
             <q-item-section>Add Children</q-item-section>
             <q-item-section avatar><q-icon color="primary" name="add"/></q-item-section>
@@ -78,6 +78,7 @@ export default {
     window.addEventListener('keyup', event => {
       if (event.key === 'Backspace') {
         if (this.activeComponent && this.activeComponentData.isActive) {
+          // console.log('this:', this)
           this.$store.dispatch('deleteActiveComponent')
         }
       }
@@ -214,6 +215,9 @@ export default {
       20px,
     #269;
   behavior: url(/pie/PIE.htc);
+}
+.menu {
+  margin-bottom: 0px !important;
 }
 .component-box {
   color: white;
