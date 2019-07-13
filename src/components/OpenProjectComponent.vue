@@ -11,7 +11,7 @@
 // import { mapState, mapActions } from 'vuex'
 
 export default {
-  // name: 'OpenProjectComponent',
+  name: 'OpenProjectComponent',
   // methods: {
   //   ...mapActions([
   //     'setComponentMap',
