@@ -60,125 +60,125 @@
   </div>
 </template>
 <script>
-import { mapState, mapActions } from "vuex";
-import VueDraggableResizable from "vue-draggable-resizable";
+import { mapState, mapActions } from 'vuex'
+import VueDraggableResizable from 'vue-draggable-resizable'
 // import ChildrenMultiselect from '../components/ChildrenMultiselect'
-import "vue-draggable-resizable/dist/VueDraggableResizable.css";
+import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
 
 export default {
-  name: "ComponentDisplay",
+  name: 'ComponentDisplay',
   components: {
     VueDraggableResizable
   },
-  data() {
+  data () {
     return {
       modalOpen: false,
       abilityToDelete: false,
-      testOptions: ["parent", "child", "grandchild"],
+      testOptions: ['parent', 'child', 'grandchild'],
       testModel: [],
       mockImg: false
-    };
+    }
   },
-  mounted() {
+  mounted () {
     // when component is mounted add ability to delete
-    window.addEventListener("keyup", event => {
-      if (event.key === "Backspace") {
+    window.addEventListener('keyup', event => {
+      if (event.key === 'Backspace') {
         if (this.activeComponent && this.activeComponentData.isActive) {
-          this.$store.dispatch("deleteActiveComponent");
+          this.$store.dispatch('deleteActiveComponent')
         }
       }
-    });
+    })
   },
   computed: {
     ...mapState([
-      "routes",
-      "activeRoute",
-      "activeComponent",
-      "componentMap",
-      "componentChildrenMultiselectValue",
-      "imagePath"
+      'routes',
+      'activeRoute',
+      'activeComponent',
+      'componentMap',
+      'componentChildrenMultiselectValue',
+      'imagePath'
     ]),
     // used in VueDraggableResizeable component
-    activeRouteArray() {
-      console.log("active route array method", this.routes[this.activeRoute]);
-      return this.routes[this.activeRoute];
+    activeRouteArray () {
+      console.log('active route array method', this.routes[this.activeRoute])
+      return this.routes[this.activeRoute]
     },
     // used to delete components
-    activeComponentData() {
+    activeComponentData () {
       return this.activeRouteArray.filter(componentData => {
-        return componentData.componentName === this.activeComponent;
-      })[0];
+        return componentData.componentName === this.activeComponent
+      })[0]
     },
-    childList() {
-      return this.componentMap[componentData.componentName].children;
+    childList () {
+      return this.componentMap[componentData.componentName].children
     },
-    options() {
+    options () {
       // PROBLEM: the objects on childrenmultiselectvalue are applied
-      const routes = Object.keys(this.routes);
-      const exceptions = new Set(["App", this.activeComponent, ...routes]);
+      const routes = Object.keys(this.routes)
+      const exceptions = new Set(['App', this.activeComponent, ...routes])
       return Object.keys(this.componentMap).filter(component => {
-        if (!exceptions.has(component)) return component;
-      });
+        if (!exceptions.has(component)) return component
+      })
     },
-    userImage() {
-      const imgSrc = this.imagePath.length ? `file://` + this.imagePath[0] : "";
+    userImage () {
+      const imgSrc = this.imagePath.length ? `file://` + this.imagePath[0] : ''
       // const imgSrc1 = this.imagePath;
-      console.log(`imgSrc: ${imgSrc}`);
-      return imgSrc;
+      console.log(`imgSrc: ${imgSrc}`)
+      return imgSrc
     },
-    mockBg() {
+    mockBg () {
       return this.imagePath.length
         ? {
-            background: `url("${this.userImage}") no-repeat center`,
-            "background-size": "cover"
-          }
-        : {};
+          background: `url("${this.userImage}") no-repeat center`,
+          'background-size': 'cover'
+        }
+        : {}
     }
   },
   methods: {
     ...mapActions([
-      "setActiveComponent",
-      "updateComponentChildrenMultiselectValue",
-      "updateActiveComponentChildrenValue"
+      'setActiveComponent',
+      'updateComponentChildrenMultiselectValue',
+      'updateActiveComponentChildrenValue'
     ]),
-    onResize: function(x, y, width, height) {
-      this.activeComponentData.x = x;
-      this.activeComponentData.y = y;
-      this.activeComponentData.w = width;
-      this.activeComponentData.h = height;
+    onResize: function (x, y, width, height) {
+      this.activeComponentData.x = x
+      this.activeComponentData.y = y
+      this.activeComponentData.w = width
+      this.activeComponentData.h = height
 
-      this.componentMap[this.activeComponent].x = x;
-      this.componentMap[this.activeComponent].y = y;
-      this.componentMap[this.activeComponent].w = width;
-      this.componentMap[this.activeComponent].h = height;
+      this.componentMap[this.activeComponent].x = x
+      this.componentMap[this.activeComponent].y = y
+      this.componentMap[this.activeComponent].w = width
+      this.componentMap[this.activeComponent].h = height
     },
-    onDrag: function(x, y) {
-      this.activeComponentData.x = x;
-      this.activeComponentData.y = y;
+    onDrag: function (x, y) {
+      this.activeComponentData.x = x
+      this.activeComponentData.y = y
 
-      this.componentMap[this.activeComponent].x = x;
-      this.componentMap[this.activeComponent].y = y;
-      this.userImage;
+      this.componentMap[this.activeComponent].x = x
+      this.componentMap[this.activeComponent].y = y
+      this.userImage
     },
-    onActivated(componentData) {
-      this.setActiveComponent(componentData.componentName);
-      this.activeComponentData.isActive = true;
+    onActivated (componentData) {
+      this.setActiveComponent(componentData.componentName)
+      this.activeComponentData.isActive = true
     },
-    onDeactivated() {
-      this.activeComponentData.isActive = false;
+    onDeactivated () {
+      this.activeComponentData.isActive = false
     },
-    onDoubleClick(compData) {
-      this.setActiveComponent(compData.componentName);
-      this.activeComponentData.isActive = true;
+    onDoubleClick (compData) {
+      this.setActiveComponent(compData.componentName)
+      this.activeComponentData.isActive = true
     },
-    handleAddChild() {
+    handleAddChild () {
       // render modal with childrenmultiselect in it
-      this.modalOpen = true;
+      this.modalOpen = true
     },
-    handleSelect(value) {
+    handleSelect (value) {
       // if (this.modalOpen) this.updateActiveComponentChildrenValue(value)
-      console.log("Multiselect: ", value);
-      this.updateActiveComponentChildrenValue(value);
+      console.log('Multiselect: ', value)
+      this.updateActiveComponentChildrenValue(value)
       // this.updateComponentChildrenMultiselectValue(value)
     }
     //       @dblclick.native="onDoubleClick(componentData)"
@@ -187,7 +187,7 @@ export default {
     //   this.activeComponentData.isActive = true
     // }
   }
-};
+}
 </script>
 
 <style scoped>

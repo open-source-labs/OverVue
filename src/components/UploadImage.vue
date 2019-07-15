@@ -29,30 +29,30 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
-import uploadImage from "../utils/uploadImage.util";
-import clearImageDialog from "../utils/clearImage.util";
+import { mapState, mapActions } from 'vuex'
+import uploadImage from '../utils/uploadImage.util'
+import clearImageDialog from '../utils/clearImage.util'
 
 export default {
-  name: "upload-image",
+  name: 'upload-image',
   computed: {
-    ...mapState(["imagePath"]),
-    imageExists() {
-      return this.imagePath.length;
+    ...mapState(['imagePath']),
+    imageExists () {
+      return this.imagePath.length
     }
   },
   methods: {
-    ...mapActions(["importImage", "clearImage"]),
-    importMockup() {
-      const img = uploadImage();
-      this.importImage(img);
+    ...mapActions(['importImage', 'clearImage']),
+    importMockup () {
+      const img = uploadImage()
+      this.importImage(img)
     },
-    removeImage() {
-      const res = clearImageDialog();
-      if (res === 0) this.clearImage();
+    removeImage () {
+      const res = clearImageDialog()
+      if (res === 0) this.clearImage()
     }
   }
-};
+}
 </script>
 
 <style>
