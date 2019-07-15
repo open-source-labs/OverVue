@@ -199,6 +199,13 @@ const mutations = {
     state.routes[state.activeRoute] = compArr
     console.log('new state', state)
     
+  },
+  [types.ADD_USER_ACTION]: (state, payload) => {
+    if (typeof(payload)==='string') state.userActions.push(payload);
+  },
+  [types.ADD_TO_USER_STORE]: (state, payload) => {
+    const key = Object.keys(payload);
+    state.userStore[key] = payload[key];
   }
 }
 
