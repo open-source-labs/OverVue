@@ -4,13 +4,13 @@
 </template>
 
 <script>
-import localforage from 'localforage';
-//import fs from 'fs-extra';
-//const { remote } = require("electron");
-//const Mousetrap = require('mousetrap');
+import localforage from 'localforage'
+// import fs from 'fs-extra';
+// const { remote } = require("electron");
+// const Mousetrap = require('mousetrap');
 
 export default {
-  name: 'SaveProjetComponent',
+  name: 'SaveProjetComponent'
 }
 
 //   methods: {
@@ -127,7 +127,7 @@ export default {
 //           console.log('result is', result);
 //         });
 //       console.log('PROJECT SAVED AS A JSON OBJECT!');
-//     }    
+//     }
 //   },
 //   created(){
 //     Mousetrap.bind(['command+s', 'ctrl+s'], () => {

@@ -7,14 +7,14 @@
 
 <script>
 // Where all of the boilerplate is exported
-import { mapState } from "vuex";
-//const { remote } = require("electron");
-//import fs from "fs-extra";
-//import path from "path";
-//const ipc = require("electron").ipcRenderer;
+import { mapState } from 'vuex'
+// const { remote } = require("electron");
+// import fs from "fs-extra";
+// import path from "path";
+// const ipc = require("electron").ipcRenderer;
 export default {
 
-  name: "ExportProjectComponent",
+  name: 'ExportProjectComponent'
 }
 
 //   methods: {
@@ -380,8 +380,6 @@ export default {
 //   }
 // };
 
-
-
 </script>
 
 <style>
@@ -394,5 +392,3 @@ export default {
 }
 
 </style>
-
-

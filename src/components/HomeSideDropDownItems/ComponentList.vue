@@ -44,7 +44,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setActiveComponent','deleteComponent']),
+    ...mapActions(['setActiveComponent', 'deleteComponent']),
     onActivated (componentData) {
       this.setActiveComponent(componentData.componentName)
       this.activeComponentData.isActive = true
