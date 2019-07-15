@@ -65,13 +65,13 @@ describe('Mount Quasar', () => {
 })
 */
 describe('actions', () => {
-  let userActions;
-  let userStore;
-
+  let actions;
+  let store;
   beforeEach(() => {
+    const dummyFunction = jest.fn(() => 'hello')
     actions = {
-      userActionInput: jest.fn(),
-      userStore: jest.fn()
+      userActionInput: dummyFunction,
+      userStore: dummyFunction
     }
     store = new Vuex.Store({
       actions
