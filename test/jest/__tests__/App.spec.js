@@ -27,7 +27,7 @@ describe('Dummy test', () => {
 })
 
 describe('Adding actions to components', () => {
-  
+
 })
 
 // describe('Mount Quasar', () => {

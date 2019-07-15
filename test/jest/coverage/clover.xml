@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1563215497602" clover="3.2.0">
-  <project timestamp="1563215497602" name="All files">
+<coverage generated="1563225730259" clover="3.2.0">
+  <project timestamp="1563225730259" name="All files">
     <metrics statements="413" coveredstatements="0" conditionals="52" coveredconditionals="0" methods="155" coveredmethods="0" elements="620" coveredelements="0" complexity="0" loc="413" ncloc="413" packages="10" files="34" classes="34"/>
     <package name="src-electron.main-process">
       <metrics statements="19" coveredstatements="0" conditionals="6" coveredconditionals="0" methods="7" coveredmethods="0"/>
@@ -114,37 +114,37 @@
         <line num="78" count="0" type="stmt"/>
         <line num="79" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="80" count="0" type="cond" truecount="0" falsecount="4"/>
-        <line num="81" count="0" type="stmt"/>
-        <line num="90" count="0" type="stmt"/>
+        <line num="82" count="0" type="stmt"/>
         <line num="91" count="0" type="stmt"/>
-        <line num="94" count="0" type="stmt"/>
+        <line num="92" count="0" type="stmt"/>
         <line num="95" count="0" type="stmt"/>
         <line num="96" count="0" type="stmt"/>
-        <line num="100" count="0" type="stmt"/>
-        <line num="104" count="0" type="stmt"/>
+        <line num="97" count="0" type="stmt"/>
+        <line num="101" count="0" type="stmt"/>
         <line num="105" count="0" type="stmt"/>
         <line num="106" count="0" type="stmt"/>
-        <line num="107" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="117" count="0" type="stmt"/>
+        <line num="107" count="0" type="stmt"/>
+        <line num="108" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="118" count="0" type="stmt"/>
         <line num="119" count="0" type="stmt"/>
         <line num="120" count="0" type="stmt"/>
-        <line num="122" count="0" type="stmt"/>
+        <line num="121" count="0" type="stmt"/>
         <line num="123" count="0" type="stmt"/>
         <line num="124" count="0" type="stmt"/>
         <line num="125" count="0" type="stmt"/>
-        <line num="128" count="0" type="stmt"/>
+        <line num="126" count="0" type="stmt"/>
         <line num="129" count="0" type="stmt"/>
-        <line num="131" count="0" type="stmt"/>
+        <line num="130" count="0" type="stmt"/>
         <line num="132" count="0" type="stmt"/>
-        <line num="135" count="0" type="stmt"/>
+        <line num="133" count="0" type="stmt"/>
         <line num="136" count="0" type="stmt"/>
-        <line num="139" count="0" type="stmt"/>
-        <line num="142" count="0" type="stmt"/>
+        <line num="137" count="0" type="stmt"/>
+        <line num="140" count="0" type="stmt"/>
         <line num="143" count="0" type="stmt"/>
-        <line num="147" count="0" type="stmt"/>
-        <line num="151" count="0" type="stmt"/>
+        <line num="144" count="0" type="stmt"/>
+        <line num="148" count="0" type="stmt"/>
         <line num="152" count="0" type="stmt"/>
+        <line num="153" count="0" type="stmt"/>
       </file>
       <file name="CreateComponent.vue" path="/Users/josepheisele/Documents/Coding/repos/prevue2/src/components/CreateComponent.vue">
         <metrics statements="9" coveredstatements="0" conditionals="2" coveredconditionals="0" methods="5" coveredmethods="0"/>
@@ -262,8 +262,8 @@
         <line num="42" count="0" type="stmt"/>
         <line num="49" count="0" type="stmt"/>
         <line num="50" count="0" type="stmt"/>
-        <line num="53" count="0" type="stmt"/>
         <line num="54" count="0" type="stmt"/>
+        <line num="55" count="0" type="stmt"/>
       </file>
     </package>
     <package name="src.layouts">
