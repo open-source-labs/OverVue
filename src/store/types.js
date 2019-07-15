@@ -41,7 +41,9 @@ export const UPDATE_OPEN_MODAL = 'UPDATE_OPEN_MODAL'
 export const PARENT_SELECTED = 'PARENT_SELECTED'
 export const DELETE_ROUTE = 'DELETE_ROUTE'
 export const DELETE_COMPONENT = 'DELETE_COMPONENT'
-
+// Image upload mutations
+export const IMPORT_IMAGE = 'IMPORT_IMAGE'
+export const CLEAR_IMAGE = 'CLEAR_IMAGE'
 // Actions
 export const registerComponent = 'registerComponent'
 export const setSelectedElementList = 'setSelectedElementList'
@@ -75,3 +77,6 @@ export const updateOpenModal = 'updateOpenModal'
 export const parentSelected = 'parentSelected'
 export const deleteRoute = 'deleteRoute'
 export const deleteComponent = 'deleteComponent'
+// image upload logic
+export const importImage = 'importImage'
+export const clearImage = 'clearImage'

@@ -163,7 +163,9 @@ const mutations = {
   [types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE]: (state, payload) => {
     // original line
     state.componentMap[state.activeComponent].children = payload
-    state.componentMap[state.activeRoute].children = state.componentMap[state.activeRoute].children.filter(el => !payload.includes(el))
+    state.componentMap[state.activeRoute].children = state.componentMap[
+      state.activeRoute
+    ].children.filter(el => !payload.includes(el))
   },
   // allows usr to change the name of component!!
   [types.UPDATE_COMPONENT_NAME_INPUT_VALUE]: (state, payload) => {
@@ -187,18 +189,28 @@ const mutations = {
     delete stateCopy.componentMap[payload]
     state = stateCopy
   },
-  [types.DELETE_COMPONENT]: (state,payload) => {
+  [types.DELETE_COMPONENT]: (state, payload) => {
     const stateCopy = state
     let compArr = stateCopy.routes[stateCopy.activeRoute]
-    for (let i = 0; i < compArr.length;i++){
-      if (compArr[i].componentName==payload.componentName){
-        compArr.splice(i,1)
+    for (let i = 0; i < compArr.length; i++) {
+      if (compArr[i].componentName == payload.componentName) {
+        compArr.splice(i, 1)
       }
     }
     delete state.componentMap[payload.componentName]
     state.routes[state.activeRoute] = compArr
     console.log('new state', state)
-    
+  },
+  /**
+   * Import Image Mutations
+   */
+  [types.IMPORT_IMAGE]: (state, payload) => {
+    console.log(`import image invoked. image: ${payload}`)
+    state.imagePath = payload
+  },
+  [types.CLEAR_IMAGE]: state => {
+    console.log(`clear image invoked`)
+    if (state.imagePath) state.imagePath = ''
   }
 }
 

@@ -21,7 +21,10 @@ const actions = {
       })
 
       if (state.parentSelected) {
-        commit(types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE, [...state.componentMap[state.activeComponent].children, payload.componentName])
+        commit(types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE, [
+          ...state.componentMap[state.activeComponent].children,
+          payload.componentName
+        ])
       }
 
       commit(types.UPDATE_COMPONENT_CHILDREN_VALUE, { component, value })
@@ -119,9 +122,15 @@ const actions = {
   [types.deleteRoute]: ({ state, commit }, payload) => {
     commit(types.DELETE_ROUTE, payload)
   },
-  [types.deleteComponent]: ({state, commit }, payload) => {
+  [types.deleteComponent]: ({ state, commit }, payload) => {
     console.log('payload in actions:', payload)
     commit(types.DELETE_COMPONENT, payload)
+  },
+  [types.importImage]: ({ commit }, payload) => {
+    commit(types.IMPORT_IMAGE, payload)
+  },
+  [types.clearImage]: ({ commit }) => {
+    commit(types.CLEAR_IMAGE)
   }
 }
 

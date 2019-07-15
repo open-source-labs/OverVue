@@ -11,13 +11,13 @@
 // import { mapState, mapActions } from 'vuex'
 
 export default {
-  name: 'OpenProjectComponent',
+  name: 'OpenProjectComponent'
   // methods: {
   //   ...mapActions([
   //     'setComponentMap',
   //     'setRoutes',
   //   ]),
-  //   parseFileName(file) { 
+  //   parseFileName(file) {
   //     //Obtains json file name from file path
   //     return file.split('/').pop();
   //   },
@@ -49,7 +49,7 @@ export default {
   //   });
   // }
 }
- </script>
+</script>
 
  <style scoped>
    .mr-sm {

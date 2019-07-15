@@ -35,7 +35,8 @@ const newState = {
   activeTab: 0,
   componentChildrenMultiselectValue: [],
   modalOpen: false,
-  parentSelected: false
+  parentSelected: false,
+  imagePath: ''
 }
 
 export default newState
