@@ -119,9 +119,18 @@ const actions = {
   [types.deleteRoute]: ({ state, commit }, payload) => {
     commit(types.DELETE_ROUTE, payload)
   },
-  [types.deleteComponent]: ({state, commit }, payload) => {
+  [types.deleteComponent]: ({ state, commit }, payload) => {
     console.log('payload in actions:', payload)
     commit(types.DELETE_COMPONENT, payload)
+  },
+  [types.deleteUserActions]: ({ state, commit }, payload) => {
+    console.log('invoking deleteUserActions')
+    if(state.activeComponent) commit(types.REMOVE_ACTION_FROM_COMPONENT, payload)
+    commit(types.DELETE_USER_ACTIONS, payload)
+  },
+  [types.removeActionFromComponent]: ({ state, commit }, payload) => {
+    console.log('invoking removeActionFromComponent')
+    commit(types.REMOVE_ACTION_FROM_COMPONENT, payload)
   }
 }
 

@@ -41,6 +41,8 @@ export const UPDATE_OPEN_MODAL = 'UPDATE_OPEN_MODAL'
 export const PARENT_SELECTED = 'PARENT_SELECTED'
 export const DELETE_ROUTE = 'DELETE_ROUTE'
 export const DELETE_COMPONENT = 'DELETE_COMPONENT'
+export const DELETE_USER_ACTIONS = 'DELETE_USER_ACTIONS'
+export const REMOVE_ACTION_FROM_COMPONENT = 'REMOVE_ACTION_FROM_COMPONENT'
 
 // Actions
 export const registerComponent = 'registerComponent'
@@ -75,3 +77,6 @@ export const updateOpenModal = 'updateOpenModal'
 export const parentSelected = 'parentSelected'
 export const deleteRoute = 'deleteRoute'
 export const deleteComponent = 'deleteComponent'
+
+export const deleteUserActions = 'deleteUserActions'
+export const removeActionFromComponent = 'removeActionFromComponent'
