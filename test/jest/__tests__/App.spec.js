@@ -26,6 +26,10 @@ describe('Dummy test', () => {
   })
 })
 
+describe('Adding actions to components', () => {
+  
+})
+
 // describe('Mount Quasar', () => {
 //   const localVue = createLocalVue()
 //   localVue.use(Quasar, { components }) // , lang: langEn
