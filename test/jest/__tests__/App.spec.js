@@ -26,6 +26,15 @@ describe('Dummy test', () => {
   })
 })
 
+describe('Test Suite - Delete from userActions and/or componentMap', () => {
+  const localVue = createLocalVue()
+  localVue.use(Quasar, { components })
+  const testValue = false;
+  it('does this produce the correct result ahahaha', () => {
+    expect(testValue).toBe(false)
+  })
+})
+
 // describe('Mount Quasar', () => {
 //   const localVue = createLocalVue()
 //   localVue.use(Quasar, { components }) // , lang: langEn
