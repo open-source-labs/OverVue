@@ -28,37 +28,37 @@
 /**
  * TODO: Needs functionality to delete component, and (maybe) show child components
  */
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions } from 'vuex'
 
 export default {
   computed: {
-    ...mapState(["routes", "activeRoute", "activeComponent"]),
-    activeRouteDisplay() {
-      let component = this.routes[this.activeRoute];
-      return component;
+    ...mapState(['routes', 'activeRoute', 'activeComponent']),
+    activeRouteDisplay () {
+      let component = this.routes[this.activeRoute]
+      return component
     },
-    activeComponentData() {
+    activeComponentData () {
       return this.activeRouteDisplay.filter(componentData => {
-        return componentData.componentName === this.activeComponent;
-      })[0];
+        return componentData.componentName === this.activeComponent
+      })[0]
     }
   },
   methods: {
     ...mapActions([
-      "setActiveComponent",
-      "deleteComponent",
-      "deleteActiveComponent"
+      'setActiveComponent',
+      'deleteComponent',
+      'deleteActiveComponent'
     ]),
-    onActivated(componentData) {
-      this.setActiveComponent(componentData.componentName);
-      this.activeComponentData.isActive = true;
+    onActivated (componentData) {
+      this.setActiveComponent(componentData.componentName)
+      this.activeComponentData.isActive = true
     },
-    handleClick(componentData) {
-      this.setActiveComponent(componentData.componentName);
-      this.deleteActiveComponent(componentData.componentName);
+    handleClick (componentData) {
+      this.setActiveComponent(componentData.componentName)
+      this.deleteActiveComponent(componentData.componentName)
     }
   }
-};
+}
 </script>
 
 <style>

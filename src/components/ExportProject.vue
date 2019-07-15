@@ -11,7 +11,7 @@
 // import path from "path";
 // const ipc = require("electron").ipcRenderer;
 export default {
-  name: "ExportProjectComponent",
+  name: 'ExportProjectComponent'
   // methods: {
   //   showExportDialog() {
   //     remote.dialog.showSaveDialog({
@@ -373,7 +373,7 @@ export default {
   // computed: {
   //   ...mapState(["componentMap"])
   // }
-};
+}
 
 </script>
 
