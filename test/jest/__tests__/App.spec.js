@@ -27,22 +27,33 @@ describe('Dummy test', () => {
   })
 })
 
-describe('Adding actions to components', () => {
-  const state = {
-    componentMap: {
-      testComponent: {
-        componentName: 'testComponent',
-        children: [],
-        htmlList: [],
-        componentActions: [],
-        componentState: []
-      }
-    },
-    activeComponent: 'testComponent'
-  }
-  it('should add a single action to a component based on active component', () => {
-    mutations.ADD_TO_COMPONENT_ACTIONS(state, 'testAction')
-    expect(state.componentMap[state.activeComponent].componentActions).toEqual(['testAction'])
+describe('Adding actions and state to components', () => {
+  let state;
+  beforeEach(() => {
+    state = {
+      componentMap: {
+        testComponent: {
+          componentName: 'testComponent',
+          children: [],
+          htmlList: [],
+          componentActions: [],
+          componentState: []
+        }
+      },
+      activeComponent: 'testComponent'
+    }
+  })
+  describe('Adding actions to components', () => {
+    it('should add a single action to active component', () => {
+      mutations.ADD_TO_COMPONENT_ACTIONS(state, 'testAction')
+      expect(state.componentMap[state.activeComponent].componentActions).toEqual(['testAction'])
+    })
+  })
+  describe('Adding state to components', () => {
+    it('should add a single state string to active component', () => {
+      mutations.ADD_TO_COMPONENT_STATE(state, 'testState')
+      expect(state.componentMap[state.activeComponent].componentState).toEqual(['testState'])
+    })
   })
 })
 

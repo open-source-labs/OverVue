@@ -201,6 +201,9 @@ const mutations = {
   },
   [types.ADD_TO_COMPONENT_ACTIONS]: (state, payload) => {
     state.componentMap[state.activeComponent].componentActions.push(payload)
+  },
+  [types.ADD_TO_COMPONENT_STATE]: (state, payload) => {
+    state.componentMap[state.activeComponent].componentState.push(payload)
   }
 }
 
