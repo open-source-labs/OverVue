@@ -6,6 +6,7 @@
 import { mount, createLocalVue, shallowMount } from '@vue/test-utils'
 import QBUTTON from './demo/QBtn-demo.vue'
 import * as All from 'quasar'
+import mutations from '../../../src/store/mutations'
 // import langEn from 'quasar/lang/en-us' // change to any language you wish! => this breaks wallaby :(
 const { Quasar, date } = All
 
@@ -27,7 +28,22 @@ describe('Dummy test', () => {
 })
 
 describe('Adding actions to components', () => {
-
+  const state = {
+    componentMap: {
+      testComponent: {
+        componentName: 'testComponent',
+        children: [],
+        htmlList: [],
+        componentActions: [],
+        componentState: []
+      }
+    },
+    activeComponent: 'testComponent'
+  }
+  it('should add a single action to a component based on active component', () => {
+    mutations.ADD_TO_COMPONENT_ACTIONS(state, 'testAction')
+    expect(state.componentMap[state.activeComponent].componentActions).toEqual(['testAction'])
+  })
 })
 
 // describe('Mount Quasar', () => {

@@ -198,7 +198,9 @@ const mutations = {
     delete state.componentMap[payload.componentName]
     state.routes[state.activeRoute] = compArr
     console.log('new state', state)
-    
+  },
+  [types.ADD_TO_COMPONENT_ACTIONS]: (state, payload) => {
+    state.componentMap[state.activeComponent].componentActions.push(payload)
   }
 }
 
