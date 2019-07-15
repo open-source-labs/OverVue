@@ -84,6 +84,7 @@ export default {
     window.addEventListener('keyup', event => {
       if (event.key === 'Backspace') {
         if (this.activeComponent && this.activeComponentData.isActive) {
+          // console.log('this:', this)
           this.$store.dispatch('deleteActiveComponent')
         }
       }
