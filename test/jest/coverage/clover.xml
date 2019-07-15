@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1563215612795" clover="3.2.0">
-  <project timestamp="1563215612795" name="All files">
+<coverage generated="1563225499366" clover="3.2.0">
+  <project timestamp="1563225499366" name="All files">
     <metrics statements="413" coveredstatements="0" conditionals="52" coveredconditionals="0" methods="155" coveredmethods="0" elements="620" coveredelements="0" complexity="0" loc="413" ncloc="413" packages="10" files="34" classes="34"/>
     <package name="src-electron.main-process">
       <metrics statements="19" coveredstatements="0" conditionals="6" coveredconditionals="0" methods="7" coveredmethods="0"/>

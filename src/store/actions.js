@@ -122,7 +122,7 @@ const actions = {
   [types.deleteComponent]: ({state, commit }, payload) => {
     console.log('payload in actions:', payload)
     commit(types.DELETE_COMPONENT, payload)
-  }
+  },
 }
 
 export default actions
