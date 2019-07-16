@@ -23,6 +23,8 @@ const newState = {
     HomeView: []
     // NewView: []
   },
+  userActions: [],
+  userState: {},
   /**
    *
    */

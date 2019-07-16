@@ -7,7 +7,6 @@ import { mount, createLocalVue, shallowMount } from '@vue/test-utils'
 import Vuex from 'vuex';
 import QBUTTON from './demo/QBtn-demo.vue'
 import * as All from 'quasar'
-
 // import langEn from 'quasar/lang/en-us' // change to any language you wish! => this breaks wallaby :(
 const { Quasar, date } = All
 
@@ -22,50 +21,37 @@ const components = Object.keys(All).reduce((object, key) => {
   }
   return object
 }, {})
-/*
-describe('Mount Quasar', () => {
-  const localVue = createLocalVue()
-  localVue.use(Quasar, { components }) // , lang: langEn
 
-  const wrapper = mount(QBUTTON, {
-    localVue
+describe('Adding actions and state to components', () => {
+  let state;
+  beforeEach(() => {
+    state = {
+      componentMap: {
+        testComponent: {
+          componentName: 'testComponent',
+          children: [],
+          htmlList: [],
+          componentActions: [],
+          componentState: []
+        }
+      },
+      activeComponent: 'testComponent'
+    }
   })
-  const vm = wrapper.vm
-
-  it('passes the sanity check and creates a wrapper', () => {
-    expect(wrapper.isVueInstance()).toBe(true)
+  describe('Adding actions to components', () => {
+    it('should add a single action to active component', () => {
+      mutations.ADD_TO_COMPONENT_ACTIONS(state, 'testAction')
+      expect(state.componentMap[state.activeComponent].componentActions).toEqual(['testAction'])
+    })
   })
-
-  it('has a created hook', () => {
-    expect(typeof vm.increment).toBe('function')
-  })
-
-  it('accesses the shallowMount', () => {
-    expect(vm.$el.textContent).toContain('rocket muffin')
-    expect(wrapper.text()).toContain('rocket muffin') // easier
-    expect(wrapper.find('p').text()).toContain('rocket muffin')
-  })
-
-  it('sets the correct default data', () => {
-    expect(typeof vm.counter).toBe('number')
-    const defaultData2 = QBUTTON.data()
-    expect(defaultData2.counter).toBe(0)
-  })
-
-  it('correctly updates data when button is pressed', () => {
-    const button = wrapper.find('button')
-    button.trigger('click')
-    expect(vm.counter).toBe(1)
-  })
-
-  it('formats a date without throwing exception', () => {
-    // test will automatically fail if an exception is thrown
-    // MMMM and MMM require that a language is 'installed' in Quasar
-    let formattedString = date.formatDate(Date.now(), 'YYYY MMMM MMM DD')
-    console.log('formattedString', formattedString)
+  describe('Adding state to components', () => {
+    it('should add a single state string to active component', () => {
+      mutations.ADD_TO_COMPONENT_STATE(state, 'testState')
+      expect(state.componentMap[state.activeComponent].componentState).toEqual(['testState'])
+    })
   })
 })
-*/
+
 describe('userActions mutation', () => {
   let actions;
   let store;
