@@ -204,6 +204,14 @@ const mutations = {
   },
   [types.ADD_TO_COMPONENT_STATE]: (state, payload) => {
     state.componentMap[state.activeComponent].componentState.push(payload)
+
+  },
+  [types.ADD_USER_ACTION]: (state, payload) => {
+    if (typeof(payload)==='string') state.userActions.push(payload);
+  },
+  [types.ADD_TO_USER_STORE]: (state, payload) => {
+    const key = Object.keys(payload);
+    state.userStore[key] = payload[key];
   }
 }
 
