@@ -199,6 +199,15 @@ const mutations = {
     state.routes[state.activeRoute] = compArr
     console.log('new state', state)
   },
+  [types.DELETE_USER_ACTIONS]: (state, payload) => {
+    //payload should be a string of the name of the action to remove
+    let index = state.userActions.indexOf(payload)
+    state.userActions.splice(index, 1)
+  },
+  [types.REMOVE_ACTION_FROM_COMPONENT]: (state, payload) => {
+    let index = state.componentMap[state.activeComponent].mapActions.indexOf(payload)
+    state.componentMap[state.activeComponent].mapActions.splice(index, 1)
+  },
   [types.ADD_TO_COMPONENT_ACTIONS]: (state, payload) => {
     state.componentMap[state.activeComponent].componentActions.push(payload)
   },

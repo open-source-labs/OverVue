@@ -4,23 +4,36 @@
  */
 import mutations from '../../../src/store/mutations';
 import { mount, createLocalVue, shallowMount } from '@vue/test-utils'
-import Vuex from 'vuex';
-import QBUTTON from './demo/QBtn-demo.vue'
 import * as All from 'quasar'
-// import langEn from 'quasar/lang/en-us' // change to any language you wish! => this breaks wallaby :(
 const { Quasar, date } = All
 
-//const localVue = createLocalVue()
+describe('Test mutations + actions to remove action from component and userActions', () => {
+  let state
+  beforeEach(() => {
+    state = {
+      componentMap: {
+        component: {
+          componentName: 'App',
+          children: ['HomeView'],
+          htmlList: [],
+          mapActions: ['action']
+        }
+      },
+      activeComponent: 'component',
+      userActions: ['action']
+    }
+  })
 
-// localVue.use(Vuex)
+  it('deleting user action from state.userActions', () => {
+    mutations.DELETE_USER_ACTIONS(state, 'action')
+    expect(state.userActions.length).toBe(0)
+  })
 
-const components = Object.keys(All).reduce((object, key) => {
-  const val = All[key]
-  if (val && val.component && val.component.name != null) {
-    object[key] = val
-  }
-  return object
-}, {})
+  it('deleting "action" from componentMap', () => {
+    mutations.REMOVE_ACTION_FROM_COMPONENT(state, 'action')
+    expect(state.componentMap.component.mapActions.length).toBe(0)
+  })
+})
 
 describe('Adding actions and state to components', () => {
   let state;
