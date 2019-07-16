@@ -207,6 +207,14 @@ const mutations = {
   [types.REMOVE_ACTION_FROM_COMPONENT]: (state, payload) => {
     let index = state.componentMap[state.activeComponent].mapActions.indexOf(payload)
     state.componentMap[state.activeComponent].mapActions.splice(index, 1)
+    
+  },
+  [types.ADD_USER_ACTION]: (state, payload) => {
+    if (typeof(payload)==='string') state.userActions.push(payload);
+  },
+  [types.ADD_TO_USER_STORE]: (state, payload) => {
+    const key = Object.keys(payload);
+    state.userStore[key] = payload[key];
   }
 }
 

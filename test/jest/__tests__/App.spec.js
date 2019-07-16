@@ -2,12 +2,10 @@
 /**
  * @jest-environment jsdom
  */
-
+import mutations from '../../../src/store/mutations';
 import { mount, createLocalVue, shallowMount } from '@vue/test-utils'
 import * as All from 'quasar'
 const { Quasar, date } = All
-
-import mutations from '../../../src/store/mutations'
 import actions from '../../../src/store/actions'
 
 describe('Test mutations + actions to remove action from component and userActions', () => {
@@ -43,3 +41,51 @@ describe('Test mutations + actions to remove action from component and userActio
   //   expect(state.userActions.length).toBe(0)
   // })
 })
+
+describe('userActions mutation', () => {
+  let actions;
+  let store;
+  beforeEach(() => {
+  store = {
+    userActions: []
+    }
+  })
+  it ('should push user defined action to end of userActions array', () => {
+    mutations.ADD_USER_ACTION(store, 'actionnnn')
+    expect(store.userActions[store.userActions.length-1]).toBe('actionnnn');
+  })
+  it ('should only push to array if payload is of type string', () => {
+    mutations.ADD_USER_ACTION(store, 66)
+    expect(store.userActions).toStrictEqual([])
+  })
+});
+
+describe('userStore mutation', () => {
+  let actions;
+  let store;
+    store = {
+      userStore : {}
+    }
+  it ('should be able to update store with a key defined by the user and a value of type object', () => {
+    mutations.ADD_TO_USER_STORE(store, {'dummyKey': {}})
+    // console.log('store.userStore.dummyKey', store.userStore.dummyKey);
+    expect(store.userStore.dummyKey).toStrictEqual({})
+  })
+  it ('should update user store with a key value pair with value strictly equal to empty array', () => {
+    mutations.ADD_TO_USER_STORE(store, {'dummyKey': []})
+    expect(store.userStore.dummyKey).toStrictEqual([]);
+  })
+  it ('should be able to store booleans in the store as the key', () => {
+    mutations.ADD_TO_USER_STORE(store, {boolean: true})
+    expect (store.userStore.boolean).toBe(true)
+  })
+  it ('should add to userStore a key with a value of type number', () => {
+    mutations.ADD_TO_USER_STORE(store, { number:696 })
+    expect (store.userStore.number).toBe(696)
+  })
+
+  it ('should work with strings too', () => {
+    mutations.ADD_TO_USER_STORE(store, { string: 'string'})
+    expect(store.userStore.string).toBe('string')
+  })
+});

@@ -43,6 +43,8 @@ export const DELETE_ROUTE = 'DELETE_ROUTE'
 export const DELETE_COMPONENT = 'DELETE_COMPONENT'
 export const DELETE_USER_ACTIONS = 'DELETE_USER_ACTIONS'
 export const REMOVE_ACTION_FROM_COMPONENT = 'REMOVE_ACTION_FROM_COMPONENT'
+export const ADD_USER_ACTION = 'ADD_USER_ACTION'
+export const ADD_TO_USER_STORE = 'ADD_TO_USER_STORE'
 
 // Actions
 export const registerComponent = 'registerComponent'
@@ -80,3 +82,5 @@ export const deleteComponent = 'deleteComponent'
 
 export const deleteUserActions = 'deleteUserActions'
 export const removeActionFromComponent = 'removeActionFromComponent'
+export const addUserAction = 'addUserAction'
+export const addToUserStore = 'addToUserStore'
