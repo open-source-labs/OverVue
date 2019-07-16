@@ -212,6 +212,30 @@ const mutations = {
   [types.CLEAR_IMAGE]: state => {
     console.log(`clear image invoked`)
     if (state.imagePath) state.imagePath = ''
+  },
+  [types.DELETE_USER_ACTIONS]: (state, payload) => {
+    // payload should be a string of the name of the action to remove
+    let index = state.userActions.indexOf(payload)
+    state.userActions.splice(index, 1)
+  },
+  [types.REMOVE_ACTION_FROM_COMPONENT]: (state, payload) => {
+    let index = state.componentMap[state.activeComponent].mapActions.indexOf(
+      payload
+    )
+    state.componentMap[state.activeComponent].mapActions.splice(index, 1)
+  },
+  [types.ADD_TO_COMPONENT_ACTIONS]: (state, payload) => {
+    state.componentMap[state.activeComponent].componentActions.push(payload)
+  },
+  [types.ADD_TO_COMPONENT_STATE]: (state, payload) => {
+    state.componentMap[state.activeComponent].componentState.push(payload)
+  },
+  [types.ADD_USER_ACTION]: (state, payload) => {
+    if (typeof payload === 'string') state.userActions.push(payload)
+  },
+  [types.ADD_TO_USER_STORE]: (state, payload) => {
+    const key = Object.keys(payload)
+    state.userStore[key] = payload[key]
   }
 }
 

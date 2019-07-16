@@ -29,16 +29,8 @@ const newState = {
     HomeView: []
     // NewView: []
   },
-  userState: {
-    userActions: false,
-    activeStore: false,
-    storeContents: {
-      obj1: 'string',
-      obj2: 'boolean',
-      obj3: 'array'
-    }
-  },
-  userActions: ['action1', 'action2'],
+  userActions: [],
+  userState: {},
   /**
    *
    */
