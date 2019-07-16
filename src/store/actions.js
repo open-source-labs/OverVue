@@ -136,12 +136,30 @@ const actions = {
   },
   [types.deleteUserActions]: ({ state, commit }, payload) => {
     console.log('invoking deleteUserActions')
-    if (state.activeComponent) { commit(types.REMOVE_ACTION_FROM_COMPONENT, payload) }
+    if (state.activeComponent) {
+      commit(types.REMOVE_ACTION_FROM_COMPONENT, payload)
+    }
     commit(types.DELETE_USER_ACTIONS, payload)
   },
   [types.removeActionFromComponent]: ({ state, commit }, payload) => {
     console.log('invoking removeActionFromComponent')
     commit(types.REMOVE_ACTION_FROM_COMPONENT, payload)
+  },
+  [types.removeStateFromComponent]: ({ commit }, payload) => {
+    console.log('removeStateFromComponent invoked')
+    commit(types.REMOVE_STATE_FROM_COMPONENT, payload)
+  },
+  [types.deleteUserState]: ({ state, commit }, payload) => {
+    console.log('deleteUserState invoked')
+    if (state.activeComponent) {
+      commit(types.REMOVE_STATE_FROM_COMPONENT, payload)
+    }
+    // loops through component map and deletes all props
+    Object.keys(state.componentMap).forEach(prop => {
+      commit(types.SET_ACTIVE_COMPONENT, prop.componentName)
+      commit(types.REMOVE_ACTION_FROM_COMPONENT, payload)
+    })
+    commit(types.DELETE_USER_STATE, payload)
   }
 }
 

@@ -21,7 +21,7 @@ import actions from "../../../src/store/actions";
 import mutations from "../../../src/store/mutations";
 import * as types from "../../../src/store/types";
 import Vuex from "vuex";
-// import store from "../../../src/store/state/index";
+import store from "../../../src/store/state/index";
 
 /**
  * @description: Testing functionality of the uploadImage mutations and actions

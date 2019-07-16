@@ -236,6 +236,13 @@ const mutations = {
   [types.ADD_TO_USER_STORE]: (state, payload) => {
     const key = Object.keys(payload)
     state.userStore[key] = payload[key]
+  },
+  [types.REMOVE_STATE_FROM_COMPONENT]: (state, payload) => {
+    let prop = state.componentMap[state.activeComponent].componentState
+    prop.splice(prop.indexOf(payload), 1)
+  },
+  [types.DELETE_USER_STATE]: (state, payload) => {
+    delete state.userStore[payload]
   }
 }
 
