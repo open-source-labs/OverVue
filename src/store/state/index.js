@@ -14,8 +14,14 @@ const newState = {
     },
     HomeView: {
       componentName: 'HomeView',
-      children: [],
+      children: ['LoginBtn'],
       htmlList: []
+    },
+    LoginBtn: {
+      componentName: 'HomeView',
+      children: ['LoginBtn'],
+      htmlList: ['<btn></btn>'],
+      actions: ['action1']
     }
     // NewView: {}
   },
@@ -23,6 +29,16 @@ const newState = {
     HomeView: []
     // NewView: []
   },
+  userState: {
+    userActions: false,
+    activeStore: false,
+    storeContents: {
+      obj1: 'string',
+      obj2: 'boolean',
+      obj3: 'array'
+    }
+  },
+  userActions: ['action1', 'action2'],
   /**
    *
    */
@@ -35,7 +51,8 @@ const newState = {
   activeTab: 0,
   componentChildrenMultiselectValue: [],
   modalOpen: false,
-  parentSelected: false
+  parentSelected: false,
+  imagePath: ''
 }
 
 export default newState

@@ -3,38 +3,59 @@
  * @jest-environment jsdom
  */
 
-import { mount, createLocalVue, shallowMount } from '@vue/test-utils'
-import QBUTTON from './demo/QBtn-demo.vue'
-import * as All from 'quasar'
+import { mount, createLocalVue, shallowMount } from "@vue/test-utils";
+import QBUTTON from "./demo/QBtn-demo.vue";
+import * as All from "quasar";
 // import langEn from 'quasar/lang/en-us' // change to any language you wish! => this breaks wallaby :(
-const { Quasar, date } = All
+const { Quasar, date } = All;
 
 const components = Object.keys(All).reduce((object, key) => {
-  const val = All[key]
+  const val = All[key];
   if (val && val.component && val.component.name != null) {
-    object[key] = val
+    object[key] = val;
   }
-  return object
-}, {})
+  return object;
+}, {});
 
-describe('Dummy test', () => {
-  const localVue = createLocalVue()
-  localVue.use(Quasar, { components })
+describe("Test Suite - Delete from userActions and/or componentMap", () => {
+  const localVue = createLocalVue();
+  localVue.use(Quasar, { components });
   const testValue = false;
-  it('does this produce the correct result', () => {
-    expect(testValue).toBe(false)
-  })
-})
+  it("does this produce the correct result ahahaha", () => {
+    expect(testValue).toBe(false);
+  });
+});
 
-describe('Test Suite - Delete from userActions and/or componentMap', () => {
-  const localVue = createLocalVue()
-  localVue.use(Quasar, { components })
-  const testValue = false;
-  it('does this produce the correct result ahahaha', () => {
-    expect(testValue).toBe(false)
-  })
-})
+/**
+ * @description: Tests for deleting state
+ * @summary:
+ *  `deleteUserState` invokes removeStateFromComponent
+ *  `removeStateFromComponent` mutation that deletes state from userStore
+ *  `userStore` holds the user defined state objects
+ *
+ */
 
+// describe("Test Suite - Delete from userState(?) and/or componentMap", () => {
+//   const localVue = createLocalVue();
+//   localVue.use(Quasar, { components });
+//   const dumVal = false;
+//   it("removeStateFromComponent deletes item from userStore", () => {
+
+//     expect(dumVal).toBe(false);
+//   });
+//   it("removeStateFromComponent deletes the appropriate item from userStore", () => {
+//     expect(dumVal).toBe(false);
+//   });
+//   it("removeStateFromComponent deletes the appropriate item from component in componentMap", () => {
+//     expect(dumVal).toBe(false);
+//   });
+//   it("deleteUserState invokes removeStateFromComponent", () => {
+//     expect(dumVal).toBe(false);
+//   });
+//   it("deleteUserState payload deletes the appropriate item from userStore", () => {
+//     expect(dumVal).toBe(false);
+//   });
+// });
 // describe('Mount Quasar', () => {
 //   const localVue = createLocalVue()
 //   localVue.use(Quasar, { components }) // , lang: langEn

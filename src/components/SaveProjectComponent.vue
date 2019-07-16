@@ -1,6 +1,6 @@
 <template>
   <!-- <q-btn class=" export-btn" color="secondary" label="Save"/> -->
-  <q-btn class="export-btn" color="secondary" label="Save" @click="saveProjectJSON"/> 
+  <q-btn class="export-btn" color="secondary" label="Save" @click="saveProjectJSON"/>
 </template>
 
 <script>
@@ -10,7 +10,7 @@
 // const Mousetrap = require('mousetrap');
 
 export default {
-  name: 'SaveProjetComponent',
+  name: 'SaveProjetComponent'
   // methods: {
   //   showSaveJSONDialog(){
   //     remote.dialog.showSaveDialog({
@@ -125,7 +125,7 @@ export default {
   //         console.log('result is', result);
   //       });
   //     console.log('PROJECT SAVED AS A JSON OBJECT!');
-  //   }    
+  //   }
   // },
   // created(){
   //   Mousetrap.bind(['command+s', 'ctrl+s'], () => {
