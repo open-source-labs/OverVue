@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
+    "lodash": ">=4.17.13",
     "fs-extra": "^8.1.0",
     "localforage": "^1.7.3",
     "mousetrap": "^1.6.3",
