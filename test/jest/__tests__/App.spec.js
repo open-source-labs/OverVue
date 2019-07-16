@@ -6,7 +6,6 @@ import mutations from '../../../src/store/mutations';
 import { mount, createLocalVue, shallowMount } from '@vue/test-utils'
 import * as All from 'quasar'
 const { Quasar, date } = All
-import actions from '../../../src/store/actions'
 
 describe('Test mutations + actions to remove action from component and userActions', () => {
   let state
@@ -34,12 +33,6 @@ describe('Test mutations + actions to remove action from component and userActio
     mutations.REMOVE_ACTION_FROM_COMPONENT(state, 'action')
     expect(state.componentMap.component.mapActions.length).toBe(0)
   })
-
-  // it('deleting "action" from active component and userActions', () => {
-  //   actions.deleteUserActions('action')
-  //   expect(state.componentMap.component.mapActions.length).toBe(0)
-  //   expect(state.userActions.length).toBe(0)
-  // })
 })
 
 describe('userActions mutation', () => {
