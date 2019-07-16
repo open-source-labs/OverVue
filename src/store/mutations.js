@@ -76,6 +76,7 @@ const mutations = {
     }
     state.componentMap = newObj
   },
+  // used by setComponentMap for OpenProjectComponent.vue
   [types.SET_COMPONENT_MAP]: (state, payload) => {
     console.log(payload)
     state.componentMap = payload
@@ -163,7 +164,9 @@ const mutations = {
   [types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE]: (state, payload) => {
     // original line
     state.componentMap[state.activeComponent].children = payload
-    state.componentMap[state.activeRoute].children = state.componentMap[state.activeRoute].children.filter(el => !payload.includes(el))
+    state.componentMap[state.activeRoute].children = state.componentMap[
+      state.activeRoute
+    ].children.filter(el => !payload.includes(el))
   },
   // allows usr to change the name of component!!
   [types.UPDATE_COMPONENT_NAME_INPUT_VALUE]: (state, payload) => {
@@ -187,25 +190,38 @@ const mutations = {
     delete stateCopy.componentMap[payload]
     state = stateCopy
   },
-  [types.DELETE_COMPONENT]: (state,payload) => {
+  [types.DELETE_COMPONENT]: (state, payload) => {
     const stateCopy = state
     let compArr = stateCopy.routes[stateCopy.activeRoute]
-    for (let i = 0; i < compArr.length;i++){
-      if (compArr[i].componentName==payload.componentName){
-        compArr.splice(i,1)
+    for (let i = 0; i < compArr.length; i++) {
+      if (compArr[i].componentName == payload.componentName) {
+        compArr.splice(i, 1)
       }
     }
     delete state.componentMap[payload.componentName]
     state.routes[state.activeRoute] = compArr
     console.log('new state', state)
   },
+  /**
+   * Import Image Mutations
+   */
+  [types.IMPORT_IMAGE]: (state, payload) => {
+    console.log(`import image invoked. image: ${payload}`)
+    state.imagePath = payload
+  },
+  [types.CLEAR_IMAGE]: state => {
+    console.log(`clear image invoked`)
+    if (state.imagePath) state.imagePath = ''
+  },
   [types.DELETE_USER_ACTIONS]: (state, payload) => {
-    //payload should be a string of the name of the action to remove
+    // payload should be a string of the name of the action to remove
     let index = state.userActions.indexOf(payload)
     state.userActions.splice(index, 1)
   },
   [types.REMOVE_ACTION_FROM_COMPONENT]: (state, payload) => {
-    let index = state.componentMap[state.activeComponent].mapActions.indexOf(payload)
+    let index = state.componentMap[state.activeComponent].mapActions.indexOf(
+      payload
+    )
     state.componentMap[state.activeComponent].mapActions.splice(index, 1)
   },
   [types.ADD_TO_COMPONENT_ACTIONS]: (state, payload) => {
@@ -213,14 +229,20 @@ const mutations = {
   },
   [types.ADD_TO_COMPONENT_STATE]: (state, payload) => {
     state.componentMap[state.activeComponent].componentState.push(payload)
-
   },
   [types.ADD_USER_ACTION]: (state, payload) => {
-    if (typeof(payload)==='string') state.userActions.push(payload);
+    if (typeof payload === 'string') state.userActions.push(payload)
   },
   [types.ADD_TO_USER_STORE]: (state, payload) => {
-    const key = Object.keys(payload);
-    state.userStore[key] = payload[key];
+    const key = Object.keys(payload)
+    state.userStore[key] = payload[key]
+  },
+  [types.REMOVE_STATE_FROM_COMPONENT]: (state, payload) => {
+    let prop = state.componentMap[state.activeComponent].componentState
+    prop.splice(prop.indexOf(payload), 1)
+  },
+  [types.DELETE_USER_STATE]: (state, payload) => {
+    delete state.userStore[payload]
   }
 }
 

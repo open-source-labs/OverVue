@@ -14,8 +14,14 @@ const newState = {
     },
     HomeView: {
       componentName: 'HomeView',
-      children: [],
+      children: ['LoginBtn'],
       htmlList: []
+    },
+    LoginBtn: {
+      componentName: 'HomeView',
+      children: ['LoginBtn'],
+      htmlList: ['<btn></btn>'],
+      actions: ['action1']
     }
     // NewView: {}
   },
@@ -37,7 +43,8 @@ const newState = {
   activeTab: 0,
   componentChildrenMultiselectValue: [],
   modalOpen: false,
-  parentSelected: false
+  parentSelected: false,
+  imagePath: ''
 }
 
 export default newState

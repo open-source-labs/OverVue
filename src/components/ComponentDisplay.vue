@@ -99,7 +99,7 @@ export default {
     },
     childList () {
       return this.componentMap[componentData.componentName].children
-    }, 
+    },
     options () {
       // PROBLEM: the objects on childrenmultiselectvalue are applied
       const routes = Object.keys(this.routes)

@@ -44,16 +44,14 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setActiveComponent','deleteComponent', 'deleteActiveComponent']),
+    ...mapActions(['setActiveComponent', 'deleteComponent', 'deleteActiveComponent']),
     onActivated (componentData) {
       this.setActiveComponent(componentData.componentName)
       this.activeComponentData.isActive = true
     },
     handleClick (componentData) {
-   
-        this.setActiveComponent(componentData.componentName)
-        this.deleteActiveComponent(componentData.componentName)
-     
+      this.setActiveComponent(componentData.componentName)
+      this.deleteActiveComponent(componentData.componentName)
     }
   }
 }

@@ -130,10 +130,10 @@ i {
   background: #11120F;
 }
 .toolbar-background {
-  background: black;  
+  background: black;
 }
 .full-footer {
   // height: 100vh;
-  padding-bottom: 0px;  
+  padding-bottom: 0px;
 }
 </style>
