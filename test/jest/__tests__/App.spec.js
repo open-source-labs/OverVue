@@ -35,6 +35,36 @@ describe('Test mutations + actions to remove action from component and userActio
   })
 })
 
+describe('Adding actions and state to components', () => {
+  let state;
+  beforeEach(() => {
+    state = {
+      componentMap: {
+        testComponent: {
+          componentName: 'testComponent',
+          children: [],
+          htmlList: [],
+          componentActions: [],
+          componentState: []
+        }
+      },
+      activeComponent: 'testComponent'
+    }
+  })
+  describe('Adding actions to components', () => {
+    it('should add a single action to active component', () => {
+      mutations.ADD_TO_COMPONENT_ACTIONS(state, 'testAction')
+      expect(state.componentMap[state.activeComponent].componentActions).toEqual(['testAction'])
+    })
+  })
+  describe('Adding state to components', () => {
+    it('should add a single state string to active component', () => {
+      mutations.ADD_TO_COMPONENT_STATE(state, 'testState')
+      expect(state.componentMap[state.activeComponent].componentState).toEqual(['testState'])
+    })
+  })
+})
+
 describe('userActions mutation', () => {
   let actions;
   let store;
