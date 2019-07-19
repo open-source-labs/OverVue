@@ -1,11 +1,11 @@
 <template>
   <div class="home-sidebar drawer-menu">
     <q-list>
-      <q-expansion-item dense dense-toggle expand-separator label="Upload Mockup Image">
+      <q-expansion-item expand-separator label="Upload Mockup Image">
         <div class="upload">
-          <!-- for electron, below is for browser usage
-          <q-btn class="upload-btn" color="secondary" label="Upload Mockup" @click="importMockup" />-->
-          <form enctype="multipart/form-data" action="/upload/image" method="post">
+          <!-- for electron, below is for browser usage -->
+          <q-btn class="upload-btn" color="secondary" label="Upload Mockup" @click="importMockup" />
+          <!-- <form enctype="multipart/form-data" action="/upload/image" method="post">
             <input
               type="file"
               class="browser-btn"
@@ -20,15 +20,15 @@
             color="secondary"
             label="Clear Image"
             @click="removeImageBrowser"
-          />
-          <!-- for electron 
-            <q-btn
+          />-->
+          <!-- for electron  -->
+          <q-btn
             v-if="imageExists"
             class="upload-btn"
             color="secondary"
             label="Clear Image"
             @click="removeImage"
-          />-->
+          />
           <q-btn v-else disable class="upload-btn" color="secondary" label="Clear Image" />
         </div>
         <div class="file-path">
@@ -51,8 +51,8 @@ import { mapState, mapActions } from "vuex";
 /**
  * Electron functionality
  */
-// import uploadImage from '../utils/uploadImage.util'
-// import clearImageDialog from '../utils/clearImage.util'
+import uploadImage from "../utils/uploadImage.util";
+import clearImageDialog from "../utils/clearImage.util";
 
 export default {
   name: "upload-image",
@@ -73,12 +73,12 @@ export default {
      * @description: for use with electron
      */
     importMockup() {
-      // const img = uploadImage()
-      // this.importImage(img)
+      const img = uploadImage();
+      this.importImage(img);
     },
     removeImage() {
-      // const res = clearImageDialog()
-      // if (res === 0) this.clearImage()
+      const res = clearImageDialog();
+      if (res === 0) this.clearImage();
     },
     /**
      * @description: for use with the browser
@@ -103,6 +103,7 @@ export default {
   margin: 1rem;
   justify-content: center;
   border-radius: 5px;
+  padding: 0px;
 }
 
 .upload-btn {
@@ -117,7 +118,8 @@ export default {
 }
 
 .file-path {
-  padding-bottom: 1rem;
+  padding-bottom: 1em;
+  height: 100%;
   margin: 1rem;
   font-size: 11px;
 }

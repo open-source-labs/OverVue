@@ -6,7 +6,8 @@ node_modules
 /src-cordova/node_modules
 /src-cordova/platforms
 /src-cordova/plugins
-/src-cordova/www
+/src-cordova/www\
+/test/jest/coverage
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
