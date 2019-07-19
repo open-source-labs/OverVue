@@ -2,8 +2,8 @@
   <q-layout view="hHh LpR lFf">
     <q-header elevated class="gradient text-white">
       <q-toolbar>
-        <q-btn dense flat color="subaccent" round @click="left = !left" >
-          <i :class="[left ? 'fas fa-chevron-left' : 'fas fa-list-ul']" id="btn" ></i>
+        <q-btn dense flat color="subaccent" round @click="left = !left">
+          <i :class="[left ? 'fas fa-chevron-left' : 'fas fa-list-ul']" id="btn"></i>
         </q-btn>
         <q-toolbar-title>
           <!-- <q-avatar></q-avatar> -->
@@ -18,7 +18,7 @@
     <q-drawer v-model="left" side="left" behavior="desktop" bordered>
       <!-- drawer content -->
       <q-list class="q-list-drawer">
-        <UploadImage />
+        <!-- <UploadImage /> -->
         <HomeSideDropDown />
         <CreateComponent />
       </q-list>
@@ -27,7 +27,7 @@
     <q-page-container>
       <router-view />
     </q-page-container>
-      <Footer />
+    <Footer />
   </q-layout>
 </template>
 
@@ -38,7 +38,7 @@ import CreateComponent from '../components/CreateComponent'
 import ExportProjectComponent from '../components/ExportProject'
 import SaveProjectComponent from '../components/SaveProjectComponent'
 import OpenProjectComponent from '../components/OpenProjectComponent'
-import UploadImage from '../components/UploadImage'
+// import UploadImage from '../components/UploadImage'
 
 export default {
   data () {
@@ -53,8 +53,8 @@ export default {
     CreateComponent,
     ExportProjectComponent,
     SaveProjectComponent,
-    OpenProjectComponent,
-    UploadImage
+    OpenProjectComponent
+    // UploadImage
   }
 }
 </script>
@@ -63,37 +63,46 @@ export default {
 .q-layout {
   transition-timing-function: ease-in;
 }
+
 .export-btn {
   margin-left: 0.3rem;
 }
+
 .q-toolbar {
-  min-height:  30px;
+  min-height: 30px;
 }
+
 .deano-size {
-  min-height: 2in
-  height: 3in
+  min-height: 2in;
+  height: 3in;
 }
+
 // css styling for the drawer items
 .drawer-menu {
-  background: white;
+  // background: white;
+  background: $subsecondary;
   // background: #27282268;
 }
+
 // css styling for the drawer list (not entire bg)
 .q-list-drawer {
-  // background: gray;
   height: 100vh;
-  border-radius: 5px;
+  // border-radius: 5px;
   box-shadow: none;
 }
+
 // styling between input and elements in q-list drawer
 .q-field--with-bottom {
   // pading-bottom:
 }
+
 // css styling for entire drawer
 .q-drawer {
   // background: white;
-  background: #272822;
+  background: $subprimary;
+  // background: #272822;
 }
+
 ::-webkit-scrollbar {
   display: none;
 }

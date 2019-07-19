@@ -1,7 +1,7 @@
 import * as types from './types'
 
 const actions = {
-  //
+  // creates a new component in componentMap
   [types.registerComponent]: ({ state, commit }, payload) => {
     const { componentName } = payload
     if (!state.componentMap[componentName]) {
@@ -78,6 +78,7 @@ const actions = {
   [types.changeActiveTab]: ({ commit }, payload) => {
     commit(types.CHANGE_ACTIVE_TAB, payload)
   },
+  // used by OpenProjectComponent.vue
   [types.setComponentMap]: ({ commit }, payload) => {
     commit(types.SET_COMPONENT_MAP, payload)
   },
@@ -94,6 +95,7 @@ const actions = {
   [types.setActiveRoute]: ({ commit }, payload) => {
     commit(types.SET_ACTIVE_ROUTE, payload)
   },
+  // sets active component when clicked in componentDisplay
   [types.setActiveComponent]: ({ commit }, payload) => {
     commit(types.SET_ACTIVE_COMPONENT, payload)
   },
@@ -131,6 +133,33 @@ const actions = {
   },
   [types.clearImage]: ({ commit }) => {
     commit(types.CLEAR_IMAGE)
+  },
+  [types.deleteUserActions]: ({ state, commit }, payload) => {
+    console.log('invoking deleteUserActions')
+    if (state.activeComponent) {
+      commit(types.REMOVE_ACTION_FROM_COMPONENT, payload)
+    }
+    commit(types.DELETE_USER_ACTIONS, payload)
+  },
+  [types.removeActionFromComponent]: ({ state, commit }, payload) => {
+    console.log('invoking removeActionFromComponent')
+    commit(types.REMOVE_ACTION_FROM_COMPONENT, payload)
+  },
+  [types.removeStateFromComponent]: ({ commit }, payload) => {
+    console.log('removeStateFromComponent invoked')
+    commit(types.REMOVE_STATE_FROM_COMPONENT, payload)
+  },
+  [types.deleteUserState]: ({ state, commit }, payload) => {
+    console.log('deleteUserState invoked')
+    if (state.activeComponent) {
+      commit(types.REMOVE_STATE_FROM_COMPONENT, payload)
+    }
+    // loops through component map and deletes all props
+    Object.keys(state.componentMap).forEach(prop => {
+      commit(types.SET_ACTIVE_COMPONENT, prop.componentName)
+      commit(types.REMOVE_ACTION_FROM_COMPONENT, payload)
+    })
+    commit(types.DELETE_USER_STATE, payload)
   }
 }
 
