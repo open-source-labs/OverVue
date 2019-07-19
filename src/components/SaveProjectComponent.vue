@@ -1,6 +1,6 @@
 <template>
   <!-- <q-btn class=" export-btn" color="secondary" label="Save"/> -->
-  <q-btn class="export-btn" color="secondary" label="Save" @click="saveProjectJSON"/>
+  <q-btn class="export-btn" color="secondary" label="Save" @click="saveProjectJSON" />
 </template>
 
 <script>
@@ -137,7 +137,7 @@ export default {
 
 <!-- } -->
 <style scoped>
-  .mr-sm {
-    margin-right: 2px
-  }
+.mr-sm {
+  margin-right: 2px;
+}
 </style>

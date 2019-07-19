@@ -1,8 +1,8 @@
 <template>
   <div class="codesnippet-container">
     <!-- <input type="checkbox" v-model="lineNumbers"> Linenumbers -->
-    <div class="top-p" v-if="activeComponent === ''" >Select a component</div>
-    <div v-else >{{ `${activeComponent}.vue` }}</div>
+    <div class="top-p" v-if="activeComponent === ''">Select a component</div>
+    <div v-else>{{ `${activeComponent}.vue` }}</div>
     <prism-editor
       v-model="code"
       language="js"
@@ -44,7 +44,10 @@ export default {
     },
     // calls createTemplate and createBoiler to generate snippet
     createCodeSnippet (componentName, children) {
-      let result = `${this.createTemplate(componentName, children)}${this.createBoiler(componentName, children)}`
+      let result = `${this.createTemplate(
+        componentName,
+        children
+      )}${this.createBoiler(componentName, children)}`
       return result
     },
     createTemplate (componentName, children) {
@@ -108,7 +111,10 @@ export default {
   // updates code snippet, but broken cause children undefined, shows `function () { [native code] }`
   updated () {
     // console.log(`code: ${this.createCodeSnippet(this.activeComponent, this.componentMap[this.activeComponent].children)}`)
-    this.code = `${this.createCodeSnippet(this.activeComponent, this.componentMap[this.activeComponent].children)}`
+    this.code = `${this.createCodeSnippet(
+      this.activeComponent,
+      this.componentMap[this.activeComponent].children
+    )}`
   },
   beforeDestroy () {
     window.removeEventListener('resize', this.getWindowHeight)
@@ -121,11 +127,12 @@ export default {
 .code-editor {
   font-size: 12px;
 }
+
 .codesnippet-container {
   margin-bottom: 1rem;
 }
-::-webkit-scrollbar {
-    display: none;
-}
 
+::-webkit-scrollbar {
+  display: none;
+}
 </style>
