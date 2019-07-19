@@ -104,6 +104,7 @@ export default {
   justify-content: center;
   border-radius: 5px;
   padding: 0px;
+  background: $subsecondary;
 }
 
 .upload-btn {

@@ -92,7 +92,7 @@ i {
   transition-timing-function: ease-in;
   transition: 0.2s;
   // background: #313131;
-  background: #272822;
+  background: $subsecondary;
 }
 
 // changes the footer toolbar height
@@ -124,7 +124,7 @@ i {
 
 .q-tab-panel {
   // matchs the code editor bg
-  background: #272822;
+  background: $subprimary;
   // background: rgb(69,77,102);
   // background: linear-gradient(180deg, rgba(69,77,102,1) 0%, rgba(54,60,78,1) 100%);
 }
