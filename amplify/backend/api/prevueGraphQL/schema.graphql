@@ -1,0 +1,8 @@
+type Todo @model @searchable @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  name: String!
+  owner: String
+  date: AWSDate
+  description: String
+  completed: Boolean!
+}

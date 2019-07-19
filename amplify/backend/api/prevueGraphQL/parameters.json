@@ -1,0 +1,10 @@
+{
+    "AppSyncApiName": "prevueGraphQL",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authprevue2af0141e5",
+            "Outputs.UserPoolId"
+        ]
+    }
+}
