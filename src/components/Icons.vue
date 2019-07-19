@@ -22,8 +22,7 @@ export default {
   },
   methods: {
     changeState (elementName) {
-      if (this.activeComponent === '') this.$emit('getClickedIcon', elementName)
-      else this.$emit('activeElement', elementName)
+      if (this.activeComponent === '') { this.$emit('getClickedIcon', elementName) } else this.$emit('activeElement', elementName)
     }
   }
 }
@@ -43,20 +42,19 @@ export default {
     grid-template-columns: 50% 50%;
     grid-row-gap: 1em;
     width: 100%;
-
   }
 }
 
 button {
   background: none;
+  color: white;
   border: none;
 }
 button:hover {
   cursor: pointer;
-  color: #00FFFF
+  color: #00ffff;
 }
 button:focus {
   outline: none;
 }
-
 </style>

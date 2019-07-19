@@ -1,8 +1,6 @@
 {
   "@quasar/testing": {
-    "harnesses": [
-      "unit-jest"
-    ]
+    "harnesses": ["unit-jest"]
   },
   "@quasar/testing-unit-jest": {
     "babel": "babelrc",

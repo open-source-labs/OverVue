@@ -18,34 +18,34 @@
 </template>
 
 <script>
-import Routes from "./Routes";
-import { mapState, mapActions } from "vuex";
+import Routes from './Routes'
+import { mapState, mapActions } from 'vuex'
 
 export default {
-  name: "RouteDisplay",
+  name: 'RouteDisplay',
   components: {
     Routes
   },
   computed: {
-    ...mapState(["routes"])
+    ...mapState(['routes'])
   },
-  data() {
+  data () {
     return {
-      newRoute: ""
-    };
+      newRoute: ''
+    }
   },
   methods: {
-    ...mapActions(["addRouteToRouteMap", "setRoutes"]),
-    handleEnterKeyPress() {
+    ...mapActions(['addRouteToRouteMap', 'setRoutes']),
+    handleEnterKeyPress () {
       this.addRouteToRouteMap(this.newRoute)
         .then(() => {
-          this.newRoute = "";
+          this.newRoute = ''
         })
 
-        .catch(err => console.log(err));
+        .catch(err => console.log(err))
     }
   }
-};
+}
 </script>
 
 <style scoped>
