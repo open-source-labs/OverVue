@@ -33,36 +33,36 @@
 </template>
 
 <script>
-import Icons from "./Icons";
-import ParentMultiselect from "../components/ParentMultiselect";
-import { mapState, mapActions } from "vuex";
+import Icons from './Icons'
+import ParentMultiselect from '../components/ParentMultiselect'
+import { mapState, mapActions } from 'vuex'
 
 export default {
-  name: "HomeSidebar",
+  name: 'HomeSidebar',
   components: {
     Icons,
     ParentMultiselect
   },
   computed: {
-    ...mapState(["componentMap", "selectedElementList", "activeComponent"]),
+    ...mapState(['componentMap', 'selectedElementList', 'activeComponent']),
     componentNameInputValue: {
-      get() {
-        return this.$store.state.componentNameInputValue;
+      get () {
+        return this.$store.state.componentNameInputValue
       },
-      set(value) {
-        this.updateComponentNameInputValue(value);
+      set (value) {
+        this.updateComponentNameInputValue(value)
       }
     }
   },
   methods: {
     ...mapActions([
-      "registerComponent",
-      "addToSelectedElementList",
-      "updateComponentNameInputValue",
-      "setActiveComponent",
-      "addToComponentElementList"
+      'registerComponent',
+      'addToSelectedElementList',
+      'updateComponentNameInputValue',
+      'setActiveComponent',
+      'addToComponentElementList'
     ]),
-    handleClick() {
+    handleClick () {
       const component = {
         componentName: this.componentNameInputValue,
         x: 0,
@@ -72,19 +72,19 @@ export default {
         htmlList: this.selectedElementList,
         children: [],
         isActive: false
-      };
+      }
 
-      this.registerComponent(component);
+      this.registerComponent(component)
     },
-    resetActiveComponent() {
-      this.setActiveComponent("");
+    resetActiveComponent () {
+      this.setActiveComponent('')
     },
-    handleIconClick() {
-      if (this.activeComponent === "") this.setClickedElementList();
-      else this.setComponentHtmlList();
+    handleIconClick () {
+      if (this.activeComponent === '') this.setClickedElementList()
+      else this.setComponentHtmlList()
     }
   }
-};
+}
 </script>
 <style type="stylus" scoped>
 .is-primary {

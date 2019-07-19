@@ -18,24 +18,24 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions } from 'vuex'
 
 export default {
-  name: "Routes",
+  name: 'Routes',
   computed: {
-    ...mapState(["routes", "activeRoute"])
+    ...mapState(['routes', 'activeRoute'])
   },
   methods: {
-    ...mapActions(["setActiveRoute", "deleteRoute"]),
-    handleClick(route) {
-      this.setActiveRoute(route);
+    ...mapActions(['setActiveRoute', 'deleteRoute']),
+    handleClick (route) {
+      this.setActiveRoute(route)
     },
-    deleteSelectedRoute(route) {
-      this.deleteRoute(route);
-      this.setActiveRoute("");
+    deleteSelectedRoute (route) {
+      this.deleteRoute(route)
+      this.setActiveRoute('')
     }
   }
-};
+}
 </script>
 
 <style scoped>

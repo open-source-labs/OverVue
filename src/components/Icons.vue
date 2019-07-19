@@ -13,21 +13,19 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 
 export default {
-  name: "Icons",
+  name: 'Icons',
   computed: {
-    ...mapState(["icons", "activeComponent"])
+    ...mapState(['icons', 'activeComponent'])
   },
   methods: {
-    changeState(elementName) {
-      if (this.activeComponent === "")
-        this.$emit("getClickedIcon", elementName);
-      else this.$emit("activeElement", elementName);
+    changeState (elementName) {
+      if (this.activeComponent === '') { this.$emit('getClickedIcon', elementName) } else this.$emit('activeElement', elementName)
     }
   }
-};
+}
 </script>
 
 <style scoped>

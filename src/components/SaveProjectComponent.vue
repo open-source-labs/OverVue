@@ -10,7 +10,7 @@
 // const Mousetrap = require('mousetrap');
 
 export default {
-  name: "SaveProjetComponent"
+  name: 'SaveProjetComponent'
   // methods: {
   //   showSaveJSONDialog(){
   //     remote.dialog.showSaveDialog({
@@ -132,7 +132,7 @@ export default {
   //     this.saveProjectJSON()
   //   })
   // }
-};
+}
 </script>
 
 <!-- } -->

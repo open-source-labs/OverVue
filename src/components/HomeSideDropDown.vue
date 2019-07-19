@@ -34,9 +34,9 @@
   </div>
 </template>
 <script>
-import RouteDisplay from "../components/RouteDisplay";
-import ComponentList from "./HomeSideDropDownItems/ComponentList";
-import VuexForm from "./HomeSideDropDownItems/VuexForm";
+import RouteDisplay from '../components/RouteDisplay'
+import ComponentList from './HomeSideDropDownItems/ComponentList'
+import VuexForm from './HomeSideDropDownItems/VuexForm'
 
 export default {
   components: {
@@ -44,7 +44,7 @@ export default {
     VuexForm,
     ComponentList
   }
-};
+}
 </script>
 
 <style lang="stylus">
