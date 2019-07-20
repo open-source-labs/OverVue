@@ -18,7 +18,7 @@
     <q-drawer v-model="left" side="left" behavior="desktop" bordered>
       <!-- drawer content -->
       <q-list class="q-list-drawer">
-        <!-- <UploadImage /> -->
+        <UploadImage />
         <HomeSideDropDown />
         <CreateComponent />
       </q-list>

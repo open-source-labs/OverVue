@@ -1,0 +1,59 @@
+{
+    "identityPoolName": "prevue22d2bb648_identitypool_2d2bb648",
+    "allowUnauthenticatedIdentities": false,
+    "openIdLambdaRoleName": "prevue2d2bb648_openid_lambda_role",
+    "resourceNameTruncated": "prevue2d2bb648",
+    "userPoolName": "prevue22d2bb648_userpool_2d2bb648",
+    "autoVerifiedAttributes": [
+        "email"
+    ],
+    "mfaConfiguration": "OFF",
+    "mfaTypes": [
+        "SMS Text Message"
+    ],
+    "smsAuthenticationMessage": "Your authentication code is {####}",
+    "smsVerificationMessage": "Your verification code is {####}",
+    "emailVerificationSubject": "Your verification code",
+    "emailVerificationMessage": "Your verification code is {####}",
+    "defaultPasswordPolicy": false,
+    "passwordPolicyMinLength": 8,
+    "passwordPolicyCharacters": [],
+    "requiredAttributes": [
+        "email"
+    ],
+    "userpoolClientName": "prevue2d2bb648_app_client",
+    "userpoolClientGenerateSecret": true,
+    "userpoolClientRefreshTokenValidity": 30,
+    "userpoolClientWriteAttributes": [
+        "email"
+    ],
+    "userpoolClientReadAttributes": [
+        "email"
+    ],
+    "mfaLambdaRole": "prevue2d2bb648_totp_lambda_role",
+    "userpoolClientLambdaRole": "prevue2d2bb648_userpoolclient_lambda_role",
+    "userpoolClientSetAttributes": false,
+    "resourceName": "prevue22d2bb648",
+    "authSelections": "identityPoolAndUserPool",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    },
+    "unauthRoleArn": {
+        "Fn::GetAtt": [
+            "UnauthRole",
+            "Arn"
+        ]
+    },
+    "useDefault": "default",
+    "additionalQuestions": [],
+    "dependsOn": []
+}
