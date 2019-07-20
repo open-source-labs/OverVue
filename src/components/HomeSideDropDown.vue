@@ -21,7 +21,7 @@
         </q-card>
       </q-expansion-item>
 
-      <q-expansion-item dense dense-toggle expand-separator label="Vuex" header-class="text-purple">
+      <q-expansion-item dense dense-toggle expand-separator label="Vuex">
         <q-card>
           <q-card-section>
             <div class="input-container">
