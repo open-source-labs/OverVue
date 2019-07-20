@@ -1,5 +1,6 @@
 <template>
-  <div class="component-display">
+  <div class="component-display grid-bg" :style="mockBg">
+    <!-- <p>{{ userImage }}</p> -->
     <VueDraggableResizable
       class-name="component-box"
       v-for="componentData in activeRouteArray"
@@ -15,23 +16,27 @@
       @resizing="onResize"
       @dblclick.native="onDoubleClick(componentData)"
     >
-     <div class="component-title">
+      <div class="component-title">
         <p>{{ componentData.componentName }}</p>
       </div>
       <ul class="component-children">
-        <li># of children: {{ componentMap[componentData.componentName].children.length }} </li>
+        <li># of children: {{ componentMap[componentData.componentName].children.length }}</li>
         <li>children: {{ componentMap[componentData.componentName].children }}</li>
-         <!-- <p v-for="child in childList" :key="childList.indexOf(child)"> {{ child.text }}</p> -->
+        <!-- <p v-for="child in childList" :key="childList.indexOf(child)"> {{ child.text }}</p> -->
       </ul>
-      <q-menu context-menu >
+      <q-menu context-menu>
         <q-list class="menu">
           <q-item clickable v-ripple v-close-popup @click="handleAddChild">
             <q-item-section>Add Children</q-item-section>
-            <q-item-section avatar><q-icon color="primary" name="add"/></q-item-section>
+            <q-item-section avatar>
+              <q-icon color="primary" name="add" />
+            </q-item-section>
           </q-item>
           <q-item clickable v-ripple v-close-popup auto-close>
             <q-item-section>Delete Children</q-item-section>
-            <q-item-section avatar><q-icon color="primary" name="delete"/></q-item-section>
+            <q-item-section avatar>
+              <q-icon color="primary" name="delete" />
+            </q-item-section>
           </q-item>
         </q-list>
       </q-menu>
@@ -70,7 +75,8 @@ export default {
       modalOpen: false,
       abilityToDelete: false,
       testOptions: ['parent', 'child', 'grandchild'],
-      testModel: []
+      testModel: [],
+      mockImg: false
     }
   },
   mounted () {
@@ -85,7 +91,14 @@ export default {
     })
   },
   computed: {
-    ...mapState(['routes', 'activeRoute', 'activeComponent', 'componentMap', 'componentChildrenMultiselectValue']),
+    ...mapState([
+      'routes',
+      'activeRoute',
+      'activeComponent',
+      'componentMap',
+      'componentChildrenMultiselectValue',
+      'imagePath'
+    ]),
     // used in VueDraggableResizeable component
     activeRouteArray () {
       console.log('active route array method', this.routes[this.activeRoute])
@@ -107,13 +120,28 @@ export default {
       return Object.keys(this.componentMap).filter(component => {
         if (!exceptions.has(component)) return component
       })
+    },
+    userImage () {
+      const imgSrc = this.imagePath.length ? `file://` + this.imagePath[0] : ''
+      // const imgSrc1 = this.imagePath;
+      console.log(`imgSrc: ${imgSrc}`)
+      return imgSrc
+    },
+    mockBg () {
+      return this.imagePath.length
+        ? {
+          background: `url("${this.userImage}") no-repeat center`,
+          'background-size': 'cover'
+        }
+        : {}
     }
   },
   methods: {
     ...mapActions([
       'setActiveComponent',
       'updateComponentChildrenMultiselectValue',
-      'updateActiveComponentChildrenValue']),
+      'updateActiveComponentChildrenValue'
+    ]),
     onResize: function (x, y, width, height) {
       this.activeComponentData.x = x
       this.activeComponentData.y = y
@@ -131,6 +159,7 @@ export default {
 
       this.componentMap[this.activeComponent].x = x
       this.componentMap[this.activeComponent].y = y
+      this.userImage
     },
     onActivated (componentData) {
       this.setActiveComponent(componentData.componentName)
@@ -190,8 +219,10 @@ export default {
   height: 90vh;
   width: 100%;
   position: relative;
-  background: darkslategray;
-  background-color: rgba(124, 126, 145, 0.44);
+  /* background: rgb(211, 211, 210); */
+}
+.grid-bg {
+  background-color: rgba(223, 218, 218, 0.886);
   /* background-color: #269; */
   background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
   background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
@@ -216,6 +247,7 @@ export default {
     #269;
   behavior: url(/pie/PIE.htc);
 }
+
 .menu {
   margin-bottom: 0px !important;
 }

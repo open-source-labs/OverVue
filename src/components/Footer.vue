@@ -43,9 +43,9 @@
 </template>
 
 <script>
-import Tree from "./Tree";
-import HomeQueue from "./HomeQueue";
-import CodeSnippet from "./CodeSnippet";
+import Tree from './Tree'
+import HomeQueue from './HomeQueue'
+import CodeSnippet from './CodeSnippet'
 
 export default {
   components: {
@@ -53,26 +53,26 @@ export default {
     HomeQueue,
     CodeSnippet
   },
-  data() {
+  data () {
     return {
-      tab: "code",
+      tab: 'code',
       open: true,
       height: 40,
-      up: "fas fa-chevron-up",
-      down: "fas fa-chevron-down"
-    };
+      up: 'fas fa-chevron-up',
+      down: 'fas fa-chevron-down'
+    }
   },
   methods: {
-    openBottomDrawer() {
+    openBottomDrawer () {
       // 15in mb pro - 1027 px 3.75
       // big ass screens 2.5
       let minHeight =
-        window.outerHeight < 900 ? 4.5 : window.outerHeight < 1035 ? 3.75 : 2.5;
-      this.height === 40 ? (this.height = minHeight) : (this.height = 40);
-      this.open === true ? (this.open = false) : (this.open = true);
+        window.outerHeight < 900 ? 4.5 : window.outerHeight < 1035 ? 3.75 : 2.5
+      this.height === 40 ? (this.height = minHeight) : (this.height = 40)
+      this.open === true ? (this.open = false) : (this.open = true)
     }
   }
-};
+}
 </script>
 
 <style lang="stylus" scoped>
@@ -92,7 +92,7 @@ i {
   transition-timing-function: ease-in;
   transition: 0.2s;
   // background: #313131;
-  background: #272822;
+  background: $subsecondary;
 }
 
 // changes the footer toolbar height
@@ -124,7 +124,7 @@ i {
 
 .q-tab-panel {
   // matchs the code editor bg
-  background: #272822;
+  background: $subprimary;
   // background: rgb(69,77,102);
   // background: linear-gradient(180deg, rgba(69,77,102,1) 0%, rgba(54,60,78,1) 100%);
 }

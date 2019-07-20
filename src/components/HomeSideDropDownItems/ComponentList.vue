@@ -5,8 +5,8 @@
       :key="componentData.componentName"
       v-on:click="onActivated(componentData)"
     >
-      <q-list dense bordered separator>
-        <q-item clickable v-ripple>
+      <q-list class="list-item" dense bordered separator>
+        <q-item clickable v-ripple class="list-item">
           <q-item-section>
             <div class="component-container">
               <div class="component-info">
@@ -15,7 +15,7 @@
                 {{componentData.componentName}}
                 <!-- <br> -->
               </div>
-              <q-btn round flat icon="highlight_off" v-on:click.stop='handleClick(componentData)'/>
+              <q-btn round flat icon="highlight_off" v-on:click.stop="handleClick(componentData)" />
             </div>
           </q-item-section>
         </q-item>
@@ -44,7 +44,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setActiveComponent', 'deleteComponent', 'deleteActiveComponent']),
+    ...mapActions([
+      'setActiveComponent',
+      'deleteComponent',
+      'deleteActiveComponent'
+    ]),
     onActivated (componentData) {
       this.setActiveComponent(componentData.componentName)
       this.activeComponentData.isActive = true

@@ -10,17 +10,25 @@
         label="Component Name"
         :dense="dense"
         class="input-add"
-      >
-      </q-input>
+      ></q-input>
     </form>
     <div class="icon-container">
-      <Icons class = 'icons' @getClickedIcon="addToSelectedElementList" @activeElement="addToComponentElementList"/>
+      <Icons
+        class="icons"
+        @getClickedIcon="addToSelectedElementList"
+        @activeElement="addToComponentElementList"
+      />
     </div>
     <ParentMultiselect />
     <br />
 
-    <q-btn id="add-component-btn" color="secondary" label="Create Component" @click="handleClick" :disabled="!componentNameInputValue" />
-
+    <q-btn
+      id="add-component-btn"
+      color="secondary"
+      label="Create Component"
+      @click="handleClick"
+      :disabled="!componentNameInputValue"
+    />
   </div>
 </template>
 
@@ -78,7 +86,7 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style type="stylus" scoped>
 .is-primary {
   height: 45px;
 }
@@ -93,7 +101,7 @@ form {
 .home-sidebar {
   margin: 1rem;
   padding: 0.5rem;
-  border: 1px solid rgba(215, 215, 215, 0.728);
+  /* border: 1px solid $subsecondary; */
   border-radius: 5px;
 }
 </style>

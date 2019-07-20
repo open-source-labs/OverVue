@@ -1,7 +1,6 @@
 <template>
-
-<div class="home-sidebar">
-  <!--<div class="route-view">-->
+  <div class="home-sidebar">
+    <!--<div class="route-view">-->
     <a
       :class="route === activeRoute ? 'panel-block is-active' : 'panel-block'"
       v-for="route in Object.keys(routes)"
@@ -9,8 +8,8 @@
       @click="handleClick(route)"
       v-on:keyup.delete="deleteSelectedRoute(route)"
     >
-      <q-list bordered separator>
-        <q-item clickable v-ripple>
+      <q-list bordered separator class="list-item">
+        <q-item clickable v-ripple class="list-item">
           <q-item-section>{{route}}</q-item-section>
         </q-item>
       </q-list>
