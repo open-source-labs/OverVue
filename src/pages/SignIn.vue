@@ -7,7 +7,7 @@
         square
         filled
         color="teal"
-        label="Username"
+        label="Email"
         v-model="form.username"
       />
       <q-input
@@ -46,7 +46,7 @@ export default {
       await this.$Auth.signIn(username, password);
       this.$AmplifyEventBus.$emit("authState", "signedIn");
       parent.signedIn = true;
-      this.$router.push({ name: "todo" });
+      this.$router.go(-1);
     }
   }
 };
