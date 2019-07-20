@@ -8,8 +8,8 @@
         'Already signed up? Sign In' : 'Need an account? Sign Up'
         }}
       </q-btn>
-      <q-btn @click="goHome" type="submit">Back</q-btn>
     </div>
+    <q-btn v-close-popup type="submit" class="authButton gradient">Back</q-btn>
   </div>
 </template>
 <script>
@@ -58,6 +58,15 @@ export default {
   border: none;
   color: white;
   outline: none;
+}
+.gradient {
+  background: rgb(131, 58, 180);
+  background: linear-gradient(
+    90deg,
+    rgba(131, 58, 180, 1) 0%,
+    rgba(253, 29, 29, 1) 28%,
+    rgba(252, 176, 69, 1) 100%
+  );
 }
 .button {
   cursor: pointer;

@@ -63,7 +63,9 @@ module.exports = function (ctx) {
         'QDate',
         'QTime',
         'QPopupProxy',
-        'QCircularProgress'
+        'QCircularProgress',
+        'QDialog',
+        'QSpace'
       ],
 
       directives: ['Ripple', 'ClosePopup'],

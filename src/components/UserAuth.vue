@@ -24,7 +24,7 @@
     </div>
 
     <div v-if="!isLoggedIn">
-      <q-item clickable :to="{name: 'auth'}">
+      <q-item clickable @click="icon = true">
         <q-item-section avatar>
           <q-icon name="group" />
         </q-item-section>
@@ -34,17 +34,36 @@
         </q-item-section>
       </q-item>
     </div>
+
+    <q-dialog v-model="icon">
+      <q-card class="login-modal">
+        <q-card-section class="row items-center">
+          <div class="text-h6">PreVue 2.0</div>
+          <q-space />
+          <q-btn icon="close" flat round dense v-close-popup />
+        </q-card-section>
+        <q-card-section>
+          <Auth />
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
 <script>
 import { openURL } from "quasar";
+import Auth from "./AuthComponents/Auth";
+
 export default {
   name: "UserAuth",
+  components: {
+    Auth
+  },
   data() {
     return {
       user: "",
-      signedIn: "false"
+      signedIn: "false",
+      icon: false
     };
   },
   computed: {
@@ -77,8 +96,14 @@ export default {
         .catch(err => console.log(err));
       this.signedIn = false;
       parent.signedIn = false;
-      this.$router.push({ name: "auth" });
+      // this.$router.push({ name: "auth" });
     }
   }
 };
 </script>
+
+<style lang="stylus" scoped>
+.login-modal {
+  padding: 1rem;
+}
+</style>

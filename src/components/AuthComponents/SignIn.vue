@@ -46,7 +46,7 @@ export default {
       await this.$Auth.signIn(username, password);
       this.$AmplifyEventBus.$emit("authState", "signedIn");
       parent.signedIn = true;
-      this.$router.go(-1);
+      // this.$router.go(1);
     }
   }
 };

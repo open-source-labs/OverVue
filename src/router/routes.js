@@ -14,20 +14,20 @@ const routes = [
     component: () => import('layouts/MyLayout.vue'),
     children: [{ path: '', component: () => import('pages/Page2.vue') }]
   },
-  {
-    path: '/auth',
-    component: () => import('layouts/MyLayout.vue'),
-    children: [
-      {
-        path: '',
-        name: 'auth',
-        component: () => import('pages/Auth.vue'),
-        meta: {
-          requiresAuth: false
-        }
-      }
-    ]
-  },
+  // {
+  //   path: '/auth',
+  //   component: () => import('layouts/MyLayout.vue'),
+  //   children: [
+  //     {
+  //       path: '',
+  //       name: 'auth',
+  //       component: () => import('pages/Auth.vue'),
+  //       meta: {
+  //         requiresAuth: false
+  //       }
+  //     }
+  //   ]
+  // },
   {
     path: '/profile',
     component: () => import('layouts/MyLayout.vue'),
