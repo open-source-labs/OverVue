@@ -14,14 +14,8 @@ const newState = {
     },
     HomeView: {
       componentName: 'HomeView',
-      children: ['LoginBtn'],
+      children: [],
       htmlList: []
-    },
-    LoginBtn: {
-      componentName: 'HomeView',
-      children: ['LoginBtn'],
-      htmlList: ['<btn></btn>'],
-      actions: ['action1']
     }
     // NewView: {}
   },
