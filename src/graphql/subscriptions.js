@@ -6,9 +6,6 @@ export const onCreateTodo = `subscription OnCreateTodo {
     id
     name
     owner
-    date
-    description
-    completed
   }
 }
 `;
@@ -17,9 +14,6 @@ export const onUpdateTodo = `subscription OnUpdateTodo {
     id
     name
     owner
-    date
-    description
-    completed
   }
 }
 `;
@@ -28,9 +22,6 @@ export const onDeleteTodo = `subscription OnDeleteTodo {
     id
     name
     owner
-    date
-    description
-    completed
   }
 }
 `;

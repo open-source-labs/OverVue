@@ -1,5 +1,5 @@
 projects:
-  prevueGraphQL:
+  prevue2:
     schemaPath: src/graphql/schema.json
     includes:
       - src/graphql/**/*.js

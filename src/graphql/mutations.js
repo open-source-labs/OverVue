@@ -6,9 +6,6 @@ export const createTodo = `mutation CreateTodo($input: CreateTodoInput!) {
     id
     name
     owner
-    date
-    description
-    completed
   }
 }
 `;
@@ -17,9 +14,6 @@ export const updateTodo = `mutation UpdateTodo($input: UpdateTodoInput!) {
     id
     name
     owner
-    date
-    description
-    completed
   }
 }
 `;
@@ -28,9 +22,6 @@ export const deleteTodo = `mutation DeleteTodo($input: DeleteTodoInput!) {
     id
     name
     owner
-    date
-    description
-    completed
   }
 }
 `;

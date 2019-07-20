@@ -6,9 +6,6 @@ export const getTodo = `query GetTodo($id: ID!) {
     id
     name
     owner
-    date
-    description
-    completed
   }
 }
 `;
@@ -22,9 +19,6 @@ export const listTodos = `query ListTodos(
       id
       name
       owner
-      date
-      description
-      completed
     }
     nextToken
   }
@@ -46,9 +40,6 @@ export const searchTodos = `query SearchTodos(
       id
       name
       owner
-      date
-      description
-      completed
     }
     nextToken
   }
