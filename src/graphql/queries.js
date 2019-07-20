@@ -10,7 +10,7 @@ export const getProject = `query GetProject($id: ID!) {
     description
   }
 }
-`;
+`
 export const listProjects = `query ListProjects(
   $filter: ModelProjectFilterInput
   $limit: Int
@@ -27,7 +27,7 @@ export const listProjects = `query ListProjects(
     nextToken
   }
 }
-`;
+`
 export const searchProjects = `query SearchProjects(
   $filter: SearchableProjectFilterInput
   $sort: SearchableProjectSortInput
@@ -50,4 +50,4 @@ export const searchProjects = `query SearchProjects(
     nextToken
   }
 }
-`;
+`

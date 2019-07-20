@@ -10,7 +10,7 @@ export const onCreateProject = `subscription OnCreateProject {
     description
   }
 }
-`;
+`
 export const onUpdateProject = `subscription OnUpdateProject {
   onUpdateProject {
     id
@@ -20,7 +20,7 @@ export const onUpdateProject = `subscription OnUpdateProject {
     description
   }
 }
-`;
+`
 export const onDeleteProject = `subscription OnDeleteProject {
   onDeleteProject {
     id
@@ -30,4 +30,4 @@ export const onDeleteProject = `subscription OnDeleteProject {
     description
   }
 }
-`;
+`

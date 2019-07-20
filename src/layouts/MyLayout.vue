@@ -32,9 +32,9 @@
 </template>
 
 <script>
-import HomeSideDropDown from "../components/HomeSideDropDown";
-import Footer from "../components/Footer";
-import CreateComponent from "../components/CreateComponent";
+import HomeSideDropDown from '../components/HomeSideDropDown'
+import Footer from '../components/Footer'
+import CreateComponent from '../components/CreateComponent'
 // electron build features
 // import ExportProjectComponent from "../components/ExportProject";
 // import SaveProjectComponent from "../components/SaveProjectComponent";
@@ -42,11 +42,11 @@ import CreateComponent from "../components/CreateComponent";
 // import UploadImage from '../components/UploadImage'
 
 export default {
-  data() {
+  data () {
     return {
       left: true,
       bottom: true
-    };
+    }
   },
   components: {
     HomeSideDropDown,
@@ -57,7 +57,7 @@ export default {
     // OpenProjectComponent
     // UploadImage
   }
-};
+}
 </script>
 
 <style lang="stylus">

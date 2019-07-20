@@ -10,7 +10,7 @@ export const createProject = `mutation CreateProject($input: CreateProjectInput!
     description
   }
 }
-`;
+`
 export const updateProject = `mutation UpdateProject($input: UpdateProjectInput!) {
   updateProject(input: $input) {
     id
@@ -20,7 +20,7 @@ export const updateProject = `mutation UpdateProject($input: UpdateProjectInput!
     description
   }
 }
-`;
+`
 export const deleteProject = `mutation DeleteProject($input: DeleteProjectInput!) {
   deleteProject(input: $input) {
     id
@@ -30,4 +30,4 @@ export const deleteProject = `mutation DeleteProject($input: DeleteProjectInput!
     description
   }
 }
-`;
+`
