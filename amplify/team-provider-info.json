@@ -1,0 +1,19 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "ovrvue-pwa-dev-20190720122306-authRole",
+            "UnauthRoleArn": "arn:aws:iam::705809431037:role/ovrvue-pwa-dev-20190720122306-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::705809431037:role/ovrvue-pwa-dev-20190720122306-authRole",
+            "Region": "us-west-2",
+            "DeploymentBucketName": "ovrvue-pwa-dev-20190720122306-deployment",
+            "UnauthRoleName": "ovrvue-pwa-dev-20190720122306-unauthRole",
+            "StackName": "ovrvue-pwa-dev-20190720122306",
+            "StackId": "arn:aws:cloudformation:us-west-2:705809431037:stack/ovrvue-pwa-dev-20190720122306/cd3f8d10-ab23-11e9-b7b6-0ae06257a2d8"
+        },
+        "categories": {
+            "auth": {
+                "ovrvuepwa3c1c45fe": {}
+            }
+        }
+    }
+}

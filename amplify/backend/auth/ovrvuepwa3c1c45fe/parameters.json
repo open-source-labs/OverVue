@@ -1,0 +1,62 @@
+{
+    "identityPoolName": "ovrvuepwa3c1c45fe_identitypool_3c1c45fe",
+    "allowUnauthenticatedIdentities": false,
+    "openIdLambdaRoleName": "ovrvue3c1c45fe_openid_lambda_role",
+    "resourceNameTruncated": "ovrvue3c1c45fe",
+    "userPoolName": "ovrvuepwa3c1c45fe_userpool_3c1c45fe",
+    "autoVerifiedAttributes": [
+        "email"
+    ],
+    "mfaConfiguration": "OFF",
+    "mfaTypes": [
+        "SMS Text Message"
+    ],
+    "smsAuthenticationMessage": "Your authentication code is {####}",
+    "smsVerificationMessage": "Your verification code is {####}",
+    "emailVerificationSubject": "Your verification code",
+    "emailVerificationMessage": "Your verification code is {####}",
+    "defaultPasswordPolicy": false,
+    "passwordPolicyMinLength": 8,
+    "passwordPolicyCharacters": [],
+    "requiredAttributes": [
+        "email"
+    ],
+    "userpoolClientName": "ovrvue3c1c45fe_app_client",
+    "userpoolClientGenerateSecret": true,
+    "userpoolClientRefreshTokenValidity": 30,
+    "userpoolClientWriteAttributes": [
+        "email"
+    ],
+    "userpoolClientReadAttributes": [
+        "email"
+    ],
+    "mfaLambdaRole": "ovrvue3c1c45fe_totp_lambda_role",
+    "userpoolClientLambdaRole": "ovrvue3c1c45fe_userpoolclient_lambda_role",
+    "userpoolClientSetAttributes": false,
+    "resourceName": "ovrvuepwa3c1c45fe",
+    "authSelections": "identityPoolAndUserPool",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    },
+    "unauthRoleArn": {
+        "Fn::GetAtt": [
+            "UnauthRole",
+            "Arn"
+        ]
+    },
+    "useDefault": "default",
+    "usernameAttributes": [
+        "email"
+    ],
+    "additionalQuestions": [],
+    "dependsOn": []
+}
