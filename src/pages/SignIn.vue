@@ -2,8 +2,23 @@
   <div class="auth">
     <h2>Sign In</h2>
     <form @submit.prevent="signIn">
-      <q-input square filled color="teal" label="Username" v-model="form.username" />
-      <q-input square filled color="teal" label="Password" type="password" v-model="form.password" />
+      <q-input
+        class="color-primary"
+        square
+        filled
+        color="teal"
+        label="Username"
+        v-model="form.username"
+      />
+      <q-input
+        class="color-primary"
+        square
+        filled
+        color="teal"
+        label="Password"
+        type="password"
+        v-model="form.password"
+      />
       <div class="row">
         <q-btn type="submit" @click="signIn" label="Sign In" class="authButton">
           <template v-slot:loading>
@@ -36,7 +51,7 @@ export default {
   }
 };
 </script>
-<style>
+<style type="stylus">
 .authButton {
   width: 100%;
   padding: 10px;

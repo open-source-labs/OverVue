@@ -8,6 +8,7 @@
         'Already signed up? Sign In' : 'Need an account? Sign Up'
         }}
       </q-btn>
+      <q-btn @click="goHome" type="submit">Back</q-btn>
     </div>
   </div>
 </template>
@@ -30,6 +31,9 @@ export default {
       this.formState === "signUp"
         ? (this.formState = "signIn")
         : (this.formState = "signUp");
+    },
+    goHome() {
+      this.$router.push({ name: "/" });
     }
   }
 };
