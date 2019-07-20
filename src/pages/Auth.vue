@@ -8,7 +8,7 @@
         'Already signed up? Sign In' : 'Need an account? Sign Up'
         }}
       </q-btn>
-      <q-btn @click="goHome" type="submit">Back</q-btn>
+      <q-btn :to="{ name: '/' }" type="submit">Back</q-btn>
     </div>
   </div>
 </template>
