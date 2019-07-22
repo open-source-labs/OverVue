@@ -1,24 +1,34 @@
 <template>
-  <div class="home-sidebar">
+  <div class="home-sidebar drawer-menu">
     <!-- <p class="panel-heading">Create a component</p> -->
     <br />
-    <form v-on:submit.prevent="handleClick">
+    <form v-on:submit.prevent="handleClick" v-on:click="resetActiveComponent">
       <q-input
-        standout="bg-teal text-white"
+        standout="bg-secondary text-white"
         bottom-slots
         v-model="componentNameInputValue"
         label="Component Name"
         :dense="dense"
         class="input-add"
-      >
-      </q-input>
+      ></q-input>
     </form>
     <div class="icon-container">
-      <Icons @getClickedIcon="addToSelectedElementList" />
+      <Icons
+        class="icons"
+        @getClickedIcon="addToSelectedElementList"
+        @activeElement="addToComponentElementList"
+      />
     </div>
     <ParentMultiselect />
     <br />
-    <q-btn id="add-component-btn" class="primary" color="secondary" label="Create Component" icon-right="add" @click="handleClick" :disabled="!componentNameInputValue" />
+
+    <q-btn
+      id="add-component-btn"
+      color="secondary"
+      label="Create Component"
+      @click="handleClick"
+      :disabled="!componentNameInputValue"
+    />
   </div>
 </template>
 
@@ -34,7 +44,7 @@ export default {
     ParentMultiselect
   },
   computed: {
-    ...mapState(['componentMap', 'selectedElementList']),
+    ...mapState(['componentMap', 'selectedElementList', 'activeComponent']),
     componentNameInputValue: {
       get () {
         return this.$store.state.componentNameInputValue
@@ -48,7 +58,9 @@ export default {
     ...mapActions([
       'registerComponent',
       'addToSelectedElementList',
-      'updateComponentNameInputValue'
+      'updateComponentNameInputValue',
+      'setActiveComponent',
+      'addToComponentElementList'
     ]),
     handleClick () {
       const component = {
@@ -63,11 +75,18 @@ export default {
       }
 
       this.registerComponent(component)
+    },
+    resetActiveComponent () {
+      this.setActiveComponent('')
+    },
+    handleIconClick () {
+      if (this.activeComponent === '') this.setClickedElementList()
+      else this.setComponentHtmlList()
     }
   }
 }
 </script>
-<style scoped>
+<style type="stylus" scoped>
 .is-primary {
   height: 45px;
 }
@@ -82,7 +101,7 @@ form {
 .home-sidebar {
   margin: 1rem;
   padding: 0.5rem;
-  border: 1px solid rgba(215, 215, 215, 0.728);
+  /* border: 1px solid $subsecondary; */
   border-radius: 5px;
 }
 </style>

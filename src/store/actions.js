@@ -1,15 +1,18 @@
 import * as types from './types'
 
 const actions = {
-  //
+  // creates a new component in componentMap
   [types.registerComponent]: ({ state, commit }, payload) => {
     const { componentName } = payload
     if (!state.componentMap[componentName]) {
       commit(types.ADD_COMPONENT_TO_COMPONENT_MAP, payload)
-      commit(
-        types.ADD_COMPONENT_TO_ACTIVE_ROUTE_CHILDREN,
-        payload.componentName
-      )
+      if (!state.parentSelected) {
+        commit(
+          types.ADD_COMPONENT_TO_ACTIVE_ROUTE_CHILDREN,
+          payload.componentName
+        )
+      }
+
       commit(types.ADD_COMPONENT_TO_ACTIVE_ROUTE_IN_ROUTE_MAP, payload)
 
       let component = state.componentNameInputValue
@@ -18,7 +21,10 @@ const actions = {
       })
 
       if (state.parentSelected) {
-        commit(types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE, [...state.componentMap[state.activeComponent].children, payload.componentName])
+        commit(types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE, [
+          ...state.componentMap[state.activeComponent].children,
+          payload.componentName
+        ])
       }
 
       commit(types.UPDATE_COMPONENT_CHILDREN_VALUE, { component, value })
@@ -72,6 +78,7 @@ const actions = {
   [types.changeActiveTab]: ({ commit }, payload) => {
     commit(types.CHANGE_ACTIVE_TAB, payload)
   },
+  // used by OpenProjectComponent.vue
   [types.setComponentMap]: ({ commit }, payload) => {
     commit(types.SET_COMPONENT_MAP, payload)
   },
@@ -88,6 +95,7 @@ const actions = {
   [types.setActiveRoute]: ({ commit }, payload) => {
     commit(types.SET_ACTIVE_ROUTE, payload)
   },
+  // sets active component when clicked in componentDisplay
   [types.setActiveComponent]: ({ commit }, payload) => {
     commit(types.SET_ACTIVE_COMPONENT, payload)
   },
@@ -114,8 +122,44 @@ const actions = {
     commit(types.PARENT_SELECTED, payload)
   },
   [types.deleteRoute]: ({ state, commit }, payload) => {
-    console.log('stat in actions:', state)
     commit(types.DELETE_ROUTE, payload)
+  },
+  [types.deleteComponent]: ({ state, commit }, payload) => {
+    console.log('payload in actions:', payload)
+    commit(types.DELETE_COMPONENT, payload)
+  },
+  [types.importImage]: ({ commit }, payload) => {
+    commit(types.IMPORT_IMAGE, payload)
+  },
+  [types.clearImage]: ({ commit }) => {
+    commit(types.CLEAR_IMAGE)
+  },
+  [types.deleteUserActions]: ({ state, commit }, payload) => {
+    console.log('invoking deleteUserActions')
+    if (state.activeComponent) {
+      commit(types.REMOVE_ACTION_FROM_COMPONENT, payload)
+    }
+    commit(types.DELETE_USER_ACTIONS, payload)
+  },
+  [types.removeActionFromComponent]: ({ state, commit }, payload) => {
+    console.log('invoking removeActionFromComponent')
+    commit(types.REMOVE_ACTION_FROM_COMPONENT, payload)
+  },
+  [types.removeStateFromComponent]: ({ commit }, payload) => {
+    console.log('removeStateFromComponent invoked')
+    commit(types.REMOVE_STATE_FROM_COMPONENT, payload)
+  },
+  [types.deleteUserState]: ({ state, commit }, payload) => {
+    console.log('deleteUserState invoked')
+    if (state.activeComponent) {
+      commit(types.REMOVE_STATE_FROM_COMPONENT, payload)
+    }
+    // loops through component map and deletes all props
+    Object.keys(state.componentMap).forEach(prop => {
+      commit(types.SET_ACTIVE_COMPONENT, prop.componentName)
+      commit(types.REMOVE_ACTION_FROM_COMPONENT, payload)
+    })
+    commit(types.DELETE_USER_STATE, payload)
   }
 }
 

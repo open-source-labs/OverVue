@@ -40,6 +40,18 @@ export const ADD_COMPONENT_TO_COMPONENT_CHILDREN =
 export const UPDATE_OPEN_MODAL = 'UPDATE_OPEN_MODAL'
 export const PARENT_SELECTED = 'PARENT_SELECTED'
 export const DELETE_ROUTE = 'DELETE_ROUTE'
+export const DELETE_COMPONENT = 'DELETE_COMPONENT'
+// Image upload mutations
+export const IMPORT_IMAGE = 'IMPORT_IMAGE'
+export const CLEAR_IMAGE = 'CLEAR_IMAGE'
+export const DELETE_USER_ACTIONS = 'DELETE_USER_ACTIONS'
+export const REMOVE_ACTION_FROM_COMPONENT = 'REMOVE_ACTION_FROM_COMPONENT'
+export const ADD_TO_COMPONENT_ACTIONS = 'ADD_TO_COMPONENT_ACTIONS'
+export const ADD_TO_COMPONENT_STATE = 'ADD_TO_COMPONENT_STATE'
+export const ADD_USER_ACTION = 'ADD_USER_ACTION'
+export const ADD_TO_USER_STORE = 'ADD_TO_USER_STORE'
+export const REMOVE_STATE_FROM_COMPONENT = 'REMOVE_STATE_FROM_COMPONENT'
+export const DELETE_USER_STATE = 'DELETE_USER_STATE'
 
 // Actions
 export const registerComponent = 'registerComponent'
@@ -73,3 +85,14 @@ export const updateComponentNameInputValue = 'updateComponentNameInputValue'
 export const updateOpenModal = 'updateOpenModal'
 export const parentSelected = 'parentSelected'
 export const deleteRoute = 'deleteRoute'
+export const deleteComponent = 'deleteComponent'
+// image upload logic
+export const importImage = 'importImage'
+export const clearImage = 'clearImage'
+
+export const deleteUserActions = 'deleteUserActions'
+export const removeActionFromComponent = 'removeActionFromComponent'
+export const addUserAction = 'addUserAction'
+export const addToUserStore = 'addToUserStore'
+export const removeStateFromComponent = 'removeStateFromComponent'
+export const deleteUserState = 'deleteUserState'
