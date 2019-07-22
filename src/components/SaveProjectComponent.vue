@@ -51,36 +51,7 @@ export default {
       });
     },
     saveProjectJSON() {
-      let projectLocation = this.$store.state.projects[
-        this.$store.state.activeTab
-      ].lastSavedLocation;
-      if (projectLocation) {
-        console.log('IN SAVE LOCATION', this.$store.state);
-        let state = this.$store.state;
-        let routes = state.routes;
-        for (let view in routes) {
-          routes[view].forEach(component => {
-            let htmlList = component.htmlList;
-            this.parseAndDelete(htmlList);
-          });
-        }
-        let componentMap = this.$store.state.componentMap;
-        console.log('compmap', componentMap);
-        for (let component in componentMap) {
-          if (componentMap[component].htmlList) {
-            let comphtml = componentMap[component].htmlList;
-            console.log('COMPHTML', comphtml);
-            this.parseAndDelete(comphtml);
-          }
-        }
-
-        fs.writeFileSync(projectLocation, JSON.stringify(state));
-
-        console.log('PROJECT SAVED TO LAST SAVED LOCATION');
-      } else {
-        // ipc.send('show-save-json-dialog');
         this.showSaveJSONDialog();
-      }
     },
     saveJSONLocation(data){
       //delete original key from local forage
