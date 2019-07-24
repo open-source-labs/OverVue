@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 # OverVue (Beta)
-=======
-# PreVue 2
->>>>>>> 0429119fe1127683fea28caa053fae178dffc456
 
 **WIP**
 
