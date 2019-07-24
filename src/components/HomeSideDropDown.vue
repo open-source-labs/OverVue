@@ -2,7 +2,7 @@
   <div class="q-pa-md" style="max-width: 350px">
     <q-list padding bordered class="rounded-borders drawer-menu">
       <q-expansion-item dense dense-toggle expand-separator label="Components">
-        <q-card >
+        <q-card>
           <q-card-section>
             <div class="input-container">
               <ComponentList />
@@ -21,7 +21,7 @@
         </q-card>
       </q-expansion-item>
 
-      <q-expansion-item dense dense-toggle expand-separator label="Vuex" header-class="text-purple">
+      <q-expansion-item dense dense-toggle expand-separator label="Vuex">
         <q-card>
           <q-card-section>
             <div class="input-container">
@@ -51,12 +51,13 @@ export default {
 .input-add {
   margin: 0em 1em 0em 1em;
 }
+
 .input-container {
   margin-top: 1rem;
-  // background: $primary;
+  background: $subsecondary;
 }
+
 .red {
   background: red;
 }
-
 </style>

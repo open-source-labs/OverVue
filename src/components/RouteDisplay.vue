@@ -1,16 +1,15 @@
 <template>
-<div>
-       <q-input
-        @keyup.enter.native="handleEnterKeyPress"
-        standout="bg-secondary text-white"
-        bottom-slots
-        v-model="newRoute"
-        label="Enter new route"
-        :dense="dense"
-        class="input-add"
-      >
-      </q-input>
-  <!--<div class="route-display">-->
+  <div>
+    <q-input
+      @keyup.enter.native="handleEnterKeyPress"
+      standout="bg-secondary text-white"
+      bottom-slots
+      v-model="newRoute"
+      label="Enter new route"
+      :dense="dense"
+      class="input-add"
+    ></q-input>
+    <!--<div class="route-display">-->
     <!--
 
     -->

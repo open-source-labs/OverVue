@@ -1,7 +1,8 @@
 <template>
-  <div>
+  <div class="codesnippet-container">
     <!-- <input type="checkbox" v-model="lineNumbers"> Linenumbers -->
-    {{ `${activeComponent}.vue` }}
+    <div class="top-p" v-if="activeComponent === ''">Select a component</div>
+    <div v-else>{{ `${activeComponent}.vue` }}</div>
     <prism-editor
       v-model="code"
       language="js"
@@ -23,7 +24,7 @@ import 'vue-prism-editor/dist/VuePrismEditor.css'
 export default {
   data () {
     return {
-      code: `Select a component`,
+      code: `Your component boilerplate will be displayed here.`,
       lineNumbers: true,
       height: null
     }
@@ -43,13 +44,14 @@ export default {
     },
     // calls createTemplate and createBoiler to generate snippet
     createCodeSnippet (componentName, children) {
-      let result = `${this.createTemplate(componentName, children)}${this.createBoiler(componentName, children)}`
-      //console.log(`createCodeSnippet result: ${result}`)
+      let result = `${this.createTemplate(
+        componentName,
+        children
+      )}${this.createBoiler(componentName, children)}`
       return result
     },
     createTemplate (componentName, children) {
       let output = ``
-      // let htmlArr = this.componentMap[compName].htmlList;
       output += ` <div>\n`
       children.forEach(name => {
         output += `    <${name}>\n    </${name}>\n`
@@ -58,7 +60,7 @@ export default {
       return `<template>\n ${output}${templateTagStr}  </div>\n</template>`
     },
     writeTemplateTag (componentName) {
-      //console.log('writeTemplateTag invoked!')
+      // console.log('writeTemplateTag invoked!')
       // create reference object
       const htmlElementMap = {
         div: ['<div>', '</div>'],
@@ -82,7 +84,7 @@ export default {
         outputStr += htmlElementMap[el.text][1]
         outputStr += `  \n`
       }
-      //console.log(`outputStr from writeTemplateTag: ${outputStr}`)
+      // console.log(`outputStr from writeTemplateTag: ${outputStr}`)
       return outputStr
     },
     createBoiler (componentName, children) {
@@ -105,13 +107,14 @@ export default {
 
       this.getWindowHeight()
     })
-    // set code to this new string literal mofo
-    // this.code = `${this.createCodeSnippet(this.activeComponent, this.componentMap[this.activeComponent].children)}`
   },
   // updates code snippet, but broken cause children undefined, shows `function () { [native code] }`
   updated () {
-    //console.log(`code: ${this.createCodeSnippet(this.activeComponent, this.componentMap[this.activeComponent].children)}`)
-    this.code = `${this.createCodeSnippet(this.activeComponent, this.componentMap[this.activeComponent].children)}`
+    // console.log(`code: ${this.createCodeSnippet(this.activeComponent, this.componentMap[this.activeComponent].children)}`)
+    this.code = `${this.createCodeSnippet(
+      this.activeComponent,
+      this.componentMap[this.activeComponent].children
+    )}`
   },
   beforeDestroy () {
     window.removeEventListener('resize', this.getWindowHeight)
@@ -122,6 +125,14 @@ export default {
 <style lang="stylus" scoped>
 // resize handled by vue lifecycle methods
 .code-editor {
-  font-size: 11px;
+  font-size: 12px;
+}
+
+.codesnippet-container {
+  margin-bottom: 1rem;
+}
+
+::-webkit-scrollbar {
+  display: none;
 }
 </style>
