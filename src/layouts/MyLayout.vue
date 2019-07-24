@@ -9,9 +9,9 @@
           <!-- <q-avatar></q-avatar> -->
           OverVue
         </q-toolbar-title>
-        <OpenProjectComponent />
+        <!-- <OpenProjectComponent />
         <SaveProjectComponent />
-        <ExportProjectComponent />
+        <ExportProjectComponent />-->
       </q-toolbar>
     </q-header>
 
@@ -32,31 +32,32 @@
 </template>
 
 <script>
-import HomeSideDropDown from '../components/HomeSideDropDown'
-import Footer from '../components/Footer'
-import CreateComponent from '../components/CreateComponent'
-import ExportProjectComponent from '../components/ExportProject'
-import SaveProjectComponent from '../components/SaveProjectComponent'
-import OpenProjectComponent from '../components/OpenProjectComponent'
-import UploadImage from '../components/UploadImage'
+import HomeSideDropDown from "../components/HomeSideDropDown";
+import Footer from "../components/Footer";
+import CreateComponent from "../components/CreateComponent";
+// electron build features
+// import ExportProjectComponent from "../components/ExportProject";
+// import SaveProjectComponent from "../components/SaveProjectComponent";
+// import OpenProjectComponent from "../components/OpenProjectComponent";
+// import UploadImage from '../components/UploadImage'
 
 export default {
-  data () {
+  data() {
     return {
       left: true,
       bottom: true
-    }
+    };
   },
   components: {
     HomeSideDropDown,
     Footer,
-    CreateComponent,
-    ExportProjectComponent,
-    SaveProjectComponent,
-    OpenProjectComponent,
-    UploadImage
+    CreateComponent
+    // ExportProjectComponent,
+    // SaveProjectComponent,
+    // OpenProjectComponent
+    // UploadImage
   }
-}
+};
 </script>
 
 <style lang="stylus">
@@ -70,11 +71,6 @@ export default {
 
 .q-toolbar {
   min-height: 30px;
-}
-
-.deano-size {
-  min-height: 2in;
-  height: 3in;
 }
 
 // css styling for the drawer items
