@@ -7,7 +7,7 @@
         </q-btn>
         <q-toolbar-title>
           <!-- <q-avatar></q-avatar> -->
-          PreVue 2.0
+          OverVue
         </q-toolbar-title>
         <!-- <OpenProjectComponent />
         <SaveProjectComponent />

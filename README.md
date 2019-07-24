@@ -1,6 +1,8 @@
-# PreVue 2
+# OverVue (Beta)
 
 **WIP**
+
+Original Project: https://github.com/open-source-labs/PreVue
 
 #### Authors
 ```
