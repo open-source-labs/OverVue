@@ -20,20 +20,20 @@
         <p>{{ componentData.componentName }}</p>
       </div>
       <ul class="component-children">
-        <li># of children: {{ componentMap[componentData.componentName].children.length }}</li>
-        <li>children: {{ componentMap[componentData.componentName].children }}</li>
+        <!-- <li># of children: {{ componentMap[componentData.componentName].children.length }}</li>
+        <li>children: {{ componentMap[componentData.componentName].children }}</li> -->
         <!-- <p v-for="child in childList" :key="childList.indexOf(child)"> {{ child.text }}</p> -->
       </ul>
       <q-menu context-menu>
         <q-list class="menu">
           <q-item clickable v-ripple v-close-popup @click="handleAddChild">
-            <q-item-section>Add Children</q-item-section>
+            <q-item-section style="color: white">Add Children</q-item-section>
             <q-item-section avatar>
               <q-icon color="primary" name="add" />
             </q-item-section>
           </q-item>
           <q-item clickable v-ripple v-close-popup auto-close>
-            <q-item-section>Delete Children</q-item-section>
+            <q-item-section style="color: pink">Delete Children</q-item-section>
             <q-item-section avatar>
               <q-icon color="primary" name="delete" />
             </q-item-section>
