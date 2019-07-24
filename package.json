@@ -2,7 +2,7 @@
   "name": "prevue2",
   "version": "0.0.1",
   "description": "Vue Prototype DevTool",
-  "productName": "PreVue 2.0",
+  "productName": "OverVue",
   "cordovaId": "org.cordova.quasar.app",
   "author": "Drew Nguyen <drew.ktran@gmail.com>",
   "private": true,
