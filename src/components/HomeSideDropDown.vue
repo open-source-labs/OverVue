@@ -21,7 +21,7 @@
         </q-card>
       </q-expansion-item>
 
-      <q-expansion-item dense dense-toggle expand-separator label="Vuex">
+      <!-- <q-expansion-item dense dense-toggle expand-separator label="Vuex">
         <q-card>
           <q-card-section>
             <div class="input-container">
@@ -29,7 +29,7 @@
             </div>
           </q-card-section>
         </q-card>
-      </q-expansion-item>
+      </q-expansion-item> -->
     </q-list>
   </div>
 </template>
