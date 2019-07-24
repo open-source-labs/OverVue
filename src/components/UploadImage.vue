@@ -35,10 +35,10 @@
           <q-card>
             <img :src="[imageExists ? `file:///${imagePath[0]}` : ' ']" />
 
-            <q-card-section>
+            <!-- <q-card-section>
               <div class="text-h6 file-header">File Path</div>
               <div class="text-subtitle2 file-content">{{ imagePath[0] }}</div>
-            </q-card-section>
+            </q-card-section> -->
           </q-card>
         </div>
       </q-expansion-item>

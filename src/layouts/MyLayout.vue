@@ -18,7 +18,7 @@
     <q-drawer v-model="left" side="left" behavior="desktop" bordered>
       <!-- drawer content -->
       <q-list class="q-list-drawer">
-        <!-- <UploadImage /> -->
+        <UploadImage />
         <HomeSideDropDown />
         <CreateComponent />
       </q-list>
@@ -38,7 +38,7 @@ import CreateComponent from '../components/CreateComponent'
 import ExportProjectComponent from '../components/ExportProject'
 import SaveProjectComponent from '../components/SaveProjectComponent'
 import OpenProjectComponent from '../components/OpenProjectComponent'
-// import UploadImage from '../components/UploadImage'
+import UploadImage from '../components/UploadImage'
 
 export default {
   data () {
@@ -53,8 +53,8 @@ export default {
     CreateComponent,
     ExportProjectComponent,
     SaveProjectComponent,
-    OpenProjectComponent
-    // UploadImage
+    OpenProjectComponent,
+    UploadImage
   }
 }
 </script>
