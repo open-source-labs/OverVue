@@ -11,61 +11,6 @@
 
 export default {
   name: 'SaveProjetComponent',
-<<<<<<< HEAD
-  methods: {
-    showSaveJSONDialog(){
-      remote.dialog.showSaveDialog({
-        title: 'Choose location to save JSON object in',
-        defaultPath: remote.app.getPath('desktop'),
-        message: 'Choose location to save JSON object in',
-        nameFieldLabel: 'Application State Name',
-        filters: [{
-          name: 'JSON Files',
-          extensions: ['json']
-        }]
-      },
-      result => {
-        // event.sender.send('save-json-location', result);
-        this.saveJSONLocation(result);
-      });
-    },
-    parseFileName(file) {
-      //'asdf/asdff/sdf.txt -> sdf.txt
-      return file.split('/').pop();
-    },
-    parseAndDelete(htmlList) {
-      htmlList.forEach(element => {
-        if (element.children.length > 0) {
-          console.log('in recurse');
-          this.parseAndDelete(element.children);
-        }
-        delete element._vm;
-        delete element.parent;
-        delete element.open;
-        delete element.active;
-        delete element.style;
-        delete element.class;
-        delete element.innerStyle;
-        delete element.innerClass;
-        delete element.innerBackStyle;
-        delete element.innerBackClass;
-      });
-    },
-    saveProjectJSON() {
-        this.showSaveJSONDialog();
-    },
-    saveJSONLocation(data){
-      //delete original key from local forage
-      let deleteKey = this.$store.state.projects[this.$store.state.activeTab].filename;
-      localforage
-        .removeItem(deleteKey)
-        .then(function() {
-          console.log(deleteKey, 'Key is cleared!');
-        })
-        .catch(function(err) {
-          console.log(err);
-        });
-=======
   // methods: {
   //   showSaveJSONDialog(){
   //     remote.dialog.showSaveDialog({
@@ -148,7 +93,6 @@ export default {
   //       .catch(function(err) {
   //         console.log(err);
   //       });
->>>>>>> 0429119fe1127683fea28caa053fae178dffc456
 
   //     let fileName = this.parseFileName(data);
 
