@@ -34,7 +34,7 @@
 + You can also add children to components by right-clicking the component to add children to, and you can see the tree re-render as you create new components or change the hierarchy.
 ![](https://raw.githubusercontent.com/jeisele2/OverVue/master/src/assets/gifs/HTML-elements-tree-rerender.gif)
 
-+ The dashboard shows info about each component (code snippets and HTML elements). Click a component in the display to see its properties.
++ The dashboard shows info about each component (code snippets and HTML elements). Click a component in the display to see its properties.                                               
 ![](https://raw.githubusercontent.com/jeisele2/OverVue/master/src/assets/gifs/snippets-active-component.gif)
 
 + You can add new routes and view all components and routes in the sidebar.
