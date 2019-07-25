@@ -22,7 +22,7 @@
 
 #### How to use
 + Opening the application will create by default a root App component and a root route called "HomeView"
-+ Upload an mockup from your filesystem if you'd like. Remove the mockup and choose a new one if needed.
++ Upload a mockup from your filesystem if you'd like. Remove the mockup and choose a new one if needed.
 ![](https://raw.githubusercontent.com/jeisele2/OverVue/master/src/assets/gifs/upload-image-drawers.gif)
 
 + To add a new component, type its name in the component name box and select any HTML elements that should be rendered by that component.
@@ -31,7 +31,7 @@
 + After adding, you can move and resize the component in the display.
 ![alt text](https://raw.githubusercontent.com/jeisele2/OverVue/master/src/assets/gifs/component_creation.gif)
 
-+ You can also add children to components by right-clicking the component to add children to, and you can see the tree rerender as you create new components or change the hierarchy.
++ You can also add children to components by right-clicking the component to add children to, and you can see the tree re-render as you create new components or change the hierarchy.
 ![](https://raw.githubusercontent.com/jeisele2/OverVue/master/src/assets/gifs/HTML-elements-tree-rerender.gif)
 
 + The dashboard shows info about each component (code snippets and HTML elements). Click a component in the display to see its properties.
