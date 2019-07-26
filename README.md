@@ -8,6 +8,8 @@
 
 <p>OverVue is a prototyping tool that allows developers to <em>dynamically</em> create and visualize a Vue application, implementing a real-time intuitive <em>tree display</em> of component hierarchy and a live-generated <em>code preview</em>. The resulting boilerplate can be <em>exported</em> as a template for further development.</p>
 
+![](https://raw.githubusercontent.com/jeisele2/OverVue/master/src/assets/gifs/screenshot.png)
+
 #### Features
 + Upload a frontend mockup image
 + Visualize draggable and resizable components
