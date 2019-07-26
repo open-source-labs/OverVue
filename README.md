@@ -66,7 +66,7 @@ package.json
 #### Running a local version
 This app was developed using the Quasar framework, so first you will need to install the Quasar cli
 ```
-npm i quasar-cli
+npm i -g @quasar/cli
 ```
 Install dependencies
 ```
