@@ -1,10 +1,10 @@
 {
-  "name": "prevue2",
+  "name": "overvue",
   "version": "0.0.1",
   "description": "Vue Prototype DevTool",
   "productName": "OverVue",
   "cordovaId": "org.cordova.quasar.app",
-  "author": "Drew Nguyen <drew.ktran@gmail.com>",
+  "author": "Team OverVue",
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue src",
