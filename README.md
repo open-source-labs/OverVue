@@ -8,6 +8,8 @@
 
 <p>OverVue is a prototyping tool that allows developers to <em>dynamically</em> create and visualize a Vue application, implementing a real-time intuitive <em>tree display</em> of component hierarchy and a live-generated <em>code preview</em>. The resulting boilerplate can be <em>exported</em> as a template for further development.</p>
 
+<p>这个程序能帮你生成Vue 组件, 设置 routes , 也可以帮你显像Component Parent-Child组件树。你只要做一些小配置然后可以下载code boilerplate. 这样你就可以很方便简洁地生成Vue前台APP了！</p>
+
 ![](https://raw.githubusercontent.com/jeisele2/OverVue/master/src/assets/gifs/screenshot.png)
 
 #### Features
