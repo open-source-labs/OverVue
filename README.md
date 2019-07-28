@@ -99,4 +99,4 @@ Dean Chung @deanfchung
 Dean Ohashi @dnohashi
 Drew Nguyen @drewngyen
 ```
-Inspired by [PreVue](https://github.com/open-source-labs/ReacType)
+Inspired by [PreVue](https://github.com/open-source-labs/PreVue)
