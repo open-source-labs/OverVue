@@ -39,22 +39,10 @@ const mutations = {
   },
   [types.DELETE_FROM_COMPONENT_HTML_LIST]: (state, idx) => {
     const componentName = state.activeComponent
-    const htmlList = state.componentMap[componentName].htmlList
-
-    function parseAndDelete (htmlList) {
-      htmlList.forEach((element, index) => {
-        if (element.children.length > 0) {
-          parseAndDelete(element.children)
-        }
-        // if (id === element._id) {
-        htmlList.splice(idx, 1)
-        // }
-      })
-
-      let copied = htmlList.slice(0)
-      state.componentMap[componentName].htmlList = copied
-    }
-    parseAndDelete(htmlList)
+    const htmlList = state.componentMap[componentName].htmlList.slice(0)
+    // splice out selected element and return resulting array
+    htmlList.splice(idx, 1)
+    state.componentMap[componentName].htmlList = htmlList
   },
   [types.SET_CLICKED_ELEMENT_LIST]: (state, payload) => {
     const componentName = state.activeComponent
