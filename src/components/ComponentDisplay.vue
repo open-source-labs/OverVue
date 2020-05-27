@@ -27,17 +27,17 @@
       <q-menu context-menu>
         <q-list class="menu">
           <q-item clickable v-ripple v-close-popup @click="handleAddChild">
-            <q-item-section style="color: white">Add Children</q-item-section>
+            <q-item-section style="color: white">Update Children</q-item-section>
             <q-item-section avatar>
               <q-icon color="primary" name="add" />
             </q-item-section>
           </q-item>
-          <q-item clickable v-ripple v-close-popup auto-close>
+          <!-- <q-item clickable v-ripple v-close-popup auto-close>
             <q-item-section style="color: pink">Delete Children</q-item-section>
             <q-item-section avatar>
               <q-icon color="primary" name="delete" />
             </q-item-section>
-          </q-item>
+          </q-item> -->
         </q-list>
       </q-menu>
     </VueDraggableResizable>
