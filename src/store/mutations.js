@@ -6,19 +6,31 @@ const mutations = {
   // pushs new component to componentMap
   [types.ADD_COMPONENT_TO_COMPONENT_MAP]: (state, payload) => {
     const { componentName, htmlList, children, isActive } = payload
-    state.componentMap = {
-      ...state.componentMap,
-      [componentName]: {
-        componentName,
-        x: 0,
-        y: 0,
-        w: 200,
-        h: 200,
-        children,
-        htmlList,
-        isActive
-      }
-    }
+    state.componentMap = Object.assign({},state.componentMap,{[componentName]: {
+          componentName,
+          x: 0,
+          y: 0,
+          w: 200,
+          h: 200,
+          children,
+          htmlList,
+          isActive
+        }})
+  
+
+    // state.componentMap = {
+    //   ...state.componentMap,
+    //   [componentName]: {
+    //     componentName,
+    //     x: 0,
+    //     y: 0,
+    //     w: 200,
+    //     h: 200,
+    //     children,
+    //     htmlList,
+    //     isActive
+    //   }
+    //}
   },
   // adds a html tag from the Icons.vue to the HomeQueue.vue
   // event: getClickedIcon @Icons.vue
@@ -36,6 +48,7 @@ const mutations = {
       text: elementName,
       children: []
     })
+   
   },
   [types.DELETE_FROM_COMPONENT_HTML_LIST]: (state, idx) => {
     const componentName = state.activeComponent
@@ -53,7 +66,6 @@ const mutations = {
     const { componentMap, activeComponent } = state
 
     let newObj = Object.assign({}, componentMap)
-
     delete newObj[activeComponent]
 
     for (let compKey in newObj) {
@@ -151,10 +163,18 @@ const mutations = {
   },
   [types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE]: (state, payload) => {
     // original line
-    state.componentMap[state.activeComponent].children = payload
-    state.componentMap[state.activeRoute].children = state.componentMap[
-      state.activeRoute
-    ].children.filter(el => !payload.includes(el))
+    let temp = state.componentMap[state.activeComponent].children // b c  and we are removing c
+    if (payload.length<temp.length){ // we will get a payload of [b] and our temp is currently [b,c]
+      state.componentMap[state.activeComponent].children = payload
+      state.componentMap[state.activeRoute].children.push(...temp.filter(el => !payload.includes(el)))
+    }
+    else {
+      state.componentMap[state.activeComponent].children = payload
+      state.componentMap[state.activeRoute].children = state.componentMap[
+        state.activeRoute
+      ].children.filter(el => !payload.includes(el))
+    } 
+ 
   },
   // allows usr to change the name of component!!
   [types.UPDATE_COMPONENT_NAME_INPUT_VALUE]: (state, payload) => {
