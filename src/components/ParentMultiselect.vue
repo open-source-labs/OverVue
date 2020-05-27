@@ -2,6 +2,7 @@
   <div id="parent-select">
     <br />
     <multiselect
+      v-model="value"
       placeholder="Parent Component"
       :multiple="false"
       :close-on-select="true"
@@ -9,7 +10,7 @@
       @input="handleSelect"
       :max-height="150"
       :option-height="20"
-      :searchable="false"
+      :searchable="true"
     ></multiselect>
   </div>
 </template>
@@ -22,6 +23,9 @@ export default {
   name: 'ParentMultiselect',
   components: {
     Multiselect
+  },
+  data () {
+    return { value: '' }
   },
   computed: {
     ...mapState([
@@ -45,6 +49,14 @@ export default {
       this.setActiveComponent(value)
       // Set parentSelected to true IF VALUE IS A VALID PARENT (not null)
       this.parentSelected(true)
+    }
+  },
+  watch: {
+    componentMap: {
+      handler () {
+        // console.log('activeComponent has changed')
+        this.value = ''
+      }
     }
   }
 }
