@@ -1,5 +1,5 @@
 <template>
-  <div class="component-display grid-bg" :style="mockBg" >
+  <div class="component-display grid-bg" :style="mockBg" v-on:click ="handleClick">
     <!-- <p>{{ userImage }}</p> -->
     <VueDraggableResizable
       class-name="component-box"
@@ -148,6 +148,20 @@ export default {
         : {};
     }
   },
+
+  updated() {
+    console.log("updated")
+    if(this.activeComponent === '')
+    {
+      this.$refs.boxes.forEach((element)=> {
+          element.enabled = false;
+          element.$emit('deactivated')
+          element.$emit('update:active', false)
+        
+      })
+    }
+  },
+
   methods: {
     ...mapActions([
       "setActiveComponent",
@@ -174,23 +188,24 @@ export default {
       this.userImage;
     },
     onActivated(componentData) {
-      this.setActiveComponent(componentData.componentName);
-      this.activeComponentData.isActive = true;
-      console.log(this.$refs.boxes)
-      this.$refs.boxes.forEach((element)=> {
+          this.$refs.boxes.forEach((element)=> {
         if (element.$attrs.id !== componentData.componentName){
            element.enabled = false;
           element.$emit('deactivated')
           element.$emit('update:active', false)
         }
       })
+      this.setActiveComponent(componentData.componentName);
+      this.activeComponentData.isActive = true;
+  
     },
 
     // deactivated is emitted before activated
   
     onDeactivated(componentData) {
-      console.log("componentData",componentData)
+      if(this.activeComponent !== ''){
       this.activeComponentData.isActive = false;
+      }
      // console.log("Componentdataname", componentData.componentName)
      // console.log("active component",this.activeComponent)
       // if(componentData.componentName === this.activeComponent)
@@ -217,7 +232,11 @@ export default {
     //   this.setActiveComponent(compData.componentName)
     //   this.activeComponentData.isActive = true
     // }
-    test(){
+    handleClick(event){
+      if(event.target.className === "component-display grid-bg")
+      {
+        this.setActiveComponent('')
+      }
       // console.log(this.$children)
       // this.$children[1].
       // this.$children[1].enabled = false;

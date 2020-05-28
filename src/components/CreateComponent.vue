@@ -78,6 +78,7 @@ export default {
     },
     resetActiveComponent () {
       this.setActiveComponent('')
+      
     },
     handleIconClick () {
       if (this.activeComponent === '') this.setClickedElementList()
