@@ -1,15 +1,18 @@
 <template>
-  <div class="component-display grid-bg" :style="mockBg" v-on:click="test()">
+  <div class="component-display grid-bg" :style="mockBg" >
     <!-- <p>{{ userImage }}</p> -->
     <VueDraggableResizable
       class-name="component-box"
       v-for="componentData in activeRouteArray"
+      ref ="boxes"
       :key="componentData.componentName"
+      :id ="componentData.componentName"
       :x="componentData.x"
       :y="componentData.y + 20"
       :w="componentData.w"
       :h="componentData.h"
       :parent="true"
+      :preventDeactivation="true"
       @activated="onActivated(componentData)"
       @deactivated="onDeactivated(componentData)"
       @dragging="onDrag"
@@ -64,7 +67,7 @@ import { mapState, mapActions } from "vuex";
 import VueDraggableResizable from "vue-draggable-resizable";
 // import ChildrenMultiselect from '../components/ChildrenMultiselect'
 import "vue-draggable-resizable/dist/VueDraggableResizable.css";
-
+// :preventDeactivation="true"
 export default {
   name: "ComponentDisplay",
   components: {
@@ -173,10 +176,27 @@ export default {
     onActivated(componentData) {
       this.setActiveComponent(componentData.componentName);
       this.activeComponentData.isActive = true;
-      console.log("This is onActivated",this.activeComponentData)
+      console.log(this.$refs.boxes)
+      this.$refs.boxes.forEach((element)=> {
+        if (element.$attrs.id !== componentData.componentName){
+           element.enabled = false;
+          element.$emit('deactivated')
+          element.$emit('update:active', false)
+        }
+      })
     },
-    onDeactivated() {
+
+    // deactivated is emitted before activated
+  
+    onDeactivated(componentData) {
+      console.log("componentData",componentData)
       this.activeComponentData.isActive = false;
+     // console.log("Componentdataname", componentData.componentName)
+     // console.log("active component",this.activeComponent)
+      // if(componentData.componentName === this.activeComponent)
+      // {
+      //   console.log("We just clicked without making a new active component")
+      // }
     },
     onDoubleClick(compData) {
       this.setActiveComponent(compData.componentName);
@@ -198,7 +218,11 @@ export default {
     //   this.activeComponentData.isActive = true
     // }
     test(){
-      console.log("this.activeComponent Data", this.activeComponentData)
+      // console.log(this.$children)
+      // this.$children[1].
+      // this.$children[1].enabled = false;
+      // this.$children[1].$emit('deactivated')
+      // this.$children[1].$emit('update:active', false)
     }
   }
 };
