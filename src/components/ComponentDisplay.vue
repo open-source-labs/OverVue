@@ -116,6 +116,13 @@ export default {
       return this.componentMap[componentData.componentName].children;
     },
     options() {
+      const checkParents = (component, lineage=[component.componentName]) => {
+        console.log('component parent', component)
+        if (!component.parent) return lineage;
+        lineage.push(component.parent.componentName);
+        return checkParents(component.parent, lineage);
+      };
+      let lineage = [this.activeComponent];
       // PROBLEM: the objects on childrenmultiselectvalue are applied
       // check to see if there are any existing children
       if (this.componentMap[this.activeComponent]) {
@@ -123,9 +130,11 @@ export default {
         // console.log('testmodel', this.testModel)
         // console.log(this.componentMap[this.activeComponent].children)
         this.testModel = this.componentMap[this.activeComponent].children;
+        lineage = checkParents(this.componentMap[this.activeComponent]);
+        console.log('Lineage', lineage);
       }
       const routes = Object.keys(this.routes);
-      const exceptions = new Set(["App", this.activeComponent, ...routes, ...this.testModel]);
+      const exceptions = new Set(["App", ...lineage, ...routes, ...this.testModel]);
       return Object.keys(this.componentMap).filter(component => {
         if (!exceptions.has(component)) return component;
       });

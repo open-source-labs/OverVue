@@ -71,6 +71,7 @@ export default {
         h: 200,
         htmlList: this.selectedElementList,
         children: [],
+        parent: null,
         isActive: false
       }
 

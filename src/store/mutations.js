@@ -5,7 +5,7 @@ import localforage from 'localforage'
 const mutations = {
   // pushs new component to componentMap
   [types.ADD_COMPONENT_TO_COMPONENT_MAP]: (state, payload) => {
-    const { componentName, htmlList, children, isActive } = payload
+    const { componentName, htmlList, children, parent, isActive } = payload
     state.componentMap = Object.assign({},state.componentMap,{[componentName]: {
           componentName,
           x: 0,
@@ -13,6 +13,7 @@ const mutations = {
           w: 200,
           h: 200,
           children,
+          parent,
           htmlList,
           isActive
         }})
@@ -32,6 +33,12 @@ const mutations = {
     //   }
     //}
   },
+// add parent
+[types.ADD_PARENT]: (state, payload) => {
+  state.componentMap[payload.componentName].parent = state.componentMap[state.parentSelected]
+  state.componentMap[state.parentSelected].children.push(payload.componentName)
+},
+
   // adds a html tag from the Icons.vue to the HomeQueue.vue
   // event: getClickedIcon @Icons.vue
   [types.ADD_TO_SELECTED_ELEMENT_LIST]: (state, payload) => {
