@@ -5,9 +5,12 @@
       v-for="([elementName, iconString], idx) in Object.entries(icons)"
       :key="idx + Date.now()"
     >
+      <span class="badge"> {{ elementStorage[elementName] }}</span>
+      <br />
       <i :class="iconString"></i>
       <br />
-      <span class="white--text">{{ elementName }}</span>
+      <span class="white--text"
+      >{{ elementName }}</span>
     </button>
   </section>
 </template>
@@ -16,15 +19,57 @@
 import { mapState } from 'vuex'
 
 export default {
+  data () {
+    return {
+      elementStorage: {}
+    }
+  },
   name: 'Icons',
   computed: {
-    ...mapState(['icons', 'activeComponent'])
+    ...mapState(['icons', 'activeComponent', 'componentMap'])
   },
   methods: {
     changeState (elementName) {
       if (this.activeComponent === '') { this.$emit('getClickedIcon', elementName) } else this.$emit('activeElement', elementName)
     }
-  }
+  },
+  watch: {
+    componentMap: {
+      deep: true,
+      handler () {
+        console.log('watching componentMap');
+        console.log('activecomponent is ', this.activeComponent)
+        // console.log('htmlList', this.componentMap[this.activeComponent].htmlList)
+        if (this.activeComponent) {
+          this.elementStorage = {};
+          this.componentMap[this.activeComponent].htmlList.forEach(el => {
+            if (!this.elementStorage[el.text]) {
+              this.elementStorage[el.text] = 1;
+            } else {
+              this.elementStorage[el.text] += 1;
+            }
+          })
+          console.log('elementStorage is ', this.elementStorage);
+        }
+      },
+    },
+    activeComponent: function() {
+      console.log('watching activeComponent', this.activeComponent);
+      if (this.activeComponent) {
+        this.elementStorage = {};
+        this.componentMap[this.activeComponent].htmlList.forEach(el => {
+          if (!this.elementStorage[el.text]) {
+            this.elementStorage[el.text] = 1;
+          } else {
+            this.elementStorage[el.text] += 1;
+          }
+        })
+        console.log('elementStorage is ', this.elementStorage);
+      } else {
+        this.elementStorage = {};
+      }
+    }
+  },
 }
 </script>
 
@@ -44,7 +89,6 @@ export default {
     width: 100%;
   }
 }
-
 button {
   background: none;
   color: white;
@@ -54,7 +98,23 @@ button:hover {
   cursor: pointer;
   color: #00ffff;
 }
-button:focus {
+button:focus {  
   outline: none;
+  color: #00ffff;
+}
+button:active {
+  box-shadow: 0 5px inherit;
+  transform: translateY(4px);
+}
+.badge {
+  width: 15px;
+  line-height: 15px;
+  text-align: center;
+  font-size: 10px;
+  font-weight: bold;
+  float: right;
+  border-radius: 50%;
+  background-color: #228585;
+  color: white;
 }
 </style>

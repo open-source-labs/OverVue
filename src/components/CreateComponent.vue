@@ -91,7 +91,7 @@ export default {
   height: 45px;
 }
 form {
-  margin-bottom: 2em;
+  /* margin-bottom: 2em; */
 }
 #add-component-btn {
   height: 15px;

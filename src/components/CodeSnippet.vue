@@ -138,7 +138,7 @@ export default {
       },
     },
     activeComponent: function() {
-      console.log('watching active component');
+      // console.log('watching active component');
     },
   },
 };
