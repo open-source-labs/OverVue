@@ -103,7 +103,7 @@ export default {
     ]),
     // used in VueDraggableResizeable component
     activeRouteArray() {
-      console.log("active route array method", this.routes[this.activeRoute]);
+      // console.log("active route array method", this.routes[this.activeRoute]);
       return this.routes[this.activeRoute];
     },
     // used to delete components
@@ -119,9 +119,9 @@ export default {
       // PROBLEM: the objects on childrenmultiselectvalue are applied
       // check to see if there are any existing children
       if (this.componentMap[this.activeComponent]) {
-        console.log('active component', this.activeComponent)
-        console.log('testmodel', this.testModel)
-        console.log(this.componentMap[this.activeComponent].children)
+        // console.log('active component', this.activeComponent)
+        // console.log('testmodel', this.testModel)
+        // console.log(this.componentMap[this.activeComponent].children)
         this.testModel = this.componentMap[this.activeComponent].children;
       }
       const routes = Object.keys(this.routes);
