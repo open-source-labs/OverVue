@@ -37,8 +37,8 @@ export default {
     componentMap: {
       deep: true,
       handler () {
-        console.log('watching componentMap');
-        console.log('activecomponent is ', this.activeComponent)
+        //console.log('watching componentMap');
+        //console.log('activecomponent is ', this.activeComponent)
         // console.log('htmlList', this.componentMap[this.activeComponent].htmlList)
         if (this.activeComponent) {
           this.elementStorage = {};
@@ -49,12 +49,12 @@ export default {
               this.elementStorage[el.text] += 1;
             }
           })
-          console.log('elementStorage is ', this.elementStorage);
+          //console.log('elementStorage is ', this.elementStorage);
         }
       },
     },
     activeComponent: function() {
-      console.log('watching activeComponent', this.activeComponent);
+     // console.log('watching activeComponent', this.activeComponent);
       if (this.activeComponent) {
         this.elementStorage = {};
         this.componentMap[this.activeComponent].htmlList.forEach(el => {
@@ -64,7 +64,7 @@ export default {
             this.elementStorage[el.text] += 1;
           }
         })
-        console.log('elementStorage is ', this.elementStorage);
+        //console.log('elementStorage is ', this.elementStorage);
       } else {
         this.elementStorage = {};
       }

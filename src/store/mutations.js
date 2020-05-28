@@ -163,8 +163,8 @@ const mutations = {
   },
   [types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE]: (state, payload) => {
     // original line
-    let temp = state.componentMap[state.activeComponent].children // b c  and we are removing c
-    if (payload.length<temp.length){ // we will get a payload of [b] and our temp is currently [b,c]
+    let temp = state.componentMap[state.activeComponent].children 
+    if (payload.length<temp.length){ 
       state.componentMap[state.activeComponent].children = payload
       state.componentMap[state.activeRoute].children.push(...temp.filter(el => !payload.includes(el)))
     }

@@ -1,5 +1,5 @@
 <template>
-  <div class="component-display grid-bg" :style="mockBg">
+  <div class="component-display grid-bg" :style="mockBg" v-on:click="test()">
     <!-- <p>{{ userImage }}</p> -->
     <VueDraggableResizable
       class-name="component-box"
@@ -86,7 +86,7 @@ export default {
     window.addEventListener("keyup", event => {
       if (event.key === "Backspace") {
         if (this.activeComponent && this.activeComponentData.isActive) {
-          console.log('this:', this)
+         // console.log('this:', this)
           this.$store.dispatch("deleteActiveComponent");
         }
       }
@@ -173,6 +173,7 @@ export default {
     onActivated(componentData) {
       this.setActiveComponent(componentData.componentName);
       this.activeComponentData.isActive = true;
+      console.log("This is onActivated",this.activeComponentData)
     },
     onDeactivated() {
       this.activeComponentData.isActive = false;
@@ -190,12 +191,15 @@ export default {
       console.log("Multiselect: ", value);
       this.updateActiveComponentChildrenValue(value);
       // this.updateComponentChildrenMultiselectValue(value)
-    }
+    },
     //       @dblclick.native="onDoubleClick(componentData)"
     // onDoubleClick (compData) {
     //   this.setActiveComponent(compData.componentName)
     //   this.activeComponentData.isActive = true
     // }
+    test(){
+      console.log("this.activeComponent Data", this.activeComponentData)
+    }
   }
 };
 </script>
