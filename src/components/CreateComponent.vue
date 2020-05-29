@@ -27,7 +27,7 @@
       color="secondary"
       label="Create Component"
       @click="handleClick"
-      :disabled="!componentNameInputValue"
+      :disabled="!componentNameInputValue.trim()"
     />
   </div>
 </template>
@@ -63,6 +63,10 @@ export default {
       'addToComponentElementList'
     ]),
     handleClick () {
+      if (!this.componentNameInputValue.trim()) {
+        event.preventDefault();
+        return false;
+      }
       const component = {
         componentName: this.componentNameInputValue,
         x: 0,
@@ -75,6 +79,7 @@ export default {
       }
 
       this.registerComponent(component)
+
     },
     resetActiveComponent () {
       this.setActiveComponent('')
@@ -91,7 +96,7 @@ export default {
   height: 45px;
 }
 form {
-  margin-bottom: 2em;
+  /* margin-bottom: 2em; */
 }
 #add-component-btn {
   height: 15px;

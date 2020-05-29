@@ -111,7 +111,7 @@ export default {
   // updates code snippet, but broken cause children undefined, shows `function () { [native code] }`
   updated() {
     // console.log(`code: ${this.createCodeSnippet(this.activeComponent, this.componentMap[this.activeComponent].children)}`)
-    console.log('component map: ', this.componentMap);
+    // console.log('component map: ', this.componentMap);
     if (this.componentMap[this.activeComponent]) {
       this.code = `${this.createCodeSnippet(
         this.activeComponent,
@@ -128,7 +128,7 @@ export default {
     componentMap: {
       deep: true,
       handler() {
-        console.log('component Map has changed');
+        // console.log('component Map has changed');
         if (this.componentMap[this.activeComponent]) {
           this.code = `${this.createCodeSnippet(
             this.activeComponent,
@@ -138,7 +138,7 @@ export default {
       },
     },
     activeComponent: function() {
-      console.log('watching active component');
+      // console.log('watching active component');
     },
   },
 };
