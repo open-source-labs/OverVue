@@ -71,10 +71,12 @@ export default {
         componentName: this.componentNameInputValue,
         x: 0,
         y: 0,
+        z: 0,
         w: 200,
         h: 200,
         htmlList: this.selectedElementList,
         children: [],
+        parent: {},
         isActive: false
       }
 

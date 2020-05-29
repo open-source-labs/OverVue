@@ -5,14 +5,16 @@ import localforage from 'localforage'
 const mutations = {
   // pushs new component to componentMap
   [types.ADD_COMPONENT_TO_COMPONENT_MAP]: (state, payload) => {
-    const { componentName, htmlList, children, isActive } = payload
+    const { componentName, htmlList, children, parent, isActive } = payload
     state.componentMap = Object.assign({},state.componentMap,{[componentName]: {
           componentName,
           x: 0,
           y: 0,
+          z: 0,
           w: 200,
           h: 200,
           children,
+          parent,
           htmlList,
           isActive
         }})
@@ -32,6 +34,12 @@ const mutations = {
     //   }
     //}
   },
+// add parent
+[types.ADD_PARENT]: (state, payload) => {
+  state.componentMap[payload.componentName].parent[state.parentSelected] = state.componentMap[state.parentSelected]
+  state.componentMap[state.parentSelected].children.push(payload.componentName)
+},
+
   // adds a html tag from the Icons.vue to the HomeQueue.vue
   // event: getClickedIcon @Icons.vue
   [types.ADD_TO_SELECTED_ELEMENT_LIST]: (state, payload) => {
@@ -163,16 +171,22 @@ const mutations = {
   },
   [types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE]: (state, payload) => {
     // original line
-    let temp = state.componentMap[state.activeComponent].children 
-    if (payload.length<temp.length){ 
+    let temp = state.componentMap[state.activeComponent].children // b c  and we are removing c
+    if (payload.length<temp.length) { // we will get a payload of [b] and our temp is currently [b,c]
+      let child = temp.filter(el => !payload.includes(el))
+      console.log('delete child: ', child)
       state.componentMap[state.activeComponent].children = payload
       state.componentMap[state.activeRoute].children.push(...temp.filter(el => !payload.includes(el)))
+      delete state.componentMap[child[0]].parent[state.activeComponent]
     }
     else {
+      let child = payload.filter(el => !temp.includes(el))
+      console.log('child added', child)
       state.componentMap[state.activeComponent].children = payload
       state.componentMap[state.activeRoute].children = state.componentMap[
         state.activeRoute
       ].children.filter(el => !payload.includes(el))
+      state.componentMap[child[0]].parent[state.activeComponent] = state.componentMap[state.activeComponent]
     } 
  
   },
