@@ -41,14 +41,15 @@ export default {
   },
   methods: {
     ...mapActions([
-      'setActiveComponent',
+      // 'addParent',
       'parentSelected'
     ]),
     handleSelect (value) {
       // Set Active Component to selected Parent
-      this.setActiveComponent(value)
+      // this.setActiveComponent(value)
+      // this.addParent(value)
       // Set parentSelected to true IF VALUE IS A VALID PARENT (not null)
-      this.parentSelected(true)
+      this.parentSelected(value)
     }
   },
   watch: {
