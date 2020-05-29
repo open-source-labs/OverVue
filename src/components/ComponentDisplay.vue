@@ -117,10 +117,22 @@ export default {
     },
     options() {
       const checkParents = (component, lineage=[component.componentName]) => {
-        console.log('component parent', component)
-        if (!component.parent) return lineage;
-        lineage.push(component.parent.componentName);
-        return checkParents(component.parent, lineage);
+        // console.log('component', component)
+        // component parent is an object of parents
+        // console.log('component parent',component.parent)
+        // console.log('component parent parent', component.parent.parent)
+        if (!Object.keys(component.parent).length) return lineage;
+        for(var parents in component.parent){
+          //for each parent in our component
+          console.log('parents', parents)
+          lineage.push(parents); //push the parent into lineage
+          console.log('lineage pre push', component, lineage)
+          checkParents(component.parent[parents], lineage);
+          console.log('lineage post recursive call', lineage)
+        }
+        // lineage.push(component.parent[component.componentName]);
+        // return checkParents(component.parent, lineage);
+        return lineage
       };
       let lineage = [this.activeComponent];
       // PROBLEM: the objects on childrenmultiselectvalue are applied

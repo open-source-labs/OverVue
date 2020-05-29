@@ -35,7 +35,7 @@ const mutations = {
   },
 // add parent
 [types.ADD_PARENT]: (state, payload) => {
-  state.componentMap[payload.componentName].parent = state.componentMap[state.parentSelected]
+  state.componentMap[payload.componentName].parent[state.parentSelected] = state.componentMap[state.parentSelected]
   state.componentMap[state.parentSelected].children.push(payload.componentName)
 },
 
@@ -171,15 +171,21 @@ const mutations = {
   [types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE]: (state, payload) => {
     // original line
     let temp = state.componentMap[state.activeComponent].children // b c  and we are removing c
-    if (payload.length<temp.length){ // we will get a payload of [b] and our temp is currently [b,c]
+    if (payload.length<temp.length) { // we will get a payload of [b] and our temp is currently [b,c]
+      let child = temp.filter(el => !payload.includes(el))
+      console.log('delete child: ', child)
       state.componentMap[state.activeComponent].children = payload
       state.componentMap[state.activeRoute].children.push(...temp.filter(el => !payload.includes(el)))
+      delete state.componentMap[child[0]].parent[state.activeComponent]
     }
     else {
+      let child = payload.filter(el => !temp.includes(el))
+      console.log('child added', child)
       state.componentMap[state.activeComponent].children = payload
       state.componentMap[state.activeRoute].children = state.componentMap[
         state.activeRoute
       ].children.filter(el => !payload.includes(el))
+      state.componentMap[child[0]].parent[state.activeComponent] = state.componentMap[state.activeComponent]
     } 
  
   },
