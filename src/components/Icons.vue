@@ -52,13 +52,8 @@ export default {
     componentMap: {
       deep: true,
       handler () {
-<<<<<<< HEAD
-        //console.log('watching componentMap');
-        //console.log('activecomponent is ', this.activeComponent)
-=======
         // console.log('watching componentMap');
         // console.log('activecomponent is ', this.activeComponent)
->>>>>>> 84c287a78f3cb00f8ac06191184056ca83e39306
         // console.log('htmlList', this.componentMap[this.activeComponent].htmlList)
         if (this.activeComponent) {
           this.elementStorage = {};
@@ -69,21 +64,13 @@ export default {
               this.elementStorage[el.text] += 1;
             }
           })
-<<<<<<< HEAD
-          //console.log('elementStorage is ', this.elementStorage);
-=======
           // console.log('elementStorage is ', this.elementStorage);
->>>>>>> 84c287a78f3cb00f8ac06191184056ca83e39306
         }
       },
     },
     // if activeComponent is updated, elementStorage will update its cache of elements & frequency to reflect new active component
     activeComponent: function() {
-<<<<<<< HEAD
-     // console.log('watching activeComponent', this.activeComponent);
-=======
       // console.log('watching activeComponent', this.activeComponent);
->>>>>>> 84c287a78f3cb00f8ac06191184056ca83e39306
       if (this.activeComponent) {
         this.elementStorage = {};
         this.componentMap[this.activeComponent].htmlList.forEach(el => {
@@ -93,11 +80,6 @@ export default {
             this.elementStorage[el.text] += 1;
           }
         })
-<<<<<<< HEAD
-        //console.log('elementStorage is ', this.elementStorage);
-      } else {
-        this.elementStorage = {};
-=======
         // console.log('elementStorage is ', this.elementStorage);
       } else if (this.activeComponent === '') {
         // console.log(`watching activeComponent, current active is ''`)
@@ -110,7 +92,6 @@ export default {
             this.elementStorage[el.text] += 1;
           }
         })
->>>>>>> 84c287a78f3cb00f8ac06191184056ca83e39306
       }
     }
   }
