@@ -1,5 +1,8 @@
 <template>
   <section class="home-queue">
+    <span class='list-title' v-if='component'> Viewing Elements in '{{ this.activeComponent }}' </span>
+    <span class='list-title' v-else> Elements in Queue </span>
+    <hr>
     <draggable
       v-model="renderList"
       group="people"
@@ -31,7 +34,11 @@ export default {
       type: Array
     }
   },
-
+  data () {
+    return {
+      component: false
+    }
+  },
   computed: {
     ...mapState(['selectedElementList', 'componentMap', 'activeComponent']),
     renderList: {
@@ -52,6 +59,16 @@ export default {
   },
   components: {
     draggable
+  },
+  watch: {
+    activeComponent: function () {
+      console.log('watching activeComponent in HomeQueue');
+      if (this.activeComponent !== '') {
+        this.component = true
+      } else {
+        this.component = false
+      }
+    }
   }
 }
 </script>
@@ -62,6 +79,9 @@ export default {
 }
 li {
   list-style-type: none;
+}
+.list-title {
+  // font-weight: bold;
 }
 .list-group-item {
   display: inline-block;
@@ -80,5 +100,8 @@ li {
 .fa-trash {
   position: relative;
   left: 20px;
+}
+hr {
+  border: 1px solid grey
 }
 </style>
