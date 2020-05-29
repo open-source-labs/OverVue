@@ -9,6 +9,7 @@
       :id ="componentData.componentName"
       :x="componentData.x"
       :y="componentData.y + 20"
+      :z="componentData.z"
       :w="componentData.w"
       :h="componentData.h"
       :parent="true"
@@ -28,19 +29,22 @@
         <!-- <p v-for="child in childList" :key="childList.indexOf(child)"> {{ child.text }}</p> -->
       </ul>
       <q-menu context-menu>
-        <q-list class="menu">
+        <q-list color='black' class="menu">
           <q-item clickable v-ripple v-close-popup @click="handleAddChild">
             <q-item-section style="color: white">Update Children</q-item-section>
             <q-item-section avatar>
               <q-icon color="primary" name="add" />
             </q-item-section>
           </q-item>
-          <!-- <q-item clickable v-ripple v-close-popup auto-close>
-            <q-item-section style="color: pink">Delete Children</q-item-section>
-            <q-item-section avatar>
-              <q-icon color="primary" name="delete" />
-            </q-item-section>
-          </q-item> -->
+          <q-item clickable v-ripple v-close-popup>
+            <q-item-section class='layer' style="color: pink">Layer</q-item-section>
+              <q-btn class='btn' color='transparent' text-color='primary' label='-' @click='(e)=>handleLayer(e)'/>
+              <p id='counter' style="color: white"> {{componentData.z}} </p>
+              <q-btn class='btn' color='transparent' text-color='primary' label='+' @click='(e)=>handleLayer(e)'/>
+            <!-- <q-item-section avatar>
+              <q-icon color="primary" name="layer" />
+            </q-item-section> -->
+          </q-item>
         </q-list>
       </q-menu>
     </VueDraggableResizable>
@@ -80,7 +84,8 @@ export default {
       abilityToDelete: false,
       testOptions: ["parent", "child", "grandchild"],
       testModel: [],
-      mockImg: false
+      mockImg: false,
+      counter: 0
     };
   },
   mounted() {
@@ -119,6 +124,25 @@ export default {
       return this.componentMap[componentData.componentName].children;
     },
     options() {
+      const checkParents = (component, lineage=[component.componentName]) => {
+        // console.log('component', component)
+        // component parent is an object of parents
+        // console.log('component parent',component.parent)
+        // console.log('component parent parent', component.parent.parent)
+        if (!Object.keys(component.parent).length) return lineage;
+        for(var parents in component.parent){
+          //for each parent in our component
+          console.log('parents', parents)
+          lineage.push(parents); //push the parent into lineage
+          console.log('lineage pre push', component, lineage)
+          checkParents(component.parent[parents], lineage);
+          console.log('lineage post recursive call', lineage)
+        }
+        // lineage.push(component.parent[component.componentName]);
+        // return checkParents(component.parent, lineage);
+        return lineage
+      };
+      let lineage = [this.activeComponent];
       // PROBLEM: the objects on childrenmultiselectvalue are applied
       // check to see if there are any existing children
       if (this.componentMap[this.activeComponent]) {
@@ -126,9 +150,11 @@ export default {
         // console.log('testmodel', this.testModel)
         // console.log(this.componentMap[this.activeComponent].children)
         this.testModel = this.componentMap[this.activeComponent].children;
+        lineage = checkParents(this.componentMap[this.activeComponent]);
+        console.log('Lineage', lineage);
       }
       const routes = Object.keys(this.routes);
-      const exceptions = new Set(["App", this.activeComponent, ...routes, ...this.testModel]);
+      const exceptions = new Set(["App", ...lineage, ...routes, ...this.testModel]);
       return Object.keys(this.componentMap).filter(component => {
         if (!exceptions.has(component)) return component;
       });
@@ -197,6 +223,9 @@ export default {
       this.componentMap[this.activeComponent].y = y;
       this.userImage;
     },
+    onLayer: function(z) {
+      this.activeComponentData.z = z;
+    },
     onActivated(componentData) {
           this.$refs.boxes.forEach((element)=> {
         if (element.$attrs.id !== componentData.componentName){
@@ -237,6 +266,23 @@ export default {
       this.updateActiveComponentChildrenValue(value);
       // this.updateComponentChildrenMultiselectValue(value)
     },
+    handleLayer(e){
+      e.preventDefault()
+      console.log('event object', e.target.innerText)
+      console.log('Layer handled')
+      
+      if(e.target.innerText === '+'){
+        this.counter++;
+        // this.activeComponentData.z = z;
+      }
+      if(e.target.innerText === '-' && this.counter > 0){
+        this.counter--;
+      }
+      console.log('counter', this.counter)
+      this.activeComponentData.z = this.counter;
+      this.componentMap[this.activeComponent].z = this.counter;
+
+    },
     //       @dblclick.native="onDoubleClick(componentData)"
     // onDoubleClick (compData) {
     //   this.setActiveComponent(compData.componentName)
@@ -247,11 +293,6 @@ export default {
       {
         this.setActiveComponent('')
       }
-      // console.log(this.$children)
-      // this.$children[1].
-      // this.$children[1].enabled = false;
-      // this.$children[1].$emit('deactivated')
-      // this.$children[1].$emit('update:active', false)
     }
   }
 };
@@ -269,6 +310,7 @@ export default {
   /* width: 1rem; */
   line-height: 1.2;
   /* margin: 10px; */
+  z-index: 0;
 }
 .component-children {
   position: absolute;
@@ -329,4 +371,23 @@ export default {
   background-color: rgba(105, 179, 190, 0.514);
   border: 1px dashed rgb(227, 203, 71);
 }
+.btn {
+  font-size: 25px;
+  /* margin-top: 0;
+  margin-bottom: 0; */
+  padding: 0 20px;
+  width: 10px;
+  height: 10px;
+  transition: none;
+}
+.btn:hover, .btn:focus, .btn:active {
+  color: white;
+  background-color: transparent;
+}
+#counter {
+  margin-top: 20px;
+}
+/* .layer {
+  padding: 0 20px;
+} */
 </style>

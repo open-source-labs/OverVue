@@ -27,7 +27,7 @@
       color="secondary"
       label="Create Component"
       @click="handleClick"
-      :disabled="!componentNameInputValue"
+      :disabled="!componentNameInputValue.trim()"
     />
   </div>
 </template>
@@ -63,18 +63,25 @@ export default {
       'addToComponentElementList'
     ]),
     handleClick () {
+      if (!this.componentNameInputValue.trim()) {
+        event.preventDefault();
+        return false;
+      }
       const component = {
         componentName: this.componentNameInputValue,
         x: 0,
         y: 0,
+        z: 0,
         w: 200,
         h: 200,
         htmlList: this.selectedElementList,
         children: [],
+        parent: {},
         isActive: false
       }
 
       this.registerComponent(component)
+
     },
     resetActiveComponent () {
       this.setActiveComponent('')
