@@ -27,7 +27,7 @@
       color="secondary"
       label="Create Component"
       @click="handleClick"
-      :disabled="!componentNameInputValue"
+      :disabled="!componentNameInputValue.trim()"
     />
   </div>
 </template>

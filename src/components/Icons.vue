@@ -26,7 +26,7 @@ export default {
   },
   name: 'Icons',
   computed: {
-    ...mapState(['icons', 'activeComponent', 'componentMap'])
+    ...mapState(['icons', 'activeComponent', 'componentMap', 'selectedElementList'])
   },
   methods: {
     changeState (elementName) {
@@ -34,11 +34,26 @@ export default {
     }
   },
   watch: {
+    selectedElementList: function() {
+      // console.log('watching selectedElementList');
+      if (this.activeComponent === '') {
+        this.elementStorage = {};
+        this.selectedElementList.forEach(el => {
+          if (!this.elementStorage[el.text]) {
+            this.elementStorage[el.text] = 1;
+          } else {
+            this.elementStorage[el.text] += 1;
+          }
+        })
+      }
+      // console.log('storage is ', this.elementStorage)
+    },
+    // if componentMap is updated (i.e. element is added to component's htmlList), elementStorage will update its cache of elements & frequency
     componentMap: {
       deep: true,
       handler () {
-        console.log('watching componentMap');
-        console.log('activecomponent is ', this.activeComponent)
+        // console.log('watching componentMap');
+        // console.log('activecomponent is ', this.activeComponent)
         // console.log('htmlList', this.componentMap[this.activeComponent].htmlList)
         if (this.activeComponent) {
           this.elementStorage = {};
@@ -49,12 +64,13 @@ export default {
               this.elementStorage[el.text] += 1;
             }
           })
-          console.log('elementStorage is ', this.elementStorage);
+          // console.log('elementStorage is ', this.elementStorage);
         }
       },
     },
+    // if activeComponent is updated, elementStorage will update its cache of elements & frequency to reflect new active component
     activeComponent: function() {
-      console.log('watching activeComponent', this.activeComponent);
+      // console.log('watching activeComponent', this.activeComponent);
       if (this.activeComponent) {
         this.elementStorage = {};
         this.componentMap[this.activeComponent].htmlList.forEach(el => {
@@ -64,12 +80,21 @@ export default {
             this.elementStorage[el.text] += 1;
           }
         })
-        console.log('elementStorage is ', this.elementStorage);
-      } else {
-        this.elementStorage = {};
+        // console.log('elementStorage is ', this.elementStorage);
+      } else if (this.activeComponent === '') {
+        // console.log(`watching activeComponent, current active is ''`)
+        // if component was switched from existing component to '', reset cache and update items
+        if (this.elementStorage !== {}) this.elementStorage = {};
+        this.selectedElementList.forEach(el => {
+          if (!this.elementStorage[el.text]) {
+            this.elementStorage[el.text] = 1;
+          } else {
+            this.elementStorage[el.text] += 1;
+          }
+        })
       }
     }
-  },
+  }
 }
 </script>
 

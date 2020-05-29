@@ -15,6 +15,7 @@
         indicator-color="secondary"
         align="left"
       >
+
         <q-tab name="code" label="Code Snippet" id="label-text" />
         <q-tab name="detail" label="Component Details" id="label-text" />
         <q-tab name="tree" label="Project Tree" id="label-text" />
@@ -43,6 +44,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import Tree from './Tree'
 import HomeQueue from './HomeQueue'
 import CodeSnippet from './CodeSnippet'
@@ -52,6 +54,9 @@ export default {
     Tree,
     HomeQueue,
     CodeSnippet
+  },
+  computed: {
+    ...mapState(['activeComponent', 'componentNameInputValue', 'selectedElementList'])
   },
   data () {
     return {
@@ -70,6 +75,30 @@ export default {
         window.outerHeight < 900 ? 4.5 : window.outerHeight < 1035 ? 3.75 : 2.5
       this.height === 40 ? (this.height = minHeight) : (this.height = 40)
       this.open === true ? (this.open = false) : (this.open = true)
+    }
+  },
+  // toggles footer to "html" tab when existing component is not in focus
+  watch: {
+    activeComponent: function () {
+      // console.log('watching activeComponent in Footer');
+      if (this.activeComponent === '' && this.selectedElementList.length !== 0) {
+        this.tab = 'html'
+      }
+    },
+  // toggles footer to "html" tab if component name has value & elements are in queue
+    componentNameInputValue: function() {
+      // console.log('watching componentNameInputVal')
+      if (this.componentNameInputValue !== '' && this.selectedElementList.length !== 0) {
+        console.log(this.selectedElementList)
+        this.tab = 'html'
+      }
+    },
+    // toggles footer to "html" tab if elements are added to queue on component creation
+    selectedElementList: function() {
+      // console.log('watching selectedElementList')
+      if (this.activeComponent === '') {
+        this.tab = 'html'
+      }
     }
   }
 }
