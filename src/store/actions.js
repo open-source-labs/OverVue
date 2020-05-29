@@ -1,12 +1,18 @@
 import * as types from './types'
 
 const actions = {
+
+  // add selected parent to component
+  // [types.addParent]: ({ commit }, payload) => {
+  //   commit(types.ADD_PARENT, payload)
+  // },
+
   // creates a new component in componentMap
   [types.registerComponent]: ({ state, commit }, payload) => {
     const { componentName } = payload
     if (!state.componentMap[componentName]) {
       commit(types.ADD_COMPONENT_TO_COMPONENT_MAP, payload)
-      if (!state.parentSelected) {
+      if (!state.parentSelected.length) {
         commit(
           types.ADD_COMPONENT_TO_ACTIVE_ROUTE_CHILDREN,
           payload.componentName
@@ -20,11 +26,13 @@ const actions = {
         return state.componentMap[component]
       })
 
-      if (state.parentSelected) {
-        commit(types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE, [
-          ...state.componentMap[state.activeComponent].children,
-          payload.componentName
-        ])
+      if (state.parentSelected.length) {
+        // we want to replace this with an 'add parent' mutation
+        commit(types.ADD_PARENT, payload)
+        // commit(types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE, [
+        //   ...state.componentMap[state.activeComponent].children,
+        //   payload.componentName
+        // ])
       }
 
       commit(types.UPDATE_COMPONENT_CHILDREN_VALUE, { component, value })
@@ -32,7 +40,8 @@ const actions = {
       commit(types.UPDATE_COMPONENT_NAME_INPUT_VALUE, '')
       commit(types.SET_SELECTED_ELEMENT_LIST, [])
       commit(types.SET_ACTIVE_COMPONENT, '')
-      commit(types.PARENT_SELECTED, false)
+      // commit(types.PARENT_SELECTED, false)
+      commit(types.PARENT_SELECTED, '')
     }
   },
   // sets component inside componentDisplay
