@@ -160,6 +160,16 @@ export default {
         
       })
     }
+    else{
+      this.$refs.boxes.forEach((element)=>{
+        if(this.activeComponent === element.$attrs.id)
+        {
+          element.enabled = true
+          element.$emit('activated')
+          element.$emit('update:active', true)
+        }
+      })
+    }
   },
 
   methods: {
