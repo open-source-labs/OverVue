@@ -88,15 +88,15 @@ export default {
   // toggles footer to "html" tab if component name has value & elements are in queue
     componentNameInputValue: function() {
       // console.log('watching componentNameInputVal')
-      if (this.componentNameInputValue !== '' && this.selectedElementList.length !== 0) {
-        console.log(this.selectedElementList)
+      if (this.componentNameInputValue !== '' && this.selectedElementList.length !== 0 && this.activeComponent === '') {
+        // console.log(this.selectedElementList)
         this.tab = 'html'
       }
     },
     // toggles footer to "html" tab if elements are added to queue on component creation
     selectedElementList: function() {
       // console.log('watching selectedElementList')
-      if (this.activeComponent === '') {
+      if (this.activeComponent === '' && this.selectedElementList.length !== 0) {
         this.tab = 'html'
       }
     }

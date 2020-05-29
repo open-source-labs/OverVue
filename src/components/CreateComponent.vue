@@ -63,6 +63,10 @@ export default {
       'addToComponentElementList'
     ]),
     handleClick () {
+      if (!this.componentNameInputValue.trim()) {
+        event.preventDefault();
+        return false;
+      }
       const component = {
         componentName: this.componentNameInputValue,
         x: 0,
@@ -75,6 +79,7 @@ export default {
       }
 
       this.registerComponent(component)
+
     },
     resetActiveComponent () {
       this.setActiveComponent('')
