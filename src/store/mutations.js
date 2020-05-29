@@ -10,6 +10,7 @@ const mutations = {
           componentName,
           x: 0,
           y: 0,
+          z: 0,
           w: 200,
           h: 200,
           children,
