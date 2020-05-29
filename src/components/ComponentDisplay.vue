@@ -1,16 +1,19 @@
 <template>
-  <div class="component-display grid-bg" :style="mockBg">
+  <div class="component-display grid-bg" :style="mockBg" v-on:click ="handleClick">
     <!-- <p>{{ userImage }}</p> -->
     <VueDraggableResizable
       class-name="component-box"
       v-for="componentData in activeRouteArray"
+      ref ="boxes"
       :key="componentData.componentName"
+      :id ="componentData.componentName"
       :x="componentData.x"
       :y="componentData.y + 20"
       :z="componentData.z"
       :w="componentData.w"
       :h="componentData.h"
       :parent="true"
+      :preventDeactivation="true"
       @activated="onActivated(componentData)"
       @deactivated="onDeactivated(componentData)"
       @dragging="onDrag"
@@ -68,7 +71,7 @@ import { mapState, mapActions } from "vuex";
 import VueDraggableResizable from "vue-draggable-resizable";
 // import ChildrenMultiselect from '../components/ChildrenMultiselect'
 import "vue-draggable-resizable/dist/VueDraggableResizable.css";
-
+// :preventDeactivation="true"
 export default {
   name: "ComponentDisplay",
   components: {
@@ -91,7 +94,7 @@ export default {
     window.addEventListener("keyup", event => {
       if (event.key === "Backspace") {
         if (this.activeComponent && this.activeComponentData.isActive) {
-          console.log('this:', this)
+         // console.log('this:', this)
           this.$store.dispatch("deleteActiveComponent");
         }
       }
@@ -171,6 +174,30 @@ export default {
         : {};
     }
   },
+
+  updated() {
+    console.log("updated")
+    if(this.activeComponent === '')
+    {
+      this.$refs.boxes.forEach((element)=> {
+          element.enabled = false;
+          element.$emit('deactivated')
+          element.$emit('update:active', false)
+        
+      })
+    }
+    else{
+      this.$refs.boxes.forEach((element)=>{
+        if(this.activeComponent === element.$attrs.id)
+        {
+          element.enabled = true
+          element.$emit('activated')
+          element.$emit('update:active', true)
+        }
+      })
+    }
+  },
+
   methods: {
     ...mapActions([
       "setActiveComponent",
@@ -200,11 +227,30 @@ export default {
       this.activeComponentData.z = z;
     },
     onActivated(componentData) {
+          this.$refs.boxes.forEach((element)=> {
+        if (element.$attrs.id !== componentData.componentName){
+           element.enabled = false;
+          element.$emit('deactivated')
+          element.$emit('update:active', false)
+        }
+      })
       this.setActiveComponent(componentData.componentName);
       this.activeComponentData.isActive = true;
+  
     },
-    onDeactivated() {
+
+    // deactivated is emitted before activated
+  
+    onDeactivated(componentData) {
+      if(this.activeComponent !== ''){
       this.activeComponentData.isActive = false;
+      }
+     // console.log("Componentdataname", componentData.componentName)
+     // console.log("active component",this.activeComponent)
+      // if(componentData.componentName === this.activeComponent)
+      // {
+      //   console.log("We just clicked without making a new active component")
+      // }
     },
     onDoubleClick(compData) {
       this.setActiveComponent(compData.componentName);
@@ -236,12 +282,18 @@ export default {
       this.activeComponentData.z = this.counter;
       this.componentMap[this.activeComponent].z = this.counter;
 
-    }
+    },
     //       @dblclick.native="onDoubleClick(componentData)"
     // onDoubleClick (compData) {
     //   this.setActiveComponent(compData.componentName)
     //   this.activeComponentData.isActive = true
     // }
+    handleClick(event){
+      if(event.target.className === "component-display grid-bg")
+      {
+        this.setActiveComponent('')
+      }
+    }
   }
 };
 </script>

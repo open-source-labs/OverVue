@@ -71,17 +71,27 @@ const mutations = {
   },
   // deletes selected component
   [types.DELETE_ACTIVE_COMPONENT]: state => {
-    const { componentMap, activeComponent } = state
+    const { componentMap, activeComponent, activeRoute } = state
 
     let newObj = Object.assign({}, componentMap)
+    //gotta save the children of the active component
+    //and make sure they are placed as children of the active route or they will be lost to the graph.
+
+    const activeObjChildrenArray = newObj[activeComponent].children
+    console.log(newObj[activeComponent])
+    console.log("he saves the children but not the british children", activeObjChildrenArray)
+
     delete newObj[activeComponent]
 
+    // goes in to make sure no children are the selected component any longer
     for (let compKey in newObj) {
       let children = newObj[compKey].children
       children.forEach((child, index) => {
         if (activeComponent === child) children.splice(index, 1)
       })
     }
+
+    newObj[activeRoute].children.push(...activeObjChildrenArray)
     state.componentMap = newObj
   },
   // used by setComponentMap for OpenProjectComponent.vue
