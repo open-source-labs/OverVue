@@ -170,19 +170,10 @@ export default {
       console.log('mockBg is working', this.imagePath[this.activeRoute])
       return this.imagePath[this.activeRoute]
         ? {
-            background: `url("${this.userImage}") no-repeat center`,
-            "background-size": "cover"
-          }
+          background: `url("${this.userImage}") no-repeat center`,
+          "background-size": "cover"
+        }
         : {};
-    }
-  },
-  watch: {
-    imagePath: function () {
-      console.log('watching imagePath - updating!')
-      this.mockBg()
-    },
-    componentMap: function () {
-      console.log('watching component Map')
     }
   },
   updated() {
@@ -190,9 +181,9 @@ export default {
     if(this.activeComponent === '')
     {
       this.$refs.boxes.forEach((element)=> {
-          element.enabled = false;
-          element.$emit('deactivated')
-          element.$emit('update:active', false)
+        element.enabled = false;
+        element.$emit('deactivated')
+        element.$emit('update:active', false)
         
       })
     }
