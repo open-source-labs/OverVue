@@ -23,7 +23,7 @@
           />-->
           <!-- for electron  -->
           <q-btn
-            v-if="imageExists"
+            v-if="source !== ''"
             class="upload-btn"
             color="secondary"
             label="Clear Image"
@@ -33,7 +33,8 @@
         </div>
         <div class="file-path">
           <q-card>
-            <img :src="[imageExists ? `file:///${imagePath[0]}` : ' ']" />
+            <!-- <img :src="[imageExists ? `file:///${imagePath[this.activeRoute]}` : ' ']" /> -->
+            <img :src="source"/>
 
             <!-- <q-card-section>
               <div class="text-h6 file-header">File Path</div>
@@ -58,14 +59,16 @@ export default {
   name: 'upload-image',
   data () {
     return {
-      files: []
+      files: [],
+      source: ''
     }
   },
   computed: {
-    ...mapState(['imagePath']),
-    imageExists () {
-      return this.imagePath.length
-    }
+    ...mapState(['imagePath', 'activeRoute']),
+    // imageExists () {
+    //   console.log('imagePath', this.imagePath)
+    //   return this.imagePath.length
+    // }
   },
   methods: {
     ...mapActions(['importImage', 'clearImage']),
@@ -74,11 +77,13 @@ export default {
      */
     importMockup () {
       const img = uploadImage()
-      this.importImage(img)
+      this.importImage({ img, route: this.activeRoute })
+      this.source = 'file:///' + img
     },
     removeImage () {
       const res = clearImageDialog()
-      if (res === 0) this.clearImage()
+      if (res === 0) this.clearImage({ route: this.activeRoute })
+      this.source = this.imagePath[this.activeRoute]
     },
     /**
      * @description: for use with the browser

@@ -130,7 +130,7 @@ export default {
         // console.log('component parent',component.parent)
         // console.log('component parent parent', component.parent.parent)
         if (!Object.keys(component.parent).length) return lineage;
-        for(var parents in component.parent){
+        for(var parents in component.parent) {
           //for each parent in our component
           console.log('parents', parents)
           lineage.push(parents); //push the parent into lineage
@@ -160,13 +160,15 @@ export default {
       });
     },
     userImage() {
-      const imgSrc = this.imagePath.length ? `file://` + this.imagePath[0] : "";
+      console.log('userImage is working')
+      const imgSrc = `file://` + this.imagePath[this.activeRoute];
       // const imgSrc1 = this.imagePath;
       console.log(`imgSrc: ${imgSrc}`);
       return imgSrc;
     },
     mockBg() {
-      return this.imagePath.length
+      console.log('mockBg is working', this.imagePath[this.activeRoute])
+      return this.imagePath[this.activeRoute]
         ? {
             background: `url("${this.userImage}") no-repeat center`,
             "background-size": "cover"
@@ -174,7 +176,15 @@ export default {
         : {};
     }
   },
-
+  watch: {
+    imagePath: function () {
+      console.log('watching imagePath - updating!')
+      this.mockBg()
+    },
+    componentMap: function () {
+      console.log('watching component Map')
+    }
+  },
   updated() {
     console.log("updated")
     if(this.activeComponent === '')

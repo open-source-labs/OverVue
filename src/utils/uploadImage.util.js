@@ -21,7 +21,8 @@ const options = {
 const uploadImage = () => {
   const output = dialog.showOpenDialog(options)
   if (output) {
-    return output
+    // console.log('image output', output)
+    return output[0]
   }
   return ''
 }

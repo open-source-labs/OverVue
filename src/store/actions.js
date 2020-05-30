@@ -140,8 +140,8 @@ const actions = {
   [types.importImage]: ({ commit }, payload) => {
     commit(types.IMPORT_IMAGE, payload)
   },
-  [types.clearImage]: ({ commit }) => {
-    commit(types.CLEAR_IMAGE)
+  [types.clearImage]: ({ commit }, payload) => {
+    commit(types.CLEAR_IMAGE, payload)
   },
   [types.deleteUserActions]: ({ state, commit }, payload) => {
     console.log('invoking deleteUserActions')
