@@ -81,6 +81,10 @@ const mutations = {
     console.log(newObj[activeComponent])
     console.log("he saves the children but not the british children", activeObjChildrenArray)
 
+    activeObjChildrenArray.forEach((child => {
+      delete newObj[child].parent[activeComponent]
+    }))
+
     delete newObj[activeComponent]
 
     // goes in to make sure no children are the selected component any longer
