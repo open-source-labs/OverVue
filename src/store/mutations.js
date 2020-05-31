@@ -78,8 +78,8 @@ const mutations = {
     //and make sure they are placed as children of the active route or they will be lost to the graph.
 
     const activeObjChildrenArray = newObj[activeComponent].children
-    console.log(newObj[activeComponent])
-    console.log("he saves the children but not the british children", activeObjChildrenArray)
+    // console.log(newObj[activeComponent])
+    // console.log("children of the soon to be deleted object", activeObjChildrenArray)
 
     delete newObj[activeComponent]
 

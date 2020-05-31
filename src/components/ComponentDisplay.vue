@@ -188,7 +188,9 @@ export default {
     }
     else{
       this.$refs.boxes.forEach((element)=>{
-        if(this.activeComponent === element.$attrs.id)
+        // added "element.enabled === false to stop it from emitting a change every frame the box moves
+        //may need to re-enable to track box movement and resizing since that stuff isn't part of a single source of truth.
+        if(this.activeComponent === element.$attrs.id && element.enabled === false)
         {
           element.enabled = true
           element.$emit('activated')
