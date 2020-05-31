@@ -179,12 +179,13 @@ export default {
     console.log("updated")
     if(this.activeComponent === '')
     {
+      if(this.$refs.boxes){
       this.$refs.boxes.forEach((element)=> {
           element.enabled = false;
           element.$emit('deactivated')
           element.$emit('update:active', false)
         
-      })
+      })}
     }
     else{
         this.$refs.boxes.forEach((element)=>{

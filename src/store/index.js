@@ -7,7 +7,7 @@ import actions from './actions.js'
 import mutations from './mutations.js'
 
 Vue.use(Vuex)
-Vue.use(undoRedo)
+// Vue.use(undoRedo)
 
 export default new Vuex.Store({
   state,

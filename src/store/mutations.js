@@ -1,6 +1,54 @@
 import * as types from './types'
+import icons from './state/icons.js'
+import htmlElementMap from './state/htmlElementMap.js'
+// import VuexStore from './index'
+//import { getDefault, defaultState } from './state/index.js'
 
 import localforage from 'localforage'
+
+const defaultState = 
+{
+  icons,
+  htmlElementMap,
+  // every single time we create a component
+  // sent to export project component
+  componentMap: {
+    App: {
+      componentName: 'App',
+      children: ['HomeView'],
+      htmlList: []
+    },
+    HomeView: {
+      componentName: 'HomeView',
+      children: [],
+      htmlList: []
+    }
+    // NewView: {}
+  },
+  routes: {
+    HomeView: []
+    // NewView: []
+  },
+  userActions: [],
+  userState: {},
+  /**
+   *
+   */
+  componentNameInputValue: '',
+  projects: [{ filename: 'Untitled-1', lastSavedLocation: '' }],
+  activeRoute: 'HomeView',
+  activeComponent: '',
+  selectedElementList: [],
+  projectNumber: 2,
+  activeTab: 0,
+  componentChildrenMultiselectValue: [],
+  modalOpen: false,
+  parentSelected: false,
+  imagePath: ''
+}
+
+
+
 
 const mutations = {
   // pushs new component to componentMap
@@ -33,6 +81,52 @@ const mutations = {
     //   }
     // }
   },
+  // empty state
+  [types.EMPTY_STATE]: (state, payload) => {
+    console.log('This is our defaultstate still', defaultState)
+    console.log(payload)
+    payload.replaceState({
+      icons,
+      htmlElementMap,
+      // every single time we create a component
+      // sent to export project component
+      componentMap: {
+        App: {
+          componentName: 'App',
+          children: ['HomeView'],
+          htmlList: []
+        },
+        HomeView: {
+          componentName: 'HomeView',
+          children: [],
+          htmlList: []
+        }
+        // NewView: {}
+      },
+      routes: {
+        HomeView: []
+        // NewView: []
+      },
+      userActions: [],
+      userState: {},
+      /**
+       *
+       */
+      componentNameInputValue: '',
+      projects: [{ filename: 'Untitled-1', lastSavedLocation: '' }],
+      activeRoute: 'HomeView',
+      activeComponent: '',
+      selectedElementList: [],
+      projectNumber: 2,
+      activeTab: 0,
+      componentChildrenMultiselectValue: [],
+      modalOpen: false,
+      parentSelected: false,
+      imagePath: ''
+    });
+
+  },
+
   // add parent
   [types.ADD_PARENT]: (state, payload) => {
     state.componentMap[payload.componentName].parent[state.parentSelected] = state.componentMap[state.parentSelected]
