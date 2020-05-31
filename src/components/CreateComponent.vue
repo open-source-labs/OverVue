@@ -84,7 +84,9 @@ export default {
 
     },
     resetActiveComponent () {
+      if(!this.activeComponent === ''){
       this.setActiveComponent('')
+      }
       
     },
     handleIconClick () {

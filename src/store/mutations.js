@@ -2,11 +2,11 @@ import * as types from './types'
 import icons from './state/icons.js'
 import htmlElementMap from './state/htmlElementMap.js'
 // import VuexStore from './index'
-//import { getDefault, defaultState } from './state/index.js'
+// import { getDefault, defaultState } from './state/index.js'
 
 import localforage from 'localforage'
 
-const defaultState = 
+const defaultState =
 {
   icons,
   htmlElementMap,
@@ -46,9 +46,6 @@ const defaultState =
   parentSelected: false,
   imagePath: ''
 }
-
-
-
 
 const mutations = {
   // pushs new component to componentMap
@@ -123,8 +120,7 @@ const mutations = {
       modalOpen: false,
       parentSelected: false,
       imagePath: ''
-    });
-
+    })
   },
 
   // add parent
@@ -274,6 +270,10 @@ const mutations = {
   [types.UPDATE_COMPONENT_CHILDREN_VALUE]: (state, payload) => {
     const { component, value } = payload
     state.componentMap[component].children = value
+  },
+  [types.UPDATE_COMPONENT_POSITION]: (state, payload) => {
+    payload.activeComponentData.x = payload.x
+    payload.activeComponentData.y = payload.y //Object.assign({}, state.componentMap[payload.activeComponent], {x: payload.x, y: payload.y});
   },
   [types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE]: (state, payload) => {
     // original line

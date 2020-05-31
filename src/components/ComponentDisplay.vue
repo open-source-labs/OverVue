@@ -19,6 +19,8 @@
       @dragging="onDrag"
       @resizing="onResize"
       @dblclick.native="onDoubleClick(componentData)"
+      @dragstop="finishedDrag"
+      :onDragStart="recordInitialPosition"
     >
       <div class="component-title">
         <p>{{ componentData.componentName }}</p>
@@ -85,7 +87,8 @@ export default {
       testOptions: ["parent", "child", "grandchild"],
       testModel: [],
       mockImg: false,
-      counter: 0
+      counter: 0,
+      initialPosition:{x:0, y:0,},
     };
   },
   mounted() {
@@ -205,7 +208,9 @@ export default {
     ...mapActions([
       "setActiveComponent",
       "updateComponentChildrenMultiselectValue",
-      "updateActiveComponentChildrenValue"
+      "updateActiveComponentChildrenValue",
+      "updateComponentPosition",
+      "updateStartingPosition",
     ]),
     onResize: function(x, y, width, height) {
       this.activeComponentData.x = x;
@@ -218,6 +223,26 @@ export default {
       this.componentMap[this.activeComponent].w = width;
       this.componentMap[this.activeComponent].h = height;
     },
+
+    recordInitialPosition: function(e) {
+      console.log("we started a drag")
+      console.log("this.intialPosition",this.initialPosition)
+      console.log("WHAT IS THIS", this)
+       if(this.activeComponent !== e.target.id){
+      this.setActiveComponent(e.target.id)
+      }
+      this.initialPosition.x = this.componentMap[this.activeComponent].x
+      this.initialPosition.y = this.componentMap[this.activeComponent].y
+        let payload = {
+        x: this.initialPosition.x,
+        y: this.initialPosition.y,
+        activeComponent: this.activeComponent,
+        routeArray: this.routes[this.activeRoute],
+        activeComponentData: this.activeComponentData
+      }
+      this.updateStartingPosition(payload);
+    },
+
     onDrag: function(x, y) {
       this.activeComponentData.x = x;
       this.activeComponentData.y = y;
@@ -226,10 +251,30 @@ export default {
       this.componentMap[this.activeComponent].y = y;
       this.userImage;
     },
-    onLayer: function(z) {
-      this.activeComponentData.z = z;
+    // onLayer: function(z) {
+    //   this.activeComponentData.z = z;
+    //   // Want to change the "Z" of the component found in Routes[activeRoute][whatever the component is]
+    //   //have to do this via an action or it won't be preserved in our undo/redo
+    // },
+
+    finishedDrag: function(x,y){
+      console.log("FINISHED DRAGGING")
+      let payload = {
+        x: x,
+        y: y,
+        activeComponent: this.activeComponent,
+        routeArray: this.routes[this.activeRoute],
+        activeComponentData: this.activeComponentData
+      }
+      console.log("Payload.x = ", payload.x, "this.initialPosition.x", this.initialPosition.x)
+       console.log("Payload.y = ", payload.y, "this.initialPosition.y", this.initialPosition.y)
+      if(payload.x !== this.initialPosition.x || payload.y !== this.initialPosition.y){
+        this.updateComponentPosition(payload);
+      }
     },
+
     onActivated(componentData) {
+      console.log("I RAN!")
           this.$refs.boxes.forEach((element)=> {
         if (element.$attrs.id !== componentData.componentName){
            element.enabled = false;
@@ -237,8 +282,14 @@ export default {
           element.$emit('update:active', false)
         }
       })
-      this.setActiveComponent(componentData.componentName);
+      // console.log("this is what is currently active",this.activeComponent)
+      // console.log("this is this", this)
+      // console.log('!(componentData.componentName === this.activeComponent)?',!(componentData.componentName === this.activeComponent))
+      if(!(componentData.componentName === this.activeComponent)){
+        this.setActiveComponent(componentData.componentName);
+      }
       this.activeComponentData.isActive = true;
+      
   
     },
 
@@ -256,7 +307,9 @@ export default {
       // }
     },
     onDoubleClick(compData) {
-      this.setActiveComponent(compData.componentName);
+       if(!(componentData.componentName === this.activeComponent)){
+        this.setActiveComponent(componentData.componentName);
+      }
       this.activeComponentData.isActive = true;
     },
     handleAddChild() {
@@ -294,7 +347,9 @@ export default {
     handleClick(event){
       if(event.target.className === "component-display grid-bg")
       {
-        this.setActiveComponent('')
+         if(!('' === this.activeComponent)){
+        this.setActiveComponent('');
+        }
       }
     }
   }
