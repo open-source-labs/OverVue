@@ -187,7 +187,7 @@ export default {
               // name.componentName
               name
             }</router-link>\n`;
-          }
+          }<div id="app">
         });
         str += "\t\t\t<router-view></router-view>\n\t\t</div>\n";
       } else {
@@ -327,7 +327,7 @@ export default {
       str += `\n}`;
       fs.writeFileSync(path.join(location, "package.json"), str);
     },
-    exportFile(data){
+    exportFile(data) {
       if (!fs.existsSync(data)) {
         fs.mkdirSync(data);
         console.log("FOLDER CREATED!");
