@@ -34,7 +34,7 @@
         <div class="file-path">
           <q-card>
             <!-- <img :src="[imageExists ? `file:///${imagePath[this.activeRoute]}` : ' ']" /> -->
-            <img :src="source"/>
+            <img class='img' :src="source"/>
 
             <!-- <q-card-section>
               <div class="text-h6 file-header">File Path</div>
@@ -60,11 +60,11 @@ export default {
   data () {
     return {
       files: [],
-      source: ''
+      source: '',
     }
   },
   computed: {
-    ...mapState(['imagePath', 'activeRoute']),
+    ...mapState(['imagePath', 'activeRoute'])
     // imageExists () {
     //   console.log('imagePath', this.imagePath)
     //   return this.imagePath.length
@@ -78,7 +78,9 @@ export default {
     importMockup () {
       const img = uploadImage()
       this.importImage({ img, route: this.activeRoute })
-      this.source = 'file:///' + img
+      if (this.imagePath[this.activeRoute]) {
+        this.source = 'file:///' + this.imagePath[this.activeRoute]
+      }
     },
     removeImage () {
       const res = clearImageDialog()
@@ -98,6 +100,18 @@ export default {
     },
     removeImageBrowser () {
       this.clearImage()
+    }
+  },
+  watch: {
+    activeRoute: function () {
+      // watch for changes in store activeRoute
+      console.log('Route has changed')
+      if (this.imagePath[this.activeRoute]) {
+        // if there is a uploaded image
+        this.source = 'file:///' + this.imagePath[this.activeRoute]
+      } else {
+        this.source = ''
+      }
     }
   }
 }
@@ -141,5 +155,9 @@ export default {
 .browser-btn {
   width: 90px;
   background: $secondary;
+}
+
+.img {
+  max-height: 200px;
 }
 </style>

@@ -122,6 +122,7 @@ const mutations = {
       ...state.routes,
       [payload]: []
     }
+    state.imagePath[payload] = '';
     // console.log('payload in add_route', payload)
   },
   // Changes the component map
@@ -239,7 +240,8 @@ const mutations = {
    */
   [types.IMPORT_IMAGE]: (state, payload) => {
     console.log(`import image invoked. image: ${payload.img} ${payload.route}`)
-    state.imagePath[payload.route] = payload.img
+    state.imagePath = { ...state.imagePath, [payload.route]: payload.img }
+    // state.imagePath[payload.route] = payload.img
   },
   [types.CLEAR_IMAGE]: (state, payload) => {
     console.log(`clear image invoked`)

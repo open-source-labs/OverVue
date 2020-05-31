@@ -184,7 +184,6 @@ export default {
         element.enabled = false;
         element.$emit('deactivated')
         element.$emit('update:active', false)
-        
       })
     }
     else{

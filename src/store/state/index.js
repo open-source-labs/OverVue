@@ -38,10 +38,7 @@ const newState = {
   componentChildrenMultiselectValue: [],
   modalOpen: false,
   parentSelected: false,
-  imagePath: {
-    HomeView: ''
-    // NewView: ''
-  }
+  imagePath: {}
 }
 
 export default newState
