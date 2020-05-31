@@ -1,24 +1,68 @@
 import * as types from './types'
+import icons from './state/icons.js'
+import htmlElementMap from './state/htmlElementMap.js'
+// import VuexStore from './index'
+// import { getDefault, defaultState } from './state/index.js'
 
 import localforage from 'localforage'
+
+const defaultState =
+{
+  icons,
+  htmlElementMap,
+  // every single time we create a component
+  // sent to export project component
+  componentMap: {
+    App: {
+      componentName: 'App',
+      children: ['HomeView'],
+      htmlList: []
+    },
+    HomeView: {
+      componentName: 'HomeView',
+      children: [],
+      htmlList: []
+    }
+    // NewView: {}
+  },
+  routes: {
+    HomeView: []
+    // NewView: []
+  },
+  userActions: [],
+  userState: {},
+  /**
+   *
+   */
+  componentNameInputValue: '',
+  projects: [{ filename: 'Untitled-1', lastSavedLocation: '' }],
+  activeRoute: 'HomeView',
+  activeComponent: '',
+  selectedElementList: [],
+  projectNumber: 2,
+  activeTab: 0,
+  componentChildrenMultiselectValue: [],
+  modalOpen: false,
+  parentSelected: false,
+  imagePath: ''
+}
 
 const mutations = {
   // pushs new component to componentMap
   [types.ADD_COMPONENT_TO_COMPONENT_MAP]: (state, payload) => {
     const { componentName, htmlList, children, parent, isActive } = payload
-    state.componentMap = Object.assign({},state.componentMap,{[componentName]: {
-          componentName,
-          x: 0,
-          y: 0,
-          z: 0,
-          w: 200,
-          h: 200,
-          children,
-          parent,
-          htmlList,
-          isActive
-        }})
-  
+    state.componentMap = Object.assign({}, state.componentMap, { [componentName]: {
+      componentName,
+      x: 0,
+      y: 0,
+      z: 0,
+      w: 200,
+      h: 200,
+      children,
+      parent,
+      htmlList,
+      isActive
+    } })
 
     // state.componentMap = {
     //   ...state.componentMap,
@@ -32,13 +76,58 @@ const mutations = {
     //     htmlList,
     //     isActive
     //   }
-    //}
+    // }
   },
-// add parent
-[types.ADD_PARENT]: (state, payload) => {
-  state.componentMap[payload.componentName].parent[state.parentSelected] = state.componentMap[state.parentSelected]
-  state.componentMap[state.parentSelected].children.push(payload.componentName)
-},
+  // empty state
+  [types.EMPTY_STATE]: (state, payload) => {
+    console.log('This is our defaultstate still', defaultState)
+    console.log(payload)
+    payload.replaceState({
+      icons,
+      htmlElementMap,
+      // every single time we create a component
+      // sent to export project component
+      componentMap: {
+        App: {
+          componentName: 'App',
+          children: ['HomeView'],
+          htmlList: []
+        },
+        HomeView: {
+          componentName: 'HomeView',
+          children: [],
+          htmlList: []
+        }
+        // NewView: {}
+      },
+      routes: {
+        HomeView: []
+        // NewView: []
+      },
+      userActions: [],
+      userState: {},
+      /**
+       *
+       */
+      componentNameInputValue: '',
+      projects: [{ filename: 'Untitled-1', lastSavedLocation: '' }],
+      activeRoute: 'HomeView',
+      activeComponent: '',
+      selectedElementList: [],
+      projectNumber: 2,
+      activeTab: 0,
+      componentChildrenMultiselectValue: [],
+      modalOpen: false,
+      parentSelected: false,
+      imagePath: ''
+    })
+  },
+
+  // add parent
+  [types.ADD_PARENT]: (state, payload) => {
+    state.componentMap[payload.componentName].parent[state.parentSelected] = state.componentMap[state.parentSelected]
+    state.componentMap[state.parentSelected].children.push(payload.componentName)
+  },
 
   // adds a html tag from the Icons.vue to the HomeQueue.vue
   // event: getClickedIcon @Icons.vue
@@ -56,7 +145,6 @@ const mutations = {
       text: elementName,
       children: []
     })
-   
   },
   [types.DELETE_FROM_COMPONENT_HTML_LIST]: (state, idx) => {
     const componentName = state.activeComponent
@@ -74,12 +162,20 @@ const mutations = {
     const { componentMap, activeComponent, activeRoute } = state
 
     let newObj = Object.assign({}, componentMap)
-    //gotta save the children of the active component
-    //and make sure they are placed as children of the active route or they will be lost to the graph.
+    // gotta save the children of the active component
+    // and make sure they are placed as children of the active route or they will be lost to the graph.
 
     const activeObjChildrenArray = newObj[activeComponent].children
     // console.log(newObj[activeComponent])
+<<<<<<< HEAD
     // console.log("children of the soon to be deleted object", activeObjChildrenArray)
+=======
+    // console.log('Saving the children of the soon to be deleted object', activeObjChildrenArray)
+
+    activeObjChildrenArray.forEach(child => {
+      delete newObj[child].parent[activeComponent]
+    })
+>>>>>>> 55581781ee9af1d82fd02398e554577cdc7b71d4
 
     delete newObj[activeComponent]
 
@@ -179,17 +275,20 @@ const mutations = {
     const { component, value } = payload
     state.componentMap[component].children = value
   },
+  [types.UPDATE_COMPONENT_POSITION]: (state, payload) => {
+    payload.activeComponentData.x = payload.x
+    payload.activeComponentData.y = payload.y //Object.assign({}, state.componentMap[payload.activeComponent], {x: payload.x, y: payload.y});
+  },
   [types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE]: (state, payload) => {
     // original line
     let temp = state.componentMap[state.activeComponent].children // b c  and we are removing c
-    if (payload.length<temp.length) { // we will get a payload of [b] and our temp is currently [b,c]
+    if (payload.length < temp.length) { // we will get a payload of [b] and our temp is currently [b,c]
       let child = temp.filter(el => !payload.includes(el))
       console.log('delete child: ', child)
       state.componentMap[state.activeComponent].children = payload
       state.componentMap[state.activeRoute].children.push(...temp.filter(el => !payload.includes(el)))
       delete state.componentMap[child[0]].parent[state.activeComponent]
-    }
-    else {
+    } else {
       let child = payload.filter(el => !temp.includes(el))
       console.log('child added', child)
       state.componentMap[state.activeComponent].children = payload
@@ -197,8 +296,7 @@ const mutations = {
         state.activeRoute
       ].children.filter(el => !payload.includes(el))
       state.componentMap[child[0]].parent[state.activeComponent] = state.componentMap[state.activeComponent]
-    } 
- 
+    }
   },
   // allows usr to change the name of component!!
   [types.UPDATE_COMPONENT_NAME_INPUT_VALUE]: (state, payload) => {
