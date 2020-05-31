@@ -53,6 +53,8 @@ export const ADD_USER_ACTION = 'ADD_USER_ACTION'
 export const ADD_TO_USER_STORE = 'ADD_TO_USER_STORE'
 export const REMOVE_STATE_FROM_COMPONENT = 'REMOVE_STATE_FROM_COMPONENT'
 export const DELETE_USER_STATE = 'DELETE_USER_STATE'
+// open image mutation
+export const SET_IMAGE_PATH = 'SET_IMAGE_PATH'
 
 // Actions
 export const registerComponent = 'registerComponent'
@@ -97,3 +99,5 @@ export const addUserAction = 'addUserAction'
 export const addToUserStore = 'addToUserStore'
 export const removeStateFromComponent = 'removeStateFromComponent'
 export const deleteUserState = 'deleteUserState'
+// open image action
+export const setImagePath = 'setImagePath'

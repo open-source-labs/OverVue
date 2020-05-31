@@ -169,6 +169,10 @@ const actions = {
       commit(types.REMOVE_ACTION_FROM_COMPONENT, payload)
     })
     commit(types.DELETE_USER_STATE, payload)
+  },
+  [types.setImagePath]: ({ commit }, payload) => {
+    console.log('image payload', payload)
+    commit(types.SET_IMAGE_PATH, payload)
   }
 }
 

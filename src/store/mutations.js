@@ -279,6 +279,10 @@ const mutations = {
   },
   [types.DELETE_USER_STATE]: (state, payload) => {
     delete state.userStore[payload]
+  },
+  [types.SET_IMAGE_PATH]: (state, payload) => {
+    console.log('mutation to set image path', { ...state.imagePath, ...payload }) 
+    state.imagePath = { ...state.imagePath, ...payload }
   }
 }
 
