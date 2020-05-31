@@ -94,7 +94,7 @@ export default {
     window.addEventListener("keyup", event => {
       if (event.key === "Backspace") {
         if (this.activeComponent && this.activeComponentData.isActive) {
-         // console.log('this:', this)
+          // console.log('this:', this)
           this.$store.dispatch("deleteActiveComponent");
         }
       }
@@ -171,7 +171,7 @@ export default {
       return this.imagePath[this.activeRoute]
         ? {
           background: `url("${this.userImage}") no-repeat center`,
-          "background-size": "cover"
+          "background-size": "cover",
         }
         : {};
     }
@@ -227,9 +227,9 @@ export default {
       this.activeComponentData.z = z;
     },
     onActivated(componentData) {
-          this.$refs.boxes.forEach((element)=> {
-        if (element.$attrs.id !== componentData.componentName){
-           element.enabled = false;
+      this.$refs.boxes.forEach((element)=> {
+        if (element.$attrs.id !== componentData.componentName) {
+          element.enabled = false;
           element.$emit('deactivated')
           element.$emit('update:active', false)
         }
@@ -242,11 +242,11 @@ export default {
     // deactivated is emitted before activated
   
     onDeactivated(componentData) {
-      if(this.activeComponent !== ''){
-      this.activeComponentData.isActive = false;
+      if(this.activeComponent !== '') {
+        this.activeComponentData.isActive = false;
       }
-     // console.log("Componentdataname", componentData.componentName)
-     // console.log("active component",this.activeComponent)
+      // console.log("Componentdataname", componentData.componentName)
+      // console.log("active component",this.activeComponent)
       // if(componentData.componentName === this.activeComponent)
       // {
       //   console.log("We just clicked without making a new active component")
@@ -266,16 +266,16 @@ export default {
       this.updateActiveComponentChildrenValue(value);
       // this.updateComponentChildrenMultiselectValue(value)
     },
-    handleLayer(e){
+    handleLayer(e) {
       e.preventDefault()
       console.log('event object', e.target.innerText)
       console.log('Layer handled')
       
-      if(e.target.innerText === '+'){
+      if(e.target.innerText === '+') {
         this.counter++;
         // this.activeComponentData.z = z;
       }
-      if(e.target.innerText === '-' && this.counter > 0){
+      if(e.target.innerText === '-' && this.counter > 0) {
         this.counter--;
       }
       console.log('counter', this.counter)
@@ -288,7 +288,7 @@ export default {
     //   this.setActiveComponent(compData.componentName)
     //   this.activeComponentData.isActive = true
     // }
-    handleClick(event){
+    handleClick(event) {
       if(event.target.className === "component-display grid-bg")
       {
         this.setActiveComponent('')

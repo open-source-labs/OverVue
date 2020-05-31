@@ -68,7 +68,7 @@ export default {
         return false;
       }
       const component = {
-        componentName: this.componentNameInputValue,
+        componentName: this.componentNameInputValue.replace(/[^a-z0-9-_.]/gi, ''),
         x: 0,
         y: 0,
         z: 0,

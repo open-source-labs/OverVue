@@ -77,15 +77,20 @@ export default {
      */
     importMockup () {
       const img = uploadImage()
-      this.importImage({ img, route: this.activeRoute })
-      if (this.imagePath[this.activeRoute]) {
-        this.source = 'file:///' + this.imagePath[this.activeRoute]
+      if (img !== '') {
+        this.importImage({ img, route: this.activeRoute })
+        if (this.imagePath[this.activeRoute]) {
+          this.source = 'file:///' + this.imagePath[this.activeRoute]
+        }
       }
     },
     removeImage () {
       const res = clearImageDialog()
-      if (res === 0) this.clearImage({ route: this.activeRoute })
-      this.source = this.imagePath[this.activeRoute]
+      console.log('REMOVEIMAGE: remove is ', res )
+      if (res === 0) {
+        this.clearImage({ route: this.activeRoute })
+        this.source = this.imagePath[this.activeRoute]
+      }
     },
     /**
      * @description: for use with the browser
