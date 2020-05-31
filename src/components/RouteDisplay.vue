@@ -27,7 +27,7 @@ export default {
     Routes
   },
   computed: {
-    ...mapState(['routes'])
+    ...mapState(['routes', 'componentMap'])
   },
   data () {
     return {
@@ -38,7 +38,7 @@ export default {
     ...mapActions(['addRouteToRouteMap', 'setRoutes']),
     handleEnterKeyPress () {
       const newRouteName = this.newRoute.replace(/[^a-z0-9-_.]/gi, '')
-      if (!this.newRoute.trim() || this.routes[newRouteName] ) {
+      if (!this.newRoute.trim() || this.routes[newRouteName] || this.componentMap[newRouteName] ) {
         event.preventDefault();
         return false;
       }
