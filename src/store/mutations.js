@@ -132,7 +132,8 @@ const mutations = {
       ...state.componentMap,
       [route]: {
         componentName: route,
-        children
+        children,
+        htmlList: []
       }
     }
   },

@@ -187,7 +187,7 @@ export default {
               // name.componentName
               name
             }</router-link>\n`;
-          }<div id="app">
+          }
         });
         str += "\t\t\t<router-view></router-view>\n\t\t</div>\n";
       } else {
@@ -346,20 +346,26 @@ export default {
       // main logic below for creating components?
       this.createRouter(data);
       for (let componentName in this.componentMap) {
+        // console.log('CURRENT COMPONENT IS ', componentName)
+        // if componentName is a route:
         if (componentName !== "App") {
           if (this.$store.state.routes[componentName]) {
+            // console.log('THIS IS JUST A ROUTE ', componentName)
             this.createComponentCode(
               path.join(data, "src", "views", componentName),
               componentName,
               this.componentMap[componentName].children
             );
+            // if componentName is a just a component
           } else {
+            // console.log('THIS IS JUST A COMPONENT ', componentName)
             this.createComponentCode(
               path.join(data, "src", "components", componentName),
               componentName,
               this.componentMap[componentName].children
             );
           }
+          // if componentName is App
         } else {
           this.createComponentCode(
             path.join(data, "src", componentName),
