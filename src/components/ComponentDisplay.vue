@@ -185,35 +185,12 @@ export default {
   },
   updated() {
     //console.log("updated")
-<<<<<<< HEAD
-    if(this.activeComponent === '')
-    {
-      if(this.$refs.boxes){
-      this.$refs.boxes.forEach((element)=> {
-          element.enabled = false;
-          element.$emit('deactivated')
-          element.$emit('update:active', false)
-        
-      })}
-    }
-    else{
-        this.$refs.boxes.forEach((element)=>{
-          // added "element.enabled === false to stop it from emitting a change every frame the box moves
-          //may need to re-enable to track box movement and resizing since that stuff isn't part of a single source of truth.
-          if(this.activeComponent === element.$attrs.id && element.enabled === false)
-          {
-            element.enabled = true
-            element.$emit('activated')
-            element.$emit('update:active', true)
-          }
-=======
     if (this.activeComponent === '') {
       if (this.$refs.boxes) {
         this.$refs.boxes.forEach((element) => {
           element.enabled = false;
           element.$emit('deactivated')
           element.$emit('update:active', false)
->>>>>>> 8acb70474c57807f7f8a7eb4a9d0b41b8f7f73be
         })
       }
     }
@@ -277,14 +254,8 @@ export default {
       // this.updateStartingPosition(payload);
     },
 
-<<<<<<< HEAD
-    recordInitialSize: function(e) {
-      console.log("MAKE MY MONSTER GROW!")
-    
-=======
     recordInitialSize: function (e) {
       // console.log("MAKE MY MONSTER GROW!")
->>>>>>> 8acb70474c57807f7f8a7eb4a9d0b41b8f7f73be
       this.initialSize.h = this.activeComponentData.h
       this.initialSize.w = this.activeComponentData.w
       this.initialPosition.x = this.activeComponentData.x
@@ -315,15 +286,9 @@ export default {
         routeArray: this.routes[this.activeRoute],
         activeComponentData: this.activeComponentData
       }
-<<<<<<< HEAD
-      if(payload.x !== this.initialPosition.x || payload.y !== this.initialPosition.y || 
-          payload.w !== this.initialSize.w || payload.h !==this.initialSize.h) {
-        this.updateComponentSize(payload)
-=======
       if (payload.x !== this.initialPosition.x || payload.y !== this.initialPosition.y || 
           payload.w !== this.initialSize.w || payload.h !==this.initialSize.h) {
       this.updateComponentSize(payload)
->>>>>>> 8acb70474c57807f7f8a7eb4a9d0b41b8f7f73be
       }
     },
 
@@ -352,22 +317,13 @@ export default {
       }
       // console.log("Payload.x = ", payload.x, "this.initialPosition.x", this.initialPosition.x)
       //  console.log("Payload.y = ", payload.y, "this.initialPosition.y", this.initialPosition.y)
-<<<<<<< HEAD
-      if(payload.x !== this.initialPosition.x || payload.y !== this.initialPosition.y) {
-=======
       if (payload.x !== this.initialPosition.x || payload.y !== this.initialPosition.y) {
->>>>>>> 8acb70474c57807f7f8a7eb4a9d0b41b8f7f73be
         this.updateComponentPosition(payload);
       }
     },
 
-<<<<<<< HEAD
-    onActivated(componentData) {
-      // console.log("I RAN!")
-=======
     onActivated (componentData) {
       //console.log("I RAN!")
->>>>>>> 8acb70474c57807f7f8a7eb4a9d0b41b8f7f73be
       this.$refs.boxes.forEach((element) => {
         if (element.$attrs.id !== componentData.componentName) {
           element.enabled = false;

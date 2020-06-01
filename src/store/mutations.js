@@ -119,13 +119,9 @@ const mutations = {
       componentChildrenMultiselectValue: [],
       modalOpen: false,
       parentSelected: false,
-<<<<<<< HEAD
-      imagePath: {}
-=======
       imagePath: {
         HomeView: ''
       }
->>>>>>> 8acb70474c57807f7f8a7eb4a9d0b41b8f7f73be
     })
   },
 

@@ -58,9 +58,9 @@ const actions = {
         activeComponent = this.activeComponent,
         routeArray = this.routes[this.activeRoute],
         activeComponentData = this.activeComponentData
-      }*/
+      } */
     
-        commit(types.UPDATE_COMPONENT_POSITION, payload)
+    commit(types.UPDATE_COMPONENT_POSITION, payload)
 
   },
 
