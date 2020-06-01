@@ -101,7 +101,7 @@ export default {
 
     window.addEventListener("keyup", event => {
       if (event.key === "Backspace") {
-        if (this.activeComponent && this.activeComponentData.isActive) {
+        if (this.activeComponent /*&& this.activeComponentData.isActive*/) {
           // console.log('this:', this)
           this.$store.dispatch("deleteActiveComponent");
         }
@@ -406,7 +406,7 @@ export default {
   z-index: -1;
 }
 .component-children {
-  position: absolute;
+  position: relative;
   top: 0rem;
   left: 2px;
   color: black;
