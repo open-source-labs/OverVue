@@ -45,6 +45,7 @@ export const PARENT_SELECTED = 'PARENT_SELECTED'
 export const ADD_PARENT = 'ADD_PARENT'
 export const DELETE_ROUTE = 'DELETE_ROUTE'
 export const DELETE_COMPONENT = 'DELETE_COMPONENT'
+export const UPDATE_COMPONENT_SIZE = 'UPDATE_COMPONENT_SIZE'
 // Image upload mutations
 export const IMPORT_IMAGE = 'IMPORT_IMAGE'
 export const CLEAR_IMAGE = 'CLEAR_IMAGE'
@@ -58,6 +59,8 @@ export const REMOVE_STATE_FROM_COMPONENT = 'REMOVE_STATE_FROM_COMPONENT'
 export const DELETE_USER_STATE = 'DELETE_USER_STATE'
 
 // Actions
+export const updateComponentSize = 'updateComponentSize'
+export const updateStartingSize = 'updateStartingSize'
 export const registerComponent = 'registerComponent'
 export const setSelectedElementList = 'setSelectedElementList'
 export const addToSelectedElementList = 'addToSelectedElementList'
