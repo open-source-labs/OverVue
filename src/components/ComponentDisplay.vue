@@ -91,7 +91,7 @@ export default {
       testOptions: ["parent", "child", "grandchild"],
       testModel: [],
       mockImg: false,
-      counter: 0,
+      // counter: 6,
       initialPosition:{x:0, y:0,},
       initialSize:{w:0,h:0,},
     };
@@ -119,7 +119,7 @@ export default {
     ]),
     // used in VueDraggableResizeable component
     activeRouteArray() {
-      // console.log("active route array method", this.routes[this.activeRoute]);
+      console.log("active route array method", this.routes[this.activeRoute]);
       return this.routes[this.activeRoute];
     },
     // used to delete components
@@ -214,6 +214,7 @@ export default {
       "updateActiveComponentChildrenValue",
       "updateComponentPosition",
       "updateStartingPosition",
+      "updateComponentLayer",
       "updateStartingSize",
       "updateComponentSize",
     ]),
@@ -300,11 +301,6 @@ export default {
       this.componentMap[this.activeComponent].y = y;
       this.userImage;
     },
-    // onLayer: function(z) {
-    //   this.activeComponentData.z = z;
-    //   // Want to change the "Z" of the component found in Routes[activeRoute][whatever the component is]
-    //   //have to do this via an action or it won't be preserved in our undo/redo
-    // },
 
     finishedDrag: function(x,y) {
       console.log("FINISHED DRAGGING")
@@ -371,31 +367,24 @@ export default {
     },
     handleLayer(e) {
       e.preventDefault()
-      console.log('event object', e.target.innerText)
-      console.log('Layer handled')
-      
-      if(e.target.innerText === '+') {
-        this.counter++;
-        // this.activeComponentData.z = z;
+      const payload = {
+        activeComponent: this.activeComponent,
+        routeArray: this.routes[this.activeRoute],
+        activeComponentData: this.activeComponentData,
+        z: this.activeComponentData.z,
       }
-      if(e.target.innerText === '-' && this.counter > 0) {
-        this.counter--;
-      }
-      console.log('counter', this.counter)
-      this.activeComponentData.z = this.counter;
-      this.componentMap[this.activeComponent].z = this.counter;
-
+      if(e.target.innerText === '+') payload.z++;
+      if(e.target.innerText === '-' && payload.z > 0) payload.z--;
+      this.updateComponentLayer(payload)
     },
     //       @dblclick.native="onDoubleClick(componentData)"
     // onDoubleClick (compData) {
     //   this.setActiveComponent(compData.componentName)
     //   this.activeComponentData.isActive = true
     // }
-    handleClick (event) {
+    handleClick(event) {
       if (event.target.className === "component-display grid-bg") {
-        if (!('' === this.activeComponent)) {
-          this.setActiveComponent('');
-        }
+        if (!('' === this.activeComponent)) this.setActiveComponent('');
       }
     }
   }
@@ -417,7 +406,7 @@ export default {
   z-index: -1;
 }
 .component-children {
-  position: absolute;
+  position: relative;
   top: 0rem;
   left: 2px;
   color: black;

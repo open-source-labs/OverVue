@@ -297,8 +297,14 @@ const mutations = {
     updatedComponent.x = payload.x
     updatedComponent.y = payload.y
   },
-
-
+  [types.UPDATE_COMPONENT_LAYER]: (state, payload) => {
+    const updatedComponent = state.routes[state.activeRoute].filter(element => {
+      return element.componentName === payload.activeComponent
+    })[0]
+    updatedComponent.z = payload.z
+    state.componentMap[payload.activeComponent].z = payload.z
+    // payload.activeComponentData.z = payload.z
+  },
   [types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE]: (state, payload) => {
     // original line
     let temp = state.componentMap[state.activeComponent].children // b c  and we are removing c

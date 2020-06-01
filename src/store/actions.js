@@ -63,6 +63,9 @@ const actions = {
     commit(types.UPDATE_COMPONENT_POSITION, payload)
 
   },
+  [types.updateComponentLayer]: ({ commit }, payload) => {
+    commit(types.UPDATE_COMPONENT_LAYER, payload)
+  },
 
   // does the same as update component position, but needed to record the initial spot of the draggable resizeable in component display
   // or else undo/redo won't work
