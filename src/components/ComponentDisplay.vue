@@ -253,7 +253,7 @@ export default {
         routeArray: this.routes[this.activeRoute],
         activeComponentData: this.activeComponentData
       }
-      console.log("x: ",payload.x,"y:",payload.y)
+      console.log("x: ",payload.x,"y: ",payload.y)
       //this.updateStartingPosition(payload);
     },
 

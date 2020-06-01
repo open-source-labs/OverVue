@@ -39,8 +39,26 @@ const newState = {
   componentChildrenMultiselectValue: [],
   modalOpen: false,
   parentSelected: false,
-  imagePath: ''
+  imagePath: {
+    HomeView:'',
+  }
 }
+
+//closured method to ensure we only ever write the default state ONCE
+const writeTheDefault = () => {
+  let initial = {}
+  let needsToRun = true;
+  function onced(payload){
+    if(needsToRun){
+      initial = cloneDeep(payload)
+      needsToRun = false;
+    }
+    return initial
+  }
+  return onced
+}
+
+const defaultState = writeTheDefault()
 
 // const defaultState = 
 // {
@@ -90,3 +108,4 @@ const newState = {
 
 
 export default newState
+export {defaultState}
