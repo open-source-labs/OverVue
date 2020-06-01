@@ -98,7 +98,7 @@ let redoMixin = {
       console.log(this.$store)
       this.doneAction.forEach(action => {
         console.log("In the loop",this.$store)
-        //this.$store.commit(`${mutation.type}`, mutation.payload);
+        // this.$store.commit(`${mutation.type}`, mutation.payload);
         this.$store.dispatch(action.type, cloneDeep(action.payload));
         this.doneAction.pop();
       });
@@ -110,12 +110,12 @@ let redoMixin = {
       let action = this.undoneAction.pop()
       this.isTimetraveling = true;
       if(action) {
-      this.$store.dispatch(action.type, cloneDeep(action.payload))
+        this.$store.dispatch(action.type, cloneDeep(action.payload))
       }
       this.isTimetraveling = false;
       if(action && (action.type === "setActiveComponent")) {
-      console.log("WE GOTTA DO MORE")
-      this.redo();
+        console.log("WE GOTTA DO MORE")
+        this.redo();
       }
     }
 
