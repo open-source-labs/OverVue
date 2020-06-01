@@ -8,7 +8,7 @@
       :key="componentData.componentName"
       :id ="componentData.componentName"
       :x="componentData.x"
-      :y="componentData.y + 20"
+      :y="componentData.y"
       :z="componentData.z"
       :w="componentData.w"
       :h="componentData.h"
@@ -19,7 +19,13 @@
       @dragging="onDrag"
       @resizing="onResize"
       @dblclick.native="onDoubleClick(componentData)"
+      @dragstop="finishedDrag"
+      @resizestop="finishedResize"
+      :onDragStart="recordInitialPosition"
+      :onResizeStart="recordInitialSize" 
     >
+      <!-- :onDragStart="recordInitialPosition"
+            :onResizeStart="recordInitialSize" -->
       <div class="component-title">
         <p>{{ componentData.componentName }}</p>
       </div>
@@ -77,7 +83,7 @@ export default {
   components: {
     VueDraggableResizable
   },
-  data() {
+  data () {
     // console.log("Component Map", this.componentMap);
     return {
       modalOpen: false,
@@ -85,10 +91,12 @@ export default {
       testOptions: ["parent", "child", "grandchild"],
       testModel: [],
       mockImg: false,
-      counter: 0
+      counter: 0,
+      initialPosition:{x:0, y:0,},
+      initialSize:{w:0,h:0,},
     };
   },
-  mounted() {
+  mounted () {
     // when component is mounted add ability to delete
 
     window.addEventListener("keyup", event => {
@@ -176,19 +184,21 @@ export default {
     }
   },
   updated() {
-    console.log("updated")
-    if(this.activeComponent === '')
-    {
-      this.$refs.boxes.forEach((element)=> {
-        element.enabled = false;
-        element.$emit('deactivated')
-        element.$emit('update:active', false)
-      })
+    //console.log("updated")
+    if (this.activeComponent === '') {
+      if (this.$refs.boxes) {
+        this.$refs.boxes.forEach((element) => {
+          element.enabled = false;
+          element.$emit('deactivated')
+          element.$emit('update:active', false)
+        })
+      }
     }
-    else{
+    else {
       this.$refs.boxes.forEach((element)=>{
-        if(this.activeComponent === element.$attrs.id)
-        {
+        // added "element.enabled === false to stop it from emitting a change every frame the box moves
+        // may need to re-enable to track box movement and resizing since that stuff isn't part of a single source of truth.
+        if (this.activeComponent === element.$attrs.id && element.enabled === false) {
           element.enabled = true
           element.$emit('activated')
           element.$emit('update:active', true)
@@ -201,7 +211,11 @@ export default {
     ...mapActions([
       "setActiveComponent",
       "updateComponentChildrenMultiselectValue",
-      "updateActiveComponentChildrenValue"
+      "updateActiveComponentChildrenValue",
+      "updateComponentPosition",
+      "updateStartingPosition",
+      "updateStartingSize",
+      "updateComponentSize",
     ]),
     onResize: function(x, y, width, height) {
       this.activeComponentData.x = x;
@@ -214,6 +228,70 @@ export default {
       this.componentMap[this.activeComponent].w = width;
       this.componentMap[this.activeComponent].h = height;
     },
+
+    recordInitialPosition: function(e) {
+      console.log("we started a drag")
+      console.log("this.intialPosition",this.initialPosition)
+      console.log("WHAT IS THIS", this)
+      if (this.activeComponent !== e.target.id) {
+        this.setActiveComponent(e.target.id)
+      }
+      this.initialPosition.x = this.activeComponentData.x
+      this.initialPosition.y = this.activeComponentData.y
+      // console.log(this.activeComponentData)
+      // console.log(this.activeComponentData.x)
+      // console.log(this.initialPosition.x)
+      // console.log(this.initialPosition.y)
+
+      let payload = {
+        x: this.initialPosition.x,
+        y: this.initialPosition.y,
+        activeComponent: this.activeComponent,
+        routeArray: this.routes[this.activeRoute],
+        activeComponentData: this.activeComponentData
+      }
+      console.log("x: ",payload.x,"y:",payload.y)
+      // this.updateStartingPosition(payload);
+    },
+
+    recordInitialSize: function (e) {
+      // console.log("MAKE MY MONSTER GROW!")
+      this.initialSize.h = this.activeComponentData.h
+      this.initialSize.w = this.activeComponentData.w
+      this.initialPosition.x = this.activeComponentData.x
+      this.initialPosition.y = this.activeComponentData.y
+
+      let payload = {
+        h: this.initialSize.h,
+        w: this.initialSize.w,
+        x: this.activeComponentData.x,
+        y: this.activeComponentData.y,
+        activeComponent: this.activeComponent,
+        routeArray: this.routes[this.activeRoute],
+        activeComponentData: this.activeComponentData
+      }
+
+      //this.updateStartingSize(payload);
+
+    },
+
+    finishedResize: function(x,y,w,h) {
+      console.log("FINISHED RESIZING")
+      let payload = {
+        x: x,
+        y: y,
+        w: w,
+        h: h,
+        activeComponent: this.activeComponent,
+        routeArray: this.routes[this.activeRoute],
+        activeComponentData: this.activeComponentData
+      }
+      if (payload.x !== this.initialPosition.x || payload.y !== this.initialPosition.y || 
+          payload.w !== this.initialSize.w || payload.h !==this.initialSize.h) {
+      this.updateComponentSize(payload)
+      }
+    },
+
     onDrag: function(x, y) {
       this.activeComponentData.x = x;
       this.activeComponentData.y = y;
@@ -222,26 +300,50 @@ export default {
       this.componentMap[this.activeComponent].y = y;
       this.userImage;
     },
-    onLayer: function(z) {
-      this.activeComponentData.z = z;
+    // onLayer: function(z) {
+    //   this.activeComponentData.z = z;
+    //   // Want to change the "Z" of the component found in Routes[activeRoute][whatever the component is]
+    //   //have to do this via an action or it won't be preserved in our undo/redo
+    // },
+
+    finishedDrag: function(x,y) {
+      console.log("FINISHED DRAGGING")
+      let payload = {
+        x: x,
+        y: y,
+        activeComponent: this.activeComponent,
+        routeArray: this.routes[this.activeRoute],
+        activeComponentData: this.activeComponentData
+      }
+      // console.log("Payload.x = ", payload.x, "this.initialPosition.x", this.initialPosition.x)
+      //  console.log("Payload.y = ", payload.y, "this.initialPosition.y", this.initialPosition.y)
+      if (payload.x !== this.initialPosition.x || payload.y !== this.initialPosition.y) {
+        this.updateComponentPosition(payload);
+      }
     },
-    onActivated(componentData) {
-      this.$refs.boxes.forEach((element)=> {
+
+    onActivated (componentData) {
+      //console.log("I RAN!")
+      this.$refs.boxes.forEach((element) => {
         if (element.$attrs.id !== componentData.componentName) {
           element.enabled = false;
           element.$emit('deactivated')
           element.$emit('update:active', false)
         }
       })
-      this.setActiveComponent(componentData.componentName);
+      // console.log("this is what is currently active",this.activeComponent)
+      // console.log("this is this", this)
+      // console.log('!(componentData.componentName === this.activeComponent)?',!(componentData.componentName === this.activeComponent))
+      if (!(componentData.componentName === this.activeComponent)) {
+        this.setActiveComponent(componentData.componentName);
+      }
       this.activeComponentData.isActive = true;
-  
     },
 
     // deactivated is emitted before activated
   
-    onDeactivated(componentData) {
-      if(this.activeComponent !== '') {
+    onDeactivated (componentData) {
+      if (this.activeComponent !== '') {
         this.activeComponentData.isActive = false;
       }
       // console.log("Componentdataname", componentData.componentName)
@@ -251,8 +353,10 @@ export default {
       //   console.log("We just clicked without making a new active component")
       // }
     },
-    onDoubleClick(compData) {
-      this.setActiveComponent(compData.componentName);
+    onDoubleClick (compData) {
+      if (!(componentData.componentName === this.activeComponent)) {
+        this.setActiveComponent(componentData.componentName);
+      }
       this.activeComponentData.isActive = true;
     },
     handleAddChild() {
@@ -287,10 +391,11 @@ export default {
     //   this.setActiveComponent(compData.componentName)
     //   this.activeComponentData.isActive = true
     // }
-    handleClick(event) {
-      if(event.target.className === "component-display grid-bg")
-      {
-        this.setActiveComponent('')
+    handleClick (event) {
+      if (event.target.className === "component-display grid-bg") {
+        if (!('' === this.activeComponent)) {
+          this.setActiveComponent('');
+        }
       }
     }
   }
@@ -309,7 +414,7 @@ export default {
   /* width: 1rem; */
   line-height: 1.2;
   /* margin: 10px; */
-  z-index: 0;
+  z-index: -1;
 }
 .component-children {
   position: absolute;
