@@ -99,7 +99,7 @@ export default {
       children = this.componentMap[componentName].children
       )
     */
-    createComponentCode(componentLocation, componentName, children) {
+    createComponentCode (componentLocation, componentName, children) {
       if (componentName === "App") {
         fs.writeFileSync(
           componentLocation + ".vue",
@@ -115,13 +115,19 @@ export default {
         );
       }
     },
+    createAssetFile (targetLocation, assetLocation) {
+      let saved = remote.nativeImage.createFromPath(assetLocation)
+      let urlData = saved.toPNG()
+      // console.log('urlData is ', urlData);
+      fs.writeFileSync(targetLocation + ".png", urlData);
+    },
     /**
      * @description helper function for writeTemplate
      * @name writeTemplateTag
      *  - gets objects from htmlList from appropriate component and adds them to the template string, then inserts into writeTemplate return str
      * @input: componentMap['component'].htmlList[tag elements]
      */
-    writeTemplateTag(compName) {
+    writeTemplateTag (compName) {
       console.log("writeTemplateTag invoked!");
       // create reference object
       const htmlElementMap = {
@@ -327,7 +333,7 @@ export default {
       str += `\n}`;
       fs.writeFileSync(path.join(location, "package.json"), str);
     },
-    exportFile(data){
+    exportFile(data) {
       if (!fs.existsSync(data)) {
         fs.mkdirSync(data);
         console.log("FOLDER CREATED!");
@@ -343,23 +349,32 @@ export default {
       this.createMainFile(data);
       this.createBabel(data);
       this.createPackage(data);
-      // main logic below for creating components?
+      // main logic below for creating components
       this.createRouter(data);
+      for (let [routeImage, imageLocation] of Object.entries(this.imagePath)) {
+        // console.log('routeImage is ', routeImage);
+        this.createAssetFile(path.join(data, "src", "assets", routeImage), imageLocation)
+      };
       for (let componentName in this.componentMap) {
+        // if componentName is a route:
         if (componentName !== "App") {
           if (this.$store.state.routes[componentName]) {
+            // console.log('THIS IS JUST A ROUTE ', componentName)
             this.createComponentCode(
               path.join(data, "src", "views", componentName),
               componentName,
               this.componentMap[componentName].children
             );
+            // if componentName is a just a component
           } else {
+            // console.log('THIS IS JUST A COMPONENT ', componentName)
             this.createComponentCode(
               path.join(data, "src", "components", componentName),
               componentName,
               this.componentMap[componentName].children
             );
           }
+          // if componentName is App
         } else {
           this.createComponentCode(
             path.join(data, "src", componentName),
@@ -371,7 +386,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(["componentMap"])
+    ...mapState(["componentMap", "imagePath"])
   }
 }
 

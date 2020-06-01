@@ -83,7 +83,7 @@ export default {
   components: {
     VueDraggableResizable
   },
-  data() {
+  data () {
     // console.log("Component Map", this.componentMap);
     return {
       modalOpen: false,
@@ -96,13 +96,13 @@ export default {
       initialSize:{w:0,h:0,},
     };
   },
-  mounted() {
+  mounted () {
     // when component is mounted add ability to delete
 
     window.addEventListener("keyup", event => {
       if (event.key === "Backspace") {
-        if (this.activeComponent && this.activeComponentData.isActive) {
-         // console.log('this:', this)
+        if (this.activeComponent /*&& this.activeComponentData.isActive*/) {
+          // console.log('this:', this)
           this.$store.dispatch("deleteActiveComponent");
         }
       }
@@ -138,7 +138,7 @@ export default {
         // console.log('component parent',component.parent)
         // console.log('component parent parent', component.parent.parent)
         if (!Object.keys(component.parent).length) return lineage;
-        for(var parents in component.parent){
+        for(var parents in component.parent) {
           //for each parent in our component
           console.log('parents', parents)
           lineage.push(parents); //push the parent into lineage
@@ -168,21 +168,21 @@ export default {
       });
     },
     userImage() {
-      const imgSrc = this.imagePath.length ? `file://` + this.imagePath[0] : "";
+      console.log('userImage is working')
+      const imgSrc = `file://` + this.imagePath[this.activeRoute];
       // const imgSrc1 = this.imagePath;
       console.log(`imgSrc: ${imgSrc}`);
       return imgSrc;
     },
     mockBg() {
-      return this.imagePath.length
+      console.log('mockBg is working', this.imagePath[this.activeRoute])
+      return this.imagePath[this.activeRoute]
         ? {
-            background: `url("${this.userImage}") no-repeat center`,
-            "background-size": "cover"
-          }
-        : {};
+          background: `url("${this.userImage}") center/contain no-repeat`
+        }
+        : {}
     }
   },
-
   updated() {
     //console.log("updated")
     if(this.activeComponent === '')
@@ -194,20 +194,18 @@ export default {
           element.$emit('update:active', false)
         
       })}
+    } else {
+      this.$refs.boxes.forEach((element)=>{
+        // added "element.enabled === false to stop it from emitting a change every frame the box moves
+        // may need to re-enable to track box movement and resizing since that stuff isn't part of a single source of truth.
+        if (this.activeComponent === element.$attrs.id && element.enabled === false) {
+          element.enabled = true
+          element.$emit('activated')
+          element.$emit('update:active', true)
+        }
+      })
     }
-    else{
-        this.$refs.boxes.forEach((element)=>{
-          // added "element.enabled === false to stop it from emitting a change every frame the box moves
-          //may need to re-enable to track box movement and resizing since that stuff isn't part of a single source of truth.
-          if(this.activeComponent === element.$attrs.id && element.enabled === false)
-          {
-            element.enabled = true
-            element.$emit('activated')
-            element.$emit('update:active', true)
-          }
-        })
-      }
-    },
+  },
 
   methods: {
     ...mapActions([
@@ -236,8 +234,8 @@ export default {
       console.log("we started a drag")
       console.log("this.intialPosition",this.initialPosition)
       console.log("WHAT IS THIS", this)
-       if(this.activeComponent !== e.target.id){
-      this.setActiveComponent(e.target.id)
+      if (this.activeComponent !== e.target.id) {
+        this.setActiveComponent(e.target.id)
       }
       this.initialPosition.x = this.activeComponentData.x
       this.initialPosition.y = this.activeComponentData.y
@@ -246,7 +244,7 @@ export default {
       // console.log(this.initialPosition.x)
       // console.log(this.initialPosition.y)
 
-        let payload = {
+      let payload = {
         x: this.initialPosition.x,
         y: this.initialPosition.y,
         activeComponent: this.activeComponent,
@@ -257,15 +255,14 @@ export default {
       //this.updateStartingPosition(payload);
     },
 
-    recordInitialSize: function(e){
-      console.log("MAKE MY MONSTER GROW!")
-     
+    recordInitialSize: function (e) {
+      // console.log("MAKE MY MONSTER GROW!")
       this.initialSize.h = this.activeComponentData.h
       this.initialSize.w = this.activeComponentData.w
       this.initialPosition.x = this.activeComponentData.x
       this.initialPosition.y = this.activeComponentData.y
 
-        let payload = {
+      let payload = {
         h: this.initialSize.h,
         w: this.initialSize.w,
         x: this.activeComponentData.x,
@@ -279,7 +276,7 @@ export default {
 
     },
 
-    finishedResize: function(x,y,w,h){
+    finishedResize: function(x,y,w,h) {
       console.log("FINISHED RESIZING")
       let payload = {
         x: x,
@@ -290,8 +287,8 @@ export default {
         routeArray: this.routes[this.activeRoute],
         activeComponentData: this.activeComponentData
       }
-      if(payload.x !== this.initialPosition.x || payload.y !== this.initialPosition.y || 
-          payload.w !== this.initialSize.w || payload.h !==this.initialSize.h){
+      if (payload.x !== this.initialPosition.x || payload.y !== this.initialPosition.y || 
+          payload.w !== this.initialSize.w || payload.h !==this.initialSize.h) {
       this.updateComponentSize(payload)
       }
     },
@@ -305,7 +302,7 @@ export default {
       this.userImage;
     },
 
-    finishedDrag: function(x,y){
+    finishedDrag: function(x,y) {
       console.log("FINISHED DRAGGING")
       let payload = {
         x: x,
@@ -316,7 +313,7 @@ export default {
       }
       // console.log("Payload.x = ", payload.x, "this.initialPosition.x", this.initialPosition.x)
       //  console.log("Payload.y = ", payload.y, "this.initialPosition.y", this.initialPosition.y)
-      if(payload.x !== this.initialPosition.x || payload.y !== this.initialPosition.y){
+      if (payload.x !== this.initialPosition.x || payload.y !== this.initialPosition.y) {
         this.updateComponentPosition(payload);
       }
     },
@@ -333,29 +330,27 @@ export default {
       // console.log("this is what is currently active",this.activeComponent)
       // console.log("this is this", this)
       // console.log('!(componentData.componentName === this.activeComponent)?',!(componentData.componentName === this.activeComponent))
-      if(!(componentData.componentName === this.activeComponent)){
+      if (!(componentData.componentName === this.activeComponent)) {
         this.setActiveComponent(componentData.componentName);
       }
       this.activeComponentData.isActive = true;
-      
-  
     },
 
     // deactivated is emitted before activated
   
-    onDeactivated(componentData) {
-      if(this.activeComponent !== ''){
-      this.activeComponentData.isActive = false;
+    onDeactivated (componentData) {
+      if (this.activeComponent !== '') {
+        this.activeComponentData.isActive = false;
       }
-     // console.log("Componentdataname", componentData.componentName)
-     // console.log("active component",this.activeComponent)
+      // console.log("Componentdataname", componentData.componentName)
+      // console.log("active component",this.activeComponent)
       // if(componentData.componentName === this.activeComponent)
       // {
       //   console.log("We just clicked without making a new active component")
       // }
     },
-    onDoubleClick(compData) {
-       if(!(componentData.componentName === this.activeComponent)){
+    onDoubleClick (compData) {
+      if (!(componentData.componentName === this.activeComponent)) {
         this.setActiveComponent(componentData.componentName);
       }
       this.activeComponentData.isActive = true;
@@ -411,7 +406,7 @@ export default {
   z-index: -1;
 }
 .component-children {
-  position: absolute;
+  position: relative;
   top: 0rem;
   left: 2px;
   color: black;

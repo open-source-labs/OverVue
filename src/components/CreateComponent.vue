@@ -68,7 +68,7 @@ export default {
         return false;
       }
       const component = {
-        componentName: this.componentNameInputValue,
+        componentName: this.componentNameInputValue.replace(/[^a-z0-9-_.]/gi, ''),
         x: 0,
         y: 20,
         z: 0,
@@ -84,10 +84,9 @@ export default {
 
     },
     resetActiveComponent () {
-      if(!this.activeComponent === ''){
-      this.setActiveComponent('')
-      }
-      
+      if (this.activeComponent !== '') {
+        this.setActiveComponent('')
+      }   
     },
     handleIconClick () {
       if (this.activeComponent === '') this.setClickedElementList()

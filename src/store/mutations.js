@@ -218,7 +218,8 @@ const mutations = {
       ...state.routes,
       [payload]: []
     }
-    console.log('payload in add_route', payload)
+    state.imagePath[payload] = '';
+    // console.log('payload in add_route', payload)
   },
   // Changes the component map
   [types.ADD_ROUTE_TO_COMPONENT_MAP]: (state, payload) => {
@@ -227,7 +228,8 @@ const mutations = {
       ...state.componentMap,
       [route]: {
         componentName: route,
-        children
+        children,
+        htmlList: []
       }
     }
   },
@@ -360,12 +362,15 @@ const mutations = {
    * Import Image Mutations
    */
   [types.IMPORT_IMAGE]: (state, payload) => {
-    console.log(`import image invoked. image: ${payload}`)
-    state.imagePath = payload
+    console.log(`import image invoked. image: ${payload.img} ${payload.route}`)
+    state.imagePath = { ...state.imagePath, [payload.route]: payload.img }
+    // state.imagePath[payload.route] = payload.img
   },
-  [types.CLEAR_IMAGE]: state => {
+  [types.CLEAR_IMAGE]: (state, payload) => {
     console.log(`clear image invoked`)
-    if (state.imagePath) state.imagePath = ''
+    // console.log('current routes img url: ', state.imagePath[payload.route])
+    if (state.imagePath[payload.route]) state.imagePath[payload.route] = ''
+    // console.log('after removal', state.imagePath[payload.route])
   },
   [types.DELETE_USER_ACTIONS]: (state, payload) => {
     // payload should be a string of the name of the action to remove
@@ -397,6 +402,10 @@ const mutations = {
   },
   [types.DELETE_USER_STATE]: (state, payload) => {
     delete state.userStore[payload]
+  },
+  [types.SET_IMAGE_PATH]: (state, payload) => {
+    console.log('mutation to set image path', { ...state.imagePath, ...payload }) 
+    state.imagePath = { ...state.imagePath, ...payload }
   }
 }
 
