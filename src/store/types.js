@@ -1,4 +1,5 @@
 // Mutations
+export const EMPTY_STATE = 'EMPTY_STATE'
 export const ADD_COMPONENT_TO_COMPONENT_MAP = 'ADD_COMPONENT_TO_COMPONENT_MAP'
 export const SET_SELECTED_ELEMENT_LIST = 'SET_SELECTED_ELEMENT_LIST'
 export const ADD_TO_SELECTED_ELEMENT_LIST = 'ADD_TO_SELECTED_ELEMENT_LIST'
@@ -33,6 +34,7 @@ export const UPDATE_COMPONENT_NAME_INPUT_VALUE =
   'UPDATE_COMPONENT_NAME_INPUT_VALUE'
 export const UPDATE_COMPONENT_CHILDREN_VALUE =
   'UPDATE_COMPONENT_CHILDREN_VALUE'
+export const UPDATE_COMPONENT_POSITION = "UPDATE_COMPONENT_POSITION"
 export const UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE =
   'UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE'
 export const ADD_COMPONENT_TO_COMPONENT_CHILDREN =
@@ -42,6 +44,7 @@ export const PARENT_SELECTED = 'PARENT_SELECTED'
 export const ADD_PARENT = 'ADD_PARENT'
 export const DELETE_ROUTE = 'DELETE_ROUTE'
 export const DELETE_COMPONENT = 'DELETE_COMPONENT'
+export const UPDATE_COMPONENT_SIZE = 'UPDATE_COMPONENT_SIZE'
 // Image upload mutations
 export const IMPORT_IMAGE = 'IMPORT_IMAGE'
 export const CLEAR_IMAGE = 'CLEAR_IMAGE'
@@ -57,6 +60,8 @@ export const DELETE_USER_STATE = 'DELETE_USER_STATE'
 export const SET_IMAGE_PATH = 'SET_IMAGE_PATH'
 
 // Actions
+export const updateComponentSize = 'updateComponentSize'
+export const updateStartingSize = 'updateStartingSize'
 export const registerComponent = 'registerComponent'
 export const setSelectedElementList = 'setSelectedElementList'
 export const addToSelectedElementList = 'addToSelectedElementList'
@@ -77,6 +82,7 @@ export const incrementProjectId = 'incrementProjectId'
 export const setRoutes = 'setRoutes'
 export const setComponentHtmlList = 'setComponentHtmlList'
 export const deleteProjectTab = 'deleteProjectTab'
+export const updateStartingPosition = 'updateStartingPosition'
 // ChildrenMultiselect actions
 export const updateComponentChildrenMultiselectValue =
   'updateComponentChildrenMultiselectValue'
@@ -85,6 +91,7 @@ export const updateActiveComponentChildrenValue =
 
 export const updateComponentChildrenValue = 'updateComponentChildrenValue'
 export const updateComponentNameInputValue = 'updateComponentNameInputValue'
+export const updateComponentPosition = 'updateComponentPosition' 
 export const updateOpenModal = 'updateOpenModal'
 export const parentSelected = 'parentSelected'
 export const deleteRoute = 'deleteRoute'
