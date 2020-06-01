@@ -170,7 +170,7 @@ export default {
       console.log('mockBg is working', this.imagePath[this.activeRoute])
       return this.imagePath[this.activeRoute]
         ? {
-          background: `url("${this.userImage}") center/cover no-repeat`
+          background: `url("${this.userImage}") center/contain no-repeat`
         }
         : {}
     }
