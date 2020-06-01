@@ -53,9 +53,9 @@ export default {
     createTemplate(componentName, children) {
       let output = ``;
       output += ` <div>\n`;
-      children.forEach(name => {
-        output += `    <${name}>\n    </${name}>\n`;
-      });
+      // children.forEach(name => {
+      //   output += `    <${name}>\n    </${name}>\n`;
+      // });
       let templateTagStr = this.writeTemplateTag(componentName);
       return `<template>\n ${output}${templateTagStr}  </div>\n</template>`;
     },
@@ -83,8 +83,12 @@ export default {
       let outputStr = ``;
       for (let el of htmlArr) {
         outputStr += `    `;
-        outputStr += htmlElementMap[el.text][0];
-        outputStr += htmlElementMap[el.text][1];
+        if (el.text) {
+          outputStr += htmlElementMap[el.text][0];
+          outputStr += htmlElementMap[el.text][1];
+        } else {
+          outputStr += `<${el} />`
+        }
         outputStr += `  \n`;
       }
       // console.log(`outputStr from writeTemplateTag: ${outputStr}`)

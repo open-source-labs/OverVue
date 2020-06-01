@@ -129,8 +129,8 @@ const mutations = {
   [types.ADD_PARENT]: (state, payload) => {
     state.componentMap[payload.componentName].parent[state.parentSelected] = state.componentMap[state.parentSelected]
     state.componentMap[state.parentSelected].children.push(payload.componentName)
+    state.componentMap[state.parentSelected].htmlList.push(payload.componentName)
   },
-
   // adds a html tag from the Icons.vue to the HomeQueue.vue
   // event: getClickedIcon @Icons.vue
   [types.ADD_TO_SELECTED_ELEMENT_LIST]: (state, payload) => {
@@ -323,6 +323,13 @@ const mutations = {
       ].children.filter(el => !payload.includes(el))
       state.componentMap[child[0]].parent[state.activeComponent] = state.componentMap[state.activeComponent]
     }
+    const copy = [...state.componentMap[state.activeComponent].htmlList]
+    for (var x in payload) {
+      if (!copy.includes(payload[x])) {
+        copy.push(payload[x])
+      }
+    }
+    state.componentMap[state.activeComponent].htmlList = copy
   },
   // allows usr to change the name of component!!
   [types.UPDATE_COMPONENT_NAME_INPUT_VALUE]: (state, payload) => {

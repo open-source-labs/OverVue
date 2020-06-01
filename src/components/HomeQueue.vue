@@ -44,7 +44,7 @@ export default {
     renderList: {
       get () {
         if (this.activeComponent === '') return this.selectedElementList
-        return this.componentMap[this.activeComponent].htmlList
+        return this.componentMap[this.activeComponent].htmlList.filter(el => el.text)
       },
       set (value) {
         this.$store.dispatch(setSelectedElementList, value)
