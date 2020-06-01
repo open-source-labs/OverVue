@@ -2,6 +2,28 @@ import icons from './icons'
 import htmlElementMap from './htmlElementMap'
 const cloneDeep = require('lodash.clonedeep')
 
+let hardA = {
+  componentName: "a",
+  x: 0,
+  y: 20,
+  z: 0,
+  w: 200,
+  h: 200,
+  htmlList: [{
+    children:[{
+      children:[],
+      text:'form'
+    }],
+    text: "div"
+  }],
+  children: [],
+  parent: {},
+  isActive: false
+}
+
+
+
+
 const newState = {
   icons,
   htmlElementMap,
@@ -15,13 +37,14 @@ const newState = {
     },
     HomeView: {
       componentName: 'HomeView',
-      children: [],
+      children: ['a'],
       htmlList: []
-    }
+    },
     // NewView: {}
+    a: hardA
   },
   routes: {
-    HomeView: []
+    HomeView: [hardA]
     // NewView: []
   },
   userActions: [],

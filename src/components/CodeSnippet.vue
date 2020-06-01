@@ -59,6 +59,9 @@ export default {
       let templateTagStr = this.writeTemplateTag(componentName);
       return `<template>\n ${output}${templateTagStr}  </div>\n</template>`;
     },
+
+    // We need a helper function to recursively iterate through the given html element's children and their children's children.
+
     writeTemplateTag(componentName) {
       // console.log('writeTemplateTag invoked!')
       // create reference object
