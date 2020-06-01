@@ -406,7 +406,7 @@ export default {
   z-index: -1;
 }
 .component-children {
-  position: relative;
+  position: absolute;
   top: 0rem;
   left: 2px;
   color: black;
