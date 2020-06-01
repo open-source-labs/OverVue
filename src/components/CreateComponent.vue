@@ -70,7 +70,7 @@ export default {
       const component = {
         componentName: this.componentNameInputValue,
         x: 0,
-        y: 0,
+        y: 20,
         z: 0,
         w: 200,
         h: 200,
@@ -84,7 +84,9 @@ export default {
 
     },
     resetActiveComponent () {
+      if(!this.activeComponent === ''){
       this.setActiveComponent('')
+      }
       
     },
     handleIconClick () {

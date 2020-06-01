@@ -50,6 +50,35 @@ const actions = {
       commit(types.SET_SELECTED_ELEMENT_LIST, payload)
     }
   },
+
+  [types.updateComponentPosition]: ({ commit }, payload) =>{
+    /*  let payload = {
+        x = x,
+        y = y,
+        activeComponent = this.activeComponent,
+        routeArray = this.routes[this.activeRoute],
+        activeComponentData = this.activeComponentData
+      }*/
+    
+        commit(types.UPDATE_COMPONENT_POSITION, payload)
+
+  },
+
+  //does the same as update component position, but needed to record the initial spot of the draggable resizeable in component display
+  // or else undo/redo won't work
+  [types.updateStartingPosition]: ({ commit }, payload) => {
+    commit(types.UPDATE_COMPONENT_POSITION, payload)
+  },
+
+  [types.updateStartingSize]: ({ commit }, payload) => {
+    commit(types.UPDATE_COMPONENT_SIZE, payload)
+  },
+
+  [types.updateComponentSize]: ({ commit }, payload) => {
+    commit(types.UPDATE_COMPONENT_SIZE,payload)
+  },
+
+
   // adds component to the homeQueue
   [types.addToSelectedElementList]: ({ commit }, payload) => {
     commit(types.ADD_TO_SELECTED_ELEMENT_LIST, payload)
