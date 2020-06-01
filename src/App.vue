@@ -8,7 +8,7 @@
 import { SET_ACTIVE_COMPONENT } from './store/types'
 const deepEqual = require('lodash.isequal')
 const cloneDeep = require('lodash.clonedeep')
-
+import {defaultState} from './store/state/index.js'
 
 let redoMixin = {
   data() {
@@ -16,7 +16,8 @@ let redoMixin = {
           // banana:[],
           doneAction:[],
           undoneAction:[],
-          isTimetraveling: false
+          isTimetraveling: false,
+          initialState:{}
         }
       },
       
@@ -60,6 +61,9 @@ let redoMixin = {
            this.redo()
           }
         });
+        //console.log("do we want this? or this.$store.state?", this.$store.state)
+        this.initialState = defaultState(this.$store.state)
+
       },
 
       methods: {
@@ -86,7 +90,11 @@ let redoMixin = {
           //  while (this.doneAction[this.doneAction.length-1] &&
           //   (this.doneAction[this.doneAction.length - 1].type === "setActiveComponent" ||
           //    this.doneAction[this.doneAction.length - 1].type === "updateComponentPosition" ))
-          this.$store.commit("EMPTY_STATE",this.$store)
+          let payload = {
+            initialState: this.initialState,
+            store: this.$store
+          }
+          this.$store.commit("EMPTY_STATE",payload)
           console.log(this.$store)
           this.doneAction.forEach(action => {
             console.log("In the loop",this.$store)

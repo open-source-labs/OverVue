@@ -1,6 +1,7 @@
 import * as types from './types'
 import icons from './state/icons.js'
 import htmlElementMap from './state/htmlElementMap.js'
+const cloneDeep = require('lodash.clonedeep')
 // import VuexStore from './index'
 // import { getDefault, defaultState } from './state/index.js'
 
@@ -80,6 +81,7 @@ const mutations = {
   },
   // empty state
   [types.EMPTY_STATE]: (state, payload) => {
+<<<<<<< HEAD
     console.log('This is our defaultstate still', defaultState)
     console.log(payload)
     payload.replaceState({
@@ -123,6 +125,50 @@ const mutations = {
         HomeView: ''
       }
     })
+=======
+    // console.log('This is our defaultstate still', defaultState)
+    console.log("hopefully this stays pure", payload)
+    payload.store.replaceState(cloneDeep(payload.initialState))
+      // {
+    //   icons,
+    //   htmlElementMap,
+    //   // every single time we create a component
+    //   // sent to export project component
+    //   componentMap: {
+    //     App: {
+    //       componentName: 'App',
+    //       children: ['HomeView'],
+    //       htmlList: []
+    //     },
+    //     HomeView: {
+    //       componentName: 'HomeView',
+    //       children: [],
+    //       htmlList: []
+    //     }
+    //     // NewView: {}
+    //   },
+    //   routes: {
+    //     HomeView: []
+    //     // NewView: []
+    //   },
+    //   userActions: [],
+    //   userState: {},
+    //   /**
+    //    *
+    //    */
+    //   componentNameInputValue: '',
+    //   projects: [{ filename: 'Untitled-1', lastSavedLocation: '' }],
+    //   activeRoute: 'HomeView',
+    //   activeComponent: '',
+    //   selectedElementList: [],
+    //   projectNumber: 2,
+    //   activeTab: 0,
+    //   componentChildrenMultiselectValue: [],
+    //   modalOpen: false,
+    //   parentSelected: false,
+    //   imagePath: ''
+    // })
+>>>>>>> 823ed2271ff432299d30b485464fbc842b60ff07
   },
 
   // add parent

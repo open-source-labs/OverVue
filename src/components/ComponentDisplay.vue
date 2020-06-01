@@ -250,8 +250,13 @@ export default {
         routeArray: this.routes[this.activeRoute],
         activeComponentData: this.activeComponentData
       }
+<<<<<<< HEAD
       console.log("x: ",payload.x,"y:",payload.y)
       // this.updateStartingPosition(payload);
+=======
+      console.log("x: ",payload.x,"y: ",payload.y)
+      //this.updateStartingPosition(payload);
+>>>>>>> 823ed2271ff432299d30b485464fbc842b60ff07
     },
 
     recordInitialSize: function (e) {
