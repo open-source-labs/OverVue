@@ -64,7 +64,7 @@ const actions = {
 
   },
 
-  //does the same as update component position, but needed to record the initial spot of the draggable resizeable in component display
+  // does the same as update component position, but needed to record the initial spot of the draggable resizeable in component display
   // or else undo/redo won't work
   [types.updateStartingPosition]: ({ commit }, payload) => {
     commit(types.UPDATE_COMPONENT_POSITION, payload)
