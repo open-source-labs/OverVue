@@ -117,9 +117,9 @@ const actions = {
     commit(types.CHANGE_ACTIVE_TAB, payload)
   },
   // used by OpenProjectComponent.vue
-  [types.setComponentMap]: ({ commit }, payload) => {
-    commit(types.SET_COMPONENT_MAP, payload)
-  },
+  // [types.setComponentMap]: ({ commit }, payload) => {
+  //   commit(types.SET_COMPONENT_MAP, payload)
+  // },
   [types.addRouteToRouteMap]: ({ state, commit }, payload) => {
     commit(types.ADD_ROUTE, payload)
     commit(types.SET_ACTIVE_ROUTE, payload)
@@ -137,9 +137,9 @@ const actions = {
   [types.setActiveComponent]: ({ commit }, payload) => {
     commit(types.SET_ACTIVE_COMPONENT, payload)
   },
-  [types.setRoutes]: ({ commit }, payload) => {
-    commit(types.SET_ROUTES, payload)
-  },
+  // [types.setRoutes]: ({ commit }, payload) => {
+  //   commit(types.SET_ROUTES, payload)
+  // },
   [types.deleteProjectTab]: ({ commit }, payload) => {
     commit(types.DELETE_PROJECT_TAB, payload)
   },
@@ -199,9 +199,19 @@ const actions = {
     })
     commit(types.DELETE_USER_STATE, payload)
   },
-  [types.setImagePath]: ({ commit }, payload) => {
-    console.log('image payload', payload)
-    commit(types.SET_IMAGE_PATH, payload)
+  // [types.setImagePath]: ({ commit }, payload) => {
+  //   console.log('image payload', payload)
+  //   commit(types.SET_IMAGE_PATH, payload)
+  // },
+  [types.openProject]: ({ commit }, payload) => {
+    // open project imagePath, componentPath, routePath
+    console.log('image', payload.imagePath)
+    console.log('component', payload.componentMap)
+    console.log('route', payload.routes)
+    commit(types.SET_IMAGE_PATH, payload.imagePath)
+    commit(types.SET_COMPONENT_MAP, payload.componentMap)
+    commit(types.SET_ROUTES, payload.routes)
+    
   }
 }
 

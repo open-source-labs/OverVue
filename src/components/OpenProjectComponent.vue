@@ -14,9 +14,10 @@ export default {
   name: 'OpenProjectComponent',
   methods: {
     ...mapActions([
-      'setComponentMap',
-      'setRoutes',
-      'setImagePath'
+      // 'setComponentMap',
+      // 'setRoutes',
+      // 'setImagePath',
+      'openProject'
     ]),
     parseFileName(file) {
       //Obtains json file name from file path
@@ -25,11 +26,13 @@ export default {
     openJSONFile (data) {
       const jsonFile = JSON.parse(fs.readFileSync(data[0], 'utf8'))
       console.log('json file', jsonFile.imagePath)
-      this.setComponentMap(jsonFile.componentMap)
-      this.setRoutes(jsonFile.routes)
-      if (jsonFile.imagePath) {
-        this.setImagePath(jsonFile.imagePath)
-      }
+      // this.setComponentMap(jsonFile.componentMap)
+      // this.setRoutes(jsonFile.routes)
+      // if (jsonFile.imagePath) {
+      //   this.setImagePath(jsonFile.imagePath)
+      // }
+      // open project action
+      this.openProject(jsonFile)
     },
     showOpenJSONDialog () {
       remote.dialog.showOpenDialog({
