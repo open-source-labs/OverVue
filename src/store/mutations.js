@@ -275,6 +275,10 @@ const mutations = {
     payload.activeComponentData.x = payload.x
     payload.activeComponentData.y = payload.y //Object.assign({}, state.componentMap[payload.activeComponent], {x: payload.x, y: payload.y});
   },
+  [types.UPDATE_COMPONENT_LAYER]: (state, payload) => {
+    state.componentMap[payload.activeComponent].z = payload.z
+    payload.activeComponentData.z = payload.z
+  },
   [types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE]: (state, payload) => {
     // original line
     let temp = state.componentMap[state.activeComponent].children // b c  and we are removing c

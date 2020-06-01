@@ -87,7 +87,7 @@ export default {
       testOptions: ["parent", "child", "grandchild"],
       testModel: [],
       mockImg: false,
-      counter: 0,
+      // counter: 6,
       initialPosition:{x:0, y:0,},
     };
   },
@@ -114,7 +114,7 @@ export default {
     ]),
     // used in VueDraggableResizeable component
     activeRouteArray() {
-      // console.log("active route array method", this.routes[this.activeRoute]);
+      console.log("active route array method", this.routes[this.activeRoute]);
       return this.routes[this.activeRoute];
     },
     // used to delete components
@@ -211,6 +211,7 @@ export default {
       "updateActiveComponentChildrenValue",
       "updateComponentPosition",
       "updateStartingPosition",
+      "updateComponentLayer"
     ]),
     onResize: function(x, y, width, height) {
       this.activeComponentData.x = x;
@@ -326,17 +327,26 @@ export default {
       e.preventDefault()
       console.log('event object', e.target.innerText)
       console.log('Layer handled')
+
+      const payload = {
+        activeComponent: this.activeComponent,
+        routeArray: this.routes[this.activeRoute],
+        activeComponentData: this.activeComponentData,
+        z: this.activeComponentData.z,
+      }
       
       if(e.target.innerText === '+'){
-        this.counter++;
+        payload.z++;
         // this.activeComponentData.z = z;
       }
-      if(e.target.innerText === '-' && this.counter > 0){
-        this.counter--;
+      if(e.target.innerText === '-' && payload.z > 0){
+        payload.z--;
       }
-      console.log('counter', this.counter)
-      this.activeComponentData.z = this.counter;
-      this.componentMap[this.activeComponent].z = this.counter;
+      // console.log('counter', this.counter)
+      this.activeComponentData.z = payload.z;
+      // this.componentMap[this.activeComponent].z = this.counter;
+
+      this.updateComponentLayer(payload)
 
     },
     //       @dblclick.native="onDoubleClick(componentData)"

@@ -35,6 +35,7 @@ export const UPDATE_COMPONENT_NAME_INPUT_VALUE =
 export const UPDATE_COMPONENT_CHILDREN_VALUE =
   'UPDATE_COMPONENT_CHILDREN_VALUE'
 export const UPDATE_COMPONENT_POSITION = "UPDATE_COMPONENT_POSITION"
+export const UPDATE_COMPONENT_LAYER = "UPDATE_COMPONENT_LAYER"
 export const UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE =
   'UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE'
 export const ADD_COMPONENT_TO_COMPONENT_CHILDREN =
@@ -87,6 +88,7 @@ export const updateActiveComponentChildrenValue =
 export const updateComponentChildrenValue = 'updateComponentChildrenValue'
 export const updateComponentNameInputValue = 'updateComponentNameInputValue'
 export const updateComponentPosition = 'updateComponentPosition' 
+export const updateComponentLayer = 'updateComponentLayer'
 export const updateOpenModal = 'updateOpenModal'
 export const parentSelected = 'parentSelected'
 export const deleteRoute = 'deleteRoute'
