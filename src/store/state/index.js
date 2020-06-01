@@ -40,7 +40,11 @@ const newState = {
   modalOpen: false,
   parentSelected: false,
   imagePath: {
+<<<<<<< HEAD
     HomeView:'',
+=======
+    HomeView: '',
+>>>>>>> master
   }
 }
 

@@ -101,7 +101,7 @@ export default {
 
     window.addEventListener("keyup", event => {
       if (event.key === "Backspace") {
-        if (this.activeComponent && this.activeComponentData.isActive) {
+        if (this.activeComponent /*&& this.activeComponentData.isActive*/) {
           // console.log('this:', this)
           this.$store.dispatch("deleteActiveComponent");
         }
@@ -185,16 +185,16 @@ export default {
   },
   updated() {
     //console.log("updated")
-    if (this.activeComponent === '') {
-      if (this.$refs.boxes) {
-        this.$refs.boxes.forEach((element) => {
+    if(this.activeComponent === '')
+    {
+      if(this.$refs.boxes){
+      this.$refs.boxes.forEach((element)=> {
           element.enabled = false;
           element.$emit('deactivated')
           element.$emit('update:active', false)
-        })
-      }
-    }
-    else {
+        
+      })}
+    } else {
       this.$refs.boxes.forEach((element)=>{
         // added "element.enabled === false to stop it from emitting a change every frame the box moves
         // may need to re-enable to track box movement and resizing since that stuff isn't part of a single source of truth.
@@ -252,7 +252,7 @@ export default {
         activeComponentData: this.activeComponentData
       }
       console.log("x: ",payload.x,"y: ",payload.y)
-      // this.updateStartingPosition(payload);
+      //this.updateStartingPosition(payload);
     },
 
     recordInitialSize: function (e) {
@@ -318,11 +318,11 @@ export default {
       }
     },
 
-    onActivated (componentData) {
+    onActivated(componentData) {
       //console.log("I RAN!")
-      this.$refs.boxes.forEach((element) => {
-        if (element.$attrs.id !== componentData.componentName) {
-          element.enabled = false;
+          this.$refs.boxes.forEach((element)=> {
+        if (element.$attrs.id !== componentData.componentName){
+           element.enabled = false;
           element.$emit('deactivated')
           element.$emit('update:active', false)
         }
@@ -382,9 +382,9 @@ export default {
     //   this.setActiveComponent(compData.componentName)
     //   this.activeComponentData.isActive = true
     // }
-    handleClick(event) {
-      if (event.target.className === "component-display grid-bg") {
-        if (!('' === this.activeComponent)) this.setActiveComponent('');
+    handleClick(event){
+      if(event.target.className === "component-display grid-bg") {
+         if(!('' === this.activeComponent)) this.setActiveComponent('');
       }
     }
   }
