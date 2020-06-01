@@ -83,7 +83,7 @@ export default {
   components: {
     VueDraggableResizable
   },
-  data() {
+  data () {
     // console.log("Component Map", this.componentMap);
     return {
       modalOpen: false,
@@ -96,7 +96,7 @@ export default {
       initialSize:{w:0,h:0,},
     };
   },
-  mounted() {
+  mounted () {
     // when component is mounted add ability to delete
 
     window.addEventListener("keyup", event => {
@@ -185,6 +185,7 @@ export default {
   },
   updated() {
     //console.log("updated")
+<<<<<<< HEAD
     if(this.activeComponent === '')
     {
       if(this.$refs.boxes){
@@ -205,9 +206,29 @@ export default {
             element.$emit('activated')
             element.$emit('update:active', true)
           }
+=======
+    if (this.activeComponent === '') {
+      if (this.$refs.boxes) {
+        this.$refs.boxes.forEach((element) => {
+          element.enabled = false;
+          element.$emit('deactivated')
+          element.$emit('update:active', false)
+>>>>>>> 8acb70474c57807f7f8a7eb4a9d0b41b8f7f73be
         })
       }
-    },
+    }
+    else {
+      this.$refs.boxes.forEach((element)=>{
+        // added "element.enabled === false to stop it from emitting a change every frame the box moves
+        // may need to re-enable to track box movement and resizing since that stuff isn't part of a single source of truth.
+        if (this.activeComponent === element.$attrs.id && element.enabled === false) {
+          element.enabled = true
+          element.$emit('activated')
+          element.$emit('update:active', true)
+        }
+      })
+    }
+  },
 
   methods: {
     ...mapActions([
@@ -235,8 +256,8 @@ export default {
       console.log("we started a drag")
       console.log("this.intialPosition",this.initialPosition)
       console.log("WHAT IS THIS", this)
-       if(this.activeComponent !== e.target.id){
-      this.setActiveComponent(e.target.id)
+      if (this.activeComponent !== e.target.id) {
+        this.setActiveComponent(e.target.id)
       }
       this.initialPosition.x = this.activeComponentData.x
       this.initialPosition.y = this.activeComponentData.y
@@ -245,7 +266,7 @@ export default {
       // console.log(this.initialPosition.x)
       // console.log(this.initialPosition.y)
 
-        let payload = {
+      let payload = {
         x: this.initialPosition.x,
         y: this.initialPosition.y,
         activeComponent: this.activeComponent,
@@ -253,12 +274,17 @@ export default {
         activeComponentData: this.activeComponentData
       }
       console.log("x: ",payload.x,"y:",payload.y)
-      //this.updateStartingPosition(payload);
+      // this.updateStartingPosition(payload);
     },
 
+<<<<<<< HEAD
     recordInitialSize: function(e) {
       console.log("MAKE MY MONSTER GROW!")
     
+=======
+    recordInitialSize: function (e) {
+      // console.log("MAKE MY MONSTER GROW!")
+>>>>>>> 8acb70474c57807f7f8a7eb4a9d0b41b8f7f73be
       this.initialSize.h = this.activeComponentData.h
       this.initialSize.w = this.activeComponentData.w
       this.initialPosition.x = this.activeComponentData.x
@@ -289,9 +315,15 @@ export default {
         routeArray: this.routes[this.activeRoute],
         activeComponentData: this.activeComponentData
       }
+<<<<<<< HEAD
       if(payload.x !== this.initialPosition.x || payload.y !== this.initialPosition.y || 
           payload.w !== this.initialSize.w || payload.h !==this.initialSize.h) {
         this.updateComponentSize(payload)
+=======
+      if (payload.x !== this.initialPosition.x || payload.y !== this.initialPosition.y || 
+          payload.w !== this.initialSize.w || payload.h !==this.initialSize.h) {
+      this.updateComponentSize(payload)
+>>>>>>> 8acb70474c57807f7f8a7eb4a9d0b41b8f7f73be
       }
     },
 
@@ -320,13 +352,22 @@ export default {
       }
       // console.log("Payload.x = ", payload.x, "this.initialPosition.x", this.initialPosition.x)
       //  console.log("Payload.y = ", payload.y, "this.initialPosition.y", this.initialPosition.y)
+<<<<<<< HEAD
       if(payload.x !== this.initialPosition.x || payload.y !== this.initialPosition.y) {
+=======
+      if (payload.x !== this.initialPosition.x || payload.y !== this.initialPosition.y) {
+>>>>>>> 8acb70474c57807f7f8a7eb4a9d0b41b8f7f73be
         this.updateComponentPosition(payload);
       }
     },
 
+<<<<<<< HEAD
     onActivated(componentData) {
       // console.log("I RAN!")
+=======
+    onActivated (componentData) {
+      //console.log("I RAN!")
+>>>>>>> 8acb70474c57807f7f8a7eb4a9d0b41b8f7f73be
       this.$refs.boxes.forEach((element) => {
         if (element.$attrs.id !== componentData.componentName) {
           element.enabled = false;
@@ -337,18 +378,16 @@ export default {
       // console.log("this is what is currently active",this.activeComponent)
       // console.log("this is this", this)
       // console.log('!(componentData.componentName === this.activeComponent)?',!(componentData.componentName === this.activeComponent))
-      if(!(componentData.componentName === this.activeComponent)){
+      if (!(componentData.componentName === this.activeComponent)) {
         this.setActiveComponent(componentData.componentName);
       }
       this.activeComponentData.isActive = true;
-      
-  
     },
 
     // deactivated is emitted before activated
   
-    onDeactivated(componentData) {
-      if(this.activeComponent !== '') {
+    onDeactivated (componentData) {
+      if (this.activeComponent !== '') {
         this.activeComponentData.isActive = false;
       }
       // console.log("Componentdataname", componentData.componentName)
@@ -358,8 +397,8 @@ export default {
       //   console.log("We just clicked without making a new active component")
       // }
     },
-    onDoubleClick(compData) {
-       if(!(componentData.componentName === this.activeComponent)){
+    onDoubleClick (compData) {
+      if (!(componentData.componentName === this.activeComponent)) {
         this.setActiveComponent(componentData.componentName);
       }
       this.activeComponentData.isActive = true;
@@ -396,11 +435,10 @@ export default {
     //   this.setActiveComponent(compData.componentName)
     //   this.activeComponentData.isActive = true
     // }
-    handleClick(event) {
-      if(event.target.className === "component-display grid-bg")
-      {
-         if(!('' === this.activeComponent)){
-        this.setActiveComponent('');
+    handleClick (event) {
+      if (event.target.className === "component-display grid-bg") {
+        if (!('' === this.activeComponent)) {
+          this.setActiveComponent('');
         }
       }
     }

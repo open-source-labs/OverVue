@@ -108,3 +108,5 @@ export const removeStateFromComponent = 'removeStateFromComponent'
 export const deleteUserState = 'deleteUserState'
 // open image action
 export const setImagePath = 'setImagePath'
+// open project action
+export const openProject = 'openProject'

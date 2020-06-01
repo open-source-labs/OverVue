@@ -34,8 +34,9 @@
         <div class="file-path">
           <q-card>
             <!-- <img :src="[imageExists ? `file:///${imagePath[this.activeRoute]}` : ' ']" /> -->
-            <img class='img' :src="source"/>
-
+            <!-- <img class='img' :src="'file:///' + this.imagePath[this.activeRoute]"/> -->
+            <img class='img' v-if='this.imagePath[this.activeRoute] !== ""' :src="'file:///' + this.imagePath[this.activeRoute]"/>
+            <!-- <img /> -->
             <!-- <q-card-section>
               <div class="text-h6 file-header">File Path</div>
               <div class="text-subtitle2 file-content">{{ imagePath[0] }}</div>
