@@ -8,7 +8,7 @@
       :close-on-select="false"
       :max-height="150"
       :option-height="20"
-      @input="onActivated(value)"
+      @input="handleSelect(value)"
       placeholder="Select a component"></multiselect>
       <br/>
     <a
@@ -74,17 +74,17 @@ export default {
       'deleteActiveComponent'
     ]),
     onActivated (componentData) {
-      if (!componentData.componentName) {
-        this.setActiveComponent(componentData)
-        this.value = ''
-      } else {
-        this.setActiveComponent(componentData.componentName)
-      }
+      this.setActiveComponent(componentData.componentName)
       this.activeComponentData.isActive = true
     },
     handleClick (componentData) {
       this.setActiveComponent(componentData.componentName)
       this.deleteActiveComponent(componentData.componentName)
+    },
+    handleSelect (componentName) {
+      this.setActiveComponent(componentName)
+      this.value = ''
+      this.activeComponentData.isActive = true
     }
   }
 }
