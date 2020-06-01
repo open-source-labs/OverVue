@@ -8,7 +8,7 @@
       :key="componentData.componentName"
       :id ="componentData.componentName"
       :x="componentData.x"
-      :y="componentData.y + 20"
+      :y="componentData.y"
       :z="componentData.z"
       :w="componentData.w"
       :h="componentData.h"
@@ -20,8 +20,12 @@
       @resizing="onResize"
       @dblclick.native="onDoubleClick(componentData)"
       @dragstop="finishedDrag"
+      @resizestop="finishedResize"
       :onDragStart="recordInitialPosition"
+      :onResizeStart="recordInitialSize" 
     >
+      <!-- :onDragStart="recordInitialPosition"
+            :onResizeStart="recordInitialSize" -->
       <div class="component-title">
         <p>{{ componentData.componentName }}</p>
       </div>
@@ -89,6 +93,7 @@ export default {
       mockImg: false,
       counter: 0,
       initialPosition:{x:0, y:0,},
+      initialSize:{w:0,h:0,},
     };
   },
   mounted() {
@@ -179,7 +184,7 @@ export default {
   },
 
   updated() {
-    console.log("updated")
+    //console.log("updated")
     if(this.activeComponent === '')
     {
       if(this.$refs.boxes){
@@ -191,20 +196,6 @@ export default {
       })}
     }
     else{
-<<<<<<< HEAD
-      this.$refs.boxes.forEach((element)=>{
-        // added "element.enabled === false to stop it from emitting a change every frame the box moves
-        //may need to re-enable to track box movement and resizing since that stuff isn't part of a single source of truth.
-        if(this.activeComponent === element.$attrs.id && element.enabled === false)
-        {
-          element.enabled = true
-          element.$emit('activated')
-          element.$emit('update:active', true)
-        }
-      })
-    }
-  },
-=======
         this.$refs.boxes.forEach((element)=>{
           // added "element.enabled === false to stop it from emitting a change every frame the box moves
           //may need to re-enable to track box movement and resizing since that stuff isn't part of a single source of truth.
@@ -217,7 +208,6 @@ export default {
         })
       }
     },
->>>>>>> 55581781ee9af1d82fd02398e554577cdc7b71d4
 
   methods: {
     ...mapActions([
@@ -226,6 +216,8 @@ export default {
       "updateActiveComponentChildrenValue",
       "updateComponentPosition",
       "updateStartingPosition",
+      "updateStartingSize",
+      "updateComponentSize",
     ]),
     onResize: function(x, y, width, height) {
       this.activeComponentData.x = x;
@@ -246,8 +238,13 @@ export default {
        if(this.activeComponent !== e.target.id){
       this.setActiveComponent(e.target.id)
       }
-      this.initialPosition.x = this.componentMap[this.activeComponent].x
-      this.initialPosition.y = this.componentMap[this.activeComponent].y
+      this.initialPosition.x = this.activeComponentData.x
+      this.initialPosition.y = this.activeComponentData.y
+      // console.log(this.activeComponentData)
+      // console.log(this.activeComponentData.x)
+      // console.log(this.initialPosition.x)
+      // console.log(this.initialPosition.y)
+
         let payload = {
         x: this.initialPosition.x,
         y: this.initialPosition.y,
@@ -255,7 +252,47 @@ export default {
         routeArray: this.routes[this.activeRoute],
         activeComponentData: this.activeComponentData
       }
-      this.updateStartingPosition(payload);
+      console.log("x: ",payload.x,"y:",payload.y)
+      //this.updateStartingPosition(payload);
+    },
+
+    recordInitialSize: function(e){
+      console.log("MAKE MY MONSTER GROW!")
+     
+      this.initialSize.h = this.activeComponentData.h
+      this.initialSize.w = this.activeComponentData.w
+      this.initialPosition.x = this.activeComponentData.x
+      this.initialPosition.y = this.activeComponentData.y
+
+        let payload = {
+        h: this.initialSize.h,
+        w: this.initialSize.w,
+        x: this.activeComponentData.x,
+        y: this.activeComponentData.y,
+        activeComponent: this.activeComponent,
+        routeArray: this.routes[this.activeRoute],
+        activeComponentData: this.activeComponentData
+      }
+
+      //this.updateStartingSize(payload);
+
+    },
+
+    finishedResize: function(x,y,w,h){
+      console.log("FINISHED RESIZING")
+      let payload = {
+        x: x,
+        y: y,
+        w: w,
+        h: h,
+        activeComponent: this.activeComponent,
+        routeArray: this.routes[this.activeRoute],
+        activeComponentData: this.activeComponentData
+      }
+      if(payload.x !== this.initialPosition.x || payload.y !== this.initialPosition.y || 
+          payload.w !== this.initialSize.w || payload.h !==this.initialSize.h){
+      this.updateComponentSize(payload)
+      }
     },
 
     onDrag: function(x, y) {
@@ -281,15 +318,15 @@ export default {
         routeArray: this.routes[this.activeRoute],
         activeComponentData: this.activeComponentData
       }
-      console.log("Payload.x = ", payload.x, "this.initialPosition.x", this.initialPosition.x)
-       console.log("Payload.y = ", payload.y, "this.initialPosition.y", this.initialPosition.y)
+      // console.log("Payload.x = ", payload.x, "this.initialPosition.x", this.initialPosition.x)
+      //  console.log("Payload.y = ", payload.y, "this.initialPosition.y", this.initialPosition.y)
       if(payload.x !== this.initialPosition.x || payload.y !== this.initialPosition.y){
         this.updateComponentPosition(payload);
       }
     },
 
     onActivated(componentData) {
-      console.log("I RAN!")
+      //console.log("I RAN!")
           this.$refs.boxes.forEach((element)=> {
         if (element.$attrs.id !== componentData.componentName){
            element.enabled = false;
@@ -383,7 +420,7 @@ export default {
   /* width: 1rem; */
   line-height: 1.2;
   /* margin: 10px; */
-  z-index: 0;
+  z-index: -1;
 }
 .component-children {
   position: absolute;

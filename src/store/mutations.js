@@ -141,6 +141,8 @@ const mutations = {
   },
   [types.ADD_TO_COMPONENT_HTML_LIST]: (state, elementName) => {
     const componentName = state.activeComponent
+
+    state.componentMap[componentName] = {...state.componentMap[componentName]}
     state.componentMap[componentName].htmlList.push({
       text: elementName,
       children: []
@@ -167,15 +169,11 @@ const mutations = {
 
     const activeObjChildrenArray = newObj[activeComponent].children
     // console.log(newObj[activeComponent])
-<<<<<<< HEAD
-    // console.log("children of the soon to be deleted object", activeObjChildrenArray)
-=======
     // console.log('Saving the children of the soon to be deleted object', activeObjChildrenArray)
 
     activeObjChildrenArray.forEach(child => {
       delete newObj[child].parent[activeComponent]
     })
->>>>>>> 55581781ee9af1d82fd02398e554577cdc7b71d4
 
     delete newObj[activeComponent]
 
@@ -276,9 +274,27 @@ const mutations = {
     state.componentMap[component].children = value
   },
   [types.UPDATE_COMPONENT_POSITION]: (state, payload) => {
-    payload.activeComponentData.x = payload.x
-    payload.activeComponentData.y = payload.y //Object.assign({}, state.componentMap[payload.activeComponent], {x: payload.x, y: payload.y});
+   const updatedComponent = state.routes[state.activeRoute].filter(element => {
+      return element.componentName === payload.activeComponent
+    })[0]
+
+    updatedComponent.x = payload.x
+    updatedComponent.y = payload.y //Object.assign({}, state.componentMap[payload.activeComponent], {x: payload.x, y: payload.y});
+
   },
+
+  [types.UPDATE_COMPONENT_SIZE]: (state, payload) => {
+    const updatedComponent = state.routes[state.activeRoute].filter(element => {
+      return element.componentName === payload.activeComponent
+    })[0]
+
+    updatedComponent.h = payload.h
+    updatedComponent.w = payload.w
+    updatedComponent.x = payload.x
+    updatedComponent.y = payload.y
+  },
+
+
   [types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE]: (state, payload) => {
     // original line
     let temp = state.componentMap[state.activeComponent].children // b c  and we are removing c

@@ -70,6 +70,14 @@ const actions = {
     commit(types.UPDATE_COMPONENT_POSITION, payload)
   },
 
+  [types.updateStartingSize]: ({ commit }, payload) => {
+    commit(types.UPDATE_COMPONENT_SIZE, payload)
+  },
+
+  [types.updateComponentSize]: ({ commit }, payload) => {
+    commit(types.UPDATE_COMPONENT_SIZE,payload)
+  },
+
 
   // adds component to the homeQueue
   [types.addToSelectedElementList]: ({ commit }, payload) => {
