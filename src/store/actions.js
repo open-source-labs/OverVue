@@ -205,9 +205,9 @@ const actions = {
   // },
   [types.openProject]: ({ commit }, payload) => {
     // open project imagePath, componentPath, routePath
-    console.log('image', payload.imagePath)
-    console.log('component', payload.componentMap)
-    console.log('route', payload.routes)
+    // console.log('image', payload.imagePath)
+    // console.log('component', payload.componentMap)
+    // console.log('route', payload.routes)
     commit(types.SET_IMAGE_PATH, payload.imagePath)
     commit(types.SET_COMPONENT_MAP, payload.componentMap)
     commit(types.SET_ROUTES, payload.routes)
