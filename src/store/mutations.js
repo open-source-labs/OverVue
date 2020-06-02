@@ -349,6 +349,16 @@ const mutations = {
     state.parentSelected = payload
   },
   [types.DELETE_ROUTE]: (state, payload) => {
+    // const deleteChildren = (children) => {
+    //   console.log('children', children.children)
+    //   children.children.forEach((child) => {
+    //     if (!state.componentMap[child].children.length) delete state.componentMap[child];
+    //     else deleteChildren(child);
+    //   });
+    // }
+
+    // deleteChildren(state.routes[payload])
+
     // const stateCopy = state
     delete state.routes[payload]
     delete state.componentMap[payload]
