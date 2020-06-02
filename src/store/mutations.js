@@ -361,20 +361,21 @@ const mutations = {
     state.parentSelected = payload
   },
   [types.DELETE_ROUTE]: (state, payload) => {
-    // const deleteChildren = (children) => {
-    //   console.log('children', children.children)
-    //   children.children.forEach((child) => {
-    //     if (!state.componentMap[child].children.length) delete state.componentMap[child];
-    //     else deleteChildren(child);
-    //   });
-    // }
+    const deleteChildren = (child) => {
+        if (state.componentMap[child.componentName].children.length) {
+          child.children.forEach((grandchild) => {
+            deleteChildren(grandchild)
+          })
+        }
+        delete state.componentMap[child.componentName]
+    }
+    state.routes[payload].forEach((child => {
+      deleteChildren(child)
+    }))
 
-    // deleteChildren(state.routes[payload])
-
-    // const stateCopy = state
     delete state.routes[payload]
     delete state.componentMap[payload]
-    // state = stateCopy
+
     state.componentMap.App.children = state.componentMap.App.children.filter((route) => {
       return route !== payload;
     })
