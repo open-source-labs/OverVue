@@ -252,8 +252,12 @@ const mutations = {
     state.activeHTML = ''
   },
   [types.SET_ACTIVE_HTML_ELEMENT]: (state, payload) => {
-    console.log('id: ', payload[2])
-    state.activeHTML = payload[2]
+    // console.log('text is ', payload[0])
+    if (payload[0] === '') {
+      state.activeHTML = ''
+    } else {
+      state.activeHTML = payload[2]
+    }
   },
   [types.SET_ROUTES]: (state, payload) => {
     console.log('setroutespayload:', payload)

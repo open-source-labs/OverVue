@@ -382,9 +382,9 @@ export default {
     //   this.setActiveComponent(compData.componentName)
     //   this.activeComponentData.isActive = true
     // }
-    handleClick(event){
-      if(event.target.className === "component-display grid-bg") {
-         if(!('' === this.activeComponent)) this.setActiveComponent('');
+    handleClick(event) {
+      if (event.target.className === 'component-display grid-bg') {
+        if (!(this.activeComponent === '')) this.setActiveComponent('');
       }
     }
   }

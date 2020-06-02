@@ -1,5 +1,5 @@
 <template>
-  <section class="home-queue">
+  <section class="home-queue" v-on:click="handleClick">
     <span class='list-title' v-if='component'> Viewing Elements in '{{ this.activeComponent }}' </span>
     <span class='list-title' v-else> Elements in Queue </span>
     <hr>
@@ -11,8 +11,8 @@
       @start="drag = true"
       @end="drag = false"
     >
-      <!-- <div class="list-group-item" v-for="(element, index) in renderList" :key="index + Date.now()"> -->
-      <div class="list-group-item" @dblclick="setActiveElement(element)" v-for="(element) in renderList" :key="element[1] + Date.now()">
+      <!-- <div class="list-group-item" @dblclick="setActiveElement(element)" v-for="(element) in renderList" :key="element[1] + Date.now()"> -->
+      <div :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'" @dblclick="setActiveElement(element)" v-for="(element) in renderList" :key="element[1] + Date.now()">
         {{ element[0] }}
         <i class="fas fa fa-trash fa-md" @click="deleteElement(element[1])"></i>
       </div>
@@ -64,6 +64,12 @@ export default {
     },
     setActiveElement (element) {
       this.$store.dispatch(setActiveHTML, element)
+    },
+    handleClick (event) {
+      console.log(event.target)
+      if (event.target.className === 'home-queue') {
+        if (!(this.activeHTML === '')) this.setActiveHTML([''])
+      }
     }
   },
   components: {
@@ -92,16 +98,31 @@ li {
 .list-title {
   // font-weight: bold;
 }
+
 .list-group-item {
   display: inline-block;
   margin: 2px 1.5%;
   width: 30%;
   border-radius: 0.5cm;
+  border: 2px solid $secondary;
   background-color: $secondary;
   height: 35px;
   padding-top: 6px;
   text-align: center;
 }
+
+.list-group-item-selected {
+  display: inline-block;
+  margin: 2px 1.5%;
+  width: 30%;
+  border-radius: 0.5cm;
+  border: 2px solid white;
+  background-color: $secondary;
+  height: 35px;
+  padding-top: 6px;
+  text-align: center;
+}
+
 .fa-trash:hover {
   cursor: pointer;
   color: red;
