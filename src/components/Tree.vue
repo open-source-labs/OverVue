@@ -22,6 +22,7 @@ export default {
   computed: {
     ...mapState(['componentMap']),
     computedTree () {
+      console.log('buildtree', this.buildTree())
       return this.buildTree()
     }
   },
@@ -61,7 +62,9 @@ export default {
       return result
     },
     buildTree () {
+      console.log('this map', this.componentMap)
       let build = this.transformToTree(this.componentMap)
+      console.log('build', build)
       return build['App']
     }
   }

@@ -16,7 +16,7 @@ let hardA = {
     }],
     text: "div"
   }],
-  children: [],
+  children: ["div"],
   parent: {},
   isActive: false
 }
@@ -56,6 +56,8 @@ const newState = {
   projects: [{ filename: 'Untitled-1', lastSavedLocation: '' }],
   activeRoute: 'HomeView',
   activeComponent: '',
+  // on click, push name and index into active element
+  activeElement: [0, 'div'],
   selectedElementList: [],
   projectNumber: 2,
   activeTab: 0,
