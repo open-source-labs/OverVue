@@ -11,9 +11,10 @@
       @start="drag = true"
       @end="drag = false"
     >
-      <div class="list-group-item" v-for="(element, index) in renderList" :key="index + Date.now()">
-        {{ element.text }}
-        <i class="fas fa fa-trash fa-md" @click="deleteElement(index)"></i>
+      <!-- <div class="list-group-item" v-for="(element, index) in renderList" :key="index + Date.now()"> -->
+      <div class="list-group-item" v-for="(element) in renderList" :key="element[1] + Date.now()">
+        {{ element[0] }}
+        <i class="fas fa fa-trash fa-md" @click="deleteElement(element[1])"></i>
       </div>
     </draggable>
   </section>
@@ -44,7 +45,11 @@ export default {
     renderList: {
       get () {
         if (this.activeComponent === '') return this.selectedElementList
-        return this.componentMap[this.activeComponent].htmlList
+        // change activeComponent's htmlList into an array of arrays ([element/component name, index in state])
+        let sortedHTML = this.componentMap[this.activeComponent].htmlList.map((el, index) => [el.text, index]).filter(el => {
+          return el[0] !== undefined
+        })
+        return sortedHTML
       },
       set (value) {
         this.$store.dispatch(setSelectedElementList, value)
