@@ -249,6 +249,7 @@ const mutations = {
   // invoked when a component is selected
   [types.SET_ACTIVE_COMPONENT]: (state, payload) => {
     state.activeComponent = payload
+    state.activeHTML = ''
   },
   [types.SET_ACTIVE_HTML_ELEMENT]: (state, payload) => {
     console.log('id: ', payload[2])
