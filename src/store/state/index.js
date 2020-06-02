@@ -62,6 +62,7 @@ const newState = {
   projects: [{ filename: 'Untitled-1', lastSavedLocation: '' }],
   activeRoute: 'HomeView',
   activeComponent: '',
+  activeHTML: '',
   selectedElementList: [],
   projectNumber: 2,
   activeTab: 0,

@@ -250,6 +250,10 @@ const mutations = {
   [types.SET_ACTIVE_COMPONENT]: (state, payload) => {
     state.activeComponent = payload
   },
+  [types.SET_ACTIVE_HTML_ELEMENT]: (state, payload) => {
+    console.log('id: ', payload[2])
+    state.activeHTML = payload[2]
+  },
   [types.SET_ROUTES]: (state, payload) => {
     console.log('setroutespayload:', payload)
     state.routes = Object.assign({}, payload)

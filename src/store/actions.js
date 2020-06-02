@@ -140,6 +140,9 @@ const actions = {
   [types.setActiveComponent]: ({ commit }, payload) => {
     commit(types.SET_ACTIVE_COMPONENT, payload)
   },
+  [types.setActiveHTML]: ({ commit }, payload) => {
+    commit(types.SET_ACTIVE_HTML_ELEMENT, payload)
+  },
   // [types.setRoutes]: ({ commit }, payload) => {
   //   commit(types.SET_ROUTES, payload)
   // },
@@ -214,7 +217,6 @@ const actions = {
     commit(types.SET_IMAGE_PATH, payload.imagePath)
     commit(types.SET_COMPONENT_MAP, payload.componentMap)
     commit(types.SET_ROUTES, payload.routes)
-    
   }
 }
 

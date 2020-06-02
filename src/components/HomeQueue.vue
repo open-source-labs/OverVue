@@ -12,7 +12,7 @@
       @end="drag = false"
     >
       <!-- <div class="list-group-item" v-for="(element, index) in renderList" :key="index + Date.now()"> -->
-      <div class="list-group-item" v-for="(element) in renderList" :key="element[1] + Date.now()">
+      <div class="list-group-item" @dblclick="setActiveElement(element)" v-for="(element) in renderList" :key="element[1] + Date.now()">
         {{ element[0] }}
         <i class="fas fa fa-trash fa-md" @click="deleteElement(element[1])"></i>
       </div>
@@ -22,8 +22,8 @@
 
 <script>
 import draggable from 'vuedraggable'
-import { mapState } from 'vuex'
-import { setSelectedElementList, deleteSelectedElement, deleteFromComponentHtmlList } from '../store/types'
+import { mapState, mapActions } from 'vuex'
+import { setSelectedElementList, deleteSelectedElement, deleteFromComponentHtmlList, setActiveHTML } from '../store/types'
 
 export default {
   name: 'HomeQueue',
@@ -41,12 +41,12 @@ export default {
     }
   },
   computed: {
-    ...mapState(['selectedElementList', 'componentMap', 'activeComponent']),
+    ...mapState(['selectedElementList', 'componentMap', 'activeComponent', 'activeHTML']),
     renderList: {
       get () {
-        if (this.activeComponent === '') return this.selectedElementList.map((el,index) => [el.text, index])
+        if (this.activeComponent === '') return this.selectedElementList.map((el, index) => [el.text, index, el.id])
         // change activeComponent's htmlList into an array of arrays ([element/component name, index in state])
-        let sortedHTML = this.componentMap[this.activeComponent].htmlList.map((el, index) => [el.text, index]).filter(el => {
+        let sortedHTML = this.componentMap[this.activeComponent].htmlList.map((el, index) => [el.text, index, el.id]).filter(el => {
           return el[0] !== undefined
         })
         return sortedHTML
@@ -57,9 +57,13 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['setActiveHTML']),
     deleteElement (index) {
       if (this.activeComponent === '') this.$store.dispatch(deleteSelectedElement, index)
       else this.$store.dispatch(deleteFromComponentHtmlList, index)
+    },
+    setActiveElement (element) {
+      this.$store.dispatch(setActiveHTML, element)
     }
   },
   components: {
