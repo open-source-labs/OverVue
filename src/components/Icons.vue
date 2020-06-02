@@ -30,7 +30,8 @@ export default {
   },
   methods: {
     changeState (elementName) {
-      if (this.activeComponent === '') { this.$emit('getClickedIcon', elementName) } else this.$emit('activeElement', elementName)
+      if (this.activeComponent === '') { this.$emit('getClickedIcon', {elementName, date:Date.now()}) }
+       else this.$emit('activeElement', {elementName,date:Date.now()})
     }
   },
   watch: {
