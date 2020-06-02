@@ -48,34 +48,36 @@ let redoMixin = {
     //  this.blankState = cloneDeep(this.$store)
   },
 
-  mounted(){
+  mounted() {
     window.addEventListener("keydown", event => {
       if (event.ctrlKey && event.key === "z") {
-      event.preventDefault()
+        event.preventDefault()
         this.undo()
       }
     });
-      window.addEventListener("keydown", event => {
+    window.addEventListener("keydown", event => {
       if (event.ctrlKey && event.key === "y") {
-      event.preventDefault()
+        event.preventDefault()
         this.redo()
       }
     });
 
-        window.addEventListener("keydown", event => {
-      if (event.ctrlKey && event.key === "a") {
-      event.preventDefault()
-        this.$store.dispatch("addNestedHTML", {elementName: "div", id:0, date:Date.now()})
+    window.addEventListener('keydown', event => {
+      if (event.ctrlKey && event.key === 'a') {
+        event.preventDefault()
+        if (this.$store.state.activeHTML !== '') {
+          this.$store.dispatch('addNestedHTML', { elementName: 'div', date: Date.now() })
+        }
       }
     });
 
-    //console.log("do we want this? or this.$store.state?", this.$store.state)
+    // console.log("do we want this? or this.$store.state?", this.$store.state)
     this.initialState = defaultState(this.$store.state)
 
   },
 
   methods: {
-    undo: function() {
+    undo: function () {
       // do {
       // console.log("How far back?")
 

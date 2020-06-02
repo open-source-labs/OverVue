@@ -120,7 +120,7 @@ const mutations = {
   [types.ADD_TO_COMPONENT_HTML_LIST]: (state, payload) => {
     const componentName = state.activeComponent
 
-    state.componentMap[componentName] = {...state.componentMap[componentName]}
+    state.componentMap[componentName] = { ...state.componentMap[componentName] }
     state.componentMap[componentName].htmlList.push({
       text: payload.elementName,
       id: payload.date,
@@ -128,10 +128,11 @@ const mutations = {
     })
   },
 
-  [types.ADD_NESTED_HTML]:(state,payload)=> {
+  [types.ADD_NESTED_HTML]:(state, payload) => {
     const componentName = state.activeComponent
-    state.componentMap[componentName] = {...state.componentMap[componentName]}
-    let nestedElement = breadthFirstSearch(state.componentMap[componentName].htmlList, payload.id)
+    const activeHTML = state.activeHTML
+    state.componentMap[componentName] = { ...state.componentMap[componentName] }
+    let nestedElement = breadthFirstSearch(state.componentMap[componentName].htmlList, activeHTML)
     nestedElement.children.push({
       text: payload.elementName,
       id: payload.date,
