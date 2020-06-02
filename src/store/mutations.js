@@ -185,6 +185,7 @@ const mutations = {
       children.forEach((child, index) => {
         if (activeComponent === child) {
           children.splice(index, 1)
+          // removes component from activeComponent's htmlList
           newObj[compKey].htmlList = newObj[compKey].htmlList.filter(el => el !== activeComponent)
         }
       })
