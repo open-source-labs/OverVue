@@ -53,14 +53,15 @@ export default {
     createTemplate(componentName, children) {
       let output = ``;
       output += ` <div>\n`;
-      children.forEach(name => {
-        output += `    <${name}>\n    </${name}>\n`;
-      });
+      // children.forEach(name => {
+      //   output += `    <${name}>\n    </${name}>\n`;
+      // });
       let templateTagStr = this.writeTemplateTag(componentName);
       return `<template>\n ${output}${templateTagStr}  </div>\n</template>`;
     },
 
     // We need a helper function to recursively iterate through the given html element's children and their children's children.
+
 
     writeTemplateTag(componentName) {
       // console.log('writeTemplateTag invoked!')
@@ -78,14 +79,48 @@ export default {
         input: ['<input />', ''],
         navbar: ['<nav>', '</nav>'],
       };
+
+       function writeNested(childrenArray, indent){
+      if(!childrenArray.length){
+        return ''
+      }
+      let indented = indent + '  '
+      let nestedString = indented
+
+      childrenArray.forEach(child => {
+        console.log(child)
+        if(!child.text){
+          nestedString += `<${child}/>\n`
+        }
+        else{
+        nestedString += htmlElementMap[child.text][0]
+        nestedString += '\n';
+        nestedString += writeNested(child.children,indented)
+        nestedString += indented + htmlElementMap[child.text][1]
+        nestedString += '\n'
+        }
+      })
+      return nestedString
+    }
+
+
       // loop to iterate through compName arr
       let htmlArr = this.componentMap[componentName].htmlList;
       let outputStr = ``;
       for (let el of htmlArr) {
+        console.log(el)
+        if(!el.text){
+          outputStr += `    <${el}/>\n`
+        }
+        else{
         outputStr += `    `;
         outputStr += htmlElementMap[el.text][0];
+        outputStr += '\n'
+        outputStr += writeNested(el.children,`    `)
+        outputStr += `    `
         outputStr += htmlElementMap[el.text][1];
         outputStr += `  \n`;
+        }
       }
       // console.log(`outputStr from writeTemplateTag: ${outputStr}`)
       return outputStr;

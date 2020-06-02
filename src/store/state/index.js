@@ -11,7 +11,10 @@ let hardA = {
   h: 200,
   htmlList: [{
     children:[{
-      children:[],
+      children:[{
+        text: 'button',
+        children:[]
+      }],
       text:'form'
     }],
     text: "div"
