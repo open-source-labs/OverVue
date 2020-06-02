@@ -118,7 +118,7 @@ export default {
     ]),
     // used in VueDraggableResizeable component
     activeRouteArray() {
-      console.log("active route array method", this.routes[this.activeRoute]);
+      // console.log("active route array method", this.routes[this.activeRoute]);
       return this.routes[this.activeRoute];
     },
     // used to delete components
@@ -139,11 +139,11 @@ export default {
         if (!Object.keys(component.parent).length) return lineage;
         for(var parents in component.parent) {
           //for each parent in our component
-          console.log('parents', parents)
+          // console.log('parents', parents)
           lineage.push(parents); //push the parent into lineage
-          console.log('lineage pre push', component, lineage)
+          // console.log('lineage pre push', component, lineage)
           checkParents(component.parent[parents], lineage);
-          console.log('lineage post recursive call', lineage)
+          // console.log('lineage post recursive call', lineage)
         }
         // lineage.push(component.parent[component.componentName]);
         // return checkParents(component.parent, lineage);
@@ -158,7 +158,7 @@ export default {
         // console.log(this.componentMap[this.activeComponent].children)
         this.testModel = this.componentMap[this.activeComponent].children;
         lineage = checkParents(this.componentMap[this.activeComponent]);
-        console.log('Lineage', lineage);
+        //console.log('Lineage', lineage);
       }
       const routes = Object.keys(this.routes);
       const exceptions = new Set(["App", ...lineage, ...routes, ...this.testModel]);
@@ -186,7 +186,7 @@ export default {
     //console.log("updated")
     if(this.activeComponent === '')
     {
-      if(this.$refs.boxes){
+      if(this.$refs.boxes) {
       this.$refs.boxes.forEach((element)=> {
           element.enabled = false;
           element.$emit('deactivated')
@@ -271,7 +271,7 @@ export default {
         activeComponentData: this.activeComponentData
       }
 
-      //this.updateStartingSize(payload);
+      // this.updateStartingSize(payload);
 
     },
 

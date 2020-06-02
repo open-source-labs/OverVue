@@ -11,10 +11,16 @@ let hardA = {
   h: 200,
   htmlList: [{
     children:[{
-      children:[],
-      text:'form'
+      children:[{
+        text: 'button',
+        children:[],
+        id:0
+      }],
+      text:'form',
+      id:2
     }],
-    text: "div"
+    text: "div",
+    id:1
   }],
   children: ["div"],
   parent: {},
@@ -65,7 +71,7 @@ const newState = {
   modalOpen: false,
   parentSelected: false,
   imagePath: {
-    HomeView: '',
+    HomeView: ''
   }
 }
 
