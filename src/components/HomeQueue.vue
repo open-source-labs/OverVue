@@ -45,10 +45,11 @@ export default {
     renderList: {
       get () {
         if (this.activeComponent === '') return this.selectedElementList
-        let newArr = this.componentMap[this.activeComponent].htmlList.map((el, index) => [el.text, index]).filter(el => {
+        // change activeComponent's htmlList into an array of arrays ([element/component name, index in state])
+        let sortedHTML = this.componentMap[this.activeComponent].htmlList.map((el, index) => [el.text, index]).filter(el => {
           return el[0] !== undefined
         })
-        return newArr
+        return sortedHTML
       },
       set (value) {
         this.$store.dispatch(setSelectedElementList, value)
