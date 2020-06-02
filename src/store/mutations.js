@@ -134,19 +134,20 @@ const mutations = {
   // adds a html tag from the Icons.vue to the HomeQueue.vue
   // event: getClickedIcon @Icons.vue
   [types.ADD_TO_SELECTED_ELEMENT_LIST]: (state, payload) => {
-    state.selectedElementList.push({ text: payload, children: [] })
+    state.selectedElementList.push({ text: payload.elementName, id: payload.date, children: [] })
   },
   // allows user to create a new component in ComponentDisplay.vue
   // invovled in creating a new component, porbably does more
   [types.SET_SELECTED_ELEMENT_LIST]: (state, payload) => {
     state.selectedElementList = payload
   },
-  [types.ADD_TO_COMPONENT_HTML_LIST]: (state, elementName) => {
+  [types.ADD_TO_COMPONENT_HTML_LIST]: (state, payload) => {
     const componentName = state.activeComponent
 
     state.componentMap[componentName] = {...state.componentMap[componentName]}
     state.componentMap[componentName].htmlList.push({
-      text: elementName,
+      text: payload.elementName,
+      id: payload.date,
       children: []
     })
   },

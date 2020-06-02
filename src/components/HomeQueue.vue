@@ -44,7 +44,7 @@ export default {
     ...mapState(['selectedElementList', 'componentMap', 'activeComponent']),
     renderList: {
       get () {
-        if (this.activeComponent === '') return this.selectedElementList
+        if (this.activeComponent === '') return this.selectedElementList.map((el,index) => [el.text, index])
         // change activeComponent's htmlList into an array of arrays ([element/component name, index in state])
         let sortedHTML = this.componentMap[this.activeComponent].htmlList.map((el, index) => [el.text, index]).filter(el => {
           return el[0] !== undefined

@@ -13,11 +13,14 @@ let hardA = {
     children:[{
       children:[{
         text: 'button',
-        children:[]
+        children:[],
+        id:0
       }],
-      text:'form'
+      text:'form',
+      id:2
     }],
-    text: "div"
+    text: "div",
+    id:1
   }],
   children: [],
   parent: {},
