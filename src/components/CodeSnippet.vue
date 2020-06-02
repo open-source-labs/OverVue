@@ -93,11 +93,16 @@ export default {
           nestedString += `<${child}/>\n`
         }
         else{
-        nestedString += htmlElementMap[child.text][0]
-        nestedString += '\n';
-        nestedString += writeNested(child.children,indented)
-        nestedString += indented + htmlElementMap[child.text][1]
-        nestedString += '\n'
+          if(child.children.length){
+            nestedString += htmlElementMap[child.text][0]
+            nestedString += '\n';
+            nestedString += writeNested(child.children,indented)
+            nestedString += indented + htmlElementMap[child.text][1]
+            nestedString += '\n'
+          }
+           else{
+            nestedString += htmlElementMap[child.text][0]+htmlElementMap[child.text][1]+'\n';
+          }
         }
       })
       return nestedString
@@ -114,12 +119,17 @@ export default {
         }
         else{
         outputStr += `    `;
-        outputStr += htmlElementMap[el.text][0];
-        outputStr += '\n'
-        outputStr += writeNested(el.children,`    `)
-        outputStr += `    `
-        outputStr += htmlElementMap[el.text][1];
-        outputStr += `  \n`;
+          if(el.children.length){
+          outputStr += htmlElementMap[el.text][0];
+          outputStr += '\n'
+          outputStr += writeNested(el.children,`    `)
+          outputStr += `    `
+          outputStr += htmlElementMap[el.text][1];
+          outputStr += `  \n`;
+          }
+          else{
+            outputStr += htmlElementMap[el.text][0]+htmlElementMap[el.text][1]+'\n';
+          }
         }
       }
       // console.log(`outputStr from writeTemplateTag: ${outputStr}`)
