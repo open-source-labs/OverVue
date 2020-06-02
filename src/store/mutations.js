@@ -183,7 +183,10 @@ const mutations = {
     for (let compKey in newObj) {
       let children = newObj[compKey].children
       children.forEach((child, index) => {
-        if (activeComponent === child) children.splice(index, 1)
+        if (activeComponent === child) {
+          children.splice(index, 1)
+          newObj[compKey].htmlList = newObj[compKey].htmlList.filter(el => el !== activeComponent)
+        }
       })
     }
 
