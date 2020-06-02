@@ -7,45 +7,21 @@ const cloneDeep = require('lodash.clonedeep')
 
 import localforage from 'localforage'
 
-const defaultState =
-{
-  icons,
-  htmlElementMap,
-  // every single time we create a component
-  // sent to export project component
-  componentMap: {
-    App: {
-      componentName: 'App',
-      children: ['HomeView'],
-      htmlList: []
-    },
-    HomeView: {
-      componentName: 'HomeView',
-      children: [],
-      htmlList: []
+//we have to do a search because undo/redo saves payloads as deep clones so passing a memory ref would be detrimental
+const breadthFirstSearch = (array,id) => {
+  let queue = [...array.filter(el => typeof el === 'object')];
+  while(queue.length){
+    let evaluated = queue.shift()
+    if(evaluated.id === id){
+      return evaluated
     }
-    // NewView: {}
-  },
-  routes: {
-    HomeView: []
-    // NewView: []
-  },
-  userActions: [],
-  userState: {},
-  /**
-   *
-   */
-  componentNameInputValue: '',
-  projects: [{ filename: 'Untitled-1', lastSavedLocation: '' }],
-  activeRoute: 'HomeView',
-  activeComponent: '',
-  selectedElementList: [],
-  projectNumber: 2,
-  activeTab: 0,
-  componentChildrenMultiselectValue: [],
-  modalOpen: false,
-  parentSelected: false,
-  imagePath: ''
+    else{
+      if (evaluated.children.length){
+      queue.push(...evaluated.children)
+      }
+    }
+  }
+  console.log("We shouldn't be ever getting here, how did you even search an id that didn't exist?")
 }
 
 const mutations = {
@@ -151,6 +127,18 @@ const mutations = {
       children: []
     })
   },
+
+  [types.ADD_NESTED_HTML]:(state,payload)=> {
+    const componentName = state.activeComponent
+    state.componentMap[componentName] = {...state.componentMap[componentName]}
+    let nestedElement = breadthFirstSearch(state.componentMap[componentName].htmlList, payload.id)
+    nestedElement.children.push({
+      text: payload.elementName,
+      id: payload.date,
+      children: []
+    })
+  },
+
   [types.DELETE_FROM_COMPONENT_HTML_LIST]: (state, idx) => {
     const componentName = state.activeComponent
     const htmlList = state.componentMap[componentName].htmlList.slice(0)
