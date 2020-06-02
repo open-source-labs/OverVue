@@ -353,7 +353,9 @@ export default {
       this.createRouter(data);
       for (let [routeImage, imageLocation] of Object.entries(this.imagePath)) {
         // console.log('routeImage is ', routeImage);
-        this.createAssetFile(path.join(data, "src", "assets", routeImage), imageLocation)
+        if (imageLocation !== '') {
+          this.createAssetFile(path.join(data, "src", "assets", routeImage), imageLocation)
+        }
       };
       for (let componentName in this.componentMap) {
         // if componentName is a route:

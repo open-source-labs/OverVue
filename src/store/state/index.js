@@ -66,7 +66,7 @@ const newState = {
   modalOpen: false,
   parentSelected: false,
   imagePath: {
-    HomeView: '',
+    HomeView: ''
   }
 }
 

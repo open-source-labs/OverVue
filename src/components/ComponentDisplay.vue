@@ -138,11 +138,19 @@ export default {
         // console.log('component parent',component.parent)
         // console.log('component parent parent', component.parent.parent)
         if (!Object.keys(component.parent).length) return lineage;
+<<<<<<< HEAD
         for(var parents in component.parent) {
           //for each parent in our component
           // console.log('parents', parents)
           lineage.push(parents); //push the parent into lineage
           // console.log('lineage pre push', component, lineage)
+=======
+        for (var parents in component.parent) {
+          // for each parent in our component
+          console.log('parents', parents)
+          lineage.push(parents); // push the parent into lineage
+          console.log('lineage pre push', component, lineage)
+>>>>>>> c3465a8ee7303f95f469f78b7ab5d89214b77193
           checkParents(component.parent[parents], lineage);
           // console.log('lineage post recursive call', lineage)
         }
@@ -187,7 +195,7 @@ export default {
     //console.log("updated")
     if(this.activeComponent === '')
     {
-      if(this.$refs.boxes){
+      if(this.$refs.boxes) {
       this.$refs.boxes.forEach((element)=> {
           element.enabled = false;
           element.$emit('deactivated')
@@ -272,7 +280,7 @@ export default {
         activeComponentData: this.activeComponentData
       }
 
-      //this.updateStartingSize(payload);
+      // this.updateStartingSize(payload);
 
     },
 
