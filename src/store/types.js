@@ -1,5 +1,6 @@
 // Mutations
 export const EMPTY_STATE = 'EMPTY_STATE'
+export const ADD_NESTED_HTML = 'ADD_NESTED_HTML'
 export const ADD_COMPONENT_TO_COMPONENT_MAP = 'ADD_COMPONENT_TO_COMPONENT_MAP'
 export const SET_SELECTED_ELEMENT_LIST = 'SET_SELECTED_ELEMENT_LIST'
 export const ADD_TO_SELECTED_ELEMENT_LIST = 'ADD_TO_SELECTED_ELEMENT_LIST'
@@ -62,6 +63,7 @@ export const DELETE_USER_STATE = 'DELETE_USER_STATE'
 export const SET_IMAGE_PATH = 'SET_IMAGE_PATH'
 
 // Actions
+export const addNestedHTML = 'addNestedHTML'
 export const updateComponentSize = 'updateComponentSize'
 export const updateStartingSize = 'updateStartingSize'
 export const registerComponent = 'registerComponent'

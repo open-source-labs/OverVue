@@ -61,6 +61,14 @@ let redoMixin = {
         this.redo()
       }
     });
+
+        window.addEventListener("keydown", event => {
+      if (event.ctrlKey && event.key === "a") {
+      event.preventDefault()
+        this.$store.dispatch("addNestedHTML", {elementName: "div", id:0, date:Date.now()})
+      }
+    });
+
     //console.log("do we want this? or this.$store.state?", this.$store.state)
     this.initialState = defaultState(this.$store.state)
 

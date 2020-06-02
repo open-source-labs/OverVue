@@ -107,6 +107,15 @@ const actions = {
   [types.deleteSelectedElement]: ({ commit }, payload) => {
     commit(types.DELETE_SELECTED_ELEMENT, payload)
   },
+
+  //payload will be an object possessing the id:id we want to find and elementName:elementName and date:Date.now() it wants to send.
+  [types.addNestedHTML]: ({ commit }, payload) => {
+    commit(types.ADD_NESTED_HTML, payload)
+  },
+
+
+
+
   [types.setState]: ({ commit }, payload) => {
     commit(types.SET_STATE, payload)
   },

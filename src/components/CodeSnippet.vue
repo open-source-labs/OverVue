@@ -85,10 +85,11 @@ export default {
         return ''
       }
       let indented = indent + '  '
-      let nestedString = indented
+      let nestedString = ''
 
       childrenArray.forEach(child => {
-        console.log(child)
+        nestedString += indented
+        //console.log(child)
         if(!child.text){
           nestedString += `<${child}/>\n`
         }
@@ -113,7 +114,7 @@ export default {
       let htmlArr = this.componentMap[componentName].htmlList;
       let outputStr = ``;
       for (let el of htmlArr) {
-        console.log(el)
+        //console.log(el)
         if(!el.text){
           outputStr += `    <${el}/>\n`
         }
