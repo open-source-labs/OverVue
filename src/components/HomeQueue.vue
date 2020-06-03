@@ -1,6 +1,10 @@
 <template>
   <section class="home-queue" v-on:click="handleClick">
+<<<<<<< HEAD
     <span class='list-title' v-if="this.activeComponent !== ''"> Viewing Elements in '{{ this.activeComponent }}' </span>
+=======
+    <span class='list-title' v-if='this.activeComponent !==""'> Viewing Elements in '{{ this.activeComponent }}' </span>
+>>>>>>> a3fdd6bb1f17d5b3b8d1ca3817ecbe75be6770b6
     <span class='list-title' v-else> Elements in Queue </span>
     <hr>
     <draggable
@@ -37,7 +41,11 @@ export default {
   },
   // data () {
   //   return {
+<<<<<<< HEAD
   //     component: false
+=======
+  //     //component: false
+>>>>>>> a3fdd6bb1f17d5b3b8d1ca3817ecbe75be6770b6
   //   }
   // },
   computed: {
@@ -74,7 +82,11 @@ export default {
   },
   components: {
     draggable
+<<<<<<< HEAD
   }
+=======
+  },
+>>>>>>> a3fdd6bb1f17d5b3b8d1ca3817ecbe75be6770b6
   // watch: {
   //   activeComponent: function () {
   //     // console.log('watching activeComponent in HomeQueue')
