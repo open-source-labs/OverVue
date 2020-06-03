@@ -26,12 +26,19 @@ export default {
   },
   name: 'Icons',
   computed: {
-    ...mapState(['icons', 'activeComponent', 'componentMap', 'selectedElementList'])
+    ...mapState(['icons', 'activeComponent', 'componentMap', 'selectedElementList','activeHTML'])
   },
   methods: {
     changeState (elementName) {
       if (this.activeComponent === '') { this.$emit('getClickedIcon', {elementName, date:Date.now()}) }
-       else this.$emit('activeElement', {elementName,date:Date.now()})
+       else {
+         if(this.activeHTML === ''){
+          this.$emit('activeElement', {elementName,date:Date.now()})
+         }
+         else{
+          this.$emit('activeHTML', {elementName, date:Date.now()})
+         }
+       }
     }
   },
   watch: {

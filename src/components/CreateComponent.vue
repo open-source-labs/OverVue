@@ -17,6 +17,7 @@
         class="icons"
         @getClickedIcon="addToSelectedElementList"
         @activeElement="addToComponentElementList"
+        @activeHTML="addNestedHTML"
       />
     </div>
     <ParentMultiselect />
@@ -44,7 +45,7 @@ export default {
     ParentMultiselect
   },
   computed: {
-    ...mapState(['componentMap', 'selectedElementList', 'activeComponent']),
+    ...mapState(['componentMap', 'selectedElementList', 'activeComponent', 'activeHTML']),
     componentNameInputValue: {
       get () {
         return this.$store.state.componentNameInputValue
@@ -60,7 +61,8 @@ export default {
       'addToSelectedElementList',
       'updateComponentNameInputValue',
       'setActiveComponent',
-      'addToComponentElementList'
+      'addToComponentElementList',
+      'addNestedHTML'
     ]),
     handleClick () {
       if (!this.componentNameInputValue.trim()) {

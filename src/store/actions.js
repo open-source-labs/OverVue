@@ -114,8 +114,6 @@ const actions = {
   },
 
 
-
-
   [types.setState]: ({ commit }, payload) => {
     commit(types.SET_STATE, payload)
   },
