@@ -69,7 +69,6 @@ const newState = {
     lineage:[]
   },
 
-
   selectedElementList: [],
   projectNumber: 2,
   activeTab: 0,

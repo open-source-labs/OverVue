@@ -8,6 +8,11 @@ const actions = {
   // },
 
   // creates a new component in componentMap
+
+  [types.setActiveLayer]: ({commit}, payload) => {
+    commit(types.SET_ACTIVE_LAYER, payload)
+  },
+
   [types.registerComponent]: ({ state, commit }, payload) => {
     const { componentName } = payload
     if (!state.componentMap[componentName]) {

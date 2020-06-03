@@ -32,10 +32,10 @@ export default {
     changeState (elementName) {
       if (this.activeComponent === '') { this.$emit('getClickedIcon', {elementName, date:Date.now()}) }
        else {
-         if(this.activeHTML === ''){
+         if(this.activeHTML === '') {
           this.$emit('activeElement', {elementName,date:Date.now()})
          }
-         else{
+         else {
           this.$emit('activeHTML', {elementName, date:Date.now()})
          }
        }
