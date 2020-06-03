@@ -1,6 +1,8 @@
 <template>
   <section class="home-queue" v-on:click="handleClick">
-    <span class='list-title' v-if='this.activeComponent !==""'> Viewing Elements in '{{ this.activeComponent }}' </span>
+    <span class='list-title' v-if='this.activeLayer.id !== ""'> Viewing Elements in '{{ this.activeComponent }} - {{ this.activeLayer.lineage }}' </span>
+    <!-- <span class='list-title' v-if='this.activeLayer.id !== ""'> Viewing Elements in '{{ this.activeLayer.lineage }}' </span> -->
+    <span class='list-title' v-else-if='this.activeComponent !==""'> Viewing Elements in '{{ this.activeComponent }}' </span>
     <span class='list-title' v-else> Elements in Queue </span>
     <hr>
     <draggable
@@ -11,8 +13,8 @@
       @start="drag = true"
       @end="drag = false"
     >
-      <!-- <div class="list-group-item" @dblclick="setActiveElement(element)" v-for="(element) in renderList" :key="element[1] + Date.now()"> -->
       <div :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'" @dblclick="setActiveElement(element)" v-for="(element) in renderList" :key="element[1] + Date.now()">
+        <i class="fas fa fa-angle-double-down fa-md" @click="setLayer({text: element[0], id: element[2]})"></i>
         {{ element[0] }}
         <i class="fas fa fa-trash fa-md" @click="deleteElement(element[1])"></i>
       </div>
@@ -23,7 +25,7 @@
 <script>
 import draggable from 'vuedraggable'
 import { mapState, mapActions } from 'vuex'
-import { setSelectedElementList, deleteSelectedElement, deleteFromComponentHtmlList, setActiveHTML } from '../store/types'
+import { setSelectedElementList, deleteSelectedElement, deleteFromComponentHtmlList, setActiveHTML, setActiveLayer } from '../store/types'
 
 const breadthFirstSearch = (array, id) => {
   let queue = [...array.filter(el => typeof el === 'object')];
@@ -81,13 +83,16 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setActiveHTML']),
+    ...mapActions(['setActiveHTML', 'setActiveLayer']),
     deleteElement (index) {
       if (this.activeComponent === '') this.$store.dispatch(deleteSelectedElement, index)
       else this.$store.dispatch(deleteFromComponentHtmlList, index)
     },
     setActiveElement (element) {
       this.$store.dispatch(setActiveHTML, element)
+    },
+    setLayer (element) {
+      this.$store.dispatch(setActiveLayer, element)
     },
     handleClick (event) {
       console.log(event.target)
@@ -151,9 +156,20 @@ li {
   cursor: pointer;
   color: red;
 }
+
 .fa-trash {
   position: relative;
   left: 20px;
+
+}
+.fa-angle-double-down {
+  position: relative;
+  right: 20px;
+}
+
+.fa-angle-double-down:hover {
+  cursor: pointer;
+  color: #41B883;
 }
 hr {
   border: 1px solid grey
