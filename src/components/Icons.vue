@@ -17,7 +17,21 @@
 
 <script>
 import { mapState } from 'vuex'
-
+const breadthFirstSearch = (array,id) => {
+  let queue = [...array.filter(el => typeof el === 'object')];
+  while(queue.length){
+    let evaluated = queue.shift()
+    if(evaluated.id === id){
+      return evaluated
+    }
+    else{
+      if (evaluated.children.length){
+      queue.push(...evaluated.children)
+      }
+    }
+  }
+  console.log("We shouldn't be ever getting here, how did you even search an id that didn't exist?")
+}
 export default {
   data () {
     return {
@@ -58,7 +72,27 @@ export default {
       }
       // console.log('storage is ', this.elementStorage)
     },
+    activeLayer: {
+      deep: true,
+      handler(){
+        if (this.activeComponent)
+        {
+          this.elementStorage = {};
+           if (this.activeLayer.id !== '' && this.activeHTML === '') {
+            let activeLayerObj =  breadthFirstSearch(this.componentMap[this.activeComponent].htmlList, this.activeLayer.id)
+            activeLayerObj.children.forEach(el => {
+              if (!this.elementStorage[el.text]) {
+                this.elementStorage[el.text] = 1;
+              } else {
+                this.elementStorage[el.text] += 1;
+              }
+            })
+          }
+        }
+      }
+    },
     // if componentMap is updated (i.e. element is added to component's htmlList), elementStorage will update its cache of elements & frequency
+
     componentMap: {
       deep: true,
       handler () {
@@ -67,16 +101,70 @@ export default {
         // console.log('htmlList', this.componentMap[this.activeComponent].htmlList)
         if (this.activeComponent) {
           this.elementStorage = {};
-          this.componentMap[this.activeComponent].htmlList.forEach(el => {
+           if (this.activeLayer.id !== '' && this.activeHTML === '') {
+          let activeLayerObj =  breadthFirstSearch(this.componentMap[this.activeComponent].htmlList, this.activeLayer.id)
+          activeLayerObj.children.forEach(el => {
             if (!this.elementStorage[el.text]) {
               this.elementStorage[el.text] = 1;
             } else {
               this.elementStorage[el.text] += 1;
             }
           })
+          } else if(this.activeHTML !== ''){
+            let activeHtmlObj =  breadthFirstSearch(this.componentMap[this.activeComponent].htmlList, this.activeHTML)
+            activeHtmlObj.children.forEach(el => {
+          if (!this.elementStorage[el.text]) {
+            this.elementStorage[el.text] = 1;
+          } else {
+            this.elementStorage[el.text] += 1;
+          }
+        })
+          } else {
+            this.componentMap[this.activeComponent].htmlList.forEach(el => {
+              if (!this.elementStorage[el.text]) {
+                this.elementStorage[el.text] = 1;
+              } else {
+                this.elementStorage[el.text] += 1;
+              }
+            })
+          }
           // console.log('elementStorage is ', this.elementStorage);
         }
       },
+    },
+
+    activeHTML: function() {
+      this.elementStorage = {};
+      if (this.activeHTML!== ''){
+        let activeHtmlObj =  breadthFirstSearch(this.componentMap[this.activeComponent].htmlList, this.activeHTML)
+        activeHtmlObj.children.forEach(el => {
+          if (!this.elementStorage[el.text]) {
+            this.elementStorage[el.text] = 1;
+          } else {
+            this.elementStorage[el.text] += 1;
+          }
+        })
+      }
+      else{
+        if (this.activeLayer.id !== '' && this.activeHTML === '') {
+          let activeLayerObj =  breadthFirstSearch(this.componentMap[this.activeComponent].htmlList, this.activeLayer.id)
+          activeLayerObj.children.forEach(el => {
+            if (!this.elementStorage[el.text]) {
+              this.elementStorage[el.text] = 1;
+            } else {
+              this.elementStorage[el.text] += 1;
+            }
+          })
+          } else {
+            this.componentMap[this.activeComponent].htmlList.forEach(el => {
+              if (!this.elementStorage[el.text]) {
+                this.elementStorage[el.text] = 1;
+              } else {
+                this.elementStorage[el.text] += 1;
+              }
+            })
+          }
+      }
     },
     // if activeComponent is updated, elementStorage will update its cache of elements & frequency to reflect new active component
     activeComponent: function() {

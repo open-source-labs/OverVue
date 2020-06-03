@@ -66,7 +66,7 @@ let redoMixin = {
       if (event.ctrlKey && event.key === 'a') {
         event.preventDefault()
         if (this.$store.state.activeHTML !== '') {
-          this.$store.dispatch('setActiveLayer', this.$store.state.activeHTML)
+          this.$store.dispatch('setActiveLayer', {id:this.$store.state.activeHTML, text:"banana"})
         }
       }
     });
