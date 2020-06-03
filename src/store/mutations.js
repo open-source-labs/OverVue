@@ -43,6 +43,31 @@ const breadthFirstSearchParent = (array,id) => {
 }
 
 const mutations = {
+
+  [types.SET_ACTIVE_LAYER]: (state, payload) =>{
+    let newLayer = cloneDeep(state.activeLayer)
+
+    //should only be reached if we change active component
+    if (payload === '') {
+      state.activeLayer = {
+        id:'',
+        lineage:[]
+      }
+    }
+    else{
+      //htmlArray = state.componentMap[state.activeComponent].htmlList
+      if(newLayer.id === ''){
+        newLayer.lineage.push(state.activeComponent)
+      }
+      else{
+        newLayer.lineage.push(newLayer.id)
+      }
+      newLayer.id = payload
+    }
+    state.activeLayer = newLayer
+  },
+
+
   // pushs new component to componentMap
   [types.ADD_COMPONENT_TO_COMPONENT_MAP]: (state, payload) => {
     const { componentName, htmlList, children, parent, isActive } = payload
