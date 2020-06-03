@@ -31,7 +31,7 @@ const breadthFirstSearchParent = (array,id) => {
   while(queue.length){
     let evaluated = queue.shift()
     for(let i=0; i<evaluated.children.length;i++){
-    if(evaluated.children[i] === id){
+    if(evaluated.children[i].id === id){
       return evaluated
      }
     }
@@ -47,24 +47,43 @@ const mutations = {
   [types.SET_ACTIVE_LAYER]: (state, payload) =>{
     let newLayer = cloneDeep(state.activeLayer)
 
-    //should only be reached if we change active component
-    if (payload === '') {
+    // //should only be reached if we change active component
+    // if (payload === '') {
+    //   state.activeLayer = {
+    //     id:'',
+    //     lineage:[]
+    //   }
+  //  }
+    // else{
+      //htmlArray = state.componentMap[state.activeComponent].htmlList
+    
+      newLayer.lineage.push(payload.text)
+      
+      newLayer.id = payload.id
+   // }
+    state.activeLayer = newLayer
+    state.activeHTML = ''
+  },
+
+  [types.UP_ONE_LAYER]: (state, payload) => {
+    //console.log("This is our payload",payload)
+   // console.log("we are looking for the parent in here",state.componentMap[state.activeComponent].htmlList)
+    if(state.activeLayer.lineage.length===1){
       state.activeLayer = {
-        id:'',
-        lineage:[]
+        id: '',
+        lineage: []
       }
     }
     else{
-      //htmlArray = state.componentMap[state.activeComponent].htmlList
-      if(newLayer.id === ''){
-        newLayer.lineage.push(state.activeComponent)
-      }
-      else{
-        newLayer.lineage.push(newLayer.id)
-      }
-      newLayer.id = payload
+    let newID = breadthFirstSearchParent(state.componentMap[state.activeComponent].htmlList, payload)
+    //console.log("new ID here", newID)
+      let newLayer = {...state.activeLayer}
+      newLayer.id = newID.id
+      newLayer.lineage.pop()
+      console.log("We should have gone up  a level ", newLayer)
+      state.activeLayer = newLayer
     }
-    state.activeLayer = newLayer
+    state.activeHTML = ''
   },
 
 
@@ -183,6 +202,19 @@ const mutations = {
     })
   },
 
+  // effectively the same as add nested, not happy with this, could do control flow earlier up somewhere?
+  [types.ADD_NESTED_NO_ACTIVE]: (state,payload) => {
+    const componentName = state.activeComponent
+    const activeLayer = state.activeLayer
+    state.componentMap[componentName] = { ...state.componentMap[componentName] }
+    let nestedElement = breadthFirstSearch(state.componentMap[componentName].htmlList, activeLayer.id)
+    nestedElement.children.push({
+      text: payload.elementName,
+      id: payload.date,
+      children: []
+    })
+  },
+
   [types.DELETE_FROM_COMPONENT_HTML_LIST]: (state, idx) => {
     const componentName = state.activeComponent
     const htmlList = state.componentMap[componentName].htmlList.slice(0)
@@ -282,6 +314,10 @@ const mutations = {
   [types.SET_ACTIVE_COMPONENT]: (state, payload) => {
     state.activeComponent = payload
     state.activeHTML = ''
+    state.activeLayer = {
+      id:'',
+      lineage:[]
+    }
   },
   [types.SET_ACTIVE_HTML_ELEMENT]: (state, payload) => {
     // console.log('text is ', payload[0])

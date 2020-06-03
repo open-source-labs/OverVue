@@ -26,17 +26,19 @@ export default {
   },
   name: 'Icons',
   computed: {
-    ...mapState(['icons', 'activeComponent', 'componentMap', 'selectedElementList','activeHTML'])
+    ...mapState(['icons', 'activeComponent', 'componentMap', 'selectedElementList','activeHTML','activeLayer'])
   },
   methods: {
     changeState (elementName) {
       if (this.activeComponent === '') { this.$emit('getClickedIcon', {elementName, date:Date.now()}) }
        else {
-         if(this.activeHTML === ''){
+         if (this.activeHTML === '' && this.activeLayer.id ==='') {
           this.$emit('activeElement', {elementName,date:Date.now()})
          }
-         else{
-          this.$emit('activeHTML', {elementName, date:Date.now()})
+         else if (this.activeLayer.id !== '' && this.activeHTML === '') {
+          this.$emit('activeLayer', {elementName, date:Date.now()})
+         }else {
+           this.$emit('activeHTML', {elementName, date:Date.now()})
          }
        }
     }

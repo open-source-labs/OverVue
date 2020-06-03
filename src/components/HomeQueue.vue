@@ -79,7 +79,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setActiveHTML']),
+    ...mapActions(['setActiveHTML', 'setActiveLayer']),
     deleteElement (index) {
       if (this.activeComponent === '') this.$store.dispatch(deleteSelectedElement, index)
       else this.$store.dispatch(deleteFromComponentHtmlList, index)

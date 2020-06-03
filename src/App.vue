@@ -70,6 +70,14 @@ let redoMixin = {
         }
       }
     });
+     window.addEventListener('keydown', event => {
+      if (event.ctrlKey && event.key === 'd') {
+        event.preventDefault()
+        if (this.$store.state.activeLayer.id !== '') {
+          this.$store.dispatch('upOneLayer', this.$store.state.activeLayer.id)
+        }
+      }
+    });
 
     // console.log("do we want this? or this.$store.state?", this.$store.state)
     this.initialState = defaultState(this.$store.state)

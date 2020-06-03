@@ -18,6 +18,7 @@
         @getClickedIcon="addToSelectedElementList"
         @activeElement="addToComponentElementList"
         @activeHTML="addNestedHTML"
+        @activeLayer="addNestedNoActive"
       />
     </div>
     <ParentMultiselect />
@@ -62,7 +63,8 @@ export default {
       'updateComponentNameInputValue',
       'setActiveComponent',
       'addToComponentElementList',
-      'addNestedHTML'
+      'addNestedHTML',
+      'addNestedNoActive'
     ]),
     handleClick () {
       if (!this.componentNameInputValue.trim()) {
