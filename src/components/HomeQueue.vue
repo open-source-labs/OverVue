@@ -25,6 +25,22 @@ import draggable from 'vuedraggable'
 import { mapState, mapActions } from 'vuex'
 import { setSelectedElementList, deleteSelectedElement, deleteFromComponentHtmlList, setActiveHTML } from '../store/types'
 
+const breadthFirstSearch = (array, id) => {
+  let queue = [...array.filter(el => typeof el === 'object')];
+  while (queue.length) {
+    let evaluated = queue.shift()
+    if (evaluated.id === id) {
+      return evaluated
+    }
+    else {
+      if (evaluated.children.length) {
+        queue.push(...evaluated.children)
+      }
+    }
+  }
+  console.log("We shouldn't be ever getting here, how did you even search an id that didn't exist?")
+}
+
 export default {
   name: 'HomeQueue',
   props: {
@@ -41,12 +57,20 @@ export default {
   //   }
   // },
   computed: {
-    ...mapState(['selectedElementList', 'componentMap', 'activeComponent', 'activeHTML']),
+    ...mapState(['selectedElementList', 'componentMap', 'activeComponent', 'activeHTML', 'activeLayer']),
     renderList: {
       get () {
         if (this.activeComponent === '') return this.selectedElementList.map((el, index) => [el.text, index, el.id])
         // change activeComponent's htmlList into an array of arrays ([element/component name, index in state])
-        let sortedHTML = this.componentMap[this.activeComponent].htmlList.map((el, index) => [el.text, index, el.id]).filter(el => {
+        if (this.activeComponent !== '' && this.activeLayer.id === '') {
+          console.log('this works right?')
+          let sortedHTML = this.componentMap[this.activeComponent].htmlList.map((el, index) => [el.text, index, el.id]).filter(el => {
+            return el[0] !== undefined
+          })
+          return sortedHTML
+        }
+        let activeElement = breadthFirstSearch(this.componentMap[this.activeComponent].htmlList, this.activeLayer.id)
+        let sortedHTML = activeElement.children.map((el, index) => [el.text, index, el.id]).filter(el => {
           return el[0] !== undefined
         })
         return sortedHTML
