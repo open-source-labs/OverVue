@@ -7,7 +7,7 @@ const cloneDeep = require('lodash.clonedeep')
 
 import localforage from 'localforage'
 
-//we have to do a search because undo/redo saves payloads as deep clones so passing a memory ref would be detrimental
+// we have to do a search because undo/redo saves payloads as deep clones so passing a memory ref would be detrimental
 const breadthFirstSearch = (array,id) => {
   let queue = [...array.filter(el => typeof el === 'object')];
   while(queue.length){

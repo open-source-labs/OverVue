@@ -1,6 +1,6 @@
 <template>
   <section class="home-queue" v-on:click="handleClick">
-    <span class='list-title' v-if='component'> Viewing Elements in '{{ this.activeComponent }}' </span>
+    <span class='list-title' v-if="this.activeComponent !== ''"> Viewing Elements in '{{ this.activeComponent }}' </span>
     <span class='list-title' v-else> Elements in Queue </span>
     <hr>
     <draggable
@@ -35,11 +35,11 @@ export default {
       type: Array
     }
   },
-  data () {
-    return {
-      component: false
-    }
-  },
+  // data () {
+  //   return {
+  //     component: false
+  //   }
+  // },
   computed: {
     ...mapState(['selectedElementList', 'componentMap', 'activeComponent', 'activeHTML']),
     renderList: {
@@ -74,17 +74,17 @@ export default {
   },
   components: {
     draggable
-  },
-  watch: {
-    activeComponent: function () {
-      // console.log('watching activeComponent in HomeQueue')
-      if (this.activeComponent !== '') {
-        this.component = true
-      } else {
-        this.component = false
-      }
-    }
   }
+  // watch: {
+  //   activeComponent: function () {
+  //     // console.log('watching activeComponent in HomeQueue')
+  //     if (this.activeComponent !== '') {
+  //       this.component = true
+  //     } else {
+  //       this.component = false
+  //     }
+  //   }
+  // }
 }
 </script>
 
