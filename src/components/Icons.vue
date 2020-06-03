@@ -26,31 +26,31 @@ export default {
   },
   name: 'Icons',
   computed: {
-    ...mapState(['icons', 'activeComponent', 'componentMap', 'selectedElementList','activeHTML'])
+    ...mapState(['icons', 'activeComponent', 'componentMap', 'selectedElementList', 'activeHTML', 'activeLayer'])
   },
   methods: {
     changeState (elementName) {
-      if (this.activeComponent === '') { this.$emit('getClickedIcon', {elementName, date:Date.now()}) }
-       else {
-         if(this.activeHTML === '') {
-          this.$emit('activeElement', {elementName,date:Date.now()})
-         }
-         else {
-          this.$emit('activeHTML', {elementName, date:Date.now()})
-         }
-       }
+      if (this.activeComponent === '') { this.$emit('getClickedIcon', { elementName, date: Date.now() }) } else {
+        if (this.activeHTML === '' && this.activeLayer.id === '') {
+          this.$emit('activeElement', { elementName, date: Date.now() })
+        } else if (this.activeLayer.id !== '' && this.activeHTML === '') {
+          this.$emit('activeLayer', { elementName, date: Date.now() })
+        } else {
+          this.$emit('activeHTML', { elementName, date: Date.now() })
+        }
+      }
     }
   },
   watch: {
-    selectedElementList: function() {
+    selectedElementList: function () {
       // console.log('watching selectedElementList');
       if (this.activeComponent === '') {
-        this.elementStorage = {};
+        this.elementStorage = {}
         this.selectedElementList.forEach(el => {
           if (!this.elementStorage[el.text]) {
-            this.elementStorage[el.text] = 1;
+            this.elementStorage[el.text] = 1
           } else {
-            this.elementStorage[el.text] += 1;
+            this.elementStorage[el.text] += 1
           }
         })
       }
@@ -64,40 +64,40 @@ export default {
         // console.log('activecomponent is ', this.activeComponent)
         // console.log('htmlList', this.componentMap[this.activeComponent].htmlList)
         if (this.activeComponent) {
-          this.elementStorage = {};
+          this.elementStorage = {}
           this.componentMap[this.activeComponent].htmlList.forEach(el => {
             if (!this.elementStorage[el.text]) {
-              this.elementStorage[el.text] = 1;
+              this.elementStorage[el.text] = 1
             } else {
-              this.elementStorage[el.text] += 1;
+              this.elementStorage[el.text] += 1
             }
           })
           // console.log('elementStorage is ', this.elementStorage);
         }
-      },
+      }
     },
     // if activeComponent is updated, elementStorage will update its cache of elements & frequency to reflect new active component
-    activeComponent: function() {
+    activeComponent: function () {
       // console.log('watching activeComponent', this.activeComponent);
       if (this.activeComponent) {
-        this.elementStorage = {};
+        this.elementStorage = {}
         this.componentMap[this.activeComponent].htmlList.forEach(el => {
           if (!this.elementStorage[el.text]) {
-            this.elementStorage[el.text] = 1;
+            this.elementStorage[el.text] = 1
           } else {
-            this.elementStorage[el.text] += 1;
+            this.elementStorage[el.text] += 1
           }
         })
         // console.log('elementStorage is ', this.elementStorage);
       } else if (this.activeComponent === '') {
         // console.log(`watching activeComponent, current active is ''`)
         // if component was switched from existing component to '', reset cache and update items
-        if (this.elementStorage !== {}) this.elementStorage = {};
+        if (this.elementStorage !== {}) this.elementStorage = {}
         this.selectedElementList.forEach(el => {
           if (!this.elementStorage[el.text]) {
-            this.elementStorage[el.text] = 1;
+            this.elementStorage[el.text] = 1
           } else {
-            this.elementStorage[el.text] += 1;
+            this.elementStorage[el.text] += 1
           }
         })
       }
@@ -131,7 +131,7 @@ button:hover {
   cursor: pointer;
   color: #00ffff;
 }
-button:focus {  
+button:focus {
   outline: none;
   color: #00ffff;
 }

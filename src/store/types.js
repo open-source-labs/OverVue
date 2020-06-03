@@ -1,4 +1,6 @@
 // Mutations
+export const UP_ONE_LAYER = 'UP_ONE_LAYER'
+export const ADD_NESTED_NO_ACTIVE = 'ADD_NESTED_NO_ACTIVE'
 export const SET_ACTIVE_LAYER = 'SET_ACTIVE_LAYER'
 export const EMPTY_STATE = 'EMPTY_STATE'
 export const ADD_NESTED_HTML = 'ADD_NESTED_HTML'
@@ -64,6 +66,8 @@ export const DELETE_USER_STATE = 'DELETE_USER_STATE'
 export const SET_IMAGE_PATH = 'SET_IMAGE_PATH'
 
 // Actions
+export const upOneLayer = 'upOneLayer'
+export const addNestedNoActive ='addNestedNoActive'
 export const setActiveLayer = 'setActiveLayer'
 export const addNestedHTML = 'addNestedHTML'
 export const updateComponentSize = 'updateComponentSize'

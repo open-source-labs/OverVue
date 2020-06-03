@@ -13,6 +13,10 @@ const actions = {
     commit(types.SET_ACTIVE_LAYER, payload)
   },
 
+  [types.upOneLayer]:({commit}, payload) => {
+    commit(types.UP_ONE_LAYER, payload)
+  },
+
   [types.registerComponent]: ({ state, commit }, payload) => {
     const { componentName } = payload
     if (!state.componentMap[componentName]) {
@@ -116,6 +120,10 @@ const actions = {
   // payload will be an object possessing the id:id we want to find and elementName:elementName and date:Date.now() it wants to send.
   [types.addNestedHTML]: ({ commit }, payload) => {
     commit(types.ADD_NESTED_HTML, payload)
+  },
+
+  [types.addNestedNoActive]:( {commit}, payload) =>{
+    commit(types.ADD_NESTED_NO_ACTIVE,payload)
   },
 
 

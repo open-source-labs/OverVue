@@ -28,13 +28,12 @@ import { mapState, mapActions } from 'vuex'
 import { setSelectedElementList, deleteSelectedElement, deleteFromComponentHtmlList, setActiveHTML, setActiveLayer } from '../store/types'
 
 const breadthFirstSearch = (array, id) => {
-  let queue = [...array.filter(el => typeof el === 'object')];
+  let queue = [...array.filter(el => typeof el === 'object')]
   while (queue.length) {
     let evaluated = queue.shift()
     if (evaluated.id === id) {
       return evaluated
-    }
-    else {
+    } else {
       if (evaluated.children.length) {
         queue.push(...evaluated.children)
       }
