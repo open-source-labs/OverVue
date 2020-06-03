@@ -60,9 +60,16 @@ const newState = {
    */
   componentNameInputValue: '',
   projects: [{ filename: 'Untitled-1', lastSavedLocation: '' }],
+
   activeRoute: 'HomeView',
   activeComponent: '',
   activeHTML: '',
+  activeLayer: {
+    id:'',
+    lineage:[]
+  },
+
+
   selectedElementList: [],
   projectNumber: 2,
   activeTab: 0,
