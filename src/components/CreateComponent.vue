@@ -39,6 +39,7 @@ import Icons from './Icons'
 import ParentMultiselect from '../components/ParentMultiselect'
 import { mapState, mapActions } from 'vuex'
 
+
 export default {
   name: 'HomeSidebar',
   components: {
