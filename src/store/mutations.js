@@ -122,14 +122,6 @@ const mutations = {
       id: payload.date,
       children: []
     })
-    if (state.activeElement.length) {
-      console.log('activeelement')
-      state.componentMap[componentName].htmlList.push({
-        text: elementName,
-        children: []
-      });
-    } else state.componentMap[componentName].children.push(elementName);
-    // state.activeElement.push(state.componentMap[componentName].children.length - 1, elementName);
   },
 
   [types.ADD_NESTED_HTML]: (state, payload) => {
