@@ -32,7 +32,9 @@ const breadthFirstSearchParent = (array,id) => {
     let evaluated = queue.shift()
     for(let i=0; i<evaluated.children.length;i++){
     if(evaluated.children[i].id === id){
-      return evaluated
+      return {
+        evaluated:evaluated,
+        index : i
      }
     }
     if (evaluated.children.length){
@@ -41,7 +43,7 @@ const breadthFirstSearchParent = (array,id) => {
   }
   console.log("We shouldn't be ever getting here, how did you even search an id that didn't exist?")
 }
-
+}
 const mutations = {
 
   [types.SET_ACTIVE_LAYER]: (state, payload) =>{
@@ -78,7 +80,7 @@ const mutations = {
     let newID = breadthFirstSearchParent(state.componentMap[state.activeComponent].htmlList, payload)
     //console.log("new ID here", newID)
       let newLayer = {...state.activeLayer}
-      newLayer.id = newID.id
+      newLayer.id = newID.evaluated.id
       newLayer.lineage.pop()
       console.log("We should have gone up  a level ", newLayer)
       state.activeLayer = newLayer
@@ -215,11 +217,15 @@ const mutations = {
     })
   },
 
-  [types.DELETE_FROM_COMPONENT_HTML_LIST]: (state, idx) => {
+  [types.DELETE_FROM_COMPONENT_HTML_LIST]: (state, id) => {
     const componentName = state.activeComponent
     const htmlList = state.componentMap[componentName].htmlList.slice(0)
     // splice out selected element and return resulting array
-    htmlList.splice(idx, 1)
+    let element = breadthFirstSearchParent(htmlList, id);
+    console.log("This is element", element)
+    element.evaluated.children.splice(element.index,1);
+   // htmlList.splice(idx, 1)
+
     state.componentMap[componentName].htmlList = htmlList
   },
   [types.SET_CLICKED_ELEMENT_LIST]: (state, payload) => {

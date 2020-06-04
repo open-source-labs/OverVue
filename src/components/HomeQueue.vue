@@ -14,7 +14,7 @@
       <!-- <div class="list-group-item" @dblclick="setActiveElement(element)" v-for="(element) in renderList" :key="element[1] + Date.now()"> -->
       <div :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'" @dblclick="setActiveElement(element)" v-for="(element) in renderList" :key="element[1] + Date.now()">
         {{ element[0] }}
-        <i class="fas fa fa-trash fa-md" @click="deleteElement(element[1])"></i>
+        <i class="fas fa fa-trash fa-md" @click="deleteElement(element[2])"></i>
       </div>
     </draggable>
   </section>
@@ -80,9 +80,9 @@ export default {
   },
   methods: {
     ...mapActions(['setActiveHTML', 'setActiveLayer']),
-    deleteElement (index) {
+    deleteElement (id) {
       if (this.activeComponent === '') this.$store.dispatch(deleteSelectedElement, index)
-      else this.$store.dispatch(deleteFromComponentHtmlList, index)
+      else this.$store.dispatch(deleteFromComponentHtmlList, id)
     },
     setActiveElement (element) {
       this.$store.dispatch(setActiveHTML, element)
