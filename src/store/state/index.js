@@ -63,8 +63,12 @@ const newState = {
 
   activeRoute: 'HomeView',
   activeComponent: '',
-  // on click, push name and index into active element
-  activeElement: [0, 'div'],
+  activeHTML: '',
+  activeLayer: {
+    id:'',
+    lineage:[]
+  },
+
   selectedElementList: [],
   projectNumber: 2,
   activeTab: 0,
