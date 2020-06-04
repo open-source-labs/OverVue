@@ -41,7 +41,7 @@ export default {
           children: compData.children
         })
       })
-      console.log("Formatcomponent map result", result)
+      console.log('Formatcomponent map result', result)
       return result
     },
     transformToTree (data) {
