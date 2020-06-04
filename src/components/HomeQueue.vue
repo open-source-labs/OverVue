@@ -1,7 +1,7 @@
 <template>
   <section class="home-queue" v-on:click="handleClick">
-    <span class='list-title' v-if='this.activeLayer.id !== ""'> Viewing Elements in '{{ this.activeComponent }} - {{ this.activeLayer.lineage }}' </span>
-    <!-- <span class='list-title' v-if='this.activeLayer.id !== ""'> Viewing Elements in '{{ this.activeLayer.lineage }}' </span> -->
+    <i v-if='this.activeLayer.id !== ""' class="fas fa fa-chevron-up fa-md" @click="setParentLayer"></i>
+    <span class='list-title' v-if='this.activeLayer.id !== ""'> Viewing Elements in '{{ this.activeComponent }} {{ this.depth }}' </span>
     <span class='list-title' v-else-if='this.activeComponent !==""'> Viewing Elements in '{{ this.activeComponent }}' </span>
     <span class='list-title' v-else> Elements in Queue </span>
     <hr>
@@ -13,10 +13,10 @@
       @start="drag = true"
       @end="drag = false"
     >
-      <div :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'" @dblclick="setActiveElement(element)" v-for="(element) in renderList" :key="element[1] + Date.now()">
+      <div :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'" @dblclick.self="setActiveElement(element)" v-for="(element) in renderList" :key="element[1] + Date.now()">
         <i class="fas fa fa-angle-double-down fa-md" @click="setLayer({text: element[0], id: element[2]})"></i>
         {{ element[0] }}
-        <i class="fas fa fa-trash fa-md" @click="deleteElement(element[1])"></i>
+        <i class="fas fa fa-trash fa-md" @click.self="deleteElement(element[1])"></i>
       </div>
     </draggable>
   </section>
@@ -25,7 +25,7 @@
 <script>
 import draggable from 'vuedraggable'
 import { mapState, mapActions } from 'vuex'
-import { setSelectedElementList, deleteSelectedElement, deleteFromComponentHtmlList, setActiveHTML, setActiveLayer } from '../store/types'
+import { setSelectedElementList, deleteSelectedElement, deleteFromComponentHtmlList } from '../store/types'
 
 const breadthFirstSearch = (array, id) => {
   let queue = [...array.filter(el => typeof el === 'object')]
@@ -52,11 +52,11 @@ export default {
       type: Array
     }
   },
-  // data () {
-  //   return {
-  //     //component: false
-  //   }
-  // },
+  data () {
+    return {
+      depth: ''
+    }
+  },
   computed: {
     ...mapState(['selectedElementList', 'componentMap', 'activeComponent', 'activeHTML', 'activeLayer']),
     renderList: {
@@ -64,7 +64,6 @@ export default {
         if (this.activeComponent === '') return this.selectedElementList.map((el, index) => [el.text, index, el.id])
         // change activeComponent's htmlList into an array of arrays ([element/component name, index in state])
         if (this.activeComponent !== '' && this.activeLayer.id === '') {
-          console.log('this works right?')
           let sortedHTML = this.componentMap[this.activeComponent].htmlList.map((el, index) => [el.text, index, el.id]).filter(el => {
             return el[0] !== undefined
           })
@@ -82,16 +81,30 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setActiveHTML', 'setActiveLayer']),
+    ...mapActions(['setActiveHTML', 'setActiveLayer', 'upOneLayer']),
     deleteElement (index) {
       if (this.activeComponent === '') this.$store.dispatch(deleteSelectedElement, index)
       else this.$store.dispatch(deleteFromComponentHtmlList, index)
     },
     setActiveElement (element) {
-      this.$store.dispatch(setActiveHTML, element)
+      this.setActiveHTML(element)
     },
     setLayer (element) {
-      this.$store.dispatch(setActiveLayer, element)
+      this.setActiveLayer(element)
+      this.setTitle()
+    },
+    setParentLayer () {
+      if (this.activeLayer.id !== '') {
+        this.upOneLayer(this.activeLayer.id)
+        this.setTitle()
+      }
+    },
+    setTitle () {
+      let newTitle = ''
+      this.activeLayer.lineage.forEach(el => {
+        newTitle += ` > ${el}`
+      })
+      this.depth = newTitle
     },
     handleClick (event) {
       console.log(event.target)
@@ -102,17 +115,23 @@ export default {
   },
   components: {
     draggable
+  },
+  watch: {
+    activeComponent: function () {
+      // console.log('watching activeComponent in HomeQueue')
+      if (this.activeComponent !== '') {
+        this.component = true
+      } else {
+        this.component = false
+      }
+    },
+    activeLayer: function () {
+      // console.log('watching activeComponent in HomeQueue')
+      if (this.activeLayer !== '') {
+        this.setTitle()
+      }
+    }
   }
-  // watch: {
-  //   activeComponent: function () {
-  //     // console.log('watching activeComponent in HomeQueue')
-  //     if (this.activeComponent !== '') {
-  //       this.component = true
-  //     } else {
-  //       this.component = false
-  //     }
-  //   }
-  // }
 }
 </script>
 
@@ -170,6 +189,16 @@ li {
   cursor: pointer;
   color: #41B883;
 }
+
+.fa-chevron-up {
+  position: relative;
+}
+
+.fa-chevron-up:hover {
+  cursor: pointer;
+  color: #41B883;
+}
+
 hr {
   border: 1px solid grey
 }
