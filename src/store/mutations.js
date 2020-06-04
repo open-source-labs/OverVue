@@ -221,10 +221,20 @@ const mutations = {
     const componentName = state.activeComponent
     const htmlList = state.componentMap[componentName].htmlList.slice(0)
     // splice out selected element and return resulting array
+    if(state.activeLayer.id === '')
+    {
+     for(let i = 0; i<htmlList.length; i++){
+       if(htmlList[i].id === id){
+         htmlList.splice(i,1)
+         break
+       }
+     }
+    } else{
     let element = breadthFirstSearchParent(htmlList, id);
     console.log("This is element", element)
     element.evaluated.children.splice(element.index,1);
    // htmlList.splice(idx, 1)
+    }
 
     state.componentMap[componentName].htmlList = htmlList
   },
