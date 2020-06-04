@@ -231,7 +231,11 @@ const mutations = {
      }
     } else{
     let element = breadthFirstSearchParent(htmlList, id);
-    console.log("This is element", element)
+    if(id = state.activeHTML)
+    {
+      state.activeHTML =''
+    }
+    //console.log("This is element", element)
     element.evaluated.children.splice(element.index,1);
    // htmlList.splice(idx, 1)
     }
