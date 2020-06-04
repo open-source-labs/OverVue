@@ -10,7 +10,7 @@
       :option-height="20"
       @input="handleSelect(value)"
       placeholder="Select a component">
-      <span slot='noResult'>No elements found.</span>
+      <span slot='noResult'>No components found.</span>
       </multiselect>
       <br/>
     <a

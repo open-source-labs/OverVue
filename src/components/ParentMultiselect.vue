@@ -12,7 +12,7 @@
       :option-height="20"
       :searchable="true"
     >
-    <span slot='noResult'>No elements found.</span>
+    <span slot='noResult'>No components found.</span>
     </multiselect>
   </div>
 </template>
@@ -67,7 +67,7 @@ export default {
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
-  #parent-select{
+  #parent-select {
     height: 30px;
     margin: 0.75rem;
     width: 90%;
