@@ -4,10 +4,10 @@
 </template>
 
 <script>
-import localforage from 'localforage';
-import fs from 'fs-extra';
-import { addProject } from '../store/types';
-const { remote } = require("electron");
+import localforage from 'localforage'
+import fs from 'fs-extra'
+import { addProject } from '../store/types'
+const { remote } = require('electron')
 import { mapState, mapActions } from 'vuex'
 
 export default {
@@ -19,9 +19,9 @@ export default {
       // 'setImagePath',
       'openProject'
     ]),
-    parseFileName(file) {
-      //Obtains json file name from file path
-      return file.split('/').pop();
+    parseFileName (file) {
+      // Obtains json file name from file path
+      return file.split('/').pop()
     },
     openJSONFile (data) {
       const jsonFile = JSON.parse(fs.readFileSync(data[0], 'utf8'))
@@ -40,21 +40,21 @@ export default {
         filters: [{
           name: 'JSON Files',
           extensions: ['json']
-        }]},
-        result => {
-          // 'result' is the filepath of the .json file being opened
-          this.openJSONFile(result);
-        }
-      );
+        }] },
+      result => {
+        // 'result' is the filepath of the .json file being opened
+        this.openJSONFile(result)
+      }
+      )
     },
-    openProjectJSON(){
-      this.showOpenJSONDialog();
+    openProjectJSON () {
+      this.showOpenJSONDialog()
     }
   },
-  created(){
+  created () {
     Mousetrap.bind(['command+o', 'ctrl+o'], () => {
-      this.openProjectJSON();
-    });
+      this.openProjectJSON()
+    })
   }
 }
 </script>

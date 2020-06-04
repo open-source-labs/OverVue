@@ -2,33 +2,30 @@ import icons from './icons'
 import htmlElementMap from './htmlElementMap'
 const cloneDeep = require('lodash.clonedeep')
 
-let hardA = {
-  componentName: "a",
-  x: 0,
-  y: 20,
-  z: 0,
-  w: 200,
-  h: 200,
-  htmlList: [{
-    children:[{
-      children:[{
-        text: 'button',
-        children:[],
-        id:0
-      }],
-      text:'form',
-      id:2
-    }],
-    text: "div",
-    id:1
-  }],
-  children: [],
-  parent: {},
-  isActive: false
-}
-
-
-
+// let hardA = {
+//   componentName: "a",
+//   x: 0,
+//   y: 20,
+//   z: 0,
+//   w: 200,
+//   h: 200,
+//   htmlList: [{
+//     children:[{
+//       children:[{
+//         text: 'button',
+//         children:[],
+//         id:0
+//       }],
+//       text:'form',
+//       id:2
+//     }],
+//     text: "div",
+//     id:1
+//   }],
+//   children: [],
+//   parent: {},
+//   isActive: false
+// }
 
 const newState = {
   icons,
@@ -43,14 +40,16 @@ const newState = {
     },
     HomeView: {
       componentName: 'HomeView',
-      children: ['a'],
+      // children: ['a'],
+      children: [],
       htmlList: []
-    },
+    }
     // NewView: {}
-    a: hardA
+    // a: hardA
   },
   routes: {
-    HomeView: [hardA]
+    // HomeView: [hardA]
+    HomeView: []
     // NewView: []
   },
   userActions: [],
