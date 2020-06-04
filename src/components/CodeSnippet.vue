@@ -15,55 +15,54 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import PrismEditor from 'vue-prism-editor';
-import 'prismjs';
-import 'prismjs/themes/prism-okaidia.css';
-import 'vue-prism-editor/dist/VuePrismEditor.css';
+import { mapState } from 'vuex'
+import PrismEditor from 'vue-prism-editor'
+import 'prismjs'
+import 'prismjs/themes/prism-okaidia.css'
+import 'vue-prism-editor/dist/VuePrismEditor.css'
 
 export default {
-  data() {
+  data () {
     return {
       code: `Your component boilerplate will be displayed here.`,
       lineNumbers: true,
-      height: null,
-    };
+      height: null
+    }
   },
   components: {
-    PrismEditor,
+    PrismEditor
   },
   computed: {
     // needs access to current component aka activeComponent
-    ...mapState(['componentMap', 'activeComponent']),
+    ...mapState(['componentMap', 'activeComponent'])
   },
   methods: {
-    getWindowHeight(e) {
+    getWindowHeight (e) {
       let minHeight =
-        window.outerHeight < 900 ? 22 : window.outerHeight < 1035 ? 24 : 27.5;
-      this.height = minHeight;
+        window.outerHeight < 900 ? 22 : window.outerHeight < 1035 ? 24 : 27.5
+      this.height = minHeight
     },
     // calls createTemplate and createBoiler to generate snippet
-    createCodeSnippet(componentName, children) {
+    createCodeSnippet (componentName, children) {
       let result = `${this.createTemplate(
         componentName,
         children
-      )}${this.createBoiler(componentName, children)}`;
-      return result;
+      )}${this.createBoiler(componentName, children)}`
+      return result
     },
-    createTemplate(componentName, children) {
-      let output = ``;
-      output += ` <div>\n`;
+    createTemplate (componentName, children) {
+      let output = ``
+      output += ` <div>\n`
       // children.forEach(name => {
       //   output += `    <${name}>\n    </${name}>\n`;
       // });
-      let templateTagStr = this.writeTemplateTag(componentName);
-      return `<template>\n ${output}${templateTagStr}  </div>\n</template>`;
+      let templateTagStr = this.writeTemplateTag(componentName)
+      return `<template>\n ${output}${templateTagStr}  </div>\n</template>`
     },
 
     // We need a helper function to recursively iterate through the given html element's children and their children's children.
 
-
-    writeTemplateTag(componentName) {
+    writeTemplateTag (componentName) {
       // console.log('writeTemplateTag invoked!')
       // create reference object
       const htmlElementMap = {
@@ -77,120 +76,115 @@ export default {
         'list-ol': ['<ol>', '</ol>'],
         'list-ul': ['<ul>', '</ul>'],
         input: ['<input />', ''],
-        navbar: ['<nav>', '</nav>'],
-      };
-
-       function writeNested(childrenArray, indent){
-      if(!childrenArray.length){
-        return ''
+        navbar: ['<nav>', '</nav>']
       }
-      let indented = indent + '  '
-      let nestedString = ''
 
-      childrenArray.forEach(child => {
-        nestedString += indented
-        //console.log(child)
-        if(!child.text){
-          nestedString += `<${child}/>\n`
+      function writeNested (childrenArray, indent) {
+        if (!childrenArray.length) {
+          return ''
         }
-        else{
-          if(child.children.length){
-            nestedString += htmlElementMap[child.text][0]
-            nestedString += '\n';
-            nestedString += writeNested(child.children,indented)
-            nestedString += indented + htmlElementMap[child.text][1]
-            nestedString += '\n'
-          }
-           else{
-            nestedString += htmlElementMap[child.text][0]+htmlElementMap[child.text][1]+'\n';
-          }
-        }
-      })
-      return nestedString
-    }
+        let indented = indent + '  '
+        let nestedString = ''
 
+        childrenArray.forEach(child => {
+          nestedString += indented
+          // console.log(child)
+          if (!child.text) {
+            nestedString += `<${child}/>\n`
+          } else {
+            if (child.children.length) {
+              nestedString += htmlElementMap[child.text][0]
+              nestedString += '\n'
+              nestedString += writeNested(child.children, indented)
+              nestedString += indented + htmlElementMap[child.text][1]
+              nestedString += '\n'
+            } else {
+              nestedString += htmlElementMap[child.text][0] + htmlElementMap[child.text][1] + '\n'
+            }
+          }
+        })
+        return nestedString
+      }
 
       // loop to iterate through compName arr
-      let htmlArr = this.componentMap[componentName].htmlList;
-      let outputStr = ``;
+      let htmlArr = this.componentMap[componentName].htmlList
+      let outputStr = ``
       for (let el of htmlArr) {
-        //console.log(el)
-        if(!el.text){
+        // console.log(el)
+        if (!el.text) {
           outputStr += `    <${el}/>\n`
-        }
-        else{
-        outputStr += `    `;
-          if(el.children.length){
-          outputStr += htmlElementMap[el.text][0];
-          outputStr += '\n'
-          outputStr += writeNested(el.children,`    `)
+        } else {
           outputStr += `    `
-          outputStr += htmlElementMap[el.text][1];
-          outputStr += `  \n`;
-          }
-          else{
-            outputStr += htmlElementMap[el.text][0]+htmlElementMap[el.text][1]+'\n';
+          if (el.children.length) {
+            outputStr += htmlElementMap[el.text][0]
+            outputStr += '\n'
+            outputStr += writeNested(el.children, `    `)
+            outputStr += `    `
+            outputStr += htmlElementMap[el.text][1]
+            outputStr += `  \n`
+          } else {
+            outputStr += htmlElementMap[el.text][0] + htmlElementMap[el.text][1] + '\n'
           }
         }
       }
       // console.log(`outputStr from writeTemplateTag: ${outputStr}`)
-      return outputStr;
+      return outputStr
     },
-    createBoiler(componentName, children) {
-      let str = '';
+    createBoiler (componentName, children) {
+      let str = ''
       children.forEach(name => {
-        str += `import ${name} from '@/components/${name}.vue';\n`;
-      });
-      let childrenComponentNames = '';
+        str += `import ${name} from '@/components/${name}.vue';\n`
+      })
+      let childrenComponentNames = ''
       children.forEach(name => {
-        childrenComponentNames += `    ${name},\n`;
-      });
-      return `\n\n<script>\n${str}\nexport default {\n  name: '${componentName}',\n  components: {\n${childrenComponentNames}  }\n};\n<\/script>\n\n<style scoped>\n</style>`;
-    },
+        childrenComponentNames += `    ${name},\n`
+      })
+      return `\n\n<script>\n${str}\nexport default {\n  name: '${componentName}',\n  components: {\n${childrenComponentNames}  }\n};\n<\/script>\n\n<style scoped>\n</style>`
+    }
   },
-  mounted() {
+  mounted () {
     // https://vuejs.org/v2/api/#Vue-nextTick
     // kinda like a promise, used for the window resize
     this.$nextTick(() => {
-      window.addEventListener('resize', this.getWindowHeight);
+      window.addEventListener('resize', this.getWindowHeight)
 
-      this.getWindowHeight();
-    });
+      this.getWindowHeight()
+    })
   },
   // updates code snippet, but broken cause children undefined, shows `function () { [native code] }`
-  updated() {
+  updated () {
     // console.log(`code: ${this.createCodeSnippet(this.activeComponent, this.componentMap[this.activeComponent].children)}`)
     // console.log('component map: ', this.componentMap);
     if (this.componentMap[this.activeComponent]) {
       this.code = `${this.createCodeSnippet(
         this.activeComponent,
         this.componentMap[this.activeComponent].children
-      )}`;
+      )}`
     } else {
-      this.code = `Your component boilerplate will be displayed here.`;
+      this.code = `Your component boilerplate will be displayed here.`
     }
   },
-  beforeDestroy() {
-    window.removeEventListener('resize', this.getWindowHeight);
+  beforeDestroy () {
+    window.removeEventListener('resize', this.getWindowHeight)
   },
   watch: {
     componentMap: {
       deep: true,
-      handler() {
+      handler () {
         // console.log('component Map has changed');
         if (this.componentMap[this.activeComponent]) {
           this.code = `${this.createCodeSnippet(
             this.activeComponent,
             this.componentMap[this.activeComponent].children
-          )}`;
+          )}`
         }
-      },
+      }
     },
-    activeComponent: function() {
+    activeComponent: function () {
       // console.log('watching active component');
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style lang="stylus" scoped>

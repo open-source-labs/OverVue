@@ -33,9 +33,9 @@ export default {
       this.setActiveRoute(route)
     },
     deleteSelectedRoute (route) {
-      this.setActiveRoute(route)
+      // this.setActiveRoute(route)
       this.deleteRoute(route)
-      this.setActiveRoute('')
+      // this.setActiveRoute('')
     }
   }
 }
