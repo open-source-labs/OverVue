@@ -17,7 +17,20 @@
 
 <script>
 import { mapState } from 'vuex'
-
+const breadthFirstSearch = (array, id) => {
+  let queue = [...array.filter(el => typeof el === 'object')]
+  while (queue.length) {
+    let evaluated = queue.shift()
+    if (evaluated.id === id) {
+      return evaluated
+    } else {
+      if (evaluated.children.length) {
+        queue.push(...evaluated.children)
+      }
+    }
+  }
+  console.log("We shouldn't be ever getting here, how did you even search an id that didn't exist?")
+}
 export default {
   data () {
     return {
@@ -26,29 +39,56 @@ export default {
   },
   name: 'Icons',
   computed: {
-    ...mapState(['icons', 'activeComponent', 'componentMap', 'selectedElementList'])
+    ...mapState(['icons', 'activeComponent', 'componentMap', 'selectedElementList', 'activeHTML', 'activeLayer'])
   },
   methods: {
     changeState (elementName) {
-      if (this.activeComponent === '') { this.$emit('getClickedIcon', elementName) } else this.$emit('activeElement', elementName)
+      if (this.activeComponent === '') { this.$emit('getClickedIcon', { elementName, date: Date.now() }) } else {
+        if (this.activeHTML === '' && this.activeLayer.id === '') {
+          this.$emit('activeElement', { elementName, date: Date.now() })
+        } else if (this.activeLayer.id !== '' && this.activeHTML === '') {
+          this.$emit('activeLayer', { elementName, date: Date.now() })
+        } else {
+          this.$emit('activeHTML', { elementName, date: Date.now() })
+        }
+      }
     }
   },
   watch: {
-    selectedElementList: function() {
+    selectedElementList: function () {
       // console.log('watching selectedElementList');
       if (this.activeComponent === '') {
-        this.elementStorage = {};
+        this.elementStorage = {}
         this.selectedElementList.forEach(el => {
           if (!this.elementStorage[el.text]) {
-            this.elementStorage[el.text] = 1;
+            this.elementStorage[el.text] = 1
           } else {
-            this.elementStorage[el.text] += 1;
+            this.elementStorage[el.text] += 1
           }
         })
       }
       // console.log('storage is ', this.elementStorage)
     },
+    activeLayer: {
+      deep: true,
+      handler () {
+        if (this.activeComponent) {
+          this.elementStorage = {}
+          if (this.activeLayer.id !== '' && this.activeHTML === '') {
+            let activeLayerObj = breadthFirstSearch(this.componentMap[this.activeComponent].htmlList, this.activeLayer.id)
+            activeLayerObj.children.forEach(el => {
+              if (!this.elementStorage[el.text]) {
+                this.elementStorage[el.text] = 1
+              } else {
+                this.elementStorage[el.text] += 1
+              }
+            })
+          }
+        }
+      }
+    },
     // if componentMap is updated (i.e. element is added to component's htmlList), elementStorage will update its cache of elements & frequency
+
     componentMap: {
       deep: true,
       handler () {
@@ -56,40 +96,93 @@ export default {
         // console.log('activecomponent is ', this.activeComponent)
         // console.log('htmlList', this.componentMap[this.activeComponent].htmlList)
         if (this.activeComponent) {
-          this.elementStorage = {};
-          this.componentMap[this.activeComponent].htmlList.forEach(el => {
-            if (!this.elementStorage[el.text]) {
-              this.elementStorage[el.text] = 1;
-            } else {
-              this.elementStorage[el.text] += 1;
-            }
-          })
+          this.elementStorage = {}
+          if (this.activeLayer.id !== '' && this.activeHTML === '') {
+            let activeLayerObj = breadthFirstSearch(this.componentMap[this.activeComponent].htmlList, this.activeLayer.id)
+            activeLayerObj.children.forEach(el => {
+              if (!this.elementStorage[el.text]) {
+                this.elementStorage[el.text] = 1
+              } else {
+                this.elementStorage[el.text] += 1
+              }
+            })
+          } else if (this.activeHTML !== '') {
+            let activeHtmlObj = breadthFirstSearch(this.componentMap[this.activeComponent].htmlList, this.activeHTML)
+            activeHtmlObj.children.forEach(el => {
+              if (!this.elementStorage[el.text]) {
+                this.elementStorage[el.text] = 1
+              } else {
+                this.elementStorage[el.text] += 1
+              }
+            })
+          } else {
+            this.componentMap[this.activeComponent].htmlList.forEach(el => {
+              if (!this.elementStorage[el.text]) {
+                this.elementStorage[el.text] = 1
+              } else {
+                this.elementStorage[el.text] += 1
+              }
+            })
+          }
           // console.log('elementStorage is ', this.elementStorage);
         }
-      },
+      }
+    },
+
+    activeHTML: function () {
+      this.elementStorage = {}
+      if (this.activeHTML !== '') {
+        let activeHtmlObj = breadthFirstSearch(this.componentMap[this.activeComponent].htmlList, this.activeHTML)
+        activeHtmlObj.children.forEach(el => {
+          if (!this.elementStorage[el.text]) {
+            this.elementStorage[el.text] = 1
+          } else {
+            this.elementStorage[el.text] += 1
+          }
+        })
+      } else {
+        if (this.activeLayer.id !== '' && this.activeHTML === '') {
+          let activeLayerObj = breadthFirstSearch(this.componentMap[this.activeComponent].htmlList, this.activeLayer.id)
+          activeLayerObj.children.forEach(el => {
+            if (!this.elementStorage[el.text]) {
+              this.elementStorage[el.text] = 1
+            } else {
+              this.elementStorage[el.text] += 1
+            }
+          })
+        } else {
+          this.componentMap[this.activeComponent].htmlList.forEach(el => {
+            if (!this.elementStorage[el.text]) {
+              this.elementStorage[el.text] = 1
+            } else {
+              this.elementStorage[el.text] += 1
+            }
+          })
+        }
+      }
     },
     // if activeComponent is updated, elementStorage will update its cache of elements & frequency to reflect new active component
-    activeComponent: function() {
+    activeComponent: function () {
       // console.log('watching activeComponent', this.activeComponent);
       if (this.activeComponent) {
-        this.elementStorage = {};
+        this.elementStorage = {}
         this.componentMap[this.activeComponent].htmlList.forEach(el => {
           if (!this.elementStorage[el.text]) {
-            this.elementStorage[el.text] = 1;
+            this.elementStorage[el.text] = 1
           } else {
-            this.elementStorage[el.text] += 1;
+            this.elementStorage[el.text] += 1
           }
         })
         // console.log('elementStorage is ', this.elementStorage);
       } else if (this.activeComponent === '') {
         // console.log(`watching activeComponent, current active is ''`)
         // if component was switched from existing component to '', reset cache and update items
-        if (this.elementStorage !== {}) this.elementStorage = {};
+        if (this.elementStorage !== {}) this.elementStorage = {}
         this.selectedElementList.forEach(el => {
           if (!this.elementStorage[el.text]) {
-            this.elementStorage[el.text] = 1;
+            this.elementStorage[el.text] = 1
           } else {
-            this.elementStorage[el.text] += 1;
+            this.elementStorage[el.text] += 1
           }
         })
       }
@@ -123,7 +216,7 @@ button:hover {
   cursor: pointer;
   color: #00ffff;
 }
-button:focus {  
+button:focus {
   outline: none;
   color: #00ffff;
 }

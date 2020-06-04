@@ -6,11 +6,13 @@
       v-for="route in Object.keys(routes)"
       :key="route"
       @click="handleClick(route)"
-      v-on:keyup.delete="deleteSelectedRoute(route)"
     >
       <q-list bordered separator class="list-item">
         <q-item clickable v-ripple class="list-item">
           <q-item-section>{{route}}</q-item-section>
+          <span v-if="route !== 'HomeView'">
+            <q-btn round flat icon="highlight_off" v-on:click.stop="deleteSelectedRoute(route)" />
+          </span>
         </q-item>
       </q-list>
     </a>
@@ -31,6 +33,7 @@ export default {
       this.setActiveRoute(route)
     },
     deleteSelectedRoute (route) {
+      this.setActiveRoute(route)
       this.deleteRoute(route)
       this.setActiveRoute('')
     }

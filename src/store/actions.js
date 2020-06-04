@@ -8,6 +8,15 @@ const actions = {
   // },
 
   // creates a new component in componentMap
+
+  [types.setActiveLayer]: ({commit}, payload) => {
+    commit(types.SET_ACTIVE_LAYER, payload)
+  },
+
+  [types.upOneLayer]:({commit}, payload) => {
+    commit(types.UP_ONE_LAYER, payload)
+  },
+
   [types.registerComponent]: ({ state, commit }, payload) => {
     const { componentName } = payload
     if (!state.componentMap[componentName]) {
@@ -50,6 +59,38 @@ const actions = {
       commit(types.SET_SELECTED_ELEMENT_LIST, payload)
     }
   },
+
+  [types.updateComponentPosition]: ({ commit }, payload) =>{
+    /*  let payload = {
+        x = x,
+        y = y,
+        activeComponent = this.activeComponent,
+        routeArray = this.routes[this.activeRoute],
+        activeComponentData = this.activeComponentData
+      } */
+    
+    commit(types.UPDATE_COMPONENT_POSITION, payload)
+
+  },
+  [types.updateComponentLayer]: ({ commit }, payload) => {
+    commit(types.UPDATE_COMPONENT_LAYER, payload)
+  },
+
+  // does the same as update component position, but needed to record the initial spot of the draggable resizeable in component display
+  // or else undo/redo won't work
+  [types.updateStartingPosition]: ({ commit }, payload) => {
+    commit(types.UPDATE_COMPONENT_POSITION, payload)
+  },
+
+  [types.updateStartingSize]: ({ commit }, payload) => {
+    commit(types.UPDATE_COMPONENT_SIZE, payload)
+  },
+
+  [types.updateComponentSize]: ({ commit }, payload) => {
+    commit(types.UPDATE_COMPONENT_SIZE,payload)
+  },
+
+
   // adds component to the homeQueue
   [types.addToSelectedElementList]: ({ commit }, payload) => {
     commit(types.ADD_TO_SELECTED_ELEMENT_LIST, payload)
@@ -75,6 +116,17 @@ const actions = {
   [types.deleteSelectedElement]: ({ commit }, payload) => {
     commit(types.DELETE_SELECTED_ELEMENT, payload)
   },
+
+  // payload will be an object possessing the id:id we want to find and elementName:elementName and date:Date.now() it wants to send.
+  [types.addNestedHTML]: ({ commit }, payload) => {
+    commit(types.ADD_NESTED_HTML, payload)
+  },
+
+  [types.addNestedNoActive]:( {commit}, payload) =>{
+    commit(types.ADD_NESTED_NO_ACTIVE,payload)
+  },
+
+
   [types.setState]: ({ commit }, payload) => {
     commit(types.SET_STATE, payload)
   },
@@ -88,9 +140,9 @@ const actions = {
     commit(types.CHANGE_ACTIVE_TAB, payload)
   },
   // used by OpenProjectComponent.vue
-  [types.setComponentMap]: ({ commit }, payload) => {
-    commit(types.SET_COMPONENT_MAP, payload)
-  },
+  // [types.setComponentMap]: ({ commit }, payload) => {
+  //   commit(types.SET_COMPONENT_MAP, payload)
+  // },
   [types.addRouteToRouteMap]: ({ state, commit }, payload) => {
     commit(types.ADD_ROUTE, payload)
     commit(types.SET_ACTIVE_ROUTE, payload)
@@ -108,9 +160,12 @@ const actions = {
   [types.setActiveComponent]: ({ commit }, payload) => {
     commit(types.SET_ACTIVE_COMPONENT, payload)
   },
-  [types.setRoutes]: ({ commit }, payload) => {
-    commit(types.SET_ROUTES, payload)
+  [types.setActiveHTML]: ({ commit }, payload) => {
+    commit(types.SET_ACTIVE_HTML_ELEMENT, payload)
   },
+  // [types.setRoutes]: ({ commit }, payload) => {
+  //   commit(types.SET_ROUTES, payload)
+  // },
   [types.deleteProjectTab]: ({ commit }, payload) => {
     commit(types.DELETE_PROJECT_TAB, payload)
   },
@@ -140,8 +195,8 @@ const actions = {
   [types.importImage]: ({ commit }, payload) => {
     commit(types.IMPORT_IMAGE, payload)
   },
-  [types.clearImage]: ({ commit }) => {
-    commit(types.CLEAR_IMAGE)
+  [types.clearImage]: ({ commit }, payload) => {
+    commit(types.CLEAR_IMAGE, payload)
   },
   [types.deleteUserActions]: ({ state, commit }, payload) => {
     console.log('invoking deleteUserActions')
@@ -169,6 +224,19 @@ const actions = {
       commit(types.REMOVE_ACTION_FROM_COMPONENT, payload)
     })
     commit(types.DELETE_USER_STATE, payload)
+  },
+  // [types.setImagePath]: ({ commit }, payload) => {
+  //   console.log('image payload', payload)
+  //   commit(types.SET_IMAGE_PATH, payload)
+  // },
+  [types.openProject]: ({ commit }, payload) => {
+    // open project imagePath, componentPath, routePath
+    // console.log('image', payload.imagePath)
+    // console.log('component', payload.componentMap)
+    // console.log('route', payload.routes)
+    commit(types.SET_IMAGE_PATH, payload.imagePath)
+    commit(types.SET_COMPONENT_MAP, payload.componentMap)
+    commit(types.SET_ROUTES, payload.routes)
   }
 }
 

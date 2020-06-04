@@ -14,19 +14,27 @@ export default {
   name: 'OpenProjectComponent',
   methods: {
     ...mapActions([
-      'setComponentMap',
-      'setRoutes',
+      // 'setComponentMap',
+      // 'setRoutes',
+      // 'setImagePath',
+      'openProject'
     ]),
     parseFileName(file) {
       //Obtains json file name from file path
       return file.split('/').pop();
     },
-    openJSONFile(data){
+    openJSONFile (data) {
       const jsonFile = JSON.parse(fs.readFileSync(data[0], 'utf8'))
-      this.setComponentMap(jsonFile.componentMap)
-      this.setRoutes(jsonFile.routes)
+      console.log('json file', jsonFile.imagePath)
+      // this.setComponentMap(jsonFile.componentMap)
+      // this.setRoutes(jsonFile.routes)
+      // if (jsonFile.imagePath) {
+      //   this.setImagePath(jsonFile.imagePath)
+      // }
+      // open project action
+      this.openProject(jsonFile)
     },
-    showOpenJSONDialog(){
+    showOpenJSONDialog () {
       remote.dialog.showOpenDialog({
         properties: ['openFile'],
         filters: [{

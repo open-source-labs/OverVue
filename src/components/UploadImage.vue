@@ -23,7 +23,7 @@
           />-->
           <!-- for electron  -->
           <q-btn
-            v-if="imageExists"
+            v-if="source !== ''"
             class="upload-btn"
             color="secondary"
             label="Clear Image"
@@ -33,8 +33,10 @@
         </div>
         <div class="file-path">
           <q-card>
-            <img :src="[imageExists ? `file:///${imagePath[0]}` : ' ']" />
-
+            <!-- <img :src="[imageExists ? `file:///${imagePath[this.activeRoute]}` : ' ']" /> -->
+            <!-- <img class='img' :src="'file:///' + this.imagePath[this.activeRoute]"/> -->
+            <img class='img' v-if='this.imagePath[this.activeRoute] !== ""' :src="'file:///' + this.imagePath[this.activeRoute]"/>
+            <!-- <img /> -->
             <!-- <q-card-section>
               <div class="text-h6 file-header">File Path</div>
               <div class="text-subtitle2 file-content">{{ imagePath[0] }}</div>
@@ -58,14 +60,16 @@ export default {
   name: 'upload-image',
   data () {
     return {
-      files: []
+      files: [],
+      source: '',
     }
   },
   computed: {
-    ...mapState(['imagePath']),
-    imageExists () {
-      return this.imagePath.length
-    }
+    ...mapState(['imagePath', 'activeRoute'])
+    // imageExists () {
+    //   console.log('imagePath', this.imagePath)
+    //   return this.imagePath.length
+    // }
   },
   methods: {
     ...mapActions(['importImage', 'clearImage']),
@@ -74,11 +78,20 @@ export default {
      */
     importMockup () {
       const img = uploadImage()
-      this.importImage(img)
+      if (img !== '') {
+        this.importImage({ img, route: this.activeRoute })
+        if (this.imagePath[this.activeRoute]) {
+          this.source = 'file:///' + this.imagePath[this.activeRoute]
+        }
+      }
     },
     removeImage () {
       const res = clearImageDialog()
-      if (res === 0) this.clearImage()
+      console.log('REMOVEIMAGE: remove is ', res )
+      if (res === 0) {
+        this.clearImage({ route: this.activeRoute })
+        this.source = this.imagePath[this.activeRoute]
+      }
     },
     /**
      * @description: for use with the browser
@@ -93,6 +106,18 @@ export default {
     },
     removeImageBrowser () {
       this.clearImage()
+    }
+  },
+  watch: {
+    activeRoute: function () {
+      // watch for changes in store activeRoute
+      console.log('Route has changed')
+      if (this.imagePath[this.activeRoute]) {
+        // if there is a uploaded image
+        this.source = 'file:///' + this.imagePath[this.activeRoute]
+      } else {
+        this.source = ''
+      }
     }
   }
 }
@@ -136,5 +161,9 @@ export default {
 .browser-btn {
   width: 90px;
   background: $secondary;
+}
+
+.img {
+  max-height: 200px;
 }
 </style>

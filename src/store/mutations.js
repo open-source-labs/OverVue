@@ -1,70 +1,177 @@
 import * as types from './types'
+import icons from './state/icons.js'
+import htmlElementMap from './state/htmlElementMap.js'
+const cloneDeep = require('lodash.clonedeep')
+// import VuexStore from './index'
+// import { getDefault, defaultState } from './state/index.js'
 
 import localforage from 'localforage'
 
+// we have to do a search because undo/redo saves payloads as deep clones so passing a memory ref would be detrimental
+// This will find you the actual object by ID
+const breadthFirstSearch = (array, id) => {
+  let queue = [...array.filter(el => typeof el === 'object')]
+  while (queue.length) {
+    let evaluated = queue.shift()
+    if (evaluated.id === id) {
+      return evaluated
+    } else {
+      if (evaluated.children.length) {
+        queue.push(...evaluated.children)
+      }
+    }
+  }
+  console.log("We shouldn't be ever getting here, how did you even search an id that didn't exist?")
+}
+
+// this would find you the parent of a given id
+const breadthFirstSearchParent = (array, id) => {
+  let queue = [...array.filter(el => typeof el === 'object')]
+  while (queue.length) {
+    let evaluated = queue.shift()
+    for (let i = 0; i < evaluated.children.length; i++) {
+      if (evaluated.children[i].id === id) {
+        return {
+          evaluated: evaluated,
+          index: i
+        }
+      }
+      if (evaluated.children.length) {
+        queue.push(...evaluated.children)
+      }
+    }
+    console.log("We shouldn't be ever getting here, how did you even search an id that didn't exist?")
+  }
+}
 const mutations = {
+
+  [types.SET_ACTIVE_LAYER]: (state, payload) => {
+    let newLayer = cloneDeep(state.activeLayer)
+    newLayer.lineage.push(payload.text)
+    newLayer.id = payload.id
+    state.activeLayer = newLayer
+    state.activeHTML = ''
+  },
+
+  [types.UP_ONE_LAYER]: (state, payload) => {
+    // console.log("This is our payload",payload)
+    // console.log("we are looking for the parent in here",state.componentMap[state.activeComponent].htmlList)
+    if (state.activeLayer.lineage.length === 1) {
+      state.activeLayer = {
+        id: '',
+        lineage: []
+      }
+    } else {
+      let newID = breadthFirstSearchParent(state.componentMap[state.activeComponent].htmlList, payload)
+      // console.log("new ID here", newID)
+      let newLayer = { ...state.activeLayer }
+      newLayer.id = newID.evaluated.id
+      newLayer.lineage.pop()
+      console.log('We should have gone up  a level', newLayer)
+      state.activeLayer = newLayer
+    }
+    state.activeHTML = ''
+  },
+
   // pushs new component to componentMap
   [types.ADD_COMPONENT_TO_COMPONENT_MAP]: (state, payload) => {
     const { componentName, htmlList, children, parent, isActive } = payload
-    state.componentMap = Object.assign({},state.componentMap,{[componentName]: {
-          componentName,
-          x: 0,
-          y: 0,
-          z: 0,
-          w: 200,
-          h: 200,
-          children,
-          parent,
-          htmlList,
-          isActive
-        }})
-  
-
-    // state.componentMap = {
-    //   ...state.componentMap,
-    //   [componentName]: {
-    //     componentName,
-    //     x: 0,
-    //     y: 0,
-    //     w: 200,
-    //     h: 200,
-    //     children,
-    //     htmlList,
-    //     isActive
-    //   }
-    //}
+    state.componentMap = Object.assign({}, state.componentMap, { [componentName]: {
+      componentName,
+      x: 0,
+      y: 0,
+      z: 0,
+      w: 200,
+      h: 200,
+      children,
+      parent,
+      htmlList,
+      isActive
+    } })
   },
-// add parent
-[types.ADD_PARENT]: (state, payload) => {
-  state.componentMap[payload.componentName].parent[state.parentSelected] = state.componentMap[state.parentSelected]
-  state.componentMap[state.parentSelected].children.push(payload.componentName)
-},
 
+  // empty state
+  [types.EMPTY_STATE]: (state, payload) => {
+    // console.log('This is our defaultstate still', defaultState)
+    console.log('hopefully this stays pure', payload)
+    payload.store.replaceState(cloneDeep(payload.initialState))
+  },
+
+  // add parent
+  [types.ADD_PARENT]: (state, payload) => {
+    state.componentMap[payload.componentName].parent[state.parentSelected] = state.componentMap[state.parentSelected]
+    state.componentMap[state.parentSelected].children.push(payload.componentName)
+    state.componentMap[state.parentSelected].htmlList.push(payload.componentName)
+  },
   // adds a html tag from the Icons.vue to the HomeQueue.vue
   // event: getClickedIcon @Icons.vue
   [types.ADD_TO_SELECTED_ELEMENT_LIST]: (state, payload) => {
-    state.selectedElementList.push({ text: payload, children: [] })
+    state.selectedElementList.push({ text: payload.elementName, id: payload.date, children: [] })
   },
   // allows user to create a new component in ComponentDisplay.vue
   // invovled in creating a new component, porbably does more
   [types.SET_SELECTED_ELEMENT_LIST]: (state, payload) => {
     state.selectedElementList = payload
   },
-  [types.ADD_TO_COMPONENT_HTML_LIST]: (state, elementName) => {
+  [types.ADD_TO_COMPONENT_HTML_LIST]: (state, payload) => {
     const componentName = state.activeComponent
+
+    state.componentMap[componentName] = { ...state.componentMap[componentName] }
     state.componentMap[componentName].htmlList.push({
-      text: elementName,
+      text: payload.elementName,
+      id: payload.date,
       children: []
     })
-   
   },
-  [types.DELETE_FROM_COMPONENT_HTML_LIST]: (state, idx) => {
+
+  [types.ADD_NESTED_HTML]: (state, payload) => {
+    const componentName = state.activeComponent
+    const activeHTML = state.activeHTML
+    state.componentMap[componentName] = { ...state.componentMap[componentName] }
+    let nestedElement = breadthFirstSearch(state.componentMap[componentName].htmlList, activeHTML)
+    nestedElement.children.push({
+      text: payload.elementName,
+      id: payload.date,
+      children: []
+    })
+  },
+
+  // effectively the same as add nested, not happy with this, could do control flow earlier up somewhere?
+  [types.ADD_NESTED_NO_ACTIVE]: (state, payload) => {
+    const componentName = state.activeComponent
+    const activeLayer = state.activeLayer
+    state.componentMap[componentName] = { ...state.componentMap[componentName] }
+    let nestedElement = breadthFirstSearch(state.componentMap[componentName].htmlList, activeLayer.id)
+    nestedElement.children.push({
+      text: payload.elementName,
+      id: payload.date,
+      children: []
+    })
+  },
+
+  [types.DELETE_FROM_COMPONENT_HTML_LIST]: (state, id) => {
     const componentName = state.activeComponent
     const htmlList = state.componentMap[componentName].htmlList.slice(0)
     // splice out selected element and return resulting array
-    htmlList.splice(idx, 1)
+    if (state.activeLayer.id === '') {
+      for (let i = 0; i < htmlList.length; i++) {
+        if (htmlList[i].id === id) {
+          htmlList.splice(i, 1)
+          break
+        }
+      }
+    } else {
+      let element = breadthFirstSearchParent(htmlList, id)
+      // console.log("This is element", element)
+      element.evaluated.children.splice(element.index, 1)
+      // htmlList.splice(idx, 1)
+    }
+    if (id === state.activeHTML) {
+      state.activeHTML = ''
+    }
     state.componentMap[componentName].htmlList = htmlList
   },
+
   [types.SET_CLICKED_ELEMENT_LIST]: (state, payload) => {
     const componentName = state.activeComponent
     state.componentMap[componentName].htmlList = payload
@@ -74,16 +181,16 @@ const mutations = {
     const { componentMap, activeComponent, activeRoute } = state
 
     let newObj = Object.assign({}, componentMap)
-    //gotta save the children of the active component
-    //and make sure they are placed as children of the active route or they will be lost to the graph.
+    // gotta save the children of the active component
+    // and make sure they are placed as children of the active route or they will be lost to the graph.
 
     const activeObjChildrenArray = newObj[activeComponent].children
-    console.log(newObj[activeComponent])
-    console.log("he saves the children but not the british children", activeObjChildrenArray)
+    // console.log(newObj[activeComponent])
+    // console.log('Saving the children of the soon to be deleted object', activeObjChildrenArray)
 
-    activeObjChildrenArray.forEach((child => {
+    activeObjChildrenArray.forEach(child => {
       delete newObj[child].parent[activeComponent]
-    }))
+    })
 
     delete newObj[activeComponent]
 
@@ -91,7 +198,11 @@ const mutations = {
     for (let compKey in newObj) {
       let children = newObj[compKey].children
       children.forEach((child, index) => {
-        if (activeComponent === child) children.splice(index, 1)
+        if (activeComponent === child) {
+          children.splice(index, 1)
+          // removes component from activeComponent's htmlList
+          newObj[compKey].htmlList = newObj[compKey].htmlList.filter(el => el !== activeComponent)
+        }
       })
     }
 
@@ -126,7 +237,8 @@ const mutations = {
       ...state.routes,
       [payload]: []
     }
-    console.log('payload in add_route', payload)
+    state.imagePath[payload] = ''
+    // console.log('payload in add_route', payload)
   },
   // Changes the component map
   [types.ADD_ROUTE_TO_COMPONENT_MAP]: (state, payload) => {
@@ -135,7 +247,8 @@ const mutations = {
       ...state.componentMap,
       [route]: {
         componentName: route,
-        children
+        children,
+        htmlList: []
       }
     }
   },
@@ -150,6 +263,19 @@ const mutations = {
   // invoked when a component is selected
   [types.SET_ACTIVE_COMPONENT]: (state, payload) => {
     state.activeComponent = payload
+    state.activeHTML = ''
+    state.activeLayer = {
+      id: '',
+      lineage: []
+    }
+  },
+  [types.SET_ACTIVE_HTML_ELEMENT]: (state, payload) => {
+    // console.log('text is ', payload[0])
+    if (payload[0] === '') {
+      state.activeHTML = ''
+    } else {
+      state.activeHTML = payload[2]
+    }
   },
   [types.SET_ROUTES]: (state, payload) => {
     console.log('setroutespayload:', payload)
@@ -183,17 +309,43 @@ const mutations = {
     const { component, value } = payload
     state.componentMap[component].children = value
   },
+  [types.UPDATE_COMPONENT_POSITION]: (state, payload) => {
+    const updatedComponent = state.routes[state.activeRoute].filter(element => {
+      return element.componentName === payload.activeComponent
+    })[0]
+
+    updatedComponent.x = payload.x
+    updatedComponent.y = payload.y // Object.assign({}, state.componentMap[payload.activeComponent], {x: payload.x, y: payload.y});
+  },
+
+  [types.UPDATE_COMPONENT_SIZE]: (state, payload) => {
+    const updatedComponent = state.routes[state.activeRoute].filter(element => {
+      return element.componentName === payload.activeComponent
+    })[0]
+
+    updatedComponent.h = payload.h
+    updatedComponent.w = payload.w
+    updatedComponent.x = payload.x
+    updatedComponent.y = payload.y
+  },
+  [types.UPDATE_COMPONENT_LAYER]: (state, payload) => {
+    const updatedComponent = state.routes[state.activeRoute].filter(element => {
+      return element.componentName === payload.activeComponent
+    })[0]
+    updatedComponent.z = payload.z
+    state.componentMap[payload.activeComponent].z = payload.z
+    // payload.activeComponentData.z = payload.z
+  },
   [types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE]: (state, payload) => {
     // original line
     let temp = state.componentMap[state.activeComponent].children // b c  and we are removing c
-    if (payload.length<temp.length) { // we will get a payload of [b] and our temp is currently [b,c]
+    if (payload.length < temp.length) { // we will get a payload of [b] and our temp is currently [b,c]
       let child = temp.filter(el => !payload.includes(el))
       console.log('delete child: ', child)
       state.componentMap[state.activeComponent].children = payload
       state.componentMap[state.activeRoute].children.push(...temp.filter(el => !payload.includes(el)))
       delete state.componentMap[child[0]].parent[state.activeComponent]
-    }
-    else {
+    } else {
       let child = payload.filter(el => !temp.includes(el))
       console.log('child added', child)
       state.componentMap[state.activeComponent].children = payload
@@ -201,8 +353,14 @@ const mutations = {
         state.activeRoute
       ].children.filter(el => !payload.includes(el))
       state.componentMap[child[0]].parent[state.activeComponent] = state.componentMap[state.activeComponent]
-    } 
- 
+    }
+    const copy = [...state.componentMap[state.activeComponent].htmlList]
+    for (var x in payload) {
+      if (!copy.includes(payload[x])) {
+        copy.push(payload[x])
+      }
+    }
+    state.componentMap[state.activeComponent].htmlList = copy
   },
   // allows usr to change the name of component!!
   [types.UPDATE_COMPONENT_NAME_INPUT_VALUE]: (state, payload) => {
@@ -242,12 +400,15 @@ const mutations = {
    * Import Image Mutations
    */
   [types.IMPORT_IMAGE]: (state, payload) => {
-    console.log(`import image invoked. image: ${payload}`)
-    state.imagePath = payload
+    console.log(`import image invoked. image: ${payload.img} ${payload.route}`)
+    state.imagePath = { ...state.imagePath, [payload.route]: payload.img }
+    // state.imagePath[payload.route] = payload.img
   },
-  [types.CLEAR_IMAGE]: state => {
+  [types.CLEAR_IMAGE]: (state, payload) => {
     console.log(`clear image invoked`)
-    if (state.imagePath) state.imagePath = ''
+    // console.log('current routes img url: ', state.imagePath[payload.route])
+    if (state.imagePath[payload.route]) state.imagePath[payload.route] = ''
+    // console.log('after removal', state.imagePath[payload.route])
   },
   [types.DELETE_USER_ACTIONS]: (state, payload) => {
     // payload should be a string of the name of the action to remove
@@ -279,6 +440,10 @@ const mutations = {
   },
   [types.DELETE_USER_STATE]: (state, payload) => {
     delete state.userStore[payload]
+  },
+  [types.SET_IMAGE_PATH]: (state, payload) => {
+    console.log('mutation to set image path', { ...state.imagePath, ...payload })
+    state.imagePath = { ...state.imagePath, ...payload }
   }
 }
 

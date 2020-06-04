@@ -12,10 +12,10 @@ const Mousetrap = require('mousetrap');
 export default {
   name: 'SaveProjetComponent',
   methods: {
-    showSaveJSONDialog(){
+    showSaveJSONDialog () {
       remote.dialog.showSaveDialog({
         title: 'Choose location to save JSON object in',
-        defaultPath: remote.app.getPath('desktop'),
+        // defaultPath: remote.app.getPath('desktop'),
         message: 'Choose location to save JSON object in',
         nameFieldLabel: 'Application State Name',
         filters: [{
@@ -28,7 +28,7 @@ export default {
         this.saveJSONLocation(result);
       });
     },
-    parseFileName(file) {
+    parseFileName (file) {
       //'asdf/asdff/sdf.txt -> sdf.txt
       return file.split('/').pop();
     },
@@ -50,18 +50,18 @@ export default {
         delete element.innerBackClass;
       });
     },
-    saveProjectJSON() {
+    saveProjectJSON () {
         this.showSaveJSONDialog();
     },
-    saveJSONLocation(data){
-      //delete original key from local forage
+    saveJSONLocation (data) {
+      // delete original key from local forage
       let deleteKey = this.$store.state.projects[this.$store.state.activeTab].filename;
       localforage
         .removeItem(deleteKey)
-        .then(function() {
+        .then(function () {
           console.log(deleteKey, 'Key is cleared!');
         })
-        .catch(function(err) {
+        .catch(function (err) {
           console.log(err);
         });
 
@@ -74,6 +74,7 @@ export default {
       let state = this.$store.state;
       let routes = state.routes;
       for (let view in routes) {
+        console.log('views in Routes', routes[view])
         routes[view].forEach(component => {
           let htmlList = component.htmlList;
           this.parseAndDelete(htmlList);
@@ -97,7 +98,7 @@ export default {
       console.log('PROJECT SAVED AS A JSON OBJECT!');
     }
   },
-  created(){
+  created () {
     Mousetrap.bind(['command+s', 'ctrl+s'], () => {
       this.saveProjectJSON()
     })

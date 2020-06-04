@@ -1,4 +1,9 @@
 // Mutations
+export const UP_ONE_LAYER = 'UP_ONE_LAYER'
+export const ADD_NESTED_NO_ACTIVE = 'ADD_NESTED_NO_ACTIVE'
+export const SET_ACTIVE_LAYER = 'SET_ACTIVE_LAYER'
+export const EMPTY_STATE = 'EMPTY_STATE'
+export const ADD_NESTED_HTML = 'ADD_NESTED_HTML'
 export const ADD_COMPONENT_TO_COMPONENT_MAP = 'ADD_COMPONENT_TO_COMPONENT_MAP'
 export const SET_SELECTED_ELEMENT_LIST = 'SET_SELECTED_ELEMENT_LIST'
 export const ADD_TO_SELECTED_ELEMENT_LIST = 'ADD_TO_SELECTED_ELEMENT_LIST'
@@ -17,6 +22,7 @@ export const ADD_COMPONENT_TO_ACTIVE_ROUTE_IN_ROUTE_MAP =
   'ADD_COMPONENT_TO_ACTIVE_ROUTE_IN_ROUTE_MAP'
 export const ADD_ROUTE = 'ADD_ROUTE'
 export const SET_ACTIVE_COMPONENT = 'SET_ACTIVE_COMPONENT'
+export const SET_ACTIVE_HTML_ELEMENT = 'SET_ACTIVE_HTML_ELEMENT'
 export const SET_ACTIVE_PROJECT = 'SET_ACTIVE_PROJECT'
 export const SET_ACTIVE_ROUTE = 'SET_ACTIVE_ROUTE'
 export const INCREMENT_PROJECT_ID = 'INCREMENT_PROJECT_ID'
@@ -33,6 +39,8 @@ export const UPDATE_COMPONENT_NAME_INPUT_VALUE =
   'UPDATE_COMPONENT_NAME_INPUT_VALUE'
 export const UPDATE_COMPONENT_CHILDREN_VALUE =
   'UPDATE_COMPONENT_CHILDREN_VALUE'
+export const UPDATE_COMPONENT_POSITION = "UPDATE_COMPONENT_POSITION"
+export const UPDATE_COMPONENT_LAYER = "UPDATE_COMPONENT_LAYER"
 export const UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE =
   'UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE'
 export const ADD_COMPONENT_TO_COMPONENT_CHILDREN =
@@ -42,6 +50,7 @@ export const PARENT_SELECTED = 'PARENT_SELECTED'
 export const ADD_PARENT = 'ADD_PARENT'
 export const DELETE_ROUTE = 'DELETE_ROUTE'
 export const DELETE_COMPONENT = 'DELETE_COMPONENT'
+export const UPDATE_COMPONENT_SIZE = 'UPDATE_COMPONENT_SIZE'
 // Image upload mutations
 export const IMPORT_IMAGE = 'IMPORT_IMAGE'
 export const CLEAR_IMAGE = 'CLEAR_IMAGE'
@@ -53,8 +62,16 @@ export const ADD_USER_ACTION = 'ADD_USER_ACTION'
 export const ADD_TO_USER_STORE = 'ADD_TO_USER_STORE'
 export const REMOVE_STATE_FROM_COMPONENT = 'REMOVE_STATE_FROM_COMPONENT'
 export const DELETE_USER_STATE = 'DELETE_USER_STATE'
+// open image mutation
+export const SET_IMAGE_PATH = 'SET_IMAGE_PATH'
 
 // Actions
+export const upOneLayer = 'upOneLayer'
+export const addNestedNoActive ='addNestedNoActive'
+export const setActiveLayer = 'setActiveLayer'
+export const addNestedHTML = 'addNestedHTML'
+export const updateComponentSize = 'updateComponentSize'
+export const updateStartingSize = 'updateStartingSize'
 export const registerComponent = 'registerComponent'
 export const setSelectedElementList = 'setSelectedElementList'
 export const addToSelectedElementList = 'addToSelectedElementList'
@@ -71,10 +88,12 @@ export const changeActiveTab = 'changeActiveTab'
 export const addRouteToRouteMap = 'addRouteToRouteMap'
 export const setActiveComponent = 'setActiveComponent'
 export const setActiveRoute = 'setActiveRoute'
+export const setActiveHTML = 'setActiveHTML'
 export const incrementProjectId = 'incrementProjectId'
 export const setRoutes = 'setRoutes'
 export const setComponentHtmlList = 'setComponentHtmlList'
 export const deleteProjectTab = 'deleteProjectTab'
+export const updateStartingPosition = 'updateStartingPosition'
 // ChildrenMultiselect actions
 export const updateComponentChildrenMultiselectValue =
   'updateComponentChildrenMultiselectValue'
@@ -83,6 +102,8 @@ export const updateActiveComponentChildrenValue =
 
 export const updateComponentChildrenValue = 'updateComponentChildrenValue'
 export const updateComponentNameInputValue = 'updateComponentNameInputValue'
+export const updateComponentPosition = 'updateComponentPosition' 
+export const updateComponentLayer = 'updateComponentLayer'
 export const updateOpenModal = 'updateOpenModal'
 export const parentSelected = 'parentSelected'
 export const deleteRoute = 'deleteRoute'
@@ -97,3 +118,7 @@ export const addUserAction = 'addUserAction'
 export const addToUserStore = 'addToUserStore'
 export const removeStateFromComponent = 'removeStateFromComponent'
 export const deleteUserState = 'deleteUserState'
+// open image action
+export const setImagePath = 'setImagePath'
+// open project action
+export const openProject = 'openProject'
