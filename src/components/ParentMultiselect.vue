@@ -8,10 +8,12 @@
       :close-on-select="true"
       :options="options"
       @input="handleSelect"
-      :max-height="150"
+      :max-height="90"
       :option-height="20"
       :searchable="true"
-    ></multiselect>
+    >
+    <span slot='noResult'>No elements found.</span>
+    </multiselect>
   </div>
 </template>
 

@@ -5,11 +5,13 @@
       v-model="value" 
       :options='options' 
       :searchable="true" 
-      :close-on-select="false"
-      :max-height="150"
+      :close-on-select="true"
+      :max-height="90"
       :option-height="20"
       @input="handleSelect(value)"
-      placeholder="Select a component"></multiselect>
+      placeholder="Select a component">
+      <span slot='noResult'>No elements found.</span>
+      </multiselect>
       <br/>
     <a
       v-for="componentData in activeRouteDisplay"
