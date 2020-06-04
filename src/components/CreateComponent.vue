@@ -39,7 +39,6 @@ import Icons from './Icons'
 import ParentMultiselect from '../components/ParentMultiselect'
 import { mapState, mapActions } from 'vuex'
 
-
 export default {
   name: 'HomeSidebar',
   components: {
@@ -68,9 +67,9 @@ export default {
       'addNestedNoActive'
     ]),
     handleClick () {
-      if (!this.componentNameInputValue.trim()) {
-        event.preventDefault();
-        return false;
+      if (!this.componentNameInputValue.replace(/[^a-z0-9-_.]/gi, '')) {
+        event.preventDefault()
+        return false
       }
       const component = {
         componentName: this.componentNameInputValue.replace(/[^a-z0-9-_.]/gi, ''),
@@ -86,12 +85,11 @@ export default {
       }
 
       this.registerComponent(component)
-
     },
     resetActiveComponent () {
       if (this.activeComponent !== '') {
         this.setActiveComponent('')
-      }   
+      }
     },
     handleIconClick () {
       if (this.activeComponent === '') this.setClickedElementList()
