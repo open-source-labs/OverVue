@@ -1,5 +1,18 @@
 <template>
   <div class="home-sidebar">
+    <multiselect
+      class='multiselect' 
+      v-model="value" 
+      :options='options' 
+      :searchable="true" 
+      :close-on-select="true"
+      :max-height="90"
+      :option-height="20"
+      @input="handleSelect(value)"
+      placeholder="Select a component">
+      <span slot='noResult'>No components found.</span>
+      </multiselect>
+      <br/>
     <a
       v-for="componentData in activeRouteDisplay"
       :key="componentData.componentName"
@@ -29,18 +42,31 @@
  * TODO: Needs functionality to delete component, and (maybe) show child components
  */
 import { mapState, mapActions } from 'vuex'
+import Multiselect from 'vue-multiselect'
 
 export default {
+  data () {
+    return {
+      value: ''
+    }
+  },
+  components: { Multiselect },
   computed: {
     ...mapState(['routes', 'activeRoute', 'activeComponent']),
     activeRouteDisplay () {
       let component = this.routes[this.activeRoute]
+      console.log(component)
       return component
     },
     activeComponentData () {
       return this.activeRouteDisplay.filter(componentData => {
         return componentData.componentName === this.activeComponent
       })[0]
+    },
+    options () {
+      const val = this.activeRouteDisplay.map(component => component.componentName)
+      console.log('options', val)
+      return val
     }
   },
   methods: {
@@ -56,6 +82,11 @@ export default {
     handleClick (componentData) {
       this.setActiveComponent(componentData.componentName)
       this.deleteActiveComponent(componentData.componentName)
+    },
+    handleSelect (componentName) {
+      this.setActiveComponent(componentName)
+      this.value = ''
+      this.activeComponentData.isActive = true
     }
   }
 }

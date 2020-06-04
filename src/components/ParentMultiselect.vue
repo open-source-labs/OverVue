@@ -8,10 +8,12 @@
       :close-on-select="true"
       :options="options"
       @input="handleSelect"
-      :max-height="150"
+      :max-height="90"
       :option-height="20"
       :searchable="true"
-    ></multiselect>
+    >
+    <span slot='noResult'>No components found.</span>
+    </multiselect>
   </div>
 </template>
 
@@ -65,7 +67,7 @@ export default {
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
-  #parent-select{
+  #parent-select {
     height: 30px;
     margin: 0.75rem;
     width: 90%;
