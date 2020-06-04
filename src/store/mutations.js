@@ -7,48 +7,72 @@ const cloneDeep = require('lodash.clonedeep')
 
 import localforage from 'localforage'
 
-const defaultState =
-{
-  icons,
-  htmlElementMap,
-  // every single time we create a component
-  // sent to export project component
-  componentMap: {
-    App: {
-      componentName: 'App',
-      children: ['HomeView'],
-      htmlList: []
-    },
-    HomeView: {
-      componentName: 'HomeView',
-      children: [],
-      htmlList: []
+// we have to do a search because undo/redo saves payloads as deep clones so passing a memory ref would be detrimental
+// This will find you the actual object by ID
+const breadthFirstSearch = (array, id) => {
+  let queue = [...array.filter(el => typeof el === 'object')]
+  while (queue.length) {
+    let evaluated = queue.shift()
+    if (evaluated.id === id) {
+      return evaluated
+    } else {
+      if (evaluated.children.length) {
+        queue.push(...evaluated.children)
+      }
     }
-    // NewView: {}
-  },
-  routes: {
-    HomeView: []
-    // NewView: []
-  },
-  userActions: [],
-  userState: {},
-  /**
-   *
-   */
-  componentNameInputValue: '',
-  projects: [{ filename: 'Untitled-1', lastSavedLocation: '' }],
-  activeRoute: 'HomeView',
-  activeComponent: '',
-  selectedElementList: [],
-  projectNumber: 2,
-  activeTab: 0,
-  componentChildrenMultiselectValue: [],
-  modalOpen: false,
-  parentSelected: false,
-  imagePath: ''
+  }
+  console.log("We shouldn't be ever getting here, how did you even search an id that didn't exist?")
 }
 
+// this would find you the parent of a given id
+const breadthFirstSearchParent = (array, id) => {
+  let queue = [...array.filter(el => typeof el === 'object')]
+  while (queue.length) {
+    let evaluated = queue.shift()
+    for (let i = 0; i < evaluated.children.length; i++) {
+      if (evaluated.children[i].id === id) {
+        return {
+          evaluated: evaluated,
+          index: i
+        }
+      }
+      if (evaluated.children.length) {
+        queue.push(...evaluated.children)
+      }
+    }
+    console.log("We shouldn't be ever getting here, how did you even search an id that didn't exist?")
+  }
+}
 const mutations = {
+
+  [types.SET_ACTIVE_LAYER]: (state, payload) => {
+    let newLayer = cloneDeep(state.activeLayer)
+    newLayer.lineage.push(payload.text)
+    newLayer.id = payload.id
+    state.activeLayer = newLayer
+    state.activeHTML = ''
+  },
+
+  [types.UP_ONE_LAYER]: (state, payload) => {
+    // console.log("This is our payload",payload)
+    // console.log("we are looking for the parent in here",state.componentMap[state.activeComponent].htmlList)
+    if (state.activeLayer.lineage.length === 1) {
+      state.activeLayer = {
+        id: '',
+        lineage: []
+      }
+    } else {
+      let newID = breadthFirstSearchParent(state.componentMap[state.activeComponent].htmlList, payload)
+      // console.log("new ID here", newID)
+      let newLayer = { ...state.activeLayer }
+      newLayer.id = newID.evaluated.id
+      newLayer.lineage.pop()
+      console.log('We should have gone up  a level', newLayer)
+      state.activeLayer = newLayer
+    }
+    state.activeHTML = ''
+  },
+
   // pushs new component to componentMap
   [types.ADD_COMPONENT_TO_COMPONENT_MAP]: (state, payload) => {
     const { componentName, htmlList, children, parent, isActive } = payload
@@ -64,65 +88,13 @@ const mutations = {
       htmlList,
       isActive
     } })
-
-    // state.componentMap = {
-    //   ...state.componentMap,
-    //   [componentName]: {
-    //     componentName,
-    //     x: 0,
-    //     y: 0,
-    //     w: 200,
-    //     h: 200,
-    //     children,
-    //     htmlList,
-    //     isActive
-    //   }
-    // }
   },
+
   // empty state
   [types.EMPTY_STATE]: (state, payload) => {
     // console.log('This is our defaultstate still', defaultState)
-    console.log("hopefully this stays pure", payload)
+    console.log('hopefully this stays pure', payload)
     payload.store.replaceState(cloneDeep(payload.initialState))
-    // {
-    //   icons,
-    //   htmlElementMap,
-    //   // every single time we create a component
-    //   // sent to export project component
-    //   componentMap: {
-    //     App: {
-    //       componentName: 'App',
-    //       children: ['HomeView'],
-    //       htmlList: []
-    //     },
-    //     HomeView: {
-    //       componentName: 'HomeView',
-    //       children: [],
-    //       htmlList: []
-    //     }
-    //     // NewView: {}
-    //   },
-    //   routes: {
-    //     HomeView: []
-    //     // NewView: []
-    //   },
-    //   userActions: [],
-    //   userState: {},
-    //   /**
-    //    *
-    //    */
-    //   componentNameInputValue: '',
-    //   projects: [{ filename: 'Untitled-1', lastSavedLocation: '' }],
-    //   activeRoute: 'HomeView',
-    //   activeComponent: '',
-    //   selectedElementList: [],
-    //   projectNumber: 2,
-    //   activeTab: 0,
-    //   componentChildrenMultiselectValue: [],
-    //   modalOpen: false,
-    //   parentSelected: false,
-    //   imagePath: ''
-    // })
   },
 
   // add parent
@@ -144,20 +116,62 @@ const mutations = {
   [types.ADD_TO_COMPONENT_HTML_LIST]: (state, payload) => {
     const componentName = state.activeComponent
 
-    state.componentMap[componentName] = {...state.componentMap[componentName]}
+    state.componentMap[componentName] = { ...state.componentMap[componentName] }
     state.componentMap[componentName].htmlList.push({
       text: payload.elementName,
       id: payload.date,
       children: []
     })
   },
-  [types.DELETE_FROM_COMPONENT_HTML_LIST]: (state, idx) => {
+
+  [types.ADD_NESTED_HTML]: (state, payload) => {
+    const componentName = state.activeComponent
+    const activeHTML = state.activeHTML
+    state.componentMap[componentName] = { ...state.componentMap[componentName] }
+    let nestedElement = breadthFirstSearch(state.componentMap[componentName].htmlList, activeHTML)
+    nestedElement.children.push({
+      text: payload.elementName,
+      id: payload.date,
+      children: []
+    })
+  },
+
+  // effectively the same as add nested, not happy with this, could do control flow earlier up somewhere?
+  [types.ADD_NESTED_NO_ACTIVE]: (state, payload) => {
+    const componentName = state.activeComponent
+    const activeLayer = state.activeLayer
+    state.componentMap[componentName] = { ...state.componentMap[componentName] }
+    let nestedElement = breadthFirstSearch(state.componentMap[componentName].htmlList, activeLayer.id)
+    nestedElement.children.push({
+      text: payload.elementName,
+      id: payload.date,
+      children: []
+    })
+  },
+
+  [types.DELETE_FROM_COMPONENT_HTML_LIST]: (state, id) => {
     const componentName = state.activeComponent
     const htmlList = state.componentMap[componentName].htmlList.slice(0)
     // splice out selected element and return resulting array
-    htmlList.splice(idx, 1)
+    if (state.activeLayer.id === '') {
+      for (let i = 0; i < htmlList.length; i++) {
+        if (htmlList[i].id === id) {
+          htmlList.splice(i, 1)
+          break
+        }
+      }
+    } else {
+      let element = breadthFirstSearchParent(htmlList, id)
+      // console.log("This is element", element)
+      element.evaluated.children.splice(element.index, 1)
+      // htmlList.splice(idx, 1)
+    }
+    if (id === state.activeHTML) {
+      state.activeHTML = ''
+    }
     state.componentMap[componentName].htmlList = htmlList
   },
+
   [types.SET_CLICKED_ELEMENT_LIST]: (state, payload) => {
     const componentName = state.activeComponent
     state.componentMap[componentName].htmlList = payload
@@ -223,7 +237,7 @@ const mutations = {
       ...state.routes,
       [payload]: []
     }
-    state.imagePath[payload] = '';
+    state.imagePath[payload] = ''
     // console.log('payload in add_route', payload)
   },
   // Changes the component map
@@ -249,6 +263,19 @@ const mutations = {
   // invoked when a component is selected
   [types.SET_ACTIVE_COMPONENT]: (state, payload) => {
     state.activeComponent = payload
+    state.activeHTML = ''
+    state.activeLayer = {
+      id: '',
+      lineage: []
+    }
+  },
+  [types.SET_ACTIVE_HTML_ELEMENT]: (state, payload) => {
+    // console.log('text is ', payload[0])
+    if (payload[0] === '') {
+      state.activeHTML = ''
+    } else {
+      state.activeHTML = payload[2]
+    }
   },
   [types.SET_ROUTES]: (state, payload) => {
     console.log('setroutespayload:', payload)
@@ -283,13 +310,12 @@ const mutations = {
     state.componentMap[component].children = value
   },
   [types.UPDATE_COMPONENT_POSITION]: (state, payload) => {
-   const updatedComponent = state.routes[state.activeRoute].filter(element => {
+    const updatedComponent = state.routes[state.activeRoute].filter(element => {
       return element.componentName === payload.activeComponent
     })[0]
 
     updatedComponent.x = payload.x
-    updatedComponent.y = payload.y //Object.assign({}, state.componentMap[payload.activeComponent], {x: payload.x, y: payload.y});
-
+    updatedComponent.y = payload.y // Object.assign({}, state.componentMap[payload.activeComponent], {x: payload.x, y: payload.y});
   },
 
   [types.UPDATE_COMPONENT_SIZE]: (state, payload) => {
@@ -416,7 +442,7 @@ const mutations = {
     delete state.userStore[payload]
   },
   [types.SET_IMAGE_PATH]: (state, payload) => {
-    console.log('mutation to set image path', { ...state.imagePath, ...payload }) 
+    console.log('mutation to set image path', { ...state.imagePath, ...payload })
     state.imagePath = { ...state.imagePath, ...payload }
   }
 }

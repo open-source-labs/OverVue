@@ -276,7 +276,7 @@ export default {
 
     },
 
-    finishedResize: function(x,y,w,h) {
+    finishedResize: function(x, y, w, h) {
       console.log("FINISHED RESIZING")
       let payload = {
         x: x,
@@ -289,7 +289,7 @@ export default {
       }
       if (payload.x !== this.initialPosition.x || payload.y !== this.initialPosition.y || 
           payload.w !== this.initialSize.w || payload.h !==this.initialSize.h) {
-      this.updateComponentSize(payload)
+        this.updateComponentSize(payload)
       }
     },
 
@@ -302,7 +302,7 @@ export default {
       this.userImage;
     },
 
-    finishedDrag: function(x,y) {
+    finishedDrag: function(x, y) {
       console.log("FINISHED DRAGGING")
       let payload = {
         x: x,
@@ -319,10 +319,10 @@ export default {
     },
 
     onActivated(componentData) {
-      //console.log("I RAN!")
-          this.$refs.boxes.forEach((element)=> {
-        if (element.$attrs.id !== componentData.componentName){
-           element.enabled = false;
+      // console.log("I RAN!")
+      this.$refs.boxes.forEach((element) => {
+        if (element.$attrs.id !== componentData.componentName) {
+          element.enabled = false;
           element.$emit('deactivated')
           element.$emit('update:active', false)
         }
@@ -382,9 +382,9 @@ export default {
     //   this.setActiveComponent(compData.componentName)
     //   this.activeComponentData.isActive = true
     // }
-    handleClick(event){
-      if(event.target.className === "component-display grid-bg") {
-         if(!('' === this.activeComponent)) this.setActiveComponent('');
+    handleClick(event) {
+      if (event.target.className === 'component-display grid-bg') {
+        if (!(this.activeComponent === '')) this.setActiveComponent('');
       }
     }
   }

@@ -8,6 +8,15 @@ const actions = {
   // },
 
   // creates a new component in componentMap
+
+  [types.setActiveLayer]: ({commit}, payload) => {
+    commit(types.SET_ACTIVE_LAYER, payload)
+  },
+
+  [types.upOneLayer]:({commit}, payload) => {
+    commit(types.UP_ONE_LAYER, payload)
+  },
+
   [types.registerComponent]: ({ state, commit }, payload) => {
     const { componentName } = payload
     if (!state.componentMap[componentName]) {
@@ -107,6 +116,17 @@ const actions = {
   [types.deleteSelectedElement]: ({ commit }, payload) => {
     commit(types.DELETE_SELECTED_ELEMENT, payload)
   },
+
+  // payload will be an object possessing the id:id we want to find and elementName:elementName and date:Date.now() it wants to send.
+  [types.addNestedHTML]: ({ commit }, payload) => {
+    commit(types.ADD_NESTED_HTML, payload)
+  },
+
+  [types.addNestedNoActive]:( {commit}, payload) =>{
+    commit(types.ADD_NESTED_NO_ACTIVE,payload)
+  },
+
+
   [types.setState]: ({ commit }, payload) => {
     commit(types.SET_STATE, payload)
   },
@@ -139,6 +159,9 @@ const actions = {
   // sets active component when clicked in componentDisplay
   [types.setActiveComponent]: ({ commit }, payload) => {
     commit(types.SET_ACTIVE_COMPONENT, payload)
+  },
+  [types.setActiveHTML]: ({ commit }, payload) => {
+    commit(types.SET_ACTIVE_HTML_ELEMENT, payload)
   },
   // [types.setRoutes]: ({ commit }, payload) => {
   //   commit(types.SET_ROUTES, payload)
@@ -214,7 +237,6 @@ const actions = {
     commit(types.SET_IMAGE_PATH, payload.imagePath)
     commit(types.SET_COMPONENT_MAP, payload.componentMap)
     commit(types.SET_ROUTES, payload.routes)
-    
   }
 }
 

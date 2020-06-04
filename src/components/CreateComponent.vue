@@ -17,6 +17,8 @@
         class="icons"
         @getClickedIcon="addToSelectedElementList"
         @activeElement="addToComponentElementList"
+        @activeHTML="addNestedHTML"
+        @activeLayer="addNestedNoActive"
       />
     </div>
     <ParentMultiselect />
@@ -37,6 +39,7 @@ import Icons from './Icons'
 import ParentMultiselect from '../components/ParentMultiselect'
 import { mapState, mapActions } from 'vuex'
 
+
 export default {
   name: 'HomeSidebar',
   components: {
@@ -44,7 +47,7 @@ export default {
     ParentMultiselect
   },
   computed: {
-    ...mapState(['componentMap', 'selectedElementList', 'activeComponent']),
+    ...mapState(['componentMap', 'selectedElementList', 'activeComponent', 'activeHTML']),
     componentNameInputValue: {
       get () {
         return this.$store.state.componentNameInputValue
@@ -60,7 +63,9 @@ export default {
       'addToSelectedElementList',
       'updateComponentNameInputValue',
       'setActiveComponent',
-      'addToComponentElementList'
+      'addToComponentElementList',
+      'addNestedHTML',
+      'addNestedNoActive'
     ]),
     handleClick () {
       if (!this.componentNameInputValue.trim()) {
