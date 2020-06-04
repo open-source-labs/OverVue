@@ -22,7 +22,7 @@ let hardA = {
     text: "div",
     id:1
   }],
-  children: [],
+  children: ["div"],
   parent: {},
   isActive: false
 }
@@ -63,12 +63,8 @@ const newState = {
 
   activeRoute: 'HomeView',
   activeComponent: '',
-  activeHTML: '',
-  activeLayer: {
-    id:'',
-    lineage:[]
-  },
-
+  // on click, push name and index into active element
+  activeElement: [0, 'div'],
   selectedElementList: [],
   projectNumber: 2,
   activeTab: 0,

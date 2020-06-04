@@ -22,6 +22,7 @@ export default {
   computed: {
     ...mapState(['componentMap']),
     computedTree () {
+      console.log('buildtree', this.buildTree())
       return this.buildTree()
     }
   },

@@ -122,6 +122,14 @@ const mutations = {
       id: payload.date,
       children: []
     })
+    if (state.activeElement.length) {
+      console.log('activeelement')
+      state.componentMap[componentName].htmlList.push({
+        text: elementName,
+        children: []
+      });
+    } else state.componentMap[componentName].children.push(elementName);
+    // state.activeElement.push(state.componentMap[componentName].children.length - 1, elementName);
   },
 
   [types.ADD_NESTED_HTML]: (state, payload) => {
@@ -379,10 +387,25 @@ const mutations = {
     state.parentSelected = payload
   },
   [types.DELETE_ROUTE]: (state, payload) => {
-    const stateCopy = state
-    delete stateCopy.routes[payload]
-    delete stateCopy.componentMap[payload]
-    state = stateCopy
+    const deleteChildren = (child) => {
+        if (state.componentMap[child.componentName].children.length) {
+          child.children.forEach((grandchild) => {
+            deleteChildren(grandchild)
+          })
+        }
+        delete state.componentMap[child.componentName]
+    }
+    state.routes[payload].forEach((child => {
+      deleteChildren(child)
+    }))
+
+    delete state.routes[payload]
+    delete state.componentMap[payload]
+
+    state.componentMap.App.children = state.componentMap.App.children.filter((route) => {
+      return route !== payload;
+    })
+    if (!state.routes[state.activeRoute]) state.activeRoute = 'HomeView'
   },
   [types.DELETE_COMPONENT]: (state, payload) => {
     const stateCopy = state

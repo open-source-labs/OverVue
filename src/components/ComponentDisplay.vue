@@ -91,7 +91,6 @@ export default {
       testOptions: ["parent", "child", "grandchild"],
       testModel: [],
       mockImg: false,
-      // counter: 6,
       initialPosition:{x:0, y:0,},
       initialSize:{w:0,h:0,},
     };
