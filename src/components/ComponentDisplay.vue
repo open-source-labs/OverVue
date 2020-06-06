@@ -177,7 +177,29 @@ export default {
       console.log('mockBg is working', this.imagePath[this.activeRoute])
       return this.imagePath[this.activeRoute]
         ? {
-          background: `url("${this.userImage}") center/contain no-repeat`
+          background: `url("${this.userImage}") center/contain no-repeat rgba(223, 218, 218, 0.886)`,
+          // 'background-color': 'rgba(223, 218, 218, 0.886)',
+          // 'background-size': '100px 100px, 100px 100px, 20px 20px, 20px 20px',
+          // 'background-position':' -2px -2px, -2px -2px, -1px -1px, -1px -1px',
+          // 'background-image': `-webkit-linear-gradient(white 2px, transparent 2px),
+          // -webkit-linear-gradient(0, white 2px, transparent 2px),
+          // -webkit-linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+          // -webkit-linear-gradient(0, rgba(255, 255, 255, 0.3) 1px, transparent 1px)`,
+          // 'background-image': `-moz-linear-gradient(white 2px, transparent 2px),
+          // -moz-linear-gradient(0, white 2px, transparent 2px),
+          // -moz-linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+          // -moz-linear-gradient(0, rgba(255, 255, 255, 0.3) 1px, transparent 1px)`,
+          // 'background-image': `linear-gradient(white 2px, transparent 2px),
+          // linear-gradient(90deg, white 2px, transparent 2px),
+          // linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+          // linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px)`,
+          // '-pie-background': `linear-gradient(white 2px, transparent 2px) -2px -2px / 100px,
+          // linear-gradient(90deg, white 2px, transparent 2px) -2px -2px / 100px,
+          // linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px) -1px -1px /
+          // 20px, linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px) -1px -1px /
+          // 20px, #269`,
+          // 'background-image': `url(${this.userImage})`,
+          // behavior: 'url(/pie/PIE.htc)',
         }
         : {}
     }
