@@ -1,14 +1,15 @@
 <template>
   <div class="home-sidebar">
     <multiselect
-      class='multiselect' 
-      v-model="value" 
-      :options='options' 
-      :searchable="true" 
+      class='multiselect'
+      v-model="value"
+      :options='options'
+      :searchable="true"
       :close-on-select="true"
       :max-height="90"
       :option-height="20"
       @input="handleSelect(value)"
+      @open="resetActiveComponent"
       placeholder="Select a component">
       <span slot='noResult'>No components found.</span>
       </multiselect>
@@ -87,6 +88,11 @@ export default {
       this.setActiveComponent(componentName)
       this.value = ''
       this.activeComponentData.isActive = true
+    },
+    resetActiveComponent () {
+      if (this.activeComponent !== '') {
+        this.setActiveComponent('')
+      }
     }
   }
 }

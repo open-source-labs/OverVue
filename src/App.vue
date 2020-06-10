@@ -138,7 +138,6 @@ let redoMixin = {
         store: this.$store
       }
       this.$store.commit('EMPTY_STATE', payload)
-      console.log(this.$store)
       this.doneAction.forEach(action => {
         //console.log('In the loop', this.$store)
         // this.$store.commit(`${mutation.type}`, mutation.payload);

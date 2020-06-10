@@ -143,14 +143,55 @@ export default {
         input: ['<input />', ''],
         navbar: ['<nav>', '</nav>']
       }
+
+      /* Function to loop through nested elements */
+      function writeNested (childrenArray, indent) {
+        if (!childrenArray.length) {
+          return ''
+        }
+        let indented = indent + '  '
+        let nestedString = ''
+
+        childrenArray.forEach(child => {
+          nestedString += indented
+          // console.log(child)
+          if (!child.text) {
+            nestedString += `<${child}/>\n`
+          } else {
+            if (child.children.length) {
+              nestedString += htmlElementMap[child.text][0]
+              nestedString += '\n'
+              nestedString += writeNested(child.children, indented)
+              nestedString += indented + htmlElementMap[child.text][1]
+              nestedString += '\n'
+            } else {
+              nestedString += htmlElementMap[child.text][0] + htmlElementMap[child.text][1] + '\n'
+            }
+          }
+        })
+        return nestedString
+      }
+
       // loop to iterate through compName arr
       let htmlArr = this.componentMap[compName].htmlList
-      let outputStr = ''
+      let outputStr = ``
       for (let el of htmlArr) {
-        outputStr += '\t\t'
-        outputStr += htmlElementMap[el.text][0]
-        outputStr += htmlElementMap[el.text][1]
-        outputStr += `\n`
+        // console.log(el)
+        if (!el.text) {
+          outputStr += `    <${el}/>\n`
+        } else {
+          outputStr += `    `
+          if (el.children.length) {
+            outputStr += htmlElementMap[el.text][0]
+            outputStr += '\n'
+            outputStr += writeNested(el.children, `    `)
+            outputStr += `    `
+            outputStr += htmlElementMap[el.text][1]
+            outputStr += `  \n`
+          } else {
+            outputStr += htmlElementMap[el.text][0] + htmlElementMap[el.text][1] + '\n'
+          }
+        }
       }
       console.log(`outputStr from writeTemplateTag: ${outputStr}`)
       return outputStr
@@ -199,15 +240,6 @@ export default {
       } else {
         // console.log(`else (if compName === 'App'`);
         str += `<div>\n`
-        children.forEach(name => {
-          str += `\t\t<${
-            // name.componentName
-            name
-          }>\n\t\t</${
-            // name.componentName
-            name
-          }>\n`
-        })
       }
       // writes the html tag boilerplate
       let templateTagStr = this.writeTemplateTag(compName)

@@ -158,6 +158,34 @@ li {
   text-align: center;
 }
 
+@media (max-width: 900px) {
+  .list-group-item {
+    display: inline-block;
+    margin: 2px 1.5%;
+    width: 45%;
+    border-radius: 0.5cm;
+    border: 2px solid $secondary;
+    background-color: $secondary;
+    height: 35px;
+    padding-top: 6px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 700px) {
+  .list-group-item {
+    display: inline-block;
+    margin: 2px 1.5%;
+    width: 90%;
+    border-radius: 0.5cm;
+    border: 2px solid $secondary;
+    background-color: $secondary;
+    height: 35px;
+    padding-top: 6px;
+    text-align: center;
+  }
+}
+
 .list-group-item-selected {
   display: inline-block;
   margin: 2px 1.5%;
@@ -170,6 +198,35 @@ li {
   text-align: center;
 }
 
+@media (max-width: 900px) {
+  .list-group-item-selected {
+  display: inline-block;
+  margin: 2px 1.5%;
+  width: 45%;
+  border-radius: 0.5cm;
+  border: 2px solid white;
+  background-color: $secondary;
+  height: 35px;
+  padding-top: 6px;
+  text-align: center;
+  }
+}
+
+@media (max-width: 700px) {
+  .list-group-item-selected {
+  display: inline-block;
+  margin: 2px 1.5%;
+  width: 90%;
+  border-radius: 0.5cm;
+  border: 2px solid white;
+  background-color: $secondary;
+  height: 35px;
+  padding-top: 6px;
+  text-align: center;
+  }
+}
+
+
 .fa-trash:hover {
   cursor: pointer;
   color: red;
@@ -177,12 +234,17 @@ li {
 
 .fa-trash {
   position: relative;
-  left: 20px;
-
+  // left: 20px;
+  top: 2px;
+  right: 35px;
+  float: right;
 }
 .fa-angle-double-down {
   position: relative;
-  right: 20px;
+  // right: 20px;
+  top: 2px;
+  left: 35px;
+  float: left;
 }
 
 .fa-angle-double-down:hover {
