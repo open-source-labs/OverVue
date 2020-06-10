@@ -177,12 +177,17 @@ li {
 
 .fa-trash {
   position: relative;
-  left: 20px;
-
+  // left: 20px;
+  top: 2px;
+  right: 35px;
+  float: right;
 }
 .fa-angle-double-down {
   position: relative;
-  right: 20px;
+  // right: 20px;
+  top: 2px;
+  left: 35px;
+  float: left;
 }
 
 .fa-angle-double-down:hover {
