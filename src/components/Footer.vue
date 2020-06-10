@@ -22,7 +22,7 @@
         <q-tab name="html" label="HTML Elements" id="label-text" />
       </q-tabs>
 
-      <q-tab-panels v-model="tab" animated class="html-bg text-white full-footer">
+      <q-tab-panels v-model="tab" animated class="html-bg text-white" >
         <q-tab-panel name="code">
           <CodeSnippet />
         </q-tab-panel>
@@ -172,10 +172,10 @@ i {
   background: black;
 }
 
-.full-footer {
-  // height: 100vh;
-  padding-bottom: 0px;
-}
+// .full-footer {
+//   // height: 100vh;
+
+// }
 
 #footer-cards {
   height: 100%;

@@ -150,6 +150,7 @@ li {
 .list-group-item {
   display: inline-block;
   margin: 2px 1.5%;
+  min-width: 145px;
   width: 30%;
   border-radius: 0.5cm;
   border: 2px solid $secondary;
