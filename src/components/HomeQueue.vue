@@ -158,6 +158,34 @@ li {
   text-align: center;
 }
 
+@media (max-width: 900px) {
+  .list-group-item {
+    display: inline-block;
+    margin: 2px 1.5%;
+    width: 45%;
+    border-radius: 0.5cm;
+    border: 2px solid $secondary;
+    background-color: $secondary;
+    height: 35px;
+    padding-top: 6px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 700px) {
+  .list-group-item {
+    display: inline-block;
+    margin: 2px 1.5%;
+    width: 90%;
+    border-radius: 0.5cm;
+    border: 2px solid $secondary;
+    background-color: $secondary;
+    height: 35px;
+    padding-top: 6px;
+    text-align: center;
+  }
+}
+
 .list-group-item-selected {
   display: inline-block;
   margin: 2px 1.5%;
@@ -169,6 +197,35 @@ li {
   padding-top: 6px;
   text-align: center;
 }
+
+@media (max-width: 900px) {
+  .list-group-item-selected {
+  display: inline-block;
+  margin: 2px 1.5%;
+  width: 45%;
+  border-radius: 0.5cm;
+  border: 2px solid white;
+  background-color: $secondary;
+  height: 35px;
+  padding-top: 6px;
+  text-align: center;
+  }
+}
+
+@media (max-width: 700px) {
+  .list-group-item-selected {
+  display: inline-block;
+  margin: 2px 1.5%;
+  width: 90%;
+  border-radius: 0.5cm;
+  border: 2px solid white;
+  background-color: $secondary;
+  height: 35px;
+  padding-top: 6px;
+  text-align: center;
+  }
+}
+
 
 .fa-trash:hover {
   cursor: pointer;
