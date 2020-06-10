@@ -8,6 +8,7 @@
       :close-on-select="true"
       :options="options"
       @input="handleSelect"
+      @open="resetActiveComponent"
       :max-height="90"
       :option-height="20"
       :searchable="true"
