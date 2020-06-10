@@ -137,7 +137,8 @@ export default {
 
 <style lang="stylus" scoped>
 .home-queue {
-  height: 100%;
+  overflow: scroll;
+  padding-bottom: 40px;
 }
 li {
   list-style-type: none;
