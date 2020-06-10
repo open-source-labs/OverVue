@@ -405,12 +405,9 @@ export default {
   top: -18px;
   left: 2px;
   color: black;
-  text-shadow: white 0px 0px 3px;
+  -webkit-text-stroke: 0.4px white;
   font-weight: 800;
-  /* background: rgba(0, 0, 0, 0.678); */
-  /* width: 1rem; */
   line-height: 1.2;
-  /* margin: 10px; */
   z-index: -1;
 }
 .component-children {
