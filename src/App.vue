@@ -93,7 +93,7 @@ let redoMixin = {
       if (undone !== undefined) {
         this.undoneAction.push(undone)
         if (undone.type === 'setActiveComponent') {
-          console.log('We did something useless!')
+          // console.log('We did something useless!')
           do {
             this.undoneAction.push(this.doneAction.pop())
           }
@@ -110,9 +110,8 @@ let redoMixin = {
         store: this.$store
       }
       this.$store.commit('EMPTY_STATE', payload)
-      console.log(this.$store)
       this.doneAction.forEach(action => {
-        console.log('In the loop', this.$store)
+        // console.log('In the loop', this.$store)
         // this.$store.commit(`${mutation.type}`, mutation.payload);
         this.$store.dispatch(action.type, cloneDeep(action.payload))
         this.doneAction.pop()
