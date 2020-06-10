@@ -141,4 +141,8 @@ export default {
   background: $subprimary;
   // background: #272822;
 }
+
+// ::-webkit-scrollbar {
+//   display: none;
+//   }
 </style>
