@@ -2,18 +2,18 @@
   <div class="q-pa-md" style="max-width: 350px">
     <q-list padding bordered class="rounded-borders drawer-menu">
       <q-expansion-item dense dense-toggle expand-separator label="Components">
-        <q-card>
-          <q-card-section>
-            <div class="input-container">
-              <ComponentList />
-            </div>
-          </q-card-section>
-        </q-card>
+          <q-card>
+            <q-card-section>
+              <div class="input-container" style='height: 130px'>
+                <ComponentList />
+              </div>
+            </q-card-section>
+          </q-card>
       </q-expansion-item>
       <q-expansion-item dense dense-toggle expand-separator label="Routes">
         <q-card>
           <q-card-section>
-            <div class="input-container">
+            <div class="input-container" style='height: 150px'>
               <RouteDisplay />
               <br />
             </div>
@@ -48,6 +48,7 @@ export default {
 </script>
 
 <style lang="stylus">
+
 .input-add {
   margin: 0em 1em 0em 1em;
 }
@@ -55,6 +56,7 @@ export default {
 .input-container {
   margin-top: 1rem;
   background: $subsecondary;
+  overflow-y: auto;
 }
 
 .red {

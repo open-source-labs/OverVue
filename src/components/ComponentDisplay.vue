@@ -18,7 +18,6 @@
       @deactivated="onDeactivated(componentData)"
       @dragging="onDrag"
       @resizing="onResize"
-      @dblclick.native="onDoubleClick(componentData)"
       @dragstop="finishedDrag"
       @resizestop="finishedResize"
       :onDragStart="recordInitialPosition"
@@ -177,7 +176,29 @@ export default {
       console.log('mockBg is working', this.imagePath[this.activeRoute])
       return this.imagePath[this.activeRoute]
         ? {
-          background: `url("${this.userImage}") center/contain no-repeat`
+          background: `url("${this.userImage}") center/contain no-repeat rgba(223, 218, 218, 0.886)`,
+          // 'background-color': 'rgba(223, 218, 218, 0.886)',
+          // 'background-size': '100px 100px, 100px 100px, 20px 20px, 20px 20px',
+          // 'background-position':' -2px -2px, -2px -2px, -1px -1px, -1px -1px',
+          // 'background-image': `-webkit-linear-gradient(white 2px, transparent 2px),
+          // -webkit-linear-gradient(0, white 2px, transparent 2px),
+          // -webkit-linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+          // -webkit-linear-gradient(0, rgba(255, 255, 255, 0.3) 1px, transparent 1px)`,
+          // 'background-image': `-moz-linear-gradient(white 2px, transparent 2px),
+          // -moz-linear-gradient(0, white 2px, transparent 2px),
+          // -moz-linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+          // -moz-linear-gradient(0, rgba(255, 255, 255, 0.3) 1px, transparent 1px)`,
+          // 'background-image': `linear-gradient(white 2px, transparent 2px),
+          // linear-gradient(90deg, white 2px, transparent 2px),
+          // linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+          // linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px)`,
+          // '-pie-background': `linear-gradient(white 2px, transparent 2px) -2px -2px / 100px,
+          // linear-gradient(90deg, white 2px, transparent 2px) -2px -2px / 100px,
+          // linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px) -1px -1px /
+          // 20px, linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px) -1px -1px /
+          // 20px, #269`,
+          // 'background-image': `url(${this.userImage})`,
+          // behavior: 'url(/pie/PIE.htc)',
         }
         : {}
     }
@@ -346,12 +367,6 @@ export default {
       //   console.log("We just clicked without making a new active component")
       // }
     },
-    onDoubleClick (compData) {
-      if (!(componentData.componentName === this.activeComponent)) {
-        this.setActiveComponent(componentData.componentName)
-      }
-      this.activeComponentData.isActive = true
-    },
     handleAddChild () {
       // render modal with childrenmultiselect in it
       this.modalOpen = true
@@ -374,11 +389,6 @@ export default {
       if (e.target.innerText === '-' && payload.z > 0) payload.z--
       this.updateComponentLayer(payload)
     },
-    //       @dblclick.native="onDoubleClick(componentData)"
-    // onDoubleClick (compData) {
-    //   this.setActiveComponent(compData.componentName)
-    //   this.activeComponentData.isActive = true
-    // }
     handleClick (event) {
       if (event.target.className === 'component-display grid-bg') {
         if (!(this.activeComponent === '')) this.setActiveComponent('')
@@ -395,11 +405,9 @@ export default {
   top: -18px;
   left: 2px;
   color: black;
+  -webkit-text-stroke: 0.4px white;
   font-weight: 800;
-  /* background: rgba(0, 0, 0, 0.678); */
-  /* width: 1rem; */
   line-height: 1.2;
-  /* margin: 10px; */
   z-index: -1;
 }
 .component-children {

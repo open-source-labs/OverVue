@@ -22,7 +22,7 @@
         <q-tab name="html" label="HTML Elements" id="label-text" />
       </q-tabs>
 
-      <q-tab-panels v-model="tab" animated class="bg-primary text-white full-footer">
+      <q-tab-panels v-model="tab" animated class="html-bg text-white" >
         <q-tab-panel name="code">
           <CodeSnippet />
         </q-tab-panel>
@@ -35,7 +35,7 @@
           <Tree />
         </q-tab-panel>
 
-        <q-tab-panel name="html">
+        <q-tab-panel name="html" :style="{height: `${height}vh`}">
           <HomeQueue />
         </q-tab-panel>
       </q-tab-panels>
@@ -172,14 +172,18 @@ i {
   background: black;
 }
 
-.full-footer {
-  // height: 100vh;
-  padding-bottom: 0px;
-}
+// .full-footer {
+//   // height: 100vh;
+
+// }
 
 #footer-cards {
   height: 100%;
   border-radius: 0px;
   background: #737578;
+}
+.html-bg {
+  // give html background color of grey
+  background-color: #202122;
 }
 </style>
