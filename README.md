@@ -22,22 +22,22 @@
 + Live-generated tree view to aid in visualizing parent-child hierarchy
 + Save projects and open previous projects
 + Export full boilerplate code for a working frontend
-###### OverVue 2020 new features and fixes 
-+ Undo/redo functionality
-+ Ability to nest HTML elements
-+ Ability to navigate into HTML elements from a selected Vue component
-+ Ability to have one image per route
-+ Can now set Vue components to specific layers
++ Undo/redo functionality <sup><sub>(v2.0)</sub></sup>
++ Ability to nest HTML elements <sup><sub>(v2.0)</sub></sup>
++ Ability to navigate into HTML elements from a selected Vue component <sup><sub>(v2.0)</sub></sup>
++ Ability to have one image per route <sup><sub>(v2.0)</sub></sup>
++ Can now set Vue components to specific layers <sup><sub>(v2.0)</sub></sup>
++ Will now load route images along with project <sup><sub>(v2.0)</sub></sup>
++ Windows compatibility for uploading mockup images. <sup><sub>(v2.0)</sub></sup>
+
+#### Changelog
+<details><summary>OverVue 2.0</summary>
 + Improved hierarchy tree rendering
 + Improved Route addition and deletion
 + Improved UI to be more informative
 + UI is more reactive, code snippets update dynamically, Component children menu is consistent with children list at time of creation
 + Extensive bug fixing for Vue component and HTML element deletion behavior, exporting and saving.
-+ Will now load route images along with project
-+ Windows compatibility for uploading mockup images.
-
-#### Changelog
-<details><summary>OverVue 2.0</summary>
++ Can now use Quasar build -m electron to make windows .exe
 </details>
 
 #### How to use
