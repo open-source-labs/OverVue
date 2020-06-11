@@ -120,9 +120,12 @@ quasar build -m electron
 We'd love for you to test this application out and submit any issues you encounter. Also feel free to fork to your own repo and submit PRs.
 Here are some features we're thinking about adding:
 + Vuex state prototyping and boilerplate export
-+ Ability to add additional mockup images for more routes
-+ Ability to nest HTML elements
 + Option to export files in TypeScript
++ Ability to place child components into HTML elements
++ Integration with Storybook
++ Removal of NPM Dependencies
++ Ability to add a copy of an existing component from another route to a new route
++ Fix the incorrect resizing of components when maximizing and minimizing while the compoenent is active.
 
 #### Authors
 ```
@@ -131,5 +134,9 @@ Joseph Eisele @jeisele2
 Dean Chung @deanfchung
 Dean Ohashi @dnohashi
 Drew Nguyen @drewngyen
+Alexander Havas @LOLDragoon
+Keriann Lin @keliphan
+Allison Pratt @allisons11 
+              @JojuOlaode
 ```
 Inspired by [PreVue](https://github.com/open-source-labs/PreVue)

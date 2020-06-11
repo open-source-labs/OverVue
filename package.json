@@ -27,6 +27,8 @@
     "lodash.isequal": "^4.5.0",
     "lodash.throttle": "^4.1.1",
     "mousetrap": "^1.6.3",
+    "node": "^14.4.0",
+    "npm": "^6.14.5",
     "prismjs": "^1.16.0",
     "quasar": "^1.0.0",
     "vue-custom-context-menu": "^3.0.1",
