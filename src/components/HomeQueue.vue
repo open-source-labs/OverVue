@@ -211,7 +211,7 @@ li {
 }
 
 #unavailable {
-  color: grey;
+  color: #686868;
   cursor: default
 }
 

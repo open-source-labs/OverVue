@@ -25,6 +25,7 @@
     "localforage": "^1.7.3",
     "lodash": ">=4.17.13",
     "lodash.isequal": "^4.5.0",
+    "lodash.throttle": "^4.1.1",
     "mousetrap": "^1.6.3",
     "prismjs": "^1.16.0",
     "quasar": "^1.0.0",

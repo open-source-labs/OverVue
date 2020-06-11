@@ -424,7 +424,9 @@ const mutations = {
    */
   [types.IMPORT_IMAGE]: (state, payload) => {
     console.log(`import image invoked. image: ${payload.img} ${payload.route}`)
-    state.imagePath = { ...state.imagePath, [payload.route]: payload.img }
+   
+    console.log(payload.img.replace(/\\/g,"/"))
+    state.imagePath = { ...state.imagePath, [payload.route]: payload.img.replace(/\\/g,"/") }
     // state.imagePath[payload.route] = payload.img
   },
   [types.CLEAR_IMAGE]: (state, payload) => {
