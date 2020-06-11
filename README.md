@@ -22,7 +22,19 @@
 + Live-generated tree view to aid in visualizing parent-child hierarchy
 + Save projects and open previous projects
 + Export full boilerplate code for a working frontend
-
+###### OverVue 2020 new features and fixes
++ Undo/redo functionality
++ Ability to nest HTML elements
++ Ability to navigate into HTML elements from a selected Vue component
++ Ability to have one image per route
++ Can now set Vue components to specific layers
++ Improved hierarchy tree rendering
++ Improved Route addition and deletion
++ Improved UI to be more informative
++ UI is more reactive, code snippets update dynamically, Component children menu is consistent with children list at time of creation
++ Extensive bug fixing for Vue component and HTML element deletion behavior, exporting and saving.
++ Will now load route images along with project
++ Windows compatibility for uploading mockup images.
 
 #### How to use
 + Opening the application will create by default a root App component and a root route called "HomeView"
@@ -66,6 +78,25 @@ src/
 babel.config.js
 package.json
 ```
+###### OverVue 2020 How to
++ Undo/Redo feature has been added to the top right of the program, you can also use CTRL+z and CTRL+y respectively.
+
++ You can nest html elements in two different ways:
+ 1. Upon creating a component and adding an html element into it, Select the component to make it the active component.
+ Go to the html elements tab and then double click on the html element you wish to be the target for your new elements.
+ Once the html element is selected, use the left hand panel and start adding elements like you were adding it to a component.
+ 2. Similar to above, but instead of double clicking, you can press the down arrow icon on the html element button to enter it.
+ From there the view will change to the contents of that particular HTML element.
+ You can then add html elements like you would for a component using the left hand side
+
++ Setting layers on a component is done by right clicking the desired component on the component display and using the menu option
+  All components start on layer 1 by default.
+
+
+
+
+
+
 
 #### Running a local version
 This app was developed using the Quasar framework, so first you will need to install the Quasar cli
