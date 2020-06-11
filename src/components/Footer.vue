@@ -1,5 +1,5 @@
 <template>
-  <q-footer reveal class="gradient text-white" :style="{ height: `${height}vh` }">
+  <q-footer reveal class="gradient text-white" :style="{ height: `${height}vh` }" v-on:click="handleHtmlDeselection">
     <q-toolbar class="toolbar-background">
       <q-btn flat color="subaccent" round @click="openBottomDrawer">
         <i :class="[open ? down : up]" id="btn"></i>
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import Tree from './Tree'
 import HomeQueue from './HomeQueue'
 import CodeSnippet from './CodeSnippet'
@@ -56,7 +56,7 @@ export default {
     CodeSnippet
   },
   computed: {
-    ...mapState(['activeComponent', 'componentNameInputValue', 'selectedElementList'])
+    ...mapState(['activeComponent', 'componentNameInputValue', 'selectedElementList', 'activeHTML'])
   },
   data () {
     return {
@@ -68,6 +68,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['setActiveHTML']),
     openBottomDrawer () {
       // 15in mb pro - 1027 px 3.75
       // big ass screens 2.5
@@ -75,6 +76,14 @@ export default {
         window.outerHeight < 900 ? 4.5 : window.outerHeight < 1035 ? 3.75 : 2.5
       this.height === 40 ? (this.height = minHeight) : (this.height = 40)
       this.open === true ? (this.open = false) : (this.open = true)
+    },
+    handleHtmlDeselection (event) {
+      // method that will handle deselection from active HTML element
+      // console.log('target html element: ', event.target)
+      if (event.target.className !== 'list-group-item') {
+        // if html element classname is not equal to this string that all html elements have
+        if (!(this.activeHTML === '')) this.setActiveHTML(['']) // if activeHtml is not already deselected, do so
+      }
     }
   },
   // toggles footer to "html" tab when existing component is not in focus

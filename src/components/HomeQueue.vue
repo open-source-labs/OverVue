@@ -1,5 +1,5 @@
 <template>
-  <section class="home-queue" v-on:click="handleClick">
+  <section class="home-queue">
     <i v-if='this.activeLayer.id !== ""' class="fas fa fa-chevron-up fa-md" @click="setParentLayer"></i>
     <span class='list-title' v-if='this.activeLayer.id !== ""'> Viewing Elements in '{{ this.activeComponent }} {{ this.depth }}' </span>
     <span class='list-title' v-else-if='this.activeComponent !==""'> Viewing Elements in '{{ this.activeComponent }}' </span>
@@ -109,12 +109,12 @@ export default {
       })
       this.depth = newTitle
     },
-    handleClick (event) {
-      console.log(event.target)
-      if (event.target.className === 'home-queue') {
-        if (!(this.activeHTML === '')) this.setActiveHTML([''])
-      }
-    }
+    // handleClick (event) {
+    //   console.log(event.target)
+    //   if (event.target.className !== 'list-group-item') {
+    //     if (!(this.activeHTML === '')) this.setActiveHTML([''])
+    //   }
+    // }
   },
   components: {
     draggable
