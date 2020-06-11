@@ -22,13 +22,13 @@
 + Live-generated tree view to aid in visualizing parent-child hierarchy
 + Save projects and open previous projects
 + Export full boilerplate code for a working frontend
-+ Undo/redo functionality <sup><sub>(v2.0)</sub></sup>
-+ Ability to nest HTML elements <sup><sub>(v2.0)</sub></sup>
-+ Ability to navigate into HTML elements from a selected Vue component <sup><sub>(v2.0)</sub></sup>
-+ Ability to have one image per route <sup><sub>(v2.0)</sub></sup>
-+ Can now set Vue components to specific layers <sup><sub>(v2.0)</sub></sup>
-+ Will now load route images along with project <sup><sub>(v2.0)</sub></sup>
-+ Windows compatibility for uploading mockup images. <sup><sub>(v2.0)</sub></sup>
++ Undo/redo functionality <sub><sup>(v2.0)</sup></sub>
++ Ability to nest HTML elements <sub><sup>(v2.0)</sup></sub>
++ Ability to navigate into HTML elements from a selected Vue component <sub><sup>(v2.0)</sup></sub>
++ Ability to have one image per route <sub><sup>(v2.0)</sup></sub>
++ Can now set Vue components to specific layers <sub><sup>(v2.0)</sup></sub>
++ Will now load route images along with project <sub><sup>(v2.0)</sup></sub>
++ Windows compatibility for uploading mockup images. <sub><sup>(v2.0)</sup></sub>
 
 #### Changelog
 <details><summary>OverVue 2.0</summary>
