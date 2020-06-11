@@ -89,14 +89,14 @@ src/
 babel.config.js
 package.json
 ```
-###### OverVue 2020 How to
+###### OverVue v2.0 How to
 + Undo/Redo feature has been added to the top right of the program, you can also use CTRL+z and CTRL+y respectively.
 
 + You can nest html elements in two different ways:
     1. Upon creating a component and adding an html element into it, Select the component to make it the active component.
     Go to the html elements tab and then double click on the html element you wish to be the target for your new elements.
     Once the html element is selected, use the left hand panel and start adding elements like you were adding it to a component.
-    
+
     2. Similar to above, but instead of double clicking, you can press the down arrow icon on the html element button to enter it.
     From there the view will change to the contents of that particular HTML element.
     You can then add html elements like you would for a component using the left hand side
@@ -135,9 +135,7 @@ Here are some features we're thinking about adding:
 + Option to export files in TypeScript
 + Ability to place child components into HTML elements
 + Integration with Storybook
-+ Removal of NPM Dependencies
 + Ability to add a copy of an existing component from one route to another
-+ Fix the incorrect resizing of components when maximizing and minimizing while the compoenent is active.
 
 #### Authors
 ```
