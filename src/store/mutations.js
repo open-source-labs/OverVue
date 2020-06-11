@@ -379,25 +379,33 @@ const mutations = {
     state.parentSelected = payload
   },
   [types.DELETE_ROUTE]: (state, payload) => {
+    const newRoutes = { ...state.routes }
+    const newMap = { ...state.componentMap }
+    const newImagePath = { ...state.imagePath }
+
     const deleteChildren = (child) => {
-        if (state.componentMap[child.componentName].children.length) {
-          child.children.forEach((grandchild) => {
-            deleteChildren(grandchild)
-          })
-        }
-        delete state.componentMap[child.componentName]
+      if (newMap[child.componentName].children.length) {
+        child.children.forEach((grandchild) => {
+          deleteChildren(grandchild)
+        })
+      }
+      delete newMap[child.componentName]
     }
-    state.routes[payload].forEach((child => {
+    newRoutes[payload].forEach(child => {
       deleteChildren(child)
-    }))
-
-    delete state.routes[payload]
-    delete state.componentMap[payload]
-
-    state.componentMap.App.children = state.componentMap.App.children.filter((route) => {
-      return route !== payload;
     })
-    if (!state.routes[state.activeRoute]) state.activeRoute = 'HomeView'
+
+    delete newRoutes[payload]
+    delete newMap[payload]
+    delete newImagePath[payload]
+
+    newMap.App.children = newMap.App.children.filter((route) => {
+      return route !== payload
+    })
+    if (!newRoutes[state.activeRoute]) state.activeRoute = 'HomeView'
+    state.routes = newRoutes
+    state.componentMap = newMap
+    state.imagePath = newImagePath
   },
   [types.DELETE_COMPONENT]: (state, payload) => {
     const stateCopy = state
@@ -420,7 +428,7 @@ const mutations = {
     // state.imagePath[payload.route] = payload.img
   },
   [types.CLEAR_IMAGE]: (state, payload) => {
-    console.log(`clear image invoked`)
+    console.log(`clear image invoked`, payload)
     // console.log('current routes img url: ', state.imagePath[payload.route])
     if (state.imagePath[payload.route]) state.imagePath[payload.route] = ''
     // console.log('after removal', state.imagePath[payload.route])
