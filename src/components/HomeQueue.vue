@@ -14,7 +14,10 @@
       @end="drag = false"
     >
       <div :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'" @dblclick.self="setActiveElement(element)" v-for="(element) in renderList" :key="element[1] + Date.now()">
-        <i class="fas fa fa-angle-double-down fa-md" @click="setLayer({text: element[0], id: element[2]})"></i>
+        <!-- <i class="fas fa fa-angle-double-down fa-md" @click="setLayer({text: element[0], id: element[2]})"></i> -->
+        <i v-if='activeComponent === "" ' class="fas fa fa-angle-double-down fa-md" id="unavailable"></i>
+        <i v-else class="fas fa fa-angle-double-down fa-md" @click="setLayer({text: element[0], id: element[2]})"></i>
+        <!-- <i class="fas fa fa-angle-double-down fa-md" @click="setLayer({text: element[0], id: element[2]})"></i> -->
         {{ element[0] }}
         <i class="fas fa fa-trash fa-md" @click.self="deleteElement([element[1],element[2]])"></i>
       </div>
@@ -137,7 +140,7 @@ export default {
 
 <style lang="stylus" scoped>
 .home-queue {
-  height: 100%;
+  padding-bottom: 40px;
 }
 li {
   list-style-type: none;
@@ -149,6 +152,7 @@ li {
 .list-group-item {
   display: inline-block;
   margin: 2px 1.5%;
+  min-width: 175px;
   width: 30%;
   border-radius: 0.5cm;
   border: 2px solid $secondary;
@@ -161,6 +165,7 @@ li {
 .list-group-item-selected {
   display: inline-block;
   margin: 2px 1.5%;
+  min-width: 175px;
   width: 30%;
   border-radius: 0.5cm;
   border: 2px solid white;
@@ -177,12 +182,17 @@ li {
 
 .fa-trash {
   position: relative;
-  left: 20px;
-
+  // left: 20px;
+  top: 2px;
+  right: 35px;
+  float: right;
 }
 .fa-angle-double-down {
   position: relative;
-  right: 20px;
+  // right: 20px;
+  top: 2px;
+  left: 35px;
+  float: left;
 }
 
 .fa-angle-double-down:hover {
@@ -197,6 +207,11 @@ li {
 .fa-chevron-up:hover {
   cursor: pointer;
   color: #41B883;
+}
+
+#unavailable {
+  color: grey;
+  cursor: default
 }
 
 hr {

@@ -9,9 +9,17 @@
           <!-- <q-avatar></q-avatar> -->
           OverVue
         </q-toolbar-title>
+        <div>
+        <!-- <i class="fa fa-undo" aria-hidden="true"></i> -->
+        <!-- <i class="fas fa fa-repeat" aria-hidden="true"></i> -->
+        <i v-if='this.$router.app.$children[0].doneAction.length' class="fa fa-backward" aria-hidden="true" @click="undo"></i>
+        <i v-else class="fa fa-backward" id="unavailable" aria-hidden="true"></i>
+        <i v-if='this.$router.app.$children[0].undoneAction.length' class="fa fa-forward" aria-hidden="true" @click="redo"></i>
+        <i v-else class="fa fa-forward" id="unavailable" aria-hidden="true"></i>
         <OpenProjectComponent />
         <SaveProjectComponent />
         <ExportProjectComponent />
+        </div>
       </q-toolbar>
     </q-header>
 
@@ -55,11 +63,42 @@ export default {
     SaveProjectComponent,
     OpenProjectComponent,
     UploadImage
+  },
+  methods: {
+    undo () {
+      console.log('UNDO FROM BUTTON')
+      console.log('look at me ', this.$router.app.$children[0].doneAction)
+      this.$router.app.$children[0].undo()
+    },
+    redo () {
+      console.log('REDO FROM BUTTON')
+      this.$router.app.$children[0].redo()
+    }
   }
 }
 </script>
 
 <style lang="stylus">
+
+.fa-backward, .fa-forward {
+  padding: 0 5px
+}
+
+.fa-backward:hover, .fa-forward:hover {
+  cursor: pointer;
+  color: #00ffff
+}
+
+#unavailable {
+  color: grey;
+  cursor: default
+}
+
+.fa-backward:active, .fa-forward:active {
+  box-shadow: 0 1px inherit;
+  transform: translateY(1px);
+}
+
 .q-layout {
   transition-timing-function: ease-in;
 }
@@ -103,7 +142,7 @@ export default {
   // background: #272822;
 }
 
-::-webkit-scrollbar {
-  display: none;
-}
+// ::-webkit-scrollbar {
+//   display: none;
+//   }
 </style>

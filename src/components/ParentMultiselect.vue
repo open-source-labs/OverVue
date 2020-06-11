@@ -8,6 +8,7 @@
       :close-on-select="true"
       :options="options"
       @input="handleSelect"
+      @open="resetActiveComponent"
       :max-height="90"
       :option-height="20"
       :searchable="true"
@@ -44,7 +45,7 @@ export default {
   methods: {
     ...mapActions([
       // 'addParent',
-      'parentSelected'
+      'parentSelected', 'setActiveComponent'
     ]),
     handleSelect (value) {
       // Set Active Component to selected Parent
@@ -52,6 +53,11 @@ export default {
       // this.addParent(value)
       // Set parentSelected to true IF VALUE IS A VALID PARENT (not null)
       this.parentSelected(value)
+    },
+    resetActiveComponent () {
+      if (this.activeComponent !== '') {
+        this.setActiveComponent('')
+      }
     }
   },
   watch: {
