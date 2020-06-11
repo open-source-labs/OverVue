@@ -23,9 +23,9 @@
 + Save projects and open previous projects
 + Export full boilerplate code for a working frontend
 + Undo/redo functionality <sub><sup>(v2.0)</sup></sub>
-+ Ability to nest HTML elements <sub><sup>(v2.0)</sup></sub>
++ Can nest HTML elements <sub><sup>(v2.0)</sup></sub>
 + Ability to navigate into HTML elements from a selected Vue component <sub><sup>(v2.0)</sup></sub>
-+ Ability to have one image per route <sub><sup>(v2.0)</sup></sub>
++ Assign one image per route <sub><sup>(v2.0)</sup></sub>
 + Can now set Vue components to specific layers <sub><sup>(v2.0)</sup></sub>
 + Will now load route images along with project <sub><sup>(v2.0)</sup></sub>
 + Windows compatibility for uploading mockup images. <sub><sup>(v2.0)</sup></sub>
@@ -33,12 +33,17 @@
 #### Changelog
 <details><summary>OverVue 2.0</summary>
   <ul>
-  * Improved hierarchy tree rendering
+  <li>Improved hierarchy tree rendering</li>
   <li>Improved Route addition and deletion</li>
-  - Improved UI to be more informative
-  UI is more reactive, code snippets update dynamically, Component children menu is consistent with children list at time of creation
-  Extensive bug fixing for Vue component and HTML element deletion behavior, exporting and saving.
-  Can now use Quasar build -m electron to make windows .exe
+  <li>Able to search for components by name</li>
+  <li>Improved UI to be more informative</li>
+  <li>UI is more reactive, code snippets update dynamically </li>
+  <li>Component children menu is consistent with children list at time of creation</li>
+  <li>Children components can no longer choose any of their ancestors to be their children.</li>
+  <li>Can now use Quasar build -m electron to make windows .exe </li>
+  <li>Exporting projects now exports the mockup files as well into the assets folder</li>
+  <li>Saving projects now saves the mockup image url</li>
+  <li>Extensive bug fixing for Vue component and HTML element deletion behavior, exporting and saving.</li>
   </ul>
 </details>
 
@@ -88,12 +93,13 @@ package.json
 + Undo/Redo feature has been added to the top right of the program, you can also use CTRL+z and CTRL+y respectively.
 
 + You can nest html elements in two different ways:
- 1. Upon creating a component and adding an html element into it, Select the component to make it the active component.
- Go to the html elements tab and then double click on the html element you wish to be the target for your new elements.
- Once the html element is selected, use the left hand panel and start adding elements like you were adding it to a component.
- 2. Similar to above, but instead of double clicking, you can press the down arrow icon on the html element button to enter it.
- From there the view will change to the contents of that particular HTML element.
- You can then add html elements like you would for a component using the left hand side
+    1. Upon creating a component and adding an html element into it, Select the component to make it the active component.
+    Go to the html elements tab and then double click on the html element you wish to be the target for your new elements.
+    Once the html element is selected, use the left hand panel and start adding elements like you were adding it to a component.
+    
+    2. Similar to above, but instead of double clicking, you can press the down arrow icon on the html element button to enter it.
+    From there the view will change to the contents of that particular HTML element.
+    You can then add html elements like you would for a component using the left hand side
 
 + Setting layers on a component is done by right clicking the desired component on the component display and using the menu option
   All components start on layer 1 by default.
