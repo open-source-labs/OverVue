@@ -414,8 +414,8 @@ export default {
   /* height: 500px; */
   /* width: 500px; */
   /* original is 70 */
-  min-height: 1080px;
-  min-width: 1920px;
+  height: 90vh;
+  width: 100%;
   position: relative;
   /* background: rgb(211, 211, 210); */
 }
