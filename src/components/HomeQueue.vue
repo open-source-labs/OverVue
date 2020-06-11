@@ -1,16 +1,15 @@
 <template>
-  <section class="home-queue" v-on:click="handleClick">
+  <section class="home-queue">
     <i v-if='this.activeLayer.id !== ""' class="fas fa fa-chevron-up fa-md" @click="setParentLayer"></i>
     <span class='list-title' v-if='this.activeLayer.id !== ""'> Viewing Elements in '{{ this.activeComponent }} {{ this.depth }}' </span>
     <span class='list-title' v-else-if='this.activeComponent !==""'> Viewing Elements in '{{ this.activeComponent }}' </span>
     <span class='list-title' v-else> Elements in Queue </span>
     <hr>
     <div
-      v-model="renderList"
       group="people"
       class="list-group"
     >
-    
+
       <div
       :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'"
       @dblclick.self="setActiveElement(element)"
@@ -28,7 +27,6 @@
 </template>
 
 <script>
-import draggable from 'vuedraggable'
 import { mapState, mapActions } from 'vuex'
 import { setSelectedElementList, deleteSelectedElement, deleteFromComponentHtmlList } from '../store/types'
 
@@ -112,12 +110,6 @@ export default {
         newTitle += ` > ${el}`
       })
       this.depth = newTitle
-    },
-    handleClick (event) {
-      // console.log(event.target)
-      if (event.target.className === 'home-queue') {
-        if (!(this.activeHTML === '')) this.setActiveHTML([''])
-      }
     }
   },
   watch: {
