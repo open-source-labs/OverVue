@@ -5,28 +5,28 @@
     <span class='list-title' v-else-if='this.activeComponent !==""'> Viewing Elements in '{{ this.activeComponent }}' </span>
     <span class='list-title' v-else> Elements in Queue </span>
     <hr>
-    <draggable
-      v-model="renderList"
+    <div
       group="people"
       class="list-group"
-      ghost-class="ghost"
-      @start="drag = true"
-      @end="drag = false"
     >
-      <div :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'" @dblclick.self="setActiveElement(element)" v-for="(element) in renderList" :key="element[1] + Date.now()">
+
+      <div
+      :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'"
+      @dblclick.self="setActiveElement(element)"
+      v-for="(element) in renderList" :key="element[1] + Date.now()"
+      >
         <!-- <i class="fas fa fa-angle-double-down fa-md" @click="setLayer({text: element[0], id: element[2]})"></i> -->
         <i v-if='activeComponent === "" ' class="fas fa fa-angle-double-down fa-md" id="unavailable"></i>
         <i v-else class="fas fa fa-angle-double-down fa-md" @click="setLayer({text: element[0], id: element[2]})"></i>
-        <!-- <i class="fas fa fa-angle-double-down fa-md" @click="setLayer({text: element[0], id: element[2]})"></i> -->
         {{ element[0] }}
         <i class="fas fa fa-trash fa-md" @click.self="deleteElement([element[1],element[2]])"></i>
       </div>
-    </draggable>
+
+    </div>
   </section>
 </template>
 
 <script>
-import draggable from 'vuedraggable'
 import { mapState, mapActions } from 'vuex'
 import { setSelectedElementList, deleteSelectedElement, deleteFromComponentHtmlList } from '../store/types'
 
@@ -90,7 +90,9 @@ export default {
       else this.$store.dispatch(deleteFromComponentHtmlList, id[1])
     },
     setActiveElement (element) {
-      this.setActiveHTML(element)
+      if (this.activeComponent !== '') {
+        this.setActiveHTML(element)
+      }
     },
     setLayer (element) {
       this.setActiveLayer(element)
@@ -108,16 +110,7 @@ export default {
         newTitle += ` > ${el}`
       })
       this.depth = newTitle
-    },
-    // handleClick (event) {
-    //   console.log(event.target)
-    //   if (event.target.className !== 'list-group-item') {
-    //     if (!(this.activeHTML === '')) this.setActiveHTML([''])
-    //   }
-    // }
-  },
-  components: {
-    draggable
+    }
   },
   watch: {
     activeComponent: function () {
@@ -210,7 +203,7 @@ li {
 }
 
 #unavailable {
-  color: grey;
+  color: #686868;
   cursor: default
 }
 
