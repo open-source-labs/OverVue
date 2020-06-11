@@ -15,9 +15,9 @@
     >
       <div :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'" @dblclick.self="setActiveElement(element)" v-for="(element) in renderList" :key="element[1] + Date.now()">
         <!-- <i class="fas fa fa-angle-double-down fa-md" @click="setLayer({text: element[0], id: element[2]})"></i> -->
-        <!-- <i v-if='activeComponent !== "" && (element[0] !== "img" && element[0] !== "link")' class="fas fa fa-angle-double-down fa-md" id="noNesting" @click="setLayer({text: element[0], id: element[2]})"></i> -->
-        <!-- <i v-else class="fas fa fa-angle-double-down fa-md" @click="setLayer({text: element[0], id: element[2]})"></i> -->
-        <i class="fas fa fa-angle-double-down fa-md" @click="setLayer({text: element[0], id: element[2]})"></i>
+        <i v-if='activeComponent === "" ' class="fas fa fa-angle-double-down fa-md" id="unavailable"></i>
+        <i v-else class="fas fa fa-angle-double-down fa-md" @click="setLayer({text: element[0], id: element[2]})"></i>
+        <!-- <i class="fas fa fa-angle-double-down fa-md" @click="setLayer({text: element[0], id: element[2]})"></i> -->
         {{ element[0] }}
         <i class="fas fa fa-trash fa-md" @click.self="deleteElement([element[1],element[2]])"></i>
       </div>
@@ -207,6 +207,11 @@ li {
 .fa-chevron-up:hover {
   cursor: pointer;
   color: #41B883;
+}
+
+#unavailable {
+  color: grey;
+  cursor: default
 }
 
 hr {
