@@ -123,13 +123,13 @@ let redoMixin = {
           ignoredActions.has(this.doneAction[this.doneAction.length - 1].type)){
             this.undoneAction.push(this.doneAction.pop())
           }
+           // if we get here, that means we have undone all "useless" actions 
+          // so we have to do one more final pop and push, have to make sure it isn't null though
           let finalPop = this.doneAction.pop()
           if(finalPop !== undefined){
             this.undoneAction.push(finalPop)
           }
         }
-        // if we get here, that means we have undone all "useless" actions 
-        // so we have to do one more final pop and push, have to make sure it isn't null though
          
       }
 
