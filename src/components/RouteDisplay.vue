@@ -1,13 +1,14 @@
 <template>
   <div>
     <q-input
-      @keyup.enter.native="handleEnterKeyPress"
+      @keyup.enter.native="handleEnterKeyPress "
       standout="bg-secondary text-white"
       bottom-slots
       v-model="newRoute"
       label="Enter new route"
       :dense="dense"
       class="input-add"
+      @click.native="resetActiveComponent"
     ></q-input>
     <!--<div class="route-display">-->
     <!--
@@ -35,7 +36,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['addRouteToRouteMap', 'setRoutes']),
+    ...mapActions(['addRouteToRouteMap', 'setRoutes', 'setActiveComponent']),
     handleEnterKeyPress () {
       const newRouteName = this.newRoute.replace(/[^a-z0-9-_.]/gi, '')
       if (!newRouteName.trim() || this.routes[newRouteName] || this.componentMap[newRouteName]) {
@@ -48,6 +49,11 @@ export default {
         })
 
         .catch(err => console.log(err))
+    },
+    resetActiveComponent () {
+      if (this.activeComponent !== '') {
+        this.setActiveComponent('')
+      }
     }
   }
 }
