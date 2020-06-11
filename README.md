@@ -32,12 +32,14 @@
 
 #### Changelog
 <details><summary>OverVue 2.0</summary>
-+ Improved hierarchy tree rendering
-+ Improved Route addition and deletion
-+ Improved UI to be more informative
-+ UI is more reactive, code snippets update dynamically, Component children menu is consistent with children list at time of creation
-+ Extensive bug fixing for Vue component and HTML element deletion behavior, exporting and saving.
-+ Can now use Quasar build -m electron to make windows .exe
+  <ul>
+  * Improved hierarchy tree rendering
+  <li>Improved Route addition and deletion</li>
+  - Improved UI to be more informative
+  UI is more reactive, code snippets update dynamically, Component children menu is consistent with children list at time of creation
+  Extensive bug fixing for Vue component and HTML element deletion behavior, exporting and saving.
+  Can now use Quasar build -m electron to make windows .exe
+  </ul>
 </details>
 
 #### How to use
