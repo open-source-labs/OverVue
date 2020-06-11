@@ -142,7 +142,7 @@ export default {
   // background: #272822;
 }
 
-::-webkit-scrollbar {
-  display: none;
-}
+// ::-webkit-scrollbar {
+//   display: none;
+//   }
 </style>

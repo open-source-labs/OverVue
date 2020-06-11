@@ -56,7 +56,7 @@ export default {
     ...mapState(['routes', 'activeRoute', 'activeComponent']),
     activeRouteDisplay () {
       let component = this.routes[this.activeRoute]
-      console.log(component)
+      console.log('component', component)
       return component
     },
     activeComponentData () {

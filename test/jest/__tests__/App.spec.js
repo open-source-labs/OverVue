@@ -70,7 +70,7 @@ describe("Adding actions and state to components", () => {
   });
 });
 
-describe("userActions mutation", () => {
+xdescribe("userActions mutation", () => {
   let actions;
   let store;
   beforeEach(() => {
@@ -88,7 +88,7 @@ describe("userActions mutation", () => {
   });
 });
 
-describe("userStore mutation", () => {
+xdescribe("userStore mutation", () => {
   let actions;
   let store;
   store = {
@@ -126,7 +126,7 @@ describe("userStore mutation", () => {
  *  `userStore` holds the user defined state objects
  */
 
-describe("Delete state in userStore/componentMap", () => {
+xdescribe("Delete state in userStore/componentMap", () => {
   let state;
   beforeEach(() => {
     state = {
@@ -143,7 +143,7 @@ describe("Delete state in userStore/componentMap", () => {
       userStore: { state1: true, state2: [] }
     };
   });
-  describe('"DELETE_USER_STATE" should delete property from "userStore" object', () => {
+  xdescribe('"DELETE_USER_STATE" should delete property from "userStore" object', () => {
     it("should delete a single state property", () => {
       mutations.DELETE_USER_STATE(state, "state1");
       expect(state.userStore).toEqual({ state2: [] });
