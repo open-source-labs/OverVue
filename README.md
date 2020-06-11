@@ -6,7 +6,7 @@
 
 <p align="center"><b>Prototyping Tool for Vue Developers</b></p>
 
-<p>OverVue is a prototyping tool that allows developers to <em>dynamically</em> create and visualize a Vue application, implementing a real-time intuitive <em>tree display</em> of component hierarchy and a live-generated <em>code preview</em>. The resulting boilerplate can be <em>exported</em> as a template for further development.</p>
+<p>OverVue is a prototyping tool that allows developers to dynamically create and visualize a Vue application, implementing a real-time intuitive tree display of component hierarchy and a live-generated code preview. The resulting boilerplate can be exported as a template for further development.</p>
 
 <p>这个程序能帮你生成Vue 组件, 设置 routes , 也可以帮你显像Component Parent-Child组件树。你只要做一些小配置然后可以下载code boilerplate. 这样你就可以很方便简洁地生成Vue前台APP了！</p>
 
@@ -22,7 +22,7 @@
 + Live-generated tree view to aid in visualizing parent-child hierarchy
 + Save projects and open previous projects
 + Export full boilerplate code for a working frontend
-###### OverVue 2020 new features and fixes
+###### OverVue 2020 new features and fixes 
 + Undo/redo functionality
 + Ability to nest HTML elements
 + Ability to navigate into HTML elements from a selected Vue component
@@ -35,6 +35,10 @@
 + Extensive bug fixing for Vue component and HTML element deletion behavior, exporting and saving.
 + Will now load route images along with project
 + Windows compatibility for uploading mockup images.
+
+#### Changelog
+<details><summary>OverVue 2.0</summary>
+</details>
 
 #### How to use
 + Opening the application will create by default a root App component and a root route called "HomeView"
@@ -111,7 +115,7 @@ To run electron app in dev mode
 ```
 quasar dev -m electron
 ```
-To build a new .dmg
+To build a new .dmg / windows .exe
 ```
 quasar build -m electron
 ```
@@ -124,7 +128,7 @@ Here are some features we're thinking about adding:
 + Ability to place child components into HTML elements
 + Integration with Storybook
 + Removal of NPM Dependencies
-+ Ability to add a copy of an existing component from another route to a new route
++ Ability to add a copy of an existing component from one route to another
 + Fix the incorrect resizing of components when maximizing and minimizing while the compoenent is active.
 
 #### Authors
@@ -137,6 +141,6 @@ Drew Nguyen @drewngyen
 Alexander Havas @LOLDragoon
 Keriann Lin @keliphan
 Allison Pratt @allisons11 
-              @JojuOlaode
+Joju Olaode @JojuOlaode
 ```
 Inspired by [PreVue](https://github.com/open-source-labs/PreVue)
