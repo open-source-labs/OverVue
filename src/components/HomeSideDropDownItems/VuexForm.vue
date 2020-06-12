@@ -1,3 +1,9 @@
+<!--
+Description:
+  Displays Vuex features for possible iterations.
+  Functionality includes: N/A
+  -->
+
 <template>
   <div class="input-container">
     <q-input
