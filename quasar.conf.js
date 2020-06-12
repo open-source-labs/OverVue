@@ -158,6 +158,7 @@ module.exports = function (ctx) {
     },
 
     electron: {
+      bundler:'builder',
       // bundler: 'builder', // or 'packager'
 
       extendWebpack (cfg) {
@@ -181,7 +182,10 @@ module.exports = function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        // appId: 'quasar-example'
+         appId: 'com.electron.OverVue',
+         win:{
+           target:'nsis'
+         },
       }
     }
   }
