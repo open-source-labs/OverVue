@@ -1,7 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import undoRedo from './plugins.js'
-
 import state from './state'
 import actions from './actions.js'
 import mutations from './mutations.js'

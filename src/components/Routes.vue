@@ -1,11 +1,16 @@
+<!--
+Description:
+  Displays routes in home-sidebar Routes dropdown
+  Functionality includes: selects active route || deletes route on click
+  -->
+
 <template>
   <div class="home-sidebar">
-    <!--<div class="route-view">-->
     <a
       :class="route === activeRoute ? 'panel-block is-active' : 'panel-block'"
       v-for="route in Object.keys(routes)"
       :key="route"
-      @click="handleClick(route)"
+      @click="selectRoute(route)"
     >
       <q-list bordered separator class="list-item">
         <q-item clickable v-ripple class="list-item">
@@ -29,13 +34,13 @@ export default {
   },
   methods: {
     ...mapActions(['setActiveRoute', 'deleteRoute']),
-    handleClick (route) {
+    // selects active route
+    selectRoute (route) {
       this.setActiveRoute(route)
     },
+    // deletes route
     deleteSelectedRoute (route) {
-      // this.setActiveRoute(route)
       this.deleteRoute(route)
-      // this.setActiveRoute('')
     }
   }
 }

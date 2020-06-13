@@ -1,3 +1,9 @@
+<!--
+Description:
+  Is not imported in current version of OverVue
+  Functionality includes: N/A
+  -->
+
 <template>
   <div id="child-select">
     <br />
@@ -13,11 +19,6 @@
       :option-height="20"
       :searchable="false"
     ></multiselect>
-    <!-- <q-select
-      :options="options"
-      label="Select children"
-      multiple
-    /> -->
   </div>
 </template>
 
@@ -32,7 +33,6 @@ export default {
   computed: {
     ...mapState([
       'routes',
-      // comes from store/state/index.js
       'componentMap',
       'activeComponent',
       'componentChildrenMultiselectValue',
@@ -52,9 +52,7 @@ export default {
       'updateComponentChildrenMultiselectValue',
       'updateActiveComponentChildrenValue'
     ]),
-    //
     handleSelect (value) {
-      // if (this.modalOpen) this.updateActiveComponentChildrenValue(value)
       // console.log('Multiselect: ', value)
       this.updateActiveComponentChildrenValue(value)
       this.updateComponentChildrenMultiselectValue(value)

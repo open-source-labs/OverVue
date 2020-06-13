@@ -1,3 +1,9 @@
+<!--
+Description:
+  Displays project tree in Footer
+  Functionality includes: formating componentMap object to displaying in tree form
+  -->
+
 <template>
   <div class="container">
     <tree
@@ -21,8 +27,9 @@ export default {
   },
   computed: {
     ...mapState(['componentMap']),
+    // Returns project tree on re-render
     computedTree () {
-      console.log('buildtree', this.buildTree())
+      // console.log('buildtree', this.buildTree())
       return this.buildTree()
     }
   },
@@ -32,8 +39,9 @@ export default {
     }
   },
   methods: {
+    // Called by transformToTree, formats componentMap
     formatComponentMap (compMap) {
-      console.log('compMap', compMap)
+      // console.log('compMap', compMap)
       let result = []
       Object.values(compMap).forEach(compData => {
         result.push({
@@ -41,9 +49,10 @@ export default {
           children: compData.children
         })
       })
-      console.log('Formatcomponent map result', result)
+      // console.log('Formatcomponent map result', result)
       return result
     },
+    // Called by buildTree, transforms componentMap
     transformToTree (data) {
       let result = {}
       const nodes = {}
@@ -61,6 +70,7 @@ export default {
       })
       return result
     },
+    // Called by computedTree, calls transformToTree
     buildTree () {
       let build = this.transformToTree(this.componentMap)
       return build['App']

@@ -1,37 +1,27 @@
+<!--
+Description:
+  Displays Open Project Button
+  Functionality includes: opening saved json file and storing data in state
+  -->
+
 <template>
-  <!-- <q-btn class=" export-btn" color="secondary" label="Open Project"/> -->
   <q-btn class="export-btn" color="secondary" label="Open Project" @click="openProjectJSON"/>
 </template>
 
 <script>
-import localforage from 'localforage'
 import fs from 'fs-extra'
-import { addProject } from '../store/types'
 const { remote } = require('electron')
-import { mapState, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
+const Mousetrap = require('mousetrap')
 
 export default {
   name: 'OpenProjectComponent',
   methods: {
-    ...mapActions([
-      // 'setComponentMap',
-      // 'setRoutes',
-      // 'setImagePath',
-      'openProject'
-    ]),
-    parseFileName (file) {
-      // Obtains json file name from file path
-      return file.split('/').pop()
-    },
+    ...mapActions(['openProject']),
     openJSONFile (data) {
       const jsonFile = JSON.parse(fs.readFileSync(data[0], 'utf8'))
-      console.log('json file', jsonFile.imagePath)
-      // this.setComponentMap(jsonFile.componentMap)
-      // this.setRoutes(jsonFile.routes)
-      // if (jsonFile.imagePath) {
-      //   this.setImagePath(jsonFile.imagePath)
-      // }
-      // open project action
+      // console.log('json file', jsonFile)
+      // opens project
       this.openProject(jsonFile)
     },
     showOpenJSONDialog () {
@@ -51,6 +41,7 @@ export default {
       this.showOpenJSONDialog()
     }
   },
+  // on components creation these key presses will trigger open project
   created () {
     Mousetrap.bind(['command+o', 'ctrl+o'], () => {
       this.openProjectJSON()

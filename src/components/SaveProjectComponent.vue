@@ -1,5 +1,10 @@
+<!--
+Description:
+  Displays Save button
+  Functionality includes: Allows users to save their project as json object
+  -->
+
 <template>
-  <!-- <q-btn class=" export-btn" color="secondary" label="Save"/> -->
   <q-btn class="export-btn" color="secondary" label="Save" @click="saveProjectJSON" />
 </template>
 
@@ -12,6 +17,7 @@ const Mousetrap = require('mousetrap')
 export default {
   name: 'SaveProjetComponent',
   methods: {
+    // displays save dialog, success calls saveJSONLocation
     showSaveJSONDialog () {
       remote.dialog.showSaveDialog({
         title: 'Choose location to save JSON object in',
@@ -24,18 +30,19 @@ export default {
         }]
       },
       result => {
-        // event.sender.send('save-json-location', result);
         this.saveJSONLocation(result)
       })
     },
+    // returns location of where file is stored
     parseFileName (file) {
       // 'asdf/asdff/sdf.txt -> sdf.txt
       return file.split('/').pop()
     },
+    // deletes anything attached to html element
     parseAndDelete (htmlList) {
       htmlList.forEach(element => {
         if (element.children.length > 0) {
-          console.log('in recurse')
+          // console.log('in recurse')
           this.parseAndDelete(element.children)
         }
         delete element._vm
@@ -50,16 +57,18 @@ export default {
         delete element.innerBackClass
       })
     },
+    // displays save dialog
     saveProjectJSON () {
       this.showSaveJSONDialog()
     },
+    // saves where JSON object is stored in state
     saveJSONLocation (data) {
       // delete original key from local forage
       let deleteKey = this.$store.state.projects[this.$store.state.activeTab].filename
       localforage
         .removeItem(deleteKey)
         .then(function () {
-          console.log(deleteKey, 'Key is cleared!')
+          // console.log(deleteKey, 'Key is cleared!')
         })
         .catch(function (err) {
           console.log(err)
@@ -73,8 +82,9 @@ export default {
       })
       let state = this.$store.state
       let routes = state.routes
+      // for each route call parseAndDelete on htmlList
       for (let view in routes) {
-        console.log('views in Routes', routes[view])
+        // console.log('views in Routes', routes[view])
         routes[view].forEach(component => {
           let htmlList = component.htmlList
           this.parseAndDelete(htmlList)
@@ -91,13 +101,14 @@ export default {
       fs.writeFileSync(data, JSON.stringify(state))
       localforage
         .setItem(fileName, JSON.parse(fs.readFileSync(data, 'utf8')))
-        .then(result => {
-          console.log('saved ', fileName, 'to local forage')
-          console.log('result is', result)
-        })
-      console.log('PROJECT SAVED AS A JSON OBJECT!')
+        // .then(result => {
+        //   console.log('saved ', fileName, 'to local forage')
+        //   console.log('result is', result)
+        // })
+      // console.log('PROJECT SAVED AS A JSON OBJECT!')
     }
   },
+  // on components creation these key presses will trigger save project
   created () {
     Mousetrap.bind(['command+s', 'ctrl+s'], () => {
       this.saveProjectJSON()
@@ -106,7 +117,6 @@ export default {
 }
 </script>
 
-<!-- } -->
 <style scoped>
 .mr-sm {
   margin-right: 2px;

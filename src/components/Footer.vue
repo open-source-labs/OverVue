@@ -1,4 +1,11 @@
-<template>
+<!--
+Description:
+  Displays OverVue's footer containing Code Snippet, component details (TBD), Project Tree, and HTML Elements tabs
+  Functionality includes: opening/closing drawer, deselecting active html, and
+  toggling to html elements tab during component creation
+  -->
+
+  <template>
   <q-footer reveal class="gradient text-white" :style="{ height: `${height}vh` }" v-on:click="handleHtmlDeselection">
     <q-toolbar class="toolbar-background">
       <q-btn flat color="subaccent" round @click="openBottomDrawer">
@@ -26,11 +33,11 @@
         <q-tab-panel name="code">
           <CodeSnippet />
         </q-tab-panel>
-
+      <!-- Work in Progress -->
         <q-tab-panel name="detail">
           <div class="text-h6">Vuex</div>Component Info Here
         </q-tab-panel>
-
+      <!----------------------->
         <q-tab-panel name="tree">
           <Tree />
         </q-tab-panel>
@@ -69,16 +76,17 @@ export default {
   },
   methods: {
     ...mapActions(['setActiveHTML']),
+    // toggles open/close action of footer drawer
     openBottomDrawer () {
       // 15in mb pro - 1027 px 3.75
-      // big ass screens 2.5
+      // big screens 2.5
       let minHeight =
         window.outerHeight < 900 ? 4.5 : window.outerHeight < 1035 ? 3.75 : 2.5
       this.height === 40 ? (this.height = minHeight) : (this.height = 40)
       this.open === true ? (this.open = false) : (this.open = true)
     },
+    // method that will handle deselection from active HTML element
     handleHtmlDeselection (event) {
-      // method that will handle deselection from active HTML element
       // console.log('target html element: ', event.target)
       if (event.target.className !== 'list-group-item') {
         // if html element classname is not equal to this string that all html elements have
@@ -119,17 +127,14 @@ i {
 }
 
 .q-btn {
-  // background: $secondary;
   font-size: 8px;
   margin: 5px;
 }
 
 // styling for the entire footer
 .q-footer {
-  // height: 35vh;
   transition-timing-function: ease-in;
   transition: 0.2s;
-  // background: #313131;
   background: $subsecondary;
 }
 
@@ -142,7 +147,6 @@ i {
 .q-toolbar__title {
   font-size: 14px;
   text-transform: uppercase;
-  // font-weight: 700;
   padding: 5px;
 }
 
@@ -163,8 +167,6 @@ i {
 .q-tab-panel {
   // matchs the code editor bg
   background: $subprimary;
-  // background: rgb(69,77,102);
-  // background: linear-gradient(180deg, rgba(69,77,102,1) 0%, rgba(54,60,78,1) 100%);
 }
 
 // changes the length of the tab panels
@@ -180,11 +182,6 @@ i {
 .toolbar-background {
   background: black;
 }
-
-// .full-footer {
-//   // height: 100vh;
-
-// }
 
 #footer-cards {
   height: 100%;

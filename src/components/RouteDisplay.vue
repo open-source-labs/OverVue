@@ -1,3 +1,9 @@
+<!--
+Description: container for route component.
+Includes functionality to:
+  update route name, update route map, and reset active component upon route creation
+-->
+
 <template>
   <div>
     <q-input
@@ -6,14 +12,11 @@
       bottom-slots
       v-model="newRoute"
       label="Enter new route"
-      :dense="dense"
+      dense
       class="input-add"
       @click.native="resetActiveComponent"
     ></q-input>
-    <!--<div class="route-display">-->
-    <!--
 
-    -->
     <Routes></Routes>
   </div>
 </template>
@@ -48,7 +51,7 @@ export default {
           this.newRoute = ''
         })
 
-        .catch(err => console.log(err))
+        .catch(err => err)
     },
     resetActiveComponent () {
       if (this.activeComponent !== '') {
