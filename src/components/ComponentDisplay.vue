@@ -29,8 +29,6 @@ Description:
       <div class="component-title">
         <p>{{ componentData.componentName }}</p>
       </div>
-      <ul class="component-children">
-      </ul>
       <q-menu context-menu>
         <q-list color='black' class="menu">
           <q-item clickable v-ripple v-close-popup @click="handleAddChild">
@@ -152,6 +150,7 @@ export default {
 
     userImage () {
       const imgSrc = `file://` + this.imagePath[this.activeRoute]
+      // console.log('imgSrc is: ', imgSrc)
       return imgSrc
     },
 

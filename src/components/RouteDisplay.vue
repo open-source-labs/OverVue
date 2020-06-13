@@ -51,7 +51,7 @@ export default {
           this.newRoute = ''
         })
 
-        .catch(err => err)
+      // .catch(err => console.log(err))
     },
     resetActiveComponent () {
       if (this.activeComponent !== '') {

@@ -37,21 +37,6 @@ import { mapState, mapActions } from 'vuex'
 import { setSelectedElementList, deleteSelectedElement, deleteFromComponentHtmlList } from '../store/types'
 import { breadthFirstSearch } from '../utils/search.util'
 
-// const breadthFirstSearch = (array, id) => {
-//   let queue = [...array.filter(el => typeof el === 'object')]
-//   while (queue.length) {
-//     let evaluated = queue.shift()
-//     if (evaluated.id === id) {
-//       return evaluated
-//     } else {
-//       if (evaluated.children.length) {
-//         queue.push(...evaluated.children)
-//       }
-//     }
-//   }
-//   // console.log("We shouldn't be ever getting here, how did you even search an id that didn't exist?")
-// }
-
 export default {
   name: 'HomeQueue',
   props: {
