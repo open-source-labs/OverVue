@@ -11,7 +11,7 @@ Description:
       bottom-slots
       v-model="text"
       label="Add Vuex"
-      :dense="dense"
+      dense
       class="input-add"
     >
       <template v-slot:append>
@@ -23,7 +23,7 @@ Description:
       bottom-slots
       v-model="text"
       label="Add Action"
-      :dense="dense"
+      dense
       class="input-add"
     >
       <template v-slot:append>
@@ -35,7 +35,7 @@ Description:
       bottom-slots
       v-model="text"
       label="Add Mutation"
-      :dense="dense"
+      dense
       class="input-add"
     >
       <template v-slot:append>

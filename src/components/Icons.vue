@@ -1,3 +1,9 @@
+<!--
+Description:
+  Displays all html elements icons that can be added to component in createComponent
+  Functionality includes: Adding (nesting) html elements to components
+  -->
+
 <template>
   <section class="icon-grid">
     <button
@@ -17,20 +23,21 @@
 
 <script>
 import { mapState } from 'vuex'
-const breadthFirstSearch = (array, id) => {
-  let queue = [...array.filter(el => typeof el === 'object')]
-  while (queue.length) {
-    let evaluated = queue.shift()
-    if (evaluated.id === id) {
-      return evaluated
-    } else {
-      if (evaluated.children.length) {
-        queue.push(...evaluated.children)
-      }
-    }
-  }
-  console.log("We shouldn't be ever getting here, how did you even search an id that didn't exist?")
-}
+import { breadthFirstSearch } from '../utils/search.util'
+// const breadthFirstSearch = (array, id) => {
+//   let queue = [...array.filter(el => typeof el === 'object')]
+//   while (queue.length) {
+//     let evaluated = queue.shift()
+//     if (evaluated.id === id) {
+//       return evaluated
+//     } else {
+//       if (evaluated.children.length) {
+//         queue.push(...evaluated.children)
+//       }
+//     }
+//   }
+//   // console.log("We shouldn't be ever getting here, how did you even search an id that didn't exist?")
+// }
 export default {
   data () {
     return {
@@ -42,19 +49,25 @@ export default {
     ...mapState(['icons', 'activeComponent', 'componentMap', 'selectedElementList', 'activeHTML', 'activeLayer'])
   },
   methods: {
+    // Logic to decide where to place selected html element
     changeState (elementName) {
+      // if no active component & creating a new component: add html to selectedElement list
       if (this.activeComponent === '') { this.$emit('getClickedIcon', { elementName, date: Date.now() }) } else {
         if (this.activeHTML === '' && this.activeLayer.id === '') {
+          // if active component & no active html: add html to component's htmlList no nesting
           this.$emit('activeElement', { elementName, date: Date.now() })
         } else if (this.activeLayer.id !== '' && this.activeHTML === '') {
+          // if active component & in a different layer: add html to current layers htmlList
           this.$emit('activeLayer', { elementName, date: Date.now() })
         } else {
+          // if active component, active layer is not selected, but have active html: add html to active html's htmlList
           this.$emit('activeHTML', { elementName, date: Date.now() })
         }
       }
     }
   },
   watch: {
+    // watch for changes to selectedElementList when creating a component
     selectedElementList: function () {
       // console.log('watching selectedElementList');
       if (this.activeComponent === '') {
@@ -69,6 +82,7 @@ export default {
       }
       // console.log('storage is ', this.elementStorage)
     },
+    // watch for changes to activeLayer when creating a component
     activeLayer: {
       deep: true,
       handler () {
@@ -88,9 +102,9 @@ export default {
       }
     },
     // if componentMap is updated (i.e. element is added to component's htmlList), elementStorage will update its cache of elements & frequency
-
     componentMap: {
       deep: true,
+      // handler logic for where to increment html element count in element storage
       handler () {
         // console.log('watching componentMap');
         // console.log('activecomponent is ', this.activeComponent)
@@ -128,7 +142,7 @@ export default {
         }
       }
     },
-
+    // watch for changes to the activeHTML to decide where to place our html element
     activeHTML: function () {
       this.elementStorage = {}
       if (this.activeHTML !== '') {

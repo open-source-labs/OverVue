@@ -1,6 +1,11 @@
+<!--
+Description:
+  Dynamically renders Code Snippet in Footer
+  Functionality includes: Displays children components and (nested) HTML elements in order of selection.
+  -->
+
 <template>
   <div class="codesnippet-container">
-    <!-- <input type="checkbox" v-model="lineNumbers"> Linenumbers -->
     <div class="top-p" v-if="activeComponent === ''">Select a component</div>
     <div v-else>{{ `${activeComponent}.vue` }}</div>
     <prism-editor
@@ -42,7 +47,7 @@ export default {
         window.outerHeight < 900 ? 22 : window.outerHeight < 1035 ? 24 : 27.5
       this.height = minHeight
     },
-    // calls createTemplate and createBoiler to generate snippet
+    // Calls createTemplate and createBoiler to generate snippet
     createCodeSnippet (componentName, children) {
       let result = `${this.createTemplate(
         componentName,
@@ -50,18 +55,14 @@ export default {
       )}${this.createBoiler(componentName, children)}`
       return result
     },
+    // Creates beginner boilerplate
     createTemplate (componentName, children) {
       let output = ``
       output += ` <div>\n`
-      // children.forEach(name => {
-      //   output += `    <${name}>\n    </${name}>\n`;
-      // });
       let templateTagStr = this.writeTemplateTag(componentName)
       return `<template>\n ${output}${templateTagStr}  </div>\n</template>`
     },
-
-    // We need a helper function to recursively iterate through the given html element's children and their children's children.
-
+    // Creates <template> boilerplate
     writeTemplateTag (componentName) {
       // console.log('writeTemplateTag invoked!')
       // create reference object
@@ -79,6 +80,7 @@ export default {
         navbar: ['<nav>', '</nav>']
       }
 
+      // Helper function that recursively iterates through the given html element's children and their children's children.
       function writeNested (childrenArray, indent) {
         if (!childrenArray.length) {
           return ''
@@ -106,7 +108,7 @@ export default {
         return nestedString
       }
 
-      // loop to iterate through compName arr
+      // Iterates through active component's HTML elements list and adds to code snippet
       let htmlArr = this.componentMap[componentName].htmlList
       let outputStr = ``
       for (let el of htmlArr) {
@@ -130,6 +132,7 @@ export default {
       // console.log(`outputStr from writeTemplateTag: ${outputStr}`)
       return outputStr
     },
+    // Creates boiler text for <script> and <style>
     createBoiler (componentName, children) {
       let str = ''
       children.forEach(name => {
@@ -151,7 +154,7 @@ export default {
       this.getWindowHeight()
     })
   },
-  // updates code snippet, but broken cause children undefined, shows `function () { [native code] }`
+  // Updates code snippet
   updated () {
     // console.log(`code: ${this.createCodeSnippet(this.activeComponent, this.componentMap[this.activeComponent].children)}`)
     // console.log('component map: ', this.componentMap);
@@ -168,6 +171,7 @@ export default {
     window.removeEventListener('resize', this.getWindowHeight)
   },
   watch: {
+    // If HTML elements or components are added, rerenders Code Snippet
     componentMap: {
       deep: true,
       handler () {
@@ -179,9 +183,6 @@ export default {
           )}`
         }
       }
-    },
-    activeComponent: function () {
-      // console.log('watching active component');
     }
   }
 }

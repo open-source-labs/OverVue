@@ -1,6 +1,11 @@
+<!--
+Description:
+  Handles display grid functionality
+  Functionality includes: resizing/dragging component boxes, display grid image, active component
+  -->
+
 <template>
   <div class="component-display grid-bg" :style="mockBg" v-on:click ="handleClick">
-    <!-- <p>{{ userImage }}</p> -->
     <VueDraggableResizable
       class-name="component-box"
       v-for="componentData in activeRouteArray"
@@ -16,22 +21,15 @@
       :preventDeactivation="true"
       @activated="onActivated(componentData)"
       @deactivated="onDeactivated(componentData)"
-      @dragging="onDrag"
-      @resizing="onResize"
       @dragstop="finishedDrag"
       @resizestop="finishedResize"
       :onDragStart="recordInitialPosition"
       :onResizeStart="recordInitialSize"
     >
-      <!-- :onDragStart="recordInitialPosition"
-            :onResizeStart="recordInitialSize" -->
       <div class="component-title">
         <p>{{ componentData.componentName }}</p>
       </div>
       <ul class="component-children">
-        <!-- <li># of children: {{ componentMap[componentData.componentName].children.length }}</li>
-        <li>children: {{ componentMap[componentData.componentName].children }}</li>-->
-        <!-- <p v-for="child in childList" :key="childList.indexOf(child)"> {{ child.text }}</p> -->
       </ul>
       <q-menu context-menu>
         <q-list color='black' class="menu">
@@ -46,9 +44,6 @@
               <q-btn class='btn' color='transparent' text-color='primary' label='-' @click='(e)=>handleLayer(e)'/>
               <p id='counter' style="color: white"> {{componentData.z}} </p>
               <q-btn class='btn' color='transparent' text-color='primary' label='+' @click='(e)=>handleLayer(e)'/>
-            <!-- <q-item-section avatar>
-              <q-icon color="primary" name="layer" />
-            </q-item-section> -->
           </q-item>
         </q-list>
       </q-menu>
@@ -71,36 +66,33 @@
     </div>
   </div>
 </template>
+
 <script>
 import { mapState, mapActions } from 'vuex'
 import VueDraggableResizable from 'vue-draggable-resizable'
-// import ChildrenMultiselect from '../components/ChildrenMultiselect'
 import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
-// :preventDeactivation="true"
+
 export default {
   name: 'ComponentDisplay',
   components: {
     VueDraggableResizable
   },
   data () {
-    // console.log("Component Map", this.componentMap);
+    // console.log("Current Component Map is: ", this.componentMap);
     return {
       modalOpen: false,
       abilityToDelete: false,
-      testOptions: ['parent', 'child', 'grandchild'],
       testModel: [],
       mockImg: false,
-      initialPosition:{x:0, y:0,},
-      initialSize:{w:0,h:0,},
-    };
+      initialPosition: { x: 0, y: 0 },
+      initialSize: { w: 0, h: 0 }
+    }
   },
   mounted () {
-    // when component is mounted add ability to delete
-
+    // when component is mounted, add ability to delete
     window.addEventListener('keyup', event => {
       if (event.key === 'Backspace') {
-        if (this.activeComponent /* && this.activeComponentData.isActive */) {
-          // console.log('this:', this)
+        if (this.activeComponent) {
           this.$store.dispatch('deleteActiveComponent')
         }
       }
@@ -115,44 +107,36 @@ export default {
       'componentChildrenMultiselectValue',
       'imagePath'
     ]),
+
     // used in VueDraggableResizeable component
     activeRouteArray () {
-      // console.log("active route array method", this.routes[this.activeRoute]);
       return this.routes[this.activeRoute]
     },
-    // used to delete components
+
+    // used to delete active component
     activeComponentData () {
       return this.activeRouteArray.filter(componentData => {
         return componentData.componentName === this.activeComponent
       })[0]
     },
+
     childList () {
       return this.componentMap[componentData.componentName].children
     },
+
     options () {
+      // checks if component has any parents and pushes them into lineage
       const checkParents = (component, lineage = [component.componentName]) => {
-        // console.log('component', component)
-        // component parent is an object of parents
-        // console.log('component parent',component.parent)
-        // console.log('component parent parent', component.parent.parent)
         if (!Object.keys(component.parent).length) return lineage
         for (var parents in component.parent) {
-          // for each parent in our component
-          // console.log('parents', parents)
-          lineage.push(parents) // push the parent into lineage
-          // console.log('lineage pre push', component, lineage)
+          lineage.push(parents)
           checkParents(component.parent[parents], lineage)
-          // console.log('lineage post recursive call', lineage)
         }
-        // lineage.push(component.parent[component.componentName]);
-        // return checkParents(component.parent, lineage);
         return lineage
       }
       let lineage = [this.activeComponent]
-      // PROBLEM: the objects on childrenmultiselectvalue are applied
-      // check to see if there are any existing children
+      // checks to see if there are any existing children
       if (this.componentMap[this.activeComponent]) {
-        // console.log('active component', this.activeComponent)
         // console.log('testmodel', this.testModel)
         // console.log(this.componentMap[this.activeComponent].children)
         this.testModel = this.componentMap[this.activeComponent].children
@@ -165,24 +149,23 @@ export default {
         if (!exceptions.has(component)) return component
       })
     },
+
     userImage () {
-      console.log('userImage is working')
       const imgSrc = `file://` + this.imagePath[this.activeRoute]
-      // const imgSrc1 = this.imagePath;
-      console.log(`imgSrc: ${imgSrc}`)
       return imgSrc
     },
+
+    // updates display with mockup image
     mockBg () {
-      console.log('mockBg is working', this.imagePath[this.activeRoute])
       return this.imagePath[this.activeRoute]
         ? {
-          background: `url("${this.userImage}") center/contain no-repeat rgba(223, 218, 218, 0.886)`,
+          background: `url("${this.userImage}") center/contain no-repeat rgba(223, 218, 218, 0.886)`
         }
         : {}
     }
   },
   updated () {
-    // console.log("updated")
+    // if there are no active component, all boxes are unhighlighted
     if (this.activeComponent === '') {
       if (this.$refs.boxes) {
         this.$refs.boxes.forEach((element) => {
@@ -192,9 +175,8 @@ export default {
         })
       }
     } else {
+      // if a component is set to active, highlight it
       this.$refs.boxes.forEach((element) => {
-        // added "element.enabled === false to stop it from emitting a change every frame the box moves
-        // may need to re-enable to track box movement and resizing since that stuff isn't part of a single source of truth.
         if (this.activeComponent === element.$attrs.id && element.enabled === false) {
           element.enabled = true
           element.$emit('activated')
@@ -215,65 +197,29 @@ export default {
       'updateStartingSize',
       'updateComponentSize'
     ]),
-    onResize: function (x, y, width, height) {
-      this.activeComponentData.x = x
-      this.activeComponentData.y = y
-      this.activeComponentData.w = width
-      this.activeComponentData.h = height
 
-      this.componentMap[this.activeComponent].x = x
-      this.componentMap[this.activeComponent].y = y
-      this.componentMap[this.activeComponent].w = width
-      this.componentMap[this.activeComponent].h = height
-    },
-
+    // records component's initial position in case of drag
     recordInitialPosition: function (e) {
-      console.log('we started a drag')
-      console.log('this.intialPosition', this.initialPosition)
-      console.log('WHAT IS THIS', this)
+      // console.log('recording initial position: ', this.initialPosition)
       if (this.activeComponent !== e.target.id) {
         this.setActiveComponent(e.target.id)
       }
       this.initialPosition.x = this.activeComponentData.x
       this.initialPosition.y = this.activeComponentData.y
-      // console.log(this.activeComponentData)
-      // console.log(this.activeComponentData.x)
-      // console.log(this.initialPosition.x)
-      // console.log(this.initialPosition.y)
-
-      let payload = {
-        x: this.initialPosition.x,
-        y: this.initialPosition.y,
-        activeComponent: this.activeComponent,
-        routeArray: this.routes[this.activeRoute],
-        activeComponentData: this.activeComponentData
-      }
-      console.log('x: ', payload.x, 'y: ', payload.y)
-      // this.updateStartingPosition(payload);
     },
 
+    // records component's initial size/position in case of resize
     recordInitialSize: function (e) {
-      // console.log("MAKE MY MONSTER GROW!")
+      // console.log('recording initial size')
       this.initialSize.h = this.activeComponentData.h
       this.initialSize.w = this.activeComponentData.w
       this.initialPosition.x = this.activeComponentData.x
       this.initialPosition.y = this.activeComponentData.y
-
-      let payload = {
-        h: this.initialSize.h,
-        w: this.initialSize.w,
-        x: this.activeComponentData.x,
-        y: this.activeComponentData.y,
-        activeComponent: this.activeComponent,
-        routeArray: this.routes[this.activeRoute],
-        activeComponentData: this.activeComponentData
-      }
-
-      // this.updateStartingSize(payload);
     },
 
+    // sets component's ending size/position
     finishedResize: function (x, y, w, h) {
-      console.log('FINISHED RESIZING')
+      // console.log('FINISHED RESIZING')
       let payload = {
         x: x,
         y: y,
@@ -289,17 +235,8 @@ export default {
       }
     },
 
-    onDrag: function (x, y) {
-      this.activeComponentData.x = x
-      this.activeComponentData.y = y
-
-      this.componentMap[this.activeComponent].x = x
-      this.componentMap[this.activeComponent].y = y
-      this.userImage
-    },
-
     finishedDrag: function (x, y) {
-      console.log('FINISHED DRAGGING')
+      // console.log('FINISHED DRAGGING')
       let payload = {
         x: x,
         y: y,
@@ -308,14 +245,43 @@ export default {
         activeComponentData: this.activeComponentData
       }
       // console.log("Payload.x = ", payload.x, "this.initialPosition.x", this.initialPosition.x)
-      //  console.log("Payload.y = ", payload.y, "this.initialPosition.y", this.initialPosition.y)
+      // console.log("Payload.y = ", payload.y, "this.initialPosition.y", this.initialPosition.y)
       if (payload.x !== this.initialPosition.x || payload.y !== this.initialPosition.y) {
         this.updateComponentPosition(payload)
       }
     },
 
+    /* Records size/position
+      Add @resizing="onResize" to VueDraggableResizable #component-box to use
+
+    onResize: function (x, y, width, height) {
+      this.activeComponentData.x = x
+      this.activeComponentData.y = y
+      this.activeComponentData.w = width
+      this.activeComponentData.h = height
+
+      this.componentMap[this.activeComponent].x = x
+      this.componentMap[this.activeComponent].y = y
+      this.componentMap[this.activeComponent].w = width
+      this.componentMap[this.activeComponent].h = height
+    },
+    */
+
+    /* Records component's position
+      Add @dragging="onDrag" to VueDraggableResizable #component-box to use
+
+    onDrag: function (x, y) {
+      console.log('ondrag')
+      this.activeComponentData.x = x
+      this.activeComponentData.y = y
+
+      this.componentMap[this.activeComponent].x = x
+      this.componentMap[this.activeComponent].y = y
+    },
+    */
+
+    // unhighlights all inactive components
     onActivated (componentData) {
-      // console.log("I RAN!")
       this.$refs.boxes.forEach((element) => {
         if (element.$attrs.id !== componentData.componentName) {
           element.enabled = false
@@ -323,9 +289,6 @@ export default {
           element.$emit('update:active', false)
         }
       })
-      // console.log("this is what is currently active",this.activeComponent)
-      // console.log("this is this", this)
-      // console.log('!(componentData.componentName === this.activeComponent)?',!(componentData.componentName === this.activeComponent))
       if (!(componentData.componentName === this.activeComponent)) {
         this.setActiveComponent(componentData.componentName)
       }
@@ -333,28 +296,24 @@ export default {
     },
 
     // deactivated is emitted before activated
-
     onDeactivated (componentData) {
       if (this.activeComponent !== '') {
         this.activeComponentData.isActive = false
       }
-      // console.log("Componentdataname", componentData.componentName)
-      // console.log("active component",this.activeComponent)
-      // if(componentData.componentName === this.activeComponent)
-      // {
-      //   console.log("We just clicked without making a new active component")
-      // }
     },
+
+    // renders modal with Update Children and Layer in it
     handleAddChild () {
-      // render modal with childrenmultiselect in it
       this.modalOpen = true
     },
+
+    // used when user selects to add child from dropdown
     handleSelect (value) {
-      // if (this.modalOpen) this.updateActiveComponentChildrenValue(value)
-      console.log('Multiselect: ', value)
+      // console.log('selected child component: ', value)
       this.updateActiveComponentChildrenValue(value)
-      // this.updateComponentChildrenMultiselectValue(value)
     },
+
+    // user can change component's layer order
     handleLayer (e) {
       e.preventDefault()
       const payload = {
@@ -367,6 +326,8 @@ export default {
       if (e.target.innerText === '-' && payload.z > 0) payload.z--
       this.updateComponentLayer(payload)
     },
+
+    // if user clicks on display grid, resets active component to ''
     handleClick (event) {
       if (event.target.className === 'component-display grid-bg') {
         if (!(this.activeComponent === '')) this.setActiveComponent('')
@@ -396,18 +357,12 @@ export default {
   list-style: none;
 }
 .component-display {
-  /* border: 3px dashed rgb(159, 122, 122); */
-  /* height: 500px; */
-  /* width: 500px; */
-  /* original is 70 */
   height: 90vh;
   width: 100%;
   position: relative;
-  /* background: rgb(211, 211, 210); */
 }
 .grid-bg {
   background-color: rgba(223, 218, 218, 0.886);
-  /* background-color: #269; */
   background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
   background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
   background-image: -webkit-linear-gradient(white 2px, transparent 2px),
@@ -449,8 +404,6 @@ export default {
 }
 .btn {
   font-size: 25px;
-  /* margin-top: 0;
-  margin-bottom: 0; */
   padding: 0 20px;
   width: 10px;
   height: 10px;
@@ -463,7 +416,5 @@ export default {
 #counter {
   margin-top: 20px;
 }
-/* .layer {
-  padding: 0 20px;
-} */
+
 </style>

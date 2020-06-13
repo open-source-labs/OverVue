@@ -1,3 +1,9 @@
+<!--
+Description:
+  Display of HTML elements in dashboard
+  Functionality: delete/set active elements and traverse nested HTML elements
+-->
+
 <template>
   <section class="home-queue">
     <i v-if='this.activeLayer.id !== ""' class="fas fa fa-chevron-up fa-md" @click="setParentLayer"></i>
@@ -15,7 +21,6 @@
       @dblclick.self="setActiveElement(element)"
       v-for="(element) in renderList" :key="element[1] + Date.now()"
       >
-        <!-- <i class="fas fa fa-angle-double-down fa-md" @click="setLayer({text: element[0], id: element[2]})"></i> -->
         <i v-if='activeComponent === "" ' class="fas fa fa-angle-double-down fa-md" id="unavailable"></i>
         <i v-else class="fas fa fa-angle-double-down fa-md" @click="setLayer({text: element[0], id: element[2]})"></i>
         {{ element[0] }}
@@ -27,23 +32,25 @@
 </template>
 
 <script>
+
 import { mapState, mapActions } from 'vuex'
 import { setSelectedElementList, deleteSelectedElement, deleteFromComponentHtmlList } from '../store/types'
+import { breadthFirstSearch } from '../utils/search.util'
 
-const breadthFirstSearch = (array, id) => {
-  let queue = [...array.filter(el => typeof el === 'object')]
-  while (queue.length) {
-    let evaluated = queue.shift()
-    if (evaluated.id === id) {
-      return evaluated
-    } else {
-      if (evaluated.children.length) {
-        queue.push(...evaluated.children)
-      }
-    }
-  }
-  console.log("We shouldn't be ever getting here, how did you even search an id that didn't exist?")
-}
+// const breadthFirstSearch = (array, id) => {
+//   let queue = [...array.filter(el => typeof el === 'object')]
+//   while (queue.length) {
+//     let evaluated = queue.shift()
+//     if (evaluated.id === id) {
+//       return evaluated
+//     } else {
+//       if (evaluated.children.length) {
+//         queue.push(...evaluated.children)
+//       }
+//     }
+//   }
+//   // console.log("We shouldn't be ever getting here, how did you even search an id that didn't exist?")
+// }
 
 export default {
   name: 'HomeQueue',
@@ -135,11 +142,9 @@ export default {
 .home-queue {
   padding-bottom: 40px;
 }
+
 li {
   list-style-type: none;
-}
-.list-title {
-  // font-weight: bold;
 }
 
 .list-group-item {
@@ -175,14 +180,12 @@ li {
 
 .fa-trash {
   position: relative;
-  // left: 20px;
   top: 2px;
   right: 35px;
   float: right;
 }
 .fa-angle-double-down {
   position: relative;
-  // right: 20px;
   top: 2px;
   left: 35px;
   float: left;

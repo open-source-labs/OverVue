@@ -1,14 +1,19 @@
+<!--
+Description:
+  Handles create component menu on left-side
+  Functionality includes: creating a component, preventing users from entering invalid component file names
+  -->
+
 <template>
   <div class="home-sidebar drawer-menu">
-    <!-- <p class="panel-heading">Create a component</p> -->
     <br />
-    <form v-on:submit.prevent="handleClick" v-on:click="resetActiveComponent">
+    <form v-on:submit.prevent="createComponent" v-on:click="resetActiveComponent">
       <q-input
         standout="bg-secondary text-white"
         bottom-slots
         v-model="componentNameInputValue"
         label="Component Name"
-        :dense="dense"
+        dense
         class="input-add"
       ></q-input>
     </form>
@@ -28,7 +33,7 @@
       id="add-component-btn"
       color="secondary"
       label="Create Component"
-      @click="handleClick"
+      @click="createComponent"
       :disabled="!componentNameInputValue.trim()"
     />
   </div>
@@ -66,7 +71,8 @@ export default {
       'addNestedHTML',
       'addNestedNoActive'
     ]),
-    handleClick () {
+
+    createComponent () {
       if (!this.componentNameInputValue.replace(/[^a-z0-9-_.]/gi, '')) {
         event.preventDefault()
         return false
@@ -86,24 +92,20 @@ export default {
 
       this.registerComponent(component)
     },
+
+    // clears active component during component creation
     resetActiveComponent () {
       if (this.activeComponent !== '') {
         this.setActiveComponent('')
       }
-    },
-    handleIconClick () {
-      if (this.activeComponent === '') this.setClickedElementList()
-      else this.setComponentHtmlList()
     }
   }
 }
 </script>
+
 <style type="stylus" scoped>
 .is-primary {
   height: 45px;
-}
-form {
-  /* margin-bottom: 2em; */
 }
 #add-component-btn {
   height: 15px;
@@ -113,7 +115,6 @@ form {
 .home-sidebar {
   margin: 1rem;
   padding: 0.5rem;
-  /* border: 1px solid $subsecondary; */
   border-radius: 5px;
 }
 </style>

@@ -1,6 +1,11 @@
+<!--
+Description:
+  Displays componentDisplay
+  Functionality includes: N/A
+  -->
+
 <template>
   <q-page class="flex flex-center">
-    <!-- <img alt="Quasar logo" src="~assets/quasar-logo-full.svg"> -->
     <ComponentDisplay />
   </q-page>
 </template>

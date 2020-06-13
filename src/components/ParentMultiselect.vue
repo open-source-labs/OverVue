@@ -1,3 +1,9 @@
+<!--
+Description:
+  Displays multiselect dropdown for already existing components in CreateComponent
+  Functionality includes: selects parent for created component
+  -->
+
 <template>
   <div id="parent-select">
     <br />
@@ -7,7 +13,7 @@
       :multiple="false"
       :close-on-select="true"
       :options="options"
-      @input="handleSelect"
+      @input="selectParent"
       @open="resetActiveComponent"
       :max-height="90"
       :option-height="20"
@@ -43,27 +49,22 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      // 'addParent',
-      'parentSelected', 'setActiveComponent'
-    ]),
-    handleSelect (value) {
-      // Set Active Component to selected Parent
-      // this.setActiveComponent(value)
-      // this.addParent(value)
-      // Set parentSelected to true IF VALUE IS A VALID PARENT (not null)
+    ...mapActions(['parentSelected', 'setActiveComponent']),
+    selectParent (value) {
       this.parentSelected(value)
     },
+    // when multiselect is opened activeComponent is deselected to allow for parentSelected action
     resetActiveComponent () {
       if (this.activeComponent !== '') {
         this.setActiveComponent('')
       }
     }
   },
+  // clears out value in mutiselect on creation of component
   watch: {
     componentMap: {
       handler () {
-        // console.log('activeComponent has changed')
+        // console.log('componentMap has changed')
         this.value = ''
       }
     }

@@ -1,15 +1,19 @@
+<!--
+Description:
+  Displays Export Project button and allows users to export project
+  Functionality includes: export prompts, creating folders and code, exporting images
+  -->
+
 <template>
   <q-btn class="export-btn" color="secondary" label="Export Project" @click="exportProject"/>
-  <!-- <q-btn class=" export-btn" color="secondary" label="Export Project"/> -->
 </template>
 
 <script>
-// Where all of the boilerplate is exported
 import { mapState } from 'vuex'
 const { remote } = require('electron')
 import fs from 'fs-extra'
 import path from 'path'
-const ipc = require('electron').ipcRenderer
+
 export default {
   name: 'ExportProjectComponent',
   methods: {
@@ -24,16 +28,16 @@ export default {
         this.exportFile(result)
       })
     },
+
     exportProject: function () {
-      // ipc.send("show-export-dialog")
       this.showExportDialog()
     },
+
     /**
      * @description creates the router.js file
-     * input: path to dir
+     * argument: location = path to dir
      * invokes: createRouterImports(this.componentMap['App'].children),
      *          createExport(this.componentMap['App'].children)
-     * bug: this.componentMap['App'].children might have bad reference to state..
      *  */
     createRouter (location) {
       fs.writeFileSync(
@@ -43,39 +47,32 @@ export default {
           this.createExport(this.componentMap['App'].children)
       )
     },
+
     /**
      * @description import routed components from the /views/ dir
      * @argument: this.componentMap['App'].children
-     * bug: showing undefined in the import routes
-     * fix: changing the child.componentName to child
      */
     createRouterImports (appChildren) {
       let str = "import Vue from 'vue'\nimport Router from 'vue-router'\n"
       appChildren.forEach(child => {
         // console.log(`createRouterImports child: ${child}`);
         str += `import ${
-          // child.componentName
           child
         } from './views/${
-          // this reference to store state is buggy, returns undefined
-          //  import undefined from './views/undefined.vue'
-          // child.componentName
           child
         }.vue'\n`
       })
       return str
     },
+
     /**
-     * @description creates the `export default`
-     * bug: path: '/undefined', name: 'undefined', component: undefined
-     * issue: child.componentName returning undefined
+     * @description creates the `export default` code in <script>
      */
     createExport (appChildren) {
       let str =
         "export default new Router({\n\tmode: 'history',\n\tbase: process.env.BASE_URL,\n\troutes: [\n"
       appChildren.forEach(child => {
         // console.log(`createExport child: ${child}`);
-        // changed if/else: `child.componentName` to `name`
         if (child === 'HomeView') {
           // console.log(`if createExport addChildren child.componentName${child.componentName}`);
           str += `\t\t{\n\t\t\tpath: '/',\n\t\t\tname:'${child}',\n\t\t\tcomponent:${child}\n\t\t},\n`
@@ -87,18 +84,11 @@ export default {
       str += `\t]\n})\n`
       return str
     },
+
     /**
-     * @description
-     * invokes: writeTemplate, writeScript, writeStyle
-     * bug: name.componentName
+     * @description: creates component code <template>, <script>, <style>
+     * invokes writeTemplate, writeScript, writeStyle
      */
-    /*
-    createComponentCode(
-      componentLocation = path.join(data, 'src', 'views', componentName),
-      componentName = componentName,
-      children = this.componentMap[componentName].children
-      )
-    */
     createComponentCode (componentLocation, componentName, children) {
       if (componentName === 'App') {
         fs.writeFileSync(
@@ -115,20 +105,22 @@ export default {
         )
       }
     },
+
+    // creates assets folder
     createAssetFile (targetLocation, assetLocation) {
       let saved = remote.nativeImage.createFromPath(assetLocation)
       let urlData = saved.toPNG()
       // console.log('urlData is ', urlData);
       fs.writeFileSync(targetLocation + '.png', urlData)
     },
+
     /**
      * @description helper function for writeTemplate
      * @name writeTemplateTag
-     *  - gets objects from htmlList from appropriate component and adds them to the template string, then inserts into writeTemplate return str
+     * takes HTML elements from passed in component and adds them to the template string, then returns the string back to writeTemplate
      * @input: componentMap['component'].htmlList[tag elements]
      */
-    writeTemplateTag (compName) {
-      console.log('writeTemplateTag invoked!')
+    writeTemplateTag (componentName) {
       // create reference object
       const htmlElementMap = {
         div: ['<div>', '</div>'],
@@ -144,7 +136,7 @@ export default {
         navbar: ['<nav>', '</nav>']
       }
 
-      /* Function to loop through nested elements */
+      // function to loop through nested elements
       function writeNested (childrenArray, indent) {
         if (!childrenArray.length) {
           return ''
@@ -154,7 +146,6 @@ export default {
 
         childrenArray.forEach(child => {
           nestedString += indented
-          // console.log(child)
           if (!child.text) {
             nestedString += `<${child}/>\n`
           } else {
@@ -172,11 +163,10 @@ export default {
         return nestedString
       }
 
-      // loop to iterate through compName arr
-      let htmlArr = this.componentMap[compName].htmlList
+      // iterate through component's htmllist
+      let htmlArr = this.componentMap[componentName].htmlList
       let outputStr = ``
       for (let el of htmlArr) {
-        // console.log(el)
         if (!el.text) {
           outputStr += `    <${el}/>\n`
         } else {
@@ -193,64 +183,44 @@ export default {
           }
         }
       }
-      console.log(`outputStr from writeTemplateTag: ${outputStr}`)
+      // console.log(`outputStr from writeTemplateTag: ${outputStr}`)
       return outputStr
     },
-    /*
+
+    /**
      * @description creates the <router-link> boilerplate for /views/components
      * also creates the <template></template> tag for each component
-     * changed name.componentName to name, name is the reference to the object name(?)
-     * bug: name.componentName is a bad reference, something is wrong with it
      */
-    writeTemplate (compName, children) {
+    writeTemplate (componentName, children) {
       let str = ''
-      let htmlArr = this.componentMap[compName].htmlList
-      // for (let el of htmlArr) {
-      //   console.log(`el of htmlArr: ${el.text}`);
-      // }
-      if (compName === 'App') {
-        // console.log(`form if compName === 'App'`);
-        // console.log(`children: ${children}`)
+
+      if (componentName === 'App') {
         str += `<div id="app">\n\t\t<div id="nav">\n`
         children.forEach(name => {
           if (name === 'HomeView') {
-            // console.log(`HomeView if statement invoked!`);
-            // console.log(`name: ${name}`);
-            // console.log(`name.componentName: ${
-            //   // name.componentName
-            //   name
-            //   }`);
             str += `\t\t\t<router-link to="/">${
-              // name.componentName
               name
             }</router-link>\n`
           } else {
-            // console.log(`else invoked`);
-            // console.log(`name: ${name}`);
             str += `\t\t\t<router-link to="/${
-              // name.componentName
               name
             }">${
-              // name.componentName
               name
             }</router-link>\n`
           }
         })
         str += '\t\t\t<router-view></router-view>\n\t\t</div>\n'
       } else {
-        // console.log(`else (if compName === 'App'`);
         str += `<div>\n`
       }
-      // writes the html tag boilerplate
-      let templateTagStr = this.writeTemplateTag(compName)
-      console.log(`templateTagStr: ${templateTagStr}`)
-      let testStr = `<template>\n\t<div>\n${templateTagStr}\t</div>\n</template>`
-      console.log(`testStr: \n${testStr}`)
+      // writes the HTML tag boilerplate
+      let templateTagStr = this.writeTemplateTag(componentName)
+      // console.log(`templateTagStr: ${templateTagStr}`)
       return `<template>\n\t${str}${templateTagStr}\t</div>\n</template>`
     },
+
     /**
-     * changed name.componentName = name
-     * @description imports child components into style
+     * @description imports child components into <script>
      */
     writeScript (componentName, children) {
       let str = ''
@@ -263,8 +233,10 @@ export default {
       })
       return `\n\n<script>\n${str}\nexport default {\n\tname: '${componentName}',\n\tcomponents: {\n${childrenComponentNames}\t}\n};\n<\/script>`
     },
+
     /**
-     * @description writes the <style> in vue component, if component is 'App', writes a shitton of css, else returns <style scoped
+     * @description writes the <style> in vue component
+     * if component is 'App', writes css, else returns <style scoped>
      */
     writeStyle (componentName) {
       let style =
@@ -273,6 +245,7 @@ export default {
           : `#app {\n\tfont-family: 'Avenir', Helvetica, Arial, sans-serif;\n\t-webkit-font-smoothing: antialiased;\n\t-moz-osx-font-smoothing: grayscale;\n\ttext-align: center;\n\tcolor: #2c3e50;\n\tmargin-top: 60px;\n}\n`
       return `\n\n<style scoped>\n${style}</style>`
     },
+
     // creates index html
     createIndexFile (location) {
       let str = `<!DOCTYPE html>\n<html lang="en">\n\n<head>`
@@ -293,6 +266,7 @@ export default {
       str += `</html>\n`
       fs.writeFileSync(path.join(location, 'public', 'index.html'), str)
     },
+
     // creates main.js boilerplate
     createMainFile (location) {
       let str = `import Vue from 'vue'`
@@ -305,6 +279,7 @@ export default {
       str += `\n}).$mount('#app')`
       fs.writeFileSync(path.join(location, 'src', 'main.js'), str)
     },
+
     // create babel file
     createBabel (location) {
       let str = `module.exports = {`
@@ -314,6 +289,7 @@ export default {
       str += `\n}`
       fs.writeFileSync(path.join(location, 'babel.config.js'), str)
     },
+
     // create package.json file
     createPackage (location) {
       let str = `{`
@@ -365,10 +341,12 @@ export default {
       str += `\n}`
       fs.writeFileSync(path.join(location, 'package.json'), str)
     },
+
     exportFile (data) {
+      if (data === undefined) return
       if (!fs.existsSync(data)) {
         fs.mkdirSync(data)
-        console.log('FOLDER CREATED!')
+        // console.log('FOLDER CREATED!')
         // console.log(`data: ${data}`); // displays the directory path
         fs.mkdirSync(path.join(data, 'public'))
         fs.mkdirSync(path.join(data, 'src'))
@@ -376,19 +354,23 @@ export default {
         fs.mkdirSync(path.join(data, 'src', 'components'))
         fs.mkdirSync(path.join(data, 'src', 'views'))
       }
+
       // creating basic boilerplate for vue app
       this.createIndexFile(data)
       this.createMainFile(data)
       this.createBabel(data)
       this.createPackage(data)
-      // main logic below for creating components
-      this.createRouter(data)
+
+      // exports images to the /assets folder
       for (let [routeImage, imageLocation] of Object.entries(this.imagePath)) {
-        // console.log('routeImage is ', routeImage);
         if (imageLocation !== '') {
           this.createAssetFile(path.join(data, 'src', 'assets', routeImage), imageLocation)
         }
       };
+
+      // main logic below for creating components
+      this.createRouter(data)
+
       for (let componentName in this.componentMap) {
         // if componentName is a route:
         if (componentName !== 'App') {
@@ -427,12 +409,10 @@ export default {
 </script>
 
 <style>
-
 .export-btn {
   min-height: 10px !important;
   font-size: 11px;
   text-transform: capitalize;
   padding: 3px 8px;
 }
-
 </style>

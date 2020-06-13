@@ -1,3 +1,9 @@
+<!--
+Description:
+  Is not imported in current version of OverVue
+  Functionality includes: N/A
+  -->
+
 <template>
   <div>
     <p class="panel-heading">Selected Elements</p>
@@ -13,16 +19,12 @@
 </template>
 
 <script>
-// import draggable from 'vuedraggable'
 import { DraggableTree } from 'vue-draggable-nested-tree'
 import { mapState, mapActions } from 'vuex'
 import {
   setClickedElementList,
   deleteFromComponentHtmlList
-  // setComponentHtmlList,
-  // addToComponentElementList
 } from '../store/types'
-// import { setInterval } from 'timers'
 
 export default {
   name: 'EditQueue',
@@ -54,7 +56,6 @@ export default {
     }
   },
   components: {
-    // draggable,
     Tree: DraggableTree
   }
 }
