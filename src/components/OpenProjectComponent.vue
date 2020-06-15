@@ -18,10 +18,10 @@ export default {
   name: 'OpenProjectComponent',
   methods: {
     ...mapActions(['openProject']),
+    // opens project
     openJSONFile (data) {
       const jsonFile = JSON.parse(fs.readFileSync(data[0], 'utf8'))
       // console.log('json file', jsonFile)
-      // opens project
       this.openProject(jsonFile)
     },
     showOpenJSONDialog () {
