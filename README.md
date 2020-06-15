@@ -6,7 +6,7 @@
 
 <p align="center"><b>Prototyping Tool for Vue Developers</b></p>
 
-<p>OverVue is a prototyping tool that allows developers to <em>dynamically</em> create and visualize a Vue application, implementing a real-time intuitive <em>tree display</em> of component hierarchy and a live-generated <em>code preview</em>. The resulting boilerplate can be <em>exported</em> as a template for further development.</p>
+<p>OverVue is a prototyping tool that allows developers to dynamically create and visualize a Vue application, implementing a real-time intuitive tree display of component hierarchy and a live-generated code preview. The resulting boilerplate can be exported as a template for further development.</p>
 
 <p>这个程序能帮你生成Vue 组件, 设置 routes , 也可以帮你显像Component Parent-Child组件树。你只要做一些小配置然后可以下载code boilerplate. 这样你就可以很方便简洁地生成Vue前台APP了！</p>
 
@@ -22,7 +22,30 @@
 + Live-generated tree view to aid in visualizing parent-child hierarchy
 + Save projects and open previous projects
 + Export full boilerplate code for a working frontend
++ Undo/redo functionality <sub><sup>(v2.0)</sup></sub>
++ Can nest HTML elements <sub><sup>(v2.0)</sup></sub>
++ Ability to navigate into HTML elements from a selected Vue component <sub><sup>(v2.0)</sup></sub>
++ Assign one image per route <sub><sup>(v2.0)</sup></sub>
++ Can now set Vue components to specific layers <sub><sup>(v2.0)</sup></sub>
++ Will now load route images along with project <sub><sup>(v2.0)</sup></sub>
++ Windows compatibility for uploading mockup images. <sub><sup>(v2.0)</sup></sub>
 
+#### Changelog
+<details><summary>OverVue 2.0</summary>
+  <ul>
+  <li>Improved hierarchy tree rendering</li>
+  <li>Improved Route addition and deletion</li>
+  <li>Able to search for components by name</li>
+  <li>Improved UI to be more informative</li>
+  <li>UI is more reactive, code snippets update dynamically </li>
+  <li>Component children menu is consistent with children list at time of creation</li>
+  <li>Children components can no longer choose any of their ancestors to be their children.</li>
+  <li>Can now use Quasar build -m electron to make windows .exe </li>
+  <li>Exporting projects now exports the mockup files as well into the assets folder</li>
+  <li>Saving projects now saves the mockup image url</li>
+  <li>Extensive bug fixing for Vue component and HTML element deletion behavior, exporting and saving.</li>
+  </ul>
+</details>
 
 #### How to use
 + Opening the application will create by default a root App component and a root route called "HomeView"
@@ -66,6 +89,26 @@ src/
 babel.config.js
 package.json
 ```
+###### OverVue v2.0 How to
++ Undo/Redo feature has been added to the top right of the program, you can also use CTRL+z and CTRL+y respectively.
+
++ You can nest html elements in two different ways:
+    1. Upon creating a component and adding an html element into it, Select the component to make it the active component.
+    Go to the html elements tab and then double click on the html element you wish to be the target for your new elements.
+    Once the html element is selected, use the left hand panel and start adding elements like you were adding it to a component.
+
+    2. Similar to above, but instead of double clicking, you can press the down arrow icon on the html element button to enter it.
+    From there the view will change to the contents of that particular HTML element.
+    You can then add html elements like you would for a component using the left hand side
+
++ Setting layers on a component is done by right clicking the desired component on the component display and using the menu option
+  All components start on layer 1 by default.
+
+
+
+
+
+
 
 #### Running a local version
 This app was developed using the Quasar framework, so first you will need to install the Quasar cli
@@ -80,7 +123,7 @@ To run electron app in dev mode
 ```
 quasar dev -m electron
 ```
-To build a new .dmg
+To build a new .dmg / windows .exe
 ```
 quasar build -m electron
 ```
@@ -89,9 +132,10 @@ quasar build -m electron
 We'd love for you to test this application out and submit any issues you encounter. Also feel free to fork to your own repo and submit PRs.
 Here are some features we're thinking about adding:
 + Vuex state prototyping and boilerplate export
-+ Ability to add additional mockup images for more routes
-+ Ability to nest HTML elements
 + Option to export files in TypeScript
++ Ability to place child components into HTML elements
++ Integration with Storybook
++ Ability to add a copy of an existing component from one route to another
 
 #### Authors
 ```
@@ -100,5 +144,9 @@ Joseph Eisele @jeisele2
 Dean Chung @deanfchung
 Dean Ohashi @dnohashi
 Drew Nguyen @drewngyen
+Alexander Havas @LOLDragoon
+Keriann Lin @keliphan
+Allison Pratt @allisons11 
+Joju Olaode @JojuOlaode
 ```
 Inspired by [PreVue](https://github.com/open-source-labs/PreVue)

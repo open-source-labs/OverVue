@@ -25,18 +25,18 @@ describe("Test mutations + actions to remove action from component and userActio
     };
   });
 
-  it("deleting user action from state.userActions", () => {
+  xit("deleting user action from state.userActions", () => {
     mutations.DELETE_USER_ACTIONS(state, "action");
     expect(state.userActions.length).toBe(0);
   });
 
-  it('deleting "action" from componentMap', () => {
+  xit('deleting "action" from componentMap', () => {
     mutations.REMOVE_ACTION_FROM_COMPONENT(state, "action");
     expect(state.componentMap.component.mapActions.length).toBe(0);
   });
 });
 
-describe("Adding actions and state to components", () => {
+xdescribe("Adding actions and state to components", () => {
   let state;
   beforeEach(() => {
     state = {
@@ -52,7 +52,7 @@ describe("Adding actions and state to components", () => {
       activeComponent: "testComponent"
     };
   });
-  describe("Adding actions to components", () => {
+  xdescribe("Adding actions to components", () => {
     it("should add a single action to active component", () => {
       mutations.ADD_TO_COMPONENT_ACTIONS(state, "testAction");
       expect(
@@ -60,7 +60,7 @@ describe("Adding actions and state to components", () => {
       ).toEqual(["testAction"]);
     });
   });
-  describe("Adding state to components", () => {
+  xdescribe("Adding state to components", () => {
     it("should add a single state string to active component", () => {
       mutations.ADD_TO_COMPONENT_STATE(state, "testState");
       expect(state.componentMap[state.activeComponent].componentState).toEqual([
@@ -70,7 +70,7 @@ describe("Adding actions and state to components", () => {
   });
 });
 
-describe("userActions mutation", () => {
+xdescribe("userActions mutation", () => {
   let actions;
   let store;
   beforeEach(() => {
@@ -88,31 +88,31 @@ describe("userActions mutation", () => {
   });
 });
 
-describe("userStore mutation", () => {
+xdescribe("userStore mutation", () => {
   let actions;
   let store;
   store = {
     userStore: {}
   };
-  it("should be able to update store with a key defined by the user and a value of type object", () => {
+  xit("should be able to update store with a key defined by the user and a value of type object", () => {
     mutations.ADD_TO_USER_STORE(store, { dummyKey: {} });
     // console.log('store.userStore.dummyKey', store.userStore.dummyKey);
     expect(store.userStore.dummyKey).toStrictEqual({});
   });
-  it("should update user store with a key value pair with value strictly equal to empty array", () => {
+  xit("should update user store with a key value pair with value strictly equal to empty array", () => {
     mutations.ADD_TO_USER_STORE(store, { dummyKey: [] });
     expect(store.userStore.dummyKey).toStrictEqual([]);
   });
-  it("should be able to store booleans in the store as the key", () => {
+  xit("should be able to store booleans in the store as the key", () => {
     mutations.ADD_TO_USER_STORE(store, { boolean: true });
     expect(store.userStore.boolean).toBe(true);
   });
-  it("should add to userStore a key with a value of type number", () => {
+  xit("should add to userStore a key with a value of type number", () => {
     mutations.ADD_TO_USER_STORE(store, { number: 696 });
     expect(store.userStore.number).toBe(696);
   });
 
-  it("should work with strings too", () => {
+  xit("should work with strings too", () => {
     mutations.ADD_TO_USER_STORE(store, { string: "string" });
     expect(store.userStore.string).toBe("string");
   });
@@ -126,7 +126,7 @@ describe("userStore mutation", () => {
  *  `userStore` holds the user defined state objects
  */
 
-describe("Delete state in userStore/componentMap", () => {
+xdescribe("Delete state in userStore/componentMap", () => {
   let state;
   beforeEach(() => {
     state = {
@@ -143,13 +143,13 @@ describe("Delete state in userStore/componentMap", () => {
       userStore: { state1: true, state2: [] }
     };
   });
-  describe('"DELETE_USER_STATE" should delete property from "userStore" object', () => {
+  xdescribe('"DELETE_USER_STATE" should delete property from "userStore" object', () => {
     it("should delete a single state property", () => {
       mutations.DELETE_USER_STATE(state, "state1");
       expect(state.userStore).toEqual({ state2: [] });
     });
   });
-  describe('"REMOVE_STATE_FROM_COMPONENT" should delete state in "activeComponent"', () => {
+  xdescribe('"REMOVE_STATE_FROM_COMPONENT" should delete state in "activeComponent"', () => {
     it("should remove state from active component", () => {
       mutations.REMOVE_STATE_FROM_COMPONENT(state, "state2");
       expect(state.componentMap.test.componentState).toEqual(["state1"]);

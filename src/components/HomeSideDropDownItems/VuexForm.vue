@@ -1,3 +1,9 @@
+<!--
+Description:
+  Displays Vuex features for possible iterations.
+  Functionality includes: N/A
+  -->
+
 <template>
   <div class="input-container">
     <q-input
@@ -5,7 +11,7 @@
       bottom-slots
       v-model="text"
       label="Add Vuex"
-      :dense="dense"
+      dense
       class="input-add"
     >
       <template v-slot:append>
@@ -17,7 +23,7 @@
       bottom-slots
       v-model="text"
       label="Add Action"
-      :dense="dense"
+      dense
       class="input-add"
     >
       <template v-slot:append>
@@ -29,7 +35,7 @@
       bottom-slots
       v-model="text"
       label="Add Mutation"
-      :dense="dense"
+      dense
       class="input-add"
     >
       <template v-slot:append>

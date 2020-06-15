@@ -1,18 +1,22 @@
+<!--
+Description: container for route component.
+Includes functionality to:
+  update route name, update route map, and reset active component upon route creation
+-->
+
 <template>
   <div>
     <q-input
-      @keyup.enter.native="handleEnterKeyPress"
+      @keyup.enter.native="handleEnterKeyPress "
       standout="bg-secondary text-white"
       bottom-slots
       v-model="newRoute"
       label="Enter new route"
-      :dense="dense"
+      dense
       class="input-add"
+      @click.native="resetActiveComponent"
     ></q-input>
-    <!--<div class="route-display">-->
-    <!--
 
-    -->
     <Routes></Routes>
   </div>
 </template>
@@ -27,7 +31,7 @@ export default {
     Routes
   },
   computed: {
-    ...mapState(['routes'])
+    ...mapState(['routes', 'componentMap'])
   },
   data () {
     return {
@@ -35,14 +39,24 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['addRouteToRouteMap', 'setRoutes']),
+    ...mapActions(['addRouteToRouteMap', 'setRoutes', 'setActiveComponent']),
     handleEnterKeyPress () {
-      this.addRouteToRouteMap(this.newRoute)
+      const newRouteName = this.newRoute.replace(/[^a-z0-9-_.]/gi, '')
+      if (!newRouteName.trim() || this.routes[newRouteName] || this.componentMap[newRouteName]) {
+        event.preventDefault()
+        return false
+      }
+      this.addRouteToRouteMap(newRouteName)
         .then(() => {
           this.newRoute = ''
         })
 
-        .catch(err => console.log(err))
+      // .catch(err => console.log(err))
+    },
+    resetActiveComponent () {
+      if (this.activeComponent !== '') {
+        this.setActiveComponent('')
+      }
     }
   }
 }

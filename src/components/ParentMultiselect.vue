@@ -1,16 +1,26 @@
+<!--
+Description:
+  Displays multiselect dropdown for already existing components in CreateComponent
+  Functionality includes: selects parent for created component
+  -->
+
 <template>
   <div id="parent-select">
     <br />
     <multiselect
+      v-model="value"
       placeholder="Parent Component"
       :multiple="false"
       :close-on-select="true"
       :options="options"
-      @input="handleSelect"
-      :max-height="150"
+      @input="selectParent"
+      @open="resetActiveComponent"
+      :max-height="90"
       :option-height="20"
-      :searchable="false"
-    ></multiselect>
+      :searchable="true"
+    >
+    <span slot='noResult'>No components found.</span>
+    </multiselect>
   </div>
 </template>
 
@@ -22,6 +32,9 @@ export default {
   name: 'ParentMultiselect',
   components: {
     Multiselect
+  },
+  data () {
+    return { value: '' }
   },
   computed: {
     ...mapState([
@@ -36,15 +49,24 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'setActiveComponent',
-      'parentSelected'
-    ]),
-    handleSelect (value) {
-      // Set Active Component to selected Parent
-      this.setActiveComponent(value)
-      // Set parentSelected to true IF VALUE IS A VALID PARENT (not null)
-      this.parentSelected(true)
+    ...mapActions(['parentSelected', 'setActiveComponent']),
+    selectParent (value) {
+      this.parentSelected(value)
+    },
+    // when multiselect is opened activeComponent is deselected to allow for parentSelected action
+    resetActiveComponent () {
+      if (this.activeComponent !== '') {
+        this.setActiveComponent('')
+      }
+    }
+  },
+  // clears out value in mutiselect on creation of component
+  watch: {
+    componentMap: {
+      handler () {
+        // console.log('componentMap has changed')
+        this.value = ''
+      }
     }
   }
 }
@@ -52,7 +74,7 @@ export default {
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
-  #parent-select{
+  #parent-select {
     height: 30px;
     margin: 0.75rem;
     width: 90%;

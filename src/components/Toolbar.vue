@@ -1,3 +1,9 @@
+<!--
+Description:
+  Is not imported in current version of OverVue
+  Functionality includes: N/A
+  -->
+
 <template>
   <div class="home-sidebar">
     <q-btn-group>

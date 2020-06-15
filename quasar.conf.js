@@ -86,7 +86,7 @@ module.exports = function (ctx) {
       // analyze: true,
       // extractCSS: false,
       extendWebpack (cfg) {
-        //cfg.module.rules.push({
+        // cfg.module.rules.push({
         //   enforce: 'pre',
         //   test: /\.(js|vue)$/,
         //   loader: 'eslint-loader',
@@ -94,7 +94,7 @@ module.exports = function (ctx) {
         //   options: {
         //     formatter: require('eslint').CLIEngine.getFormatter('stylish')
         //   }
-        //})
+        // })
       }
     },
 
@@ -158,6 +158,7 @@ module.exports = function (ctx) {
     },
 
     electron: {
+      bundler: 'builder',
       // bundler: 'builder', // or 'packager'
 
       extendWebpack (cfg) {
@@ -181,7 +182,10 @@ module.exports = function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        // appId: 'quasar-example'
+        appId: 'com.electron.OverVue',
+        win: {
+          target: 'nsis'
+        }
       }
     }
   }

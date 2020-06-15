@@ -4,7 +4,7 @@
  */
 
 import { mount, createLocalVue, shallowMount } from "@vue/test-utils";
-import QBUTTON from "./demo/QBtn-demo.vue";
+// import QBUTTON from "./demo/QBtn-demo.vue";
 import * as All from "quasar";
 // import langEn from 'quasar/lang/en-us' // change to any language you wish! => this breaks wallaby :(
 const { Quasar, date } = All;
@@ -37,19 +37,24 @@ describe("Test Suite for Image Upload", () => {
 
   test('"[types.IMPORT_IMAGE]" mutation sets file path for electron "imagePath" in newState', () => {
     const newState = {
-      imagePath: ""
+      imagePath: "",
+      activeRoute: 'HomeView'
     };
-    const payload = "/Users/dev/Documents/test_img.jpg";
+    const payload = { img: "/Users/dev/Documents/test_img.jpg", route: newState.activeRoute };
     mutations[types.IMPORT_IMAGE](newState, payload);
-    expect(newState.imagePath).toBe("/Users/dev/Documents/test_img.jpg");
+    expect(newState.imagePath).toBeInstanceOf(Object);
+    expect(newState.imagePath).toHaveProperty(payload.route);
+    expect(newState.imagePath[payload.route]).toEqual(payload.img);
   });
 
   test('"[types.CLEAR_IMAGE]" mutation removes string from "imagePath" in newState', () => {
     const newState = {
-      imagePath: "/Users/dev/Documents/delete_test_img.jpg"
+      imagePath: { HomeView: "/Users/dev/Documents/delete_test_img.jpg" },
+      activeRoute: "HomeView"
     };
-    mutations[types.CLEAR_IMAGE](newState);
-    expect(newState.imagePath).toBe("");
+    const payload = { route: newState.activeRoute };
+    mutations[types.CLEAR_IMAGE](newState, payload);
+    expect(newState.imagePath[payload.route]).toBe("");
   });
 
   test('"[types.importImage]" action calls "IMPORT_IMAGE"', () => {
@@ -66,8 +71,10 @@ describe("Test Suite for Image Upload", () => {
   test('"[types.clearImage]" action calls the "CLEAR_IMAGE" mutation in newState', () => {
     store.imagePath = "/Users/dev/Documents/delete_test_img.jpg";
     const commit = jest.fn();
-    actions[types.clearImage]({ commit });
-    expect(commit).toHaveBeenCalledWith("CLEAR_IMAGE");
+    // console.log(commit);
+    // console.log(actions[types.clearImage])
+    actions[types.clearImage]({ commit }, { route: "HomeView" });
+    expect(commit).toHaveBeenCalledWith("CLEAR_IMAGE", { route: "HomeView" });
     // expect(store.imagePath).toBe("");
   });
 });

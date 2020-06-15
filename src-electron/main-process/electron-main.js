@@ -1,18 +1,18 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow } from 'electron'
 
 /**
  * Set `__statics` path to static files in production;
  * The reason we are setting it here is that the path needs to be evaluated at runtime
  */
 if (process.env.PROD) {
-  global.__statics = require("path")
-    .join(__dirname, "statics")
-    .replace(/\\/g, "\\\\");
+  global.__statics = require('path')
+    .join(__dirname, 'statics')
+    .replace(/\\/g, '\\\\')
 }
 
-let mainWindow;
+let mainWindow
 
-function createWindow() {
+function createWindow () {
   /**
    * Initial window options
    */
@@ -24,25 +24,25 @@ function createWindow() {
       nodeIntegration: true,
       webSecurity: false
     }
-  });
+  })
 
-  mainWindow.loadURL(process.env.APP_URL);
+  mainWindow.loadURL(process.env.APP_URL)
 
-  mainWindow.on("closed", () => {
-    mainWindow = null;
-  });
+  mainWindow.on('closed', () => {
+    mainWindow = null
+  })
 }
 
-app.on("ready", createWindow);
+app.on('ready', createWindow)
 
-app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") {
-    app.quit();
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit()
   }
-});
+})
 
-app.on("activate", () => {
+app.on('activate', () => {
   if (mainWindow === null) {
-    createWindow();
+    createWindow()
   }
-});
+})
