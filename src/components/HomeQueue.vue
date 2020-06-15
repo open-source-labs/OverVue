@@ -21,7 +21,7 @@ Description:
       @dblclick.self="setActiveElement(element)"
       v-for="(element) in renderList" :key="element[1] + Date.now()"
       >
-        <i v-if='activeComponent === "" ' class="fas fa fa-angle-double-down fa-md" id="unavailable"></i>
+        <i v-if='activeComponent === "" || exceptions.includes(element[0]) ' class="fas fa fa-angle-double-down fa-md" id="unavailable"></i>
         <i v-else class="fas fa fa-angle-double-down fa-md" @click="setLayer({text: element[0], id: element[2]})"></i>
         {{ element[0] }}
         <i class="fas fa fa-trash fa-md" @click.self="deleteElement([element[1],element[2]])"></i>
@@ -49,7 +49,8 @@ export default {
   },
   data () {
     return {
-      depth: ''
+      depth: '',
+      exceptions: ['input', 'img', 'link']
     }
   },
   computed: {
@@ -82,7 +83,7 @@ export default {
       else this.$store.dispatch(deleteFromComponentHtmlList, id[1])
     },
     setActiveElement (element) {
-      if (this.activeComponent !== '') {
+      if (this.activeComponent !== '' && !this.exceptions.includes(element[0])) {
         this.setActiveHTML(element)
       }
     },
