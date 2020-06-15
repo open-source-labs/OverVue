@@ -36,7 +36,7 @@ export default {
     // returns location of where file is stored
     parseFileName (file) {
       // 'asdf/asdff/sdf.txt -> sdf.txt
-      return file.split('/').pop()
+      if (file) return file.split('/').pop()
     },
     // deletes anything attached to html element
     parseAndDelete (htmlList) {
@@ -75,37 +75,39 @@ export default {
         })
 
       let fileName = this.parseFileName(data)
-
-      this.$set(this.$store.state.projects, this.$store.state.activeTab, {
-        filename: fileName,
-        lastSavedLocation: data
-      })
-      let state = this.$store.state
-      let routes = state.routes
-      // for each route call parseAndDelete on htmlList
-      for (let view in routes) {
-        // console.log('views in Routes', routes[view])
-        routes[view].forEach(component => {
-          let htmlList = component.htmlList
-          this.parseAndDelete(htmlList)
+      // if valid fileName
+      if (fileName) {
+        this.$set(this.$store.state.projects, this.$store.state.activeTab, {
+          filename: fileName,
+          lastSavedLocation: data
         })
-      }
-      let componentMap = this.$store.state.componentMap
-      for (let component in componentMap) {
-        if (component.htmlList) {
-          let comphtml = component.htmlList
-          this.parseAndDelete(comphtml)
+        let state = this.$store.state
+        let routes = state.routes
+        // for each route call parseAndDelete on htmlList
+        for (let view in routes) {
+          // console.log('views in Routes', routes[view])
+          routes[view].forEach(component => {
+            let htmlList = component.htmlList
+            this.parseAndDelete(htmlList)
+          })
         }
+        let componentMap = this.$store.state.componentMap
+        for (let component in componentMap) {
+          if (component.htmlList) {
+            let comphtml = component.htmlList
+            this.parseAndDelete(comphtml)
+          }
+        }
+  
+        fs.writeFileSync(data, JSON.stringify(state))
+        localforage
+          .setItem(fileName, JSON.parse(fs.readFileSync(data, 'utf8')))
+          // .then(result => {
+          //   console.log('saved ', fileName, 'to local forage')
+          //   console.log('result is', result)
+          // })
+        // console.log('PROJECT SAVED AS A JSON OBJECT!')
       }
-
-      fs.writeFileSync(data, JSON.stringify(state))
-      localforage
-        .setItem(fileName, JSON.parse(fs.readFileSync(data, 'utf8')))
-        // .then(result => {
-        //   console.log('saved ', fileName, 'to local forage')
-        //   console.log('result is', result)
-        // })
-      // console.log('PROJECT SAVED AS A JSON OBJECT!')
     }
   },
   // on components creation these key presses will trigger save project
