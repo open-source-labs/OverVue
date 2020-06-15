@@ -1,49 +1,9 @@
 import * as types from './types'
-// import icons from './state/icons.js'
-// import htmlElementMap from './state/htmlElementMap.js'
 const cloneDeep = require('lodash.clonedeep')
-// import VuexStore from './index'
-// import { getDefault, defaultState } from './state/index.js'
 import { breadthFirstSearch, breadthFirstSearchParent } from '../utils/search.util'
 
 import localforage from 'localforage'
 
-// we have to do a search because undo/redo saves payloads as deep clones so passing a memory ref would be detrimental
-// This will find you the actual object by ID
-// const breadthFirstSearch = (array, id) => {
-//   let queue = [...array.filter(el => typeof el === 'object')]
-//   while (queue.length) {
-//     let evaluated = queue.shift()
-//     if (evaluated.id === id) {
-//       return evaluated
-//     } else {
-//       if (evaluated.children.length) {
-//         queue.push(...evaluated.children)
-//       }
-//     }
-//   }
-//   // console.log("We shouldn't be ever getting here, how did you even search an id that didn't exist?")
-// }
-
-// // this would find you the parent of a given id
-// const breadthFirstSearchParent = (array, id) => {
-//   let queue = [...array.filter(el => typeof el === 'object')]
-//   while (queue.length) {
-//     let evaluated = queue.shift()
-//     for (let i = 0; i < evaluated.children.length; i++) {
-//       if (evaluated.children[i].id === id) {
-//         return {
-//           evaluated: evaluated,
-//           index: i
-//         }
-//       }
-//       if (evaluated.children.length) {
-//         queue.push(...evaluated.children)
-//       }
-//     }
-//     // console.log("We shouldn't be ever getting here, how did you even search an id that didn't exist?")
-//   }
-// }
 const mutations = {
   // invoked on undo, resetsstate to a cdeep clone of the initial state
   [types.EMPTY_STATE]: (state, payload) => {
