@@ -20,6 +20,7 @@ export default {
     ...mapActions(['openProject']),
     // opens project
     openJSONFile (data) {
+      if (data === undefined) return
       const jsonFile = JSON.parse(fs.readFileSync(data[0], 'utf8'))
       // console.log('json file', jsonFile)
       this.openProject(jsonFile)
