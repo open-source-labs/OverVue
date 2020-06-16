@@ -14,13 +14,13 @@
 
 ## Table of Contents
 
-* [Features](###features)
-* [Changelog](###changelog)
-* [Tutorial](###howtouse)
-  + [New Features Tutorial](####overvue-v2.0-how-to)
-* [How to Run](###running-a-local-version)
-* [Contributing](###contributing)
-* [Authors](###authors)
+* [Features](#features)
+* [Changelog](#changelog)
+* [Tutorial](#howtouse)
+  + [New Features Tutorial](#overvue-v2.0-how-to)
+* [How to Run](#running-a-local-version)
+* [Contributing](#contributing)
+* [Authors](#authors)
 
 #### Features
 + Upload a frontend mockup image
