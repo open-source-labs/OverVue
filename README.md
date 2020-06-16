@@ -12,6 +12,16 @@
 
 ![](https://raw.githubusercontent.com/jeisele2/OverVue/master/src/assets/gifs/screenshot.png)
 
+## Table of Contents
+
+* [Features](###features)
+* [Changelog](###changelog)
+* [Tutorial](###howtouse)
+  + [New Features Tutorial](####overvue-v2.0-how-to)
+* [How to Run](###running-a-local-version)
+* [Contributing](###contributing)
+* [Authors](###authors)
+
 #### Features
 + Upload a frontend mockup image
 + Visualize draggable and resizable components
@@ -103,12 +113,6 @@ package.json
 
 + Setting layers on a component is done by right clicking the desired component on the component display and using the menu option
   All components start on layer 1 by default.
-
-
-
-
-
-
 
 #### Running a local version
 This app was developed using the Quasar framework, so first you will need to install the Quasar cli
