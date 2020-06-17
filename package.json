@@ -1,11 +1,15 @@
 {
   "name": "overvue",
-  "version": "0.0.1",
+  "version": "2.0.0",
   "description": "Vue Prototype DevTool",
   "productName": "OverVue",
   "cordovaId": "org.cordova.quasar.app",
-  "author": "Team OverVue",
+  "author": "Team OverVue, Team Vuetiful",
   "private": true,
+  "bugs": {
+    "url": "https://github.com/TeamOverVue/OverVue/issues"
+  },
+  "homepage": "https://github.com/TeamOverVue/OverVue",
   "scripts": {
     "lint": "eslint --ext .js,.vue src",
     "test": "echo \"See package.json => scripts for available tests.\" && exit 0",
