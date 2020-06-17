@@ -9,13 +9,18 @@ import { mount, createLocalVue, shallowMount } from "@vue/test-utils";
 import * as All from "quasar";
 const { Quasar, date } = All;
 
+/**
+ * @description: Testing functionality of HTML element mutations and actions
+ * `actions:` `addNestedHtml', `AddNestedNoActive`, `setActiveHTML`, `setActiveLayer`,
+ * `upOneLayer`,  `deleteFromComponentHtmlList`, `deleteSelectedElement`
+ * `mutations: SET_ACTIVE_LAYER, UP_ONE_LAYER, ADD_TO_SELECTED_ELEMENT_LIST, SET_SELECTED_ELEMENT_LIST,
+ * ADD_TO_COMPONENT_HTML_LIST, ADD_NESTED_HTML, ADD_NESTED_NO_ACTIVE, DELETE_FROM_COMPONENT_HTML_LIST,
+ * DELETE_SELECTED_ELEMENT, SET_ACTIVE_HTML_ELEMENT
+ */
+
+
 let hardA = {
   componentName: "a",
-  x: 0,
-  y: 20,
-  z: 0,
-  w: 200,
-  h: 200,
   htmlList: [{
     children:[{
       children:[{
@@ -54,8 +59,6 @@ const newState = {
     NewView: []
   },
   componentNameInputValue: '',
-  projects: [{ filename: 'Untitled-1', lastSavedLocation: '' }],
-
   activeRoute: 'HomeView',
   activeComponent: '',
   activeHTML: '',
@@ -65,14 +68,6 @@ const newState = {
   },
 
   selectedElementList: [],
-  projectNumber: 2,
-  activeTab: 0,
-  componentChildrenMultiselectValue: [],
-  modalOpen: false,
-  parentSelected: false,
-  imagePath: {
-    HomeView: ''
-  }
 }
 
 describe("Tests for navigating layers in HTML elements", () => {
@@ -226,20 +221,55 @@ describe("tests for HTML element actions", () => {
     expect(commit).toHaveBeenCalledWith("ADD_NESTED_HTML", element);
   });
 
+  test('"[types.addNestedNoActive]" action calls the "ADD_NESTED_NO_ACTIVE" mutation', () => {
+    const element = {
+      date: Date.now(),
+      elementName: "div"
+    };
+    const commit = jest.fn();
+    actions[types.addNestedNoActive]({ commit }, element);
+    expect(commit).toHaveBeenCalledWith("ADD_NESTED_NO_ACTIVE", element);
+  });
+
+  test('"[types.setActiveHTML]" action calls the "SET_ACTIVE_HTML mutation', () => {
+    const element = [ 'div', 0, Date.now() ];
+    const commit = jest.fn();
+    actions[types.setActiveHTML]({ commit }, element);
+    expect(commit).toHaveBeenCalledWith("SET_ACTIVE_HTML_ELEMENT", element);
+  });
+
   test('"[types.setActiveLayer]" action calls the "SET_ACTIVE_LAYER" mutation', () => {
     const element = { text: "form", id: Date.now() };
     const commit = jest.fn();
     actions[types.setActiveLayer]({ commit }, element);
     expect(commit).toHaveBeenCalledWith("SET_ACTIVE_LAYER", element);
   });
-})
 
-// ADD NESTED HTML
-// ADD NESTED NO ACTIVE
-// SET ACTIVE HTML ELEMENT
-// ADD TO COMPONENT HTML LIST
-// DELETE FROM COMPONENT HTML LIST
-// ADD TO SELECTED ELEMENT LIST
-// SET SELECTED ELEMENT LIST
-// SET CLICKED ELEMENT LIST
-// DELETE SELECTED ELEMENT
+  test('"[types.upOneLayer]" action calls the "UP_ONE_LAYER" mutation', () => {
+    const id = Date.now();
+    const commit = jest.fn();
+    actions[types.upOneLayer]({ commit }, id);
+    expect(commit).toHaveBeenCalledWith("UP_ONE_LAYER", id);
+  });
+
+  test('"[types.deleteFromComponentHtmlList]" action calls the "DELETE_FROM_COMPONENT_HTML_LIST" mutation', () => {
+    const id = Date.now();
+    const commit = jest.fn();
+    actions[types.deleteFromComponentHtmlList]({ commit }, id);
+    expect(commit).toHaveBeenCalledWith("DELETE_FROM_COMPONENT_HTML_LIST", id);
+  });
+
+  test('"[types.deleteSelectedElement]" action calls the "DELETE_SELECTED_ELEMENT" mutation', () => {
+    const idx = 0;
+    const commit = jest.fn();
+    actions[types.deleteSelectedElement]({ commit }, idx);
+    expect(commit).toHaveBeenCalledWith("DELETE_SELECTED_ELEMENT", idx);
+  });
+
+  test('"[types.setClickedElementList]" action calls the "SET_CLICKED_ELEMENT_LIST" mutation', () => {
+    const element = { text: "form", id: Date.now() };
+    const commit = jest.fn();
+    actions[types.setClickedElementList]({ commit }, element);
+    expect(commit).toHaveBeenCalledWith("SET_CLICKED_ELEMENT_LIST", element);
+  });
+})
