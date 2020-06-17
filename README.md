@@ -10,7 +10,7 @@
 
 <p>这个程序能帮你生成Vue 组件, 设置 routes , 也可以帮你显像Component Parent-Child组件树。你只要做一些小配置然后可以下载code boilerplate. 这样你就可以很方便简洁地生成Vue前台APP了！</p>
 
-![](https://raw.githubusercontent.com/jeisele2/OverVue/master/src/assets/gifs/screenshot.png)
+![](./src/assets/readme/overvue1.png)
 
 ## Table of Contents
 
@@ -64,22 +64,22 @@
 ## How to use
 + Opening the application will create by default a root App component and a root route called "HomeView"
 + Upload a mockup from your filesystem if you'd like. Remove the mockup and choose a new one if needed.
-![](https://raw.githubusercontent.com/jeisele2/OverVue/master/src/assets/gifs/upload-image-drawers.gif)
+![](./src/assets/readme/upload_one_mockup.gif)
 
 + To add a new component, type its name in the component name box and select any HTML elements that should be rendered by that component.
 + HTML elements can also be added after creation by selecting the component in the display, then selecting HTML elements.
 + Select a parent component for the new component if needed.
 + After adding, you can move and resize the component in the display.
-![alt text](https://raw.githubusercontent.com/jeisele2/OverVue/master/src/assets/gifs/component_creation.gif)
+![alt text](./src/assets/readme/create_resize_move.gif)
 
 + You can also add children to components by right-clicking the component to add children to, and you can see the tree re-render as you create new components or change the hierarchy.
-![](https://raw.githubusercontent.com/jeisele2/OverVue/master/src/assets/gifs/HTML-elements-tree-rerender.gif)
+![](./src/assets/readme/right_click_add_children.gif)
 
 + The dashboard shows info about each component (code snippets and HTML elements). Click a component in the display to see its properties.                                               
-![](https://raw.githubusercontent.com/jeisele2/OverVue/master/src/assets/gifs/snippets-active-component.gif)
+![](./src/assets/readme/dashboard.gif)
 
 + You can add new routes and view all components and routes in the sidebar.
-![](https://raw.githubusercontent.com/jeisele2/OverVue/master/src/assets/gifs/sidebar-components-routes.gif)
+![](./src/assets/readme/add_new_route.gif)
 
 + When finished creating, you can export to a file location of your choice. Below is the exported file structure:
 
@@ -107,6 +107,7 @@ package.json
 
 ### OverVue v2.0 How to
 + Undo/Redo feature has been added to the top right of the program, you can also use CTRL+z and CTRL+y respectively.
+![](./src/assets/readme/undo_redo.gif)
 
 + You can nest html elements in two different ways:
     1. Upon creating a component and adding an html element into it, Select the component to make it the active component.
@@ -116,9 +117,11 @@ package.json
     2. Similar to above, but instead of double clicking, you can press the down arrow icon on the html element button to enter it.
     From there the view will change to the contents of that particular HTML element.
     You can then add html elements like you would for a component using the left hand side
+    ![](./src/assets/readme/nesting_html.gif)
 
 + Setting layers on a component is done by right clicking the desired component on the component display and using the menu option
   All components start on layer 1 by default.
+![](./src/assets/readme/layers.gif)
 
 [↥Back to top](#table-of-contents)
 
