@@ -7,7 +7,7 @@ Description:
 <template>
   <section class="home-queue">
     <i v-if='this.activeLayer.id !== ""' class="fas fa fa-chevron-up fa-md" @click="setParentLayer"></i>
-    <span class='list-title' v-if='this.activeLayer.id !== ""'> Viewing Elements in '{{ this.activeComponent }} {{ this.depth }}' </span>
+    <span class='list-title' v-if='this.activeLayer.id !== ""'> Viewing Elements in '{{ this.activeComponent }} {{ depth }}' </span>
     <span class='list-title' v-else-if='this.activeComponent !==""'> Viewing Elements in '{{ this.activeComponent }}' </span>
     <span class='list-title' v-else> Elements in Queue </span>
     <hr>
@@ -49,7 +49,6 @@ export default {
   },
   data () {
     return {
-      depth: '',
       exceptions: ['input', 'img', 'link']
     }
   },
@@ -74,7 +73,15 @@ export default {
       set (value) {
         this.$store.dispatch(setSelectedElementList, value)
       }
+    },
+    depth: function () {
+      let newTitle = ''
+      this.activeLayer.lineage.forEach(el => {
+        newTitle += ` > ${el}`
+      })
+      return newTitle
     }
+    
   },
   methods: {
     ...mapActions(['setActiveHTML', 'setActiveLayer', 'upOneLayer']),
@@ -89,20 +96,11 @@ export default {
     },
     setLayer (element) {
       this.setActiveLayer(element)
-      this.setTitle()
     },
     setParentLayer () {
       if (this.activeLayer.id !== '') {
         this.upOneLayer(this.activeLayer.id)
-        this.setTitle()
       }
-    },
-    setTitle () {
-      let newTitle = ''
-      this.activeLayer.lineage.forEach(el => {
-        newTitle += ` > ${el}`
-      })
-      this.depth = newTitle
     }
   },
   watch: {
@@ -112,12 +110,6 @@ export default {
         this.component = true
       } else {
         this.component = false
-      }
-    },
-    activeLayer: function () {
-      // console.log('watching activeComponent in HomeQueue')
-      if (this.activeLayer !== '') {
-        this.setTitle()
       }
     }
   }
