@@ -96,12 +96,10 @@ export default {
     },
     setLayer (element) {
       this.setActiveLayer(element)
-      // this.setTitle()
     },
     setParentLayer () {
       if (this.activeLayer.id !== '') {
         this.upOneLayer(this.activeLayer.id)
-        // this.setTitle()
       }
     }
   },
@@ -113,13 +111,7 @@ export default {
       } else {
         this.component = false
       }
-    },
-    // activeLayer: function () {
-    //   // console.log('watching activeComponent in HomeQueue')
-    //   if (this.activeLayer !== '') {
-    //     this.setTitle()
-    //   }
-    // }
+    }
   }
 }
 </script>
