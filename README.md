@@ -1,7 +1,7 @@
 <h1 align="center">
   <img src="https://raw.githubusercontent.com/jeisele2/OverVue/master/src/assets/overvue-icons/apple-icon-72x72.png">
   <br/>
-  OverVue (Beta)
+  OverVue 
 </h1>
 
 <p align="center"><b>Prototyping Tool for Vue Developers</b></p>
@@ -12,7 +12,17 @@
 
 ![](https://raw.githubusercontent.com/jeisele2/OverVue/master/src/assets/gifs/screenshot.png)
 
-#### Features
+## Table of Contents
+
+* [Features](#features)
+* [OverVue 2.0 Changelog](#changelog)
+* [Tutorial](#how-to-use)
+  + [New Features Tutorial](#overvue-v20-how-to)
+* [How to Run](#running-a-local-version)
+* [Contributing](#contributing)
+* [Authors](#authors)
+
+### Features
 + Upload a frontend mockup image
 + Visualize draggable and resizable components
 + Create parent-child hierarchy of components
@@ -30,7 +40,9 @@
 + Will now load route images along with project <sub><sup>(v2.0)</sup></sub>
 + Windows compatibility for uploading mockup images. <sub><sup>(v2.0)</sup></sub>
 
-#### Changelog
+[↥Back to top](#table-of-contents)
+
+### Changelog
 <details><summary>OverVue 2.0</summary>
   <ul>
   <li>Improved hierarchy tree rendering</li>
@@ -47,7 +59,9 @@
   </ul>
 </details>
 
-#### How to use
+[↥Back to top](#table-of-contents)
+
+## How to use
 + Opening the application will create by default a root App component and a root route called "HomeView"
 + Upload a mockup from your filesystem if you'd like. Remove the mockup and choose a new one if needed.
 ![](https://raw.githubusercontent.com/jeisele2/OverVue/master/src/assets/gifs/upload-image-drawers.gif)
@@ -89,7 +103,9 @@ src/
 babel.config.js
 package.json
 ```
-###### OverVue v2.0 How to
+[↥Back to top](#table-of-contents)
+
+### OverVue v2.0 How to
 + Undo/Redo feature has been added to the top right of the program, you can also use CTRL+z and CTRL+y respectively.
 
 + You can nest html elements in two different ways:
@@ -104,13 +120,9 @@ package.json
 + Setting layers on a component is done by right clicking the desired component on the component display and using the menu option
   All components start on layer 1 by default.
 
+[↥Back to top](#table-of-contents)
 
-
-
-
-
-
-#### Running a local version
+### Running a local version
 This app was developed using the Quasar framework, so first you will need to install the Quasar cli
 ```
 npm i -g @quasar/cli
@@ -128,7 +140,9 @@ To build a new .dmg / windows .exe
 quasar build -m electron
 ```
 
-#### Contributing
+[↥Back to top](#table-of-contents)
+
+### Contributing
 We'd love for you to test this application out and submit any issues you encounter. Also feel free to fork to your own repo and submit PRs.
 Here are some features we're thinking about adding:
 + Vuex state prototyping and boilerplate export
@@ -137,7 +151,9 @@ Here are some features we're thinking about adding:
 + Integration with Storybook
 + Ability to add a copy of an existing component from one route to another
 
-#### Authors
+[↥Back to top](#table-of-contents)
+
+### Authors
 ```
 Contributors:
 Joseph Eisele @jeisele2
@@ -150,3 +166,5 @@ Allison Pratt @allisons11
 Joju Olaode @JojuOlaode
 ```
 Inspired by [PreVue](https://github.com/open-source-labs/PreVue)
+
+[↥Back to top](#table-of-contents)
