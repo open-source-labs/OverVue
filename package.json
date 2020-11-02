@@ -28,7 +28,7 @@
     "dot-prop": "^6.0.0",
     "fs-extra": "^8.1.0",
     "localforage": "^1.7.3",
-    "lodash": ">=4.17.13",
+    "lodash": ">=4.17.19",
     "lodash.isequal": "^4.5.0",
     "lodash.throttle": "^4.1.1",
     "mousetrap": "^1.6.3",
