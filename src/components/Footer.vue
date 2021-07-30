@@ -27,6 +27,9 @@ Description:
         <q-tab name="detail" label="Component Details" id="label-text" />
         <q-tab name="tree" label="Project Tree" id="label-text" />
         <q-tab name="html" label="HTML Elements" id="label-text" />
+        <q-tab name="store" label="Vuex Store" id="label-text" />
+        <q-tab name="comp vuex" label="Component: Vuex" id="label-text" />
+
       </q-tabs>
 
       <q-tab-panels v-model="tab" animated class="html-bg text-white" >
@@ -35,7 +38,7 @@ Description:
         </q-tab-panel>
       <!-- Work in Progress -->
         <q-tab-panel name="detail">
-          <div class="text-h6">Vuex</div>Component Info Here
+          <div class="text-h6">Hello</div>World
         </q-tab-panel>
       <!----------------------->
         <q-tab-panel name="tree">
@@ -44,6 +47,12 @@ Description:
 
         <q-tab-panel name="html" :style="{height: `${height}vh`}">
           <HomeQueue />
+        </q-tab-panel>
+        <q-tab-panel name="detail">
+          <div class="text-h7">Vuex</div>Component Info Here
+        </q-tab-panel>
+        <q-tab-panel name="detail">
+            <div class="text-h8">Vuex</div>Component Info Here
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
