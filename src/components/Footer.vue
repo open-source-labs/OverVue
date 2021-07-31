@@ -49,10 +49,10 @@ Description:
           <HomeQueue />
         </q-tab-panel>
         <q-tab-panel name="detail">
-          <div class="text-h7">Vuex</div>Component Info Here
+          <div class="text-h6">Vuex</div>Component Info Here
         </q-tab-panel>
         <q-tab-panel name="detail">
-            <div class="text-h8">Vuex</div>Component Info Here
+            <div class="text-h6">Vuex</div>Component Info Here
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
