@@ -38,6 +38,7 @@ const newState = {
     lineage: []
   },
 
+  selectedActions: [],
   selectedElementList: [],
   projectNumber: 2,
   activeTab: 0,
