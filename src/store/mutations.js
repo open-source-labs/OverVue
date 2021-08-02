@@ -91,6 +91,20 @@ const mutations = {
     // state.selectedActions.push(payload);
   },
 
+  [types.ADD_ACTION_TO_COMPONENT]: (state, payload) => {
+    let active = (state.routes[state.activeRoute].filter(comp => {
+      return comp.componentName === state.activeComponent
+    })[0])
+
+    if (!active.actions) {
+      active.actions = payload
+    } else {
+      for (let action of payload) {
+        if (!active.actions.includes(action)) { active.actions.push(action) }
+      }
+    }
+  },
+
   // *** HTML ELEMENTS *** //////////////////////////////////////////////
 
   [types.ADD_NESTED_HTML]: (state, payload) => {

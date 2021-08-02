@@ -1,5 +1,6 @@
 // Mutations
 export const ADD_ACTION_SELECTED = 'ADD_ACTION_SELECTED'
+export const ADD_ACTION_TO_COMPONENT = 'ADD_ACTION_TO_COMPONENT'
 export const ADD_COMPONENT_TO_ACTIVE_ROUTE_CHILDREN = 'ADD_COMPONENT_TO_ACTIVE_ROUTE_CHILDREN'
 export const ADD_COMPONENT_TO_ACTIVE_ROUTE_IN_ROUTE_MAP = 'ADD_COMPONENT_TO_ACTIVE_ROUTE_IN_ROUTE_MAP'
 export const ADD_COMPONENT_TO_COMPONENT_CHILDREN = 'ADD_COMPONENT_TO_COMPONENT_CHILDREN'
@@ -49,6 +50,7 @@ export const UPDATE_OPEN_MODAL = 'UPDATE_OPEN_MODAL'
 
 // Actions
 export const addActionSelected = 'addActionSelected'
+export const addActionToComponent = 'addActionToComponent'
 export const addNestedHTML = 'addNestedHTML'
 export const addNestedNoActive = 'addNestedNoActive'
 export const addProject = 'addProject'

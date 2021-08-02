@@ -73,7 +73,7 @@ Description:
       id="add-actions-btn"
       color="secondary"
       label="Add Action(s)"
-      @click="addActionToComponent"
+      @click="addActionToComp"
     />
       </div>
     </template>
@@ -102,7 +102,7 @@ export default {
       'componentMap',
       'activeComponent',
       'activeRoute',
-      'routes',
+      'selectedActions',
       'userActions'
     ]),
     options () {
@@ -110,7 +110,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setActiveComponent', 'createAction', 'addActionSelected']),
+    ...mapActions(['setActiveComponent', 'createAction', 'addActionSelected', 'addActionToComponent']),
     selectAction (value) {
       this.addActionSelected(value)
     },
@@ -122,6 +122,12 @@ export default {
         console.log('userActionArray', this.userActions)
         this.text = ''
       }
+    },
+    addActionToComp () {
+      this.addActionToComponent(this.selectedActions)
+      console.log('activeComponent', (this.routes[this.activeRoute].filter(comp => {
+        return comp.componentName === this.activeComponent
+      })[0]))
     },
     // when multiselect is opened activeComponent is deselected to allow for parentSelected action
     resetActiveComponent () {

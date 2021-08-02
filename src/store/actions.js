@@ -121,6 +121,10 @@ const actions = {
   [types.addActionSelected]: ({ commit }, payload) => {
     commit(types.ADD_ACTION_SELECTED, payload)
   },
+
+  [types.addActionToComponent]: ({ commit }, payload) => {
+    commit(types.ADD_ACTION_TO_COMPONENT, payload)
+  },
   // End of Vuex Actions section //////////////////////////////////////////
 
   // Actions dispatched from left hand panel////////////////////////////////////////
