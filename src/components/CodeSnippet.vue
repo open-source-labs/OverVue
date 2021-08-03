@@ -142,6 +142,7 @@ export default {
       children.forEach(name => {
         childrenComponentNames += `    ${name},\n`
       })
+      // eslint-disable-next-line no-useless-escape
       return `\n\n<script>\n${str}\nexport default {\n  name: '${componentName}',\n  components: {\n${childrenComponentNames}  }\n};\n<\/script>\n\n<style scoped>\n</style>`
     }
   },
