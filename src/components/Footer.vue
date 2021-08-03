@@ -28,7 +28,6 @@ Description:
         <q-tab name="tree" label="Project Tree" id="label-text" />
         <q-tab name="html" label="HTML Elements" id="label-text" />
         <q-tab name="store" label="Vuex Store" id="label-text" />
-        <q-tab name="comp vuex" label="Component: Vuex" id="label-text" />
 
       </q-tabs>
 
@@ -38,7 +37,7 @@ Description:
         </q-tab-panel>
       <!-- Work in Progress -->
         <q-tab-panel name="detail">
-          <div class="text-h6">Hello</div>World
+          <ComponentDetails/>
         </q-tab-panel>
       <!----------------------->
         <q-tab-panel name="tree">
@@ -48,11 +47,8 @@ Description:
         <q-tab-panel name="html" :style="{height: `${height}vh`}">
           <HomeQueue />
         </q-tab-panel>
-        <q-tab-panel name="detail">
-          <div class="text-h6">Vuex</div>Component Info Here
-        </q-tab-panel>
-        <q-tab-panel name="detail">
-            <div class="text-h6">Vuex</div>Component Info Here
+        <q-tab-panel name="store">
+          <VuexStore/>
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
@@ -64,12 +60,16 @@ import { mapState, mapActions } from 'vuex'
 import Tree from './Tree'
 import HomeQueue from './HomeQueue'
 import CodeSnippet from './CodeSnippet'
+import VuexStore from './DashboardVuexStore.vue'
+import ComponentDetails from './ComponentDetails'
 
 export default {
   components: {
     Tree,
     HomeQueue,
-    CodeSnippet
+    CodeSnippet,
+    VuexStore,
+    ComponentDetails
   },
   computed: {
     ...mapState(['activeComponent', 'componentNameInputValue', 'selectedElementList', 'activeHTML'])

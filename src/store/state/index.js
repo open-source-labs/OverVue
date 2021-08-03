@@ -22,7 +22,8 @@ const newState = {
     HomeView: []
   },
   userActions: [],
-  userState: {},
+  userProps: [],
+  userState: [],
   imagePath: {
     HomeView: ''
   },
@@ -38,6 +39,8 @@ const newState = {
     lineage: []
   },
 
+  selectedProps: [],
+  selectedState: [],
   selectedActions: [],
   selectedElementList: [],
   projectNumber: 2,

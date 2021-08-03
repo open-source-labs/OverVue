@@ -103,8 +103,58 @@ const mutations = {
         if (!active.actions.includes(action)) { active.actions.push(action) }
       }
     }
+    state.selectedActions = []
   },
 
+  [types.CREATE_PROP]: (state, payload) => {
+    // if (!(state.userActions.includes(payload)))
+    state.userProps.push(payload)
+  },
+
+  [types.ADD_PROPS_SELECTED]: (state, payload) => {
+    state.selectedProps = payload
+    // state.selectedActions.push(payload);
+  },
+
+  [types.ADD_PROPS_TO_COMPONENT]: (state, payload) => {
+    let active = (state.routes[state.activeRoute].filter(comp => {
+      return comp.componentName === state.activeComponent
+    })[0])
+
+    if (!active.props) {
+      active.props = payload
+    } else {
+      for (let prop of payload) {
+        if (!active.props.includes(prop)) { active.props.push(prop) }
+      }
+    }
+    state.selectedProps = []
+  },
+
+  [types.CREATE_STATE]: (state, payload) => {
+    // if (!(state.userActions.includes(payload)))
+    state.userState.push(payload)
+  },
+
+  [types.ADD_STATE_SELECTED]: (state, payload) => {
+    state.selectedState = payload
+    // state.selectedActions.push(payload);
+  },
+
+  [types.ADD_STATE_TO_COMPONENT]: (state, payload) => {
+    let active = (state.routes[state.activeRoute].filter(comp => {
+      return comp.componentName === state.activeComponent
+    })[0])
+
+    if (!active.state) {
+      active.state = payload
+    } else {
+      for (let s of payload) {
+        if (!active.state.includes(s)) { active.state.push(s) }
+      }
+    }
+    state.selectedState = []
+  },
   // *** HTML ELEMENTS *** //////////////////////////////////////////////
 
   [types.ADD_NESTED_HTML]: (state, payload) => {

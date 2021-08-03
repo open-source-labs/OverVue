@@ -112,7 +112,7 @@ const actions = {
 
   // End of Routing section //////////////////////////////////////////
 
-  // Vuex Actions ///////////////////////////////////////////////
+  // Vuex ///////////////////////////////////////////////
 
   [types.createAction]: ({ commit }, payload) => {
     commit(types.CREATE_ACTION, payload)
@@ -124,6 +124,30 @@ const actions = {
 
   [types.addActionToComponent]: ({ commit }, payload) => {
     commit(types.ADD_ACTION_TO_COMPONENT, payload)
+  },
+
+  [types.createProp]: ({ commit }, payload) => {
+    commit(types.CREATE_PROP, payload)
+  },
+
+  [types.addPropsSelected]: ({ commit }, payload) => {
+    commit(types.ADD_PROPS_SELECTED, payload)
+  },
+
+  [types.addPropsToComponent]: ({ commit }, payload) => {
+    commit(types.ADD_PROPS_TO_COMPONENT, payload)
+  },
+
+  [types.createState]: ({ commit }, payload) => {
+    commit(types.CREATE_STATE, payload)
+  },
+
+  [types.addStateSelected]: ({ commit }, payload) => {
+    commit(types.ADD_STATE_SELECTED, payload)
+  },
+
+  [types.addStateToComponent]: ({ commit }, payload) => {
+    commit(types.ADD_STATE_TO_COMPONENT, payload)
   },
   // End of Vuex Actions section //////////////////////////////////////////
 
