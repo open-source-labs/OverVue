@@ -226,6 +226,7 @@ export default {
           return comp.componentName === this.activeComponent;
         })[0]
       );
+      console.log("Active comp 2", this.$store.state.activeComponentObj)
     },
     createNewProp (text) {
       if (!this.$store.state.userProps.includes(text)) {

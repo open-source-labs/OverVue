@@ -104,6 +104,9 @@ const mutations = {
       }
     }
     state.selectedActions = []
+    // super weird code, minor changes to objects are not reactive
+    // setting to null and then resetting to object makes it reactive
+    state.activeComponentObj = null
     state.activeComponentObj = active
   },
 
@@ -130,6 +133,7 @@ const mutations = {
       }
     }
     state.selectedProps = []
+    state.activeComponentObj = null
     state.activeComponentObj = active
   },
 
@@ -156,6 +160,7 @@ const mutations = {
       }
     }
     state.selectedState = []
+    state.activeComponentObj = null
     state.activeComponentObj = active
   },
   // *** HTML ELEMENTS *** //////////////////////////////////////////////

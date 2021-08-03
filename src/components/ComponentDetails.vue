@@ -14,21 +14,21 @@
         <q-tab name="props" label="Component Props" id="label-text" />
       </q-tabs>
       <q-tab-panels v-model="tab" animated class="html-bg text-white">
-        <q-tab-panel name="state" v-model="compoent">
+        <q-tab-panel name="state" v-model="activeState">
           <ul id="stateList">
             <li v-for="comp in activeState" :key="comp">
               {{ comp }}
             </li>
           </ul>
         </q-tab-panel>
-        <q-tab-panel name="actions">
+        <q-tab-panel name="actions" v-model="activeActions">
           <ul id="actionList">
             <li v-for="comp in activeActions" :key="comp">
               {{ comp }}
             </li>
           </ul>
         </q-tab-panel>
-        <q-tab-panel name="props">
+        <q-tab-panel name="props" v-model="activeProps">
           <ul id="propsList">
             <li v-for="comp in activeProps" :key="comp">
               {{ comp }}
@@ -48,29 +48,24 @@ export default {
   name: "ComponentDetails",
   computed: {
     ...mapState(["activeComponentObj"]),
-    // component: {
-    //     get(){
-    //         return this.activeComponentObj
-    //     }
-    // },
     activeState: {
-        get(){
-            if (this.activeComponentObj) return this.activeComponentObj.state;
-            return []
-        }
+      get() {
+        if (this.activeComponentObj) return this.activeComponentObj.state;
+        return []
+      },
     },
     activeProps: {
-        get(){
-            if (this.activeComponentObj) return this.activeComponentObj.props;
-            return []
-        }
+      get() {
+        if (this.activeComponentObj) return this.activeComponentObj.props;
+        return [];
+      },
     },
     activeActions: {
-        get(){
-            if (this.activeComponentObj) return this.activeComponentObj.actions;
-            return []
-        }
-    }
+      get() {
+        if (this.activeComponentObj) return this.activeComponentObj.actions;
+        return [];
+      },
+    },
     // componentActions: {
     //   get() {
     //     return this.$store.state.activeComponentObj.actions;
