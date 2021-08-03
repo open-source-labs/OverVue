@@ -1,6 +1,6 @@
 <!--
 Description:
-  Displays project tree in Footer
+  Displays project tree in Dashboard
   Functionality includes: formating componentMap object to displaying in tree form
   -->
 

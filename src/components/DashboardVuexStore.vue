@@ -33,25 +33,25 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 
 export default {
-  name: "VuexStore",
+  name: 'VuexStore',
   computed: {
-    ...mapState(["userActions", "userState"]),
-    actionOptions() {
-      return this.userActions;
+    ...mapState(['userActions', 'userState']),
+    actionOptions () {
+      return this.userActions
     },
-    stateOptions() {
-      return this.userState;
-    },
+    stateOptions () {
+      return this.userState
+    }
   },
-  data() {
+  data () {
     return {
-      tab: "state",
-    };
-  },
-};
+      tab: 'state'
+    }
+  }
+}
 </script>
 
 <style lang="stylus" scoped>
@@ -62,13 +62,13 @@ i
   font-size 8px
   margin 5px
 
-// styling for the entire footer
+// styling for the entire Dashboard
 .q-footer
   transition-timing-function ease-in
   transition .2s
   background $subsecondary
 
-// changes the footer toolbar height
+// changes the Dashboard toolbar height
 .q-toolbar
   min-height 25px !important
   padding 0 6px !important

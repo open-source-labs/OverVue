@@ -1,6 +1,6 @@
 <!--
 Description:
-  Displays OverVue application layout including undo/redo button, openProject, saveProject, and exportProject, side panels, and footer
+  Displays OverVue application layout including undo/redo button, openProject, saveProject, and exportProject, side panels, and dashboard
   Functionality includes: Toolbar to the left that can be toggled open/closed and undo/redo functionality
   -->
 
@@ -37,13 +37,13 @@ Description:
     <q-page-container>
       <router-view />
     </q-page-container>
-    <Footer />
+    <Dashboard/>
   </q-layout>
 </template>
 
 <script>
 import HomeSideDropDown from '../components/HomeSideDropDown'
-import Footer from '../components/Footer'
+import Dashboard from '../components/Dashboard'
 import CreateComponent from '../components/CreateComponent'
 import ExportProjectComponent from '../components/ExportProject'
 import SaveProjectComponent from '../components/SaveProjectComponent'
@@ -59,7 +59,7 @@ export default {
   },
   components: {
     HomeSideDropDown,
-    Footer,
+    Dashboard,
     CreateComponent,
     ExportProjectComponent,
     SaveProjectComponent,
