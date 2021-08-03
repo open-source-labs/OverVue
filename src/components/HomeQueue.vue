@@ -81,7 +81,7 @@ export default {
       })
       return newTitle
     }
-    
+
   },
   methods: {
     ...mapActions(['setActiveHTML', 'setActiveLayer', 'upOneLayer']),

@@ -22,8 +22,12 @@ const actions = {
     which are determined by the choices made on the left hand panel
      */
     const { componentName } = payload
+    // if the component name doesn't already exist,
+    // then add the component to the display
     if (!state.componentMap[componentName]) {
       commit(types.ADD_COMPONENT_TO_COMPONENT_MAP, payload)
+      // if the component isn't already a child,
+      // add it as child to the homeview display
       if (!state.parentSelected.length) {
         commit(
           types.ADD_COMPONENT_TO_ACTIVE_ROUTE_CHILDREN,

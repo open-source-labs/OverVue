@@ -7,7 +7,10 @@ Description:
 <template>
   <div class="home-sidebar drawer-menu">
     <br />
-    <form v-on:submit.prevent="createComponent" v-on:click="resetActiveComponent">
+    <form
+      v-on:submit.prevent="createComponent"
+      v-on:click="resetActiveComponent"
+    >
       <q-input
         standout="bg-secondary text-white"
         bottom-slots
@@ -51,7 +54,12 @@ export default {
     ParentMultiselect
   },
   computed: {
-    ...mapState(['componentMap', 'selectedElementList', 'activeComponent', 'activeHTML']),
+    ...mapState([
+      'componentMap',
+      'selectedElementList',
+      'activeComponent',
+      'activeHTML'
+    ]),
     componentNameInputValue: {
       get () {
         return this.$store.state.componentNameInputValue
@@ -77,8 +85,12 @@ export default {
         event.preventDefault()
         return false
       }
+      // boilerplate properties for each component upon creation
       const component = {
-        componentName: this.componentNameInputValue.replace(/[^a-z0-9-_.]/gi, ''),
+        componentName: this.componentNameInputValue.replace(
+          /[^a-z0-9-_.]/gi,
+          ''
+        ),
         x: 0,
         y: 20,
         z: 0,
