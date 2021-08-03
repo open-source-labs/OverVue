@@ -5,13 +5,17 @@ Description:
   -->
 
 <template>
-  <div class="component-display grid-bg" :style="mockBg" v-on:click ="handleClick">
+  <div
+    class="component-display grid-bg"
+    :style="mockBg"
+    v-on:click="handleClick"
+  >
     <VueDraggableResizable
       class-name="component-box"
       v-for="componentData in activeRouteArray"
-      ref ="boxes"
+      ref="boxes"
       :key="componentData.componentName"
-      :id ="componentData.componentName"
+      :id="componentData.componentName"
       :x="componentData.x"
       :y="componentData.y"
       :z="componentData.z"
@@ -29,19 +33,43 @@ Description:
       <div class="component-title">
         <p>{{ componentData.componentName }}</p>
       </div>
+      <p> Elements in Component: </p>
+      <p
+        v-for="htmlElement in componentMap[componentData.componentName]
+          .htmlList"
+        :key="htmlElement"
+      >
+        {{ htmlElement.text }}
+      </p>
       <q-menu context-menu>
-        <q-list color='black' class="menu">
+        <q-list color="black" class="menu">
           <q-item clickable v-ripple v-close-popup @click="handleAddChild">
-            <q-item-section style="color: white">Update Children</q-item-section>
+            <q-item-section style="color: white"
+              >Update Children</q-item-section
+            >
             <q-item-section avatar>
               <q-icon color="primary" name="add" />
             </q-item-section>
           </q-item>
           <q-item clickable v-ripple v-close-popup>
-            <q-item-section class='layer' style="color: pink">Layer</q-item-section>
-              <q-btn class='btn' color='transparent' text-color='primary' label='-' @click='(e)=>handleLayer(e)'/>
-              <p id='counter' style="color: white"> {{componentData.z}} </p>
-              <q-btn class='btn' color='transparent' text-color='primary' label='+' @click='(e)=>handleLayer(e)'/>
+            <q-item-section class="layer" style="color: white"
+              >Layer</q-item-section
+            >
+            <q-btn
+              class="btn"
+              color="transparent"
+              text-color="primary"
+              label="-"
+              @click="e => handleLayer(e)"
+            />
+            <p id="counter" style="color: white">{{ componentData.z }}</p>
+            <q-btn
+              class="btn"
+              color="transparent"
+              text-color="primary"
+              label="+"
+              @click="e => handleLayer(e)"
+            />
           </q-item>
         </q-list>
       </q-menu>
@@ -142,7 +170,12 @@ export default {
         // console.log('Lineage', lineage);
       }
       const routes = Object.keys(this.routes)
-      const exceptions = new Set(['App', ...lineage, ...routes, ...this.testModel])
+      const exceptions = new Set([
+        'App',
+        ...lineage,
+        ...routes,
+        ...this.testModel
+      ])
       return Object.keys(this.componentMap).filter(component => {
         if (!exceptions.has(component)) return component
       })
@@ -158,7 +191,9 @@ export default {
     mockBg () {
       return this.imagePath[this.activeRoute]
         ? {
-          background: `url("${this.userImage}") center/contain no-repeat rgba(223, 218, 218, 0.886)`
+          background: `url("${
+            this.userImage
+          }") center/contain no-repeat rgba(223, 218, 218, 0.886)`
         }
         : {}
     }
@@ -167,7 +202,7 @@ export default {
     // if there are no active component, all boxes are unhighlighted
     if (this.activeComponent === '') {
       if (this.$refs.boxes) {
-        this.$refs.boxes.forEach((element) => {
+        this.$refs.boxes.forEach(element => {
           element.enabled = false
           element.$emit('deactivated')
           element.$emit('update:active', false)
@@ -175,8 +210,11 @@ export default {
       }
     } else {
       // if a component is set to active, highlight it
-      this.$refs.boxes.forEach((element) => {
-        if (this.activeComponent === element.$attrs.id && element.enabled === false) {
+      this.$refs.boxes.forEach(element => {
+        if (
+          this.activeComponent === element.$attrs.id &&
+          element.enabled === false
+        ) {
           element.enabled = true
           element.$emit('activated')
           element.$emit('update:active', true)
@@ -228,8 +266,12 @@ export default {
         routeArray: this.routes[this.activeRoute],
         activeComponentData: this.activeComponentData
       }
-      if (payload.x !== this.initialPosition.x || payload.y !== this.initialPosition.y ||
-          payload.w !== this.initialSize.w || payload.h !== this.initialSize.h) {
+      if (
+        payload.x !== this.initialPosition.x ||
+        payload.y !== this.initialPosition.y ||
+        payload.w !== this.initialSize.w ||
+        payload.h !== this.initialSize.h
+      ) {
         this.updateComponentSize(payload)
       }
     },
@@ -245,7 +287,10 @@ export default {
       }
       // console.log("Payload.x = ", payload.x, "this.initialPosition.x", this.initialPosition.x)
       // console.log("Payload.y = ", payload.y, "this.initialPosition.y", this.initialPosition.y)
-      if (payload.x !== this.initialPosition.x || payload.y !== this.initialPosition.y) {
+      if (
+        payload.x !== this.initialPosition.x ||
+        payload.y !== this.initialPosition.y
+      ) {
         this.updateComponentPosition(payload)
       }
     },
@@ -281,7 +326,7 @@ export default {
 
     // unhighlights all inactive components
     onActivated (componentData) {
-      this.$refs.boxes.forEach((element) => {
+      this.$refs.boxes.forEach(element => {
         if (element.$attrs.id !== componentData.componentName) {
           element.enabled = false
           element.$emit('deactivated')
@@ -408,12 +453,13 @@ export default {
   height: 10px;
   transition: none;
 }
-.btn:hover, .btn:focus, .btn:active {
+.btn:hover,
+.btn:focus,
+.btn:active {
   color: white;
   background-color: transparent;
 }
 #counter {
   margin-top: 20px;
 }
-
 </style>
