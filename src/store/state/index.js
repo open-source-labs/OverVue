@@ -22,7 +22,8 @@ const newState = {
     HomeView: []
   },
   userActions: [],
-  userState: {},
+  userProps: [],
+  userState: [],
   imagePath: {
     HomeView: ''
   },
@@ -31,13 +32,17 @@ const newState = {
   projects: [{ filename: 'Untitled-1', lastSavedLocation: '' }],
 
   activeRoute: 'HomeView',
+  // need to change to activeComponentName
   activeComponent: '',
+  activeComponentObj: undefined,
   activeHTML: '',
   activeLayer: {
     id: '',
     lineage: []
   },
 
+  selectedProps: [],
+  selectedState: [],
   selectedActions: [],
   selectedElementList: [],
   projectNumber: 2,
