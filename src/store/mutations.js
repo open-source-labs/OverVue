@@ -104,6 +104,7 @@ const mutations = {
       }
     }
     state.selectedActions = []
+    state.activeComponentObj = active
   },
 
   [types.CREATE_PROP]: (state, payload) => {
@@ -129,6 +130,7 @@ const mutations = {
       }
     }
     state.selectedProps = []
+    state.activeComponentObj = active
   },
 
   [types.CREATE_STATE]: (state, payload) => {
@@ -154,6 +156,7 @@ const mutations = {
       }
     }
     state.selectedState = []
+    state.activeComponentObj = active
   },
   // *** HTML ELEMENTS *** //////////////////////////////////////////////
 
@@ -370,6 +373,9 @@ const mutations = {
 
   [types.SET_ACTIVE_COMPONENT]: (state, payload) => {
     state.activeComponent = payload
+    state.activeComponentObj = state.routes[state.activeRoute].filter((comp) => {
+      return comp.componentName === state.activeComponent;
+    })[0];
     state.activeHTML = ''
     state.activeLayer = {
       id: '',

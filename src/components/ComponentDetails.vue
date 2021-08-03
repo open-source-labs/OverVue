@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <q-card id="store-cards" v-if="active">
+    <q-card id="store-cards" v-if="this.activeComponentObj">
       <q-tabs
         v-model="tab"
         dense
@@ -14,30 +14,30 @@
         <q-tab name="props" label="Component Props" id="label-text" />
       </q-tabs>
       <q-tab-panels v-model="tab" animated class="html-bg text-white">
-        <q-tab-panel name="state">
+        <q-tab-panel name="state" v-model="compoent">
           <ul id="stateList">
-            <li v-for="state in stateOptions" :key="state">
-              {{ state }}
+            <li v-for="comp in activeState" :key="comp">
+              {{ comp }}
             </li>
           </ul>
         </q-tab-panel>
         <q-tab-panel name="actions">
           <ul id="actionList">
-            <li v-for="action in actionOptions" :key="action">
-              {{ action }}
+            <li v-for="comp in activeActions" :key="comp">
+              {{ comp }}
             </li>
           </ul>
         </q-tab-panel>
         <q-tab-panel name="props">
-          <ul id="actionList">
-            <li v-for="prop in propsOptions" :key="prop">
-              {{ prop }}
+          <ul id="propsList">
+            <li v-for="comp in activeProps" :key="comp">
+              {{ comp }}
             </li>
           </ul>
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
-    <h v-else>Select a component to show details</h>
+    <q-card v-else>Select a component to show details</q-card>
   </div>
 </template>
 
@@ -47,22 +47,45 @@ import { mapState } from "vuex";
 export default {
   name: "ComponentDetails",
   computed: {
-    ...mapState(["activeRoute", "routes", "activeComponent"]),
-    active() {
-      // this returns active component
-      return this.routes[this.activeRoute].filter((comp) => {
-        return comp.componentName === this.activeComponent;
-      })[0];
+    ...mapState(["activeComponentObj"]),
+    // component: {
+    //     get(){
+    //         return this.activeComponentObj
+    //     }
+    // },
+    activeState: {
+        get(){
+            if (this.activeComponentObj) return this.activeComponentObj.state;
+            return []
+        }
     },
-    actionOptions() {
-      return this.active.actions;
+    activeProps: {
+        get(){
+            if (this.activeComponentObj) return this.activeComponentObj.props;
+            return []
+        }
     },
-    stateOptions() {
-      return this.active.state;
-    },
-    propsOptions() {
-      return this.active.props;
-    },
+    activeActions: {
+        get(){
+            if (this.activeComponentObj) return this.activeComponentObj.actions;
+            return []
+        }
+    }
+    // componentActions: {
+    //   get() {
+    //     return this.$store.state.activeComponentObj.actions;
+    //   },
+    // },
+    // componentState: {
+    //   get() {
+    //     return this.$store.state.activeComponentObj.state;
+    //   },
+    // },
+    // componentProps: {
+    //   get() {
+    //     return this.$store.state.activeComponentObj.props;
+    //   },
+    // },
   },
   data() {
     return {

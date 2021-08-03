@@ -32,7 +32,9 @@ const newState = {
   projects: [{ filename: 'Untitled-1', lastSavedLocation: '' }],
 
   activeRoute: 'HomeView',
+  // need to change to activeComponentName
   activeComponent: '',
+  activeComponentObj: undefined,
   activeHTML: '',
   activeLayer: {
     id: '',
