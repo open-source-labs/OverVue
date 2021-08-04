@@ -92,9 +92,10 @@ const mutations = {
   },
 
   [types.ADD_ACTION_TO_COMPONENT]: (state, payload) => {
-    let active = (state.routes[state.activeRoute].filter(comp => {
-      return comp.componentName === state.activeComponent
-    })[0])
+    // let active = (state.routes[state.activeRoute].filter(comp => {
+    //   return comp.componentName === state.activeComponent
+    // })[0])
+    let active = state.activeComponentObj
 
     if (!active.actions) {
       active.actions = payload
@@ -121,9 +122,10 @@ const mutations = {
   },
 
   [types.ADD_PROPS_TO_COMPONENT]: (state, payload) => {
-    let active = (state.routes[state.activeRoute].filter(comp => {
-      return comp.componentName === state.activeComponent
-    })[0])
+    // let active = (state.routes[state.activeRoute].filter(comp => {
+    //   return comp.componentName === state.activeComponent
+    // })[0])
+    let active = state.activeComponentObj
 
     if (!active.props) {
       active.props = payload
@@ -148,9 +150,10 @@ const mutations = {
   },
 
   [types.ADD_STATE_TO_COMPONENT]: (state, payload) => {
-    let active = (state.routes[state.activeRoute].filter(comp => {
-      return comp.componentName === state.activeComponent
-    })[0])
+    // let active = (state.routes[state.activeRoute].filter(comp => {
+    //   return comp.componentName === state.activeComponent
+    // })[0])
+    let active = state.activeComponentObj
 
     if (!active.state) {
       active.state = payload

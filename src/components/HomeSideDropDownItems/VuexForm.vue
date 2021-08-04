@@ -21,9 +21,9 @@ Description:
     </q-input>
     <template>
       <div id="action-select">
-        <br />
         <multiselect
           v-model="selectAction"
+          class="multiselect"
           placeholder="Select Action"
           :multiple="true"
           :close-on-select="false"
@@ -39,15 +39,16 @@ Description:
     </template>
     <template>
       <div>
-        <br />
         <q-btn
           id="add-actions-btn"
+          class="add-btn"
           color="secondary"
           label="Add Action(s)"
           @click="addActionToComp"
         />
       </div>
     </template>
+    <br/>
     <!-- STATE PORTION -->
     <q-input
       standout="bg-secondary text-white"
@@ -63,9 +64,9 @@ Description:
     </q-input>
     <template>
       <div id="state-select">
-        <br />
         <multiselect
           v-model="selectState"
+          class="multiselect"
           placeholder="Select State"
           :multiple="true"
           :close-on-select="false"
@@ -81,16 +82,17 @@ Description:
     </template>
     <template>
       <div>
-        <br />
         <q-btn
-          id="add-actions-btn"
+          id="add-state-btn"
+          class="add-btn"
           color="secondary"
-          label="Add State(s)"
+          label="Add State"
           @click="addStateToComp"
         />
       </div>
     </template>
     <!-- PROPS PORTION -->
+    <br />
     <q-input
       standout="bg-secondary text-white"
       bottom-slots
@@ -105,9 +107,9 @@ Description:
     </q-input>
     <template>
       <div id="props-select">
-        <br />
         <multiselect
           v-model="selectProps"
+          class="multiselect"
           placeholder="Select Props"
           :multiple="true"
           :close-on-select="false"
@@ -123,9 +125,9 @@ Description:
     </template>
     <template>
       <div>
-        <br />
         <q-btn
           id="add-props-btn"
+          class="add-btn"
           color="secondary"
           label="Add Prop(s)"
           @click="addPropsToComp"
@@ -268,11 +270,22 @@ export default {
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
-#parent-select {
+.multiselect {
   height: 30px;
   margin: 0.75rem;
   width: 90%;
 }
+.add-btn {
+  height: 15px;
+  margin: 0.75rem;
+  width: 90%;
+}
+.home-sidebar {
+  margin: 1rem;
+  padding: 0.5rem;
+  border-radius: 5px;
+}
+
 </style>
 
 <style lang="stylus" scoped>
