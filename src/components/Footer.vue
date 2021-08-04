@@ -94,7 +94,7 @@ export default {
       this.height === 40 ? (this.height = minHeight) : (this.height = 40)
       this.open === true ? (this.open = false) : (this.open = true)
     },
-    // method that will handle deselection from active HTML element
+    // function that will handle deselection from active HTML element
     handleHtmlDeselection (event) {
       // console.log('target html element: ', event.target)
       if (event.target.className !== 'list-group-item') {

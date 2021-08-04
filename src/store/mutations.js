@@ -92,9 +92,10 @@ const mutations = {
   },
 
   [types.ADD_ACTION_TO_COMPONENT]: (state, payload) => {
-    let active = (state.routes[state.activeRoute].filter(comp => {
-      return comp.componentName === state.activeComponent
-    })[0])
+    // let active = (state.routes[state.activeRoute].filter(comp => {
+    //   return comp.componentName === state.activeComponent
+    // })[0])
+    let active = state.activeComponentObj
 
     if (!active.actions) {
       active.actions = payload
@@ -104,6 +105,9 @@ const mutations = {
       }
     }
     state.selectedActions = []
+    // super weird code, minor changes to objects are not reactive
+    // setting to null and then resetting to object makes it reactive
+    state.activeComponentObj = null
     state.activeComponentObj = active
   },
 
@@ -118,9 +122,10 @@ const mutations = {
   },
 
   [types.ADD_PROPS_TO_COMPONENT]: (state, payload) => {
-    let active = (state.routes[state.activeRoute].filter(comp => {
-      return comp.componentName === state.activeComponent
-    })[0])
+    // let active = (state.routes[state.activeRoute].filter(comp => {
+    //   return comp.componentName === state.activeComponent
+    // })[0])
+    let active = state.activeComponentObj
 
     if (!active.props) {
       active.props = payload
@@ -130,6 +135,7 @@ const mutations = {
       }
     }
     state.selectedProps = []
+    state.activeComponentObj = null
     state.activeComponentObj = active
   },
 
@@ -147,6 +153,7 @@ const mutations = {
     // let active = (state.routes[state.activeRoute].filter(comp => {
     //   return comp.componentName === state.activeComponent
     // })[0])
+    let active = state.activeComponentObj
 
     if (!state.activeComponentObj.state) {
       state.activeComponentObj.state = payload
@@ -156,7 +163,8 @@ const mutations = {
       }
     }
     state.selectedState = []
-    // state.activeComponentObj
+    state.activeComponentObj = null
+    state.activeComponentObj = active
   },
   // *** HTML ELEMENTS *** //////////////////////////////////////////////
 

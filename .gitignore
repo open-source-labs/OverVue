@@ -13,6 +13,7 @@ yarn-debug.log*
 yarn-error.log*
 /coverage
 package-lock.json
+vetur.config.js
 
 # Editor directories and files
 .idea
