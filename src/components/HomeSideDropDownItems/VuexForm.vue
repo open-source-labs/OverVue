@@ -136,133 +136,133 @@ Description:
 </template>
     <!-- :disabled="!componentNameInputValue.trim()" -->
 <script>
-import { mapState, mapActions } from "vuex";
-import Multiselect from "vue-multiselect";
+import { mapState, mapActions } from 'vuex'
+import Multiselect from 'vue-multiselect'
 
 export default {
-  name: "VuexForm",
+  name: 'VuexForm',
   components: {
-    Multiselect,
+    Multiselect
   },
-  data() {
+  data () {
     return {
-      textAction: "",
-      textState: "",
-      textProps: ""
-    };
+      textAction: '',
+      textState: '',
+      textProps: ''
+    }
   },
   computed: {
     ...mapState([
-      "routes",
-      "componentMap",
-      "activeComponent",
-      "activeRoute",
-      "selectedActions",
-      "selectedState",
-      "selectedProps",
-      "userActions",
-      "userState",
-      "userProps"
+      'routes',
+      'componentMap',
+      'activeComponent',
+      'activeRoute',
+      'selectedActions',
+      'selectedState',
+      'selectedProps',
+      'userActions',
+      'userState',
+      'userProps'
     ]),
-    actionOptions() {
-      return this.userActions;
+    actionOptions () {
+      return this.userActions
     },
-    propsOptions() {
-      return this.userProps;
+    propsOptions () {
+      return this.userProps
     },
-    stateOptions() {
-      return this.userState;
+    stateOptions () {
+      return this.userState
     },
     selectAction: {
-      get() {
-        return this.$store.state.selectedActions;
+      get () {
+        return this.$store.state.selectedActions
       },
-      set(value) {
-        this.addActionSelected(value);
-      },
+      set (value) {
+        this.addActionSelected(value)
+      }
     },
     selectState: {
-      get() {
-        return this.$store.state.selectedState;
+      get () {
+        return this.$store.state.selectedState
       },
-      set(value) {
-        this.addStateSelected(value);
-      },
+      set (value) {
+        this.addStateSelected(value)
+      }
     },
     selectProps: {
-      get() {
-        return this.$store.state.selectedProps;
+      get () {
+        return this.$store.state.selectedProps
       },
-      set(value) {
-        this.addPropsSelected(value);
-      },
-    },
-    
+      set (value) {
+        this.addPropsSelected(value)
+      }
+    }
+
   },
   methods: {
     ...mapActions([
-      "setActiveComponent",
-      "createAction",
-      "createState",
-      "createProp",
-      "addActionSelected",
-      "addStateSelected",
-      "addPropsSelected",
-      "addActionToComponent",
-      "addStateToComponent",
-      "addPropsToComponent"
+      'setActiveComponent',
+      'createAction',
+      'createState',
+      'createProp',
+      'addActionSelected',
+      'addStateSelected',
+      'addPropsSelected',
+      'addActionToComponent',
+      'addStateToComponent',
+      'addPropsToComponent'
     ]),
-    createNewAction(text) {
+    createNewAction (text) {
       if (!this.$store.state.userActions.includes(text)) {
-        this.createAction(text);
-        this.textAction = "";
+        this.createAction(text)
+        this.textAction = ''
       }
     },
-    addActionToComp() {
-      this.addActionToComponent(this.selectedActions);
+    addActionToComp () {
+      this.addActionToComponent(this.selectedActions)
       console.log(
-        "activeComponent",
+        'activeComponent',
         this.routes[this.activeRoute].filter((comp) => {
-          return comp.componentName === this.activeComponent;
+          return comp.componentName === this.activeComponent
         })[0]
-      );
+      )
     },
     createNewProp (text) {
       if (!this.$store.state.userProps.includes(text)) {
-        this.createProp(text);
-        this.textProps = "";
+        this.createProp(text)
+        this.textProps = ''
       }
     },
-    addPropsToComp() {
-      this.addPropsToComponent(this.selectedProps);
+    addPropsToComp () {
+      this.addPropsToComponent(this.selectedProps)
     },
-    createNewState(text) {
+    createNewState (text) {
       if (!this.$store.state.userState.includes(text)) {
-        this.createState(text);
-        this.textState = "";
+        this.createState(text)
+        this.textState = ''
       }
     },
-    addStateToComp() {
-      this.addStateToComponent(this.selectedState);
+    addStateToComp () {
+      this.addStateToComponent(this.selectedState)
     },
 
     // when multiselect is opened activeComponent is deselected to allow for parentSelected action
-    resetActiveComponent() {
-      if (this.activeComponent !== "") {
-        this.setActiveComponent("");
+    resetActiveComponent () {
+      if (this.activeComponent !== '') {
+        this.setActiveComponent('')
       }
-    },
+    }
   },
   // clears out value in mutiselect on creation of component
   watch: {
     componentMap: {
-      handler() {
+      handler () {
         // console.log('componentMap has changed')
-        this.value = "";
-      },
-    },
-  },
-};
+        this.value = ''
+      }
+    }
+  }
+}
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

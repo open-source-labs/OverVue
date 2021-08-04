@@ -144,19 +144,19 @@ const mutations = {
   },
 
   [types.ADD_STATE_TO_COMPONENT]: (state, payload) => {
-    let active = (state.routes[state.activeRoute].filter(comp => {
-      return comp.componentName === state.activeComponent
-    })[0])
+    // let active = (state.routes[state.activeRoute].filter(comp => {
+    //   return comp.componentName === state.activeComponent
+    // })[0])
 
-    if (!active.state) {
-      active.state = payload
+    if (!state.activeComponentObj.state) {
+      state.activeComponentObj.state = payload
     } else {
       for (let s of payload) {
-        if (!active.state.includes(s)) { active.state.push(s) }
+        if (!state.activeComponentObj.state.includes(s)) { state.activeComponentObj.state.push(s) }
       }
     }
     state.selectedState = []
-    state.activeComponentObj = active
+    // state.activeComponentObj
   },
   // *** HTML ELEMENTS *** //////////////////////////////////////////////
 
@@ -374,8 +374,8 @@ const mutations = {
   [types.SET_ACTIVE_COMPONENT]: (state, payload) => {
     state.activeComponent = payload
     state.activeComponentObj = state.routes[state.activeRoute].filter((comp) => {
-      return comp.componentName === state.activeComponent;
-    })[0];
+      return comp.componentName === state.activeComponent
+    })[0]
     state.activeHTML = ''
     state.activeLayer = {
       id: '',

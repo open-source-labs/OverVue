@@ -14,7 +14,7 @@
         <q-tab name="props" label="Component Props" id="label-text" />
       </q-tabs>
       <q-tab-panels v-model="tab" animated class="html-bg text-white">
-        <q-tab-panel name="state" v-model="compoent">
+        <q-tab-panel name="state">
           <ul id="stateList">
             <li v-for="comp in activeState" :key="comp">
               {{ comp }}
@@ -42,34 +42,34 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 
 export default {
-  name: "ComponentDetails",
+  name: 'ComponentDetails',
   computed: {
-    ...mapState(["activeComponentObj"]),
+    ...mapState(['activeComponentObj']),
     // component: {
     //     get(){
     //         return this.activeComponentObj
     //     }
     // },
     activeState: {
-        get(){
-            if (this.activeComponentObj) return this.activeComponentObj.state;
-            return []
-        }
+      get () {
+        if (this.activeComponentObj) return this.activeComponentObj.state
+        return []
+      }
     },
     activeProps: {
-        get(){
-            if (this.activeComponentObj) return this.activeComponentObj.props;
-            return []
-        }
+      get () {
+        if (this.activeComponentObj) return this.activeComponentObj.props
+        return []
+      }
     },
     activeActions: {
-        get(){
-            if (this.activeComponentObj) return this.activeComponentObj.actions;
-            return []
-        }
+      get () {
+        if (this.activeComponentObj) return this.activeComponentObj.actions
+        return []
+      }
     }
     // componentActions: {
     //   get() {
@@ -87,12 +87,12 @@ export default {
     //   },
     // },
   },
-  data() {
+  data () {
     return {
-      tab: "state",
-    };
-  },
-};
+      tab: 'state'
+    }
+  }
+}
 </script>
 
 <style lang="stylus" scoped>
@@ -156,12 +156,3 @@ i
   // give html background color of grey
   background-color #202122
 </style>
-
-
-let active = (state.routes[state.activeRoute].filter(comp => {
-      return comp.componentName === state.activeComponent
-    })[0])
-
-    active.props
-    active.state
-    active.actions
