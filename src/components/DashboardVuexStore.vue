@@ -107,7 +107,7 @@ i
   background black
 
 #store-cards
-  height 100%
+  height 80%
   border-radius 0
   background #737578
 

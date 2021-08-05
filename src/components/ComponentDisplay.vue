@@ -134,7 +134,8 @@ export default {
       'activeComponent',
       'componentMap',
       'componentChildrenMultiselectValue',
-      'imagePath'
+      'imagePath',
+      'activeComponentObj'
     ]),
 
     // used in VueDraggableResizeable component
@@ -378,6 +379,14 @@ export default {
     handleClick (event) {
       if (event.target.className === 'component-display grid-bg') {
         if (!(this.activeComponent === '')) this.setActiveComponent('')
+      }
+    }
+  },
+  watch: {
+    activeComponentObj: {
+      handler () {
+        // console.log('componentMap has changed')
+        this.value = ''
       }
     }
   }

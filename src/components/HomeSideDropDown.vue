@@ -6,12 +6,12 @@ Description:
 <template>
   <div class="q-pa-md" style="max-width: 350px">
     <q-list padding bordered class="rounded-borders drawer-menu">
-      <q-expansion-item dense dense-toggle expand-separator label="Components">
-        <q-card>
-          <div class="input-container" style="height: 130px">
-            <ComponentList />
-          </div>
-        </q-card>
+      <q-expansion-item dense dense-toggle expand-separator label="Edit/Delete Components">
+          <q-card>
+            <div class="input-container" style='height: 130px'>
+              <ComponentList />
+            </div>
+          </q-card>
       </q-expansion-item>
       <q-expansion-item dense dense-toggle expand-separator label="Routes">
         <q-card>

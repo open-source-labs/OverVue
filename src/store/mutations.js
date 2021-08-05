@@ -92,9 +92,10 @@ const mutations = {
   },
 
   [types.ADD_ACTION_TO_COMPONENT]: (state, payload) => {
-    let active = (state.routes[state.activeRoute].filter(comp => {
-      return comp.componentName === state.activeComponent
-    })[0])
+    // let active = (state.routes[state.activeRoute].filter(comp => {
+    //   return comp.componentName === state.activeComponent
+    // })[0])
+    let active = state.activeComponentObj
 
     if (!active.actions) {
       active.actions = payload
@@ -121,9 +122,10 @@ const mutations = {
   },
 
   [types.ADD_PROPS_TO_COMPONENT]: (state, payload) => {
-    let active = (state.routes[state.activeRoute].filter(comp => {
-      return comp.componentName === state.activeComponent
-    })[0])
+    // let active = (state.routes[state.activeRoute].filter(comp => {
+    //   return comp.componentName === state.activeComponent
+    // })[0])
+    let active = state.activeComponentObj
 
     if (!active.props) {
       active.props = payload
@@ -148,21 +150,36 @@ const mutations = {
   },
 
   [types.ADD_STATE_TO_COMPONENT]: (state, payload) => {
-    let active = (state.routes[state.activeRoute].filter(comp => {
-      return comp.componentName === state.activeComponent
-    })[0])
+    // let active = (state.routes[state.activeRoute].filter(comp => {
+    //   return comp.componentName === state.activeComponent
+    // })[0])
+    let active = state.activeComponentObj
 
-    if (!active.state) {
-      active.state = payload
+    if (!state.activeComponentObj.state) {
+      state.activeComponentObj.state = payload
     } else {
       for (let s of payload) {
-        if (!active.state.includes(s)) { active.state.push(s) }
+        if (!state.activeComponentObj.state.includes(s)) { state.activeComponentObj.state.push(s) }
       }
     }
     state.selectedState = []
     state.activeComponentObj = null
     state.activeComponentObj = active
   },
+
+  // *** EDIT FUNCTIONALITY *** //////////////////////////////////////////////
+
+  [types.EDIT_COMPONENT_NAME]: (state, payload) => {
+    // let temp = state.activeComponentObj
+    // temp.componentName = payload
+    let active = (state.routes[state.activeRoute].filter(comp => {
+      return comp.componentName === state.activeComponent
+    })[0])
+    active.componentName = payload
+    state.activeComponentObj = Object.assign({},
+      state.activeComponentObj, {componentName: payload})
+  },
+
   // *** HTML ELEMENTS *** //////////////////////////////////////////////
 
   [types.ADD_NESTED_HTML]: (state, payload) => {
@@ -379,8 +396,8 @@ const mutations = {
   [types.SET_ACTIVE_COMPONENT]: (state, payload) => {
     state.activeComponent = payload
     state.activeComponentObj = state.routes[state.activeRoute].filter((comp) => {
-      return comp.componentName === state.activeComponent;
-    })[0];
+      return comp.componentName === state.activeComponent
+    })[0]
     state.activeHTML = ''
     state.activeLayer = {
       id: '',
