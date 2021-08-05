@@ -6,24 +6,32 @@ Description:
 
 <template>
   <div class="input-container">
+    <hr />
     <!-- ACTION SECTION -->
     <q-input
+      @keyup.enter.native="createNewAction(textAction)"
       standout="bg-secondary text-white"
       bottom-slots
       v-model="textAction"
-      label="Create Action"
+      label="Create Action in Store"
       dense
       class="input-add"
     >
       <template v-slot:append>
-        <q-btn round dense flat icon="add" @click="createNewAction(textAction)" />
+        <q-btn
+          round
+          dense
+          flat
+          icon="add"
+          @click="createNewAction(textAction)"
+        />
       </template>
     </q-input>
     <template>
       <div id="action-select">
-        <br />
         <multiselect
           v-model="selectAction"
+          class="multiselect"
           placeholder="Select Action"
           :multiple="true"
           :close-on-select="false"
@@ -39,21 +47,23 @@ Description:
     </template>
     <template>
       <div>
-        <br />
         <q-btn
           id="add-actions-btn"
+          class="add-btn"
           color="secondary"
-          label="Add Action(s)"
+          label="Map Action(s)"
           @click="addActionToComp"
         />
       </div>
     </template>
+    <hr />
     <!-- STATE PORTION -->
     <q-input
+      @keyup.enter.native="createNewState(textState)"
       standout="bg-secondary text-white"
       bottom-slots
       v-model="textState"
-      label="Create State"
+      label="Create State in Store"
       dense
       class="input-add"
     >
@@ -63,9 +73,9 @@ Description:
     </q-input>
     <template>
       <div id="state-select">
-        <br />
         <multiselect
           v-model="selectState"
+          class="multiselect"
           placeholder="Select State"
           :multiple="true"
           :close-on-select="false"
@@ -81,21 +91,23 @@ Description:
     </template>
     <template>
       <div>
-        <br />
         <q-btn
-          id="add-actions-btn"
+          id="add-state-btn"
+          class="add-btn"
           color="secondary"
-          label="Add State(s)"
+          label="Map State"
           @click="addStateToComp"
         />
       </div>
     </template>
     <!-- PROPS PORTION -->
+    <hr />
     <q-input
+      @keyup.enter.native="createNewProp(textProps)"
       standout="bg-secondary text-white"
       bottom-slots
       v-model="textProps"
-      label="Create Props"
+      label="Create Prop"
       dense
       class="input-add"
     >
@@ -105,9 +117,9 @@ Description:
     </q-input>
     <template>
       <div id="props-select">
-        <br />
         <multiselect
           v-model="selectProps"
+          class="multiselect"
           placeholder="Select Props"
           :multiple="true"
           :close-on-select="false"
@@ -123,155 +135,176 @@ Description:
     </template>
     <template>
       <div>
-        <br />
         <q-btn
           id="add-props-btn"
+          class="add-btn"
           color="secondary"
           label="Add Prop(s)"
           @click="addPropsToComp"
         />
       </div>
     </template>
+    <hr/>
   </div>
 </template>
     <!-- :disabled="!componentNameInputValue.trim()" -->
 <script>
-import { mapState, mapActions } from "vuex";
-import Multiselect from "vue-multiselect";
+import { mapState, mapActions } from 'vuex'
+import Multiselect from 'vue-multiselect'
 
 export default {
-  name: "VuexForm",
+  name: 'VuexForm',
   components: {
-    Multiselect,
+    Multiselect
   },
-  data() {
+  data () {
     return {
-      textAction: "",
-      textState: "",
-      textProps: ""
-    };
+      textAction: '',
+      textState: '',
+      textProps: ''
+    }
   },
   computed: {
     ...mapState([
-      "routes",
-      "componentMap",
-      "activeComponent",
-      "activeRoute",
-      "selectedActions",
-      "selectedState",
-      "selectedProps",
-      "userActions",
-      "userState",
-      "userProps"
+      'routes',
+      'componentMap',
+      'activeComponent',
+      'activeRoute',
+      'selectedActions',
+      'selectedState',
+      'selectedProps',
+      'userActions',
+      'userState',
+      'userProps'
     ]),
-    actionOptions() {
-      return this.userActions;
+    actionOptions () {
+      return this.userActions
     },
-    propsOptions() {
-      return this.userProps;
+    propsOptions () {
+      return this.userProps
     },
-    stateOptions() {
-      return this.userState;
+    stateOptions () {
+      return this.userState
     },
     selectAction: {
-      get() {
-        return this.$store.state.selectedActions;
+      get () {
+        return this.selectedActions
       },
-      set(value) {
-        this.addActionSelected(value);
-      },
+      set (value) {
+        this.addActionSelected(value)
+      }
     },
     selectState: {
-      get() {
-        return this.$store.state.selectedState;
+      get () {
+        return this.selectedState
       },
-      set(value) {
-        this.addStateSelected(value);
-      },
+      set (value) {
+        this.addStateSelected(value)
+      }
     },
     selectProps: {
-      get() {
-        return this.$store.state.selectedProps;
+      get () {
+        return this.selectedProps
       },
-      set(value) {
-        this.addPropsSelected(value);
-      },
-    },
-    
+      set (value) {
+        this.addPropsSelected(value)
+      }
+    }
   },
   methods: {
     ...mapActions([
-      "setActiveComponent",
-      "createAction",
-      "createState",
-      "createProp",
-      "addActionSelected",
-      "addStateSelected",
-      "addPropsSelected",
-      "addActionToComponent",
-      "addStateToComponent",
-      "addPropsToComponent"
+      'setActiveComponent',
+      'createAction',
+      'createState',
+      'createProp',
+      'addActionSelected',
+      'addStateSelected',
+      'addPropsSelected',
+      'addActionToComponent',
+      'addStateToComponent',
+      'addPropsToComponent'
     ]),
-    createNewAction(text) {
-      if (!this.$store.state.userActions.includes(text)) {
-        this.createAction(text);
-        this.textAction = "";
+
+    // Create's a new action that will be stored in the userActions array within store, and it will be added to the action drop-down menu
+    createNewAction (text) {
+      if (!this.userActions.includes(text) && text) {
+        this.createAction(text)
+        this.textAction = ''
       }
     },
-    addActionToComp() {
-      this.addActionToComponent(this.selectedActions);
-      console.log(
-        "activeComponent",
-        this.routes[this.activeRoute].filter((comp) => {
-          return comp.componentName === this.activeComponent;
-        })[0]
-      );
-      console.log("Active comp 2", this.$store.state.activeComponentObj)
+
+    // Adds an action to the currently selected component
+    addActionToComp () {
+      this.addActionToComponent(this.selectedActions)
     },
+
+    // Create's a new prop that will be stored in the userProps array within store, and it will be added to the props drop-down menu
     createNewProp (text) {
-      if (!this.$store.state.userProps.includes(text)) {
-        this.createProp(text);
-        this.textProps = "";
+      if (!this.userProps.includes(text) && text) {
+        this.createProp(text)
+        this.textProps = ''
       }
     },
-    addPropsToComp() {
-      this.addPropsToComponent(this.selectedProps);
+
+    // Adds a prop to the currently selected component
+    addPropsToComp () {
+      this.addPropsToComponent(this.selectedProps)
     },
-    createNewState(text) {
-      if (!this.$store.state.userState.includes(text)) {
-        this.createState(text);
-        this.textState = "";
+
+    // Create's a new state property that will be stored in the userState array within store, and it will be added to the state drop-down menu
+    createNewState (text) {
+      if (!this.userState.includes(text) && text) {
+        this.createState(text)
+        this.textState = ''
       }
     },
-    addStateToComp() {
-      this.addStateToComponent(this.selectedState);
+
+    // Adds a state to the currently selected component
+    addStateToComp () {
+      this.addStateToComponent(this.selectedState)
     },
 
     // when multiselect is opened activeComponent is deselected to allow for parentSelected action
-    resetActiveComponent() {
-      if (this.activeComponent !== "") {
-        this.setActiveComponent("");
+    resetActiveComponent () {
+      if (this.activeComponent !== '') {
+        this.setActiveComponent('')
       }
-    },
-  },
+    }
+  }
   // clears out value in mutiselect on creation of component
-  watch: {
-    componentMap: {
-      handler() {
-        // console.log('componentMap has changed')
-        this.value = "";
-      },
-    },
-  },
-};
+  // watch: {
+  //   componentMap: {
+  //     handler () {
+  //       // console.log('componentMap has changed')
+  //       this.value = ''
+  //     }
+  //   }
+  // }
+}
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
-#parent-select {
+.multiselect {
   height: 30px;
   margin: 0.75rem;
   width: 90%;
+}
+.add-btn {
+  height: 15px;
+  margin: 0.75rem;
+  width: 90%;
+}
+.home-sidebar {
+  margin: 1rem;
+  padding: 0.5rem;
+  border-radius: 5px;
+}
+
+hr {
+  height: 1px;
+  background-color: #ccc;
+  border: none;
 }
 </style>
 

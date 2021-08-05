@@ -9,85 +9,71 @@
         indicator-color="secondary"
         align="left"
       >
+        <q-tab name="code" label="Code Snippet" id="label-text" />
+        <q-tab name="html" label="HTML Elements" id="label-text" />
         <q-tab name="state" label="Component State" id="label-text" />
         <q-tab name="actions" label="Component Actions" id="label-text" />
         <q-tab name="props" label="Component Props" id="label-text" />
       </q-tabs>
       <q-tab-panels v-model="tab" animated class="html-bg text-white">
-        <q-tab-panel name="state" v-model="activeState">
+        <q-tab-panel name="code">
+          <CodeSnippet/>
+        </q-tab-panel>
+       <q-tab-panel name="html" :style="{height: `${height}vh`}">
+          <HomeQueue />
+        </q-tab-panel>
+        <q-tab-panel name="state">
           <ul id="stateList">
-            <li v-for="comp in activeState" :key="comp">
+            <li v-for="comp in compObj.state" :key="comp">
               {{ comp }}
             </li>
           </ul>
         </q-tab-panel>
-        <q-tab-panel name="actions" v-model="activeActions">
+        <q-tab-panel name="actions">
           <ul id="actionList">
-            <li v-for="comp in activeActions" :key="comp">
+            <li v-for="comp in compObj.actions" :key="comp">
               {{ comp }}
             </li>
           </ul>
         </q-tab-panel>
-        <q-tab-panel name="props" v-model="activeProps">
+        <q-tab-panel name="props">
           <ul id="propsList">
-            <li v-for="comp in activeProps" :key="comp">
+            <li v-for="comp in compObj.props" :key="comp">
               {{ comp }}
             </li>
           </ul>
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
-    <q-card v-else>Select a component to show details</q-card>
+    <q-card id="blank-card" v-else>Select a component to show details</q-card>
   </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
+import HomeQueue from './HomeQueue'
+import CodeSnippet from './CodeSnippet'
 
 export default {
-  name: "ComponentDetails",
+  name: 'ComponentDetails',
+  components: {
+    HomeQueue,
+    CodeSnippet
+  },
   computed: {
-    ...mapState(["activeComponentObj"]),
-    activeState: {
-      get() {
-        if (this.activeComponentObj) return this.activeComponentObj.state;
-        return []
-      },
-    },
-    activeProps: {
-      get() {
-        if (this.activeComponentObj) return this.activeComponentObj.props;
-        return [];
-      },
-    },
-    activeActions: {
-      get() {
-        if (this.activeComponentObj) return this.activeComponentObj.actions;
-        return [];
-      },
-    },
-    // componentActions: {
-    //   get() {
-    //     return this.$store.state.activeComponentObj.actions;
-    //   },
-    // },
-    // componentState: {
-    //   get() {
-    //     return this.$store.state.activeComponentObj.state;
-    //   },
-    // },
-    // componentProps: {
-    //   get() {
-    //     return this.$store.state.activeComponentObj.props;
-    //   },
-    // },
+    ...mapState(['activeComponentObj']),
+    compObj: {
+      get () {
+        return this.activeComponentObj
+      }
+    }
   },
-  data() {
+  data () {
     return {
-      tab: "state",
-    };
-  },
-};
+      tab: 'code'
+    }
+  }
+}
 </script>
 
 <style lang="stylus" scoped>
@@ -143,20 +129,16 @@ i
   background black
 
 #store-cards
-  height 100%
+  height 80%
   border-radius 0
   background #737578
+
+#blank-card
+  height 80%
+  border-radius 0
+  background-color #202122
 
 .html-bg
   // give html background color of grey
   background-color #202122
 </style>
-
-
-let active = (state.routes[state.activeRoute].filter(comp => {
-      return comp.componentName === state.activeComponent
-    })[0])
-
-    active.props
-    active.state
-    active.actions

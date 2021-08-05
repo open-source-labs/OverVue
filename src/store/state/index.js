@@ -34,7 +34,7 @@ const newState = {
   activeRoute: 'HomeView',
   // need to change to activeComponentName
   activeComponent: '',
-  activeComponentObj: undefined,
+  activeComponentObj: null,
   activeHTML: '',
   activeLayer: {
     id: '',
