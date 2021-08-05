@@ -36,8 +36,8 @@ Description:
 
 <script>
 import RouteDisplay from '../components/RouteDisplay'
-import ComponentList from './HomeSideDropDownItems/ComponentList'
-import VuexForm from './HomeSideDropDownItems/VuexForm'
+import ComponentList from './home_sidebar_items/ComponentList'
+import VuexForm from './home_sidebar_items/VuexForm'
 
 export default {
   components: {
