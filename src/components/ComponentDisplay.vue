@@ -34,7 +34,7 @@ Description:
         <p>{{ componentData.componentName }}</p>
       </div>
       <div class="component-html-info">
-        <p>Elements in Component:</p>
+        <!-- <p>Elements in Component:</p> -->
         <p
           class="list-of-elements"
           v-for="htmlElement in componentMap[componentData.componentName]
