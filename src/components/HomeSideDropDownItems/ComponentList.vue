@@ -113,9 +113,11 @@ export default {
     },
     editCompName(name){
       if (name) this.editComponentName(name)
-      console.log(this.routes[this.activeRoute])
-      console.log(this.activeComponentObj)
-      console.log(this.activeComponent)
+      this.setActiveComponent(this.activeComponent)
+      // console.log(this.routes[this.activeRoute])
+      // console.log(this.activeComponentObj)
+      // console.log(this.activeComponent)
+      console.log(this.$refs.boxes)
     }
   },
   watch: {

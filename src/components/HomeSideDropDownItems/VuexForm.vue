@@ -16,6 +16,7 @@ Description:
       label="Create Action in Store"
       dense
       class="input-add"
+      v-on:keyup.delete.stop
     >
       <template v-slot:append>
         <q-btn
@@ -30,6 +31,7 @@ Description:
     <template>
       <div id="action-select">
         <multiselect
+          v-on:keyup.delete.stop
           v-model="selectAction"
           class="multiselect"
           placeholder="Select Action"
@@ -66,6 +68,7 @@ Description:
       label="Create State in Store"
       dense
       class="input-add"
+      v-on:keyup.delete.stop
     >
       <template v-slot:append>
         <q-btn round dense flat icon="add" @click="createNewState(textState)" />
@@ -84,6 +87,7 @@ Description:
           open-direction="top"
           :options="stateOptions"
           :searchable="true"
+          v-on:keyup.delete.stop
         >
           <span slot="noResult">No state found.</span>
         </multiselect>
@@ -110,6 +114,7 @@ Description:
       label="Create Prop"
       dense
       class="input-add"
+      v-on:keyup.delete.stop
     >
       <template v-slot:append>
         <q-btn round dense flat icon="add" @click="createNewProp(textProps)" />
@@ -128,6 +133,7 @@ Description:
           open-direction="top"
           :options="propsOptions"
           :searchable="true"
+          v-on:keyup.delete.stop
         >
           <span slot="noResult">No props found.</span>
         </multiselect>
