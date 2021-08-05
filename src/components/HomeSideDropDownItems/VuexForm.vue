@@ -13,7 +13,7 @@ Description:
       standout="bg-secondary text-white"
       bottom-slots
       v-model="textAction"
-      label="Create Action"
+      label="Create Action in Store"
       dense
       class="input-add"
     >
@@ -63,7 +63,7 @@ Description:
       standout="bg-secondary text-white"
       bottom-slots
       v-model="textState"
-      label="Create State"
+      label="Create State in Store"
       dense
       class="input-add"
     >
@@ -107,7 +107,7 @@ Description:
       standout="bg-secondary text-white"
       bottom-slots
       v-model="textProps"
-      label="Create Props"
+      label="Create Prop in Store"
       dense
       class="input-add"
     >

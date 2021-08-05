@@ -22,30 +22,16 @@ Description:
         indicator-color="secondary"
         align="left"
       >
-
-        <q-tab name="code" label="Code Snippet" id="label-text" />
         <q-tab name="detail" label="Component Details" id="label-text" />
         <q-tab name="tree" label="Project Tree" id="label-text" />
-        <q-tab name="html" label="HTML Elements" id="label-text" />
         <q-tab name="store" label="Vuex Store" id="label-text" />
-
       </q-tabs>
-
       <q-tab-panels v-model="tab" animated class="html-bg text-white" >
-        <q-tab-panel name="code">
-          <CodeSnippet />
-        </q-tab-panel>
-      <!-- Work in Progress -->
         <q-tab-panel name="detail">
           <ComponentDetails/>
         </q-tab-panel>
-      <!----------------------->
         <q-tab-panel name="tree">
           <Tree />
-        </q-tab-panel>
-
-        <q-tab-panel name="html" :style="{height: `${height}vh`}">
-          <HomeQueue />
         </q-tab-panel>
         <q-tab-panel name="store">
           <VuexStore/>
@@ -58,16 +44,12 @@ Description:
 <script>
 import { mapState, mapActions } from 'vuex'
 import Tree from './Tree'
-import HomeQueue from './HomeQueue'
-import CodeSnippet from './CodeSnippet'
 import VuexStore from './DashboardVuexStore.vue'
 import ComponentDetails from './ComponentDetails'
 
 export default {
   components: {
     Tree,
-    HomeQueue,
-    CodeSnippet,
     VuexStore,
     ComponentDetails
   },

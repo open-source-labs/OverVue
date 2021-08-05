@@ -6,6 +6,23 @@ Description:
 
 <template>
   <div class="home-sidebar">
+     <q-input
+      @keyup.enter.native="editComponentName(newName)"
+      standout="bg-secondary text-white"
+      bottom-slots
+      v-model="newName"
+      label="Edit name"
+      dense
+      class="input-add"
+    >
+      <template v-slot:append>
+        <q-btn
+          round
+          dense
+          flat
+          icon="add"
+          @click="createNewAction(textAction)"
+        />
     <multiselect
       class='multiselect'
       v-model="value"
@@ -20,24 +37,9 @@ Description:
       <span slot='noResult'>No components found.</span>
       </multiselect>
       <br/>
-    <a
-      v-for="componentData in activeRouteDisplay"
-      :key="componentData.componentName"
-      v-on:click="onActivated(componentData)"
-    >
-      <q-list class="list-item" dense bordered separator>
-        <q-item clickable v-ripple class="list-item">
-          <q-item-section>
-            <div class="component-container">
-              <div class="component-info">
-                {{componentData.componentName}}
-              </div>
-              <q-btn round flat icon="highlight_off" v-on:click.stop="handleClick(componentData)" />
-            </div>
-          </q-item-section>
-        </q-item>
-      </q-list>
-    </a>
+    <h v-if="this.activeComponentObj"> Currently selected component: {{ activeComponentObj.componentName }} </h>
+    <h v-else> Select a component </h>
+    <q-btn id="deleteButton" @click="deleteSelectedComp(activeComponentData)" label = 'Delete currently selected'/>
   </div>
 </template>
 
@@ -48,21 +50,20 @@ import Multiselect from 'vue-multiselect'
 export default {
   data () {
     return {
-      value: ''
+      value: '',
+      newName: ''
     }
   },
   components: { Multiselect },
   computed: {
-    ...mapState(['routes', 'activeRoute', 'activeComponent']),
+    ...mapState(['routes', 'activeRoute', 'activeComponent', 'activeComponentObj']),
     activeRouteDisplay () {
       let component = this.routes[this.activeRoute]
       // console.log('component', component)
       return component
     },
     activeComponentData () {
-      return this.activeRouteDisplay.filter(componentData => {
-        return componentData.componentName === this.activeComponent
-      })[0]
+      return this.activeComponentObj
     },
     options () {
       const val = this.activeRouteDisplay.map(component => component.componentName)
@@ -77,14 +78,16 @@ export default {
       'deleteActiveComponent'
     ]),
     // Set component as active component from left side dropdown
-    onActivated (componentData) {
-      this.setActiveComponent(componentData.componentName)
-      this.activeComponentData.isActive = true
-    },
+    // onActivated (componentData) {
+    //   this.setActiveComponent(componentData.componentName)
+    //   this.activeComponentData.isActive = true
+    // },
     // Deletes the selected component
-    handleClick (componentData) {
-      this.setActiveComponent(componentData.componentName)
-      this.deleteActiveComponent(componentData.componentName)
+    deleteSelectedComp (componentData) {
+      if (componentData) {
+        // this.setActiveComponent(componentData.componentName)
+        this.deleteActiveComponent(componentData.componentName)
+      }
     },
     // Select active component from multi-select input
     handleSelect (componentName) {
@@ -99,6 +102,14 @@ export default {
       }
     }
   }
+  // watch: {
+  //   activeComponent: function () {
+  //     // console.log('watching activeComponent in Footer');
+  //     if (this.activeComponent === '' && this.selectedElementList.length !== 0) {
+  //       this.tab = 'html'
+  //     }
+  //   }
+  // }
 }
 </script>
 
@@ -126,7 +137,13 @@ export default {
   display: flex;
   justify-content: space-between;
 }
+
+h {
+  color: white;
+}
+
+#deleteButton {
+ background-color: #289ead;
+ color: white;
+}
 </style>
-
-
-

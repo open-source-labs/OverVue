@@ -9,11 +9,19 @@
         indicator-color="secondary"
         align="left"
       >
+        <q-tab name="code" label="Code Snippet" id="label-text" />
+        <q-tab name="html" label="HTML Elements" id="label-text" />
         <q-tab name="state" label="Component State" id="label-text" />
         <q-tab name="actions" label="Component Actions" id="label-text" />
         <q-tab name="props" label="Component Props" id="label-text" />
       </q-tabs>
       <q-tab-panels v-model="tab" animated class="html-bg text-white">
+        <q-tab-panel name="code">
+          <CodeSnippet/>
+        </q-tab-panel>
+       <q-tab-panel name="html" :style="{height: `${height}vh`}">
+          <HomeQueue />
+        </q-tab-panel>
         <q-tab-panel name="state">
           <ul id="stateList">
             <li v-for="comp in compObj.state" :key="comp">
@@ -43,9 +51,15 @@
 
 <script>
 import { mapState } from 'vuex'
+import HomeQueue from './HomeQueue'
+import CodeSnippet from './CodeSnippet'
 
 export default {
   name: 'ComponentDetails',
+  components: {
+    HomeQueue,
+    CodeSnippet
+  },
   computed: {
     ...mapState(['activeComponentObj']),
     compObj: {
@@ -56,7 +70,7 @@ export default {
   },
   data () {
     return {
-      tab: 'state'
+      tab: 'code'
     }
   }
 }
