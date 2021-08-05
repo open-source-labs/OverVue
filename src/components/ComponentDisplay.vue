@@ -33,14 +33,17 @@ Description:
       <div class="component-title">
         <p>{{ componentData.componentName }}</p>
       </div>
-      <p> Elements in Component: </p>
-      <p
-        v-for="htmlElement in componentMap[componentData.componentName]
-          .htmlList"
-        :key="htmlElement"
-      >
-        {{ htmlElement.text }}
-      </p>
+      <div class="component-html-info">
+        <p>Elements in Component:</p>
+        <p
+          class="list-of-elements"
+          v-for="htmlElement in componentMap[componentData.componentName]
+            .htmlList"
+          :key="htmlElement"
+        >
+           {{  htmlElement.text  }}
+        </p>
+      </div>
       <q-menu context-menu>
         <q-list color="black" class="menu">
           <q-item clickable v-ripple v-close-popup @click="handleAddChild">
@@ -402,6 +405,28 @@ export default {
   line-height: 1.2;
   z-index: -1;
 }
+/* .component-html-info {
+  position: relative;
+  font-size: 16px;
+  top: -18px;
+  left: 2px;
+  color: black;
+  -webkit-text-stroke: 0.4px white;
+  font-weight: 800;
+  line-height: 1.2;
+  z-index: -1;
+} */
+.component-html-info {
+    display: flex;
+    /* flex-basis: auto; */
+    flex-direction: column;
+    /* flex-wrap: wrap; */
+    /* justify-content: center; */
+    /* flex-flow: column wrap; */
+    /* align-content: stretch; */
+    /* align-items: flex-start; */
+    font-weight: 800;
+  }
 .component-children {
   position: relative;
   top: 0rem;
