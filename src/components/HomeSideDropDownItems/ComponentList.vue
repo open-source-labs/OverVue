@@ -64,8 +64,11 @@ export default {
       // console.log('component', component)
       return component
     },
-    activeComponentData () {
+    activeComponentData() {
       return this.activeComponentObj
+      // set(name){
+      //   this.editComponentName(name) 
+      // }
     },
     options () {
       const val = this.activeRouteDisplay.map(component => component.componentName)
@@ -77,7 +80,8 @@ export default {
     ...mapActions([
       'setActiveComponent',
       'deleteComponent',
-      'deleteActiveComponent'
+      'deleteActiveComponent',
+      'editComponentName'
     ]),
     // Set component as active component from left side dropdown
     // onActivated (componentData) {
@@ -106,11 +110,17 @@ export default {
       if (this.activeComponent !== '') {
         this.setActiveComponent('')
       }
+    },
+    editCompName(name){
+      if (name) this.editComponentName(name)
+      console.log(this.routes[this.activeRoute])
+      console.log(this.activeComponentObj)
+      console.log(this.activeComponent)
     }
   },
   watch: {
     activeComponentObj: function () {
-      this.newName = this.activeComponentObj.componentName
+      if (this.activeComponentObj) this.newName = this.activeComponentObj.componentName
     }
   }
 }

@@ -51,7 +51,7 @@ Description:
           id="add-actions-btn"
           class="add-btn"
           color="secondary"
-          label="Add Action(s)"
+          label="Map Action(s)"
           @click="addActionToComp"
         />
       </div>
@@ -95,7 +95,7 @@ Description:
           id="add-state-btn"
           class="add-btn"
           color="secondary"
-          label="Add State"
+          label="Map State"
           @click="addStateToComp"
         />
       </div>
@@ -107,7 +107,7 @@ Description:
       standout="bg-secondary text-white"
       bottom-slots
       v-model="textProps"
-      label="Create Prop in Store"
+      label="Create Prop"
       dense
       class="input-add"
     >

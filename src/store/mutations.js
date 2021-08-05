@@ -170,7 +170,14 @@ const mutations = {
   // *** EDIT FUNCTIONALITY *** //////////////////////////////////////////////
 
   [types.EDIT_COMPONENT_NAME]: (state, payload) => {
-
+    // let temp = state.activeComponentObj
+    // temp.componentName = payload
+    let active = (state.routes[state.activeRoute].filter(comp => {
+      return comp.componentName === state.activeComponent
+    })[0])
+    active.componentName = payload
+    state.activeComponentObj = Object.assign({},
+      state.activeComponentObj, {componentName: payload})
   },
 
   // *** HTML ELEMENTS *** //////////////////////////////////////////////
