@@ -155,6 +155,11 @@ const actions = {
   },
   // End of Vuex Actions section //////////////////////////////////////////
 
+  // Action primarily for edit functionality////////////////////////////////////////
+  [types.editComponentName]: ({ commit }, payload) => {
+    commit(types.EDIT_COMPONENT_NAME, payload)
+  },
+
   // Actions dispatched from left hand panel////////////////////////////////////////
 
   [types.addToComponentElementList]: ({ commit }, payload) => {

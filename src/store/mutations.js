@@ -166,6 +166,13 @@ const mutations = {
     state.activeComponentObj = null
     state.activeComponentObj = active
   },
+
+  // *** EDIT FUNCTIONALITY *** //////////////////////////////////////////////
+
+  [types.EDIT_COMPONENT_NAME]: (state, payload) => {
+
+  },
+
   // *** HTML ELEMENTS *** //////////////////////////////////////////////
 
   [types.ADD_NESTED_HTML]: (state, payload) => {

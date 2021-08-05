@@ -7,22 +7,24 @@ Description:
 <template>
   <div class="home-sidebar">
      <q-input
-      @keyup.enter.native="editComponentName(newName)"
+      @keyup.enter.native="editCompName(newName)"
       standout="bg-secondary text-white"
       bottom-slots
+      v-on:keyup.delete.stop
       v-model="newName"
       label="Edit name"
       dense
       class="input-add"
-    >
-      <template v-slot:append>
+    />
+      <!-- <template v-slot:append>
         <q-btn
           round
           dense
           flat
-          icon="add"
-          @click="createNewAction(textAction)"
+          icon="fas fa-edit"
+          @click="editCompName(newName)"
         />
+      </template> -->
     <multiselect
       class='multiselect'
       v-model="value"
@@ -82,6 +84,10 @@ export default {
     //   this.setActiveComponent(componentData.componentName)
     //   this.activeComponentData.isActive = true
     // },
+    //
+    // deleteCircumvent (e) {
+    //   e.preventDefault()
+    // },
     // Deletes the selected component
     deleteSelectedComp (componentData) {
       if (componentData) {
@@ -101,15 +107,12 @@ export default {
         this.setActiveComponent('')
       }
     }
+  },
+  watch: {
+    activeComponentObj: function () {
+      this.newName = this.activeComponentObj.componentName
+    }
   }
-  // watch: {
-  //   activeComponent: function () {
-  //     // console.log('watching activeComponent in Footer');
-  //     if (this.activeComponent === '' && this.selectedElementList.length !== 0) {
-  //       this.tab = 'html'
-  //     }
-  //   }
-  // }
 }
 </script>
 
