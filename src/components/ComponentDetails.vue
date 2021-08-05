@@ -42,30 +42,30 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 
 export default {
-  name: "ComponentDetails",
+  name: 'ComponentDetails',
   computed: {
-    ...mapState(["activeComponentObj"]),
+    ...mapState(['activeComponentObj']),
     activeState: {
-      get() {
-        if (this.activeComponentObj) return this.activeComponentObj.state;
+      get () {
+        if (this.activeComponentObj) return this.activeComponentObj.state
         return []
-      },
+      }
     },
     activeProps: {
-      get() {
-        if (this.activeComponentObj) return this.activeComponentObj.props;
-        return [];
-      },
+      get () {
+        if (this.activeComponentObj) return this.activeComponentObj.props
+        return []
+      }
     },
     activeActions: {
-      get() {
-        if (this.activeComponentObj) return this.activeComponentObj.actions;
-        return [];
-      },
-    },
+      get () {
+        if (this.activeComponentObj) return this.activeComponentObj.actions
+        return []
+      }
+    }
     // componentActions: {
     //   get() {
     //     return this.$store.state.activeComponentObj.actions;
@@ -82,12 +82,12 @@ export default {
     //   },
     // },
   },
-  data() {
+  data () {
     return {
-      tab: "state",
-    };
-  },
-};
+      tab: 'state'
+    }
+  }
+}
 </script>
 
 <style lang="stylus" scoped>
@@ -98,13 +98,13 @@ i
   font-size 8px
   margin 5px
 
-// styling for the entire footer
+// styling for the entire dashboard
 .q-footer
   transition-timing-function ease-in
   transition .2s
   background $subsecondary
 
-// changes the footer toolbar height
+// changes the dashboard toolbar height
 .q-toolbar
   min-height 25px !important
   padding 0 6px !important
@@ -151,7 +151,6 @@ i
   // give html background color of grey
   background-color #202122
 </style>
-
 
 let active = (state.routes[state.activeRoute].filter(comp => {
       return comp.componentName === state.activeComponent
