@@ -20,7 +20,7 @@
           <CodeSnippet/>
         </q-tab-panel>
        <q-tab-panel name="html" :style="{height: `${height}vh`}">
-          <HomeQueue />
+          <HTMLQueue />
         </q-tab-panel>
         <q-tab-panel name="state">
           <ul id="stateList">
