@@ -1,8 +1,7 @@
 <!--
 Description:
-  Displays dropdown for Components, Routes, and Vuex
-  Functionality includes: N/A
-  -->
+  Displays dropdown for Components, Routes, and Vuex in Home Sidebar
+-->
 
 <template>
   <div class="q-pa-md" style="max-width: 350px">
@@ -16,7 +15,7 @@ Description:
       </q-expansion-item>
       <q-expansion-item dense dense-toggle expand-separator label="Routes">
         <q-card>
-          <div class="input-container" style='height: 150px'>
+          <div class="input-container" style="height: 150px">
             <RouteDisplay />
             <br />
           </div>
@@ -37,31 +36,31 @@ Description:
 
 <script>
 import RouteDisplay from '../components/RouteDisplay'
-import ComponentList from './HomeSideDropDownItems/ComponentList'
-import VuexForm from './HomeSideDropDownItems/VuexForm'
+import ComponentList from './home_sidebar_items/ComponentList'
+import VuexForm from './home_sidebar_items/VuexForm'
 
 export default {
   components: {
     RouteDisplay,
     VuexForm,
     ComponentList
-  }
 }
+ }
 </script>
 
 <style lang="stylus">
 
-.input-add {
-  margin: 0em 1em 0em 1em;
-}
+ .input-add {
+   margin: 0em 1em 0em 1em;
+ }
 
 .input-container {
-  margin-top: 1rem;
-  background: $subsecondary;
-  overflow-y: auto;
-}
+   margin-top: 1rem;
+   background: $subsecondary;
+   overflow-y: auto;
+ }
 
 .red {
-  background: red;
-}
+   background: red;
+ }
 </style>
