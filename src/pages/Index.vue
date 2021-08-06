@@ -14,7 +14,7 @@ Description:
 </style>
 
 <script>
-import ComponentDisplay from '../components/ComponentDisplay'
+import ComponentDisplay from '../components/ComponentDisplay.vue'
 
 export default {
   name: 'PageIndex',

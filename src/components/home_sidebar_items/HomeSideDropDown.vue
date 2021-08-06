@@ -35,17 +35,17 @@ Description:
 </template>
 
 <script>
-import RouteDisplay from '../components/RouteDisplay'
-import ComponentList from './home_sidebar_items/ComponentList'
-import VuexForm from './home_sidebar_items/VuexForm'
+import RouteDisplay from './RouteDisplay.vue'
+import ComponentList from './ComponentList.vue'
+import VuexForm from './VuexForm.vue'
 
 export default {
   components: {
     RouteDisplay,
     VuexForm,
     ComponentList
+  }
 }
- }
 </script>
 
 <style lang="stylus">

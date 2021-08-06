@@ -44,7 +44,7 @@ Description:
 
 <script>
 import Icons from './Icons'
-import ParentMultiselect from '../components/ParentMultiselect'
+import ParentMultiselect from './ParentMultiselect.vue'
 import { mapState, mapActions } from 'vuex'
 
 export default {

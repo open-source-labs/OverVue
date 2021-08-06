@@ -177,7 +177,7 @@ const mutations = {
     })[0])
     active.componentName = payload
     state.activeComponentObj = Object.assign({},
-      state.activeComponentObj, {componentName: payload})
+      state.activeComponentObj, { componentName: payload })
   },
 
   // *** HTML ELEMENTS *** //////////////////////////////////////////////

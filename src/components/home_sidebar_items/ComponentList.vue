@@ -64,10 +64,10 @@ export default {
       // console.log('component', component)
       return component
     },
-    activeComponentData() {
+    activeComponentData () {
       return this.activeComponentObj
       // set(name){
-      //   this.editComponentName(name) 
+      //   this.editComponentName(name)
       // }
     },
     options () {
@@ -111,7 +111,7 @@ export default {
         this.setActiveComponent('')
       }
     },
-    editCompName(name){
+    editCompName (name) {
       if (name) this.editComponentName(name)
       console.log(this.routes[this.activeRoute])
       console.log(this.activeComponentObj)

@@ -34,8 +34,8 @@ Description:
 <script>
 
 import { mapState, mapActions } from 'vuex'
-import { setSelectedElementList, deleteSelectedElement, deleteFromComponentHtmlList } from '../store/types'
-import { breadthFirstSearch } from '../utils/search.util'
+import { setSelectedElementList, deleteSelectedElement, deleteFromComponentHtmlList } from '../../store/types'
+import { breadthFirstSearch } from '../../utils/search.util'
 
 export default {
   name: 'HTML Queue',
