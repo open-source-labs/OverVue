@@ -163,7 +163,7 @@ const actions = {
   // Actions dispatched from left hand panel////////////////////////////////////////
 
   [types.addToComponentElementList]: ({ commit }, payload) => {
-    // adds element to the homeQueue
+    // adds element to the HTMLQueue
     commit(types.ADD_TO_COMPONENT_HTML_LIST, payload)
   },
 

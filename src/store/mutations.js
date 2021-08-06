@@ -257,7 +257,7 @@ const mutations = {
     state.componentMap[componentName].htmlList = htmlList
   },
 
-  // deletes a element html tag from HomeQueue
+  // deletes a element html tag from HTMLQueue
   [types.DELETE_SELECTED_ELEMENT]: (state, payload) => {
     state.selectedElementList.splice(payload, 1)
   },

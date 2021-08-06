@@ -51,13 +51,13 @@
 
 <script>
 import { mapState } from 'vuex'
-import HomeQueue from './HomeQueue'
+import HTMLQueue from './HTMLQueue'
 import CodeSnippet from './CodeSnippet'
 
 export default {
   name: 'ComponentDetails',
   components: {
-    HomeQueue,
+    HTMLQueue,
     CodeSnippet
   },
   computed: {
