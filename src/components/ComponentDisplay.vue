@@ -35,14 +35,14 @@ Description:
       </div>
       <!-- <div class="component-html-info"> -->
         <!-- <p>Elements in Component:</p> -->
-        <p
+        <!-- <p
           class="component-html-info"
           v-for="htmlElement in componentMap[componentData.componentName]
             .htmlList"
           :key="htmlElement"
         >
            {{  htmlElement.text  }}
-        </p>
+        </p> -->
       <!-- </div> -->
       <q-menu context-menu>
         <q-list color="black" class="menu">
