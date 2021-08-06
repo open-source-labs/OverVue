@@ -42,13 +42,13 @@ Description:
 </template>
 
 <script>
-import HomeSideDropDown from '../components/HomeSideDropDown'
-import Dashboard from '../components/Dashboard'
-import CreateComponent from '../components/CreateComponent'
-import ExportProjectComponent from '../components/ExportProject'
-import SaveProjectComponent from '../components/SaveProjectComponent'
-import OpenProjectComponent from '../components/OpenProjectComponent'
-import UploadImage from '../components/UploadImage'
+import HomeSideDropDown from '../components/home_sidebar_items/HomeSideDropDown.vue'
+import Dashboard from '../components/dashboard_items/Dashboard.vue'
+import CreateComponent from '../components/home_sidebar_items/CreateComponent.vue'
+import ExportProjectComponent from '../components/file_system_interface/ExportProject.vue'
+import SaveProjectComponent from '../components/file_system_interface/SaveProjectComponent.vue'
+import OpenProjectComponent from '../components/file_system_interface/OpenProjectComponent.vue'
+import UploadImage from '../components/home_sidebar_items/UploadImage.vue'
 
 export default {
   data () {

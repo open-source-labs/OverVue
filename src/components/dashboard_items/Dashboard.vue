@@ -1,6 +1,6 @@
 <!--
 Description:
-  Displays OverVue's dashboard containing Code Snippet, component details (TBD), Project Tree, and HTML Elements tabs
+  Displays OverVue's dashboard containing Component Details, Vuex Store, and the Project Tree
   Functionality includes: opening/closing drawer, deselecting active html, and
   toggling to html elements tab during component creation
   -->

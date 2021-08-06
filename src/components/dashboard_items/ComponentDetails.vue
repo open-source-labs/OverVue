@@ -20,7 +20,7 @@
           <CodeSnippet/>
         </q-tab-panel>
        <q-tab-panel name="html" :style="{height: `${height}vh`}">
-          <HomeQueue />
+          <HTMLQueue />
         </q-tab-panel>
         <q-tab-panel name="state">
           <ul id="stateList">
@@ -51,13 +51,13 @@
 
 <script>
 import { mapState } from 'vuex'
-import HomeQueue from './HomeQueue'
+import HTMLQueue from './HTMLQueue'
 import CodeSnippet from './CodeSnippet'
 
 export default {
   name: 'ComponentDetails',
   components: {
-    HomeQueue,
+    HTMLQueue,
     CodeSnippet
   },
   computed: {

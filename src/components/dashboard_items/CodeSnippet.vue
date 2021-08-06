@@ -1,5 +1,6 @@
 <!--
 Description:
+  Located under Component Details in Dashboard
   Dynamically renders Code Snippet in Dashboard
   Functionality includes: Displays children components and (nested) HTML elements in order of selection.
   -->
