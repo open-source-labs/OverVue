@@ -145,9 +145,7 @@ export default {
 
     // used to delete active component
     activeComponentData () {
-      return this.activeRouteArray.filter(componentData => {
-        return componentData.componentName === this.activeComponent
-      })[0]
+      return this.activeComponentObj
     },
 
     childList () {
@@ -383,11 +381,8 @@ export default {
     }
   },
   watch: {
-    activeComponentObj: {
-      handler () {
-        // console.log('componentMap has changed')
-        this.value = ''
-      }
+    activeComponent: function () {
+      this.onActivated(this.activeComponentObj)
     }
   }
 }

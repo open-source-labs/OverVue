@@ -16,6 +16,7 @@ Description:
       label="Create Action in Store"
       dense
       class="input-add"
+      v-on:keyup.delete.stop
     >
       <template v-slot:append>
         <q-btn
@@ -40,6 +41,7 @@ Description:
           open-direction="top"
           :options="actionOptions"
           :searchable="true"
+          @search-change="stopDelete($event)"
         >
           <span slot="noResult">No actions found.</span>
         </multiselect>
@@ -66,6 +68,7 @@ Description:
       label="Create State in Store"
       dense
       class="input-add"
+      v-on:keyup.delete.stop
     >
       <template v-slot:append>
         <q-btn round dense flat icon="add" @click="createNewState(textState)" />
@@ -84,6 +87,7 @@ Description:
           open-direction="top"
           :options="stateOptions"
           :searchable="true"
+          @search-change="stopDelete($event)"
         >
           <span slot="noResult">No state found.</span>
         </multiselect>
@@ -110,6 +114,7 @@ Description:
       label="Create Prop"
       dense
       class="input-add"
+      v-on:keyup.delete.stop
     >
       <template v-slot:append>
         <q-btn round dense flat icon="add" @click="createNewProp(textProps)" />
@@ -128,6 +133,7 @@ Description:
           open-direction="top"
           :options="propsOptions"
           :searchable="true"
+          @search-change="stopDelete($event)"
         >
           <span slot="noResult">No props found.</span>
         </multiselect>
@@ -224,6 +230,12 @@ export default {
       'addStateToComponent',
       'addPropsToComponent'
     ]),
+
+    // Prevent Delete on changes to seafrchable multiselect
+    stopDelete (e) {
+      if (e.code === 'Backspace') e.stopPropogation()
+      console.log(e)
+    },
 
     // Create's a new action that will be stored in the userActions array within store, and it will be added to the action drop-down menu
     createNewAction (text) {
