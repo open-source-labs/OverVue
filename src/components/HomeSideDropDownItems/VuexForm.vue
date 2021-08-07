@@ -4,7 +4,7 @@ Description:
   Functionality includes: N/A
   -->
 
-<template>
+<template @keyup.enter.native="createNewAction(textAction)">
   <div class="input-container">
     <hr />
     <!-- ACTION SECTION -->
@@ -31,7 +31,6 @@ Description:
     <template>
       <div id="action-select">
         <multiselect
-          v-on:keyup.delete.stop
           v-model="selectAction"
           class="multiselect"
           placeholder="Select Action"
