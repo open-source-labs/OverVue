@@ -31,7 +31,6 @@ Description:
     <template>
       <div id="action-select">
         <multiselect
-          v-on:keyup.delete.stop
           v-model="selectAction"
           class="multiselect"
           placeholder="Select Action"
@@ -42,6 +41,7 @@ Description:
           open-direction="top"
           :options="actionOptions"
           :searchable="true"
+          @search-change="stopDelete($event)"
         >
           <span slot="noResult">No actions found.</span>
         </multiselect>
@@ -87,7 +87,7 @@ Description:
           open-direction="top"
           :options="stateOptions"
           :searchable="true"
-          v-on:keyup.delete.stop
+          @search-change="stopDelete($event)"
         >
           <span slot="noResult">No state found.</span>
         </multiselect>
@@ -133,7 +133,7 @@ Description:
           open-direction="top"
           :options="propsOptions"
           :searchable="true"
-          v-on:keyup.delete.stop
+          @search-change="stopDelete($event)"
         >
           <span slot="noResult">No props found.</span>
         </multiselect>
@@ -230,6 +230,12 @@ export default {
       'addStateToComponent',
       'addPropsToComponent'
     ]),
+
+    // Prevent Delete on changes to seafrchable multiselect
+    stopDelete (e) {
+      if (e.code === 'Backspace') e.stopPropogation()
+      console.log(e)
+    },
 
     // Create's a new action that will be stored in the userActions array within store, and it will be added to the action drop-down menu
     createNewAction (text) {

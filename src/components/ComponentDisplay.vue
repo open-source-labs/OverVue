@@ -378,7 +378,7 @@ export default {
     }
   },
   watch: {
-    activeComponent: function(){
+    activeComponent: function () {
       this.onActivated(this.activeComponentObj)
     }
   }
