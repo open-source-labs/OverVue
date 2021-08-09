@@ -31,8 +31,8 @@ Description:
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import uploadImage from '../utils/uploadImage.util'
-import clearImageDialog from '../utils/clearImage.util'
+import uploadImage from '../../utils/uploadImage.util'
+import clearImageDialog from '../../utils/clearImage.util'
 
 export default {
   name: 'upload-image',

@@ -1,13 +1,14 @@
 <!--
 Description:
-  Dynamically renders Code Snippet in Footer
+  Located under Component Details in Dashboard
+  Dynamically renders Code Snippet in Dashboard
   Functionality includes: Displays children components and (nested) HTML elements in order of selection.
   -->
 
 <template>
   <div class="codesnippet-container">
-    <div class="top-p" v-if="activeComponent === ''">Select a component</div>
-    <div v-else>{{ `${activeComponent}.vue` }}</div>
+    <div class="top-p" v-if="this.activeComponent === ''">Select a component</div>
+    <div v-else>{{ `${this.activeComponent}.vue` }}</div>
     <prism-editor
       v-model="code"
       language="js"
@@ -171,18 +172,28 @@ export default {
   beforeDestroy () {
     window.removeEventListener('resize', this.getWindowHeight)
   },
-  watch: {
-    // If HTML elements or components are added, rerenders Code Snippet
-    componentMap: {
-      deep: true,
-      handler () {
-        // console.log('component Map has changed');
-        if (this.componentMap[this.activeComponent]) {
-          this.code = `${this.createCodeSnippet(
-            this.activeComponent,
-            this.componentMap[this.activeComponent].children
-          )}`
-        }
+  // watch: {
+  //   activeComponent: {
+  //     handler () {
+  //       if (this.componentMap[this.activeComponent]) {
+  //         this.code = `${this.createCodeSnippet(
+  //           this.activeComponent,
+  //           this.componentMap[this.activeComponent].children
+  //         )}`
+  //       }
+  //     }
+  //   }
+  // },
+  // If HTML elements or components are added, rerenders Code Snippet
+  componentMap: {
+    deep: true,
+    handler () {
+      // console.log('component Map has changed');
+      if (this.componentMap[this.activeComponent]) {
+        this.code = `${this.createCodeSnippet(
+          this.activeComponent,
+          this.componentMap[this.activeComponent].children
+        )}`
       }
     }
   }

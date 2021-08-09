@@ -33,14 +33,17 @@ Description:
       <div class="component-title">
         <p>{{ componentData.componentName }}</p>
       </div>
-      <!-- <p> Elements in Component: </p>
-      <p
-        v-for="htmlElement in componentMap[componentData.componentName]
-          .htmlList"
-        :key="htmlElement"
-      >
-        {{ htmlElement.text }}
-      </p> -->
+      <!-- <div class="component-html-info"> -->
+        <!-- <p>Elements in Component:</p> -->
+        <!-- <p
+          class="component-html-info"
+          v-for="htmlElement in componentMap[componentData.componentName]
+            .htmlList"
+          :key="htmlElement"
+        >
+           {{  htmlElement.text  }}
+        </p> -->
+      <!-- </div> -->
       <q-menu context-menu>
         <q-list color="black" class="menu">
           <q-item clickable v-ripple v-close-popup @click="handleAddChild">
@@ -339,7 +342,7 @@ export default {
     },
 
     // deactivated is emitted before activated
-    onDeactivated (componentData) {
+    onDeactivated () {
       if (this.activeComponent !== '') {
         this.activeComponentData.isActive = false
       }
@@ -378,8 +381,13 @@ export default {
     }
   },
   watch: {
-    activeComponent: function(){
-      this.onActivated(this.activeComponentObj)
+    activeComponent: function () {
+      if (this.activeComponent){
+        this.onActivated(this.activeComponentObj)
+      }
+      else{
+        this.onDeactivated()
+      }
     }
   }
 }
@@ -397,6 +405,19 @@ export default {
   line-height: 1.2;
   z-index: -1;
 }
+
+.component-html-info {
+    display: flex;
+    font-size: 14px;
+    /* flex-basis: auto; */
+    flex-direction: column;
+    /* flex-wrap: wrap; */
+    /* justify-content: center; */
+    /* flex-flow: column wrap; */
+    /* align-content: stretch; */
+    /* align-items: flex-start; */
+    font-weight: 800;
+  }
 .component-children {
   position: relative;
   top: 0rem;

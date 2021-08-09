@@ -19,8 +19,8 @@
         <q-tab-panel name="code">
           <CodeSnippet/>
         </q-tab-panel>
-       <q-tab-panel name="html" :style="{height: `${height}vh`}">
-          <HomeQueue />
+       <q-tab-panel name="html">
+          <HTMLQueue />
         </q-tab-panel>
         <q-tab-panel name="state">
           <ul id="stateList">
@@ -51,13 +51,13 @@
 
 <script>
 import { mapState } from 'vuex'
-import HomeQueue from './HomeQueue'
+import HTMLQueue from './HTMLQueue'
 import CodeSnippet from './CodeSnippet'
 
 export default {
   name: 'ComponentDetails',
   components: {
-    HomeQueue,
+    HTMLQueue,
     CodeSnippet
   },
   computed: {
@@ -84,13 +84,13 @@ i
   font-size 8px
   margin 5px
 
-// styling for the entire footer
+// styling for the entire dashboard
 .q-footer
   transition-timing-function ease-in
   transition .2s
   background $subsecondary
 
-// changes the footer toolbar height
+// changes the dashboard toolbar height
 .q-toolbar
   min-height 25px !important
   padding 0 6px !important

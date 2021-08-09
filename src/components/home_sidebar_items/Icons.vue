@@ -22,7 +22,7 @@ Description:
 
 <script>
 import { mapState } from 'vuex'
-import { breadthFirstSearch } from '../utils/search.util'
+import { breadthFirstSearch } from '../../utils/search.util'
 
 export default {
   data () {

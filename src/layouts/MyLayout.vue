@@ -1,6 +1,6 @@
 <!--
 Description:
-  Displays OverVue application layout including undo/redo button, openProject, saveProject, and exportProject, side panels, and footer
+  Displays OverVue application layout including undo/redo button, openProject, saveProject, and exportProject, side panels, and dashboard
   Functionality includes: Toolbar to the left that can be toggled open/closed and undo/redo functionality
   -->
 
@@ -37,18 +37,18 @@ Description:
     <q-page-container>
       <router-view />
     </q-page-container>
-    <Footer />
+    <Dashboard/>
   </q-layout>
 </template>
 
 <script>
-import HomeSideDropDown from '../components/HomeSideDropDown'
-import Footer from '../components/Footer'
-import CreateComponent from '../components/CreateComponent'
-import ExportProjectComponent from '../components/ExportProject'
-import SaveProjectComponent from '../components/SaveProjectComponent'
-import OpenProjectComponent from '../components/OpenProjectComponent'
-import UploadImage from '../components/UploadImage'
+import HomeSideDropDown from '../components/home_sidebar_items/HomeSideDropDown.vue'
+import Dashboard from '../components/dashboard_items/Dashboard.vue'
+import CreateComponent from '../components/home_sidebar_items/CreateComponent.vue'
+import ExportProjectComponent from '../components/file_system_interface/ExportProject.vue'
+import SaveProjectComponent from '../components/file_system_interface/SaveProjectComponent.vue'
+import OpenProjectComponent from '../components/file_system_interface/OpenProjectComponent.vue'
+import UploadImage from '../components/home_sidebar_items/UploadImage.vue'
 
 export default {
   data () {
@@ -59,7 +59,7 @@ export default {
   },
   components: {
     HomeSideDropDown,
-    Footer,
+    Dashboard,
     CreateComponent,
     ExportProjectComponent,
     SaveProjectComponent,

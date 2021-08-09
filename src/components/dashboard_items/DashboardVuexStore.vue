@@ -62,13 +62,13 @@ i
   font-size 8px
   margin 5px
 
-// styling for the entire footer
+// styling for the entire Dashboard
 .q-footer
   transition-timing-function ease-in
   transition .2s
   background $subsecondary
 
-// changes the footer toolbar height
+// changes the Dashboard toolbar height
 .q-toolbar
   min-height 25px !important
   padding 0 6px !important

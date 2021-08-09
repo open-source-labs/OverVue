@@ -39,8 +39,8 @@ Description:
       <span slot='noResult'>No components found.</span>
       </multiselect>
       <br/>
-    <h v-if="this.activeComponentObj"> Currently selected component: {{ activeComponentObj.componentName }} </h>
-    <h v-else> Select a component </h>
+    <p class="editName" v-if="this.activeComponentObj"> Currently selected component: {{ activeComponentObj.componentName }} </p>
+    <p class="editName" v-else > Select a component </p>
     <q-btn id="deleteButton" @click="deleteSelectedComp(activeComponentData)" label = 'Delete currently selected'/>
   </div>
 </template>
@@ -58,16 +58,16 @@ export default {
   },
   components: { Multiselect },
   computed: {
-    ...mapState(['routes', 'activeRoute', 'activeComponent', 'activeComponentObj']),
+    ...mapState(['routes', 'activeRoute', 'activeComponent', 'activeComponentObj', 'componentMap']),
     activeRouteDisplay () {
       let component = this.routes[this.activeRoute]
       // console.log('component', component)
       return component
     },
-    activeComponentData() {
+    activeComponentData () {
       return this.activeComponentObj
       // set(name){
-      //   this.editComponentName(name) 
+      //   this.editComponentName(name)
       // }
     },
     options () {
@@ -111,13 +111,13 @@ export default {
         this.setActiveComponent('')
       }
     },
-    editCompName(name){
-      if (name) this.editComponentName(name)
+    editCompName (name) {
+      if (name && name !== this.activeComponent && this.activeComponent) this.editComponentName(name)
       this.setActiveComponent(this.activeComponent)
-      // console.log(this.routes[this.activeRoute])
-      // console.log(this.activeComponentObj)
-      // console.log(this.activeComponent)
-      console.log(this.$refs.boxes)
+      console.log(this.activeComponentObj)
+      console.log(this.activeComponent)
+      console.log(this.componentMap)
+      console.log(typeof this.componentMap)
     }
   },
   watch: {
@@ -153,7 +153,7 @@ export default {
   justify-content: space-between;
 }
 
-h {
+.editName {
   color: white;
 }
 
