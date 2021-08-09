@@ -175,11 +175,19 @@ const mutations = {
     let active = (state.routes[state.activeRoute].filter(comp => {
       return comp.componentName === state.activeComponent
     })[0])
+    // delete state.componentMap[state.activeComponent]
+    let temp = active.componentName
     active.componentName = payload
     state.activeComponentObj = Object.assign({},
       state.activeComponentObj, { componentName: payload })
     state.activeComponent = payload
-    state.componentMap[state.activeComponent] = state.activeComponentObj
+    if (temp !== payload) {
+      // Object.defineProperty(state.componentMap, state.activeComponent, state.activeComponentObj);
+      state.componentMap[state.activeComponent] = state.activeComponentObj
+      delete state.componentMap[temp];
+  }
+    // state.componentMap[state.activeComponent] = state.activeComponentObj
+    // access key of edited child to get componentName of parent
   },
 
   // *** HTML ELEMENTS *** //////////////////////////////////////////////
@@ -343,6 +351,7 @@ const mutations = {
         isActive
       }
     })
+    
   },
 
   [types.ADD_PARENT]: (state, payload) => {

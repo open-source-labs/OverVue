@@ -342,7 +342,7 @@ export default {
     },
 
     // deactivated is emitted before activated
-    onDeactivated (componentData) {
+    onDeactivated () {
       if (this.activeComponent !== '') {
         this.activeComponentData.isActive = false
       }
@@ -382,7 +382,12 @@ export default {
   },
   watch: {
     activeComponent: function () {
-      this.onActivated(this.activeComponentObj)
+      if (this.activeComponent){
+        this.onActivated(this.activeComponentObj)
+      }
+      else{
+        this.onDeactivated()
+      }
     }
   }
 }

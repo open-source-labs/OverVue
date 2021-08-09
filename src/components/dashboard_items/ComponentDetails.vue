@@ -19,7 +19,7 @@
         <q-tab-panel name="code">
           <CodeSnippet/>
         </q-tab-panel>
-       <q-tab-panel name="html" :style="{height: `${height}vh`}">
+       <q-tab-panel name="html">
           <HTMLQueue />
         </q-tab-panel>
         <q-tab-panel name="state">

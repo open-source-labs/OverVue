@@ -172,21 +172,18 @@ export default {
   beforeDestroy () {
     window.removeEventListener('resize', this.getWindowHeight)
   },
-  watch: {
-
-    activeComponent: {
-      handler () {
-        console.log('component Map has changed')
-        if (this.componentMap[this.activeComponent]) {
-          console.log('we made it here')
-          this.code = `${this.createCodeSnippet(
-            this.activeComponent,
-            this.componentMap[this.activeComponent].children
-          )}`
-        }
-      }
-    }
-  },
+  // watch: {
+  //   activeComponent: {
+  //     handler () {
+  //       if (this.componentMap[this.activeComponent]) {
+  //         this.code = `${this.createCodeSnippet(
+  //           this.activeComponent,
+  //           this.componentMap[this.activeComponent].children
+  //         )}`
+  //       }
+  //     }
+  //   }
+  // },
   // If HTML elements or components are added, rerenders Code Snippet
   componentMap: {
     deep: true,

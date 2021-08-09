@@ -4,7 +4,7 @@ Description:
   Functionality includes: N/A
   -->
 
-<template>
+<template @keyup.enter.native="createNewAction(textAction)">
   <div class="input-container">
     <hr />
     <!-- ACTION SECTION -->
