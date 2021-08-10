@@ -382,10 +382,9 @@ export default {
   },
   watch: {
     activeComponent: function () {
-      if (this.activeComponent){
+      if (this.activeComponent) {
         this.onActivated(this.activeComponentObj)
-      }
-      else{
+      } else {
         this.onDeactivated()
       }
     }

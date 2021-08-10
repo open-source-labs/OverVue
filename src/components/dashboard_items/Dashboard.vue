@@ -1,8 +1,8 @@
 <!--
 Description:
   Displays OverVue's dashboard containing Component Details, Vuex Store, and the Project Tree
-  Functionality includes: opening/closing drawer, deselecting active html, and
-  toggling to html elements tab during component creation
+  Functionality includes: opening/closing drawer, and contains the different Tabs
+  As of now, no default tab selected when not selecting anything, but might change to Project Tree in the future if we want
   -->
 
   <template>
@@ -85,27 +85,30 @@ export default {
       }
     }
   },
-  // toggles dashboard to "html" tab when existing component is not in focus
   watch: {
+    // toggles dashboard to "Component Details" tab when a components is selected
     activeComponent: function () {
-      // console.log('watching activeComponent in Dashboard');
-      if (this.activeComponent === '' && this.selectedElementList.length !== 0) {
-        this.tab = 'html'
+      if (this.activeComponent !== '') {
+        this.tab = 'detail'
+      } else {
+        // otherwise toggle dashboard to 'Project Tree' tab if no component is selected
+        this.tab = 'tree'
       }
     },
-    // toggles dashboard to "html" tab if component name has value & elements are in queue
+    // otherwise toggle dashboard to 'Project Tree' tab if no component is selected or the
+    // user is in the process of creating a component
     componentNameInputValue: function () {
-      // console.log('watching componentNameInputVal')
-      if (this.componentNameInputValue !== '' && this.selectedElementList.length !== 0 && this.activeComponent === '') {
-        // console.log(this.selectedElementList)
-        this.tab = 'html'
+      if (this.componentNameInputValue !== '' && this.activeComponent === '') {
+        console.log(this.selectedElementList.length)
+        this.tab = 'tree'
       }
     },
-    // toggles dashboard to "html" tab if elements are added to queue on component creation
+    // // toggles dashboard to "Project Tree" tab if:
+    // // no component is selected and either:
+    // // elements are being added to component or name is being typed
     selectedElementList: function () {
-      // console.log('watching selectedElementList')
       if (this.activeComponent === '' && this.selectedElementList.length !== 0) {
-        this.tab = 'html'
+        this.tab = 'tree'
       }
     }
   }
