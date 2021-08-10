@@ -1,3 +1,12 @@
+<!--
+Description:
+  Located in the Dashboard
+  Contains the Code Snippet, HTMLQueue Components, and the Component state, actions, and props as well
+  Functionality includes: Contains the Code Snippet and HTMLQueue Components,
+  as well as tabs to show the Component state, actions, and props
+
+  -->
+
 <template>
   <div class="container">
     <q-card id="store-cards" v-if="this.activeComponentObj">

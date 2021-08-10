@@ -56,13 +56,13 @@ let redoMixin = {
     const throttledRedo = throttle(this.redo, 300)
 
     window.addEventListener('keydown', event => {
-      if (event.ctrlKey && event.key === 'z') {
+      if ((event.ctrlKey || event.metaKey) && event.key === 'z') {
         event.preventDefault()
         throttledUndo()
       }
     })
     window.addEventListener('keydown', event => {
-      if (event.ctrlKey && event.key === 'y') {
+      if ((event.ctrlKey || event.metaKey) && event.key === 'y') {
         event.preventDefault()
         throttledRedo()
       }
