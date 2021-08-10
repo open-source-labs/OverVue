@@ -40,8 +40,14 @@ let redoMixin = {
       // console.log("Are these equal to each other?", action == this.undoneAction[this.undoneAction.length-1])
       if (!this.isTimetraveling) {
         if (this.undoneAction[this.undoneAction.length - 1]) {
-          if (action.type === this.undoneAction[this.undoneAction.length - 1].type &&
-            deepEqual(action.payload, this.undoneAction[this.undoneAction.length - 1].payload)) {
+          if (
+            action.type ===
+              this.undoneAction[this.undoneAction.length - 1].type &&
+            deepEqual(
+              action.payload,
+              this.undoneAction[this.undoneAction.length - 1].payload
+            )
+          ) {
             this.undoneAction.pop()
           } else {
             this.undoneAction = []
@@ -50,17 +56,19 @@ let redoMixin = {
       }
     })
   },
-
+  // undo + redo function calling
+  // metaKey accounts for Command Key on Mac
   mounted () {
     const throttledUndo = throttle(this.undo, 300)
     const throttledRedo = throttle(this.redo, 300)
-
+    // undo function calling
     window.addEventListener('keydown', event => {
       if ((event.ctrlKey || event.metaKey) && event.key === 'z') {
         event.preventDefault()
         throttledUndo()
       }
     })
+    // redo function calling
     window.addEventListener('keydown', event => {
       if ((event.ctrlKey || event.metaKey) && event.key === 'y') {
         event.preventDefault()
@@ -90,8 +98,10 @@ let redoMixin = {
         this.undoneAction.push(undone)
         if (ignoredActions.has(undone.type)) {
           // console.log('We undid an ignored action!')
-          while (this.doneAction[this.doneAction.length - 1] &&
-          ignoredActions.has(this.doneAction[this.doneAction.length - 1].type)) {
+          while (
+            this.doneAction[this.doneAction.length - 1] &&
+            ignoredActions.has(this.doneAction[this.doneAction.length - 1].type)
+          ) {
             this.undoneAction.push(this.doneAction.pop())
           }
           /* if we get here, that means we have undone all "useless" actions
@@ -130,7 +140,6 @@ let redoMixin = {
         this.redo()
       }
     }
-
   }
 }
 
@@ -140,5 +149,4 @@ export default {
 }
 </script>
 
-<style>
-</style>
+<style></style>
