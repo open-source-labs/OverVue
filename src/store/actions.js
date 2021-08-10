@@ -153,6 +153,18 @@ const actions = {
   [types.addStateToComponent]: ({ commit }, payload) => {
     commit(types.ADD_STATE_TO_COMPONENT, payload)
   },
+
+  [types.deleteActionFromComponent]: ({ commit }, payload) => {
+    commit(types.DELETE_ACTION_FROM_COMPONENT, payload)
+  },
+
+  [types.deletePropsFromComponent]: ({ commit }, payload) => {
+    commit(types.DELETE_PROPS_FROM_COMPONENT, payload)
+  },
+
+  [types.deleteStateFromComponent]: ({ commit }, payload) => {
+    commit(types.DELETE_STATE_FROM_COMPONENT, payload)
+  },
   // End of Vuex Actions section //////////////////////////////////////////
 
   // Action primarily for edit functionality////////////////////////////////////////
