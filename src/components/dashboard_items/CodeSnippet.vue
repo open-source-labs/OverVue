@@ -65,7 +65,6 @@ export default {
     },
     // Creates <template> boilerplate
     writeTemplateTag (componentName) {
-      // console.log('writeTemplateTag invoked!')
       // create reference object
       const htmlElementMap = {
         div: ['<div>', '</div>'],
@@ -82,6 +81,7 @@ export default {
       }
 
       // Helper function that recursively iterates through the given html element's children and their children's children.
+      // also adds proper indentation to code snippet
       function writeNested (childrenArray, indent) {
         if (!childrenArray.length) {
           return ''
@@ -91,7 +91,6 @@ export default {
 
         childrenArray.forEach(child => {
           nestedString += indented
-          // console.log(child)
           if (!child.text) {
             nestedString += `<${child}/>\n`
           } else {
@@ -113,7 +112,6 @@ export default {
       let htmlArr = this.componentMap[componentName].htmlList
       let outputStr = ``
       for (let el of htmlArr) {
-        // console.log(el)
         if (!el.text) {
           outputStr += `    <${el}/>\n`
         } else {
@@ -130,7 +128,6 @@ export default {
           }
         }
       }
-      // console.log(`outputStr from writeTemplateTag: ${outputStr}`)
       return outputStr
     },
     // Creates boiler text for <script> and <style>
@@ -156,15 +153,14 @@ export default {
       this.getWindowHeight()
     })
   },
-  // Updates code snippet
+  // Updates code snippet when adding children
   updated () {
-    // console.log(`code: ${this.createCodeSnippet(this.activeComponent, this.componentMap[this.activeComponent].children)}`)
-    // console.log('component map: ', this.componentMap);
     if (this.componentMap[this.activeComponent]) {
       this.code = `${this.createCodeSnippet(
         this.activeComponent,
         this.componentMap[this.activeComponent].children
       )}`
+      // else if there is not existing component/no active component
     } else {
       this.code = `Your component boilerplate will be displayed here.`
     }

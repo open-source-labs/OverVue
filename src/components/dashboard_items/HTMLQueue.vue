@@ -38,7 +38,7 @@ import { setSelectedElementList, deleteSelectedElement, deleteFromComponentHtmlL
 import { breadthFirstSearch } from '../../utils/search.util'
 
 export default {
-  name: 'HTML Queue',
+  name: 'HTMLQueue',
   props: {
     name: {
       type: String
