@@ -8,7 +8,7 @@ Description:
     <q-list padding bordered class="rounded-borders drawer-menu">
       <q-expansion-item dense dense-toggle expand-separator label="Edit/Delete Components">
           <q-card>
-            <div class="input-container" style='height: 130px'>
+            <div class="input-container" style='height: 500px'>
               <ComponentList />
             </div>
           </q-card>

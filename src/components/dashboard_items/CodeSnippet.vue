@@ -185,18 +185,18 @@ export default {
   //   }
   // },
   // If HTML elements or components are added, rerenders Code Snippet
-  componentMap: {
-    deep: true,
-    handler () {
-      // console.log('component Map has changed');
-      if (this.componentMap[this.activeComponent]) {
-        this.code = `${this.createCodeSnippet(
-          this.activeComponent,
-          this.componentMap[this.activeComponent].children
-        )}`
-      }
-    }
-  }
+  // componentMap: {
+  //   deep: true,
+  //   handler () {
+  //     // console.log('component Map has changed');
+  //     if (this.componentMap[this.activeComponent]) {
+  //       this.code = `${this.createCodeSnippet(
+  //         this.activeComponent,
+  //         this.componentMap[this.activeComponent].children
+  //       )}`
+  //     }
+  //   }
+  // }
 }
 </script>
 
