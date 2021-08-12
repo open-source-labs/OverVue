@@ -1,3 +1,12 @@
+<!--
+Description:
+  Located in the Dashboard
+  Contains the Code Snippet, HTMLQueue Components, and the Component state, actions, and props as well
+  Functionality includes: Contains the Code Snippet and HTMLQueue Components,
+  as well as tabs to show the Component state, actions, and props
+
+  -->
+
 <template>
   <div class="container">
     <q-card id="store-cards" v-if="this.activeComponentObj">
@@ -19,8 +28,8 @@
         <q-tab-panel name="code">
           <CodeSnippet/>
         </q-tab-panel>
-       <q-tab-panel name="html" :style="{height: `${height}vh`}">
-          <HomeQueue />
+       <q-tab-panel name="html">
+          <HTMLQueue />
         </q-tab-panel>
         <q-tab-panel name="state">
           <ul id="stateList">
@@ -51,13 +60,13 @@
 
 <script>
 import { mapState } from 'vuex'
-import HomeQueue from './HomeQueue'
+import HTMLQueue from './HTMLQueue'
 import CodeSnippet from './CodeSnippet'
 
 export default {
   name: 'ComponentDetails',
   components: {
-    HomeQueue,
+    HTMLQueue,
     CodeSnippet
   },
   computed: {
@@ -84,13 +93,13 @@ i
   font-size 8px
   margin 5px
 
-// styling for the entire footer
+// styling for the entire dashboard
 .q-footer
   transition-timing-function ease-in
   transition .2s
   background $subsecondary
 
-// changes the footer toolbar height
+// changes the dashboard toolbar height
 .q-toolbar
   min-height 25px !important
   padding 0 6px !important

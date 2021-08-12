@@ -3,7 +3,7 @@ Description:
   Is not imported in current version of OverVue
   Functionality includes: N/A
   -->
-
+<!--
 <template>
   <div>
     <p class="panel-heading">Selected Elements</p>

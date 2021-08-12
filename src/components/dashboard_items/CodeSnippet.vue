@@ -1,19 +1,22 @@
 <!--
 Description:
-  Dynamically renders Code Snippet in Footer
+  Located under Component Details in Dashboard
+  Dynamically renders Code Snippet in Dashboard
   Functionality includes: Displays children components and (nested) HTML elements in order of selection.
   -->
 
 <template>
   <div class="codesnippet-container">
-    <div class="top-p" v-if="this.activeComponent === ''">Select a component</div>
+    <div class="top-p" v-if="this.activeComponent === ''">
+      Select a component
+    </div>
     <div v-else>{{ `${this.activeComponent}.vue` }}</div>
     <prism-editor
       v-model="code"
       language="js"
       :line-numbers="lineNumbers"
       class="code-editor"
-      :style="{ height: `${height}vh`}"
+      :style="{ height: `${height}vh` }"
       :readonly="true"
     />
   </div>
@@ -64,7 +67,6 @@ export default {
     },
     // Creates <template> boilerplate
     writeTemplateTag (componentName) {
-      // console.log('writeTemplateTag invoked!')
       // create reference object
       const htmlElementMap = {
         div: ['<div>', '</div>'],
@@ -81,6 +83,7 @@ export default {
       }
 
       // Helper function that recursively iterates through the given html element's children and their children's children.
+      // also adds proper indentation to code snippet
       function writeNested (childrenArray, indent) {
         if (!childrenArray.length) {
           return ''
@@ -88,9 +91,8 @@ export default {
         let indented = indent + '  '
         let nestedString = ''
 
-        childrenArray.forEach(child => {
+        childrenArray.forEach((child) => {
           nestedString += indented
-          // console.log(child)
           if (!child.text) {
             nestedString += `<${child}/>\n`
           } else {
@@ -101,7 +103,10 @@ export default {
               nestedString += indented + htmlElementMap[child.text][1]
               nestedString += '\n'
             } else {
-              nestedString += htmlElementMap[child.text][0] + htmlElementMap[child.text][1] + '\n'
+              nestedString +=
+                htmlElementMap[child.text][0] +
+                htmlElementMap[child.text][1] +
+                '\n'
             }
           }
         })
@@ -112,7 +117,6 @@ export default {
       let htmlArr = this.componentMap[componentName].htmlList
       let outputStr = ``
       for (let el of htmlArr) {
-        // console.log(el)
         if (!el.text) {
           outputStr += `    <${el}/>\n`
         } else {
@@ -125,21 +129,21 @@ export default {
             outputStr += htmlElementMap[el.text][1]
             outputStr += `  \n`
           } else {
-            outputStr += htmlElementMap[el.text][0] + htmlElementMap[el.text][1] + '\n'
+            outputStr +=
+              htmlElementMap[el.text][0] + htmlElementMap[el.text][1] + '\n'
           }
         }
       }
-      // console.log(`outputStr from writeTemplateTag: ${outputStr}`)
       return outputStr
     },
     // Creates boiler text for <script> and <style>
     createBoiler (componentName, children) {
       let str = ''
-      children.forEach(name => {
+      children.forEach((name) => {
         str += `import ${name} from '@/components/${name}.vue';\n`
       })
       let childrenComponentNames = ''
-      children.forEach(name => {
+      children.forEach((name) => {
         childrenComponentNames += `    ${name},\n`
       })
       // eslint-disable-next-line no-useless-escape
@@ -155,64 +159,57 @@ export default {
       this.getWindowHeight()
     })
   },
-  // Updates code snippet
+  // Updates code snippet when adding children
   updated () {
-    // console.log(`code: ${this.createCodeSnippet(this.activeComponent, this.componentMap[this.activeComponent].children)}`)
-    // console.log('component map: ', this.componentMap);
     if (this.componentMap[this.activeComponent]) {
       this.code = `${this.createCodeSnippet(
         this.activeComponent,
         this.componentMap[this.activeComponent].children
       )}`
+      // else if there is not existing component/no active component
     } else {
       this.code = `Your component boilerplate will be displayed here.`
     }
   },
   beforeDestroy () {
     window.removeEventListener('resize', this.getWindowHeight)
-  },
-  watch: {
-
-    activeComponent: {
-      handler () {
-        console.log('component Map has changed')
-        if (this.componentMap[this.activeComponent]) {
-          console.log('we made it here')
-          this.code = `${this.createCodeSnippet(
-            this.activeComponent,
-            this.componentMap[this.activeComponent].children
-          )}`
-        }
-      }
-    }
-  },
-  // If HTML elements or components are added, rerenders Code Snippet
-  componentMap: {
-    deep: true,
-    handler () {
-      // console.log('component Map has changed');
-      if (this.componentMap[this.activeComponent]) {
-        this.code = `${this.createCodeSnippet(
-          this.activeComponent,
-          this.componentMap[this.activeComponent].children
-        )}`
-      }
-    }
   }
+  // watch: {
+  //   activeComponent: {
+  //     handler () {
+  //       if (this.componentMap[this.activeComponent]) {
+  //         this.code = `${this.createCodeSnippet(
+  //           this.activeComponent,
+  //           this.componentMap[this.activeComponent].children
+  //         )}`
+  //       }
+  //     }
+  //   }
+  // },
+  // If HTML elements or components are added, rerenders Code Snippet
+  // componentMap: {
+  //   deep: true,
+  //   handler () {
+  //     // console.log('component Map has changed');
+  //     if (this.componentMap[this.activeComponent]) {
+  //       this.code = `${this.createCodeSnippet(
+  //         this.activeComponent,
+  //         this.componentMap[this.activeComponent].children
+  //       )}`
+  //     }
+  //   }
+  // }
 }
 </script>
 
 <style lang="stylus" scoped>
 // resize handled by vue lifecycle methods
-.code-editor {
-  font-size: 12px;
-}
+.code-editor
+  font-size 12px
 
-.codesnippet-container {
-  margin-bottom: 1rem;
-}
+.codesnippet-container
+  margin-bottom 1rem
 
-::-webkit-scrollbar {
-  display: none;
-}
+::-webkit-scrollbar
+  display none
 </style>

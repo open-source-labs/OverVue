@@ -34,11 +34,11 @@ Description:
 <script>
 
 import { mapState, mapActions } from 'vuex'
-import { setSelectedElementList, deleteSelectedElement, deleteFromComponentHtmlList } from '../store/types'
-import { breadthFirstSearch } from '../utils/search.util'
+import { setSelectedElementList, deleteSelectedElement, deleteFromComponentHtmlList } from '../../store/types'
+import { breadthFirstSearch } from '../../utils/search.util'
 
 export default {
-  name: 'HomeQueue',
+  name: 'HTMLQueue',
   props: {
     name: {
       type: String
@@ -105,7 +105,7 @@ export default {
   },
   watch: {
     activeComponent: function () {
-      // console.log('watching activeComponent in HomeQueue')
+      // console.log('watching activeComponent in HTMLQueue')
       if (this.activeComponent !== '') {
         this.component = true
       } else {
