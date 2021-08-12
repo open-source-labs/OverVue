@@ -108,7 +108,7 @@ Description:
       </q-list>
       </a>
     </div>
-
+    <p v-else> Select Component to Enable Edit </p>
   </div>
 </template>
 
