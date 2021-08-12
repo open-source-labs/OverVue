@@ -10,7 +10,6 @@ Description:
       @keyup.enter.native="editCompName(newName)"
       standout="bg-secondary text-white"
       bottom-slots
-      v-on:keyup.delete.stop
       v-model="newName"
       label="Edit name"
       dense
