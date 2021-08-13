@@ -206,6 +206,7 @@ export default {
       output += data
       output += computed
       output += methods
+      // eslint-disable-next-line no-useless-escape
       output += '};\n<\/script>\n\n<style scoped>\n</style>'
       // add props/data
 

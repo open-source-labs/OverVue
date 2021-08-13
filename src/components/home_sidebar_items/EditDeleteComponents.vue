@@ -47,7 +47,7 @@ Description:
     <q-btn id="deleteButton" @click="deleteSelectedComp(activeComponentData)" label = 'Delete currently selected'/>
     <div v-if="this.activeComponentData">
     <br/>
-   <section>Layer: 
+   <section>Layer:
        <q-btn
               class="btn"
               color="transparent"
