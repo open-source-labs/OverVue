@@ -223,17 +223,87 @@ export default {
      * @description imports child components into <script>
      */
     writeScript (componentName, children) {
-      let str = ''
+    //   let str = ''
+    //   children.forEach(name => {
+    //     str += `import ${name} from '@/components/${name}.vue';\n`
+    //   })
+    //   let childrenComponentNames = ''
+    //   children.forEach(name => {
+    //     childrenComponentNames += `\t\t${name},\n`
+    //   })
+    //   return `\n\n<script>\n${str}\nexport default {\n\tname: '${componentName}'
+    //   ,\n\tcomponents: {\n${childrenComponentNames}\t}\n};\n<\/script>`
+    // },
+      // add import mapstate and mapactions if they exist
+      let imports = ''
+      if (this.activeComponentObj.actions.length || this.activeComponentObj.state.length){
+        imports += 'import { '
+        if (this.activeComponentObj.actions.length && this.activeComponentObj.state.length) {
+          imports += 'mapState, mapActions'
+        } 
+        else if (this.activeComponentObj.state.length) imports += 'mapState'
+        else imports += 'mapActions'
+        imports += ' } from "vuex"\n'
+      }
+
+      // add imports for children
       children.forEach(name => {
-        str += `import ${name} from '@/components/${name}.vue';\n`
+        imports += `import ${name} from '@/components/${name}.vue';\n`
       })
+
+      // add components section  
       let childrenComponentNames = ''
       children.forEach(name => {
-        childrenComponentNames += `\t\t${name},\n`
+        childrenComponentNames += `    ${name},\n`
       })
-      return `\n\n<script>\n${str}\nexport default {\n\tname: '${componentName}',\n\tcomponents: {\n${childrenComponentNames}\t}\n};\n<\/script>`
-    },
 
+      // if true add data section and populate with props
+      let data = ''
+      if (this.activeComponentObj.props.length){
+        data += '  data () {\n    return {'
+        this.activeComponentObj.props.forEach(prop => {
+          data += `\n      ${prop}: "PLACEHOLDER FOR VALUE",`
+        })
+        data += '\n'
+        data += '    }\n'
+        data += '  },\n'
+      }
+
+      // if true add computed section and populate with state
+      let computed = ''
+      if (this.activeComponentObj.state.length){
+        computed += '  computed: {'
+        computed += '\n    ...mapState(['
+        this.activeComponentObj.state.forEach((state) =>{
+          computed += `\n      "${state}",`
+        })
+        computed += '\n    ]),\n'
+        computed += '  },\n'
+      }
+
+      // if true add methods section and populate with actions
+      let methods = ''
+      if (this.activeComponentObj.actions.length){
+        methods += '  methods: {'
+        methods += '\n    ...mapActions(['
+        this.activeComponentObj.actions.forEach((action) => {
+          methods += `\n      "${action}",`
+        })
+        methods += '\n    ]),\n'
+        methods += '  },\n'
+      }
+
+      // concat all code within script tags
+      let output = '\n\n<script>\n'
+      output += imports + '\nexport default {\n  name: ' + componentName
+      output += ',\n  components: {\n'
+      output += childrenComponentNames + '  },\n'
+      output += data
+      output += computed
+      output += methods
+      output += '};\n<\/script>'
+      return output
+    },
     /**
      * @description writes the <style> in vue component
      * if component is 'App', writes css, else returns <style scoped>
@@ -402,7 +472,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['componentMap', 'imagePath'])
+    ...mapState(['componentMap', 'imagePath', 'activeComponentObj'])
   }
 }
 

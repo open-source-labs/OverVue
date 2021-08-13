@@ -41,9 +41,6 @@ export default {
   computed: {
     // needs access to current component aka activeComponent
     ...mapState(['componentMap', 'activeComponent', 'activeComponentObj']),
-    activeObj (){
-      return this.activeComponentObj
-    }
   },
   methods: {
     getWindowHeight (e) {
@@ -60,7 +57,7 @@ export default {
       return result
     },
     // Creates beginner boilerplate
-    createTemplate (componentName, children) {
+    createTemplate (componentName) {
       // not sure why output was set up like this, was imputted into return statement
       // using string literal
       // let output = ``
@@ -140,12 +137,12 @@ export default {
 
       // add import mapstate and mapactions if they exist
       let imports = ''
-      if (this.activeObj.actions.length || this.activeObj.state.length){
+      if (this.activeComponentObj.actions.length || this.activeComponentObj.state.length){
         imports += 'import { '
-        if (this.activeObj.actions.length && this.activeObj.state.length) {
+        if (this.activeComponentObj.actions.length && this.activeComponentObj.state.length) {
           imports += 'mapState, mapActions'
         } 
-        else if (this.activeObj.state.length) imports += 'mapState'
+        else if (this.activeComponentObj.state.length) imports += 'mapState'
         else imports += 'mapActions'
         imports += ' } from "vuex"\n'
       }
@@ -163,9 +160,9 @@ export default {
 
       // if true add data section and populate with props
       let data = ''
-      if (this.activeObj.props.length){
+      if (this.activeComponentObj.props.length){
         data += '  data () {\n    return {'
-        this.activeObj.props.forEach(prop => {
+        this.activeComponentObj.props.forEach(prop => {
           data += `\n      ${prop}: "PLACEHOLDER FOR VALUE",`
         })
         data += '\n'
@@ -175,10 +172,10 @@ export default {
 
       // if true add computed section and populate with state
       let computed = ''
-      if (this.activeObj.state.length){
+      if (this.activeComponentObj.state.length){
         computed += '  computed: {'
         computed += '\n    ...mapState(['
-        this.activeObj.state.forEach((state) =>{
+        this.activeComponentObj.state.forEach((state) =>{
           computed += `\n      "${state}",`
         })
         computed += '\n    ]),\n'
@@ -187,10 +184,10 @@ export default {
 
       // if true add methods section and populate with actions
       let methods = ''
-      if (this.activeObj.actions.length){
+      if (this.activeComponentObj.actions.length){
         methods += '  methods: {'
         methods += '\n    ...mapActions(['
-        this.activeObj.actions.forEach((action) => {
+        this.activeComponentObj.actions.forEach((action) => {
           methods += `\n      "${action}",`
         })
         methods += '\n    ]),\n'
