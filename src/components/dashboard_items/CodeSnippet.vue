@@ -57,7 +57,7 @@ export default {
       return result
     },
     // Creates beginner boilerplate
-    createTemplate (componentName, children) {
+    createTemplate (componentName) {
       // not sure why output was set up like this, was imputted into return statement
       // using string literal
       // let output = ``
