@@ -46,14 +46,39 @@ Description:
     <p class="editName" v-else>Select a component</p>
     <q-btn id="deleteButton" @click="deleteSelectedComp(activeComponentData)" label = 'Delete currently selected'/>
     <div v-if="this.activeComponentData">
-<p>Toggle to edit state</p>
-    <toggle-button v-model="showState"/>
+    <br/>
+   <section>Layer: 
+       <q-btn
+              class="btn"
+              color="transparent"
+              text-color="primary"
+              label="-"
+              @click="e => handleLayer(e)"
+            />
+            <p id="counter" style="color: white">{{ activeComponentObj.z }}</p>
+            <q-btn
+              class="btn"
+              color="transparent"
+              text-color="primary"
+              label="+"
+              @click="e => handleLayer(e)"
+            />
+          </section>
+
+    <p> Toggle to edit: </p>
+    <section class="toggleText"> HTML elements
+    <toggle-button v-model="showHTML"/> </section>
+    <HTMLQueue v-if="showHTML"/>
+    <br/>
+    <section class="toggleText"> State
+    <toggle-button v-model="showState"/> </section>
+    <hr v-if="showState">
     <a
       v-for="s in this.activeComponentData.state"
       :key="s"
     >
       <q-list v-if="showState" class="list-item" dense bordered separator>
-        <q-item clickable v-ripple class="list-item">
+       <q-item clickable v-ripple class="list-item">
           <q-item-section>
             <div class="component-container">
               <div class="component-info">
@@ -66,8 +91,9 @@ Description:
       </q-list>
       </a>
     <br/>
-    <p>Toggle to edit actions</p>
-    <toggle-button v-model="showActions" />
+    <section class="toggleText"> Actions
+    <toggle-button v-model="showActions" /> </section>
+    <hr v-if="showActions">
         <a
       v-for="action in this.activeComponentData.actions"
       :key="action"
@@ -86,8 +112,10 @@ Description:
       </q-list>
       </a>
     <br/>
-    <p>Toggle to edit props</p>
-    <toggle-button v-model="showProps"/>
+    <section class="toggleText">
+    Props
+    <toggle-button v-model="showProps"/> </section>
+    <hr v-if="showProps">
     <a
       v-for="prop in this.activeComponentData.props"
       :key="prop"
@@ -116,6 +144,7 @@ Description:
 import { mapState, mapActions } from 'vuex'
 import Multiselect from 'vue-multiselect'
 import { ToggleButton } from 'vue-js-toggle-button'
+import HTMLQueue from '../dashboard_items/HTMLQueue.vue'
 
 export default {
   data () {
@@ -124,10 +153,11 @@ export default {
       newName: '',
       showState: false,
       showActions: false,
-      showProps: false
+      showProps: false,
+      showHTML: false
     }
   },
-  components: { Multiselect, ToggleButton },
+  components: { Multiselect, ToggleButton, HTMLQueue },
   computed: {
     ...mapState([
       'routes',
@@ -159,7 +189,8 @@ export default {
       'editComponentName',
       'deleteActionFromComponent',
       'deletePropsFromComponent',
-      'deleteStateFromComponent'
+      'deleteStateFromComponent',
+      'updateComponentLayer'
     ]),
 
     deleteState (state) {
@@ -191,6 +222,16 @@ export default {
         // this.setActiveComponent(componentData.componentName)
         this.deleteActiveComponent(componentData.componentName)
       }
+    },
+
+    handleLayer (e) {
+      e.preventDefault()
+      const payload = {
+        z: this.activeComponentObj.z
+      }
+      if (e.target.innerText === '+') payload.z++
+      if (e.target.innerText === '-' && payload.z > 0) payload.z--
+      this.updateComponentLayer(payload)
     },
     // Select active component from multi-select input
     handleSelect (componentName) {
@@ -245,9 +286,15 @@ export default {
   display: flex;
   justify-content: space-between;
 }
+
 p {
   color: white;
 }
+
+.toggleText {
+  color: white;
+}
+
 .editName {
   color: white;
 }
@@ -255,5 +302,9 @@ p {
 #deleteButton {
   background-color: #289ead;
   color: white;
+}
+
+hr {
+  border: 1px solid grey
 }
 </style>

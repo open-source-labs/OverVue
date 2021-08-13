@@ -33,7 +33,7 @@ Description:
         <multiselect
           v-model="selectAction"
           class="multiselect"
-          placeholder="Select Action"
+          placeholder="Select Action for Component"
           :multiple="true"
           :close-on-select="false"
           :max-height="90"
@@ -79,7 +79,7 @@ Description:
         <multiselect
           v-model="selectState"
           class="multiselect"
-          placeholder="Select State"
+          placeholder="Select State for Component"
           :multiple="true"
           :close-on-select="false"
           :max-height="90"
@@ -125,7 +125,7 @@ Description:
         <multiselect
           v-model="selectProps"
           class="multiselect"
-          placeholder="Select Props"
+          placeholder="Select Props for Component"
           :multiple="true"
           :close-on-select="false"
           :max-height="90"
