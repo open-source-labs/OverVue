@@ -9,7 +9,7 @@ Description:
       <q-expansion-item dense dense-toggle expand-separator label="Edit/Delete Components">
           <q-card>
             <div class="input-container" style='height: 500px'>
-              <ComponentList />
+              <EditDeleteComponents />
             </div>
           </q-card>
       </q-expansion-item>
@@ -21,7 +21,6 @@ Description:
           </div>
         </q-card>
       </q-expansion-item>
-      <!-- Work in Progress -->
       <q-expansion-item dense dense-toggle expand-separator label="Vuex">
         <q-card>
           <div class="input-container">
@@ -36,14 +35,14 @@ Description:
 
 <script>
 import RouteDisplay from './RouteDisplay.vue'
-import ComponentList from './ComponentList.vue'
+import EditDeleteComponents from './EditDeleteComponents.vue'
 import VuexForm from './VuexForm.vue'
 
 export default {
   components: {
     RouteDisplay,
     VuexForm,
-    ComponentList
+    EditDeleteComponents
   }
 }
 </script>
