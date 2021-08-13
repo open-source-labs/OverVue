@@ -148,9 +148,9 @@ export default {
       return this.activeComponentObj
     },
 
-    childList () {
-      return this.componentMap[componentData.componentName].children
-    },
+    // childList () {
+    //   return this.componentMap[componentData.componentName].children
+    // },
 
     options () {
       // checks if component has any parents and pushes them into lineage
@@ -328,13 +328,15 @@ export default {
 
     // unhighlights all inactive components
     onActivated (componentData) {
-      this.$refs.boxes.forEach(element => {
-        if (element.$attrs.id !== componentData.componentName) {
-          element.enabled = false
-          element.$emit('deactivated')
-          element.$emit('update:active', false)
-        }
-      })
+      if (this.$refs.boxes) {
+        this.$refs.boxes.forEach(element => {
+          if (element.$attrs.id !== componentData.componentName) {
+            element.enabled = false
+            element.$emit('deactivated')
+            element.$emit('update:active', false)
+          }
+        })
+      }
       if (!(componentData.componentName === this.activeComponent)) {
         this.setActiveComponent(componentData.componentName)
       }

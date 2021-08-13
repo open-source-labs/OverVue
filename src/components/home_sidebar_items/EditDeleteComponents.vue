@@ -47,24 +47,32 @@ Description:
     <q-btn id="deleteButton" @click="deleteSelectedComp(activeComponentData)" label = 'Delete currently selected'/>
     <div v-if="this.activeComponentData">
     <br/>
-   <section>Layer:
-       <q-btn
+   <section id="counter" style="color: white">  Layer:
+      <q-btn
               class="btn"
               color="transparent"
-              text-color="primary"
+              text-color="white"
               label="-"
               @click="e => handleLayer(e)"
             />
-            <p id="counter" style="color: white">{{ activeComponentObj.z }}</p>
+     {{ this.activeComponentObj.z }}
+       <!-- <q-btn
+              class="btn"
+              color="transparent"
+              text-color="white"
+              label="-"
+              @click="e => handleLayer(e)"
+            /> -->
+            <!-- <p id="counter" style="color: white">{{ this.activeComponentObj.z }}</p> -->
             <q-btn
               class="btn"
               color="transparent"
-              text-color="primary"
+              text-color="white"
               label="+"
               @click="e => handleLayer(e)"
             />
           </section>
-
+          <br/>
     <p> Toggle to edit: </p>
     <section class="toggleText"> HTML elements
     <toggle-button v-model="showHTML"/> </section>
@@ -166,14 +174,17 @@ export default {
       'activeComponentObj',
       'componentMap'
     ]),
+
     activeRouteDisplay () {
       let component = this.routes[this.activeRoute]
       // console.log('component', component)
       return component
     },
+
     activeComponentData () {
       return this.activeComponentObj
     },
+
     options () {
       const val = this.activeRouteDisplay.map(
         (component) => component.componentName
@@ -227,7 +238,10 @@ export default {
     handleLayer (e) {
       e.preventDefault()
       const payload = {
-        z: this.activeComponentObj.z
+        activeComponent: this.activeComponent,
+        routeArray: this.routes[this.activeRoute],
+        activeComponentData: this.activeComponentData,
+        z: this.activeComponentData.z
       }
       if (e.target.innerText === '+') payload.z++
       if (e.target.innerText === '-' && payload.z > 0) payload.z--
