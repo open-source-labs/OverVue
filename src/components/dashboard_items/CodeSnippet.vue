@@ -42,7 +42,7 @@ export default {
   },
   computed: {
     // needs access to current component aka activeComponent
-    ...mapState(['componentMap', 'activeComponent', 'activeComponentObj'])
+    ...mapState(['componentMap', 'activeComponent', 'activeComponentObj']),
   },
   methods: {
     getWindowHeight (e) {
@@ -59,7 +59,7 @@ export default {
       return result
     },
     // Creates beginner boilerplate
-    createTemplate (componentName, children) {
+    createTemplate (componentName) {
       // not sure why output was set up like this, was imputted into return statement
       // using string literal
       // let output = ``
@@ -215,6 +215,14 @@ export default {
       // components: {\n${childrenComponentNames}  }\n};\n<\/script>\n\n<style scoped>\n
       // </style>`
       return output
+    }
+  },
+  watch: {
+    // watches activeComponentObj for changes to make it reactive upon mutation
+    activeComponentObj: {
+      handler(){
+        this.code = this.createCodeSnippet(this.activeComponentObj.componentName, this.activeComponentObj.children)
+      }
     }
   },
   mounted () {

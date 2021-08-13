@@ -84,6 +84,7 @@ const mutations = {
   [types.CREATE_ACTION]: (state, payload) => {
     // if (!(state.userActions.includes(payload)))
     state.userActions.push(payload)
+    state.userActions.sort()
   },
 
   [types.ADD_ACTION_SELECTED]: (state, payload) => {
@@ -116,6 +117,7 @@ const mutations = {
   [types.CREATE_PROP]: (state, payload) => {
     // if (!(state.userActions.includes(payload)))
     state.userProps.push(payload)
+    state.userProps.sort()
   },
 
   [types.ADD_PROPS_SELECTED]: (state, payload) => {
@@ -146,6 +148,7 @@ const mutations = {
   [types.CREATE_STATE]: (state, payload) => {
     // if (!(state.userActions.includes(payload)))
     state.userState.push(payload)
+    state.userState.sort()
   },
 
   [types.ADD_STATE_SELECTED]: (state, payload) => {

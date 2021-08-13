@@ -15,8 +15,8 @@ Description:
       label="Edit name"
       dense
       class="input-add"
-    />
-    <!-- <template v-slot:append>
+    >
+    <template v-slot:append>
         <q-btn
           round
           dense
@@ -24,7 +24,8 @@ Description:
           icon="fas fa-edit"
           @click="editCompName(newName)"
         />
-      </template> -->
+      </template>
+    </q-input>
     <multiselect
       class="multiselect"
       v-model="value"
@@ -56,14 +57,6 @@ Description:
               @click="e => handleLayer(e)"
             />
      {{ this.activeComponentObj.z }}
-       <!-- <q-btn
-              class="btn"
-              color="transparent"
-              text-color="white"
-              label="-"
-              @click="e => handleLayer(e)"
-            /> -->
-            <!-- <p id="counter" style="color: white">{{ this.activeComponentObj.z }}</p> -->
             <q-btn
               class="btn"
               color="transparent"
@@ -281,9 +274,9 @@ export default {
   margin: 1rem;
 }
 /* modifies top label */
-.component {
+/* .component {
   text-transform: uppercase;
-}
+} */
 /* modifies each list element */
 .q-list {
   margin-bottom: 0.5rem;
