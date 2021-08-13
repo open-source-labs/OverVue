@@ -40,7 +40,7 @@ Description:
           :option-height="20"
           open-direction="top"
           :options="actionOptions"
-          :searchable="true"
+          :searchable="false"
           @search-change="stopDelete($event)"
         >
           <span slot="noResult">No actions found.</span>
@@ -86,7 +86,7 @@ Description:
           :option-height="20"
           open-direction="top"
           :options="stateOptions"
-          :searchable="true"
+          :searchable="false"
           @search-change="stopDelete($event)"
         >
           <span slot="noResult">No state found.</span>
@@ -132,7 +132,7 @@ Description:
           :option-height="20"
           open-direction="top"
           :options="propsOptions"
-          :searchable="true"
+          :searchable="false"
           @search-change="stopDelete($event)"
         >
           <span slot="noResult">No props found.</span>

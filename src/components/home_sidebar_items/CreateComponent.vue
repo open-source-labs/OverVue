@@ -98,6 +98,9 @@ export default {
         h: 200,
         htmlList: this.selectedElementList,
         children: [],
+        actions: [],
+        props: [],
+        state: [],
         parent: {},
         isActive: false
       }
