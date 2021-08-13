@@ -65,7 +65,7 @@ Description:
         </q-item>
       </q-list>
       </a>
-    </br>
+    <br/>
     <p>Toggle to edit actions</p>
     <toggle-button v-model="showActions" />
         <a
