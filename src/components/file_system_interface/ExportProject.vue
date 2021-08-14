@@ -298,7 +298,7 @@ export default {
         output += '};\n<\/script>'
         return output
       }
-      
+
       else{
         let str = ''
         children.forEach(name => {
@@ -306,10 +306,9 @@ export default {
         })
         let childrenComponentNames = ''
         children.forEach(name => {
-          childrenComponentNames += `\t\t${name},\n`
+          childrenComponentNames += `    ${name},\n`
         })
-        return `\n\n<script>\n${str}\nexport default {\n\tname: '${componentName}',
-        \n\tcomponents: {\n${childrenComponentNames}\t}\n};\n<\/script>`
+        return `\n\n<script>\n${str}\nexport default {\n  name: '${componentName}',\n  components: {\n${childrenComponentNames}  }\n};\n<\/script>`
       }
 
     },
