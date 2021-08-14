@@ -15,8 +15,8 @@ Description:
       label="Edit name"
       dense
       class="input-add"
-    />
-    <!-- <template v-slot:append>
+    >
+    <template v-slot:append>
         <q-btn
           round
           dense
@@ -24,7 +24,8 @@ Description:
           icon="fas fa-edit"
           @click="editCompName(newName)"
         />
-      </template> -->
+      </template>
+    </q-input>
     <multiselect
       class="multiselect"
       v-model="value"
@@ -39,21 +40,46 @@ Description:
     >
       <span slot="noResult">No components found.</span>
     </multiselect>
-    <br />
+    <br/>
     <p class="editName" v-if="this.activeComponentObj">
       Currently selected component: {{ this.activeComponentObj.componentName }}
     </p>
     <p class="editName" v-else>Select a component</p>
     <q-btn id="deleteButton" @click="deleteSelectedComp(activeComponentData)" label = 'Delete currently selected'/>
     <div v-if="this.activeComponentData">
-<p>Toggle to edit state</p>
-    <toggle-button v-model="showState"/>
+    <br/>
+   <section id="counter" style="color: white">  Layer:
+      <q-btn
+              class="btn"
+              color="transparent"
+              text-color="white"
+              label="-"
+              @click="e => handleLayer(e)"
+            />
+     {{ this.activeComponentObj.z }}
+            <q-btn
+              class="btn"
+              color="transparent"
+              text-color="white"
+              label="+"
+              @click="e => handleLayer(e)"
+            />
+          </section>
+          <br/>
+    <p> Toggle to edit: </p>
+    <section class="toggleText"> HTML elements
+    <toggle-button v-model="showHTML"/> </section>
+    <HTMLQueue v-if="showHTML"/>
+    <br/>
+    <section class="toggleText"> State
+    <toggle-button v-model="showState"/> </section>
+    <hr v-if="showState">
     <a
       v-for="s in this.activeComponentData.state"
       :key="s"
     >
       <q-list v-if="showState" class="list-item" dense bordered separator>
-        <q-item clickable v-ripple class="list-item">
+       <q-item clickable v-ripple class="list-item">
           <q-item-section>
             <div class="component-container">
               <div class="component-info">
@@ -66,8 +92,9 @@ Description:
       </q-list>
       </a>
     <br/>
-    <p>Toggle to edit actions</p>
-    <toggle-button v-model="showActions" />
+    <section class="toggleText"> Actions
+    <toggle-button v-model="showActions" /> </section>
+    <hr v-if="showActions">
         <a
       v-for="action in this.activeComponentData.actions"
       :key="action"
@@ -86,8 +113,10 @@ Description:
       </q-list>
       </a>
     <br/>
-    <p>Toggle to edit props</p>
-    <toggle-button v-model="showProps"/>
+    <section class="toggleText">
+    Props
+    <toggle-button v-model="showProps"/> </section>
+    <hr v-if="showProps">
     <a
       v-for="prop in this.activeComponentData.props"
       :key="prop"
@@ -113,53 +142,59 @@ Description:
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
-import Multiselect from "vue-multiselect";
-import { ToggleButton } from "vue-js-toggle-button";
+import { mapState, mapActions } from 'vuex'
+import Multiselect from 'vue-multiselect'
+import { ToggleButton } from 'vue-js-toggle-button'
+import HTMLQueue from '../dashboard_items/HTMLQueue.vue'
 
 export default {
-  data() {
+  data () {
     return {
-      value: "",
-      newName: "",
+      value: '',
+      newName: '',
       showState: false,
       showActions: false,
       showProps: false,
-    };
+      showHTML: false
+    }
   },
-  components: { Multiselect, ToggleButton },
+  components: { Multiselect, ToggleButton, HTMLQueue },
   computed: {
     ...mapState([
-      "routes",
-      "activeRoute",
-      "activeComponent",
-      "activeComponentObj",
-      "componentMap",
+      'routes',
+      'activeRoute',
+      'activeComponent',
+      'activeComponentObj',
+      'componentMap'
     ]),
-    activeRouteDisplay() {
-      let component = this.routes[this.activeRoute];
+
+    activeRouteDisplay () {
+      let component = this.routes[this.activeRoute]
       // console.log('component', component)
-      return component;
+      return component
     },
-    activeComponentData() {
-      return this.activeComponentObj;
+
+    activeComponentData () {
+      return this.activeComponentObj
     },
-    options() {
+
+    options () {
       const val = this.activeRouteDisplay.map(
         (component) => component.componentName
-      );
-      return val;
-    },
+      )
+      return val
+    }
   },
   methods: {
     ...mapActions([
-      "setActiveComponent",
-      "deleteComponent",
-      "deleteActiveComponent",
-      "editComponentName",
-      "deleteActionFromComponent",
-      "deletePropsFromComponent",
-      "deleteStateFromComponent"
+      'setActiveComponent',
+      'deleteComponent',
+      'deleteActiveComponent',
+      'editComponentName',
+      'deleteActionFromComponent',
+      'deletePropsFromComponent',
+      'deleteStateFromComponent',
+      'updateComponentLayer'
     ]),
 
     deleteState (state) {
@@ -171,7 +206,7 @@ export default {
       this.deleteActionFromComponent(action)
       console.log(this.activeComponentObj)
     },
-    
+
     deleteProp (prop) {
       this.deletePropsFromComponent(prop)
       console.log(this.activeComponentObj)
@@ -186,37 +221,49 @@ export default {
     //   e.preventDefault()
     // },
     // Deletes the selected component
-    deleteSelectedComp(componentData) {
+    deleteSelectedComp (componentData) {
       if (componentData) {
         // this.setActiveComponent(componentData.componentName)
-        this.deleteActiveComponent(componentData.componentName);
+        this.deleteActiveComponent(componentData.componentName)
       }
+    },
+
+    handleLayer (e) {
+      e.preventDefault()
+      const payload = {
+        activeComponent: this.activeComponent,
+        routeArray: this.routes[this.activeRoute],
+        activeComponentData: this.activeComponentData,
+        z: this.activeComponentData.z
+      }
+      if (e.target.innerText === '+') payload.z++
+      if (e.target.innerText === '-' && payload.z > 0) payload.z--
+      this.updateComponentLayer(payload)
     },
     // Select active component from multi-select input
-    handleSelect(componentName) {
-      this.setActiveComponent(componentName);
-      this.value = "";
-      this.activeComponentData.isActive = true;
+    handleSelect (componentName) {
+      this.setActiveComponent(componentName)
+      this.value = ''
+      this.activeComponentData.isActive = true
     },
     // Deselects active component
-    resetActiveComponent() {
-      if (this.activeComponent !== "") {
-        this.setActiveComponent("");
+    resetActiveComponent () {
+      if (this.activeComponent !== '') {
+        this.setActiveComponent('')
       }
     },
-    editCompName(name) {
-      if (name && name !== this.activeComponent && this.activeComponent)
-        this.editComponentName(name);
-      this.setActiveComponent(this.activeComponent);
-      console.log(this.componentMap);
-    },
+    editCompName (name) {
+      if (name && name !== this.activeComponent && this.activeComponent) { this.editComponentName(name) }
+      this.setActiveComponent(this.activeComponent)
+      console.log(this.componentMap)
+    }
   },
   watch: {
     activeComponentObj: function () {
       if (this.activeComponentObj) this.newName = this.activeComponentObj.componentName
     }
-  },
-};
+  }
+}
 </script>
 
 <style>
@@ -227,9 +274,9 @@ export default {
   margin: 1rem;
 }
 /* modifies top label */
-.component {
+/* .component {
   text-transform: uppercase;
-}
+} */
 /* modifies each list element */
 .q-list {
   margin-bottom: 0.5rem;
@@ -246,9 +293,15 @@ export default {
   display: flex;
   justify-content: space-between;
 }
+
 p {
   color: white;
 }
+
+.toggleText {
+  color: white;
+}
+
 .editName {
   color: white;
 }
@@ -256,5 +309,9 @@ p {
 #deleteButton {
   background-color: #289ead;
   color: white;
+}
+
+hr {
+  border: 1px solid grey
 }
 </style>

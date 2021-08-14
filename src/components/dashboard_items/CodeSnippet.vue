@@ -7,14 +7,16 @@ Description:
 
 <template>
   <div class="codesnippet-container">
-    <div class="top-p" v-if="this.activeComponent === ''">Select a component</div>
+    <div class="top-p" v-if="this.activeComponent === ''">
+      Select a component
+    </div>
     <div v-else>{{ `${this.activeComponent}.vue` }}</div>
     <prism-editor
       v-model="code"
       language="js"
       :line-numbers="lineNumbers"
       class="code-editor"
-      :style="{ height: `${height}vh`}"
+      :style="{ height: `${height}vh` }"
       :readonly="true"
     />
   </div>
@@ -91,7 +93,7 @@ export default {
         let indented = indent + '  '
         let nestedString = ''
 
-        childrenArray.forEach(child => {
+        childrenArray.forEach((child) => {
           nestedString += indented
           if (!child.text) {
             nestedString += `<${child}/>\n`
@@ -103,7 +105,10 @@ export default {
               nestedString += indented + htmlElementMap[child.text][1]
               nestedString += '\n'
             } else {
-              nestedString += htmlElementMap[child.text][0] + htmlElementMap[child.text][1] + '\n'
+              nestedString +=
+                htmlElementMap[child.text][0] +
+                htmlElementMap[child.text][1] +
+                '\n'
             }
           }
         })
@@ -126,7 +131,8 @@ export default {
             outputStr += htmlElementMap[el.text][1]
             outputStr += `  \n`
           } else {
-            outputStr += htmlElementMap[el.text][0] + htmlElementMap[el.text][1] + '\n'
+            outputStr +=
+              htmlElementMap[el.text][0] + htmlElementMap[el.text][1] + '\n'
           }
         }
       }
@@ -134,15 +140,13 @@ export default {
     },
     // Creates boiler text for <script> and <style>
     createBoiler (componentName, children) {
-
       // add import mapstate and mapactions if they exist
       let imports = ''
-      if (this.activeComponentObj.actions.length || this.activeComponentObj.state.length){
+      if (this.activeComponentObj.actions.length || this.activeComponentObj.state.length) {
         imports += 'import { '
         if (this.activeComponentObj.actions.length && this.activeComponentObj.state.length) {
           imports += 'mapState, mapActions'
-        } 
-        else if (this.activeComponentObj.state.length) imports += 'mapState'
+        } else if (this.activeComponentObj.state.length) imports += 'mapState'
         else imports += 'mapActions'
         imports += ' } from "vuex"\n'
       }
@@ -152,15 +156,15 @@ export default {
         imports += `import ${name} from '@/components/${name}.vue';\n`
       })
 
-      // add components section  
+      // add components section
       let childrenComponentNames = ''
-      children.forEach(name => {
+      children.forEach((name) => {
         childrenComponentNames += `    ${name},\n`
       })
 
       // if true add data section and populate with props
       let data = ''
-      if (this.activeComponentObj.props.length){
+      if (this.activeComponentObj.props.length) {
         data += '  data () {\n    return {'
         this.activeComponentObj.props.forEach(prop => {
           data += `\n      ${prop}: "PLACEHOLDER FOR VALUE",`
@@ -172,10 +176,10 @@ export default {
 
       // if true add computed section and populate with state
       let computed = ''
-      if (this.activeComponentObj.state.length){
+      if (this.activeComponentObj.state.length) {
         computed += '  computed: {'
         computed += '\n    ...mapState(['
-        this.activeComponentObj.state.forEach((state) =>{
+        this.activeComponentObj.state.forEach((state) => {
           computed += `\n      "${state}",`
         })
         computed += '\n    ]),\n'
@@ -184,7 +188,7 @@ export default {
 
       // if true add methods section and populate with actions
       let methods = ''
-      if (this.activeComponentObj.actions.length){
+      if (this.activeComponentObj.actions.length) {
         methods += '  methods: {'
         methods += '\n    ...mapActions(['
         this.activeComponentObj.actions.forEach((action) => {
@@ -202,12 +206,12 @@ export default {
       output += data
       output += computed
       output += methods
+      // eslint-disable-next-line no-useless-escape
       output += '};\n<\/script>\n\n<style scoped>\n</style>'
       // add props/data
 
-
       // eslint-disable-next-line no-useless-escape
-      // return `\n\n<script>\n${str}\nexport default {\n  name: '${componentName}',\n  
+      // return `\n\n<script>\n${str}\nexport default {\n  name: '${componentName}',\n
       // components: {\n${childrenComponentNames}  }\n};\n<\/script>\n\n<style scoped>\n
       // </style>`
       return output
@@ -244,7 +248,7 @@ export default {
   },
   beforeDestroy () {
     window.removeEventListener('resize', this.getWindowHeight)
-  },
+  }
   // watch: {
   //   activeComponent: {
   //     handler () {
@@ -275,15 +279,12 @@ export default {
 
 <style lang="stylus" scoped>
 // resize handled by vue lifecycle methods
-.code-editor {
-  font-size: 12px;
-}
+.code-editor
+  font-size 12px
 
-.codesnippet-container {
-  margin-bottom: 1rem;
-}
+.codesnippet-container
+  margin-bottom 1rem
 
-::-webkit-scrollbar {
-  display: none;
-}
+::-webkit-scrollbar
+  display none
 </style>

@@ -3,17 +3,16 @@ Description:
   Handles create component menu on left-side
   Functionality includes: creating a component, preventing users from entering invalid component file names
   -->
-
 <template>
   <div class="home-sidebar drawer-menu">
     <br />
     <form
       v-on:submit.prevent="createComponent"
-      v-on:click="resetActiveComponent"
     >
       <q-input
         standout="bg-secondary text-white"
         bottom-slots
+        v-on:keyup.delete.stop
         v-model="componentNameInputValue"
         label="Component Name"
         dense
@@ -106,16 +105,11 @@ export default {
       }
 
       this.registerComponent(component)
-    },
-
-    // clears active component during component creation
-    resetActiveComponent () {
-      if (this.activeComponent !== '') {
-        this.setActiveComponent('')
-      }
+      this.setActiveComponent(component.componentName)
     }
   }
 }
+
 </script>
 
 <style type="stylus" scoped>
