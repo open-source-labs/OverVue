@@ -103,7 +103,7 @@ export default {
         parent: {},
         isActive: false
       }
-      if (!this.componentMap[component.componentName]){
+      if (!this.componentMap[component.componentName]) {
         this.registerComponent(component)
         this.setActiveComponent(component.componentName)
       }

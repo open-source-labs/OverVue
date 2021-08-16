@@ -42,7 +42,7 @@ export default {
   },
   computed: {
     // needs access to current component aka activeComponent
-    ...mapState(['componentMap', 'activeComponent', 'activeComponentObj']),
+    ...mapState(['componentMap', 'activeComponent', 'activeComponentObj'])
   },
   methods: {
     getWindowHeight (e) {
@@ -220,7 +220,7 @@ export default {
   watch: {
     // watches activeComponentObj for changes to make it reactive upon mutation
     activeComponentObj: {
-      handler(){
+      handler () {
         this.code = this.createCodeSnippet(this.activeComponentObj.componentName, this.activeComponentObj.children)
       }
     }

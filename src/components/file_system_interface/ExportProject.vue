@@ -228,14 +228,13 @@ export default {
       const routes = Object.keys(this.routes)
       console.log(componentName)
       console.log(currentComponent)
-      if (!routes.includes(componentName)){
+      if (!routes.includes(componentName)) {
         let imports = ''
-        if (currentComponent.actions.length || currentComponent.state.length){
+        if (currentComponent.actions.length || currentComponent.state.length) {
           imports += 'import { '
           if (currentComponent.actions.length && currentComponent.state.length) {
             imports += 'mapState, mapActions'
-          } 
-          else if (currentComponent.state.length) imports += 'mapState'
+          } else if (currentComponent.state.length) imports += 'mapState'
           else imports += 'mapActions'
           imports += ' } from "vuex"\n'
         }
@@ -245,7 +244,7 @@ export default {
           imports += `import ${name} from '@/components/${name}.vue';\n`
         })
 
-        // add components section  
+        // add components section
         let childrenComponentNames = ''
         children.forEach(name => {
           childrenComponentNames += `    ${name},\n`
@@ -253,7 +252,7 @@ export default {
 
         // if true add data section and populate with props
         let data = ''
-        if (currentComponent.props.length){
+        if (currentComponent.props.length) {
           data += '  data () {\n    return {'
           currentComponent.props.forEach(prop => {
             data += `\n      ${prop}: "PLACEHOLDER FOR VALUE",`
@@ -265,10 +264,10 @@ export default {
 
         // if true add computed section and populate with state
         let computed = ''
-        if (currentComponent.state.length){
+        if (currentComponent.state.length) {
           computed += '  computed: {'
           computed += '\n    ...mapState(['
-          currentComponent.state.forEach((state) =>{
+          currentComponent.state.forEach((state) => {
             computed += `\n      "${state}",`
           })
           computed += '\n    ]),\n'
@@ -277,7 +276,7 @@ export default {
 
         // if true add methods section and populate with actions
         let methods = ''
-        if (currentComponent.actions.length){
+        if (currentComponent.actions.length) {
           methods += '  methods: {'
           methods += '\n    ...mapActions(['
           currentComponent.actions.forEach((action) => {
@@ -297,9 +296,7 @@ export default {
         output += methods
         output += '};\n<\/script>'
         return output
-      }
-
-      else{
+      } else {
         let str = ''
         children.forEach(name => {
           str += `import ${name} from '@/components/${name}.vue';\n`
@@ -310,7 +307,6 @@ export default {
         })
         return `\n\n<script>\n${str}\nexport default {\n  name: '${componentName}',\n  components: {\n${childrenComponentNames}  }\n};\n<\/script>`
       }
-
     },
     /**
      * @description writes the <style> in vue component

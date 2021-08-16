@@ -2,7 +2,7 @@
 Description:
   Contains edit functionality for selected component
   Functionality includes: delete component, set active component, search for component, change name of component,adjust layer of component,
-  delete props, state, actions, HTML elements, or children of component. 
+  delete props, state, actions, HTML elements, or children of component.
   -->
 
 <template>
@@ -262,7 +262,7 @@ export default {
       }
     },
 
-    // edit name of selected component 
+    // edit name of selected component
     editCompName (name) {
       if (name && name !== this.activeComponent && this.activeComponent && !this.componentMap[name]) this.editComponentName(name)
       this.setActiveComponent(this.activeComponent)

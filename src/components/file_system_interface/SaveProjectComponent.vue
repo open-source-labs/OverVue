@@ -98,7 +98,7 @@ export default {
             this.parseAndDelete(comphtml)
           }
         }
-  
+
         fs.writeFileSync(data, JSON.stringify(state))
         localforage
           .setItem(fileName, JSON.parse(fs.readFileSync(data, 'utf8')))

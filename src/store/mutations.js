@@ -114,7 +114,7 @@ const mutations = {
     // state.activeComponentObj = active;
     state.activeComponentObj = Object.assign({}, active)
 
-    state.componentMap = Object.assign({}, state.componentMap, {[state.activeComponent]: state.activeComponentObj})
+    state.componentMap = Object.assign({}, state.componentMap, { [state.activeComponent]: state.activeComponentObj })
   },
 
   [types.CREATE_PROP]: (state, payload) => {
@@ -143,10 +143,10 @@ const mutations = {
         }
       }
     }
-    state.selectedProps = [];
+    state.selectedProps = []
     state.activeComponentObj = Object.assign({}, active)
 
-    state.componentMap = Object.assign({}, state.componentMap, {[state.activeComponent]: state.activeComponentObj})
+    state.componentMap = Object.assign({}, state.componentMap, { [state.activeComponent]: state.activeComponentObj })
   },
 
   [types.CREATE_STATE]: (state, payload) => {
@@ -161,7 +161,7 @@ const mutations = {
   },
 
   [types.ADD_STATE_TO_COMPONENT]: (state, payload) => {
-    let active = state.activeComponentObj;
+    let active = state.activeComponentObj
 
     if (!state.activeComponentObj.state) {
       state.activeComponentObj.state = payload
@@ -172,12 +172,12 @@ const mutations = {
         }
       }
     }
-    state.selectedState = [];
+    state.selectedState = []
     // state.activeComponentObj = null;
     // state.activeComponentObj = active;
     state.activeComponentObj = Object.assign({}, active)
 
-    state.componentMap = Object.assign({}, state.componentMap, {[state.activeComponent]: state.activeComponentObj})
+    state.componentMap = Object.assign({}, state.componentMap, { [state.activeComponent]: state.activeComponentObj })
   },
 
   [types.DELETE_ACTION_FROM_COMPONENT]: (state, payload) => {
@@ -406,7 +406,7 @@ const mutations = {
   },
   // pushs new component to componentMap
   [types.ADD_COMPONENT_TO_COMPONENT_MAP]: (state, payload) => {
-    const { componentName, htmlList, children, parent, isActive, actions, props } = payload;
+    const { componentName, htmlList, children, parent, isActive, actions, props } = payload
     const s = payload.state
     state.componentMap = Object.assign({}, state.componentMap, {
       [componentName]: {
