@@ -1,7 +1,7 @@
 <!--
 Description:
-  Displays Vuex features for possible iterations.
-  Functionality includes: N/A
+  Sidebar dropdown for Vuex features
+  Functionality includes: create state, props and actions globally, as well as map them to selected component
   -->
 
 <template @keyup.enter.native="createNewAction(textAction)">

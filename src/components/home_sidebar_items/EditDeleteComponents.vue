@@ -1,7 +1,8 @@
 <!--
 Description:
-  Displays list of components in the active route.
-  Functionality includes: delete component, set active component, search for component via multiselect.
+  Contains edit functionality for selected component
+  Functionality includes: delete component, set active component, search for component, change name of component,adjust layer of component,
+  delete props, state, actions, HTML elements, or children of component. 
   -->
 
 <template>
@@ -121,7 +122,7 @@ Description:
       v-for="prop in this.activeComponentData.props"
       :key="prop"
     >
-          <!-- v-on:click="onActivated(prop)" -->
+    <!-- v-on:click="onActivated(prop)" -->
 
       <q-list v-if="showProps" class="list-item" dense bordered separator>
         <q-item clickable v-ripple class="list-item">
@@ -178,6 +179,7 @@ export default {
       return this.activeComponentObj
     },
 
+    // returns options for component multiselect
     options () {
       const val = this.activeRouteDisplay.map(
         (component) => component.componentName
@@ -197,16 +199,19 @@ export default {
       'updateComponentLayer'
     ]),
 
+    // delete selected state from active component
     deleteState (state) {
       this.deleteStateFromComponent(state)
       console.log(this.activeComponentObj)
     },
 
+    // delete selected action from active component
     deleteAction (action) {
       this.deleteActionFromComponent(action)
       console.log(this.activeComponentObj)
     },
 
+    // delete selected props from active component
     deleteProp (prop) {
       this.deletePropsFromComponent(prop)
       console.log(this.activeComponentObj)
@@ -220,6 +225,7 @@ export default {
     // deleteCircumvent (e) {
     //   e.preventDefault()
     // },
+
     // Deletes the selected component
     deleteSelectedComp (componentData) {
       if (componentData) {
@@ -228,6 +234,7 @@ export default {
       }
     },
 
+    // changes layer of active component
     handleLayer (e) {
       e.preventDefault()
       const payload = {
@@ -240,25 +247,30 @@ export default {
       if (e.target.innerText === '-' && payload.z > 0) payload.z--
       this.updateComponentLayer(payload)
     },
+
     // Select active component from multi-select input
     handleSelect (componentName) {
       this.setActiveComponent(componentName)
       this.value = ''
       this.activeComponentData.isActive = true
     },
+
     // Deselects active component
     resetActiveComponent () {
       if (this.activeComponent !== '') {
         this.setActiveComponent('')
       }
     },
+
+    // edit name of selected component 
     editCompName (name) {
-      if (name && name !== this.activeComponent && this.activeComponent) { this.editComponentName(name) }
+      if (name && name !== this.activeComponent && this.activeComponent && !this.componentMap[name]) this.editComponentName(name)
       this.setActiveComponent(this.activeComponent)
       console.log(this.componentMap)
     }
   },
   watch: {
+    // watches for changes in selected component, changes edit name text to newly selected component
     activeComponentObj: function () {
       if (this.activeComponentObj) this.newName = this.activeComponentObj.componentName
     }

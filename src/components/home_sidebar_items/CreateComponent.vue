@@ -103,9 +103,10 @@ export default {
         parent: {},
         isActive: false
       }
-
-      this.registerComponent(component)
-      this.setActiveComponent(component.componentName)
+      if (!this.componentMap[component.componentName]){
+        this.registerComponent(component)
+        this.setActiveComponent(component.componentName)
+      }
     }
   }
 }

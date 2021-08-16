@@ -1,3 +1,9 @@
+<!--
+Description:
+  Displays Vuex Dropdown on Home Sidebar
+  Functionality includes: create State, Actions, and Props, and assign to selected component
+  -->
+
 <template>
   <div class="container">
     <q-card id="store-cards">
