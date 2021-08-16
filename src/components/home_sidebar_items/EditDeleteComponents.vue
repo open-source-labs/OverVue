@@ -122,7 +122,7 @@ Description:
       v-for="prop in this.activeComponentData.props"
       :key="prop"
     >
-          <!-- v-on:click="onActivated(prop)" -->
+    <!-- v-on:click="onActivated(prop)" -->
 
       <q-list v-if="showProps" class="list-item" dense bordered separator>
         <q-item clickable v-ripple class="list-item">
