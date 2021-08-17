@@ -31,7 +31,7 @@ Description:
       :onResizeStart="recordInitialSize"
     >
       <div class="component-title">
-        <p>{{ componentData.componentName }}</p>
+        <p style='color: black'>{{ componentData.componentName }}</p>
       </div>
       <!-- <div class="component-html-info"> -->
         <!-- <p>Elements in Component:</p> -->

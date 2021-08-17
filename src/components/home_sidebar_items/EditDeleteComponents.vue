@@ -45,8 +45,9 @@ Description:
     <p class="editName" v-if="this.activeComponentObj">
       Currently selected component: {{ this.activeComponentObj.componentName }}
     </p>
-    <p class="editName" v-else>Select a component</p>
+    <!-- <p class="editName" v-else>Select a component</p> -->
     <q-btn id="deleteButton" @click="deleteSelectedComp(activeComponentData)" label = 'Delete currently selected'/>
+    <br/>
     <div v-if="this.activeComponentData">
     <br/>
     <!-- @input="selectParent"
@@ -160,7 +161,7 @@ Description:
       </q-list>
       </a>
     </div>
-    <p v-else> Select Component to Enable Edit </p>
+    <p v-else> <br/> Select Component to Enable Edit </p>
   </div>
 </template>
 

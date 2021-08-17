@@ -87,14 +87,14 @@ export default {
   },
   watch: {
     // toggles dashboard to "Component Details" tab when a components is selected
-    activeComponent: function () {
-      if (this.activeComponent !== '') {
-        this.tab = 'detail'
-      } else {
-        // otherwise toggle dashboard to 'Project Tree' tab if no component is selected
-        this.tab = 'tree'
-      }
-    },
+    // activeComponent: function () {
+    //   if (this.activeComponent !== '') {
+    //     this.tab = 'detail'
+    //   } else {
+    //     // otherwise toggle dashboard to 'Project Tree' tab if no component is selected
+    //     this.tab = 'tree'
+    //   }
+    // },
     // otherwise toggle dashboard to 'Project Tree' tab if no component is selected or the
     // user is in the process of creating a component
     componentNameInputValue: function () {
