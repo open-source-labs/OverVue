@@ -1,3 +1,3 @@
 /* eslint-disable import/prefer-default-export */
-export function someAction(/* context */) {
+export function someAction (/* context */) {
 }

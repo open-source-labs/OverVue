@@ -9,7 +9,7 @@ const htmlElementMap = {
   'list-ol': ['<ol>', '</ol>'],
   'list-ul': ['<ul>', '</ul>'],
   input: ['<input />', ''],
-  navbar: ['<nav>', '</nav>'],
-};
+  navbar: ['<nav>', '</nav>']
+}
 
-export default htmlElementMap;
+export default htmlElementMap

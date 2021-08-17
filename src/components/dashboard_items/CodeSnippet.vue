@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 <!--
 Description:
   Located under Component Details in Dashboard
@@ -118,6 +119,7 @@ export default {
       // Iterates through active component's HTML elements list and adds to code snippet
       let htmlArr = this.componentMap[componentName].htmlList
       let outputStr = ``
+      // eslint-disable-next-line no-unused-vars
       for (let el of htmlArr) {
         if (!el.text) {
           console.log(htmlArr)
