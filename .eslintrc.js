@@ -3,22 +3,19 @@ module.exports = {
   root: true,
 
   parserOptions: {
-    parser: '@babel/eslint-parser',
-    sourceType: 'module',
+    parser: 'babel-eslint',
+    sourceType: 'module'
   },
 
   env: {
-    browser: true,
+    browser: true
   },
 
   extends: [
-    // updated to Airbnb Style guide - Aug 2021
-    'airbnb-base',
-
     // https://github.com/vuejs/eslint-plugin-vue#priority-a-essential-error-prevention
     // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules.
-    // 'plugin:vue/essential',
-    // '@vue/standard'
+    'plugin:vue/essential',
+    '@vue/standard'
   ],
 
   // required to lint *.vue files
@@ -28,7 +25,7 @@ module.exports = {
     ga: true, // Google Analytics
     cordova: true,
     __statics: true,
-    process: true,
+    process: true
   },
 
   // add your custom rules here
@@ -51,6 +48,6 @@ module.exports = {
     // allow console.log during development only
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     // allow debugger during development only
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-  },
-};
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
+  }
+}

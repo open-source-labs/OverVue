@@ -9,7 +9,7 @@ const icons = {
   'list-ol': 'fas fa-list-ol fa-lg',
   'list-ul': 'fas fa-list-ul fa-lg',
   input: 'fas fa-pen fa-lg',
-  navbar: 'fas fa-window-maximize fa-lg',
-};
+  navbar: 'fas fa-window-maximize fa-lg'
+}
 
-export default icons;
+export default icons

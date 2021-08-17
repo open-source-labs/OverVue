@@ -1,3 +1,10 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-useless-escape */
 /* eslint-disable no-useless-escape */
 <!--
@@ -168,6 +175,7 @@ export default {
       // iterate through component's htmllist
       let htmlArr = this.componentMap[componentName].htmlList
       let outputStr = ``
+      // eslint-disable-next-line no-unused-vars
       for (let el of htmlArr) {
         if (!el.text) {
           outputStr += `    <${el}/>\n`
@@ -440,6 +448,7 @@ export default {
       this.createPackage(data)
 
       // exports images to the /assets folder
+      // eslint-disable-next-line no-unused-vars
       for (let [routeImage, imageLocation] of Object.entries(this.imagePath)) {
         if (imageLocation !== '') {
           this.createAssetFile(path.join(data, 'src', 'assets', routeImage), imageLocation)
@@ -449,6 +458,7 @@ export default {
       // main logic below for creating components
       this.createRouter(data)
 
+      // eslint-disable-next-line no-unused-vars
       for (let componentName in this.componentMap) {
         // if componentName is a route:
         if (componentName !== 'App') {

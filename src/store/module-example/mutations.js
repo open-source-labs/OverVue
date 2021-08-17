@@ -1,3 +1,3 @@
 /* eslint-disable import/prefer-default-export */
-export function someMutation(/* state */) {
+export function someMutation (/* state */) {
 }
