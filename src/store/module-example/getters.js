@@ -1,2 +1,3 @@
-export function someGetter (/* state */) {
+/* eslint-disable import/prefer-default-export */
+export function someGetter(/* state */) {
 }

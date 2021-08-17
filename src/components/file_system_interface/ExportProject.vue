@@ -1,3 +1,5 @@
+/* eslint-disable no-useless-escape */
+/* eslint-disable no-useless-escape */
 <!--
 Description:
   Displays Export Project button and allows users to export project
@@ -294,6 +296,7 @@ export default {
         output += data
         output += computed
         output += methods
+        // eslint-disable-next-line no-useless-escape
         output += '};\n<\/script>'
         return output
       } else {
@@ -305,6 +308,7 @@ export default {
         children.forEach(name => {
           childrenComponentNames += `    ${name},\n`
         })
+        // eslint-disable-next-line no-useless-escape
         return `\n\n<script>\n${str}\nexport default {\n  name: '${componentName}',\n  components: {\n${childrenComponentNames}  }\n};\n<\/script>`
       }
     },

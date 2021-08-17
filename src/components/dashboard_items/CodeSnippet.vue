@@ -93,7 +93,7 @@ export default {
         let indented = indent + '  '
         let nestedString = ''
 
-        childrenArray.forEach((child) => {
+        childrenArray.forEach(child => {
           nestedString += indented
           if (!child.text) {
             nestedString += `<${child}/>\n`
@@ -120,6 +120,7 @@ export default {
       let outputStr = ``
       for (let el of htmlArr) {
         if (!el.text) {
+          console.log(htmlArr)
           outputStr += `    <${el}/>\n`
         } else {
           outputStr += `    `
@@ -142,9 +143,15 @@ export default {
     createBoiler (componentName, children) {
       // add import mapstate and mapactions if they exist
       let imports = ''
-      if (this.activeComponentObj.actions.length || this.activeComponentObj.state.length) {
+      if (
+        this.activeComponentObj.actions.length ||
+        this.activeComponentObj.state.length
+      ) {
         imports += 'import { '
-        if (this.activeComponentObj.actions.length && this.activeComponentObj.state.length) {
+        if (
+          this.activeComponentObj.actions.length &&
+          this.activeComponentObj.state.length
+        ) {
           imports += 'mapState, mapActions'
         } else if (this.activeComponentObj.state.length) imports += 'mapState'
         else imports += 'mapActions'
@@ -158,7 +165,7 @@ export default {
 
       // add components section
       let childrenComponentNames = ''
-      children.forEach((name) => {
+      children.forEach(name => {
         childrenComponentNames += `    ${name},\n`
       })
 
@@ -179,7 +186,7 @@ export default {
       if (this.activeComponentObj.state.length) {
         computed += '  computed: {'
         computed += '\n    ...mapState(['
-        this.activeComponentObj.state.forEach((state) => {
+        this.activeComponentObj.state.forEach(state => {
           computed += `\n      "${state}",`
         })
         computed += '\n    ]),\n'
@@ -191,7 +198,7 @@ export default {
       if (this.activeComponentObj.actions.length) {
         methods += '  methods: {'
         methods += '\n    ...mapActions(['
-        this.activeComponentObj.actions.forEach((action) => {
+        this.activeComponentObj.actions.forEach(action => {
           methods += `\n      "${action}",`
         })
         methods += '\n    ]),\n'
@@ -221,7 +228,20 @@ export default {
     // watches activeComponentObj for changes to make it reactive upon mutation
     activeComponentObj: {
       handler () {
-        this.code = this.createCodeSnippet(this.activeComponentObj.componentName, this.activeComponentObj.children)
+        // console.log(this.activeComponentObj.children)
+        this.code = this.createCodeSnippet(
+          this.activeComponentObj.componentName,
+          this.activeComponentObj.children
+        )
+      }
+    },
+    // watches componentMap for changes to make it reactive upon mutation
+    componentMap: {
+      handler () {
+        this.code = this.createCodeSnippet(
+          this.activeComponentObj.componentName,
+          this.activeComponentObj.children
+        )
       }
     }
   },

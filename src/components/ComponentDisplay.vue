@@ -167,6 +167,7 @@ export default {
       if (this.componentMap[this.activeComponent]) {
         // console.log('testmodel', this.testModel)
         // console.log(this.componentMap[this.activeComponent].children)
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.testModel = this.componentMap[this.activeComponent].children
         lineage = checkParents(this.componentMap[this.activeComponent])
         // console.log('Lineage', lineage);

@@ -1,6 +1,7 @@
-import icons from './icons'
-import htmlElementMap from './htmlElementMap'
-const cloneDeep = require('lodash.clonedeep')
+import icons from './icons';
+import htmlElementMap from './htmlElementMap';
+
+const cloneDeep = require('lodash.clonedeep');
 
 const newState = {
   icons,
@@ -10,22 +11,22 @@ const newState = {
     App: {
       componentName: 'App',
       children: ['HomeView'],
-      htmlList: []
+      htmlList: [],
     },
     HomeView: {
       componentName: 'HomeView',
       children: [],
-      htmlList: []
-    }
+      htmlList: [],
+    },
   },
   routes: {
-    HomeView: []
+    HomeView: [],
   },
   userActions: [],
   userProps: [],
   userState: [],
   imagePath: {
-    HomeView: ''
+    HomeView: '',
   },
   // state below is not used when exporting a project
   componentNameInputValue: '',
@@ -38,7 +39,7 @@ const newState = {
   activeHTML: '',
   activeLayer: {
     id: '',
-    lineage: []
+    lineage: [],
   },
 
   selectedProps: [],
@@ -49,24 +50,24 @@ const newState = {
   activeTab: 0,
   componentChildrenMultiselectValue: [],
   modalOpen: false,
-  parentSelected: false
-}
+  parentSelected: false,
+};
 
 // closured method to ensure we only ever write the default state ONCE
 const writeTheDefault = () => {
-  let initial = {}
-  let needsToRun = true
-  function onced (payload) {
+  let initial = {};
+  let needsToRun = true;
+  function onced(payload) {
     if (needsToRun) {
-      initial = cloneDeep(payload)
-      needsToRun = false
+      initial = cloneDeep(payload);
+      needsToRun = false;
     }
-    return initial
+    return initial;
   }
-  return onced
-}
+  return onced;
+};
 
-const defaultState = writeTheDefault()
+const defaultState = writeTheDefault();
 
-export default newState
-export { defaultState }
+export default newState;
+export { defaultState };
