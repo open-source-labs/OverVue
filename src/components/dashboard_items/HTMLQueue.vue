@@ -5,11 +5,10 @@ Description:
 -->
 
 <template>
-  <section class="home-queue">
+  <section class="html-queue">
     <i v-if='this.activeLayer.id !== ""' class="fas fa fa-chevron-up fa-md" @click="setParentLayer"></i>
-    <span class='list-title' v-if='this.activeLayer.id !== ""'> Viewing Elements in '{{ this.activeComponent }} {{ depth }}' </span>
-    <span class='list-title' v-else-if='this.activeComponent !==""'> Viewing Elements in '{{ this.activeComponent }}' </span>
-    <span class='list-title' v-else> Elements in Queue </span>
+    <span class='list-title' v-if='this.activeLayer.id !== ""'> Viewing Elements in '{{ depth }}' </span>
+    <span class='list-title' v-else-if='this.activeComponent !==""'> </span>
     <hr>
     <div
       group="people"
@@ -34,11 +33,11 @@ Description:
 <script>
 
 import { mapState, mapActions } from 'vuex'
-import { setSelectedElementList, deleteSelectedElement, deleteFromComponentHtmlList } from '../store/types'
-import { breadthFirstSearch } from '../utils/search.util'
+import { setSelectedElementList, deleteSelectedElement, deleteFromComponentHtmlList } from '../../store/types'
+import { breadthFirstSearch } from '../../utils/search.util'
 
 export default {
-  name: 'HomeQueue',
+  name: 'HTMLQueue',
   props: {
     name: {
       type: String
@@ -81,7 +80,7 @@ export default {
       })
       return newTitle
     }
-    
+
   },
   methods: {
     ...mapActions(['setActiveHTML', 'setActiveLayer', 'upOneLayer']),
@@ -105,7 +104,7 @@ export default {
   },
   watch: {
     activeComponent: function () {
-      // console.log('watching activeComponent in HomeQueue')
+      // console.log('watching activeComponent in HTMLQueue')
       if (this.activeComponent !== '') {
         this.component = true
       } else {
@@ -117,7 +116,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.home-queue {
+.html-queue {
   padding-bottom: 40px;
 }
 

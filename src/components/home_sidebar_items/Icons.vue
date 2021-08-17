@@ -15,15 +15,14 @@ Description:
       <br />
       <i :class="iconString"></i>
       <br />
-      <span class="white--text"
-      >{{ elementName }}</span>
+      <span class="white--text">{{ elementName }}</span>
     </button>
   </section>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import { breadthFirstSearch } from '../utils/search.util'
+import { breadthFirstSearch } from '../../utils/search.util'
 
 export default {
   data () {
@@ -33,13 +32,22 @@ export default {
   },
   name: 'Icons',
   computed: {
-    ...mapState(['icons', 'activeComponent', 'componentMap', 'selectedElementList', 'activeHTML', 'activeLayer'])
+    ...mapState([
+      'icons',
+      'activeComponent',
+      'componentMap',
+      'selectedElementList',
+      'activeHTML',
+      'activeLayer'
+    ])
   },
   methods: {
     // Logic to decide where to place selected html element
     changeState (elementName) {
       // if no active component & creating a new component: add html to selectedElement list
-      if (this.activeComponent === '') { this.$emit('getClickedIcon', { elementName, date: Date.now() }) } else {
+      if (this.activeComponent === '') {
+        this.$emit('getClickedIcon', { elementName, date: Date.now() })
+      } else {
         if (this.activeHTML === '' && this.activeLayer.id === '') {
           // if active component & no active html: add html to component's htmlList no nesting
           this.$emit('activeElement', { elementName, date: Date.now() })
@@ -60,9 +68,11 @@ export default {
       if (this.activeComponent === '') {
         this.elementStorage = {}
         this.selectedElementList.forEach(el => {
+          // if user adds an element and the element is not inside of component, give it a value of 1
           if (!this.elementStorage[el.text]) {
             this.elementStorage[el.text] = 1
           } else {
+            // otherwise increment count by 1
             this.elementStorage[el.text] += 1
           }
         })
@@ -76,7 +86,10 @@ export default {
         if (this.activeComponent) {
           this.elementStorage = {}
           if (this.activeLayer.id !== '' && this.activeHTML === '') {
-            let activeLayerObj = breadthFirstSearch(this.componentMap[this.activeComponent].htmlList, this.activeLayer.id)
+            let activeLayerObj = breadthFirstSearch(
+              this.componentMap[this.activeComponent].htmlList,
+              this.activeLayer.id
+            )
             activeLayerObj.children.forEach(el => {
               if (!this.elementStorage[el.text]) {
                 this.elementStorage[el.text] = 1
@@ -99,7 +112,10 @@ export default {
         if (this.activeComponent) {
           this.elementStorage = {}
           if (this.activeLayer.id !== '' && this.activeHTML === '') {
-            let activeLayerObj = breadthFirstSearch(this.componentMap[this.activeComponent].htmlList, this.activeLayer.id)
+            let activeLayerObj = breadthFirstSearch(
+              this.componentMap[this.activeComponent].htmlList,
+              this.activeLayer.id
+            )
             activeLayerObj.children.forEach(el => {
               if (!this.elementStorage[el.text]) {
                 this.elementStorage[el.text] = 1
@@ -108,7 +124,10 @@ export default {
               }
             })
           } else if (this.activeHTML !== '') {
-            let activeHtmlObj = breadthFirstSearch(this.componentMap[this.activeComponent].htmlList, this.activeHTML)
+            let activeHtmlObj = breadthFirstSearch(
+              this.componentMap[this.activeComponent].htmlList,
+              this.activeHTML
+            )
             activeHtmlObj.children.forEach(el => {
               if (!this.elementStorage[el.text]) {
                 this.elementStorage[el.text] = 1
@@ -133,7 +152,10 @@ export default {
     activeHTML: function () {
       this.elementStorage = {}
       if (this.activeHTML !== '') {
-        let activeHtmlObj = breadthFirstSearch(this.componentMap[this.activeComponent].htmlList, this.activeHTML)
+        let activeHtmlObj = breadthFirstSearch(
+          this.componentMap[this.activeComponent].htmlList,
+          this.activeHTML
+        )
         activeHtmlObj.children.forEach(el => {
           if (!this.elementStorage[el.text]) {
             this.elementStorage[el.text] = 1
@@ -143,7 +165,10 @@ export default {
         })
       } else {
         if (this.activeLayer.id !== '' && this.activeHTML === '') {
-          let activeLayerObj = breadthFirstSearch(this.componentMap[this.activeComponent].htmlList, this.activeLayer.id)
+          let activeLayerObj = breadthFirstSearch(
+            this.componentMap[this.activeComponent].htmlList,
+            this.activeLayer.id
+          )
           activeLayerObj.children.forEach(el => {
             if (!this.elementStorage[el.text]) {
               this.elementStorage[el.text] = 1

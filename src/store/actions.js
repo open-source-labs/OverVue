@@ -1,13 +1,12 @@
+/* eslint-disable max-len */
 import * as types from './types'
 
 const actions = {
   // Actions that primarily affect componentDisplay.vue /////////////////////////
   [types.deleteActiveComponent]: ({ state, commit }) => {
     commit(types.DELETE_ACTIVE_COMPONENT)
-    let activeRouteArray = [...state.routes[state.activeRoute]]
-    let newActiveRouteArray = activeRouteArray.filter(componentData => {
-      return state.activeComponent !== componentData.componentName
-    })
+    const activeRouteArray = [...state.routes[state.activeRoute]]
+    const newActiveRouteArray = activeRouteArray.filter(componentData => state.activeComponent !== componentData.componentName)
     commit(types.SET_ACTIVE_ROUTE_ARRAY, newActiveRouteArray)
     commit(types.SET_ACTIVE_COMPONENT, '')
   },
@@ -22,8 +21,12 @@ const actions = {
     which are determined by the choices made on the left hand panel
      */
     const { componentName } = payload
+    // if the component name doesn't already exist,
+    // then add the component to the display
     if (!state.componentMap[componentName]) {
       commit(types.ADD_COMPONENT_TO_COMPONENT_MAP, payload)
+      // if the component isn't already a child,
+      // add it as child to the homeview display
       if (!state.parentSelected.length) {
         commit(
           types.ADD_COMPONENT_TO_ACTIVE_ROUTE_CHILDREN,
@@ -33,9 +36,7 @@ const actions = {
 
       commit(types.ADD_COMPONENT_TO_ACTIVE_ROUTE_IN_ROUTE_MAP, payload)
 
-      let value = state.componentChildrenMultiselectValue.map(component => {
-        return state.componentMap[component]
-      })
+      const value = state.componentChildrenMultiselectValue.map(component => state.componentMap[component])
 
       if (state.parentSelected.length) {
         commit(types.ADD_PARENT, payload)
@@ -82,11 +83,11 @@ const actions = {
   [types.addRouteToRouteMap]: ({ state, commit }, payload) => {
     commit(types.ADD_ROUTE, payload)
     commit(types.SET_ACTIVE_ROUTE, payload)
-    let route = state.activeRoute
-    let children = []
+    const route = state.activeRoute
+    const children = []
     commit(types.ADD_ROUTE_TO_COMPONENT_MAP, { route, children })
-    let component = 'App'
-    let value = state.componentMap[state.activeRoute].componentName
+    const component = 'App'
+    const value = state.componentMap[state.activeRoute].componentName
     commit(types.ADD_COMPONENT_TO_COMPONENT_CHILDREN, { component, value })
   },
 
@@ -98,7 +99,7 @@ const actions = {
     commit(types.CLEAR_IMAGE, payload)
   },
 
-  [types.deleteRoute]: ({ state, commit }, payload) => {
+  [types.deleteRoute]: ({ commit }, payload) => {
     commit(types.DELETE_ROUTE, payload)
   },
 
@@ -112,10 +113,66 @@ const actions = {
 
   // End of Routing section //////////////////////////////////////////
 
+  // Vuex ///////////////////////////////////////////////
+
+  [types.createAction]: ({ commit }, payload) => {
+    commit(types.CREATE_ACTION, payload)
+  },
+
+  [types.addActionSelected]: ({ commit }, payload) => {
+    commit(types.ADD_ACTION_SELECTED, payload)
+  },
+
+  [types.addActionToComponent]: ({ commit }, payload) => {
+    commit(types.ADD_ACTION_TO_COMPONENT, payload)
+  },
+
+  [types.createProp]: ({ commit }, payload) => {
+    commit(types.CREATE_PROP, payload)
+  },
+
+  [types.addPropsSelected]: ({ commit }, payload) => {
+    commit(types.ADD_PROPS_SELECTED, payload)
+  },
+
+  [types.addPropsToComponent]: ({ commit }, payload) => {
+    commit(types.ADD_PROPS_TO_COMPONENT, payload)
+  },
+
+  [types.createState]: ({ commit }, payload) => {
+    commit(types.CREATE_STATE, payload)
+  },
+
+  [types.addStateSelected]: ({ commit }, payload) => {
+    commit(types.ADD_STATE_SELECTED, payload)
+  },
+
+  [types.addStateToComponent]: ({ commit }, payload) => {
+    commit(types.ADD_STATE_TO_COMPONENT, payload)
+  },
+
+  [types.deleteActionFromComponent]: ({ commit }, payload) => {
+    commit(types.DELETE_ACTION_FROM_COMPONENT, payload)
+  },
+
+  [types.deletePropsFromComponent]: ({ commit }, payload) => {
+    commit(types.DELETE_PROPS_FROM_COMPONENT, payload)
+  },
+
+  [types.deleteStateFromComponent]: ({ commit }, payload) => {
+    commit(types.DELETE_STATE_FROM_COMPONENT, payload)
+  },
+  // End of Vuex Actions section //////////////////////////////////////////
+
+  // Action primarily for edit functionality////////////////////////////////////////
+  [types.editComponentName]: ({ commit }, payload) => {
+    commit(types.EDIT_COMPONENT_NAME, payload)
+  },
+
   // Actions dispatched from left hand panel////////////////////////////////////////
 
   [types.addToComponentElementList]: ({ commit }, payload) => {
-    // adds element to the homeQueue
+    // adds element to the HTMLQueue
     commit(types.ADD_TO_COMPONENT_HTML_LIST, payload)
   },
 

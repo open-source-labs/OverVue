@@ -1,3 +1,7 @@
+/* eslint-disable import/no-named-as-default-member */
+/* eslint-disable import/no-named-as-default */
+/* eslint-disable import/default */
+/* eslint-disable import/namespace */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
@@ -10,7 +14,7 @@ Vue.use(VueRouter)
  * directly export the Router instantiation
  */
 
-export default function (/* { store, ssrContext } */) {
+export default function routerConstructor (/* { store, ssrContext } */) {
   const Router = new VueRouter({
     scrollBehavior: () => ({ x: 0, y: 0 }),
     routes,

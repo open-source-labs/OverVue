@@ -1,3 +1,12 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-useless-escape */
+/* eslint-disable no-useless-escape */
 <!--
 Description:
   Displays Export Project button and allows users to export project
@@ -166,6 +175,7 @@ export default {
       // iterate through component's htmllist
       let htmlArr = this.componentMap[componentName].htmlList
       let outputStr = ``
+      // eslint-disable-next-line no-unused-vars
       for (let el of htmlArr) {
         if (!el.text) {
           outputStr += `    <${el}/>\n`
@@ -223,17 +233,93 @@ export default {
      * @description imports child components into <script>
      */
     writeScript (componentName, children) {
-      let str = ''
-      children.forEach(name => {
-        str += `import ${name} from '@/components/${name}.vue';\n`
-      })
-      let childrenComponentNames = ''
-      children.forEach(name => {
-        childrenComponentNames += `\t\t${name},\n`
-      })
-      return `\n\n<script>\n${str}\nexport default {\n\tname: '${componentName}',\n\tcomponents: {\n${childrenComponentNames}\t}\n};\n<\/script>`
-    },
+      // add import mapstate and mapactions if they exist
+      const currentComponent = this.componentMap[componentName]
+      const routes = Object.keys(this.routes)
+      console.log(componentName)
+      console.log(currentComponent)
+      if (!routes.includes(componentName)) {
+        let imports = ''
+        if (currentComponent.actions.length || currentComponent.state.length) {
+          imports += 'import { '
+          if (currentComponent.actions.length && currentComponent.state.length) {
+            imports += 'mapState, mapActions'
+          } else if (currentComponent.state.length) imports += 'mapState'
+          else imports += 'mapActions'
+          imports += ' } from "vuex"\n'
+        }
 
+        // add imports for children
+        children.forEach(name => {
+          imports += `import ${name} from '@/components/${name}.vue';\n`
+        })
+
+        // add components section
+        let childrenComponentNames = ''
+        children.forEach(name => {
+          childrenComponentNames += `    ${name},\n`
+        })
+
+        // if true add data section and populate with props
+        let data = ''
+        if (currentComponent.props.length) {
+          data += '  data () {\n    return {'
+          currentComponent.props.forEach(prop => {
+            data += `\n      ${prop}: "PLACEHOLDER FOR VALUE",`
+          })
+          data += '\n'
+          data += '    }\n'
+          data += '  },\n'
+        }
+
+        // if true add computed section and populate with state
+        let computed = ''
+        if (currentComponent.state.length) {
+          computed += '  computed: {'
+          computed += '\n    ...mapState(['
+          currentComponent.state.forEach((state) => {
+            computed += `\n      "${state}",`
+          })
+          computed += '\n    ]),\n'
+          computed += '  },\n'
+        }
+
+        // if true add methods section and populate with actions
+        let methods = ''
+        if (currentComponent.actions.length) {
+          methods += '  methods: {'
+          methods += '\n    ...mapActions(['
+          currentComponent.actions.forEach((action) => {
+            methods += `\n      "${action}",`
+          })
+          methods += '\n    ]),\n'
+          methods += '  },\n'
+        }
+
+        // concat all code within script tags
+        let output = '\n\n<script>\n'
+        output += imports + '\nexport default {\n  name: ' + componentName
+        output += ',\n  components: {\n'
+        output += childrenComponentNames + '  },\n'
+        output += data
+        output += computed
+        output += methods
+        // eslint-disable-next-line no-useless-escape
+        output += '};\n<\/script>'
+        return output
+      } else {
+        let str = ''
+        children.forEach(name => {
+          str += `import ${name} from '@/components/${name}.vue';\n`
+        })
+        let childrenComponentNames = ''
+        children.forEach(name => {
+          childrenComponentNames += `    ${name},\n`
+        })
+        // eslint-disable-next-line no-useless-escape
+        return `\n\n<script>\n${str}\nexport default {\n  name: '${componentName}',\n  components: {\n${childrenComponentNames}  }\n};\n<\/script>`
+      }
+    },
     /**
      * @description writes the <style> in vue component
      * if component is 'App', writes css, else returns <style scoped>
@@ -362,6 +448,7 @@ export default {
       this.createPackage(data)
 
       // exports images to the /assets folder
+      // eslint-disable-next-line no-unused-vars
       for (let [routeImage, imageLocation] of Object.entries(this.imagePath)) {
         if (imageLocation !== '') {
           this.createAssetFile(path.join(data, 'src', 'assets', routeImage), imageLocation)
@@ -371,6 +458,7 @@ export default {
       // main logic below for creating components
       this.createRouter(data)
 
+      // eslint-disable-next-line no-unused-vars
       for (let componentName in this.componentMap) {
         // if componentName is a route:
         if (componentName !== 'App') {
@@ -402,7 +490,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['componentMap', 'imagePath'])
+    ...mapState(['componentMap', 'imagePath', 'routes'])
   }
 }
 

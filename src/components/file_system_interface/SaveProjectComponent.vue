@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-vars */
 <!--
 Description:
   Displays Save button
@@ -84,6 +86,7 @@ export default {
         let state = this.$store.state
         let routes = state.routes
         // for each route call parseAndDelete on htmlList
+        // eslint-disable-next-line no-unused-vars
         for (let view in routes) {
           // console.log('views in Routes', routes[view])
           routes[view].forEach(component => {
@@ -92,13 +95,14 @@ export default {
           })
         }
         let componentMap = this.$store.state.componentMap
+        // eslint-disable-next-line no-unused-vars
         for (let component in componentMap) {
           if (component.htmlList) {
             let comphtml = component.htmlList
             this.parseAndDelete(comphtml)
           }
         }
-  
+
         fs.writeFileSync(data, JSON.stringify(state))
         localforage
           .setItem(fileName, JSON.parse(fs.readFileSync(data, 'utf8')))
