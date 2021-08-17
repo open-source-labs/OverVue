@@ -1,8 +1,8 @@
 <!--
 Description:
-  Displays OverVue's footer containing Code Snippet, component details (TBD), Project Tree, and HTML Elements tabs
-  Functionality includes: opening/closing drawer, deselecting active html, and
-  toggling to html elements tab during component creation
+  Displays OverVue's dashboard containing Component Details, Vuex Store, and the Project Tree
+  Functionality includes: opening/closing drawer, and contains the different Tabs
+  As of now, no default tab selected when not selecting anything, but might change to Project Tree in the future if we want
   -->
 
   <template>
@@ -13,7 +13,7 @@ Description:
       </q-btn>
       <q-toolbar-title>Dashboard</q-toolbar-title>
     </q-toolbar>
-    <q-card id="footer-cards">
+    <q-card id="dashboard-cards">
       <q-tabs
         v-model="tab"
         dense
@@ -22,28 +22,19 @@ Description:
         indicator-color="secondary"
         align="left"
       >
-
-        <q-tab name="code" label="Code Snippet" id="label-text" />
         <q-tab name="detail" label="Component Details" id="label-text" />
         <q-tab name="tree" label="Project Tree" id="label-text" />
-        <q-tab name="html" label="HTML Elements" id="label-text" />
+        <q-tab name="store" label="Vuex Store" id="label-text" />
       </q-tabs>
-
       <q-tab-panels v-model="tab" animated class="html-bg text-white" >
-        <q-tab-panel name="code">
-          <CodeSnippet />
-        </q-tab-panel>
-      <!-- Work in Progress -->
         <q-tab-panel name="detail">
-          <div class="text-h6">Vuex</div>Component Info Here
+          <ComponentDetails/>
         </q-tab-panel>
-      <!----------------------->
         <q-tab-panel name="tree">
           <Tree />
         </q-tab-panel>
-
-        <q-tab-panel name="html" :style="{height: `${height}vh`}">
-          <HomeQueue />
+        <q-tab-panel name="store">
+          <VuexStore/>
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
@@ -53,14 +44,14 @@ Description:
 <script>
 import { mapState, mapActions } from 'vuex'
 import Tree from './Tree'
-import HomeQueue from './HomeQueue'
-import CodeSnippet from './CodeSnippet'
+import VuexStore from './DashboardVuexStore.vue'
+import ComponentDetails from './ComponentDetails'
 
 export default {
   components: {
     Tree,
-    HomeQueue,
-    CodeSnippet
+    VuexStore,
+    ComponentDetails
   },
   computed: {
     ...mapState(['activeComponent', 'componentNameInputValue', 'selectedElementList', 'activeHTML'])
@@ -76,7 +67,7 @@ export default {
   },
   methods: {
     ...mapActions(['setActiveHTML']),
-    // toggles open/close action of footer drawer
+    // toggles open/close action of dashboard drawer
     openBottomDrawer () {
       // 15in mb pro - 1027 px 3.75
       // big screens 2.5
@@ -85,7 +76,7 @@ export default {
       this.height === 40 ? (this.height = minHeight) : (this.height = 40)
       this.open === true ? (this.open = false) : (this.open = true)
     },
-    // method that will handle deselection from active HTML element
+    // function that will handle deselection from active HTML element
     handleHtmlDeselection (event) {
       // console.log('target html element: ', event.target)
       if (event.target.className !== 'list-group-item') {
@@ -94,27 +85,29 @@ export default {
       }
     }
   },
-  // toggles footer to "html" tab when existing component is not in focus
   watch: {
-    activeComponent: function () {
-      // console.log('watching activeComponent in Footer');
-      if (this.activeComponent === '' && this.selectedElementList.length !== 0) {
-        this.tab = 'html'
-      }
-    },
-    // toggles footer to "html" tab if component name has value & elements are in queue
+    // toggles dashboard to "Component Details" tab when a components is selected
+    // activeComponent: function () {
+    //   if (this.activeComponent !== '') {
+    //     this.tab = 'detail'
+    //   } else {
+    //     // otherwise toggle dashboard to 'Project Tree' tab if no component is selected
+    //     this.tab = 'tree'
+    //   }
+    // },
+    // otherwise toggle dashboard to 'Project Tree' tab if no component is selected or the
+    // user is in the process of creating a component
     componentNameInputValue: function () {
-      // console.log('watching componentNameInputVal')
-      if (this.componentNameInputValue !== '' && this.selectedElementList.length !== 0 && this.activeComponent === '') {
-        // console.log(this.selectedElementList)
-        this.tab = 'html'
+      if (this.componentNameInputValue !== '' && this.activeComponent === '') {
+        this.tab = 'tree'
       }
     },
-    // toggles footer to "html" tab if elements are added to queue on component creation
+    // // toggles dashboard to "Project Tree" tab if:
+    // // no component is selected and either:
+    // // elements are being added to component or name is being typed
     selectedElementList: function () {
-      // console.log('watching selectedElementList')
       if (this.activeComponent === '' && this.selectedElementList.length !== 0) {
-        this.tab = 'html'
+        this.tab = 'tree'
       }
     }
   }
@@ -131,14 +124,14 @@ i {
   margin: 5px;
 }
 
-// styling for the entire footer
+// styling for the entire dashboard
 .q-footer {
   transition-timing-function: ease-in;
   transition: 0.2s;
   background: $subsecondary;
 }
 
-// changes the footer toolbar height
+// changes the dashboard toolbar height
 .q-toolbar {
   min-height: 25px !important;
   padding: 0 6px !important;
@@ -183,7 +176,7 @@ i {
   background: black;
 }
 
-#footer-cards {
+#dashboard-cards {
   height: 100%;
   border-radius: 0px;
   background: #737578;

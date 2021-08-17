@@ -5,6 +5,8 @@
  *  environment.
  */
 
+// NOTE Aug 2021 - VUEJS DevTools not loading, need to debug why is does not in Dev mode
+
 // Install `electron-debug` with `devtron`
 require('electron-debug')({ showDevTools: true })
 

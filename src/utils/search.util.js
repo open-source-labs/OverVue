@@ -1,15 +1,19 @@
-// we have to do a search because undo/redo saves payloads as deep clones so passing a memory ref would be detrimental
-// This will find you the actual object by ID
+/* eslint-disable no-plusplus */
+/* eslint-disable max-len */
+/* eslint-disable consistent-return */
+// eslint-disable-next-line max-len
+/* we have to do a search because undo/redo saves payloads as deep clones so passing a memory ref would be detrimental
+This will find you the actual object by ID
+*/
 const breadthFirstSearch = (array, id) => {
-  let queue = [...array.filter(el => typeof el === 'object')]
+  const queue = [...array.filter(el => typeof el === 'object')]
   while (queue.length) {
-    let evaluated = queue.shift()
+    const evaluated = queue.shift()
     if (evaluated.id === id) {
       return evaluated
-    } else {
-      if (evaluated.children.length) {
-        queue.push(...evaluated.children)
-      }
+    }
+    if (evaluated.children.length) {
+      queue.push(...evaluated.children)
     }
   }
   // console.log("We shouldn't be ever getting here, how did you even search an id that didn't exist?")
@@ -17,13 +21,13 @@ const breadthFirstSearch = (array, id) => {
 
 // this would find you the parent of a given id
 const breadthFirstSearchParent = (array, id) => {
-  let queue = [...array.filter(el => typeof el === 'object')]
+  const queue = [...array.filter(el => typeof el === 'object')]
   while (queue.length) {
-    let evaluated = queue.shift()
+    const evaluated = queue.shift()
     for (let i = 0; i < evaluated.children.length; i++) {
       if (evaluated.children[i].id === id) {
         return {
-          evaluated: evaluated,
+          evaluated,
           index: i
         }
       }
