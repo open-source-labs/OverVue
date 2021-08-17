@@ -99,7 +99,6 @@ export default {
     // user is in the process of creating a component
     componentNameInputValue: function () {
       if (this.componentNameInputValue !== '' && this.activeComponent === '') {
-        console.log(this.selectedElementList.length)
         this.tab = 'tree'
       }
     },

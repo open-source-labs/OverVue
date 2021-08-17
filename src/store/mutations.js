@@ -539,15 +539,32 @@ const mutations = {
 
   [types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE]: (state, payload) => {
     let temp = state.componentMap[state.activeComponent].children
+    // delete block
     if (payload.length < temp.length) {
       let child = temp.filter(el => !payload.includes(el))
       // console.log('delete child: ', child)
+      let childCount = 0
+      let components = Object.values(state.componentMap)
+      console.log(components)
+      for (let comp of components){
+        if (comp.children.includes(child[0])) childCount++
+      }
       state.componentMap[state.activeComponent].children = payload
-      state.componentMap[state.activeRoute].children.push(
-        ...temp.filter(el => !payload.includes(el))
-      )
+      if (childCount <= 1){
+        state.componentMap[state.activeRoute].children.push(
+          ...temp.filter(el => !payload.includes(el))
+        )
+      }
+       const newHTMLList = state.componentMap[state.activeComponent].htmlList.filter(el => {
+        return el !== child[0]
+      })
+      state.componentMap[state.activeComponent].htmlList = newHTMLList
+      const newMap = {...state.componentMap}
+      state.componentMap = Object.assign({}, newMap)
       delete state.componentMap[child[0]].parent[state.activeComponent]
-    } else {
+    } 
+    // add block
+    else {
       let child = payload.filter(el => !temp.includes(el))
       // console.log('child added', child)
       state.componentMap[state.activeComponent].children = payload
