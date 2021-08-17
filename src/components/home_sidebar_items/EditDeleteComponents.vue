@@ -49,6 +49,21 @@ Description:
     <q-btn id="deleteButton" @click="deleteSelectedComp(activeComponentData)" label = 'Delete currently selected'/>
     <div v-if="this.activeComponentData">
     <br/>
+    <!-- @input="selectParent"
+      @open="resetActiveComponent" -->
+     <multiselect
+      v-model="testModel"
+      placeholder="Add/Remove Children"
+      :multiple="true"
+      :close-on-select="false"
+      :options="childOptions"
+      @input="handleAddChild"
+      :max-height="90"
+      :option-height="20"
+      :searchable="false"
+    />
+  <br/>
+
    <section id="counter" style="color: white">  Layer:
       <q-btn
               class="btn"
@@ -66,14 +81,18 @@ Description:
               @click="e => handleLayer(e)"
             />
           </section>
-          <br/>
+    <br/>
     <p> Toggle to edit: </p>
-    <section class="toggleText"> HTML elements
-    <toggle-button v-model="showHTML"/> </section>
+    <div class="toggleRow">
+      <section class="toggleText"> HTML elements</section>
+      <toggle-button v-model="showHTML" class="toggle"/> 
+    </div>
     <HTMLQueue v-if="showHTML"/>
     <br/>
-    <section class="toggleText"> State
-    <toggle-button v-model="showState"/> </section>
+    <div class="toggleRow">
+      <section class="toggleText"> State</section>
+      <toggle-button v-model="showState" class="toggle"/> 
+    </div>
     <hr v-if="showState">
     <a
       v-for="s in this.activeComponentData.state"
@@ -93,8 +112,10 @@ Description:
       </q-list>
       </a>
     <br/>
-    <section class="toggleText"> Actions
-    <toggle-button v-model="showActions" /> </section>
+    <div class="toggleRow">
+      <section class="toggleText"> Actions</section>
+      <toggle-button v-model="showActions" class="toggle"/> 
+    </div>
     <hr v-if="showActions">
         <a
       v-for="action in this.activeComponentData.actions"
@@ -114,9 +135,10 @@ Description:
       </q-list>
       </a>
     <br/>
-    <section class="toggleText">
-    Props
-    <toggle-button v-model="showProps"/> </section>
+    <div class="toggleRow">
+      <section class="toggleText">Props </section>
+      <toggle-button v-model="showProps" class="toggle" justify='end'/> 
+    </div>
     <hr v-if="showProps">
     <a
       v-for="prop in this.activeComponentData.props"
@@ -152,6 +174,7 @@ export default {
   data () {
     return {
       value: '',
+      testModel: [],
       newName: '',
       showState: false,
       showActions: false,
@@ -185,8 +208,40 @@ export default {
         (component) => component.componentName
       )
       return val
+    },
+
+   childOptions () {
+    // checks if component has any parents and pushes them into lineage
+      const checkParents = (component, lineage = [component.componentName]) => {
+        if (!Object.keys(component.parent).length) return lineage
+        for (var parents in component.parent) {
+          lineage.push(parents)
+          checkParents(component.parent[parents], lineage)
+        }
+        return lineage
+      }
+      let lineage = [this.activeComponent]
+      // checks to see if there are any existing children
+      if (this.componentMap[this.activeComponent]) {
+      // console.log('testmodel', this.testModel)
+      // console.log(this.componentMap[this.activeComponent].children)
+        this.testModel = this.componentMap[this.activeComponent].children
+        lineage = checkParents(this.componentMap[this.activeComponent])
+      // console.log('Lineage', lineage);
+      }
+      const routes = Object.keys(this.routes)
+      const exceptions = new Set([
+        'App',
+        ...lineage,
+        ...routes,
+        ...this.testModel
+      ])
+      return Object.keys(this.componentMap).filter(component => {
+        if (!exceptions.has(component)) return component
+      })
     }
   },
+
   methods: {
     ...mapActions([
       'setActiveComponent',
@@ -196,8 +251,14 @@ export default {
       'deleteActionFromComponent',
       'deletePropsFromComponent',
       'deleteStateFromComponent',
-      'updateComponentLayer'
+      'updateComponentLayer',
+      'updateActiveComponentChildrenValue'
     ]),
+
+     handleAddChild (value) {
+      // console.log('selected child component: ', value)
+      this.updateActiveComponentChildrenValue(value)
+    },
 
     // delete selected state from active component
     deleteState (state) {
@@ -279,6 +340,12 @@ export default {
 </script>
 
 <style>
+
+.toggleRow{
+  display: flex;
+  /* align-items: center; */
+  justify-content: space-between;
+}
 /* modifies entire container */
 .edit-sidebar {
   padding: 0.5rem;
@@ -312,6 +379,10 @@ p {
 
 .toggleText {
   color: white;
+}
+
+.toggle{
+  align-self: flex-end;
 }
 
 .editName {

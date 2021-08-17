@@ -120,6 +120,7 @@ export default {
       let outputStr = ``
       for (let el of htmlArr) {
         if (!el.text) {
+          console.log(htmlArr)
           outputStr += `    <${el}/>\n`
         } else {
           outputStr += `    `
@@ -221,9 +222,17 @@ export default {
     // watches activeComponentObj for changes to make it reactive upon mutation
     activeComponentObj: {
       handler(){
+        //console.log(this.activeComponentObj.children)
+        this.code = this.createCodeSnippet(this.activeComponentObj.componentName, this.activeComponentObj.children)
+      }
+    },
+    // watches componentMap for changes to make it reactive upon mutation
+    componentMap: {
+      handler(){
         this.code = this.createCodeSnippet(this.activeComponentObj.componentName, this.activeComponentObj.children)
       }
     }
+
   },
   mounted () {
     // https://vuejs.org/v2/api/#Vue-nextTick
