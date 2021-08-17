@@ -1,10 +1,10 @@
 {
   "name": "overvue",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Vue Prototype DevTool",
   "productName": "OverVue",
   "cordovaId": "org.cordova.quasar.app",
-  "author": "Team OverVue, Team Vuetiful",
+  "author": "Team OverVue, Team Vuetiful, Team Vuelociraptors",
   "private": true,
   "bugs": {
     "url": "https://github.com/TeamOverVue/OverVue/issues"
