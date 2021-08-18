@@ -95,6 +95,7 @@ Description:
       <toggle-button v-model="showState" class="toggle"/>
     </div>
     <hr v-if="showState">
+    <p v-if='showState && !this.activeComponentObj.state.length'>No state in component</p>
     <a
       v-for="s in this.activeComponentData.state"
       :key="s"
@@ -118,6 +119,7 @@ Description:
       <toggle-button v-model="showActions" class="toggle"/>
     </div>
     <hr v-if="showActions">
+    <p v-if='showActions && !this.activeComponentObj.actions.length'>No actions in component</p>
         <a
       v-for="action in this.activeComponentData.actions"
       :key="action"
@@ -141,6 +143,7 @@ Description:
       <toggle-button v-model="showProps" class="toggle" justify='end'/>
     </div>
     <hr v-if="showProps">
+    <p v-if='showProps && !this.activeComponentObj.props.length'>No props in component</p>
     <a
       v-for="prop in this.activeComponentData.props"
       :key="prop"

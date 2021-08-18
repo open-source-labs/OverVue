@@ -20,6 +20,7 @@ Description:
       </q-tabs>
       <q-tab-panels v-model="tab" animated class="html-bg text-white">
         <q-tab-panel name="state">
+          <p v-if='!this.stateOptions.length'>No state in store</p>
           <ul id="stateList">
             <li v-for="state in stateOptions" v-bind:key="state">
               {{ state }}
@@ -27,6 +28,7 @@ Description:
           </ul>
         </q-tab-panel>
         <q-tab-panel name="actions">
+          <p v-if='!this.actionOptions.length'>No actions in store</p>
           <ul id="actionList">
             <li v-for="action in actionOptions" :key="action">
               {{ action }}

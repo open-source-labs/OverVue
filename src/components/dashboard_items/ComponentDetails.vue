@@ -32,6 +32,7 @@ Description:
           <HTMLQueue />
         </q-tab-panel>
         <q-tab-panel name="state">
+          <p v-if='!this.activeComponentObj.state.length'>No state in component</p>
           <ul id="stateList">
             <li v-for="comp in compObj.state" :key="comp">
               {{ comp }}
@@ -39,6 +40,7 @@ Description:
           </ul>
         </q-tab-panel>
         <q-tab-panel name="actions">
+          <p v-if='!this.activeComponentObj.actions.length'>No actions in component</p>
           <ul id="actionList">
             <li v-for="comp in compObj.actions" :key="comp">
               {{ comp }}
@@ -46,6 +48,7 @@ Description:
           </ul>
         </q-tab-panel>
         <q-tab-panel name="props">
+          <p v-if='!this.activeComponentObj.props.length'>No props in component</p>
           <ul id="propsList">
             <li v-for="comp in compObj.props" :key="comp">
               {{ comp }}
