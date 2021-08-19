@@ -42,6 +42,7 @@
 + Windows compatibility for uploading mockup images. <sub><sup>(v2.0)</sup></sub>
 + Full Vuex functionality, can add props, actions, and state to components. <sub><sup>(v3.0)</sup></sub>
 + Full edit functionality, can change the name of components as well as delete properties from a component <sub><sup>(v3.0)</sup></sub>
++ More robust code snippets with Vuex props, state, and actions included <sub><sup>(v3.0)</sup></sub>
 
 [↥Back to top](#table-of-contents)
 
@@ -74,6 +75,7 @@
   <li>New Vuex store dashboard section</li>
   <li>More robust code snippets with Vuex props, state, and actions included</li>
   <li>Bug fixes for parent/child issues</li>
+  <li>Improved Documentation for easier onboarding of new contributors</li>
   </ul>
 </details>
 
@@ -156,6 +158,10 @@ To run electron app in dev mode
 ```
 quasar dev -m electron
 ```
+**For WSL users, the ability to load the application requires a tool/application to run a linux display as WSL does not have any display drivers 
+since it is based off of just a CLI.
+I recommend X410(does cost $10) for ease of use. There are free options such as VcXsrv that you can get, but require more set up.**
+
 To build a new .dmg / windows .exe
 ```
 quasar build -m electron
@@ -170,6 +176,7 @@ Here are some features we're thinking about adding:
 + Ability to place child components into HTML elements
 + Integration with Storybook
 + Ability to add a copy of an existing component from one route to another
++ Edit State and Actions in the Vuex Store
 
 [↥Back to top](#table-of-contents)
 
