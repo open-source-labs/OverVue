@@ -15,7 +15,8 @@
 ## Table of Contents
 
 * [Features](#features)
-* [OverVue 2.0 Changelog](#changelog)
+* [OverVue 2.0 Changelog](#changelog-20)
+* [OverVue 3.0 Changelog](#changelog-30)
 * [Tutorial](#how-to-use)
   + [New Features Tutorial](#overvue-v20-how-to)
 * [How to Run](#running-a-local-version)
@@ -39,10 +40,12 @@
 + Can now set Vue components to specific layers <sub><sup>(v2.0)</sup></sub>
 + Will now load route images along with project <sub><sup>(v2.0)</sup></sub>
 + Windows compatibility for uploading mockup images. <sub><sup>(v2.0)</sup></sub>
++ Full Vuex functionality, can add props, actions, and state to components. <sub><sup>(v3.0)</sup></sub>
++ Full edit functionality, can change the name of components as well as delete properties from a component
 
 [↥Back to top](#table-of-contents)
 
-### Changelog
+### Changelog 2.0
 <details><summary>OverVue 2.0</summary>
   <ul>
   <li>Improved hierarchy tree rendering</li>
@@ -56,6 +59,21 @@
   <li>Exporting projects now exports the mockup files as well into the assets folder</li>
   <li>Saving projects now saves the mockup image url</li>
   <li>Extensive bug fixing for Vue component and HTML element deletion behavior, exporting and saving.</li>
+  </ul>
+</details>
+
+### Changelog 3.0
+<details><summary>OverVue 3.0</summary>
+  <ul>
+  <li>Implemented full component edit functionality</li>
+  <li>Improved sidebar user interface to consolidate edit functionality</li>
+  <li>UI is more reactive, improved dashboard's ability to update dynamically </li>
+  <li>Added ability to incorporate Vuex in application</li>
+  <li>Updated component details section to better display all aspects of a component</li>
+  <li>Added action, state, and props section to component details dashboard</li>
+  <li>New Vuex store dashboard section</li>
+  <li>More robust code snippets with Vuex props, state, and actions included</li>
+  <li>Bug fixes for parent/child issues</li>
   </ul>
 </details>
 
