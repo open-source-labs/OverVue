@@ -334,7 +334,10 @@ const mutations = {
     if (id === state.activeHTML) {
       state.activeHTML = ''
     }
-    state.componentMap[componentName].htmlList = htmlList
+    let newCompMap = state.componentMap
+    newCompMap[componentName].htmlList = htmlList
+    state.componentMap = Object.assign({}, newCompMap)
+    // state.componentMap[componentName].htmlList = htmlList
   },
 
   // deletes a element html tag from HTMLQueue

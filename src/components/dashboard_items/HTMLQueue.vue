@@ -14,7 +14,7 @@ Description:
       group="people"
       class="list-group"
     >
-
+      <p v-if='!this.componentMap[this.activeComponent].htmlList.length'>No HTML elements in component</p>
       <div
       :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'"
       @dblclick.self="setActiveElement(element)"
