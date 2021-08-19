@@ -41,7 +41,7 @@
 + Will now load route images along with project <sub><sup>(v2.0)</sup></sub>
 + Windows compatibility for uploading mockup images. <sub><sup>(v2.0)</sup></sub>
 + Full Vuex functionality, can add props, actions, and state to components. <sub><sup>(v3.0)</sup></sub>
-+ Full edit functionality, can change the name of components as well as delete properties from a component
++ Full edit functionality, can change the name of components as well as delete properties from a component <sub><sup>(v3.0)</sup></sub>
 
 [↥Back to top](#table-of-contents)
 
