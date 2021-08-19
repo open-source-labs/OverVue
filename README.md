@@ -160,7 +160,7 @@ quasar dev -m electron
 ```
 **For WSL users, the ability to load the application requires a tool/application to run a linux display as WSL does not have any display drivers 
 since it is based off of just a CLI.
-I recommend X410(does cost $10) for ease of use. There are free options such as VcXsrv that you can get, but require more set up.**
+I recommend X410 (https://www.microsoft.com/en-us/p/x410/9nlp712zmn9q), althought it does cost $10, for ease of use. There are free options such as VcXsrv(https://sourceforge.net/projects/vcxsrv/) that you can get, but require more set up.**
 
 To build a new .dmg / windows .exe
 ```
