@@ -148,7 +148,6 @@ quasar build -m electron
 ### Contributing
 We'd love for you to test this application out and submit any issues you encounter. Also feel free to fork to your own repo and submit PRs.
 Here are some features we're thinking about adding:
-+ Vuex state prototyping and boilerplate export
 + Option to export files in TypeScript
 + Ability to place child components into HTML elements
 + Integration with Storybook
@@ -167,6 +166,11 @@ Alexander Havas @LOLDragoon
 Keriann Lin @keliphan
 Allison Pratt @allisons11 
 Joju Olaode @JojuOlaode
+Sean Grace @ziggrace
+Nicholas Schillaci @schillaci767
+Terry Tilley @codeByCandlelight
+Faraz Moallemi @farazmoallemi
+
 ```
 Inspired by [PreVue](https://github.com/open-source-labs/PreVue)
 
