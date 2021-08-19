@@ -337,7 +337,7 @@ const mutations = {
     let newCompMap = state.componentMap
     newCompMap[componentName].htmlList = htmlList
     state.componentMap = Object.assign({}, newCompMap)
-    //state.componentMap[componentName].htmlList = htmlList
+    // state.componentMap[componentName].htmlList = htmlList
   },
 
   // deletes a element html tag from HTMLQueue
