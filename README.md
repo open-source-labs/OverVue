@@ -18,7 +18,8 @@
 * [OverVue 2.0 Changelog](#changelog-20)
 * [OverVue 3.0 Changelog](#changelog-30)
 * [Tutorial](#how-to-use)
-  + [New Features Tutorial](#overvue-v20-how-to)
+  + [New Features Tutorial 2.0](#overvue-v20-how-to)
+  + [New Features Tutorial 3.0](#overvue-v30-how-to)
 * [How to Run](#running-a-local-version)
 * [Contributing](#contributing)
 * [Authors](#authors)
@@ -142,6 +143,13 @@ package.json
 + Setting layers on a component is done by right clicking the desired component on the component display and using the menu option
   All components start on layer 1 by default.
 ![](./src/assets/readme/layers.gif)
+
+### OverVue v3.0 How to 
++ Within the vuex dropdown menu, there are input fields that allow actions, state properties, and data properties to be created, and a multi-select drop-down menu for each that allows these properties to be added to specific components. ![](https://media.giphy.com/media/JucFNDgSDWwoKOpgH9/giphy.gif)
++ Now users have the ability to edit all aspects of a component, from it's name, to Vuex properties. Navigate to the dropdown menu in the top left and select a component to edit its properties. ![](<iframe src="https://giphy.com/embed/JucFNDgSDWwoKOpgH9" width="480" height="300" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/programming-vue-JucFNDgSDWwoKOpgH9">via GIPHY</a></p>
+)
+<iframe src="https://giphy.com/embed/JucFNDgSDWwoKOpgH9" width="480" height="300" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/programming-vue-JucFNDgSDWwoKOpgH9">via GIPHY</a></p>
+
 
 [↥Back to top](#table-of-contents)
 
