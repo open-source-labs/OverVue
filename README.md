@@ -178,6 +178,8 @@ Here are some features we're thinking about adding:
 + Ability to add a copy of an existing component from one route to another
 + Edit State and Actions in the Vuex Store
 
+If you make changes and wish to update the website, here is the link to the repo: https://github.com/TeamOverVue/OverVuePage
+
 [↥Back to top](#table-of-contents)
 
 ### Authors
