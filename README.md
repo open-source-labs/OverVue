@@ -128,6 +128,7 @@ package.json
 
 ### OverVue v2.0 How to
 + Undo/Redo feature has been added to the top right of the program, you can also use CTRL+z and CTRL+y respectively.
+
 ![](./src/assets/readme/undo_redo.gif)
 
 + You can nest html elements in two different ways:
@@ -138,10 +139,12 @@ package.json
     2. Similar to above, but instead of double clicking, you can press the down arrow icon on the html element button to enter it.
     From there the view will change to the contents of that particular HTML element.
     You can then add html elements like you would for a component using the left hand side
+    
     ![](./src/assets/readme/nesting_html.gif)
 
 + Setting layers on a component is done by right clicking the desired component on the component display and using the menu option
   All components start on layer 1 by default.
+  
 ![](./src/assets/readme/layers.gif)
 
 ### OverVue v3.0 How to 
