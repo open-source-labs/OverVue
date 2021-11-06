@@ -33,3 +33,6 @@ dist/
 node_modules/
 aws-exports.js
 awsconfiguration.json
+
+#secret Api keys, Webhook URLs etc
+slackApiStuff.js

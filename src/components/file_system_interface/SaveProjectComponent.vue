@@ -16,6 +16,9 @@ import fs from 'fs-extra'
 const { remote } = require('electron')
 const Mousetrap = require('mousetrap')
 
+import slackApiStuff from '../../../secretStuff/slackApiStuff.js'
+const slackWebhookURL = slackApiStuff.slackWebhookURL
+
 export default {
   name: 'SaveProjetComponent',
   methods: {
@@ -124,7 +127,7 @@ export default {
       },
       response => {
         if (response === 1) {
-          fetch('https://hooks.slack.com/services/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', {
+          fetch(slackWebhookURL, {
             method: 'POST',
             body: JSON.stringify({ 'text': 'A team member saved an OverVue project file!' }),
             headers: { 'Content-Type': 'application/json' }
