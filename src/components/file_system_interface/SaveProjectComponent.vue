@@ -110,8 +110,27 @@ export default {
           //   console.log('saved ', fileName, 'to local forage')
           //   console.log('result is', result)
           // })
+
         // console.log('PROJECT SAVED AS A JSON OBJECT!')
+        this.notifySlack()
       }
+    },
+    // creates a popup dialog box, where if you click on yes, it will send a message to our test Slack workspace
+    // still must refactor to dynamically work with user's Slack
+    notifySlack () {
+      remote.dialog.showMessageBox({
+        message: 'Save successful. Would you like to notify your team on Slack?',
+        buttons: ['No', 'Yes']
+      },
+      response => {
+        if (response === 1) {
+          fetch('https://hooks.slack.com/services/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', {
+            method: 'POST',
+            body: JSON.stringify({ 'text': 'A team member saved an OverVue project file!' }),
+            headers: { 'Content-Type': 'application/json' }
+          })
+        }
+      })
     }
   },
   // on components creation these key presses will trigger save project
