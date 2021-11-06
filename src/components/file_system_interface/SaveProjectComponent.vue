@@ -16,6 +16,7 @@ import fs from 'fs-extra'
 const { remote } = require('electron')
 const Mousetrap = require('mousetrap')
 
+// might not be optimal to import like this, since entire slackApiStuff object is imported while only one of its properties is used
 import slackApiStuff from '../../../secretStuff/slackApiStuff.js'
 const slackWebhookURL = slackApiStuff.slackWebhookURL
 
@@ -122,8 +123,10 @@ export default {
     // still must refactor to dynamically work with user's Slack
     notifySlack () {
       remote.dialog.showMessageBox({
+        title: 'Notify Slack?',
         message: 'Save successful. Would you like to notify your team on Slack?',
-        buttons: ['No', 'Yes']
+        buttons: ['No', 'Yes'],
+        defaultId: 1
       },
       response => {
         if (response === 1) {
