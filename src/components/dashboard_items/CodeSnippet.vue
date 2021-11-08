@@ -16,8 +16,7 @@ Description:
       v-model="code"
       language="js"
       :line-numbers="lineNumbers"
-      class="code-editor"
-      :style="{ height: `${height}vh` }"
+      class="code-editor fill"
       :readonly="true"
     />
   </div>

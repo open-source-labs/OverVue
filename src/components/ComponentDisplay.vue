@@ -5,11 +5,13 @@ Description:
   -->
 
 <template>
+  <!-- the background canvas grid -->
   <div
     class="component-display grid-bg"
     :style="mockBg"
     v-on:click="handleClick"
   >
+  <!-- This is the actual component box -->
     <VueDraggableResizable
       class-name="component-box"
       v-for="componentData in activeRouteArray"
