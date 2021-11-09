@@ -59,6 +59,7 @@
     "electron-builder": "^22.11.10",
     "electron-debug": "^3.0.1",
     "electron-devtools-installer": "^2.2.4",
+    "electron-packager": "^14.2.1",
     "eslint": "^7.32.0",
     "eslint-loader": "^2.1.1",
     "eslint-plugin-vue": "^5.0.0",
