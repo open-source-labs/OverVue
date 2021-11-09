@@ -40,7 +40,7 @@ export default {
       console.log('clicked')
       // shell.openExternal(this.oauthURL)
       // window.open(this.oauthURL, '_blank')
-      shell.openExternal('https://google.com/', { activate: true })
+      shell.openExternal(this.oauthURL, { activate: true })
     }
   }
 }

@@ -48,7 +48,7 @@ function createWindow() {
 app.on("ready", () => {
   createWindow()
   // window.open('http://google.com/')
-  shell.openExternal('http://google.com/', { activate: true })
+  // shell.openExternal('http://google.com/', { activate: true })
 })
 
 // listener for OAuth response with URL encoded auth token
