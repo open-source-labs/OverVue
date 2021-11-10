@@ -99,8 +99,8 @@ module.exports = function (ctx) {
     },
 
     devServer: {
-      // https: true,
-      // port: 8080,
+      https: true,
+      port: 8080,
       open: true // opens browser window automatically
     },
 
@@ -158,7 +158,7 @@ module.exports = function (ctx) {
     },
 
     electron: {
-      bundler: 'builder',
+      bundler: 'packager',
       // bundler: 'builder', // or 'packager'
 
       extendWebpack (cfg) {
@@ -170,10 +170,10 @@ module.exports = function (ctx) {
         // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
 
         // OS X / Mac App Store
-        // appBundleId: '',
+        appBundleId: 'overvue',
         // appCategoryType: '',
         // osxSign: '',
-        // protocol: 'myapp://path',
+        protocol: 'overvue'
 
         // Windows only
         // win32metadata: { ... }
@@ -185,7 +185,13 @@ module.exports = function (ctx) {
         appId: 'com.electron.OverVue',
         win: {
           target: 'nsis'
-        }
+        },
+        protocols: [
+          {
+            name: 'overvue',
+            schemes: ['overvue']
+          }
+        ]
       }
     }
   }

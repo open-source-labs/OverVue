@@ -1,6 +1,6 @@
 {
   "name": "overvue",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "Vue Prototype DevTool",
   "productName": "OverVue",
   "cordovaId": "org.cordova.quasar.app",
@@ -26,6 +26,7 @@
     "aws-amplify-vue": "^0.2.13",
     "aws-appsync": "^1.8.1",
     "dot-prop": "^6.0.0",
+    "electron-deeplink": "^1.0.8",
     "fs-extra": "^8.1.0",
     "localforage": "^1.7.3",
     "lodash": "^4.17.21",
@@ -59,6 +60,7 @@
     "electron-builder": "^22.11.10",
     "electron-debug": "^3.0.1",
     "electron-devtools-installer": "^2.2.4",
+    "electron-is-dev": "^2.0.0",
     "electron-packager": "^14.2.1",
     "eslint": "^7.32.0",
     "eslint-loader": "^2.1.1",

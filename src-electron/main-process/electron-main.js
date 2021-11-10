@@ -1,4 +1,11 @@
-import { app, BrowserWindow, shell, ipcMain } from "electron";
+import { app, BrowserWindow, net, shell, ipcMain } from "electron";
+import { Deeplink } from "electron-deeplink";
+import isDev from "electron-is-dev";
+
+import slackApiStuff from '../../secretStuff/slackApiStuff'
+
+const clientId = slackApiStuff.clientId
+const clientSecret = slackApiStuff.clientSecret
 
 /**
  * Set `__statics` path to static files in production;
@@ -11,16 +18,57 @@ if (process.env.PROD) {
 }
 
 let mainWindow;
+let authToken;
+let authResponse;
 
+function logEverywhere(...toBeLogged) {
+  console.log(...toBeLogged);
+  if (mainWindow && mainWindow.webContents) {
+    mainWindow.webContents.executeJavaScript(`console.log("${toBeLogged}")`);
+  }
+}
+
+const protocol = isDev ? "dev-app" : "prod-app";
+const deeplink = new Deeplink({ app, mainWindow, protocol, isDev });
 // ipcMain.handle('slackAuth', slackAuth)
 
-// function slackAuth () {
-//   shell.openExternal()
-//   app.listen(443, () => {
-//     console.log('Listening on port 443')
-//   })
-//   app.listen()
-// }
+function getSlackAuth () {
+  const authData = {
+    code: authToken,
+    client_secret: clientSecret,
+    client_id: clientId,
+    redirect_uri: 'overvue://slack'
+  }
+  
+  const request = net.request({
+    method: 'POST',
+    url: 'https://slack.com/api/openid.connect.token?'+ ,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      // 'Content-Length': authData.length
+    }
+  })
+
+
+  request.on('response', (response) => {
+    authResponse = JSON.parse(response)
+      .then(data => {
+        logEverywhere('response with token: ')
+        logEverywhere(authResponse)
+        mainWindow.webContents.send('tokenReceived', authResponse)
+      })
+    })
+    request.end()
+}
+
+function getSlackToken () {
+  deeplink.on("received", link => {
+    logEverywhere('auth worked here link: ', link)
+    authToken = link.split('=')[1]
+    getSlackAuth()
+  });
+}
+//overvue://slack/?code=2696943977700.2730026875664.c754c0f5326f5c8495cd66fb374c5ea441c610b2cff0064dd4832b0290db6b5b
 
 function createWindow() {
   /**
@@ -37,25 +85,18 @@ function createWindow() {
     }
   });
 
-  mainWindow.loadURL(process.env.APP_URL);
+  mainWindow.loadURL(process.env.APP_URL)
 
   mainWindow.on("closed", () => {
     mainWindow = null;
   });
-  // shell.openExternal('http://google.com/')
 }
 
 app.on("ready", () => {
   createWindow()
-  // window.open('http://google.com/')
-  // shell.openExternal('http://google.com/', { activate: true })
-})
-
-// listener for OAuth response with URL encoded auth token
-// ipcMain.once('slackAuth', )
-// app.listen(443, () => {
-
-// })
+  getSlackToken()
+  logEverywhere("process.env: ", process.env)
+});
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
@@ -65,6 +106,6 @@ app.on("window-all-closed", () => {
 
 app.on("activate", () => {
   if (mainWindow === null) {
-    createWindow();
+    createWindow()
   }
-});
+})

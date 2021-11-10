@@ -16,7 +16,7 @@ Slack Login Button:
 Skip button:
 -->
 <br/>
-<q-btn @click="" class="skipBtn" >Skip</q-btn>
+<q-btn @click="skipToHomePage" class="skipBtn" >Skip</q-btn>
 </div>
 
 </template>
@@ -24,23 +24,47 @@ Skip button:
 <script>
 // import { mapState, mapActions } from 'vuex'
 import localforage from 'localforage'
-import { shell } from 'electron'
+import { shell, ipcRenderer } from 'electron'
 import slackApiStuff from '../../../secretStuff/slackApiStuff.js'
-// const oauthURL = 
+
 
 export default {
   name: 'SlackLoginWindow',
   data () {
     return {
-      oauthURL: slackApiStuff.oauthURL
+      oauthURL: slackApiStuff.oauthURL,
+      isAuthenticating: false
     }
+  },
+  created () {
+    ipcRenderer.once('tokenReceived', (data) => {
+      console.log('data received in SlackLoginWindow: ', data)
+    })
   },
   methods: {
     slackOauth: function () {
+      const slackBaseUrl = 'https://slack.com/openid/connect/authorize'
+      const responseType = 'code'
+      const scope = 'openid profile'
+      const clientId = slackApiStuff.clientId
+      const redirectUri = process.env.DEV ? 'https://localhost:8080' : 'overvue://slack'
+
+      this.isAuthenticating = true;
+
       console.log('clicked')
       // shell.openExternal(this.oauthURL)
       // window.open(this.oauthURL, '_blank')
-      shell.openExternal(this.oauthURL, { activate: true })
+      shell.openExternal(
+        `${slackBaseUrl}?response_type=${responseType}&scope=${scope}&client_id=${clientId}&redirect_uri=${redirectUri}`,
+        { activate: true }
+      )
+      // .then(data => console.log(data))
+      // .then(data => )
+    },
+    skipToHomePage: function () {
+      console.log('CLICKK')
+      console.log('process.env: ', process.env)
+      console.log('process.platform: ', process.platform)
     }
   }
 }
