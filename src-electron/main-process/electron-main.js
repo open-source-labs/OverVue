@@ -18,7 +18,7 @@ if (process.env.PROD) {
 }
 
 let mainWindow;
-let authToken;
+let authCode;
 let authResponse;
 
 function logEverywhere(...toBeLogged) {
@@ -34,37 +34,41 @@ const deeplink = new Deeplink({ app, mainWindow, protocol, isDev });
 
 function getSlackAuth () {
   const authData = {
-    code: authToken,
-    client_secret: clientSecret,
     client_id: clientId,
+    client_secret: clientSecret,
+    code: authCode,
     redirect_uri: 'overvue://slack'
   }
-  
+
   const request = net.request({
     method: 'POST',
-    url: 'https://slack.com/api/openid.connect.token?'+ ,
+    url: 'https://slack.com/api/openid.connect.token?' +
+      'client_id=' + authData.client_id +
+      '&client_secret=' + authData.client_secret +
+      '&code=' + authData.authCode +
+      '&redirect_uri=' + authData.redirect_uri,
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
       // 'Content-Length': authData.length
     }
   })
 
-
   request.on('response', (response) => {
-    authResponse = JSON.parse(response)
+    logEverywhere('RESPONSE RECEIVED SON')
+    JSON.parse(response)
       .then(data => {
         logEverywhere('response with token: ')
-        logEverywhere(authResponse)
-        mainWindow.webContents.send('tokenReceived', authResponse)
+        logEverywhere(response)
+        mainWindow.webContents.send('tokenReceived', response)
       })
-    })
-    request.end()
+  })
+  request.end()
 }
 
 function getSlackToken () {
-  deeplink.on("received", link => {
+  return deeplink.on("received", link => {
     logEverywhere('auth worked here link: ', link)
-    authToken = link.split('=')[1]
+    authCode = link.split('=')[1]
     getSlackAuth()
   });
 }

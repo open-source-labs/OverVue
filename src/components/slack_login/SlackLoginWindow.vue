@@ -44,6 +44,7 @@ export default {
   methods: {
     slackOauth: function () {
       const slackBaseUrl = 'https://slack.com/openid/connect/authorize'
+      // const slackBaseUrl = 'https://slack.com/oauth/v2/authorize'
       const responseType = 'code'
       const scope = 'openid profile'
       const clientId = slackApiStuff.clientId
