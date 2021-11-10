@@ -158,5 +158,7 @@ app.on("window-all-closed", () => {
 app.on("activate", () => {
   if (mainWindow === null) {
     createWindow()
+    getSlackToken()
+    logEverywhere("process.env: ", process.env)
   }
 })
