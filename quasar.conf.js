@@ -2,6 +2,7 @@
 // https://quasar.dev/quasar-cli/quasar-conf-js
 
 module.exports = function (ctx) {
+  console.log('webpack\'s context parameter: ', ctx)
   return {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
@@ -99,8 +100,8 @@ module.exports = function (ctx) {
     },
 
     devServer: {
-      https: true,
-      port: 8080,
+      // https: true,
+      // port: 8080,
       open: true // opens browser window automatically
     },
 

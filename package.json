@@ -26,6 +26,7 @@
     "aws-amplify-vue": "^0.2.13",
     "aws-appsync": "^1.8.1",
     "dot-prop": "^6.0.0",
+    "dotenv": "^10.0.0",
     "electron-deeplink": "^1.0.8",
     "fs-extra": "^8.1.0",
     "localforage": "^1.7.3",

@@ -36,7 +36,7 @@ export default {
     }
   },
   created () {
-    ipcRenderer.once('tokenReceived', (data) => {
+    ipcRenderer.on('tokenReceived', (data) => {
       console.log('data received in SlackLoginWindow: ', data)
     })
   },

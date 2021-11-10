@@ -1,3 +1,7 @@
+#secret Api keys, Webhook URLs etc
+slackApiStuff.js
+.env
+#
 .quasar
 .DS_Store
 .thumbs.db
