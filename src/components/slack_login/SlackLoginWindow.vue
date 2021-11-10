@@ -32,7 +32,6 @@ export default {
   name: 'SlackLoginWindow',
   data () {
     return {
-      oauthURL: slackApiStuff.oauthURL,
       isAuthenticating: false
     }
   },
@@ -48,7 +47,8 @@ export default {
       const responseType = 'code'
       const scope = 'openid profile'
       const clientId = slackApiStuff.clientId
-      const redirectUri = process.env.DEV ? 'https://localhost:8080' : 'overvue://slack'
+      const redirectUri = process.env.DEV ? 'overvuedev://test' : 'overvue://slack'
+      // const redirectUri = 'overvue://slack'
 
       this.isAuthenticating = true;
 
