@@ -6,66 +6,89 @@ Description:
   -->
 
 <template>
-  <div class="edit-sidebar">
-    <q-input
-      @keyup.enter.native="editCompName(newName)"
-      standout="bg-secondary text-white"
-      bottom-slots
-      v-on:keyup.delete.stop
-      v-model="newName"
-      label="Edit name"
+  <div class="home-sidebar drawer-menu">
+    <q-tabs
+      v-model="tab"
       dense
-      class="input-add"
+      class="bg-subaccent text-white"
+      active-color="secondary"
+      indicator-color="secondary"
     >
-    <template v-slot:append>
-        <q-btn
-          round
+      <q-tab name="details" label="details"/>
+      <q-tab name="vuex" label="vuex"/>
+    </q-tabs>
+    <q-tab-panels v-model="tab" animated class="html-bg text-white" >
+      <q-tab-panel name="details">
+        <br/>
+        <multiselect
+          class="multiselect"
+          v-model="value"
+          :options="options"
+          :searchable="true"
+          :close-on-select="true"
+          :max-height="90"
+          :option-height="20"
+          @input="handleSelect(value)"
+          placeholder="Select a component"
+        >
+          <span slot="noResult">No components found.</span>
+        </multiselect>
+        <br/>
+        <q-input
+          @keyup.enter.native="editCompName(newName)"
+          standout="bg-secondary text-white"
+          bottom-slots
+          v-on:keyup.delete.stop
+          v-model="newName"
+          label="Edit name"
           dense
-          flat
-          icon="fas fa-edit"
-          @click="editCompName(newName)"
-        />
-      </template>
-    </q-input>
-    <multiselect
-      class="multiselect"
-      v-model="value"
-      :options="options"
-      :searchable="true"
-      :close-on-select="true"
-      :max-height="90"
-      :option-height="20"
-      @input="handleSelect(value)"
-      @open="resetActiveComponent"
-      placeholder="Select a component"
-    >
-      <span slot="noResult">No components found.</span>
-    </multiselect>
-    <br/>
-    <p class="editName" v-if="this.activeComponentObj">
+          class="input-add"
+        >
+        <template v-slot:append>
+            <q-btn
+              round
+              dense
+              flat
+              icon="fas fa-edit"
+              @click="editCompName(newName)"
+            />
+          </template>
+        </q-input>
+      <br/>
+      <multiselect
+        v-model="testModel"
+        placeholder="Add/Remove Children"
+        :multiple="true"
+        :close-on-select="false"
+        :options="childOptions"
+        @input="handleAddChild"
+        :max-height="90"
+        :option-height="20"
+        :searchable="false"
+      />
+      </q-tab-panel>
+      <q-tab-panel name="vuex">
+        <h6>Vuex Mapping State and Actions</h6>
+      </q-tab-panel>
+    </q-tab-panels>
+    <!-- moved this to createComponent -->
+    <!-- <br/> -->
+    <!-- removed text that displays what componenet is selected -->
+    <!-- <p class="editName" v-if="this.activeComponentObj">
       Currently selected component: {{ this.activeComponentObj.componentName }}
-    </p>
+    </p> -->
+    <!-- removed delete button for now -->
     <!-- <p class="editName" v-else>Select a component</p> -->
-    <q-btn id="deleteButton" @click="deleteSelectedComp(activeComponentData)" label = 'Delete currently selected'/>
-    <br/>
+    <!-- <q-btn id="deleteButton" @click="deleteSelectedComp(activeComponentData)" label = 'Delete currently selected'/> -->
+    <!-- <br/>
     <div v-if="this.activeComponentData">
-    <br/>
+    <br/> -->
     <!-- @input="selectParent"
       @open="resetActiveComponent" -->
-     <multiselect
-      v-model="testModel"
-      placeholder="Add/Remove Children"
-      :multiple="true"
-      :close-on-select="false"
-      :options="childOptions"
-      @input="handleAddChild"
-      :max-height="90"
-      :option-height="20"
-      :searchable="false"
-    />
-  <br/>
+     
+  <!-- <br/> -->
 
-   <section id="counter" style="color: white">  Layer:
+   <!-- <section id="counter" style="color: white">  Layer:
       <q-btn
               class="btn"
               color="transparent"
@@ -147,10 +170,10 @@ Description:
     <a
       v-for="prop in this.activeComponentData.props"
       :key="prop"
-    >
+    > -->
     <!-- v-on:click="onActivated(prop)" -->
 
-      <q-list v-if="showProps" class="list-item" dense bordered separator>
+      <!-- <q-list v-if="showProps" class="list-item" dense bordered separator>
         <q-item clickable v-ripple class="list-item">
           <q-item-section>
             <div class="component-container">
@@ -164,7 +187,7 @@ Description:
       </q-list>
       </a>
     </div>
-    <p v-else> <br/> Select Component to Enable Edit </p>
+    <p v-else> <br/> Select Component to Enable Edit </p> -->
   </div>
 </template>
 
@@ -172,11 +195,12 @@ Description:
 import { mapState, mapActions } from 'vuex'
 import Multiselect from 'vue-multiselect'
 import { ToggleButton } from 'vue-js-toggle-button'
-import HTMLQueue from '../dashboard_items/HTMLQueue.vue'
+import HTMLQueue from '../../dashboard_items/HTMLQueue.vue'
 
 export default {
   data () {
     return {
+      tab: 'details',
       value: '',
       testModel: [],
       newName: '',
@@ -322,11 +346,11 @@ export default {
     },
 
     // Deselects active component
-    resetActiveComponent () {
-      if (this.activeComponent !== '') {
-        this.setActiveComponent('')
-      }
-    },
+    // resetActiveComponent () {
+    //   if (this.activeComponent !== '') {
+    //     this.setActiveComponent('')
+    //   }
+    // },
 
     // edit name of selected component
     editCompName (name) {
@@ -401,5 +425,14 @@ p {
 
 hr {
   border: 1px solid grey
+}
+
+.q-tab-panel {
+  height: 100%;
+}
+
+.q-tab-panels {
+  height: 100%;
+  padding: 0 !important;
 }
 </style>

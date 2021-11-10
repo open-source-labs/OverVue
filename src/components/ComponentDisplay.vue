@@ -10,6 +10,7 @@ Description:
     :style="mockBg"
     v-on:click="handleClick"
   >
+  <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
     <VueDraggableResizable
       class-name="component-box"
       v-for="componentData in activeRouteArray"
