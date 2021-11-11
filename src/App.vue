@@ -10,7 +10,6 @@ const cloneDeep = require('lodash.clonedeep')
 const throttle = require('lodash.throttle')
 import { defaultState } from './store/state/index.js'
 
-
 // use this to make sure these actions don't count as things you "undo"
 const ignoredActions = new Set([
   'setActiveComponent',

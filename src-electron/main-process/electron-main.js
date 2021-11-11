@@ -1,13 +1,7 @@
-import { app, BrowserWindow, net, shell, ipcMain } from "electron";
+import { app, BrowserWindow, net } from "electron";
 import { Deeplink } from "electron-deeplink";
 import isDev from "electron-is-dev";
-
-import slackApiStuff from "../../secretStuff/slackApiStuff";
-
-const clientId = slackApiStuff.clientId;
-const clientSecret = slackApiStuff.clientSecret;
-import dotenv from "dotenv";
-dotenv.config();
+import jwt_decode from 'jwt-decode';
 
 /**
  * Set `__statics` path to static files in production;
@@ -18,9 +12,6 @@ if (process.env.PROD) {
     .join(__dirname, "statics")
     .replace(/\\/g, "\\\\");
 }
-
-let mainWindow;
-let authCode;
 
 function logEverywhere(toBeLogged) {
   if (isDev) {
@@ -35,122 +26,126 @@ function logEverywhere(toBeLogged) {
   }
 }
 
+let mainWindow;
+let authCode;
 const protocol = isDev ? "overvuedev" : "overvue";
+
+// Used to console log for main process in production mode
+
 const deeplink = new Deeplink({
   app,
   mainWindow,
   protocol,
   isDev,
   debugLogging: true,
-  electronPath: "../../node_modules/electron/dist/electron.exe"
+  electronPath: '/node_modules/electron/dist/electron.exe'
 });
-// ipcMain.handle('slackAuth', slackAuth)
+// logEverywhere(`electron path:  ${require('path').join(__dirname, '../../node_modules/electron/dist/electron.exe')}`);
+// Sends request to Slack for User's information,
+// then sends user information back to renderer process
+function slackErrorHandler(err) {
+  return mainWindow.webContents.send('slackError', err)
+}
 
-// function customDeepLink() {
-//   let deeplinkingUrl;
+function sendTokenRequest() {
+  logEverywhere("inside sendTokenRequest");
 
-//   if (isDev && process.platform === 'win32') {
-//     // Set the path of electron.exe and your app.
-//     // These two additional parameters are only available on windows.
-//     // Setting this is required to get this working in dev mode.
-//     app.setAsDefaultProtocolClient('overvuedev', process.execPath, [
-//       resolve(process.argv[1])
-//     ]);
-//   } else {
-//     app.setAsDefaultProtocolClient('overvue');
-//   }
-
-//   app.on('open-url', function (event, url) {
-//     event.preventDefault();
-//     deeplinkingUrl = url;
-//   });
-
-//   // Force single application instance
-//   const gotTheLock = app.requestSingleInstanceLock();
-
-//   if (!gotTheLock) {
-//     app.quit();
-//     return;
-//   } else {
-//     app.on('second-instance', (e, argv) => {
-//       if (process.platform !== 'darwin') {
-//         // Find the arg that is our custom protocol url and store it
-//         deeplinkingUrl = argv.find((arg) => arg.startsWith('overvuedev://test'));
-//       }
-
-//       if (myWindow) {
-//         if (myWindow.isMinimized()) myWindow.restore();
-//         myWindow.focus();
-//       }
-//     })
-//   }
-// }
-
-function getSlackAuth() {
-  logEverywhere("inside getSlackAuth");
-
-  const authData = {
-    client_id: clientId,
-    client_secret: clientSecret,
-    code: authCode,
-    redirect_uri: isDev ? "overvuedev://test" : "overvue://slack"
-  };
-  logEverywhere(authData.code);
-  // https://slack.com/api/openid.connect.token?client_id=2696943977700.2696948669268&client_secret=6a6206cc93da2e49243ee9683f958438&code=2696943977700.2713919388452.23b787dec24adec68eeca105f6b7d6e517425de1033a1b6bc5ba3e116b933619&redirect_uri=overvue://slack
-  const url =
-    "https://slack.com/api/openid.connect.token?" +
-    "client_id=" +
-    authData.client_id +
-    "&client_secret=" +
-    authData.client_secret +
-    "&code=" +
-    authData.code +
-    "&grant_type=authorization_key" +
-    "&redirect_uri=" +
-    authData.redirect_uri;
-  logEverywhere(url);
+  // Send Post request for user information
   const request = net.request({
     method: "POST",
-    url: url,
+    url: 'https://slack.com/api/oauth.v2.access?' +
+      "client_id=" +
+      process.env.SLACK_CLIENT_ID +
+      "&client_secret=" +
+      process.env.SLACK_CLIENT_SECRET +
+      "&code=" +
+      authCode +
+      "&grant_type=authorization_code" +
+      "&redirect_uri=" +
+      process.env.SLACK_REDIRECT_URI,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
-      // 'Content-Length': authData.length
     }
   });
 
+  // Listens for response from token request
   request.on("response", response => {
-    let body;
-    logEverywhere("RESPONSE RECEIVED SON");
-    mainWindow.webContents.send("tokenReceived", response);
-    // logEverywhere('STATUS: ', response.statusCode)
-    // logEverywhere(`HEADERS: ${JSON.stringify(response.headers)}`)
-    response.on("data", data => {
-      // logEverywhere(`response.on datas CHUNK: ${chunk}`)
-      logEverywhere("chunked");
-      logEverywhere(data);
-      body = data;
-    });
+    // logEverywhere("request.on response received");
     response.on("end", () => {
       logEverywhere("Response ended ");
-      mainWindow.webContents.send("tokenReceived", body);
+    });
+    response.on("data", data => {
+      const decoded = JSON.parse(data.toString())
+      if (decoded.error) {
+        return slackErrorHandler(decoded.error)
+      }
+      console.log('Is there an error? ', !!decoded.error, 'if true, this shouldnt be logging')
+      mainWindow.webContents.send("tokenReceived", decoded);
+      // getSlackUser(decoded.access_token, decoded.authed_user.id)
     });
   });
   request.end();
 }
 
-function getSlackToken() {
+function getSlackUser (token, userId) {
+  const request = net.request({
+    method: 'POST',
+    url: 'https://slack.com/api/users.profile.get?' +
+    "token=" + token +
+    "&user=" + userId,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  })
+  request.on('response', response => {
+    response.on('end', () => {
+      logEverywhere('User data recieved')
+    })
+    response.on('data', data => {
+      const decoded = JSON.parse(data.toString());
+      if (decoded.error) {
+        return slackErrorHandler(decoded.error)
+      }
+      // logEverywhere('slackUser decoded data in getSlackUser' + decoded)
+      mainWindow.webContents.send('slackUser', decoded)
+    })
+  })
+  request.end()
+}
+
+/*
+For Sign In with Slack, but we are now using the Add to Slack feature instead
+*/
+// function decodeUserToken (data) {
+//   // logEverywhere("response.on data ");
+//   // decodes utf8 Buffer into JSON, then parses it
+//   const decoded = JSON.parse(data.toString())
+//   // decodes JSON Web Token and places decoded JWT back into response data
+//   decoded.id_token = jwt_decode(decoded.id_token)
+//   // logEverywhere(`decoded in response.on data: ${decoded}`)
+//   // send user information back to renderer process
+//   return mainWindow.webContents.send("tokenReceived", decoded);
+// }
+
+// Turns on event listener for Slack Oauth deep linking back app
+// TODO: Deep linking currently doesn't work properly in dev mode - requires fix
+
+function setOauthListener() {
+  logEverywhere(`process.env.SLACK_CLIENT_ID in electron-main:  ${process.env.SLACK_CLIENT_ID}`);
+  logEverywhere(`process.env.SLACK_CLIENT_SECRET in electron-main:  ${process.env.SLACK_CLIENT_SECRET}`);
+
   return deeplink.on("received", link => {
     logEverywhere(`auth worked here link: ${link}`);
-    // authCode = link.split("=")[1];
-    authCode = link.split("=")[1].split(".")[2];
-    getSlackAuth();
+    // Extracts Slack authorization code from deep link
+    authCode = link.split("=")[1];
+    sendTokenRequest();
   });
 }
 
 function createWindow() {
   /**
-   * Initial window options
-   */
+  * Initial window options
+  */
 
   mainWindow = new BrowserWindow({
     width: 1000,
@@ -162,7 +157,8 @@ function createWindow() {
     }
   });
 
-  logEverywhere(`current protocol ${deeplink.getProtocol()}`);
+  logEverywhere(`Current deeplink Protocol: ${deeplink.getProtocol()}`);
+  logEverywhere(`process.execPath: ${process.execPath}`);
   mainWindow.loadURL(process.env.APP_URL);
 
   mainWindow.on("closed", () => {
@@ -172,8 +168,7 @@ function createWindow() {
 
 app.on("ready", () => {
   createWindow();
-  getSlackToken();
-  logEverywhere(`process.env.CLIENT_ID:  ${process.env.CLIENT_ID}`);
+  setOauthListener();
 });
 
 app.on("window-all-closed", () => {
@@ -185,7 +180,6 @@ app.on("window-all-closed", () => {
 app.on("activate", () => {
   if (mainWindow === null) {
     createWindow();
-    getSlackToken();
-    logEverywhere(`process.env:  ${process.env}`);
+    setOauthListener();
   }
 });
