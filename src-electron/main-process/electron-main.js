@@ -1,4 +1,4 @@
-import { app, BrowserWindow, net, shell, ipcMain } from "electron";
+import { app, BrowserWindow, net } from "electron";
 import { Deeplink } from "electron-deeplink";
 import isDev from "electron-is-dev";
 import jwt_decode from 'jwt-decode';
@@ -43,35 +43,26 @@ const deeplink = new Deeplink({
 // logEverywhere(`electron path:  ${require('path').join(__dirname, '../../node_modules/electron/dist/electron.exe')}`);
 // Sends request to Slack for User's information,
 // then sends user information back to renderer process
+function slackErrorHandler(err) {
+  return mainWindow.webContents.send('slackError', err)
+}
+
 function sendTokenRequest() {
   logEverywhere("inside sendTokenRequest");
-
-  const authData = {
-    client_id: process.env.SLACK_CLIENT_ID,
-    client_secret: process.env.SLACK_CLIENT_SECRET,
-    code: authCode,
-    redirect_uri: process.env.SLACK_REDIRECT_URI
-  };
-  logEverywhere(authData.code);
-
-  const url =
-    "https://slack.com/api/openid.connect.token?" +
-    "client_id=" +
-    authData.client_id +
-    "&client_secret=" +
-    authData.client_secret +
-    "&code=" +
-    authData.code +
-    "&grant_type=authorization_code" +
-    "&redirect_uri=" +
-    authData.redirect_uri;
-
-  logEverywhere(`Token Request URL: ${url}`);
 
   // Send Post request for user information
   const request = net.request({
     method: "POST",
-    url: url,
+    url: 'https://slack.com/api/oauth.v2.access?' +
+      "client_id=" +
+      process.env.SLACK_CLIENT_ID +
+      "&client_secret=" +
+      process.env.SLACK_CLIENT_SECRET +
+      "&code=" +
+      authCode +
+      "&grant_type=authorization_code" +
+      "&redirect_uri=" +
+      process.env.SLACK_REDIRECT_URI,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     }
@@ -84,22 +75,61 @@ function sendTokenRequest() {
       logEverywhere("Response ended ");
     });
     response.on("data", data => {
-      // logEverywhere("response.on data ");
-      // decodes utf8 Buffer into JSON, then parses it
       const decoded = JSON.parse(data.toString())
-
-      // decodes JSON Web Token and places decoded JWT back into response data
-      decoded.id_token = jwt_decode(decoded.id_token)
-      // logEverywhere(`decoded in response.on data: ${decoded}`)
-      // send user information back to renderer process
+      if (decoded.error) {
+        return slackErrorHandler(decoded.error)
+      }
+      console.log('Is there an error? ', !!decoded.error, 'if true, this shouldnt be logging')
       mainWindow.webContents.send("tokenReceived", decoded);
+      // getSlackUser(decoded.access_token, decoded.authed_user.id)
     });
   });
   request.end();
 }
 
+function getSlackUser (token, userId) {
+  const request = net.request({
+    method: 'POST',
+    url: 'https://slack.com/api/users.profile.get?' +
+    "token=" + token +
+    "&user=" + userId,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  })
+  request.on('response', response => {
+    response.on('end', () => {
+      logEverywhere('User data recieved')
+    })
+    response.on('data', data => {
+      const decoded = JSON.parse(data.toString());
+      if (decoded.error) {
+        return slackErrorHandler(decoded.error)
+      }
+      // logEverywhere('slackUser decoded data in getSlackUser' + decoded)
+      mainWindow.webContents.send('slackUser', decoded)
+    })
+  })
+  request.end()
+}
+
+/*
+For Sign In with Slack, but we are now using the Add to Slack feature instead
+*/
+// function decodeUserToken (data) {
+//   // logEverywhere("response.on data ");
+//   // decodes utf8 Buffer into JSON, then parses it
+//   const decoded = JSON.parse(data.toString())
+//   // decodes JSON Web Token and places decoded JWT back into response data
+//   decoded.id_token = jwt_decode(decoded.id_token)
+//   // logEverywhere(`decoded in response.on data: ${decoded}`)
+//   // send user information back to renderer process
+//   return mainWindow.webContents.send("tokenReceived", decoded);
+// }
+
 // Turns on event listener for Slack Oauth deep linking back app
 // TODO: Deep linking currently doesn't work properly in dev mode - requires fix
+
 function setOauthListener() {
   logEverywhere(`process.env.SLACK_CLIENT_ID in electron-main:  ${process.env.SLACK_CLIENT_ID}`);
   logEverywhere(`process.env.SLACK_CLIENT_SECRET in electron-main:  ${process.env.SLACK_CLIENT_SECRET}`);

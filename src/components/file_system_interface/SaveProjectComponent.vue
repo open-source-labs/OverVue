@@ -114,14 +114,17 @@ export default {
           // })
 
         // console.log('PROJECT SAVED AS A JSON OBJECT!')
-        this.notifySlack()
+        localforage.getItem('slackWebhookURL', (err, value) => {
+          console.log('error: ', err)
+          console.log('slackWebhookURL: ', value)
+          if (value) this.notifySlack(fileName, value)
+        })
       }
     },
     // creates a popup dialog box, where if you click on yes, it will send a message to our test Slack workspace
-    // still must refactor to dynamically work with user's Slack
-    notifySlack () {
-      const slackWebhookURL = process.env.SLACK_WEBHOOK_URL
-      console.log(slackWebhookURL)
+    notifySlack (fileName, url) {
+      // TODO: add feature to store slack user's name into local memory here if we decide to
+
       remote.dialog.showMessageBox({
         title: 'Notify Slack?',
         message: 'Save successful. Would you like to notify your team on Slack?',
@@ -130,9 +133,9 @@ export default {
       },
       response => {
         if (response === 1) {
-          fetch(slackWebhookURL, {
+          fetch(url, {
             method: 'POST',
-            body: JSON.stringify({ 'text': 'A team member saved an OverVue project file!' }),
+            body: JSON.stringify({ 'text': `A team member has saved an OverVue project file: ${fileName}` }),
             headers: { 'Content-Type': 'application/json' }
           })
         }
