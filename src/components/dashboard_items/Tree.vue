@@ -7,9 +7,10 @@ Description:
 <template>
   <div class="container">
     <tree
+      :key="computedTree"
       :data="computedTree"
       node-text="name"
-      layoutType="euclidean"
+      layoutType="vertical"
       type="tree"
       :zoomable="true"
       :radius="4"
@@ -101,6 +102,7 @@ export default {
   text-shadow none !important
   font-weight bold
   fill #FFF
+  transform: rotate(-90deg);
   /* none of these classes work
   color: white !important;
   background: white;

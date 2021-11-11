@@ -5,24 +5,57 @@ Description:
   -->
 
 <template>
-  <q-layout view="hHh LpR lFf">
+  <!-- original layout: <q-layout view="hHh LpR lFf"> -->
+  <q-layout view="hHh lpr fFf">
+    <!-- the top header of OverVue -->
     <q-header elevated class="gradient text-white">
       <q-toolbar>
         <q-btn dense flat color="subaccent" round @click="left = !left">
-          <i :class="[left ? 'fas fa-chevron-left' : 'fas fa-list-ul']" id="btn"></i>
+          <i
+            :class="[left ? 'fas fa-chevron-left' : 'fas fa-list-ul']"
+            id="btn"
+          ></i>
         </q-btn>
         <q-toolbar-title>
           OverVue
         </q-toolbar-title>
         <div>
-        <i v-if='this.$router.app.$children[0].doneAction.length' class="fa fa-backward" aria-hidden="true" @click="undo"></i>
-        <i v-else class="fa fa-backward" id="unavailable" aria-hidden="true"></i>
-        <i v-if='this.$router.app.$children[0].undoneAction.length' class="fa fa-forward" aria-hidden="true" @click="redo"></i>
-        <i v-else class="fa fa-forward" id="unavailable" aria-hidden="true"></i>
-        <OpenProjectComponent />
-        <SaveProjectComponent />
-        <ExportProjectComponent />
+          <i
+            v-if="this.$router.app.$children[0].doneAction.length"
+            class="fa fa-backward"
+            aria-hidden="true"
+            @click="undo"
+          ></i>
+          <i
+            v-else
+            class="fa fa-backward"
+            id="unavailable"
+            aria-hidden="true"
+          ></i>
+          <i
+            v-if="this.$router.app.$children[0].undoneAction.length"
+            class="fa fa-forward"
+            aria-hidden="true"
+            @click="redo"
+          ></i>
+          <i
+            v-else
+            class="fa fa-forward"
+            id="unavailable"
+            aria-hidden="true"
+          ></i>
+          <OpenProjectComponent />
+          <SaveProjectComponent />
+          <ExportProjectComponent />
         </div>
+        <!-- this button will open the right drawer -->
+        <q-btn dense flat color="subaccent" round @click="right = !right">
+          <!-- fas => fontawesome, refers to icon style -->
+          <i
+            :class="[right ? 'fas fa-chevron-right' : 'fas fa-list-ul']"
+            id="btn"
+          ></i>
+        </q-btn>
       </q-toolbar>
     </q-header>
     
@@ -57,11 +90,24 @@ Description:
       </q-tab-panel>
       </q-tab-panels>
     </q-drawer>
+    <!-- rendering dashboard as right sidebar instead of as a footer -->
+    <q-drawer right-side
+      show-if-above
+      v-model="right"
+      side="right"
+      behavior="desktop"
+      :width="400"
+      bordered
+    >
+      <q-list class="q-list-drawer">
+        <Dashboard />
+      </q-list>
+    </q-drawer>
 
     <q-page-container>
       <router-view />
     </q-page-container>
-    <Dashboard/>
+    <!-- <Dashboard /> -->
   </q-layout>
 </template>
 
@@ -80,12 +126,12 @@ import VuexForm from '../components/home_sidebar_items/VuexForm.vue'
 import ComponentTab from '../components/home_sidebar_items/ComponentTab/ComponentTab.vue'
 
 export default {
-  data () {
+  data() {
     return {
       tab: 'component',
       left: true,
-      bottom: true
-    }
+      right: true
+    };
   },
   components: {
     // HomeSideDropDown,
@@ -101,17 +147,17 @@ export default {
     ComponentTab,
   },
   methods: {
-    undo () {
+    undo() {
       // console.log('UNDO FROM BUTTON')
       // console.log('look at me ', this.$router.app.$children[0].doneAction)
-      this.$router.app.$children[0].undo()
+      this.$router.app.$children[0].undo();
     },
-    redo () {
+    redo() {
       // console.log('REDO FROM BUTTON')
-      this.$router.app.$children[0].redo()
+      this.$router.app.$children[0].redo();
     }
   }
-}
+};
 </script>
 
 <style lang="stylus">
@@ -159,7 +205,7 @@ export default {
 
 // css styling for the drawer list (not entire bg)
 .q-list-drawer {
-  height: 100vh;
+  height: 80%;
   box-shadow: none;
 }
 
