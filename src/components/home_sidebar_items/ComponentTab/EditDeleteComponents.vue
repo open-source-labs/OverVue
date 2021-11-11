@@ -7,74 +7,131 @@ Description:
 
 <template>
   <div class="home-sidebar drawer-menu">
-    <q-tabs
-      v-model="tab"
+    <br/>
+    <!-- dropdown to select a component to edit -->
+    <multiselect
+      class="multiselect"
+      v-model="value"
+      :options="options"
+      :searchable="true"
+      :close-on-select="true"
+      :max-height="90"
+      :option-height="20"
+      @input="handleSelect(value)"
+      placeholder="Select a component"
+    >
+      <span slot="noResult">No components found.</span>
+    </multiselect>
+    <br/>
+    <!-- name editor component -->
+    <q-input
+      @keyup.enter.native="editCompName(newName)"
+      standout="bg-secondary text-white"
+      bottom-slots
+      v-on:keyup.delete.stop
+      v-model="newName"
+      label="Edit name"
+      dense
+      class="input-add"
+    >
+      <template v-slot:append>
+        <q-btn
+          round
+          dense
+          flat
+          icon="fas fa-edit"
+          @click="editCompName(newName)"
+        />
+      </template>
+    </q-input>
+    <!-- for the icon list -->
+    <br/>
+    <multiselect
+    v-model="testModel"
+    placeholder="Add/Remove Children"
+    :multiple="true"
+    :close-on-select="false"
+    :options="childOptions"
+    @input="handleAddChild"
+    :max-height="90"
+    :option-height="20"
+    :searchable="false"
+    />
+    <br/>
+    <q-list
       dense
       class="bg-subaccent text-white"
       active-color="secondary"
       indicator-color="secondary"
     >
-      <q-tab name="details" label="details"/>
-      <q-tab name="vuex" label="vuex"/>
-    </q-tabs>
-    <q-tab-panels v-model="tab" animated class="html-bg text-white" >
-      <q-tab-panel name="details">
+    <!-- HTML item that has Icon component -->
+      <q-expansion-item
+        group="accordion"
+        label="HTML"
+      >
         <br/>
-        <multiselect
-          class="multiselect"
-          v-model="value"
-          :options="options"
-          :searchable="true"
-          :close-on-select="true"
-          :max-height="90"
-          :option-height="20"
-          @input="handleSelect(value)"
-          placeholder="Select a component"
-        >
-          <span slot="noResult">No components found.</span>
-        </multiselect>
+        <div class="icon-container">
+          <Icons
+            class="icons"
+            @getClickedIcon="addToSelectedElementList"
+            @activeElement="addToComponentElementList"
+            @activeHTML="addNestedHTML"
+            @activeLayer="addNestedNoActive"
+          />
+        </div>
+      </q-expansion-item>
+      <!-- Props item that has AddProps component in it -->
+      <q-expansion-item
+        group="accordion"
+        label="Props"
+      >
         <br/>
-        <q-input
-          @keyup.enter.native="editCompName(newName)"
-          standout="bg-secondary text-white"
-          bottom-slots
-          v-on:keyup.delete.stop
-          v-model="newName"
-          label="Edit name"
-          dense
-          class="input-add"
-        >
-        <template v-slot:append>
-            <q-btn
-              round
-              dense
-              flat
-              icon="fas fa-edit"
-              @click="editCompName(newName)"
-            />
-          </template>
-        </q-input>
+        <AddProps />
+        <br/>
+        <p v-if="!this.activeComponentObj.props.length">No props in component</p>
+        <div v-else>
+          <a 
+            v-for="prop in this.activeComponentData.props"
+            :key="prop"
+            v-on:click="onActivated(prop)"
+          >
+            <q-list 
+              class="list=item" dense bordered separator
+            >
+              <q-item clickable v-ripple class="list-item">
+                <q-item-section>
+                  <div class="component-container">
+                    <div class="component-info">
+                      {{prop}}
+                    </div>
+                    <q-btn round flat icon="highlight_off" v-on:click.stop="deleteProp(prop)" />
+                  </div>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </a>
+        </div>
+      </q-expansion-item>
+      <!-- Vuex State item that will have state displayed and option to delete -->
+      <q-expansion-item
+        group="accordion"
+        label="State"
+      >
       <br/>
-      <multiselect
-        v-model="testModel"
-        placeholder="Add/Remove Children"
-        :multiple="true"
-        :close-on-select="false"
-        :options="childOptions"
-        @input="handleAddChild"
-        :max-height="90"
-        :option-height="20"
-        :searchable="false"
-      />
-      </q-tab-panel>
-      <q-tab-panel name="vuex">
-        <h6>Vuex Mapping State and Actions</h6>
-      </q-tab-panel>
-    </q-tab-panels>
-    <!-- moved this to createComponent -->
+      <ComponentState />
+      </q-expansion-item>
+      <q-expansion-item
+        group="accordion"
+        label="Actions"
+      >
+      <br/>
+      <ComponentActions />
+      </q-expansion-item>
+    </q-list>
+
     <!-- <br/> -->
     <!-- removed text that displays what componenet is selected -->
-    <!-- <p class="editName" v-if="this.activeComponentObj">
+    <!-- <p class="editName" v-if="this.activeComponentObj"> 
       Currently selected component: {{ this.activeComponentObj.componentName }}
     </p> -->
     <!-- removed delete button for now -->
@@ -86,7 +143,7 @@ Description:
     <!-- @input="selectParent"
       @open="resetActiveComponent" -->
      
-  <!-- <br/> -->
+    <!-- <br/> -->
 
    <!-- <section id="counter" style="color: white">  Layer:
       <q-btn
@@ -170,7 +227,7 @@ Description:
     <a
       v-for="prop in this.activeComponentData.props"
       :key="prop"
-    > -->
+    > --> 
     <!-- v-on:click="onActivated(prop)" -->
 
       <!-- <q-list v-if="showProps" class="list-item" dense bordered separator>
@@ -196,21 +253,33 @@ import { mapState, mapActions } from 'vuex'
 import Multiselect from 'vue-multiselect'
 import { ToggleButton } from 'vue-js-toggle-button'
 import HTMLQueue from '../../dashboard_items/HTMLQueue.vue'
+import Icons from '../Icons.vue'
+import AddProps from './AddProps.vue'
+import ComponentState from './ComponentState.vue'
+import ComponentActions from './ComponentActions.vue'
 
 export default {
   data () {
     return {
-      tab: 'details',
+      // tab: 'details',
       value: '',
       testModel: [],
       newName: '',
-      showState: false,
-      showActions: false,
-      showProps: false,
-      showHTML: false
+      // showState: false,
+      // showActions: false,
+      // showProps: false,
+      // showHTML: false
     }
   },
-  components: { Multiselect, ToggleButton, HTMLQueue },
+  components: { 
+    Multiselect, 
+    ToggleButton, 
+    HTMLQueue, 
+    Icons, 
+    AddProps, 
+    ComponentState,
+    ComponentActions,
+  },
   computed: {
     ...mapState([
       'routes',
@@ -277,11 +346,15 @@ export default {
       'deleteComponent',
       'deleteActiveComponent',
       'editComponentName',
-      'deleteActionFromComponent',
-      'deletePropsFromComponent',
-      'deleteStateFromComponent',
+      // 'deleteActionFromComponent',
+      // 'deletePropsFromComponent',
+      // 'deleteStateFromComponent',
       'updateComponentLayer',
-      'updateActiveComponentChildrenValue'
+      'updateActiveComponentChildrenValue',
+      'addToSelectedElementList',
+      'addToComponentElementList',
+      'addNestedHTML',
+      'addNestedNoActive'
     ]),
 
     handleAddChild (value) {
@@ -290,27 +363,27 @@ export default {
     },
 
     // delete selected state from active component
-    deleteState (state) {
-      this.deleteStateFromComponent(state)
-      console.log(this.activeComponentObj)
-    },
+    // deleteState (state) {
+    //   this.deleteStateFromComponent(state)
+    //   console.log(this.activeComponentObj)
+    // },
 
     // delete selected action from active component
-    deleteAction (action) {
-      this.deleteActionFromComponent(action)
-      console.log(this.activeComponentObj)
-    },
+    // deleteAction (action) {
+    //   this.deleteActionFromComponent(action)
+    //   console.log(this.activeComponentObj)
+    // },
 
     // delete selected props from active component
-    deleteProp (prop) {
-      this.deletePropsFromComponent(prop)
-      console.log(this.activeComponentObj)
-    },
-    // Set component as active component from left side dropdown
-    // onActivated (componentData) {
-    //   this.setActiveComponent(componentData.componentName)
-    //   this.activeComponentData.isActive = true
+    // deleteProp (prop) {
+    //   this.deletePropsFromComponent(prop)
+    //   console.log(this.activeComponentObj)
     // },
+    // Set component as active component from left side dropdown
+    onActivated (componentData) {
+      this.setActiveComponent(componentData.componentName)
+      this.activeComponentData.isActive = true
+    },
     //
     // deleteCircumvent (e) {
     //   e.preventDefault()
@@ -346,11 +419,11 @@ export default {
     },
 
     // Deselects active component
-    // resetActiveComponent () {
-    //   if (this.activeComponent !== '') {
-    //     this.setActiveComponent('')
-    //   }
-    // },
+    resetActiveComponent () {
+      if (this.activeComponent !== '') {
+        this.setActiveComponent('')
+      }
+    },
 
     // edit name of selected component
     editCompName (name) {
