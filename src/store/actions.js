@@ -166,8 +166,8 @@ const actions = {
   [types.deleteUserActions]: ({ state, commit }, payload) => {
     commit(types.DELETE_USER_ACTIONS, payload)
   },
+  
   [types.deleteUserState]: ({ state, commit }, payload) => {
-    
     // loops through component map and deletes all props
     // Object.keys(state.componentMap).forEach(prop => {
     //   commit(types.SET_ACTIVE_COMPONENT, prop.componentName)
@@ -175,6 +175,7 @@ const actions = {
     // })
     commit(types.DELETE_USER_STATE, payload)
   },
+  
   // End of Vuex Actions section //////////////////////////////////////////
 
   // Action primarily for edit functionality////////////////////////////////////////

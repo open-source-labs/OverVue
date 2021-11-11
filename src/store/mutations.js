@@ -219,6 +219,19 @@ const mutations = {
     state.activeComponentObj = temp
   },
 
+  [types.DELETE_USER_STATE]: (state, payload) => {
+    // delete state.userState[payload];
+    // console.log('userState: ', state.userState);
+    let index = state.userState.indexOf(payload);
+    state.userState.splice(index, 1);
+  },
+
+  [types.DELETE_USER_ACTIONS]: (state, payload) => {
+    // payload should be a string of the name of the action to remove
+    let index = state.userActions.indexOf(payload);
+    state.userActions.splice(index, 1);
+  },
+
   // *** EDIT FUNCTIONALITY *** //////////////////////////////////////////////
 
   [types.EDIT_COMPONENT_NAME]: (state, payload) => {
