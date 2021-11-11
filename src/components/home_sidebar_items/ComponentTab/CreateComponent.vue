@@ -3,13 +3,16 @@ Description:
   Handles create component menu on left-side
   Functionality includes: creating a component, preventing users from entering invalid component file names
   -->
+<!-- 4.0 adjustment: conditional render to switch between new comp name input and editing active comp name, moved from EditDeleteComponents -->
 <template>
   <div class="home-sidebar drawer-menu">
     <br />
     <form
       v-on:submit.prevent="createComponent"
     >
+    <!-- will render if creating new component -->
       <q-input
+        v-if="activeComponent === ''"
         standout="bg-secondary text-white"
         bottom-slots
         v-on:keyup.delete.stop
@@ -18,6 +21,7 @@ Description:
         dense
         class="input-add"
       ></q-input>
+
     </form>
     <div class="icon-container">
       <Icons
@@ -28,10 +32,11 @@ Description:
         @activeLayer="addNestedNoActive"
       />
     </div>
-    <ParentMultiselect />
+    <ParentMultiselect v-if="activeComponent === ''"></ParentMultiselect>
     <br />
 
     <q-btn
+      v-if="activeComponent ===''"
       id="add-component-btn"
       color="secondary"
       label="Create Component"
@@ -42,8 +47,8 @@ Description:
 </template>
 
 <script>
-import Icons from './Icons'
-import ParentMultiselect from './ParentMultiselect.vue'
+import Icons from '../Icons'
+import ParentMultiselect from '../ParentMultiselect.vue'
 import { mapState, mapActions } from 'vuex'
 
 export default {
@@ -76,7 +81,8 @@ export default {
       'setActiveComponent',
       'addToComponentElementList',
       'addNestedHTML',
-      'addNestedNoActive'
+      'addNestedNoActive',
+      'editComponentName',
     ]),
 
     createComponent () {
@@ -107,8 +113,8 @@ export default {
         this.registerComponent(component)
         this.setActiveComponent(component.componentName)
       }
-    }
-  }
+    },
+  },
 }
 
 </script>
@@ -123,7 +129,7 @@ export default {
   width: 90%;
 }
 .home-sidebar {
-  margin: 1rem;
+  margin: 0.5rem;
   padding: 0.5rem;
   border-radius: 5px;
 }

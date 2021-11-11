@@ -25,13 +25,37 @@ Description:
         </div>
       </q-toolbar>
     </q-header>
-
+    
     <q-drawer v-model="left" side="left" behavior="desktop" bordered>
-      <q-list class="q-list-drawer">
+      <!-- Original code for a drawer and list style -->
+      <!-- <q-list class="q-list-drawer">
         <UploadImage />
         <HomeSideDropDown />
         <CreateComponent />
-      </q-list>
+      </q-list> -->
+
+      <!-- QTabs setup, not sure what class to set yet -->
+      <q-tabs
+        v-model="tab"
+        dense
+        class="bg-subaccent text-white"
+        active-color="secondary"
+        indicator-color="secondary"
+      >
+        <q-tab name="component" ><i class="fas fa-edit"></i></q-tab>
+        <q-tab name="store" ><i class="fas fa-store-alt"></i></q-tab>
+      </q-tabs>
+      <!-- individual tab panel's setup -->
+      <q-tab-panels v-model="tab" animated class="html-bg text-white" >
+      <!--component tab will have creator and editor components -->
+      <q-tab-panel name="component">
+        <ComponentTab/>
+      </q-tab-panel>
+      <!-- store will display store elements -->
+      <q-tab-panel name="store">
+        <Vuex-Form />
+      </q-tab-panel>
+      </q-tab-panels>
     </q-drawer>
 
     <q-page-container>
@@ -42,29 +66,39 @@ Description:
 </template>
 
 <script>
-import HomeSideDropDown from '../components/home_sidebar_items/HomeSideDropDown.vue'
+// HomeSideDropDown contains RouteDisplay, VuexForm and Edit but we'll be separating these components across different tabs
+// import HomeSideDropDown from '../components/home_sidebar_items/HomeSideDropDown.vue'
 import Dashboard from '../components/dashboard_items/Dashboard.vue'
-import CreateComponent from '../components/home_sidebar_items/CreateComponent.vue'
+import CreateComponent from '../components/home_sidebar_items/ComponentTab/CreateComponent.vue'
 import ExportProjectComponent from '../components/file_system_interface/ExportProject.vue'
 import SaveProjectComponent from '../components/file_system_interface/SaveProjectComponent.vue'
 import OpenProjectComponent from '../components/file_system_interface/OpenProjectComponent.vue'
 import UploadImage from '../components/home_sidebar_items/UploadImage.vue'
+import RouteDisplay from '../components/home_sidebar_items/RouteDisplay.vue'
+import EditDeleteComponents from '../components/home_sidebar_items/ComponentTab/EditDeleteComponents.vue'
+import VuexForm from '../components/home_sidebar_items/VuexForm.vue'
+import ComponentTab from '../components/home_sidebar_items/ComponentTab/ComponentTab.vue'
 
 export default {
   data () {
     return {
+      tab: 'component',
       left: true,
       bottom: true
     }
   },
   components: {
-    HomeSideDropDown,
+    // HomeSideDropDown,
+    RouteDisplay,
+    EditDeleteComponents,
+    VuexForm,
     Dashboard,
     CreateComponent,
     ExportProjectComponent,
     SaveProjectComponent,
     OpenProjectComponent,
-    UploadImage
+    UploadImage,
+    ComponentTab,
   },
   methods: {
     undo () {
@@ -133,4 +167,15 @@ export default {
 .q-drawer {
   background: $subprimary;
 }
+
+// give html background color of grey
+.html-bg {
+  background-color: #202122;
+}
+
+.q-tab-panel
+  padding 0 !important 
+
+.q-tab-panels
+  // height 80 vh
 </style>
