@@ -132,7 +132,6 @@ i {
   background: $subsecondary;
 }
 
-
 .q-btn {
   font-size: 8px;
   margin: 5px;
@@ -173,13 +172,12 @@ i {
 
 .q-tab-panel {
   // matchs the code editor bg
-  
   background: $subprimary;
 }
 
 // changes the length of the tab panels
 .q-tab-panels {
-  height: 80vh;
+  height: 87vh;
   padding: 0px !important;
 }
 
