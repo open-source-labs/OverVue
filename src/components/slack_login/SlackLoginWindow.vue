@@ -35,14 +35,10 @@
   </div>
 </template>
 
-
-
-
 <script>
 // import { mapState, mapActions } from 'vuex'
 import localforage from 'localforage'
 import { shell, ipcRenderer } from 'electron'
-import slackApiStuff from '../../../secretStuff/slackApiStuff.js'
 
 export default {
   name: 'SlackLoginWindow',
@@ -54,32 +50,24 @@ export default {
   },
   created () {
     ipcRenderer.on('tokenReceived', (event, data) => {
-      // JSON.parse(data).then(output => {
-      //   console.log('PARSED DATA: ', output)
-      // })
       console.log('data in SlackLoginWindow: ', data)
     })
   },
   methods: {
     slackOauth: function () {
       const slackBaseUrl = 'https://slack.com/openid/connect/authorize'
-      // const slackBaseUrl = 'https://slack.com/oauth/v2/authorize'
       const responseType = 'code'
       const scope = 'openid profile'
-      const clientId = slackApiStuff.clientId
+      const clientId = process.env.SLACK_CLIENT_ID
       const redirectUri = process.env.DEV ? 'overvuedev://test' : 'overvue://slack'
-      // const redirectUri = 'overvue://slack'
 
       this.isAuthenticating = true;
 
       console.log('clicked')
-      // window.open(this.oauthURL, '_blank')
       shell.openExternal(
         `${slackBaseUrl}?response_type=${responseType}&scope=${scope}&client_id=${clientId}&redirect_uri=${redirectUri}`,
         { activate: true }
       )
-      // .then(data => console.log(data))
-      // .then(data => )
     },
     closeLogin: function () {
       this.showLogin = false

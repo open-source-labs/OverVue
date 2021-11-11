@@ -2,7 +2,7 @@
 // https://quasar.dev/quasar-cli/quasar-conf-js
 
 module.exports = function (ctx) {
-  console.log('webpack\'s context parameter: ', ctx)
+  const env = require('quasar-dotenv').config()
   return {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
@@ -80,7 +80,7 @@ module.exports = function (ctx) {
     supportIE: false,
 
     build: {
-      scopeHoisting: true,
+      // scopeHoisting: true,
       // vueRouterMode: 'history',
       // vueCompiler: true,
       // gzip: true,
@@ -96,7 +96,8 @@ module.exports = function (ctx) {
         //     formatter: require('eslint').CLIEngine.getFormatter('stylish')
         //   }
         // })
-      }
+      },
+      env: env,
     },
 
     devServer: {

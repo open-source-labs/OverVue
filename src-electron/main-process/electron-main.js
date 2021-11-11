@@ -3,13 +3,6 @@ import { Deeplink } from "electron-deeplink";
 import isDev from "electron-is-dev";
 import jwt_decode from 'jwt-decode';
 
-import slackApiStuff from "../../secretStuff/slackApiStuff";
-
-const clientId = slackApiStuff.clientId;
-const clientSecret = slackApiStuff.clientSecret;
-import dotenv from "dotenv";
-dotenv.config();
-
 /**
  * Set `__statics` path to static files in production;
  * The reason we are setting it here is that the path needs to be evaluated at runtime
@@ -22,7 +15,9 @@ if (process.env.PROD) {
 
 let mainWindow;
 let authCode;
+const protocol = isDev ? "overvuedev" : "overvue";
 
+// Used to console log for main process in production mode
 function logEverywhere(toBeLogged) {
   if (isDev) {
     console.log(toBeLogged);
@@ -36,69 +31,24 @@ function logEverywhere(toBeLogged) {
   }
 }
 
-const protocol = isDev ? "overvuedev" : "overvue";
 const deeplink = new Deeplink({
   app,
   mainWindow,
   protocol,
   isDev,
-  debugLogging: true,
-  electronPath: "../../node_modules/electron/dist/electron.exe"
+  debugLogging: true
 });
-// ipcMain.handle('slackAuth', slackAuth)
-
-// function customDeepLink() {
-//   let deeplinkingUrl;
-
-//   if (isDev && process.platform === 'win32') {
-//     // Set the path of electron.exe and your app.
-//     // These two additional parameters are only available on windows.
-//     // Setting this is required to get this working in dev mode.
-//     app.setAsDefaultProtocolClient('overvuedev', process.execPath, [
-//       resolve(process.argv[1])
-//     ]);
-//   } else {
-//     app.setAsDefaultProtocolClient('overvue');
-//   }
-
-//   app.on('open-url', function (event, url) {
-//     event.preventDefault();
-//     deeplinkingUrl = url;
-//   });
-
-//   // Force single application instance
-//   const gotTheLock = app.requestSingleInstanceLock();
-
-//   if (!gotTheLock) {
-//     app.quit();
-//     return;
-//   } else {
-//     app.on('second-instance', (e, argv) => {
-//       if (process.platform !== 'darwin') {
-//         // Find the arg that is our custom protocol url and store it
-//         deeplinkingUrl = argv.find((arg) => arg.startsWith('overvuedev://test'));
-//       }
-
-//       if (myWindow) {
-//         if (myWindow.isMinimized()) myWindow.restore();
-//         myWindow.focus();
-//       }
-//     })
-//   }
-// }
 
 function getSlackAuth() {
   logEverywhere("inside getSlackAuth");
-  // let chunkedTogether = ''
 
   const authData = {
-    client_id: clientId,
-    client_secret: clientSecret,
+    client_id: process.env.SLACK_CLIENT_ID,
+    client_secret: process.env.SLACK_CLIENT_SECRET,
     code: authCode,
     redirect_uri: isDev ? "overvuedev://test" : "overvue://slack"
   };
   logEverywhere(authData.code);
-  // https://slack.com/api/openid.connect.token?client_id=2696943977700.2696948669268&client_secret=6a6206cc93da2e49243ee9683f958438&code=2696943977700.2713919388452.23b787dec24adec68eeca105f6b7d6e517425de1033a1b6bc5ba3e116b933619&redirect_uri=overvue://slack
   const url =
     "https://slack.com/api/openid.connect.token?" +
     "client_id=" +
@@ -121,31 +71,16 @@ function getSlackAuth() {
   });
 
   request.on("response", response => {
-    logEverywhere(`STATUS: ${response.statusCode}`)
-    // logEverywhere(`HEADERS: ${JSON.stringify(response.headers)})`) //error
-    // let body;
-    logEverywhere("request.on response received");
-    // logEverywhere('SEND #1')
-    // mainWindow.webContents.send("tokenReceived", response);
-
-    // logEverywhere('STATUS: ', response.statusCode)
-    // logEverywhere(`HEADERS: ${JSON.stringify(response.headers)}`)
+    // logEverywhere("request.on response received");
     response.on("end", () => {
       logEverywhere("Response ended ");
     });
     response.on("data", data => {
-      // logEverywhere(`response.on datas CHUNK: ${chunk}`)
-      // logEverywhere("chunked");
-      // logEverywhere(`data.id_token: ${data.id_token}`);
-      // body = data;
       logEverywhere("res on data ");
       const decoded = JSON.parse(data.toString())
       decoded.id_token = jwt_decode(decoded.id_token)
-
-      // chunkedTogether += data
-
       // logEverywhere(data + ')'); //error
-      logEverywhere(`decoded: ${decoded}`)
+      logEverywhere(`decoded in response.on data: ${decoded}`)
       logEverywhere('SEND #2')
       mainWindow.webContents.send("tokenReceived", decoded);
     });
@@ -154,19 +89,19 @@ function getSlackAuth() {
 }
 
 function getSlackToken() {
+  logEverywhere(`process.env.SLACK_CLIENT_ID in electron-main:  ${process.env.SLACK_CLIENT_ID}`);
+  logEverywhere(`process.env.SLACK_CLIENT_SECRET in electron-main:  ${process.env.SLACK_CLIENT_SECRET}`);
   return deeplink.on("received", link => {
-    logEverywhere(`auth worked here link: ${link}`);
+    // logEverywhere(`auth worked here link: ${link}`);
     authCode = link.split("=")[1];
-    // authCode = link.split("=")[1].split(".")[2];
     getSlackAuth();
   });
 }
-// overvue://lkjasdgjkasdg-235235235.235235235.235235235235235235235235
 
 function createWindow() {
   /**
-   * Initial window options
-   */
+  * Initial window options
+  */
 
   mainWindow = new BrowserWindow({
     width: 1000,
@@ -178,7 +113,7 @@ function createWindow() {
     }
   });
 
-  logEverywhere(`current protocol ${deeplink.getProtocol()}`);
+  logEverywhere(`Current deeplink Protocol: ${deeplink.getProtocol()}`);
   mainWindow.loadURL(process.env.APP_URL);
 
   mainWindow.on("closed", () => {
@@ -189,7 +124,6 @@ function createWindow() {
 app.on("ready", () => {
   createWindow();
   getSlackToken();
-  logEverywhere(`process.env.CLIENT_ID:  ${process.env.CLIENT_ID}`);
 });
 
 app.on("window-all-closed", () => {
@@ -202,6 +136,5 @@ app.on("activate", () => {
   if (mainWindow === null) {
     createWindow();
     getSlackToken();
-    logEverywhere(`process.env:  ${process.env}`);
   }
 });
