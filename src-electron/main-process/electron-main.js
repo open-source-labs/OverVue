@@ -39,8 +39,10 @@ const deeplink = new Deeplink({
   debugLogging: true
 });
 
-function getSlackAuth() {
-  logEverywhere("inside getSlackAuth");
+// Sends request to Slack for User's information,
+// then sends user information back to renderer process
+function sendTokenRequest() {
+  logEverywhere("inside sendTokenRequest");
 
   const authData = {
     client_id: process.env.SLACK_CLIENT_ID,
@@ -49,6 +51,7 @@ function getSlackAuth() {
     redirect_uri: isDev ? "overvuedev://test" : "overvue://slack"
   };
   logEverywhere(authData.code);
+
   const url =
     "https://slack.com/api/openid.connect.token?" +
     "client_id=" +
@@ -60,41 +63,49 @@ function getSlackAuth() {
     "&grant_type=authorization_code" +
     "&redirect_uri=" +
     authData.redirect_uri;
-  logEverywhere(url);
+
+  logEverywhere(`Token Request URL: ${url}`);
+
+  // Send Post request for user information
   const request = net.request({
     method: "POST",
     url: url,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
-      // 'Content-Length': authData.length
     }
   });
 
+  // Listens for response from token request
   request.on("response", response => {
     // logEverywhere("request.on response received");
     response.on("end", () => {
       logEverywhere("Response ended ");
     });
     response.on("data", data => {
-      logEverywhere("res on data ");
+      // logEverywhere("response.on data ");
+      // decodes utf8 Buffer into JSON, then parses it
       const decoded = JSON.parse(data.toString())
+
+      // decodes JSON Web Token and places decoded JWT back into response data
       decoded.id_token = jwt_decode(decoded.id_token)
-      // logEverywhere(data + ')'); //error
-      logEverywhere(`decoded in response.on data: ${decoded}`)
-      logEverywhere('SEND #2')
+      // logEverywhere(`decoded in response.on data: ${decoded}`)
+      // send user information back to renderer process
       mainWindow.webContents.send("tokenReceived", decoded);
     });
   });
   request.end();
 }
 
-function getSlackToken() {
+// Turns on event listener for Slack Oauth deep linking back app
+// TODO: Deep linking currently doesn't work properly in dev mode - requires fix
+function setOauthListener() {
   logEverywhere(`process.env.SLACK_CLIENT_ID in electron-main:  ${process.env.SLACK_CLIENT_ID}`);
   logEverywhere(`process.env.SLACK_CLIENT_SECRET in electron-main:  ${process.env.SLACK_CLIENT_SECRET}`);
   return deeplink.on("received", link => {
-    // logEverywhere(`auth worked here link: ${link}`);
+    logEverywhere(`auth worked here link: ${link}`);
+    // Extracts Slack authorization code from deep link
     authCode = link.split("=")[1];
-    getSlackAuth();
+    sendTokenRequest();
   });
 }
 
@@ -123,7 +134,7 @@ function createWindow() {
 
 app.on("ready", () => {
   createWindow();
-  getSlackToken();
+  setOauthListener();
 });
 
 app.on("window-all-closed", () => {
@@ -135,6 +146,6 @@ app.on("window-all-closed", () => {
 app.on("activate", () => {
   if (mainWindow === null) {
     createWindow();
-    getSlackToken();
+    setOauthListener();
   }
 });
