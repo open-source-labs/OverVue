@@ -1,7 +1,7 @@
 
 const routes = [
   {
-    path: '/start',
+    path: '/',
     // redirect: ''
     component: () => import('components/slack_login/SlackLoginWindow.vue')
   },
@@ -11,7 +11,7 @@ const routes = [
     redirect: '/pow'
   },
   {
-    path: '/',
+    path: '/asdf',
     component: () => import('layouts/MyLayout.vue'),
     children: [
       { path: '', component: () => import('pages/Index.vue') }

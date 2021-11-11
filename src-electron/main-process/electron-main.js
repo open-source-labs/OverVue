@@ -95,7 +95,7 @@ function getSlackAuth() {
     code: authCode,
     redirect_uri: isDev ? "overvuedev://test" : "overvue://slack"
   };
-  logEverywhere(authData.code)
+  logEverywhere(authData.code);
   // https://slack.com/api/openid.connect.token?client_id=2696943977700.2696948669268&client_secret=6a6206cc93da2e49243ee9683f958438&code=2696943977700.2713919388452.23b787dec24adec68eeca105f6b7d6e517425de1033a1b6bc5ba3e116b933619&redirect_uri=overvue://slack
   const url =
     "https://slack.com/api/openid.connect.token?" +
@@ -105,6 +105,7 @@ function getSlackAuth() {
     authData.client_secret +
     "&code=" +
     authData.code +
+    "&grant_type=authorization_key" +
     "&redirect_uri=" +
     authData.redirect_uri;
   logEverywhere(url);
@@ -140,8 +141,8 @@ function getSlackAuth() {
 function getSlackToken() {
   return deeplink.on("received", link => {
     logEverywhere(`auth worked here link: ${link}`);
-    authCode = link.split("=")[1];
-    // authCode = link.split("=")[1].split(".")[2];
+    // authCode = link.split("=")[1];
+    authCode = link.split("=")[1].split(".")[2];
     getSlackAuth();
   });
 }
