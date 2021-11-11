@@ -1,6 +1,16 @@
 
 const routes = [
   {
+    path: '/vgnfd',
+    // redirect: ''
+    component: () => import('components/slack_login/SlackLoginWindow.vue')
+  },
+  {
+    path: '/slacklogin',
+    // redirect: ''
+    redirect: '/pow'
+  },
+  {
     path: '/',
     component: () => import('layouts/MyLayout.vue'),
     children: [

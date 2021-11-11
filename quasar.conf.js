@@ -2,6 +2,7 @@
 // https://quasar.dev/quasar-cli/quasar-conf-js
 
 module.exports = function (ctx) {
+  console.log('webpack\'s context parameter: ', ctx)
   return {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
@@ -158,7 +159,7 @@ module.exports = function (ctx) {
     },
 
     electron: {
-      bundler: 'builder',
+      bundler: 'packager',
       // bundler: 'builder', // or 'packager'
 
       extendWebpack (cfg) {
@@ -170,10 +171,10 @@ module.exports = function (ctx) {
         // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
 
         // OS X / Mac App Store
-        // appBundleId: '',
+        appBundleId: 'overvue',
         // appCategoryType: '',
         // osxSign: '',
-        // protocol: 'myapp://path',
+        protocol: 'overvue'
 
         // Windows only
         // win32metadata: { ... }
@@ -185,7 +186,13 @@ module.exports = function (ctx) {
         appId: 'com.electron.OverVue',
         win: {
           target: 'nsis'
-        }
+        },
+        protocols: [
+          {
+            name: 'overvue',
+            schemes: ['overvue']
+          }
+        ]
       }
     }
   }

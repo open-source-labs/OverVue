@@ -120,6 +120,7 @@ import ExportProjectComponent from '../components/file_system_interface/ExportPr
 import SaveProjectComponent from '../components/file_system_interface/SaveProjectComponent.vue'
 import OpenProjectComponent from '../components/file_system_interface/OpenProjectComponent.vue'
 import UploadImage from '../components/home_sidebar_items/UploadImage.vue'
+import SlackLoginWindow from '../components/slack_login/SlackLoginWindow.vue'
 import RouteDisplay from '../components/home_sidebar_items/RouteDisplay.vue'
 import EditDeleteComponents from '../components/home_sidebar_items/ComponentTab/EditDeleteComponents.vue'
 import VuexForm from '../components/home_sidebar_items/VuexForm.vue'
@@ -144,6 +145,7 @@ export default {
     SaveProjectComponent,
     OpenProjectComponent,
     UploadImage,
+    SlackLoginWindow,
     ComponentTab,
   },
   methods: {
