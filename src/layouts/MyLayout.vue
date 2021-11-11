@@ -145,7 +145,7 @@ export default {
     SaveProjectComponent,
     OpenProjectComponent,
     UploadImage,
-    SlackLoginWindow
+    SlackLoginWindow,
     ComponentTab,
   },
   methods: {
