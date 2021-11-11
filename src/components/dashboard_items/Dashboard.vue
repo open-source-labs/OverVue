@@ -5,15 +5,11 @@ Description:
   As of now, no default tab selected when not selecting anything, but might change to Project Tree in the future if we want
   -->
 
-  <template>
-  <q-footer reveal class="gradient text-white" :style="{ height: `${height}vh` }" v-on:click="handleHtmlDeselection">
-    <q-toolbar class="toolbar-background">
-      <q-btn flat color="subaccent" round @click="openBottomDrawer">
-        <i :class="[open ? down : up]" id="btn"></i>
-      </q-btn>
-      <q-toolbar-title>Dashboard</q-toolbar-title>
-    </q-toolbar>
-    <q-card id="dashboard-cards">
+<template>
+
+  <div class="home-sidebar drawer-menu">
+
+    <q-card id="dashboard-cards" style="fill">
       <q-tabs
         v-model="tab"
         dense
@@ -22,30 +18,31 @@ Description:
         indicator-color="secondary"
         align="left"
       >
-        <q-tab name="detail" label="Component Details" id="label-text" />
-        <q-tab name="tree" label="Project Tree" id="label-text" />
-        <q-tab name="store" label="Vuex Store" id="label-text" />
+        <q-tab name="detail" id="label-text"><i class="fas fa-code"></i></q-tab>
+        <q-tab name="tree" id="label-text"><i class="fas fa-code-branch fa-flip-vertical" /></q-tab>
+        <q-tab name="store" id="label-text" ><i class="fas fa-store-alt"></i></q-tab>
       </q-tabs>
-      <q-tab-panels v-model="tab" animated class="html-bg text-white" >
+      <q-tab-panels v-model="tab" animated class="html-bg text-white ">
         <q-tab-panel name="detail">
-          <ComponentDetails/>
+          <ComponentDetails />
         </q-tab-panel>
-        <q-tab-panel name="tree">
+        <q-tab-panel name="tree" >
           <Tree />
         </q-tab-panel>
         <q-tab-panel name="store">
-          <VuexStore/>
+          <VuexStore />
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
-  </q-footer>
+     </div>
+
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import Tree from './Tree'
-import VuexStore from './DashboardVuexStore.vue'
-import ComponentDetails from './ComponentDetails'
+import { mapState, mapActions } from "vuex";
+import Tree from "./Tree";
+import VuexStore from "./DashboardVuexStore.vue";
+import ComponentDetails from "./ComponentDetails";
 
 export default {
   components: {
@@ -54,34 +51,39 @@ export default {
     ComponentDetails
   },
   computed: {
-    ...mapState(['activeComponent', 'componentNameInputValue', 'selectedElementList', 'activeHTML'])
+    ...mapState([
+      "activeComponent",
+      "componentNameInputValue",
+      "selectedElementList",
+      "activeHTML"
+    ])
   },
-  data () {
+  data() {
     return {
-      tab: 'code',
+      tab: "code",
       open: true,
       height: 40,
-      up: 'fas fa-chevron-up',
-      down: 'fas fa-chevron-down'
-    }
+      up: "fas fa-chevron-up",
+      down: "fas fa-chevron-down"
+    };
   },
   methods: {
-    ...mapActions(['setActiveHTML']),
+    ...mapActions(["setActiveHTML"]),
     // toggles open/close action of dashboard drawer
-    openBottomDrawer () {
+    openBottomDrawer() {
       // 15in mb pro - 1027 px 3.75
       // big screens 2.5
       let minHeight =
-        window.outerHeight < 900 ? 4.5 : window.outerHeight < 1035 ? 3.75 : 2.5
-      this.height === 40 ? (this.height = minHeight) : (this.height = 40)
-      this.open === true ? (this.open = false) : (this.open = true)
+        window.outerHeight < 900 ? 4.5 : window.outerHeight < 1035 ? 3.75 : 2.5;
+      this.height === 40 ? (this.height = minHeight) : (this.height = 40);
+      this.open === true ? (this.open = false) : (this.open = true);
     },
     // function that will handle deselection from active HTML element
-    handleHtmlDeselection (event) {
+    handleHtmlDeselection(event) {
       // console.log('target html element: ', event.target)
-      if (event.target.className !== 'list-group-item') {
+      if (event.target.className !== "list-group-item") {
         // if html element classname is not equal to this string that all html elements have
-        if (!(this.activeHTML === '')) this.setActiveHTML(['']) // if activeHtml is not already deselected, do so
+        if (!(this.activeHTML === "")) this.setActiveHTML([""]); // if activeHtml is not already deselected, do so
       }
     }
   },
@@ -97,26 +99,37 @@ export default {
     // },
     // otherwise toggle dashboard to 'Project Tree' tab if no component is selected or the
     // user is in the process of creating a component
-    componentNameInputValue: function () {
-      if (this.componentNameInputValue !== '' && this.activeComponent === '') {
-        this.tab = 'tree'
+    componentNameInputValue: function() {
+      if (this.componentNameInputValue !== "" && this.activeComponent === "") {
+        this.tab = "tree";
       }
     },
     // // toggles dashboard to "Project Tree" tab if:
     // // no component is selected and either:
     // // elements are being added to component or name is being typed
-    selectedElementList: function () {
-      if (this.activeComponent === '' && this.selectedElementList.length !== 0) {
-        this.tab = 'tree'
+    selectedElementList: function() {
+      if (
+        this.activeComponent === "" &&
+        this.selectedElementList.length !== 0
+      ) {
+        this.tab = "tree";
       }
     }
   }
-}
+};
 </script>
 
 <style lang="stylus" scoped>
 i {
   font-size: 11px;
+}
+
+.home-sidebar {
+  margin: 1rem;
+  justify-content: center;
+  border-radius: 5px;
+  padding: 0px;
+  background: $subsecondary;
 }
 
 .q-btn {
@@ -125,17 +138,17 @@ i {
 }
 
 // styling for the entire dashboard
-.q-footer {
-  transition-timing-function: ease-in;
-  transition: 0.2s;
-  background: $subsecondary;
-}
+// .q-footer {
+//   transition-timing-function: ease-in;
+//   transition: 0.2s;
+//   background: $subsecondary;
+// }
 
-// changes the dashboard toolbar height
-.q-toolbar {
-  min-height: 25px !important;
-  padding: 0 6px !important;
-}
+// // changes the dashboard toolbar height
+// .q-toolbar {
+//   min-height: 25px !important;
+//   padding: 0 6px !important;
+// }
 
 .q-toolbar__title {
   font-size: 14px;
@@ -164,7 +177,7 @@ i {
 
 // changes the length of the tab panels
 .q-tab-panels {
-  height: 90%;
+  height: 87vh;
   padding: 0px !important;
 }
 
@@ -177,7 +190,7 @@ i {
 }
 
 #dashboard-cards {
-  height: 100%;
+  height: 80%;
   border-radius: 0px;
   background: #737578;
 }
