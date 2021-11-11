@@ -1,6 +1,7 @@
 import { app, BrowserWindow, net, shell, ipcMain } from "electron";
 import { Deeplink } from "electron-deeplink";
 import isDev from "electron-is-dev";
+import jwt_decode from 'jwt-decode';
 
 import slackApiStuff from "../../secretStuff/slackApiStuff";
 
@@ -88,6 +89,7 @@ const deeplink = new Deeplink({
 
 function getSlackAuth() {
   logEverywhere("inside getSlackAuth");
+  // let chunkedTogether = ''
 
   const authData = {
     client_id: clientId,
@@ -105,7 +107,7 @@ function getSlackAuth() {
     authData.client_secret +
     "&code=" +
     authData.code +
-    "&grant_type=authorization_key" +
+    "&grant_type=authorization_code" +
     "&redirect_uri=" +
     authData.redirect_uri;
   logEverywhere(url);
@@ -119,20 +121,33 @@ function getSlackAuth() {
   });
 
   request.on("response", response => {
-    let body;
-    logEverywhere("RESPONSE RECEIVED SON");
-    mainWindow.webContents.send("tokenReceived", response);
+    logEverywhere(`STATUS: ${response.statusCode}`)
+    // logEverywhere(`HEADERS: ${JSON.stringify(response.headers)})`) //error
+    // let body;
+    logEverywhere("request.on response received");
+    // logEverywhere('SEND #1')
+    // mainWindow.webContents.send("tokenReceived", response);
+
     // logEverywhere('STATUS: ', response.statusCode)
     // logEverywhere(`HEADERS: ${JSON.stringify(response.headers)}`)
-    response.on("data", data => {
-      // logEverywhere(`response.on datas CHUNK: ${chunk}`)
-      logEverywhere("chunked");
-      logEverywhere(data);
-      body = data;
-    });
     response.on("end", () => {
       logEverywhere("Response ended ");
-      mainWindow.webContents.send("tokenReceived", body);
+    });
+    response.on("data", data => {
+      // logEverywhere(`response.on datas CHUNK: ${chunk}`)
+      // logEverywhere("chunked");
+      // logEverywhere(`data.id_token: ${data.id_token}`);
+      // body = data;
+      logEverywhere("res on data ");
+      const decoded = JSON.parse(data.toString())
+      decoded.id_token = jwt_decode(decoded.id_token)
+
+      // chunkedTogether += data
+
+      // logEverywhere(data + ')'); //error
+      logEverywhere(`decoded: ${decoded}`)
+      logEverywhere('SEND #2')
+      mainWindow.webContents.send("tokenReceived", decoded);
     });
   });
   request.end();
@@ -141,11 +156,12 @@ function getSlackAuth() {
 function getSlackToken() {
   return deeplink.on("received", link => {
     logEverywhere(`auth worked here link: ${link}`);
-    // authCode = link.split("=")[1];
-    authCode = link.split("=")[1].split(".")[2];
+    authCode = link.split("=")[1];
+    // authCode = link.split("=")[1].split(".")[2];
     getSlackAuth();
   });
 }
+// overvue://lkjasdgjkasdg-235235235.235235235.235235235235235235235235
 
 function createWindow() {
   /**

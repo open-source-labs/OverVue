@@ -19,6 +19,7 @@ Description:
         <q-toolbar-title>
           OverVue
         </q-toolbar-title>
+        <SlackLoginWindow />
         <div>
           <i
             v-if="this.$router.app.$children[0].doneAction.length"
@@ -58,7 +59,6 @@ Description:
         </q-btn>
       </q-toolbar>
     </q-header>
-    
     <q-drawer v-model="left" side="left" behavior="desktop" bordered>
       <!-- Original code for a drawer and list style -->
       <!-- <q-list class="q-list-drawer">
@@ -107,7 +107,6 @@ Description:
     <q-page-container>
       <router-view />
     </q-page-container>
-    <!-- <Dashboard /> -->
   </q-layout>
 </template>
 
