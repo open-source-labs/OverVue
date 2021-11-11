@@ -86,7 +86,7 @@ Description:
       </q-tab-panel>
       <!-- store will display store elements -->
       <q-tab-panel name="store">
-        <Vuex-Form />
+        <StoreTab/>
       </q-tab-panel>
       </q-tab-panels>
     </q-drawer>
@@ -115,16 +115,17 @@ Description:
 // HomeSideDropDown contains RouteDisplay, VuexForm and Edit but we'll be separating these components across different tabs
 // import HomeSideDropDown from '../components/home_sidebar_items/HomeSideDropDown.vue'
 import Dashboard from '../components/dashboard_items/Dashboard.vue'
-import CreateComponent from '../components/home_sidebar_items/ComponentTab/CreateComponent.vue'
+// import CreateComponent from '../components/home_sidebar_items/ComponentTab/CreateComponent.vue'
 import ExportProjectComponent from '../components/file_system_interface/ExportProject.vue'
 import SaveProjectComponent from '../components/file_system_interface/SaveProjectComponent.vue'
 import OpenProjectComponent from '../components/file_system_interface/OpenProjectComponent.vue'
 import UploadImage from '../components/home_sidebar_items/UploadImage.vue'
 import SlackLoginWindow from '../components/slack_login/SlackLoginWindow.vue'
 import RouteDisplay from '../components/home_sidebar_items/RouteDisplay.vue'
-import EditDeleteComponents from '../components/home_sidebar_items/ComponentTab/EditDeleteComponents.vue'
+// import EditDeleteComponents from '../components/home_sidebar_items/ComponentTab/EditDeleteComponents.vue'
 import VuexForm from '../components/home_sidebar_items/VuexForm.vue'
 import ComponentTab from '../components/home_sidebar_items/ComponentTab/ComponentTab.vue'
+import StoreTab from '../components/home_sidebar_items/StoreTab/StoreTab.vue'
 
 export default {
   data() {
@@ -137,16 +138,17 @@ export default {
   components: {
     // HomeSideDropDown,
     RouteDisplay,
-    EditDeleteComponents,
+    // EditDeleteComponents,
     VuexForm,
     Dashboard,
-    CreateComponent,
+    // CreateComponent,
     ExportProjectComponent,
     SaveProjectComponent,
     OpenProjectComponent,
     UploadImage,
     SlackLoginWindow,
     ComponentTab,
+    StoreTab,
   },
   methods: {
     undo() {
@@ -225,5 +227,5 @@ export default {
   padding 0 !important 
 
 .q-tab-panels
-  // height 80 vh
+  height 90 vh
 </style>

@@ -57,6 +57,8 @@ export const UPDATE_COMPONENT_POSITION = 'UPDATE_COMPONENT_POSITION'
 export const UPDATE_COMPONENT_LAYER = 'UPDATE_COMPONENT_LAYER'
 export const UPDATE_COMPONENT_SIZE = 'UPDATE_COMPONENT_SIZE'
 export const UPDATE_OPEN_MODAL = 'UPDATE_OPEN_MODAL'
+export const DELETE_USER_ACTIONS = 'DELETE_USER_ACTIONS'
+export const DELETE_USER_STATE = 'DELETE_USER_STATE'
 
 // Actions
 export const addActionSelected = 'addActionSelected'
@@ -113,11 +115,12 @@ export const updateComponentSize = 'updateComponentSize'
 export const updateOpenModal = 'updateOpenModal'
 export const updateStartingPosition = 'updateStartingPosition'
 export const updateStartingSize = 'updateStartingSize'
+export const deleteUserActions = 'deleteUserActions'
+export const deleteUserState = 'deleteUserState'
 
 // inactive mutations
 // export const SET_STATE = 'SET_STATE'
 // export const DELETE_COMPONENT = 'DELETE_COMPONENT'
-// export const DELETE_USER_ACTIONS = 'DELETE_USER_ACTIONS'
 // export const REMOVE_ACTION_FROM_COMPONENT = 'REMOVE_ACTION_FROM_COMPONENT'
 // export const ADD_TO_COMPONENT_ACTIONS = 'ADD_TO_COMPONENT_ACTIONS'
 // export const ADD_TO_COMPONENT_STATE = 'ADD_TO_COMPONENT_STATE'
@@ -128,9 +131,8 @@ export const updateStartingSize = 'updateStartingSize'
 
 // // inactive actions
 // export const setState = 'setState'
-// export const deleteUserActions = 'deleteUserActions'
 // export const removeActionFromComponent = 'removeActionFromComponent'
 // export const addUserAction = 'addUserAction'
 // export const addToUserStore = 'addToUserStore'
 // export const removeStateFromComponent = 'removeStateFromComponent'
-// export const deleteUserState = 'deleteUserState'
+
