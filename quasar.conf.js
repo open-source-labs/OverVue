@@ -1,17 +1,14 @@
 // Configuration for your app
 // https://quasar.dev/quasar-cli/quasar-conf-js
 
-module.exports = function (ctx) {
-  const env = require('quasar-dotenv').config()
+module.exports = function(ctx) {
+  const env = require("quasar-dotenv").config();
   return {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
-    boot: [
-    ],
+    boot: [],
 
-    css: [
-      'app.styl'
-    ],
+    css: ["app.styl"],
 
     extras: [
       // 'ionicons-v4',
@@ -21,8 +18,8 @@ module.exports = function (ctx) {
       // 'themify',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
 
-      'roboto-font', // optional, you are not bound to it
-      'material-icons' // optional, you are not bound to it
+      "roboto-font", // optional, you are not bound to it
+      "material-icons" // optional, you are not bound to it
     ],
 
     framework: {
@@ -32,49 +29,44 @@ module.exports = function (ctx) {
       // all: true, // --- includes everything; for dev only!
 
       components: [
-        'QLayout',
-        'QHeader',
-        'QDrawer',
-        'QPageContainer',
-        'QPage',
-        'QToolbar',
-        'QToolbarTitle',
-        'QBtn',
-        'QIcon',
-        'QList',
-        'QItem',
-        'QItemSection',
-        'QItemLabel',
-        'QExpansionItem',
-        'QInput',
-        'QBar',
-        'QFooter',
-        'QAvatar',
-        'QTabs',
-        'QTab',
-        'QRouteTab',
-        'QTabPanels',
-        'QDialog',
-        'QSelect',
-        'QTabPanel',
-        'QFab',
-        'QFabAction',
-        'QMenu',
-        'QUploader',
-        'QEditor',
-        'QCard',
-        'QChip'
+        "QLayout",
+        "QHeader",
+        "QDrawer",
+        "QPageContainer",
+        "QPage",
+        "QToolbar",
+        "QToolbarTitle",
+        "QBtn",
+        "QIcon",
+        "QList",
+        "QItem",
+        "QItemSection",
+        "QItemLabel",
+        "QExpansionItem",
+        "QInput",
+        "QBar",
+        "QFooter",
+        "QAvatar",
+        "QTabs",
+        "QTab",
+        "QRouteTab",
+        "QTabPanels",
+        "QDialog",
+        "QSelect",
+        "QTabPanel",
+        "QFab",
+        "QFabAction",
+        "QMenu",
+        "QUploader",
+        "QEditor",
+        "QCard",
+        "QChip"
       ],
 
-      directives: [
-        'Ripple',
-        'ClosePopup'
-      ],
+      directives: ["Ripple", "ClosePopup"],
 
       // Quasar plugins
-      plugins: [
-        'Notify'
-      ]
+      plugins: ["Notify"]
     },
 
     supportIE: false,
@@ -86,7 +78,7 @@ module.exports = function (ctx) {
       // gzip: true,
       // analyze: true,
       // extractCSS: false,
-      extendWebpack (cfg) {
+      extendWebpack(cfg) {
         // cfg.module.rules.push({
         //   enforce: 'pre',
         //   test: /\.(js|vue)$/,
@@ -97,13 +89,16 @@ module.exports = function (ctx) {
         //   }
         // })
       },
-      env: env,
+      env: env
     },
 
     devServer: {
-      // https: true,
+      https: true,
       // port: 8080,
+      // public: 'overvuedev',
+      // host: 'overvuedev',
       open: true // opens browser window automatically
+
     },
 
     // animations: 'all', // --- includes all animations
@@ -120,35 +115,35 @@ module.exports = function (ctx) {
         // name: 'Quasar App',
         // short_name: 'Quasar App',
         // description: 'A Quasar Framework app',
-        display: 'standalone',
-        orientation: 'portrait',
-        background_color: '#ffffff',
-        theme_color: '#027be3',
+        display: "standalone",
+        orientation: "portrait",
+        background_color: "#ffffff",
+        theme_color: "#027be3",
         icons: [
           {
-            'src': 'statics/icons/icon-128x128.png',
-            'sizes': '128x128',
-            'type': 'image/png'
+            src: "statics/icons/icon-128x128.png",
+            sizes: "128x128",
+            type: "image/png"
           },
           {
-            'src': 'statics/icons/icon-192x192.png',
-            'sizes': '192x192',
-            'type': 'image/png'
+            src: "statics/icons/icon-192x192.png",
+            sizes: "192x192",
+            type: "image/png"
           },
           {
-            'src': 'statics/icons/icon-256x256.png',
-            'sizes': '256x256',
-            'type': 'image/png'
+            src: "statics/icons/icon-256x256.png",
+            sizes: "256x256",
+            type: "image/png"
           },
           {
-            'src': 'statics/icons/icon-384x384.png',
-            'sizes': '384x384',
-            'type': 'image/png'
+            src: "statics/icons/icon-384x384.png",
+            sizes: "384x384",
+            type: "image/png"
           },
           {
-            'src': 'statics/icons/icon-512x512.png',
-            'sizes': '512x512',
-            'type': 'image/png'
+            src: "statics/icons/icon-512x512.png",
+            sizes: "512x512",
+            type: "image/png"
           }
         ]
       }
@@ -160,10 +155,10 @@ module.exports = function (ctx) {
     },
 
     electron: {
-      bundler: 'packager',
+      bundler: "packager",
       // bundler: 'builder', // or 'packager'
 
-      extendWebpack (cfg) {
+      extendWebpack(cfg) {
         // do something with Electron main process Webpack cfg
         // chainWebpack also available besides this extendWebpack
       },
@@ -172,10 +167,10 @@ module.exports = function (ctx) {
         // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
 
         // OS X / Mac App Store
-        appBundleId: 'overvue',
+        appBundleId: "overvue",
         // appCategoryType: '',
         // osxSign: '',
-        protocol: 'overvue'
+        protocol: "overvue"
 
         // Windows only
         // win32metadata: { ... }
@@ -184,17 +179,17 @@ module.exports = function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'com.electron.OverVue',
+        appId: "com.electron.OverVue",
         win: {
-          target: 'nsis'
+          target: "nsis"
         },
         protocols: [
           {
-            name: 'overvue',
-            schemes: ['overvue']
+            name: "overvue",
+            schemes: ["overvue"]
           }
         ]
       }
     }
-  }
-}
+  };
+};

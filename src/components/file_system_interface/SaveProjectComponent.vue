@@ -17,8 +17,6 @@ const { remote } = require('electron')
 const Mousetrap = require('mousetrap')
 
 // might not be optimal to import like this, since entire slackApiStuff object is imported while only one of its properties is used
-import slackApiStuff from '../../../secretStuff/slackApiStuff.js'
-const slackWebhookURL = slackApiStuff.slackWebhookURL
 
 export default {
   name: 'SaveProjetComponent',
@@ -122,6 +120,8 @@ export default {
     // creates a popup dialog box, where if you click on yes, it will send a message to our test Slack workspace
     // still must refactor to dynamically work with user's Slack
     notifySlack () {
+      const slackWebhookURL = process.env.SLACK_WEBHOOK_URL
+      console.log(slackWebhookURL)
       remote.dialog.showMessageBox({
         title: 'Notify Slack?',
         message: 'Save successful. Would you like to notify your team on Slack?',

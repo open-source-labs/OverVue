@@ -36,9 +36,10 @@ const deeplink = new Deeplink({
   mainWindow,
   protocol,
   isDev,
-  debugLogging: true
+  debugLogging: true,
+  // electronPath: '../../node_modules/electron/dist/electron.app'
 });
-
+// logEverywhere(`electron path:  ${require('path').join(__dirname, '../../node_modules/electron/dist/electron.exe')}`);
 // Sends request to Slack for User's information,
 // then sends user information back to renderer process
 function sendTokenRequest() {
@@ -101,6 +102,7 @@ function sendTokenRequest() {
 function setOauthListener() {
   logEverywhere(`process.env.SLACK_CLIENT_ID in electron-main:  ${process.env.SLACK_CLIENT_ID}`);
   logEverywhere(`process.env.SLACK_CLIENT_SECRET in electron-main:  ${process.env.SLACK_CLIENT_SECRET}`);
+
   return deeplink.on("received", link => {
     logEverywhere(`auth worked here link: ${link}`);
     // Extracts Slack authorization code from deep link
