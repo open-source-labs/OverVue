@@ -162,6 +162,19 @@ const actions = {
   [types.deleteStateFromComponent]: ({ commit }, payload) => {
     commit(types.DELETE_STATE_FROM_COMPONENT, payload)
   },
+  // Delete user actions from vuex store
+  [types.deleteUserActions]: ({ state, commit }, payload) => {
+    commit(types.DELETE_USER_ACTIONS, payload)
+  },
+  [types.deleteUserState]: ({ state, commit }, payload) => {
+    
+    // loops through component map and deletes all props
+    // Object.keys(state.componentMap).forEach(prop => {
+    //   commit(types.SET_ACTIVE_COMPONENT, prop.componentName)
+    //   commit(types.REMOVE_ACTION_FROM_COMPONENT, payload)
+    // })
+    commit(types.DELETE_USER_STATE, payload)
+  },
   // End of Vuex Actions section //////////////////////////////////////////
 
   // Action primarily for edit functionality////////////////////////////////////////
@@ -238,7 +251,7 @@ const actions = {
     commit(types.SET_IMAGE_PATH, payload.imagePath)
     commit(types.SET_COMPONENT_MAP, payload.componentMap)
     commit(types.SET_ROUTES, payload.routes)
-  }
+  },
 
   // end of loading///////////////////////////////////////////////////
 }
