@@ -13,11 +13,6 @@ if (process.env.PROD) {
     .replace(/\\/g, "\\\\");
 }
 
-let mainWindow;
-let authCode;
-const protocol = isDev ? "overvuedev" : "overvue";
-
-// Used to console log for main process in production mode
 function logEverywhere(toBeLogged) {
   if (isDev) {
     console.log(toBeLogged);
@@ -31,13 +26,19 @@ function logEverywhere(toBeLogged) {
   }
 }
 
+let mainWindow;
+let authCode;
+const protocol = isDev ? "overvuedev" : "overvue";
+
+// Used to console log for main process in production mode
+
 const deeplink = new Deeplink({
   app,
   mainWindow,
   protocol,
   isDev,
   debugLogging: true,
-  // electronPath: '../../node_modules/electron/dist/electron.app'
+  electronPath: '/node_modules/electron/dist/electron.exe'
 });
 // logEverywhere(`electron path:  ${require('path').join(__dirname, '../../node_modules/electron/dist/electron.exe')}`);
 // Sends request to Slack for User's information,
@@ -49,7 +50,7 @@ function sendTokenRequest() {
     client_id: process.env.SLACK_CLIENT_ID,
     client_secret: process.env.SLACK_CLIENT_SECRET,
     code: authCode,
-    redirect_uri: isDev ? "overvuedev://test" : "overvue://slack"
+    redirect_uri: process.env.SLACK_REDIRECT_URI
   };
   logEverywhere(authData.code);
 
@@ -127,6 +128,7 @@ function createWindow() {
   });
 
   logEverywhere(`Current deeplink Protocol: ${deeplink.getProtocol()}`);
+  logEverywhere(`process.execPath: ${process.execPath}`);
   mainWindow.loadURL(process.env.APP_URL);
 
   mainWindow.on("closed", () => {

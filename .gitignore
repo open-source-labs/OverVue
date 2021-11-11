@@ -1,6 +1,7 @@
 #secret Api keys, Webhook URLs etc
 slackApiStuff.js
 .env
+.env.development
 #
 .quasar
 .DS_Store

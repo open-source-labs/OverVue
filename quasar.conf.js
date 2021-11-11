@@ -2,7 +2,11 @@
 // https://quasar.dev/quasar-cli/quasar-conf-js
 
 module.exports = function(ctx) {
-  const env = require("quasar-dotenv").config();
+  const env = ctx.dev
+    ? require("quasar-dotenv").config({ path: '.env.development' })
+    : require("quasar-dotenv").config()
+
+  // console.log('ctx: ', ctx)
   return {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
@@ -89,7 +93,7 @@ module.exports = function(ctx) {
         //   }
         // })
       },
-      env: env
+      env: env,
     },
 
     devServer: {

@@ -52,6 +52,7 @@ export default {
     ipcRenderer.on('tokenReceived', (event, data) => {
       console.log('data in SlackLoginWindow: ', data)
     })
+    console.log(`process.env: ${process.env}`)
   },
   methods: {
     slackOauth: function () {
@@ -59,7 +60,7 @@ export default {
       const responseType = 'code'
       const scope = 'openid profile'
       const clientId = process.env.SLACK_CLIENT_ID
-      const redirectUri = process.env.DEV ? 'overvuedev://test' : 'overvue://slack'
+      const redirectUri = process.env.SLACK_REDIRECT_URI
 
       this.isAuthenticating = true;
 
