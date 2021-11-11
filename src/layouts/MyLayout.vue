@@ -58,7 +58,7 @@ Description:
         </q-btn>
       </q-toolbar>
     </q-header>
-    
+
     <q-drawer v-model="left" side="left" behavior="desktop" bordered>
       <!-- Original code for a drawer and list style -->
       <!-- <q-list class="q-list-drawer">
@@ -75,23 +75,26 @@ Description:
         active-color="secondary"
         indicator-color="secondary"
       >
-        <q-tab name="component" ><i class="fas fa-edit"></i></q-tab>
-        <q-tab name="store" ><i class="fas fa-store-alt"></i></q-tab>
+        <q-tab name="component"><i class="fas fa-edit"></i></q-tab>
+        <q-tab name="store"><i class="fas fa-store-alt"></i></q-tab>
       </q-tabs>
       <!-- individual tab panel's setup -->
-      <q-tab-panels v-model="tab" animated class="html-bg text-white" >
-      <!--component tab will have creator and editor components -->
-      <q-tab-panel name="component">
-        <ComponentTab/>
-      </q-tab-panel>
-      <!-- store will display store elements -->
-      <q-tab-panel name="store">
-        <Vuex-Form />
-      </q-tab-panel>
+      <q-tab-panels v-model="tab" animated class="html-bg text-white fit">
+        <!--component tab will have creator and editor components -->
+        <q-tab-panel name="component" class="left-panel fit">
+          <ComponentTab />
+        </q-tab-panel>
+        <!-- store will display store elements -->
+        <q-tab-panel name="store" class="left-panel fit">
+          <Vuex-Form />
+        </q-tab-panel>
       </q-tab-panels>
+     
     </q-drawer>
+  
     <!-- rendering dashboard as right sidebar instead of as a footer -->
-    <q-drawer right-side
+    <q-drawer
+      right-side
       show-if-above
       v-model="right"
       side="right"
@@ -114,21 +117,21 @@ Description:
 <script>
 // HomeSideDropDown contains RouteDisplay, VuexForm and Edit but we'll be separating these components across different tabs
 // import HomeSideDropDown from '../components/home_sidebar_items/HomeSideDropDown.vue'
-import Dashboard from '../components/dashboard_items/Dashboard.vue'
-import CreateComponent from '../components/home_sidebar_items/ComponentTab/CreateComponent.vue'
-import ExportProjectComponent from '../components/file_system_interface/ExportProject.vue'
-import SaveProjectComponent from '../components/file_system_interface/SaveProjectComponent.vue'
-import OpenProjectComponent from '../components/file_system_interface/OpenProjectComponent.vue'
-import UploadImage from '../components/home_sidebar_items/UploadImage.vue'
-import RouteDisplay from '../components/home_sidebar_items/RouteDisplay.vue'
-import EditDeleteComponents from '../components/home_sidebar_items/ComponentTab/EditDeleteComponents.vue'
-import VuexForm from '../components/home_sidebar_items/VuexForm.vue'
-import ComponentTab from '../components/home_sidebar_items/ComponentTab/ComponentTab.vue'
+import Dashboard from "../components/dashboard_items/Dashboard.vue";
+import CreateComponent from "../components/home_sidebar_items/ComponentTab/CreateComponent.vue";
+import ExportProjectComponent from "../components/file_system_interface/ExportProject.vue";
+import SaveProjectComponent from "../components/file_system_interface/SaveProjectComponent.vue";
+import OpenProjectComponent from "../components/file_system_interface/OpenProjectComponent.vue";
+import UploadImage from "../components/home_sidebar_items/UploadImage.vue";
+import RouteDisplay from "../components/home_sidebar_items/RouteDisplay.vue";
+import EditDeleteComponents from "../components/home_sidebar_items/ComponentTab/EditDeleteComponents.vue";
+import VuexForm from "../components/home_sidebar_items/VuexForm.vue";
+import ComponentTab from "../components/home_sidebar_items/ComponentTab/ComponentTab.vue";
 
 export default {
   data() {
     return {
-      tab: 'component',
+      tab: "component",
       left: true,
       right: true
     };
@@ -144,7 +147,7 @@ export default {
     SaveProjectComponent,
     OpenProjectComponent,
     UploadImage,
-    ComponentTab,
+    ComponentTab
   },
   methods: {
     undo() {
@@ -205,13 +208,14 @@ export default {
 
 // css styling for the drawer list (not entire bg)
 .q-list-drawer {
-  height: 80%;
+  height: 100%;
   box-shadow: none;
 }
 
 // css styling for entire drawer
 .q-drawer {
   background: $subprimary;
+
 }
 
 // give html background color of grey
@@ -219,9 +223,31 @@ export default {
   background-color: #202122;
 }
 
-.q-tab-panel
-  padding 0 !important 
+.left-panel {
+  padding 0 !important
+  height: 100%
+}
 
-.q-tab-panels
-  // height 80 vh
+.q-tab-panels {
+  height: 100%
+}
+
+.q-panel {
+  height: 100%
+}
+
+.q-tab-panel  {
+  height: 100%
+
+}
+
+.left-panels {
+  height: 100%
+
+  }
+
+.scroll {
+overflow: hidden
+}
+
 </style>

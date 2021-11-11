@@ -6,7 +6,8 @@ Description:
   -->
 
 <template>
-  <div class="home-sidebar drawer-menu">
+  <div class="inner-div">
+    <div class="border-panel fit">
     <q-tabs
       v-model="tab"
       dense
@@ -17,8 +18,9 @@ Description:
       <q-tab name="details" label="details"/>
       <q-tab name="vuex" label="vuex"/>
     </q-tabs>
-    <q-tab-panels v-model="tab" animated class="html-bg text-white" >
-      <q-tab-panel name="details">
+
+    <q-tab-panels v-model="tab" animated class="html-bg text-white fit" >
+      <q-tab-panel name="details" class="fit">
         <br/>
         <multiselect
           class="multiselect"
@@ -71,6 +73,7 @@ Description:
         <h6>Vuex Mapping State and Actions</h6>
       </q-tab-panel>
     </q-tab-panels>
+    </div>
     <!-- moved this to createComponent -->
     <!-- <br/> -->
     <!-- removed text that displays what componenet is selected -->
@@ -188,6 +191,7 @@ Description:
       </a>
     </div>
     <p v-else> <br/> Select Component to Enable Edit </p> -->
+
   </div>
 </template>
 
@@ -428,11 +432,33 @@ hr {
 }
 
 .q-tab-panel {
-  height: 100%;
+display: flex;
+flex-direction: column;
+align-items: stretch;
 }
 
 .q-tab-panels {
-  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   padding: 0 !important;
+}
+
+.border-panel{
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  border: 3px solid black;
+}
+
+.inner-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: stretch;
+  height: 94%;
+  margin: 10px;
 }
 </style>

@@ -12,7 +12,7 @@ Description:
     v-on:click="handleClick"
   >
     <!-- This is the actual component box -->
-  <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
+    <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
     <VueDraggableResizable
       class-name="component-box"
       v-for="componentData in activeRouteArray"
@@ -207,7 +207,7 @@ export default {
       return this.imagePath[this.activeRoute]
         ? {
           background: `url("${this.userImage}") center/contain no-repeat rgba(223, 218, 218, 0.886)`
-      }
+        }
         : {};
     }
   },
@@ -471,6 +471,7 @@ export default {
 .menu {
   margin-bottom: 0px !important;
 }
+
 .component-box {
   color: white;
   border: 1.2px dashed rgb(231, 203, 75);

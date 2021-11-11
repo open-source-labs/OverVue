@@ -57,7 +57,7 @@ export default {
 .html-bg 
   background-color: #202122
 
-#store-cards 
+#store-cards
   height: 100%
   border-radius: 0px
   background-color: #202122
@@ -70,7 +70,6 @@ export default {
 // changes the length of the tab panels
 .q-tab-panels
   height 100%
-  padding 0 !important
 
 .q-tabs
   background #11120F
