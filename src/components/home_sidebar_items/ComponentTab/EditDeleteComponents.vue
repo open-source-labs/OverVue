@@ -347,7 +347,7 @@ export default {
       'deleteActiveComponent',
       'editComponentName',
       // 'deleteActionFromComponent',
-      // 'deletePropsFromComponent',
+      'deletePropsFromComponent',
       // 'deleteStateFromComponent',
       'updateComponentLayer',
       'updateActiveComponentChildrenValue',
@@ -375,10 +375,10 @@ export default {
     // },
 
     // delete selected props from active component
-    // deleteProp (prop) {
-    //   this.deletePropsFromComponent(prop)
-    //   console.log(this.activeComponentObj)
-    // },
+    deleteProp (prop) {
+      this.deletePropsFromComponent(prop)
+      console.log(this.activeComponentObj)
+    },
     // Set component as active component from left side dropdown
     onActivated (componentData) {
       this.setActiveComponent(componentData.componentName)

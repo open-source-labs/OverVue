@@ -12,7 +12,6 @@ Description:
     >
     <!-- will render if creating new component -->
       <q-input
-        v-if="activeComponent === ''"
         standout="bg-secondary text-white"
         bottom-slots
         v-on:keyup.delete.stop
@@ -32,11 +31,10 @@ Description:
         @activeLayer="addNestedNoActive"
       />
     </div>
-    <ParentMultiselect v-if="activeComponent === ''"></ParentMultiselect>
+    <ParentMultiselect></ParentMultiselect>
     <br />
 
     <q-btn
-      v-if="activeComponent ===''"
       id="add-component-btn"
       color="secondary"
       label="Create Component"
