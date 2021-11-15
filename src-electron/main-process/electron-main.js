@@ -128,11 +128,11 @@ For Sign In with Slack, but we are now using the Add to Slack feature instead
 // }
 
 // Turns on event listener for Slack Oauth deep linking back app
-// TODO: Deep linking currently doesn't work properly in dev mode - requires fix
+// TODO: Deep linking currently doesn't work properly in dev mode on windows - requires fix
 
 function setOauthListener() {
-  logEverywhere(`process.env.SLACK_CLIENT_ID in electron-main:  ${process.env.SLACK_CLIENT_ID}`);
-  logEverywhere(`process.env.SLACK_CLIENT_SECRET in electron-main:  ${process.env.SLACK_CLIENT_SECRET}`);
+  // logEverywhere(`process.env.SLACK_CLIENT_ID in electron-main:  ${process.env.SLACK_CLIENT_ID}`);
+  // logEverywhere(`process.env.SLACK_CLIENT_SECRET in electron-main:  ${process.env.SLACK_CLIENT_SECRET}`);
 
   return deeplink.on("received", link => {
     logEverywhere(`auth worked here link: ${link}`);
