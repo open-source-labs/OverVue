@@ -8,7 +8,7 @@ Description:
   -->
 
 <template>
-  <div class="container">
+  <div class="inner-div">
     <q-card id="store-cards" v-if="this.activeComponentObj">
       <q-tabs
         v-model="tab"
@@ -147,16 +147,25 @@ i
   background black
 
 #store-cards
-  height 80%
+  height 100%
   border-radius 0
   background #737578
 
 #blank-card
-  height 80%
+  height 100%
   border-radius 0
   background-color #202122
 
 .html-bg
   // give html background color of grey
   background-color #202122
+
+
+  .inner-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-content: stretch;
+  height: 100%;
+}
 </style>

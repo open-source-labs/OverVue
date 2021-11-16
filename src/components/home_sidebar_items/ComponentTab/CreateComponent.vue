@@ -5,7 +5,7 @@ Description:
   -->
 <!-- 4.0 adjustment: conditional render to switch between new comp name input and editing active comp name, moved from EditDeleteComponents -->
 <template>
-  <div class="home-sidebar drawer-menu">
+  <div class="inner-div drawer-menu">
     <br />
     <form
       v-on:submit.prevent="createComponent"
@@ -128,9 +128,13 @@ export default {
   margin: 0.75rem;
   width: 90%;
 }
-.home-sidebar {
-  margin: 0.5rem;
-  padding: 0.5rem;
-  border-radius: 5px;
+
+.inner-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-left: 15px;
+  padding-right: 15px;
+  height: 100%;
 }
 </style>
