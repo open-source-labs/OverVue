@@ -212,7 +212,7 @@ export default {
     }
   },
   updated() {
-    // if there are no active component, all boxes are unhighlighted
+    // if there are no active components, all boxes are unhighlighted
     if (this.activeComponent === "") {
       if (this.$refs.boxes) {
         this.$refs.boxes.forEach(element => {
@@ -339,11 +339,13 @@ export default {
 
     // unhighlights all inactive components
     onActivated(componentData) {
+      console.log('onActivated - comp display, componentData', componentData)
       if (this.$refs.boxes) {
         this.$refs.boxes.forEach(element => {
           if (element.$attrs.id !== componentData.componentName) {
             element.enabled = false;
             element.$emit("deactivated");
+            // this.setActiveComponent(componentData.componentName)
             element.$emit("update:active", false);
           }
         });
@@ -374,6 +376,7 @@ export default {
 
     // user can change component's layer order
     handleLayer(e) {
+      console.log('handeLayer\'s e: ', e)
       e.preventDefault();
       const payload = {
         activeComponent: this.activeComponent,

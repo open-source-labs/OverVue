@@ -39,11 +39,23 @@ export default {
       'selectedElementList',
       'activeHTML',
       'activeLayer'
-    ])
+    ]),
+    // elementStorage: function () {
+    //   console.log('computed: elementStorage')
+    //   if (this.activeComponent) {
+    //     return {
+
+    //     }
+    //   }
+    //   return {
+
+    //   }
+    // }
   },
   methods: {
     // Logic to decide where to place selected html element
     changeState (elementName) {
+      // console.log('this.elementStorage: ', this.elementStorage)
       // if no active component & creating a new component: add html to selectedElement list
       if (this.activeComponent === '') {
         this.$emit('getClickedIcon', { elementName, date: Date.now() })
@@ -64,7 +76,7 @@ export default {
   watch: {
     // watch for changes to selectedElementList when creating a component
     selectedElementList: function () {
-      // console.log('watching selectedElementList');
+      console.log('watching selectedElementList');
       if (this.activeComponent === '') {
         this.elementStorage = {}
         this.selectedElementList.forEach(el => {
@@ -83,6 +95,7 @@ export default {
     activeLayer: {
       deep: true,
       handler () {
+        console.log('watch: activeLayer');
         if (this.activeComponent) {
           this.elementStorage = {}
           if (this.activeLayer.id !== '' && this.activeHTML === '') {
@@ -106,6 +119,7 @@ export default {
       deep: true,
       // handler logic for where to increment html element count in element storage
       handler () {
+        console.log('watch: componentMap');
         // console.log('watching componentMap');
         // console.log('activecomponent is ', this.activeComponent)
         // console.log('htmlList', this.componentMap[this.activeComponent].htmlList)
@@ -151,6 +165,7 @@ export default {
     // watch for changes to the activeHTML to decide where to place our html element
     activeHTML: function () {
       this.elementStorage = {}
+      console.log('watch: activeHTML');
       if (this.activeHTML !== '') {
         let activeHtmlObj = breadthFirstSearch(
           this.componentMap[this.activeComponent].htmlList,
@@ -190,6 +205,7 @@ export default {
     // if activeComponent is updated, elementStorage will update its cache of elements & frequency to reflect new active component
     activeComponent: function () {
       // console.log('watching activeComponent', this.activeComponent);
+      console.log('watch: activeComponent');
       if (this.activeComponent) {
         this.elementStorage = {}
         this.componentMap[this.activeComponent].htmlList.forEach(el => {

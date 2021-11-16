@@ -381,6 +381,7 @@ export default {
     },
     // Set component as active component from left side dropdown
     onActivated (componentData) {
+      console.log('onActivated - edit del component')
       this.setActiveComponent(componentData.componentName)
       this.activeComponentData.isActive = true
     },
