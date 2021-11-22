@@ -64,6 +64,7 @@ Description:
       active-color="secondary"
       indicator-color="secondary"
     >
+    <!-- Accordion for component settings -->
     <!-- HTML item that has Icon component -->
       <q-expansion-item
         group="accordion"
