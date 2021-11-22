@@ -12,7 +12,7 @@ Description:
     v-on:click="handleClick"
   >
     <!-- This is the actual component box -->
-    <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
+  <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
     <VueDraggableResizable
       class-name="component-box"
       v-for="componentData in activeRouteArray"
@@ -137,6 +137,19 @@ export default {
         }
       }
     });
+    // listener for the copy
+    window.addEventListener('copy', () => {
+      // if there is an activeComponent, copy info to state using dispatch
+      if (this.activeComponent) {
+        console.log('copied!', this.activeComponent);
+        this.$store.dispatch("copyActiveComponent");
+      }
+    });
+
+    window.addEventListener('paste', () => {
+      this.$store.dispatch("pasteActiveComponent");
+      console.log('pasted');
+    })
   },
 
   computed: {
@@ -207,7 +220,7 @@ export default {
       return this.imagePath[this.activeRoute]
         ? {
           background: `url("${this.userImage}") center/contain no-repeat rgba(223, 218, 218, 0.886)`
-        }
+      }
         : {};
     }
   },
@@ -391,7 +404,13 @@ export default {
       if (event.target.className === "component-display grid-bg") {
         if (!(this.activeComponent === "")) this.setActiveComponent("");
       }
+    },
+    
+    // event handler for copying (ctrl+C)
+    copyActiveComponent() {
+      console.log('copied');
     }
+
   },
   watch: {
     activeComponent: function() {
@@ -471,7 +490,6 @@ export default {
 .menu {
   margin-bottom: 0px !important;
 }
-
 .component-box {
   color: white;
   border: 1.2px dashed rgb(231, 203, 75);

@@ -76,6 +76,23 @@ const actions = {
     commit(types.UPDATE_COMPONENT_SIZE, payload)
   },
 
+  // copy the active component
+  [types.copyActiveComponent]: ({ commit }, payload) => {
+    commit(types.COPY_ACTIVE_COMPONENT, payload)
+  },
+  // paste the active component copy
+  [types.pasteActiveComponent]: ({ commit, state }) => {
+    commit(types.PASTE_ACTIVE_COMPONENT);
+    // if no other parents, update as parent of active route in componentMap
+    if (!Object.keys(state.pastedComponent.parent).length) {
+      commit(types.ADD_COMPONENT_TO_ACTIVE_ROUTE_CHILDREN, state.pastedComponent.componentName)
+      // if parents, update parent of pastedComponent to include as a child
+    } else {
+      commit(types.ADD_COPIED_PARENT, state.pastedComponent)
+    };
+    // add pastedComponent as a child of route in activeRoutes
+    commit(types.ADD_COMPONENT_TO_ACTIVE_ROUTE_IN_ROUTE_MAP, state.pastedComponent);
+  },
   // End of componentDisplay Section//////////////////////////////////
 
   // Actions that affect Routing //////////////////////////////////////
@@ -166,8 +183,8 @@ const actions = {
   [types.deleteUserActions]: ({ state, commit }, payload) => {
     commit(types.DELETE_USER_ACTIONS, payload)
   },
+  
   [types.deleteUserState]: ({ state, commit }, payload) => {
-    
     // loops through component map and deletes all props
     // Object.keys(state.componentMap).forEach(prop => {
     //   commit(types.SET_ACTIVE_COMPONENT, prop.componentName)
@@ -175,6 +192,7 @@ const actions = {
     // })
     commit(types.DELETE_USER_STATE, payload)
   },
+  
   // End of Vuex Actions section //////////////////////////////////////////
 
   // Action primarily for edit functionality////////////////////////////////////////

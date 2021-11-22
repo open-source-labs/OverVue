@@ -50,7 +50,11 @@ const newState = {
   activeTab: 0,
   componentChildrenMultiselectValue: [],
   modalOpen: false,
-  parentSelected: false
+  parentSelected: false,
+  // for storing copied component
+  copiedComponent: {},
+  copyNumber: 0,
+  pastedComponent: {}
 }
 
 // closured method to ensure we only ever write the default state ONCE
