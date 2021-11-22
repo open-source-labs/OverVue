@@ -203,30 +203,33 @@ export default {
       }
     },
     // if activeComponent is updated, elementStorage will update its cache of elements & frequency to reflect new active component
-    activeComponent: function () {
+    activeComponent: {
+      // deep: true,
+      handler () {
       // console.log('watching activeComponent', this.activeComponent);
-      console.log('watch: activeComponent');
-      if (this.activeComponent) {
-        this.elementStorage = {}
-        this.componentMap[this.activeComponent].htmlList.forEach(el => {
-          if (!this.elementStorage[el.text]) {
-            this.elementStorage[el.text] = 1
-          } else {
-            this.elementStorage[el.text] += 1
-          }
-        })
-        // console.log('elementStorage is ', this.elementStorage);
-      } else if (this.activeComponent === '') {
-        // console.log(`watching activeComponent, current active is ''`)
-        // if component was switched from existing component to '', reset cache and update items
-        if (this.elementStorage !== {}) this.elementStorage = {}
-        this.selectedElementList.forEach(el => {
-          if (!this.elementStorage[el.text]) {
-            this.elementStorage[el.text] = 1
-          } else {
-            this.elementStorage[el.text] += 1
-          }
-        })
+        console.log('watch: activeComponent');
+        if (this.activeComponent) {
+          this.elementStorage = {}
+          this.componentMap[this.activeComponent].htmlList.forEach(el => {
+            if (!this.elementStorage[el.text]) {
+              this.elementStorage[el.text] = 1
+            } else {
+              this.elementStorage[el.text] += 1
+            }
+          })
+          // console.log('elementStorage is ', this.elementStorage);
+        } else if (this.activeComponent === '') {
+          // console.log(`watching activeComponent, current active is ''`)
+          // if component was switched from existing component to '', reset cache and update items
+          if (this.elementStorage !== {}) this.elementStorage = {}
+          this.selectedElementList.forEach(el => {
+            if (!this.elementStorage[el.text]) {
+              this.elementStorage[el.text] = 1
+            } else {
+              this.elementStorage[el.text] += 1
+            }
+          })
+        }
       }
     }
   }
