@@ -1,5 +1,4 @@
-#secret Api keys, Webhook URLs etc
-slackApiStuff.js
+#
 .env
 .env.development
 #
@@ -37,6 +36,3 @@ dist/
 node_modules/
 aws-exports.js
 awsconfiguration.json
-
-#secret Api keys, Webhook URLs etc
-slackApiStuff.js
