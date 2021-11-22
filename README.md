@@ -20,7 +20,7 @@
 * [Tutorial](#how-to-use)
   + [New Features Tutorial 2.0](#overvue-v20-how-to)
   + [New Features Tutorial 3.0](#overvue-v30-how-to)
-* [How to Run](#running-a-local-version)
+* [Installation](#installation)
 * [Contributing](#contributing)
 * [Authors](#authors)
 
@@ -157,7 +157,8 @@ package.json
 
 [↥Back to top](#table-of-contents)
 
-### Running a local version
+### Installation
+
 This app was developed using the Quasar framework, so first you will need to install the Quasar cli
 ```
 npm i -g @quasar/cli
@@ -170,9 +171,13 @@ To run electron app in dev mode
 ```
 quasar dev -m electron
 ```
+To open Vuejs devtools
+```
+
+```
 **For WSL users, the ability to load the application requires a tool/application to run a linux display as WSL does not have any display drivers 
 since it is based off of just a CLI.
-I recommend X410 (https://www.microsoft.com/en-us/p/x410/9nlp712zmn9q), althought it does cost $10, for ease of use. There are free options such as VcXsrv(https://sourceforge.net/projects/vcxsrv/) that you can get, but require more set up.**
+I recommend X410 (https://www.microsoft.com/en-us/p/x410/9nlp712zmn9q), althought it does cost $15, for ease of use. There are free options such as VcXsrv(https://sourceforge.net/projects/vcxsrv/) that you can get, but require more set up.**
 
 To build a new .dmg / windows .exe
 ```
