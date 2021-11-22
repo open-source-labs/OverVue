@@ -43,13 +43,15 @@ Description:
       @click="createComponent"
       :disabled="!componentNameInputValue.trim()"
     />
-  </div>
+
+</div>
 </template>
 
 <script>
 import Icons from '../Icons'
 import ParentMultiselect from '../ParentMultiselect.vue'
 import { mapState, mapActions } from 'vuex'
+
 
 export default {
   name: 'HomeSidebar',

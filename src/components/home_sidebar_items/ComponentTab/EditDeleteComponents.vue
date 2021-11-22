@@ -29,6 +29,8 @@ Description:
             @click="editCompName(newName)"
           />
         </template>
+
+        
       </q-input>
       <!-- for the icon list -->
       <multiselect
@@ -42,15 +44,15 @@ Description:
         :option-height="20"
         :searchable="false"
       />
-      <br />
+            
+    
       <q-list
-        dense
-        class="bg-subaccent text-white"
+        class="accordBorder"
         active-color="secondary"
         indicator-color="secondary"
       >
         <q-expansion-item group="accordion" label="HTML">
-          <br />
+         
           <div class="icon-container">
             <Icons
               class="icons"
@@ -60,6 +62,7 @@ Description:
               @activeLayer="addNestedNoActive"
             />
           </div>
+           <br />
         </q-expansion-item>
         <!-- Props item that has AddProps component in it -->
         <q-expansion-item group="accordion" label="Props">
@@ -105,15 +108,21 @@ Description:
           <ComponentActions />
         </q-expansion-item>
       </q-list>
+
       <q-btn
         id="deleteButton"
         @click="deleteSelectedComp(activeComponentData)"
         label="Delete currently selected"
       />
- 
-  <hr>
-   
-      <multiselect
+      
+ <br/>
+       <q-list
+        class="accordBorder"
+        active-color="secondary"
+        indicator-color="secondary"
+      >
+      <q-expansion-item group="accordion" label="Select another Component">
+        <multiselect
         class="multiselect"
         v-model="value"
         :options="options"
@@ -122,15 +131,27 @@ Description:
         :max-height="90"
         :option-height="20"
         @input="handleSelect(value)"
-        placeholder="Select another component"
+        placeholder="Select/Search component"
       >
-        <span slot="noResult">No components found.</span>
+      <span slot="noResult">No components found.</span>
       </multiselect>
-      </div>
-      
-      <!-- dropdown to select a component to edit -->
-    
-    
+      </q-expansion-item>
+ </q-list>
+    </div>
+
+        <!-- <q-list>
+      <q-expansion-item popup default-opened icon="mail" label="Inbox" caption="5 unread emails">
+        <q-separator />
+        <q-card>
+          <q-card-section>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem, eius reprehenderit eos corrupti
+            commodi magni quaerat ex numquam, dolorum officiis modi facere maiores architecto suscipit iste
+            eveniet doloribus ullam aliquid.
+          </q-card-section>
+        </q-card>
+      </q-expansion-item>
+      </q-list> -->
+    <!-- dropdown to select a component to edit -->
   </div>
   <!-- moved this to createComponent -->
   <!-- <br/> -->
@@ -514,8 +535,7 @@ p {
 }
 
 hr {
-  border: 2px solid $subsecondary;
-  width: 100% !important;
+  border: 2px solid black;
   margin-left: -10px;
   margin-right: -10px;
 }
@@ -528,8 +548,14 @@ hr {
   padding: 10px;
   border: 3px solid black;
   border-radius: 10px;
-  background-color: $subsecondary ;
+  background-color: $subsecondary;
 }
+
+.accordBorder{
+   border: 2px solid black;
+   border-radius: 4px;
+   
+  }
 
 .inner-div {
   display: flex;
@@ -538,6 +564,3 @@ hr {
   margin: 10px;
 }
 </style>
-
-
-<p class=""
