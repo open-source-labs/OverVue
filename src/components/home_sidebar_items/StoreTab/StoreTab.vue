@@ -35,12 +35,12 @@ Functionality:
             </template>
           </q-input>
           <p v-if='!this.stateOptions.length'>No state in store</p>
-          <ul id="stateList">
+          <!-- <ul v-else id="stateList">
             <li v-for="state in stateOptions" v-bind:key="state">
               {{ state }}
             </li>
-          </ul>
-          <!-- <a
+          </ul> -->
+          <a
             v-else
             v-for="state in stateOptions" 
             :key="state"
@@ -52,12 +52,12 @@ Functionality:
                     <div class="component-info">
                       {{ state }}
                     </div>
-                    <q-btn round flat icon="highlight_off" v-on:click.stop="deleteUserState(state)" />
+                    <q-btn round flat icon="highlight_off" v-on:click.stop="deleteState(state)" />
                   </div>
                 </q-item-section>
               </q-item>
             </q-list>
-          </a> -->
+          </a>
         </q-tab-panel>
         <!-- store actions tab -->
         <q-tab-panel name="actions">
@@ -83,12 +83,12 @@ Functionality:
             </template>
           </q-input>
           <p v-if='!this.actionOptions.length'>No actions in store</p>
-          <ul id="actionList">
+          <!-- <ul id="actionList">
             <li v-for="action in actionOptions" :key="action">
               {{ action }}
             </li>
-          </ul>
-          <!-- <a
+          </ul> -->
+          <a
             v-else
             v-for="action in actionOptions" 
             :key="action"
@@ -100,12 +100,12 @@ Functionality:
                     <div class="component-info">
                       {{ action }}
                     </div>
-                    <q-btn round flat icon="highlight_off" v-on:click.stop="deleteUserActions(action)" />
+                    <q-btn round flat icon="highlight_off" v-on:click.stop="deleteAction(action)" />
                   </div>
                 </q-item-section>
               </q-item>
             </q-list>
-          </a> -->
+          </a>
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
@@ -140,6 +140,8 @@ export default {
     ...mapActions([
       'createAction',
       'createState',
+      'deleteUserActions',
+      'deleteUserState',
     ]),
     // Creates a new action in userActions in the store
     createNewAction (text) {
@@ -156,8 +158,15 @@ export default {
       }
     },
     // Delete a selected action in the store
+    deleteAction (action) {
+      // if delete request comes in, send to actions
+      this.deleteUserActions(action);
+    },
     // Delete a selected state in the store
-    
+    deleteState (state) {
+      console.log('state: ', state);
+      this.deleteUserState(state);
+    }
   }
 }
 </script>

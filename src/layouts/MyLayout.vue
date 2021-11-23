@@ -17,7 +17,8 @@ Description:
           ></i>
         </q-btn>
         <q-toolbar-title> OverVue </q-toolbar-title>
-        <div>
+        <SlackLoginWindow />
+        <div></div>
           <i
             v-if="this.$router.app.$children[0].doneAction.length"
             class="fa fa-backward"
