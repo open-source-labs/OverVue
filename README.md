@@ -20,7 +20,10 @@
 * [Tutorial](#how-to-use)
   + [New Features Tutorial 2.0](#overvue-v20-how-to)
   + [New Features Tutorial 3.0](#overvue-v30-how-to)
-* [How to Run](#running-a-local-version)
+* [Installation](#installation)
+  + [General Installation](#installation)
+  + [For WSL](#wsl-installation)
+  + [For Slack OAuth](#slack-oauth)
 * [Contributing](#contributing)
 * [Authors](#authors)
 
@@ -157,7 +160,8 @@ package.json
 
 [↥Back to top](#table-of-contents)
 
-### Running a local version
+### Installation
+
 This app was developed using the Quasar framework, so first you will need to install the Quasar cli
 ```
 npm i -g @quasar/cli
@@ -166,18 +170,66 @@ Install dependencies
 ```
 npm i
 ```
+To open Vuejs devtools (devtools should be open before devmode, otherwise, you can justforce reload electron app in dev mode after opening dev tools)
+```
+./node_modules/.bin/vue-devtools
+```
 To run electron app in dev mode
 ```
 quasar dev -m electron
 ```
-**For WSL users, the ability to load the application requires a tool/application to run a linux display as WSL does not have any display drivers 
-since it is based off of just a CLI.
-I recommend X410 (https://www.microsoft.com/en-us/p/x410/9nlp712zmn9q), althought it does cost $10, for ease of use. There are free options such as VcXsrv(https://sourceforge.net/projects/vcxsrv/) that you can get, but require more set up.**
-
 To build a new .dmg / windows .exe
 ```
 quasar build -m electron
 ```
+### WSL Installation
+
+**The ability to load the application and/or devtools requires a tool/application to run a linux display as WSL does not have any display drivers since it is based off of just a CLI.
+I recommend X410 (https://x410.dev/), althought it does cost $15, for ease of use. There are free options such as VcXsrv(https://sourceforge.net/projects/vcxsrv/) that you can get, but requires more set up.**
+
+If you choose to use x410, you will need to set the environment DISPLAY variable on each console:
+
+So, to open either the Vue devtools or OverVue in dev mode, first start your X Server then enter into the terminal:
+For WSL 1 :
+```
+export DISPLAY=:0
+```
+For WSL 2 :
+```
+export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
+export LIBGL_ALWAYS_INDIRECT=1
+```
+followed by the command for the devtools or devmode.  If you want both open, enter commands above followed by starting the devtools:
+```
+./node_modules/.bin/vue-devtools
+```
+Then open a new terminal instance, set the DISPLAY value again (re-enter above command for DISPLAY), and start OverVue in dev mode:
+```
+quasar dev -m electron
+```
+
+### Slack OAuth
+
+For the Slack OAuth, you will need to create a Slack app through their website (https://api.slack.com/apps?new_app=1), so that you have your own Client Secret and Client ID. Then create two .env files (one for development and one for production).
+
+  1. Create a Slack App from the link above.  Copy your Client ID and Client Secret somewhere safe.
+  2. Create two .env files in the main root of this repository.  Name them:
+  ```
+  .env
+  .env.development
+  ```
+  3. Open .env and add these three environment variables.  Replace <client secret> and <client id> with the client id and client secret given to you when you created your Slack App.
+  ```
+  SLACK_CLIENT_SECRET = "<client secret>"
+  SLACK_CLIENT_ID = "<client id>"
+  SLACK_REDIRECT_URI = "overvue://slack"
+  ```
+  4. Next, open .env.development and do the same, just note that the SLACK_REDIRECT_URI will be different here:
+  ```
+SLACK_CLIENT_SECRET = "<client secret>"
+SLACK_CLIENT_ID = "<client id>"
+SLACK_REDIRECT_URI = "overvuedev://test"
+  ```
 
 [↥Back to top](#table-of-contents)
 

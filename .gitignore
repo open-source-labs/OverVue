@@ -1,5 +1,4 @@
-#secret Api keys, Webhook URLs etc
-slackApiStuff.js
+#
 .env
 .env.development
 #
@@ -17,7 +16,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 /coverage
-package-lock.json
+<<<<<<< HEAD
+# package-lock.json
+=======
+>>>>>>> dev
 vetur.config.js
 
 # Editor directories and files
@@ -38,6 +40,3 @@ dist/
 node_modules/
 aws-exports.js
 awsconfiguration.json
-
-#secret Api keys, Webhook URLs etc
-slackApiStuff.js
