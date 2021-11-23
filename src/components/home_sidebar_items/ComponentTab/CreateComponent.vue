@@ -5,13 +5,14 @@ Description:
   -->
 <!-- 4.0 adjustment: conditional render to switch between new comp name input and editing active comp name, moved from EditDeleteComponents -->
 <template>
-  <div class="home-sidebar drawer-menu">
+  <div class="inner-div drawer-menu">
     <br />
     <form
       v-on:submit.prevent="createComponent"
     >
     <!-- will render if creating new component -->
       <q-input
+        v-if="activeComponent === ''"
         standout="bg-secondary text-white"
         bottom-slots
         v-on:keyup.delete.stop
@@ -31,23 +32,26 @@ Description:
         @activeLayer="addNestedNoActive"
       />
     </div>
-    <ParentMultiselect></ParentMultiselect>
+    <ParentMultiselect v-if="activeComponent === ''"></ParentMultiselect>
     <br />
 
     <q-btn
+      v-if="activeComponent ===''"
       id="add-component-btn"
       color="secondary"
       label="Create Component"
       @click="createComponent"
       :disabled="!componentNameInputValue.trim()"
     />
-  </div>
+
+</div>
 </template>
 
 <script>
 import Icons from '../Icons'
 import ParentMultiselect from '../ParentMultiselect.vue'
 import { mapState, mapActions } from 'vuex'
+
 
 export default {
   name: 'HomeSidebar',
@@ -126,9 +130,13 @@ export default {
   margin: 0.75rem;
   width: 90%;
 }
-.home-sidebar {
-  margin: 0.5rem;
-  padding: 0.5rem;
-  border-radius: 5px;
+
+.inner-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-left: 15px;
+  padding-right: 15px;
+  height: 100%;
 }
 </style>

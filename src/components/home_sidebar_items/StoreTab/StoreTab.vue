@@ -159,7 +159,7 @@ export default {
     },
     // Delete a selected action in the store
     deleteAction (action) {
-      //if delete request comes in, send to actions
+      // if delete request comes in, send to actions
       this.deleteUserActions(action);
     },
     // Delete a selected state in the store
