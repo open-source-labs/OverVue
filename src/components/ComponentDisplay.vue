@@ -137,6 +137,19 @@ export default {
         }
       }
     });
+    // listener for the copy
+    window.addEventListener('copy', () => {
+      // if there is an activeComponent, copy info to state using dispatch
+      if (this.activeComponent) {
+        console.log('copied!', this.activeComponent);
+        this.$store.dispatch("copyActiveComponent");
+      }
+    });
+
+    window.addEventListener('paste', () => {
+      this.$store.dispatch("pasteActiveComponent");
+      console.log('pasted');
+    })
   },
 
   computed: {
@@ -394,7 +407,13 @@ export default {
       if (event.target.className === "component-display grid-bg") {
         if (!(this.activeComponent === "")) this.setActiveComponent("");
       }
+    },
+    
+    // event handler for copying (ctrl+C)
+    copyActiveComponent() {
+      console.log('copied');
     }
+
   },
   watch: {
     activeComponent: function() {

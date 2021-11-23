@@ -20,7 +20,7 @@ Description:
       >
         <q-tab name="detail" id="label-text"><i class="fas fa-code"></i></q-tab>
         <q-tab name="tree" id="label-text"><i class="fas fa-code-branch fa-flip-vertical" /></q-tab>
-        <q-tab name="store" id="label-text" ><i class="fas fa-store-alt"></i></q-tab>
+        <!-- <q-tab name="store" id="label-text" ><i class="fas fa-store-alt"></i></q-tab> -->
       </q-tabs>
       <q-tab-panels v-model="tab" animated class="html-bg text-white ">
         <q-tab-panel name="detail">
@@ -29,9 +29,9 @@ Description:
         <q-tab-panel name="tree" >
           <Tree />
         </q-tab-panel>
-        <q-tab-panel name="store">
+        <!-- <q-tab-panel name="store">
           <VuexStore />
-        </q-tab-panel>
+        </q-tab-panel> -->
       </q-tab-panels>
     </q-card>
     </div>
@@ -41,13 +41,13 @@ Description:
 <script>
 import { mapState, mapActions } from "vuex";
 import Tree from "./Tree";
-import VuexStore from "./DashboardVuexStore.vue";
+// import VuexStore from "./DashboardVuexStore.vue";
 import ComponentDetails from "./ComponentDetails";
 
 export default {
   components: {
     Tree,
-    VuexStore,
+    // VuexStore,
     ComponentDetails
   },
   computed: {
