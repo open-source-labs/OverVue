@@ -27,7 +27,7 @@ import { breadthFirstSearch } from '../../utils/search.util'
 export default {
   data () {
     return {
-      // elementStore: {}
+      // elementStorage: {}
     }
   },
   name: 'Icons',
@@ -69,7 +69,7 @@ export default {
   methods: {
     // Logic to decide where to place selected html element
     changeState (elementName) {
-      console.log('changeState inside Icons.vue: ', this.elementStorage)
+      // console.log('changeState inside Icons.vue: ', this.elementStorage)
       // if no active component & creating a new component: add html to selectedElement list
       if (this.activeComponent === '') {
         this.$emit('getClickedIcon', { elementName, date: Date.now() })
