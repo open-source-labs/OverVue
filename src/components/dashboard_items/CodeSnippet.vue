@@ -14,7 +14,7 @@ Description:
     <div v-else>{{ `${this.activeComponent}.vue` }}</div>
     <prism-editor
       v-model="code"
-      language="vue"
+      language="js"
       :line-numbers="lineNumbers"
       class="code-editor fill"
       :readonly="true"

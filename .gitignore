@@ -16,10 +16,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 /coverage
-<<<<<<< HEAD
 # package-lock.json
-=======
->>>>>>> dev
 vetur.config.js
 
 # Editor directories and files

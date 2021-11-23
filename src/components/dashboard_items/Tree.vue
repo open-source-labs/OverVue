@@ -30,7 +30,7 @@ export default {
     ...mapState(['componentMap', 'activeComponent']),
     // Returns project tree on re-render
     computedTree () {
-      // console.log('this.buildtree', this.buildTree())
+      // console.log('buildtree', this.buildTree())
       return this.buildTree()
     }
   },
@@ -50,7 +50,7 @@ export default {
           children: compData.children
         })
       })
-      // console.log(JSON.stringify(result))
+      console.log(JSON.stringify(result))
       // console.log('Formatcomponent map result', result)
       return result
     },
@@ -70,8 +70,8 @@ export default {
           nodes[component.name].children.push(nodes[child])
         })
       })
-      // console.log('nodes in Tree.vue: ', nodes)
-      // console.log('result in Tree.vue: ', result)
+      console.log(nodes)
+      console.log(result)
       return result
     },
     // Called by computedTree, calls transformToTree

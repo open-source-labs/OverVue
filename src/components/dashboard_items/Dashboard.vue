@@ -6,49 +6,51 @@ Description:
   -->
 
 <template>
-
-  <div class="home-sidebar drawer-menu">
-
-    <q-card id="dashboard-cards" style="fill">
-      <q-tabs
-        v-model="tab"
-        dense
-        class="bg-subaccent text-white"
-        active-color="secondary"
-        indicator-color="secondary"
-        align="left"
-      >
-        <q-tab name="detail" id="label-text"><i class="fas fa-code"></i></q-tab>
-        <q-tab name="tree" id="label-text"><i class="fas fa-code-branch fa-flip-vertical" /></q-tab>
-        <!-- <q-tab name="store" id="label-text" ><i class="fas fa-store-alt"></i></q-tab> -->
-      </q-tabs>
-      <q-tab-panels v-model="tab" animated class="html-bg text-white ">
-        <q-tab-panel name="detail">
-          <ComponentDetails />
-        </q-tab-panel>
-        <q-tab-panel name="tree" >
-          <Tree />
-        </q-tab-panel>
-        <!-- <q-tab-panel name="store">
-          <VuexStore />
-        </q-tab-panel> -->
-      </q-tab-panels>
-    </q-card>
-    </div>
-
+  <q-card id="dashboard-cards" class="bord">
+    <q-tabs
+      v-model="tab"
+      dense
+      class="bg-subaccent text-white "
+      active-color="secondary"
+      indicator-color="secondary"
+      align="left"
+    >
+      <q-tab name="detail" id="label-text" style="border-right: 3px solid black"
+        ><i class="fas fa-code"></i
+      ></q-tab>
+      <q-tab name="tree" id="label-text"
+        ><i class="fas fa-code-branch fa-flip-vertical"
+      /></q-tab>
+      <q-tab name="routes" id="label-text"
+        ><i class="fas fa-project-diagram"></i
+      ></q-tab>
+    </q-tabs>
+    <q-tab-panels v-model="tab" animated class="html-bg text-white">
+      <q-tab-panel name="detail">
+        <ComponentDetails />
+      </q-tab-panel>
+      <q-tab-panel name="tree">
+        <Tree />
+      </q-tab-panel>
+      <!-- added Routes to the right side -->
+      <q-tab-panel name="routes">
+        <RouteDisplay />
+      </q-tab-panel>
+    </q-tab-panels>
+  </q-card>
 </template>
 
 <script>
 import { mapState, mapActions } from "vuex";
-import Tree from "./Tree";
-// import VuexStore from "./DashboardVuexStore.vue";
-import ComponentDetails from "./ComponentDetails";
+import Tree from "./Tree.vue";
+import ComponentDetails from "./ComponentDetails.vue";
+import RouteDisplay from "../home_sidebar_items/RouteDisplay.vue";
 
 export default {
   components: {
     Tree,
-    // VuexStore,
-    ComponentDetails
+    ComponentDetails,
+    RouteDisplay
   },
   computed: {
     ...mapState([
@@ -173,16 +175,17 @@ i {
 .q-tab-panel {
   // matchs the code editor bg
   background: $subprimary;
+
 }
 
 // changes the length of the tab panels
 .q-tab-panels {
-  height: 87vh;
-  padding: 0px !important;
+padding: 0px !important;
+border-top: 3px solid black;
 }
 
 .q-tabs {
-  background: #11120F;
+  background: #11120F
 }
 
 .toolbar-background {
@@ -190,12 +193,23 @@ i {
 }
 
 #dashboard-cards {
-  height: 80%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   border-radius: 0px;
   background: #737578;
 }
 .html-bg {
   // give html background color of grey
   background-color: #202122;
+}
+
+.inner-div {
+  height: 100%;
+}
+
+.bord {
+  border-left: 3px solid black;
+  border-right: 3px solid black;
 }
 </style>
