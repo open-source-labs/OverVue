@@ -558,6 +558,7 @@ const mutations = {
   },
 
   [types.SET_ACTIVE_COMPONENT]: (state, payload) => {
+    // console.log('SET_ACTIVE_COMPONENT: ', payload)
     state.activeComponent = payload
     state.activeComponentObj = state.routes[state.activeRoute].filter(comp => comp.componentName === state.activeComponent)[0]
     state.activeHTML = ''

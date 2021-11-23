@@ -15,7 +15,8 @@ const ignoredActions = new Set([
   'setActiveComponent',
   'setActiveLayer',
   'upOneLayer',
-  'setActiveHTML'
+  'setActiveHTML',
+  'updateComponentNameInputValue'
 ])
 
 let redoMixin = {

@@ -208,6 +208,7 @@ const actions = {
   },
 
   [types.addToSelectedElementList]: ({ commit }, payload) => {
+    console.log('addToSelectedElementList')
     commit(types.ADD_TO_SELECTED_ELEMENT_LIST, payload)
   },
 
@@ -232,6 +233,7 @@ const actions = {
   },
 
   [types.deleteSelectedElement]: ({ commit }, payload) => {
+    console.log('deleteSelectedElement')
     commit(types.DELETE_SELECTED_ELEMENT, payload)
   },
 
@@ -244,10 +246,12 @@ const actions = {
   },
 
   [types.setClickedElementList]: ({ commit }, payload) => {
+    console.log('setClickedElementList:')
     commit(types.SET_CLICKED_ELEMENT_LIST, payload)
   },
 
   [types.setSelectedElementList]: ({ commit }, payload) => {
+    console.log('setSelectedElementList:')
     if (payload) {
       commit(types.SET_SELECTED_ELEMENT_LIST, payload)
     }
