@@ -18,9 +18,6 @@
 - [OverVue 2.0 Changelog](#changelog-20)
 - [OverVue 3.0 Changelog](#changelog-30)
 - [OverVue 4.0 Changelog](#changelog-40)
-- [Tutorial](#how-to-use)
-  - [New Features Tutorial 2.0](#overvue-v20-how-to)
-  - [New Features Tutorial 3.0](#overvue-v30-how-to)
 - [Installation](#installation)
   - [General Installation](#installation)
   - [For WSL](#wsl-installation)
@@ -50,7 +47,8 @@
 - More robust code snippets with Vuex props, state, and actions included <sub><sup>(v3.0)</sup></sub>
 - Hotkey shortcuts to copy/paste/delete selected component <sub><sup>(v4.0)</sup></sub>
 - Connect to a Slack Workspace and send Slack Messages through OverVue <sub><sup>(v4.0)</sup></sub>
-- Ability to delete states or actions from the store<sub><sup>(v4.0)</sup></sub>
+- Ability to delete states or actions from the store <sub><sup>(v4.0)</sup></sub>
+- Vue Devtools enabled for Developers <sub><sup>(v4.0)</sup></sub>
 
 [↥Back to top](#table-of-contents)
 
@@ -281,7 +279,7 @@ SLACK_REDIRECT_URI = "overvuedev://test"
 ### Contributing
 
 We'd love for you to test this application out and submit any issues you encounter. Also feel free to fork to your own repo and submit PRs.
-Here are some features we're thinking about adding: + + +
+Here are some features we're thinking about adding: 
 
 - Option to export files in TypeScript
 - Ability to place child components into HTML elements
