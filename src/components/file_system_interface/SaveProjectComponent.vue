@@ -44,6 +44,7 @@ export default {
     },
     // deletes anything attached to html element
     parseAndDelete (htmlList) {
+      console.log(htmlList)
       htmlList.forEach(element => {
         if (element.children.length > 0) {
           // console.log('in recurse')

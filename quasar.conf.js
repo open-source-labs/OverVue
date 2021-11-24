@@ -184,7 +184,7 @@ module.exports = function(ctx) {
     },
 
     electron: {
-      bundler: "packager",
+      bundler: "builder",
       // bundler: 'builder', // or 'packager'
 
       extendWebpack(cfg) {

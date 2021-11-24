@@ -48,7 +48,7 @@ function slackErrorHandler(err) {
 }
 
 function sendTokenRequest() {
-  logEverywhere("inside sendTokenRequest");
+  // logEverywhere("inside sendTokenRequest");
 
   // Send Post request for user information
   const request = net.request({
@@ -72,7 +72,7 @@ function sendTokenRequest() {
   request.on("response", response => {
     // logEverywhere("request.on response received");
     response.on("end", () => {
-      logEverywhere("Response ended ");
+      // logEverywhere("Response ended ");
     });
     response.on("data", data => {
       const decoded = JSON.parse(data.toString())
@@ -99,7 +99,7 @@ function getSlackUser (token, userId) {
   })
   request.on('response', response => {
     response.on('end', () => {
-      logEverywhere('User data recieved')
+      // logEverywhere('User data recieved')
     })
     response.on('data', data => {
       const decoded = JSON.parse(data.toString());
@@ -135,7 +135,7 @@ function setOauthListener() {
   // logEverywhere(`process.env.SLACK_CLIENT_SECRET in electron-main:  ${process.env.SLACK_CLIENT_SECRET}`);
 
   return deeplink.on("received", link => {
-    logEverywhere(`auth worked here link: ${link}`);
+    // logEverywhere(`auth worked here link: ${link}`);
     // Extracts Slack authorization code from deep link
     authCode = link.split("=")[1];
     sendTokenRequest();
@@ -157,8 +157,8 @@ function createWindow() {
     }
   });
 
-  logEverywhere(`Current deeplink Protocol: ${deeplink.getProtocol()}`);
-  logEverywhere(`process.execPath: ${process.execPath}`);
+  // logEverywhere(`Current deeplink Protocol: ${deeplink.getProtocol()}`);
+  // logEverywhere(`process.execPath: ${process.execPath}`);
   mainWindow.loadURL(process.env.APP_URL);
 
   mainWindow.on("closed", () => {
