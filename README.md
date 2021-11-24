@@ -236,10 +236,12 @@ SLACK_REDIRECT_URI = "overvuedev://test"
 ### Contributing
 We'd love for you to test this application out and submit any issues you encounter. Also feel free to fork to your own repo and submit PRs.
 Here are some features we're thinking about adding:
++
++
++
 + Option to export files in TypeScript
 + Ability to place child components into HTML elements
 + Integration with Storybook
-+ Ability to add a copy of an existing component from one route to another
 + Edit State and Actions in the Vuex Store
 
 If you make changes and wish to update the website, here is the link to the repo: https://github.com/TeamOverVue/OverVuePage
