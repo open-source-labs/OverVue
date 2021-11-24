@@ -44,8 +44,9 @@ export default {
     },
     // deletes anything attached to html element
     parseAndDelete (htmlList) {
-      console.log(htmlList)
+      // console.log('htmlList in saveProjectComp: ', htmlList)
       htmlList.forEach(element => {
+        if (!Array.isArray(element.children)) console.log('This should be an array', element.children)
         if (element.children.length > 0) {
           // console.log('in recurse')
           this.parseAndDelete(element.children)

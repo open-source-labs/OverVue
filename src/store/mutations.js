@@ -505,17 +505,12 @@ const mutations = {
     state.componentMap[state.parentSelected].children.push(
       payload.componentName
     )
-    state.componentMap[state.parentSelected].htmlList.push(
-      payload.componentName
-    )
   },
 
   [types.ADD_COPIED_PARENT]: (state, payload) => {
     const parentSelected = Object.values(payload.parent)[0].componentName;
     // push into parent's children array
     state.componentMap[parentSelected].children.push(payload.componentName)
-    // push into parent's htmlList array
-    state.componentMap[parentSelected].htmlList.push(payload.componentName)
   },
 
   [types.DELETE_ACTIVE_COMPONENT]: state => {
@@ -613,6 +608,7 @@ const mutations = {
   [types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE]: (state, payload) => {
     const temp = state.componentMap[state.activeComponent].children
     // delete block
+    console.log('UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUEs payload', payload)
     if (payload.length < temp.length) {
       const child = temp.filter(el => !payload.includes(el))
       // console.log('delete child: ', child)
@@ -642,13 +638,14 @@ const mutations = {
         .children.filter(el => !payload.includes(el))
       state.componentMap[child[0]].parent[state.activeComponent] = state.componentMap[state.activeComponent]
     }
-    const copy = [...state.componentMap[state.activeComponent].htmlList]
-    for (const x in payload) {
-      if (!copy.includes(payload[x])) {
-        copy.push(payload[x])
-      }
-    }
-    state.componentMap[state.activeComponent].htmlList = copy
+    // Adding children strings to htmlList -> removed to prevent JSON parser errors
+    // const copy = [...state.componentMap[state.activeComponent].htmlList]
+    // for (const x in payload) {
+    //   if (!copy.includes(payload[x])) {
+    //     copy.push(payload[x])
+    //   }
+    // }
+    // state.componentMap[state.activeComponent].htmlList = copy
   },
   // invoked when element is double clicked, changing the boolean value
   [types.UPDATE_OPEN_MODAL]: (state, payload) => {
