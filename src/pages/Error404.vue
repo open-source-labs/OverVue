@@ -1,3 +1,9 @@
+<!--
+Description:
+  Displays 404 when there is a problem
+  Functionality includes: on btn press go back to '/' endpoint
+  -->
+
 <template>
   <div class="fixed-center text-center">
     <p>
