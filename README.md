@@ -10,48 +10,52 @@
 
 <p>这个程序能帮你生成Vue 组件, 设置 routes , 也可以帮你显像Component Parent-Child组件树。你只要做一些小配置然后可以下载code boilerplate. 这样你就可以很方便简洁地生成Vue前台APP了！</p>
 
-![](./src/assets/readme/overvue1.png)
+![](./src/assets/readme/overvuev4.png)
 
 ## Table of Contents
 
-* [Features](#features)
-* [OverVue 2.0 Changelog](#changelog-20)
-* [OverVue 3.0 Changelog](#changelog-30)
-* [OverVue 4.0 Changelog](#changelog-40)
-* [Tutorial](#how-to-use)
-  + [New Features Tutorial 2.0](#overvue-v20-how-to)
-  + [New Features Tutorial 3.0](#overvue-v30-how-to)
-* [Installation](#installation)
-  + [General Installation](#installation)
-  + [For WSL](#wsl-installation)
-  + [For Slack OAuth](#slack-oauth)
-* [Contributing](#contributing)
-* [Authors](#authors)
+- [Features](#features)
+- [OverVue 2.0 Changelog](#changelog-20)
+- [OverVue 3.0 Changelog](#changelog-30)
+- [OverVue 4.0 Changelog](#changelog-40)
+- [Tutorial](#how-to-use)
+  - [New Features Tutorial 2.0](#overvue-v20-how-to)
+  - [New Features Tutorial 3.0](#overvue-v30-how-to)
+- [Installation](#installation)
+  - [General Installation](#installation)
+  - [For WSL](#wsl-installation)
+  - [For Slack OAuth](#slack-oauth)
+- [Contributing](#contributing)
+- [Authors](#authors)
 
 ### Features
-+ Upload a frontend mockup image
-+ Visualize draggable and resizable components
-+ Create parent-child hierarchy of components
-+ Add html elements to components
-+ Create routes to be used by Vue Router
-+ Live-generated previewable code snippets for each component
-+ Live-generated tree view to aid in visualizing parent-child hierarchy
-+ Save projects and open previous projects
-+ Export full boilerplate code for a working frontend
-+ Undo/redo functionality <sub><sup>(v2.0)</sup></sub>
-+ Can nest HTML elements <sub><sup>(v2.0)</sup></sub>
-+ Ability to navigate into HTML elements from a selected Vue component <sub><sup>(v2.0)</sup></sub>
-+ Assign one image per route <sub><sup>(v2.0)</sup></sub>
-+ Can now set Vue components to specific layers <sub><sup>(v2.0)</sup></sub>
-+ Will now load route images along with project <sub><sup>(v2.0)</sup></sub>
-+ Windows compatibility for uploading mockup images. <sub><sup>(v2.0)</sup></sub>
-+ Full Vuex functionality, can add props, actions, and state to components. <sub><sup>(v3.0)</sup></sub>
-+ Full edit functionality, can change the name of components as well as delete properties from a component <sub><sup>(v3.0)</sup></sub>
-+ More robust code snippets with Vuex props, state, and actions included <sub><sup>(v3.0)</sup></sub>
+
+- Upload a frontend mockup image
+- Visualize draggable and resizable components
+- Create parent-child hierarchy of components
+- Add html elements to components
+- Create routes to be used by Vue Router
+- Live-generated previewable code snippets for each component
+- Live-generated tree view to aid in visualizing parent-child hierarchy
+- Save projects and open previous projects
+- Export full boilerplate code for a working frontend
+- Undo/redo functionality <sub><sup>(v2.0)</sup></sub>
+- Ability to navigate into HTML elements from a selected Vue component <sub><sup>(v2.0)</sup></sub>
+- Assign one image per route <sub><sup>(v2.0)</sup></sub>
+- Can now set Vue components to specific layers <sub><sup>(v2.0)</sup></sub>
+- Will now load route images along with project <sub><sup>(v2.0)</sup></sub>
+- Windows compatibility for uploading mockup images. <sub><sup>(v2.0)</sup></sub>
+- Full Vuex functionality, can add props, actions, and state to components. <sub><sup>(v3.0)</sup></sub>
+- Full edit functionality, can change the name of components as well as delete properties from a component <sub><sup>(v3.0)</sup></sub>
+- More robust code snippets with Vuex props, state, and actions included <sub><sup>(v3.0)</sup></sub>
+- Hotkey shortcuts to copy/paste/delete selected component <sub><sup>(v4.0)</sup></sub>
+- Connect to a Slack Workspace and send Slack Messages through OverVue <sub><sup>(v4.0)</sup></sub>
+- Ability to delete states or actions from the store<sub><sup>(v4.0)</sup></sub>
 
 [↥Back to top](#table-of-contents)
 
 ### Changelog 2.0
+
 <details><summary>OverVue 2.0</summary>
   <ul>
   <li>Improved hierarchy tree rendering</li>
@@ -69,6 +73,7 @@
 </details>
 
 ### Changelog 3.0
+
 <details><summary>OverVue 3.0</summary>
   <ul>
   <li>Implemented full component edit functionality</li>
@@ -84,47 +89,74 @@
   </ul>
 </details>
 
-[↥Back to top](#table-of-contents)
 ### Changelog 4.0
+
 <details><summary>OverVue 4.0</summary>
   <ul>
-  <li>Integrated Slack through a Slack Login button to link user's slack channel to their OverVue instance</li>
-  <li>After logging in with Slack, user's have the ability to send a message to their selected Slack channel after saving</li>
-  <li>Implemented the ability to delete State and Actions from the store</li>
-  <li>Added the feature to quickly copy/paste Components through hotkeys</li>
-  <li>Reworked the interface to give users a more intuitive experience</li>
-    <li>Moved bottom dashboard to the right</li>
-    <li>Features on the left are geared toward creation/editing components</li>
-    <li>Features on the right are geared toward viewing overall hierarchy of App Prototype</li>
-    <li>Component Editor menu now switches between create/edit mode depending on if a Component is selected</li>
-    <li>Vuex Store and Actions now moved to left menu with ability to view/create/delete state and actions</li>
-  <li>Implemented Vue Devtools for development ease</li>
+    <li>Integrated Slack through a Slack Login button to link user's slack channel to their OverVue instance</li>
+    <li>After logging in with Slack, user's have the ability to send a message to their selected Slack channel after saving</li>
+    <li>Implemented the ability to delete State and Actions from the store</li>
+    <li>Added the feature to quickly copy/paste Components through hotkeys</li>
+    <li>Reworked the interface to give users a more intuitive experience</li>
+    <ul>
+      <li>Moved bottom dashboard to the right</li>
+      <li>Features on the left are geared toward creation/editing components</li>
+      <li>Features on the right are geared toward viewing overall hierarchy of App Prototype</li>
+      <li>Component Editor menu now switches between create/edit mode depending on if a Component is selected</li>
+      <li>Vuex Store and Actions now moved to left menu with ability to view/create/delete state and actions</li>
+    </ul>
+    <li>Implemented Vue Devtools for development ease</li>
+    <li>Sped up component tree rendering speed for quicker, smoother viewing</li>
+    <br>
+    <h4><strong>Bug Fixes</strong></h4>
+    <li>Fixed html buttons not properly rendering for selected component</li>
+    <li>Fixed code snippet not properly rendering for selected component</li>
+    <li>Fixed JSON parser typeerror with component html lists</li>
+    <li>Fixed component tree view rendering instability with right sidebar</li>
+    <li>Fixed children and parent relationship mutations causing type related side effects</li>
+    <li>Fixed issue where state/actions deleted in store aren't reflected across components</li>
+    <li>Fixed issue with undo feature that would delete inputed text one character at a time</li>
   </ul>
 </details>
+
+
 
 [↥Back to top](#table-of-contents)
 
 ## How to use
-+ Opening the application will create by default a root App component and a root route called "HomeView"
-+ Upload a mockup from your filesystem if you'd like. Remove the mockup and choose a new one if needed.
-![](./src/assets/readme/upload_one_mockup.gif)
 
-+ To add a new component, type its name in the component name box and select any HTML elements that should be rendered by that component.
-+ HTML elements can also be added after creation by selecting the component in the display, then selecting HTML elements.
-+ Select a parent component for the new component if needed.
-+ After adding, you can move and resize the component in the display.
-![alt text](./src/assets/readme/create_resize_move.gif)
+- Upon opening the application a Connect to Slack button will appear. To skip this step click 'Skip'
+- Click the button to open a browser window, log in to your Slack workspace and select a channel to send save notifications.
+- If you have logged in to Slack, upon saving your project file you will receive a prompt with the option to notify your team.
+  ![](./src/assets/readme/v4Slack_Oauth.gif)
 
-+ You can also add children to components by right-clicking the component to add children to, and you can see the tree re-render as you create new components or change the hierarchy.
-![](./src/assets/readme/right_click_add_children.gif)
+- OverVue will assign a default root App component and a default route called "HomeView"
+- Upload a mockup from your filesystem if you'd like. Remove the mockup and choose a new one if needed.
+  ![](./src/assets/readme/v4Upload_image.gif)
 
-+ The dashboard shows info about each component (code snippets and HTML elements). Click a component in the display to see its properties.                                               
-![](./src/assets/readme/dashboard.gif)
+- To add a new component, type its name in the component name box and select any HTML elements that should be rendered by that component.
+- HTML elements can also be added after creation by selecting the component in the display, then selecting HTML elements.
+- Select a parent component for the new component if needed.
+- After adding, you can move and resize the component in the display.
+  ![](./src/assets/readme/v4Creating_Component.gif)
 
-+ You can add new routes and view all components and routes in the sidebar.
-![](./src/assets/readme/add_new_route.gif)
+- You can also duplicate components with Ctrl/Cmd C & V and see the component tree updated in real time.
+- Duplicate components will appear offset from their original and retain the same state and route assignments.
+  ![](./src/assets/readme/v4Copy_Child_Components.gif)
 
-+ When finished creating, you can export to a file location of your choice. Below is the exported file structure:
+- Child components will inherit the same parents, but parent components will not inherit duplicate children.
+  ![](./src/assets/readme/v4Copy_Parent_Component.gif)
+
+- The right-side drawer displays live code snippets for the selected element.  
+  ![](./src/assets/readme/v4Code_Snippet.gif)
+
+- You can view and add new routes and associated components in the left-hand drawer.
+  ![](./src/assets/readme/v4Copying_Route.gif)
+
+- State and actions can be created, edited, and assigned to components.
+  ![](./src/assets/readme/v4State_and_actions.gif)
+
+- When finished creating, you can export to a file location of your choice. Below is the exported file structure:
 
 ```
 public/
@@ -146,85 +178,72 @@ src/
 babel.config.js
 package.json
 ```
-[↥Back to top](#table-of-contents)
-
-### OverVue v2.0 How to
-+ Undo/Redo feature has been added to the top right of the program, you can also use CTRL+z and CTRL+y respectively.
-
-![](./src/assets/readme/undo_redo.gif)
-
-+ You can nest html elements in two different ways:
-    1. Upon creating a component and adding an html element into it, Select the component to make it the active component.
-    Go to the html elements tab and then double click on the html element you wish to be the target for your new elements.
-    Once the html element is selected, use the left hand panel and start adding elements like you were adding it to a component.
-
-    2. Similar to above, but instead of double clicking, you can press the down arrow icon on the html element button to enter it.
-    From there the view will change to the contents of that particular HTML element.
-    You can then add html elements like you would for a component using the left hand side
-    
-    ![](./src/assets/readme/nesting_html.gif)
-
-+ Setting layers on a component is done by right clicking the desired component on the component display and using the menu option
-  All components start on layer 1 by default.
-  
-![](./src/assets/readme/layers.gif)
-
-### OverVue v3.0 How to 
-+ Within the vuex dropdown menu, there are input fields that allow actions, state properties, and data properties to be created, and a multi-select drop-down menu for each that allows these properties to be added to specific components. 
-
-![](https://media.giphy.com/media/JucFNDgSDWwoKOpgH9/giphy.gif)
-+ Now users have the ability to edit all aspects of a component, from it's name, to Vuex properties. Navigate to the dropdown menu in the top left and select a component to edit its properties. 
-
-![](https://media.giphy.com/media/JucFNDgSDWwoKOpgH9/giphy.gif)
 
 [↥Back to top](#table-of-contents)
 
 ### Installation
 
-To download the development version, please visit https://www.Overvue.io
+To download the development version for windows or mac, please visit https://www.Overvue.io
 
 This app was developed using the Quasar framework, so first you will need to install the Quasar cli
+
 ```
 npm i -g @quasar/cli
 ```
+
 Install dependencies
+
 ```
 npm i
 ```
+
 To open Vuejs devtools (devtools should be open before devmode, otherwise, you can justforce reload electron app in dev mode after opening dev tools)
+
 ```
 ./node_modules/.bin/vue-devtools
 ```
+
 To run electron app in dev mode
+
 ```
 quasar dev -m electron
 ```
+
 To build a new .dmg / windows .exe
+
 ```
 quasar build -m electron
 ```
+
 ### WSL Installation
 
 **The ability to load the application and/or devtools requires a tool/application to run a linux display as WSL does not have any display drivers since it is based off of just a CLI.
-I recommend X410 (https://x410.dev/), althought it does cost $15, for ease of use. There are free options such as VcXsrv(https://sourceforge.net/projects/vcxsrv/) that you can get, but requires more set up.**
+I recommend X410 (https://x410.dev/), althought it does cost \$15, for ease of use. There are free options such as VcXsrv(https://sourceforge.net/projects/vcxsrv/) that you can get, but requires more set up.**
 
 If you choose to use x410, you will need to set the environment DISPLAY variable on each console:
 
 So, to open either the Vue devtools or OverVue in dev mode, first start your X Server then enter into the terminal:
 For WSL 1 :
+
 ```
 export DISPLAY=:0
 ```
+
 For WSL 2 :
+
 ```
 export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
 export LIBGL_ALWAYS_INDIRECT=1
 ```
-followed by the command for the devtools or devmode.  If you want both open, enter commands above followed by starting the devtools:
+
+followed by the command for the devtools or devmode. If you want both open, enter commands above followed by starting the devtools:
+
 ```
 ./node_modules/.bin/vue-devtools
 ```
+
 Then open a new terminal instance, set the DISPLAY value again (re-enter above command for DISPLAY), and start OverVue in dev mode:
+
 ```
 quasar dev -m electron
 ```
@@ -233,43 +252,48 @@ quasar dev -m electron
 
 For the Slack OAuth, you will need to create a Slack app through their website (https://api.slack.com/apps?new_app=1), so that you have your own Client Secret and Client ID. Then create two .env files (one for development and one for production).
 
-  1. Create a Slack App from the link above.  Copy your Client ID and Client Secret somewhere safe.
-  2. Create two .env files in the main root of this repository.  Name them:
-  ```
-  .env
-  .env.development
-  ```
-  3. Open .env and add these three environment variables.  Replace <client secret> and <client id> with the client id and client secret given to you when you created your Slack App.
-  ```
-  SLACK_CLIENT_SECRET = "<client secret>"
-  SLACK_CLIENT_ID = "<client id>"
-  SLACK_REDIRECT_URI = "overvue://slack"
-  ```
-  4. Next, open .env.development and do the same, just note that the SLACK_REDIRECT_URI will be different here:
-  ```
+1. Create a Slack App from the link above. Copy your Client ID and Client Secret somewhere safe.
+2. Create two .env files in the main root of this repository. Name them:
+
+```
+.env
+.env.development
+```
+
+3. Open .env and add these three environment variables. Replace <client secret> and <client id> with the client id and client secret given to you when you created your Slack App.
+
+```
+SLACK_CLIENT_SECRET = "<client secret>"
+SLACK_CLIENT_ID = "<client id>"
+SLACK_REDIRECT_URI = "overvue://slack"
+```
+
+4. Next, open .env.development and do the same, just note that the SLACK_REDIRECT_URI will be different here:
+
+```
 SLACK_CLIENT_SECRET = "<client secret>"
 SLACK_CLIENT_ID = "<client id>"
 SLACK_REDIRECT_URI = "overvuedev://test"
-  ```
+```
 
 [↥Back to top](#table-of-contents)
 
 ### Contributing
+
 We'd love for you to test this application out and submit any issues you encounter. Also feel free to fork to your own repo and submit PRs.
-Here are some features we're thinking about adding:
-+
-+
-+
-+ Option to export files in TypeScript
-+ Ability to place child components into HTML elements
-+ Integration with Storybook
-+ Edit State and Actions in the Vuex Store
+Here are some features we're thinking about adding: + + +
+
+- Option to export files in TypeScript
+- Ability to place child components into HTML elements
+- Integration with Storybook
+- Edit State and Actions in the Vuex Store
 
 If you make changes and wish to update the website, here is the link to the repo: https://github.com/TeamOverVue/OverVuePage
 
 [↥Back to top](#table-of-contents)
 
 ### Authors
+
 ```
 Contributors:
 Joseph Eisele @jeisele2
@@ -278,7 +302,7 @@ Dean Ohashi @dnohashi
 Drew Nguyen @drewngyen
 Alexander Havas @LOLDragoon
 Keriann Lin @keliphan
-Allison Pratt @allisons11 
+Allison Pratt @allisons11
 Joju Olaode @JojuOlaode
 Sean Grace @ziggrace
 Nicholas Schillaci @schillaci767
@@ -291,6 +315,7 @@ Ryan Bender @rdbender
 Sonny Nguyen @sn163
 
 ```
+
 Inspired by [PreVue](https://github.com/open-source-labs/PreVue)
 
 [↥Back to top](#table-of-contents)
