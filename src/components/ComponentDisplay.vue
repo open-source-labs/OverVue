@@ -460,7 +460,7 @@ export default {
   list-style: none;
 }
 .component-display {
-  height: 90vh;
+  height: 95.4vh;
   width: 100%;
   position: relative;
 }
