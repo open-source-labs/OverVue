@@ -104,7 +104,7 @@ export default {
   },
   created() {
     ipcRenderer.on("tokenReceived", (event, data) => {
-      console.log("data in SlackLoginWindow: ", data);
+      // console.log("data in SlackLoginWindow: ", data);
       // localforage.setItem('slackWebhookURL', data.incoming_webhook.url)
       //   .then(data => this.closeLogin())
       return this.saveToLocalForage(
@@ -113,7 +113,7 @@ export default {
       );
     });
     ipcRenderer.on("slackUser", (event, user) => {
-      console.log("user received in SlackLoginWindow: ", user);
+      // console.log("user received in SlackLoginWindow: ", user);
       // localforage.setItem('slackUser', user)
       //   .then(data => this.closeLogin())
       //   .catch(err => {
@@ -123,10 +123,10 @@ export default {
       return this.saveToLocalForage("slackUser", user);
     });
     ipcRenderer.on("slackError", (event, err) => {
-      console.log("err received in SlackLoginWindow: ", err);
+      // console.log("err received in SlackLoginWindow: ", err);
       this.printErrorMessage();
     });
-    console.log(`process.env: ${process.env}`);
+    // console.log(`process.env: ${process.env}`);
   },
   methods: {
     slackOauth: function() {
@@ -138,7 +138,7 @@ export default {
 
       this.isAuthenticating = true;
 
-      console.log("clicked");
+      // console.log("clicked");
       shell.openExternal(
         // `${slackBaseUrl}?response_type=${responseType}&scope=${scope}&client_id=${clientId}&redirect_uri=${redirectUri}`,
         `${slackBaseUrl}?scope=${scope}&redirect_uri=${redirectUri}&client_id=${clientId}`,
