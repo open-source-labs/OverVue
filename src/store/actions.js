@@ -56,7 +56,7 @@ const actions = {
   },
 
   [types.updateActiveComponentChildrenValue]: ({ commit }, payload) => {
-    console.log('payload', payload)
+    // console.log('payload', payload)
     commit(types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE, payload)
   },
 
@@ -208,7 +208,7 @@ const actions = {
   },
 
   [types.addToSelectedElementList]: ({ commit }, payload) => {
-    console.log('addToSelectedElementList')
+    // console.log('addToSelectedElementList')
     commit(types.ADD_TO_SELECTED_ELEMENT_LIST, payload)
   },
 
@@ -233,7 +233,7 @@ const actions = {
   },
 
   [types.deleteSelectedElement]: ({ commit }, payload) => {
-    console.log('deleteSelectedElement')
+    // console.log('deleteSelectedElement')
     commit(types.DELETE_SELECTED_ELEMENT, payload)
   },
 
@@ -246,12 +246,12 @@ const actions = {
   },
 
   [types.setClickedElementList]: ({ commit }, payload) => {
-    console.log('setClickedElementList:')
+    // console.log('setClickedElementList:')
     commit(types.SET_CLICKED_ELEMENT_LIST, payload)
   },
 
   [types.setSelectedElementList]: ({ commit }, payload) => {
-    console.log('setSelectedElementList:')
+    // console.log('setSelectedElementList:')
     if (payload) {
       commit(types.SET_SELECTED_ELEMENT_LIST, payload)
     }

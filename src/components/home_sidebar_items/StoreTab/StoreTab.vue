@@ -164,7 +164,7 @@ export default {
     },
     // Delete a selected state in the store
     deleteState (state) {
-      console.log('state: ', state);
+      // console.log('state: ', state);
       this.deleteUserState(state);
     }
   }

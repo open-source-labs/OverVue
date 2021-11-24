@@ -70,8 +70,8 @@ export default {
           nodes[component.name].children.push(nodes[child])
         })
       })
-      console.log(nodes)
-      console.log(result)
+      // console.log(nodes)
+      // console.log(result)
       return result
     },
     // Called by computedTree, calls transformToTree

@@ -618,7 +618,7 @@ const mutations = {
       // console.log('delete child: ', child)
       let childCount = 0
       const components = Object.values(state.componentMap)
-      console.log(components)
+      // console.log(components)
       for (const comp of components) {
         if (comp.children.includes(child[0])) childCount++
       }

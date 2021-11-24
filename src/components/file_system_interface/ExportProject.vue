@@ -236,8 +236,8 @@ export default {
       // add import mapstate and mapactions if they exist
       const currentComponent = this.componentMap[componentName]
       const routes = Object.keys(this.routes)
-      console.log(componentName)
-      console.log(currentComponent)
+      // console.log(componentName)
+      // console.log(currentComponent)
       if (!routes.includes(componentName)) {
         let imports = ''
         if (currentComponent.actions.length || currentComponent.state.length) {

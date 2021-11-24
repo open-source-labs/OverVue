@@ -459,7 +459,7 @@ export default {
       )
         this.editComponentName(name);
       this.setActiveComponent(this.activeComponent);
-      console.log(this.componentMap);
+      // console.log(this.componentMap);
     },
   },
   watch: {

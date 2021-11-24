@@ -103,7 +103,7 @@ export default {
     // Prevent Delete on changes to searchable multiselet
     stopDelete (e) {
       if (e.code === 'Backspce') e.stopPropogation();
-      console.log(e);
+      // console.log(e);
     },
     // adds a state to the currently selected component
     addStateToComp () {
@@ -112,7 +112,7 @@ export default {
     // delete selected state from active component
     deleteState (state) {
       this.deleteStateFromComponent(state);
-      console.log(this.activeComponentObj);
+      // console.log(this.activeComponentObj);
     },
 
   }

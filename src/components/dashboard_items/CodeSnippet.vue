@@ -121,7 +121,7 @@ export default {
       // eslint-disable-next-line no-unused-vars
       for (let el of htmlArr) {
         if (!el.text) {
-          console.log(htmlArr)
+          // console.log(htmlArr)
           outputStr += `    <${el}/>\n`
         } else {
           outputStr += `    `
