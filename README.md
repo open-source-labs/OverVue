@@ -18,6 +18,7 @@
 - [OverVue 2.0 Changelog](#changelog-20)
 - [OverVue 3.0 Changelog](#changelog-30)
 - [OverVue 4.0 Changelog](#changelog-40)
+- [How to Use](#how-to-use)
 - [Installation](#installation)
   - [General Installation](#installation)
   - [For WSL](#wsl-installation)
