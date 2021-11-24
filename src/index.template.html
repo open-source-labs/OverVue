@@ -7,7 +7,7 @@
     <meta name="description" content="<%= htmlWebpackPlugin.options.productDescription %>">
     <meta name="format-detection" content="telephone=no">
     <meta name="msapplication-tap-highlight" content="no">
-    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width<% if (htmlWebpackPlugin.options.ctx.mode.cordova) { %>, viewport-fit=cover<% } %>">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width<% if (htmlWebpackPlugin.options.ctx.mode.cordova || htmlWebpackPlugin.options.ctx.mode.capacitor) { %>, viewport-fit=cover<% } %>">
 
     <link rel="icon" type="image/png" href="statics/app-logo-128x128.png">
     <link rel="icon" type="image/png" sizes="16x16" href="statics/icons/favicon-16x16.png">
@@ -20,6 +20,9 @@
     integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
     crossorigin="anonymous"
   />
+      <!-- below script to allow vue devtools to connect to our electron dev app - https://devtools.vuejs.org/-->
+      <script src="http://localhost:8098"></script>
+      
   </head>
   <body>
     <!-- DO NOT touch the following DIV -->
