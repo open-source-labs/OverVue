@@ -12,6 +12,7 @@ import {
   breadthFirstSearch,
   breadthFirstSearchParent
 } from '../utils/search.util'
+import _ from 'lodash'
 
 const cloneDeep = require('lodash.clonedeep')
 
@@ -217,6 +218,72 @@ const mutations = {
     temp.state = newArray
     state.activeComponentObj = null
     state.activeComponentObj = temp
+  },
+
+  [types.DELETE_USER_STATE]: (state, payload) => {
+    // need to loop through components and take out matching state
+    for (const component in state.componentMap) {
+      // first don't go through if component is App or Homeview
+      if (component === 'App' || component === 'HomeView') continue;
+      // splice out if there is a match
+      const newState = state.componentMap[component].state;
+      const index = newState.indexOf(payload);
+      if (index > -1) {
+        newState.splice(index, 1);
+        state.componentMap[component].state = newState;
+      } else {
+        continue;
+      }
+    }
+    // remove from userState
+    let index = state.userState.indexOf(payload);
+    state.userState.splice(index, 1);
+  },
+
+  [types.DELETE_USER_ACTIONS]: (state, payload) => {
+    for (const component in state.componentMap) {
+      // first don't go through if component is App or Homeview
+      if (component === 'App' || component === 'HomeView') continue;
+      // splice out if there is a match
+      const newActions = state.componentMap[component].actions;
+      const index = newActions.indexOf(payload);
+      if (index > -1) {
+        newActions.splice(index, 1);
+        state.componentMap[component].actions = newActions;
+      } else {
+        continue;
+      }
+    }
+    let index = state.userActions.indexOf(payload);
+    state.userActions.splice(index, 1);
+  },
+  // copy and paste functionality
+  [types.COPY_ACTIVE_COMPONENT]: (state, payload) => {
+    // copy activeComponentObj and place in the state but without children
+    const copy = { ...state.activeComponentObj };
+    copy.componentName;
+    copy.children = [];
+    copy.isActive = false;
+    state.copiedComponent = copy;
+    // reset the number of copies created
+    state.copyNumber = 0;
+  },
+
+  [types.PASTE_ACTIVE_COMPONENT]: (state) => {
+    // check if copied exists 
+    if (state.copiedComponent) {
+      const { copiedComponent } = state;
+      // offset duplicate's coordinates
+      copiedComponent.x += 20;
+      copiedComponent.y += 20;
+      const pastedComponent = { ...copiedComponent }
+      state.componentMap[pastedComponent.componentName += ` (${state.copyNumber})`] = pastedComponent;
+      
+      // increment copyNumber
+      state.copyNumber += 1;
+      // track for pastedComponent
+      state.pastedComponent = pastedComponent;
+    }
   },
 
   // *** EDIT FUNCTIONALITY *** //////////////////////////////////////////////
@@ -434,13 +501,16 @@ const mutations = {
   },
 
   [types.ADD_PARENT]: (state, payload) => {
-    state.componentMap[payload.componentName].parent[state.parentSelected] = state.componentMap[state.parentSelected]
+    state.componentMap[payload.componentName].parent[state.parentSelected] = state.componentMap[state.parentSelected];
     state.componentMap[state.parentSelected].children.push(
       payload.componentName
     )
-    state.componentMap[state.parentSelected].htmlList.push(
-      payload.componentName
-    )
+  },
+
+  [types.ADD_COPIED_PARENT]: (state, payload) => {
+    const parentSelected = Object.values(payload.parent)[0].componentName;
+    // push into parent's children array
+    state.componentMap[parentSelected].children.push(payload.componentName)
   },
 
   [types.DELETE_ACTIVE_COMPONENT]: state => {
@@ -483,6 +553,7 @@ const mutations = {
   },
 
   [types.SET_ACTIVE_COMPONENT]: (state, payload) => {
+    // console.log('SET_ACTIVE_COMPONENT: ', payload)
     state.activeComponent = payload
     state.activeComponentObj = state.routes[state.activeRoute].filter(comp => comp.componentName === state.activeComponent)[0]
     state.activeHTML = ''
@@ -537,12 +608,13 @@ const mutations = {
   [types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE]: (state, payload) => {
     const temp = state.componentMap[state.activeComponent].children
     // delete block
+    console.log('UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUEs payload', payload)
     if (payload.length < temp.length) {
       const child = temp.filter(el => !payload.includes(el))
       // console.log('delete child: ', child)
       let childCount = 0
       const components = Object.values(state.componentMap)
-      console.log(components)
+      // console.log(components)
       for (const comp of components) {
         if (comp.children.includes(child[0])) childCount++
       }
@@ -566,13 +638,14 @@ const mutations = {
         .children.filter(el => !payload.includes(el))
       state.componentMap[child[0]].parent[state.activeComponent] = state.componentMap[state.activeComponent]
     }
-    const copy = [...state.componentMap[state.activeComponent].htmlList]
-    for (const x in payload) {
-      if (!copy.includes(payload[x])) {
-        copy.push(payload[x])
-      }
-    }
-    state.componentMap[state.activeComponent].htmlList = copy
+    // Adding children strings to htmlList -> removed to prevent JSON parser errors
+    // const copy = [...state.componentMap[state.activeComponent].htmlList]
+    // for (const x in payload) {
+    //   if (!copy.includes(payload[x])) {
+    //     copy.push(payload[x])
+    //   }
+    // }
+    // state.componentMap[state.activeComponent].htmlList = copy
   },
   // invoked when element is double clicked, changing the boolean value
   [types.UPDATE_OPEN_MODAL]: (state, payload) => {

@@ -56,7 +56,7 @@ const actions = {
   },
 
   [types.updateActiveComponentChildrenValue]: ({ commit }, payload) => {
-    console.log('payload', payload)
+    // console.log('payload', payload)
     commit(types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE, payload)
   },
 
@@ -76,6 +76,23 @@ const actions = {
     commit(types.UPDATE_COMPONENT_SIZE, payload)
   },
 
+  // copy the active component
+  [types.copyActiveComponent]: ({ commit }, payload) => {
+    commit(types.COPY_ACTIVE_COMPONENT, payload)
+  },
+  // paste the active component copy
+  [types.pasteActiveComponent]: ({ commit, state }) => {
+    commit(types.PASTE_ACTIVE_COMPONENT);
+    // if no other parents, update as parent of active route in componentMap
+    if (!Object.keys(state.pastedComponent.parent).length) {
+      commit(types.ADD_COMPONENT_TO_ACTIVE_ROUTE_CHILDREN, state.pastedComponent.componentName)
+      // if parents, update parent of pastedComponent to include as a child
+    } else {
+      commit(types.ADD_COPIED_PARENT, state.pastedComponent)
+    };
+    // add pastedComponent as a child of route in activeRoutes
+    commit(types.ADD_COMPONENT_TO_ACTIVE_ROUTE_IN_ROUTE_MAP, state.pastedComponent);
+  },
   // End of componentDisplay Section//////////////////////////////////
 
   // Actions that affect Routing //////////////////////////////////////
@@ -162,6 +179,20 @@ const actions = {
   [types.deleteStateFromComponent]: ({ commit }, payload) => {
     commit(types.DELETE_STATE_FROM_COMPONENT, payload)
   },
+  // Delete user actions from vuex store
+  [types.deleteUserActions]: ({ state, commit }, payload) => {
+    commit(types.DELETE_USER_ACTIONS, payload)
+  },
+  
+  [types.deleteUserState]: ({ state, commit }, payload) => {
+    // loops through component map and deletes all props
+    // Object.keys(state.componentMap).forEach(prop => {
+    //   commit(types.SET_ACTIVE_COMPONENT, prop.componentName)
+    //   commit(types.REMOVE_ACTION_FROM_COMPONENT, payload)
+    // })
+    commit(types.DELETE_USER_STATE, payload)
+  },
+  
   // End of Vuex Actions section //////////////////////////////////////////
 
   // Action primarily for edit functionality////////////////////////////////////////
@@ -177,6 +208,7 @@ const actions = {
   },
 
   [types.addToSelectedElementList]: ({ commit }, payload) => {
+    // console.log('addToSelectedElementList')
     commit(types.ADD_TO_SELECTED_ELEMENT_LIST, payload)
   },
 
@@ -201,6 +233,7 @@ const actions = {
   },
 
   [types.deleteSelectedElement]: ({ commit }, payload) => {
+    // console.log('deleteSelectedElement')
     commit(types.DELETE_SELECTED_ELEMENT, payload)
   },
 
@@ -213,10 +246,12 @@ const actions = {
   },
 
   [types.setClickedElementList]: ({ commit }, payload) => {
+    // console.log('setClickedElementList:')
     commit(types.SET_CLICKED_ELEMENT_LIST, payload)
   },
 
   [types.setSelectedElementList]: ({ commit }, payload) => {
+    // console.log('setSelectedElementList:')
     if (payload) {
       commit(types.SET_SELECTED_ELEMENT_LIST, payload)
     }
@@ -238,7 +273,7 @@ const actions = {
     commit(types.SET_IMAGE_PATH, payload.imagePath)
     commit(types.SET_COMPONENT_MAP, payload.componentMap)
     commit(types.SET_ROUTES, payload.routes)
-  }
+  },
 
   // end of loading///////////////////////////////////////////////////
 }

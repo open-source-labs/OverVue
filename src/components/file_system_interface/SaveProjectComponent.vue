@@ -16,6 +16,8 @@ import fs from 'fs-extra'
 const { remote } = require('electron')
 const Mousetrap = require('mousetrap')
 
+// might not be optimal to import like this, since entire slackApiStuff object is imported while only one of its properties is used
+
 export default {
   name: 'SaveProjetComponent',
   methods: {
@@ -42,7 +44,9 @@ export default {
     },
     // deletes anything attached to html element
     parseAndDelete (htmlList) {
+      // console.log('htmlList in saveProjectComp: ', htmlList)
       htmlList.forEach(element => {
+        if (!Array.isArray(element.children)) console.log('This should be an array', element.children)
         if (element.children.length > 0) {
           // console.log('in recurse')
           this.parseAndDelete(element.children)
@@ -73,7 +77,7 @@ export default {
           // console.log(deleteKey, 'Key is cleared!')
         })
         .catch(function (err) {
-          console.log(err)
+          // console.log(err)
         })
 
       let fileName = this.parseFileName(data)
@@ -110,8 +114,35 @@ export default {
           //   console.log('saved ', fileName, 'to local forage')
           //   console.log('result is', result)
           // })
+
         // console.log('PROJECT SAVED AS A JSON OBJECT!')
+        localforage.getItem('slackWebhookURL', (err, value) => {
+          // TODO: handle error
+          console.log('error: ', err)
+          // console.log('slackWebhookURL: ', value)
+          if (value) this.notifySlack(fileName, value)
+        })
       }
+    },
+    // creates a popup dialog box, where if you click on yes, it will send a message to our test Slack workspace
+    notifySlack (fileName, url) {
+      // TODO: add feature to store slack user's name into local memory here if we decide to
+
+      remote.dialog.showMessageBox({
+        title: 'Notify Slack?',
+        message: 'Save successful. Would you like to notify your team on Slack?',
+        buttons: ['No', 'Yes'],
+        defaultId: 1
+      },
+      response => {
+        if (response === 1) {
+          fetch(url, {
+            method: 'POST',
+            body: JSON.stringify({ 'text': `A team member has saved an OverVue project file: ${fileName}` }),
+            headers: { 'Content-Type': 'application/json' }
+          })
+        }
+      })
     }
   },
   // on components creation these key presses will trigger save project

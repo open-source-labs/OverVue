@@ -99,13 +99,13 @@ i
   text-transform capitalize
 
 .q-tab-panel
-  height 80%
+  height 100%
   // matchs the code editor bg
   background $subprimary
 
 // changes the length of the tab panels
 .q-tab-panels
-  height 80%
+  height 100%
   padding 0 !important
 
 .q-tabs

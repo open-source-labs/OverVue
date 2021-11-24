@@ -8,7 +8,7 @@ Description:
   -->
 
 <template>
-  <div class="container">
+  <div class="inner-div">
     <q-card id="store-cards" v-if="this.activeComponentObj">
       <q-tabs
         v-model="tab"
@@ -26,13 +26,15 @@ Description:
       </q-tabs>
       <q-tab-panels v-model="tab" animated class="html-bg text-white">
         <q-tab-panel name="code">
-          <CodeSnippet/>
+          <CodeSnippet />
         </q-tab-panel>
-       <q-tab-panel name="html">
+        <q-tab-panel name="html">
           <HTMLQueue />
         </q-tab-panel>
         <q-tab-panel name="state">
-          <p v-if='!this.activeComponentObj.state.length'>No state in component</p>
+          <p v-if="!this.activeComponentObj.state.length">
+            No state in component
+          </p>
           <ul id="stateList">
             <li v-for="comp in compObj.state" :key="comp">
               {{ comp }}
@@ -40,7 +42,9 @@ Description:
           </ul>
         </q-tab-panel>
         <q-tab-panel name="actions">
-          <p v-if='!this.activeComponentObj.actions.length'>No actions in component</p>
+          <p v-if="!this.activeComponentObj.actions.length">
+            No actions in component
+          </p>
           <ul id="actionList">
             <li v-for="comp in compObj.actions" :key="comp">
               {{ comp }}
@@ -48,7 +52,9 @@ Description:
           </ul>
         </q-tab-panel>
         <q-tab-panel name="props">
-          <p v-if='!this.activeComponentObj.props.length'>No props in component</p>
+          <p v-if="!this.activeComponentObj.props.length">
+            No props in component
+          </p>
           <ul id="propsList">
             <li v-for="comp in compObj.props" :key="comp">
               {{ comp }}
@@ -62,30 +68,30 @@ Description:
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import HTMLQueue from './HTMLQueue'
-import CodeSnippet from './CodeSnippet'
+import { mapState } from "vuex";
+import HTMLQueue from "./HTMLQueue";
+import CodeSnippet from "./CodeSnippet";
 
 export default {
-  name: 'ComponentDetails',
+  name: "ComponentDetails",
   components: {
     HTMLQueue,
     CodeSnippet
   },
   computed: {
-    ...mapState(['activeComponentObj']),
+    ...mapState(["activeComponentObj"]),
     compObj: {
-      get () {
-        return this.activeComponentObj
+      get() {
+        return this.activeComponentObj;
       }
     }
   },
-  data () {
+  data() {
     return {
-      tab: 'code'
-    }
+      tab: "code"
+    };
   }
-}
+};
 </script>
 
 <style lang="stylus" scoped>
@@ -125,13 +131,13 @@ i
   text-transform capitalize
 
 .q-tab-panel
-  height 80%
+  height 100%
   // matchs the code editor bg
   background $subprimary
 
 // changes the length of the tab panels
 .q-tab-panels
-  height 80%
+  height 100%
   padding 0 !important
 
 .q-tabs
@@ -141,16 +147,25 @@ i
   background black
 
 #store-cards
-  height 80%
+  height 100%
   border-radius 0
   background #737578
 
 #blank-card
-  height 80%
+  height 100%
   border-radius 0
   background-color #202122
 
 .html-bg
   // give html background color of grey
   background-color #202122
+
+
+  .inner-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-content: stretch;
+  height: 100%;
+}
 </style>

@@ -17,10 +17,14 @@
 * [Features](#features)
 * [OverVue 2.0 Changelog](#changelog-20)
 * [OverVue 3.0 Changelog](#changelog-30)
+* [OverVue 4.0 Changelog](#changelog-40)
 * [Tutorial](#how-to-use)
   + [New Features Tutorial 2.0](#overvue-v20-how-to)
   + [New Features Tutorial 3.0](#overvue-v30-how-to)
-* [How to Run](#running-a-local-version)
+* [Installation](#installation)
+  + [General Installation](#installation)
+  + [For WSL](#wsl-installation)
+  + [For Slack OAuth](#slack-oauth)
 * [Contributing](#contributing)
 * [Authors](#authors)
 
@@ -77,6 +81,24 @@
   <li>More robust code snippets with Vuex props, state, and actions included</li>
   <li>Bug fixes for parent/child issues</li>
   <li>Improved Documentation for easier onboarding of new contributors</li>
+  </ul>
+</details>
+
+[↥Back to top](#table-of-contents)
+### Changelog 4.0
+<details><summary>OverVue 4.0</summary>
+  <ul>
+  <li>Integrated Slack through a Slack Login button to link user's slack channel to their OverVue instance</li>
+  <li>After logging in with Slack, user's have the ability to send a message to their selected Slack channel after saving</li>
+  <li>Implemented the ability to delete State and Actions from the store</li>
+  <li>Added the feature to quickly copy/paste Components through hotkeys</li>
+  <li>Reworked the interface to give users a more intuitive experience</li>
+    <li>Moved bottom dashboard to the right</li>
+    <li>Features on the left are geared toward creation/editing components</li>
+    <li>Features on the right are geared toward viewing overall hierarchy of App Prototype</li>
+    <li>Component Editor menu now switches between create/edit mode depending on if a Component is selected</li>
+    <li>Vuex Store and Actions now moved to left menu with ability to view/create/delete state and actions</li>
+  <li>Implemented Vue Devtools for development ease</li>
   </ul>
 </details>
 
@@ -157,7 +179,10 @@ package.json
 
 [↥Back to top](#table-of-contents)
 
-### Running a local version
+### Installation
+
+To download the development version, please visit https://www.Overvue.io
+
 This app was developed using the Quasar framework, so first you will need to install the Quasar cli
 ```
 npm i -g @quasar/cli
@@ -166,28 +191,78 @@ Install dependencies
 ```
 npm i
 ```
+To open Vuejs devtools (devtools should be open before devmode, otherwise, you can justforce reload electron app in dev mode after opening dev tools)
+```
+./node_modules/.bin/vue-devtools
+```
 To run electron app in dev mode
 ```
 quasar dev -m electron
 ```
-**For WSL users, the ability to load the application requires a tool/application to run a linux display as WSL does not have any display drivers 
-since it is based off of just a CLI.
-I recommend X410 (https://www.microsoft.com/en-us/p/x410/9nlp712zmn9q), althought it does cost $10, for ease of use. There are free options such as VcXsrv(https://sourceforge.net/projects/vcxsrv/) that you can get, but require more set up.**
-
 To build a new .dmg / windows .exe
 ```
 quasar build -m electron
 ```
+### WSL Installation
+
+**The ability to load the application and/or devtools requires a tool/application to run a linux display as WSL does not have any display drivers since it is based off of just a CLI.
+I recommend X410 (https://x410.dev/), althought it does cost $15, for ease of use. There are free options such as VcXsrv(https://sourceforge.net/projects/vcxsrv/) that you can get, but requires more set up.**
+
+If you choose to use x410, you will need to set the environment DISPLAY variable on each console:
+
+So, to open either the Vue devtools or OverVue in dev mode, first start your X Server then enter into the terminal:
+For WSL 1 :
+```
+export DISPLAY=:0
+```
+For WSL 2 :
+```
+export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
+export LIBGL_ALWAYS_INDIRECT=1
+```
+followed by the command for the devtools or devmode.  If you want both open, enter commands above followed by starting the devtools:
+```
+./node_modules/.bin/vue-devtools
+```
+Then open a new terminal instance, set the DISPLAY value again (re-enter above command for DISPLAY), and start OverVue in dev mode:
+```
+quasar dev -m electron
+```
+
+### Slack OAuth
+
+For the Slack OAuth, you will need to create a Slack app through their website (https://api.slack.com/apps?new_app=1), so that you have your own Client Secret and Client ID. Then create two .env files (one for development and one for production).
+
+  1. Create a Slack App from the link above.  Copy your Client ID and Client Secret somewhere safe.
+  2. Create two .env files in the main root of this repository.  Name them:
+  ```
+  .env
+  .env.development
+  ```
+  3. Open .env and add these three environment variables.  Replace <client secret> and <client id> with the client id and client secret given to you when you created your Slack App.
+  ```
+  SLACK_CLIENT_SECRET = "<client secret>"
+  SLACK_CLIENT_ID = "<client id>"
+  SLACK_REDIRECT_URI = "overvue://slack"
+  ```
+  4. Next, open .env.development and do the same, just note that the SLACK_REDIRECT_URI will be different here:
+  ```
+SLACK_CLIENT_SECRET = "<client secret>"
+SLACK_CLIENT_ID = "<client id>"
+SLACK_REDIRECT_URI = "overvuedev://test"
+  ```
 
 [↥Back to top](#table-of-contents)
 
 ### Contributing
 We'd love for you to test this application out and submit any issues you encounter. Also feel free to fork to your own repo and submit PRs.
 Here are some features we're thinking about adding:
++
++
++
 + Option to export files in TypeScript
 + Ability to place child components into HTML elements
 + Integration with Storybook
-+ Ability to add a copy of an existing component from one route to another
 + Edit State and Actions in the Vuex Store
 
 If you make changes and wish to update the website, here is the link to the repo: https://github.com/TeamOverVue/OverVuePage
@@ -209,6 +284,11 @@ Sean Grace @ziggrace
 Nicholas Schillaci @schillaci767
 Terry Tilley @codeByCandlelight
 Faraz Moallemi @farazmoallemi
+Alex Lu @aleckslu
+Jeffrey Sul @jeffreysul
+Kenny Lee @kennyea
+Ryan Bender @rdbender
+Sonny Nguyen @sn163
 
 ```
 Inspired by [PreVue](https://github.com/open-source-labs/PreVue)

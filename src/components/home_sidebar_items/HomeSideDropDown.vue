@@ -35,7 +35,7 @@ Description:
 
 <script>
 import RouteDisplay from './RouteDisplay.vue'
-import EditDeleteComponents from './EditDeleteComponents.vue'
+import EditDeleteComponents from './ComponentTab/EditDeleteComponents.vue'
 import VuexForm from './VuexForm.vue'
 
 export default {

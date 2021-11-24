@@ -16,8 +16,7 @@ Description:
       v-model="code"
       language="js"
       :line-numbers="lineNumbers"
-      class="code-editor"
-      :style="{ height: `${height}vh` }"
+      class="code-editor fill"
       :readonly="true"
     />
   </div>
@@ -122,7 +121,7 @@ export default {
       // eslint-disable-next-line no-unused-vars
       for (let el of htmlArr) {
         if (!el.text) {
-          console.log(htmlArr)
+          // console.log(htmlArr)
           outputStr += `    <${el}/>\n`
         } else {
           outputStr += `    `
