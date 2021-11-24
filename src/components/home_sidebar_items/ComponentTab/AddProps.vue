@@ -88,7 +88,7 @@ export default {
     // Prevent Delete on changes to searchable multiselect
     stopDelete (e) {
       if (e.code === 'Backspace') e.stopPropogation()
-      console.log(e)
+      // console.log(e)
     },
 
     // Create's a new prop that will be stored in the userProps array within store, and it will be added to the props drop-down menu

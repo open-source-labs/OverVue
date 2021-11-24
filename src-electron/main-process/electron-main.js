@@ -79,7 +79,7 @@ function sendTokenRequest() {
       if (decoded.error) {
         return slackErrorHandler(decoded.error)
       }
-      console.log('Is there an error? ', !!decoded.error, 'if true, this shouldnt be logging')
+      // console.log('Is there an error? ', !!decoded.error, 'if true, this shouldnt be logging')
       mainWindow.webContents.send("tokenReceived", decoded);
       // getSlackUser(decoded.access_token, decoded.authed_user.id)
     });

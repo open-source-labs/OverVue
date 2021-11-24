@@ -141,14 +141,14 @@ export default {
     window.addEventListener('copy', () => {
       // if there is an activeComponent, copy info to state using dispatch
       if (this.activeComponent) {
-        console.log('copied!', this.activeComponent);
+        // console.log('copied!', this.activeComponent);
         this.$store.dispatch("copyActiveComponent");
       }
     });
 
     window.addEventListener('paste', () => {
       this.$store.dispatch("pasteActiveComponent");
-      console.log('pasted');
+      // console.log('pasted');
     })
   },
 
@@ -352,7 +352,7 @@ export default {
 
     // unhighlights all inactive components
     onActivated(componentData) {
-      console.log('onActivated - comp display, componentData', componentData)
+      // console.log('onActivated - comp display, componentData', componentData)
       if (this.$refs.boxes) {
         this.$refs.boxes.forEach(element => {
           if (element.$attrs.id !== componentData.componentName) {
@@ -389,7 +389,7 @@ export default {
 
     // user can change component's layer order
     handleLayer(e) {
-      console.log('handeLayer\'s e: ', e)
+      // console.log('handeLayer\'s e: ', e)
       e.preventDefault();
       const payload = {
         activeComponent: this.activeComponent,
@@ -411,7 +411,7 @@ export default {
     
     // event handler for copying (ctrl+C)
     copyActiveComponent() {
-      console.log('copied');
+      // console.log('copied');
     }
 
   },

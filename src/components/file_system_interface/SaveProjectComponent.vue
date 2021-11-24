@@ -75,7 +75,7 @@ export default {
           // console.log(deleteKey, 'Key is cleared!')
         })
         .catch(function (err) {
-          console.log(err)
+          // console.log(err)
         })
 
       let fileName = this.parseFileName(data)
@@ -115,8 +115,9 @@ export default {
 
         // console.log('PROJECT SAVED AS A JSON OBJECT!')
         localforage.getItem('slackWebhookURL', (err, value) => {
+          // TODO: handle error
           console.log('error: ', err)
-          console.log('slackWebhookURL: ', value)
+          // console.log('slackWebhookURL: ', value)
           if (value) this.notifySlack(fileName, value)
         })
       }

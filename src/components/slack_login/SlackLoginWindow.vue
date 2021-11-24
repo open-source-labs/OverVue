@@ -42,6 +42,16 @@
 import localforage from 'localforage'
 import { shell, ipcRenderer } from 'electron'
 
+/**
+ * ! Important: Slack Login currently doesn't work properly in Dev Mode.  Will require a fix
+ * * The deeplinking doesn't work properly unless in production mode.  To specifically test Slack Oauth feature,
+ * * you must build out a production app.  To ease this process, in the quasar webpack, change the electron bundler
+ * * option from 'builder' to 'packager'
+ * * Updating Electron/Quasar/Vue versions to current versions might help, but there will be a slew or issues to deal with
+ * ! For WSL users: Aside from WSL issues mentioned in README.md, you will also need to allow the deeplinking to open
+ * ! the default browser in your Windows environment, since your WSL Linux environment doesn't have one
+ */
+
 export default {
   name: 'SlackLoginWindow',
   data () {
@@ -53,13 +63,13 @@ export default {
   },
   created () {
     ipcRenderer.on('tokenReceived', (event, data) => {
-      console.log('data in SlackLoginWindow: ', data)
+      // console.log('data in SlackLoginWindow: ', data)
       // localforage.setItem('slackWebhookURL', data.incoming_webhook.url)
       //   .then(data => this.closeLogin())
       return this.saveToLocalForage('slackWebhookURL', data.incoming_webhook.url)
     })
     ipcRenderer.on('slackUser', (event, user) => {
-      console.log('user received in SlackLoginWindow: ', user)
+      // console.log('user received in SlackLoginWindow: ', user)
       // localforage.setItem('slackUser', user)
       //   .then(data => this.closeLogin())
       //   .catch(err => {
@@ -69,10 +79,10 @@ export default {
       return this.saveToLocalForage('slackUser', user)
     })
     ipcRenderer.on('slackError', (event, err) => {
-      console.log('err received in SlackLoginWindow: ', err)
+      // console.log('err received in SlackLoginWindow: ', err)
       this.printErrorMessage()
     })
-    console.log(`process.env: ${process.env}`)
+    // console.log(`process.env: ${process.env}`)
   },
   methods: {
     slackOauth: function () {
@@ -84,7 +94,7 @@ export default {
 
       this.isAuthenticating = true;
 
-      console.log('clicked')
+      // console.log('clicked')
       shell.openExternal(
         // `${slackBaseUrl}?response_type=${responseType}&scope=${scope}&client_id=${clientId}&redirect_uri=${redirectUri}`,
         `${slackBaseUrl}?scope=${scope}&redirect_uri=${redirectUri}&client_id=${clientId}`,

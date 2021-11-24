@@ -103,7 +103,7 @@ export default {
     // Prevent Delete on changes to searchable multiselect
     stopDelete (e) {
       if (e.code === 'Backspce') e.stopPropogation();
-      console.log(e);
+      // console.log(e);
     },
     // adds an action to the currently selected component
     addActionToComp () {
@@ -112,7 +112,7 @@ export default {
     // delete selected action from active component
     deleteAction (action) {
       this.deleteActionFromComponent(action);
-      console.log(this.activeComponentObj);
+      // console.log(this.activeComponentObj);
     },
 
   }

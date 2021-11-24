@@ -42,7 +42,6 @@ export default {
   methods: {
     // Called by transformToTree, formats componentMap
     formatComponentMap (compMap) {
-      // console.log('compMap', compMap)
       let result = []
       Object.values(compMap).forEach((compData) => {
         result.push({
@@ -50,8 +49,6 @@ export default {
           children: compData.children
         })
       })
-      console.log(JSON.stringify(result))
-      // console.log('Formatcomponent map result', result)
       return result
     },
     // Called by buildTree, transforms componentMap
@@ -70,8 +67,8 @@ export default {
           nodes[component.name].children.push(nodes[child])
         })
       })
-      console.log(nodes)
-      console.log(result)
+      // console.log(nodes)
+      // console.log(result)
       return result
     },
     // Called by computedTree, calls transformToTree
