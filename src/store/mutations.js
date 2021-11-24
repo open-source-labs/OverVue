@@ -261,7 +261,7 @@ const mutations = {
   [types.COPY_ACTIVE_COMPONENT]: (state, payload) => {
     // copy activeComponentObj and place in the state but without children
     const copy = { ...state.activeComponentObj };
-    copy.componentName;
+    // copy.componentName;
     copy.children = [];
     copy.isActive = false;
     state.copiedComponent = copy;
@@ -278,7 +278,7 @@ const mutations = {
       copiedComponent.y += 20;
       const pastedComponent = { ...copiedComponent }
       state.componentMap[pastedComponent.componentName += ` (${state.copyNumber})`] = pastedComponent;
-      
+
       // increment copyNumber
       state.copyNumber += 1;
       // track for pastedComponent
