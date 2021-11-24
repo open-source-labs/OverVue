@@ -42,7 +42,7 @@
     "node-cli-handle-error": "^1.0.0",
     "node-gyp": "^8.4.0",
     "npm": "^6.14.15",
-    "prismjs": "^1.24.1",
+    "prismjs": "^1.25.0",
     "quasar": "^1.0.0",
     "quasar-dotenv": "^1.0.5",
     "vue-custom-context-menu": "^3.0.1",
