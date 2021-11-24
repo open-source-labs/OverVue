@@ -14,6 +14,7 @@ Description:
       type="tree"
       :zoomable="true"
       :radius="4"
+      :duration="10"
     ></tree>
   </div>
 </template>
@@ -36,7 +37,8 @@ export default {
   },
   data () {
     return {
-      tree: null
+      tree: null,
+      treeKey: 'key'
     }
   },
   methods: {

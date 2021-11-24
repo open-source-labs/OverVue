@@ -32,7 +32,7 @@ import 'vue-prism-editor/dist/VuePrismEditor.css'
 export default {
   data () {
     return {
-      code: `Your component boilerplate will be displayed here.`,
+      // code: `Your component boilerplate will be displayed here.`,
       lineNumbers: true,
       height: null
     }
@@ -42,7 +42,17 @@ export default {
   },
   computed: {
     // needs access to current component aka activeComponent
-    ...mapState(['componentMap', 'activeComponent', 'activeComponentObj'])
+    ...mapState(['componentMap', 'activeComponent', 'activeComponentObj']),
+    code: function() {
+      let computedCode = 'Your component boilerplate will be displayed here.'
+      if (this.activeComponent) {
+        computedCode = this.createCodeSnippet(
+          this.activeComponentObj.componentName,
+          this.activeComponentObj.children
+        )
+      }
+      return computedCode
+    }
   },
   methods: {
     getWindowHeight (e) {
@@ -227,24 +237,24 @@ export default {
   },
   watch: {
     // watches activeComponentObj for changes to make it reactive upon mutation
-    activeComponentObj: {
-      handler () {
-        // console.log(this.activeComponentObj.children)
-        this.code = this.createCodeSnippet(
-          this.activeComponentObj.componentName,
-          this.activeComponentObj.children
-        )
-      }
-    },
+    // activeComponentObj: {
+    //   handler () {
+    //     // console.log(this.activeComponentObj.children)
+    //     this.code = this.createCodeSnippet(
+    //       this.activeComponentObj.componentName,
+    //       this.activeComponentObj.children
+    //     )
+    //   }
+    // },
     // watches componentMap for changes to make it reactive upon mutation
-    componentMap: {
-      handler () {
-        this.code = this.createCodeSnippet(
-          this.activeComponentObj.componentName,
-          this.activeComponentObj.children
-        )
-      }
-    }
+    // componentMap: {
+    //   handler () {
+    //     this.code = this.createCodeSnippet(
+    //       this.activeComponentObj.componentName,
+    //       this.activeComponentObj.children
+    //     )
+    //   }
+    // }
   },
   mounted () {
     // https://vuejs.org/v2/api/#Vue-nextTick
@@ -256,17 +266,17 @@ export default {
     })
   },
   // Updates code snippet when adding children
-  updated () {
-    if (this.componentMap[this.activeComponent]) {
-      this.code = `${this.createCodeSnippet(
-        this.activeComponent,
-        this.componentMap[this.activeComponent].children
-      )}`
-      // else if there is not existing component/no active component
-    } else {
-      this.code = `Your component boilerplate will be displayed here.`
-    }
-  },
+  // updated () {
+    // if (this.componentMap[this.activeComponent]) {
+    //   this.code = `${this.createCodeSnippet(
+    //     this.activeComponent,
+    //     this.componentMap[this.activeComponent].children
+    //   )}`
+    //   // else if there is not existing component/no active component
+    // } else {
+    //   this.code = `Your component boilerplate will be displayed here.`
+    // }
+  // },
   beforeDestroy () {
     window.removeEventListener('resize', this.getWindowHeight)
   }
