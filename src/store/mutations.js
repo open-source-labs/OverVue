@@ -608,7 +608,7 @@ const mutations = {
   [types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE]: (state, payload) => {
     const temp = state.componentMap[state.activeComponent].children
     // delete block
-    console.log('UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUEs payload', payload)
+    // console.log('UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUEs payload', payload)
     if (payload.length < temp.length) {
       const child = temp.filter(el => !payload.includes(el))
       // console.log('delete child: ', child)
