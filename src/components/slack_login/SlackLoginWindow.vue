@@ -47,6 +47,7 @@ import { shell, ipcRenderer } from 'electron'
  * * The deeplinking doesn't work properly unless in production mode.  To specifically test Slack Oauth feature,
  * * you must build out a production app.  To ease this process, in the quasar webpack, change the electron bundler
  * * option from 'builder' to 'packager'
+ * * Updating Electron/Quasar/Vue versions to current versions might help, but there will be a slew or issues to deal with
  * ! For WSL users: Aside from WSL issues mentioned in README.md, you will also need to allow the deeplinking to open
  * ! the default browser in your Windows environment, since your WSL Linux environment doesn't have one
  */
