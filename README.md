@@ -17,6 +17,7 @@
 * [Features](#features)
 * [OverVue 2.0 Changelog](#changelog-20)
 * [OverVue 3.0 Changelog](#changelog-30)
+* [OverVue 4.0 Changelog](#changelog-40)
 * [Tutorial](#how-to-use)
   + [New Features Tutorial 2.0](#overvue-v20-how-to)
   + [New Features Tutorial 3.0](#overvue-v30-how-to)
@@ -80,6 +81,24 @@
   <li>More robust code snippets with Vuex props, state, and actions included</li>
   <li>Bug fixes for parent/child issues</li>
   <li>Improved Documentation for easier onboarding of new contributors</li>
+  </ul>
+</details>
+
+[↥Back to top](#table-of-contents)
+### Changelog 4.0
+<details><summary>OverVue 4.0</summary>
+  <ul>
+  <li>Integrated Slack through a Slack Login button to link user's slack channel to their OverVue instance</li>
+  <li>After logging in with Slack, user's have the ability to send a message to their selected Slack channel after saving</li>
+  <li>Implemented the ability to delete State and Actions from the store</li>
+  <li>Added the feature to quickly copy/paste Components through hotkeys</li>
+  <li>Reworked the interface to give users a more intuitive experience</li>
+    <li>Moved bottom dashboard to the right</li>
+    <li>Features on the left are geared toward creation/editing components</li>
+    <li>Features on the right are geared toward viewing overall hierarchy of App Prototype</li>
+    <li>Component Editor menu now switches between create/edit mode depending on if a Component is selected</li>
+    <li>Vuex Store and Actions now moved to left menu with ability to view/create/delete state and actions</li>
+  <li>Implemented Vue Devtools for development ease</li>
   </ul>
 </details>
 
@@ -161,6 +180,8 @@ package.json
 [↥Back to top](#table-of-contents)
 
 ### Installation
+
+To download the development version, please visit https://www.Overvue.io
 
 This app was developed using the Quasar framework, so first you will need to install the Quasar cli
 ```
@@ -263,6 +284,11 @@ Sean Grace @ziggrace
 Nicholas Schillaci @schillaci767
 Terry Tilley @codeByCandlelight
 Faraz Moallemi @farazmoallemi
+Alex Lu @aleckslu
+Jeffrey Sul @jeffreysul
+Kenny Lee @kennyea
+Ryan Bender @rdbender
+Sonny Nguyen @sn163
 
 ```
 Inspired by [PreVue](https://github.com/open-source-labs/PreVue)
