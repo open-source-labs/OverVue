@@ -15,13 +15,13 @@ Description:
       indicator-color="secondary"
       align="left"
     >
-      <q-tab name="detail" id="label-text" style="border-right: 3px solid black"
+      <q-tab name="detail" label="Component Details" id="label-text" style="border-right: 3px solid black"
         ><i class="fas fa-code"></i
       ></q-tab>
-      <q-tab name="tree" id="label-text"
+      <q-tab name="tree" label="Project Tree" id="label-text"
         ><i class="fas fa-code-branch fa-flip-vertical"
       /></q-tab>
-      <q-tab name="routes" id="label-text"
+      <q-tab name="routes" label="Routes" id="label-text"
         ><i class="fas fa-project-diagram"></i
       ></q-tab>
     </q-tabs>
@@ -90,15 +90,6 @@ export default {
     }
   },
   watch: {
-    // toggles dashboard to "Component Details" tab when a components is selected
-    // activeComponent: function () {
-    //   if (this.activeComponent !== '') {
-    //     this.tab = 'detail'
-    //   } else {
-    //     // otherwise toggle dashboard to 'Project Tree' tab if no component is selected
-    //     this.tab = 'tree'
-    //   }
-    // },
     // otherwise toggle dashboard to 'Project Tree' tab if no component is selected or the
     // user is in the process of creating a component
     componentNameInputValue: function() {
@@ -119,9 +110,10 @@ export default {
     }
   }
 };
+
 </script>
 
-<style lang="stylus" scoped>
+<style lang='scss' scoped>
 i {
   font-size: 11px;
 }
@@ -139,18 +131,18 @@ i {
   margin: 5px;
 }
 
-// styling for the entire dashboard
-// .q-footer {
-//   transition-timing-function: ease-in;
-//   transition: 0.2s;
-//   background: $subsecondary;
-// }
+/* // styling for the entire dashboard
+.q-footer {
+  transition-timing-function: ease-in;
+  transition: 0.2s;
+  background: $subsecondary;
+}
 
-// // changes the dashboard toolbar height
-// .q-toolbar {
-//   min-height: 25px !important;
-//   padding: 0 6px !important;
-// }
+// changes the dashboard toolbar height
+.q-toolbar {
+  min-height: 25px !important;
+  padding: 0 6px !important;
+} */
 
 .q-toolbar__title {
   font-size: 14px;
@@ -158,24 +150,23 @@ i {
   padding: 5px;
 }
 
-// this class selector does not change anything
+/* this class selector does not change anything */
 .q-tab__label {
-  // font-size not changing
+  /* // font-size not changing */
   font-size: 10px !important;
   line-height: 1.718em;
   font-weight: 500;
 }
 
-// changes the tab label styling
+/* // changes the tab label styling */
 #label-text {
   font-size: 4px !important;
   text-transform: capitalize;
 }
 
 .q-tab-panel {
-  // matchs the code editor bg
+  /* // matchs the code editor bg */
   background: $subprimary;
-
 }
 
 // changes the length of the tab panels
@@ -200,7 +191,7 @@ border-top: 3px solid black;
   background: #737578;
 }
 .html-bg {
-  // give html background color of grey
+  /* // give html background color of grey */
   background-color: #202122;
 }
 

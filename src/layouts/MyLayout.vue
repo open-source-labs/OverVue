@@ -1,4 +1,4 @@
-<!--
+<!-- ************* FROM OVERVUE4.0 ***********
 Description:
   Displays OverVue application layout including undo/redo button, openProject, saveProject, and exportProject, side panels, and dashboard
   Functionality includes: Toolbar to the left that can be toggled open/closed and undo/redo functionality
@@ -10,6 +10,7 @@ Description:
     <!-- the top header of OverVue -->
     <q-header elevated class="gradient text-white">
       <q-toolbar>
+
         <q-btn dense flat color="subaccent" round @click="left = !left">
           <i
             :class="[left ? 'fas fa-chevron-left' : 'fas fa-list-ul']"
@@ -17,36 +18,31 @@ Description:
           ></i>
         </q-btn>
         <q-toolbar-title> OverVue </q-toolbar-title>
-        <SlackLoginWindow />
+        <!-- <SlackLoginWindow /> -->
         <div></div>
-          <i
-            v-if="this.$router.app.$children[0].doneAction.length"
-            class="fa fa-backward"
-            aria-hidden="true"
-            @click="undo"
-          ></i>
-          <i
-            v-else
-            class="fa fa-backward"
-            id="unavailable"
-            aria-hidden="true"
-          ></i>
-          <i
-            v-if="this.$router.app.$children[0].undoneAction.length"
-            class="fa fa-forward"
-            aria-hidden="true"
-            @click="redo"
-          ></i>
-          <i
-            v-else
-            class="fa fa-forward"
-            id="unavailable"
-            aria-hidden="true"
-          ></i>
-          <OpenProjectComponent />
-          <SaveProjectComponent />
-          <ExportProjectComponent />
-        </div>
+        <!-- <i
+          v-if="this.$router.app.$children[0].doneAction.length"
+          class="fa fa-backward"
+          aria-hidden="true"
+          @click="undo"
+        ></i>
+        <i
+          v-else
+          class="fa fa-backward"
+          id="unavailable"
+          aria-hidden="true"
+        ></i> -->
+        <!-- <i
+          v-if="this.$router.app.$children[0].undoneAction.length"
+          class="fa fa-forward"
+          aria-hidden="true"
+          @click="redo"
+        ></i>
+        <i v-else class="fa fa-forward" id="unavailable" aria-hidden="true"></i> -->
+        <!-- <OpenProjectComponent />
+        <SaveProjectComponent />
+        <ExportProjectComponent /> -->
+        <!-- </div> -->
         <!-- this button will open the right drawer -->
         <q-btn dense flat color="subaccent" round @click="right = !right">
           <!-- fas => fontawesome, refers to icon style -->
@@ -55,16 +51,11 @@ Description:
             id="btn"
           ></i>
         </q-btn>
+        
       </q-toolbar>
     </q-header>
 
     <q-drawer v-model="left" side="left" behavior="desktop" bordered>
-      <!-- Original code for a drawer and list style -->
-      <!-- <q-list class="q-list-drawer">
-        <UploadImage />
-        <HomeSideDropDown />
-        <CreateComponent />
-      </q-list> -->
 
       <!-- QTabs setup, not sure what class to set yet -->
       <q-tabs
@@ -74,8 +65,8 @@ Description:
         active-color="secondary"
         indicator-color="secondary"
       >
-        <q-tab name="component"><i class="fas fa-edit"></i></q-tab>
-        <q-tab name="store"><i class="fas fa-store-alt"></i></q-tab>
+        <q-tab name="component" label='Component'><i class="fas fa-edit"></i></q-tab>
+        <q-tab name="store" label='Store'><i class="fas fa-store-alt"></i></q-tab>
       </q-tabs>
       <!-- individual tab panel's setup -->
       <q-tab-panels v-model="tab" animated class="html-bg text-white fit">
@@ -108,24 +99,20 @@ Description:
     <q-page-container>
       <router-view />
     </q-page-container>
-    <!-- <Dashboard /> -->
   </q-layout>
 </template>
 
 <script>
 // HomeSideDropDown contains RouteDisplay, VuexForm and Edit but we'll be separating these components across different tabs
-// import HomeSideDropDown from '../components/home_sidebar_items/HomeSideDropDown.vue'
 import Dashboard from "../components/dashboard_items/Dashboard.vue";
-// import CreateComponent from '../components/home_sidebar_items/ComponentTab/CreateComponent.vue'
-import ExportProjectComponent from "../components/file_system_interface/ExportProject.vue";
-import SaveProjectComponent from "../components/file_system_interface/SaveProjectComponent.vue";
-import OpenProjectComponent from "../components/file_system_interface/OpenProjectComponent.vue";
-import UploadImage from "../components/home_sidebar_items/UploadImage.vue";
-import SlackLoginWindow from "../components/slack_login/SlackLoginWindow.vue";
-import RouteDisplay from "../components/home_sidebar_items/RouteDisplay.vue";
-// import EditDeleteComponents from '../components/home_sidebar_items/ComponentTab/EditDeleteComponents.vue'
-import VuexForm from "../components/home_sidebar_items/VuexForm.vue";
-import ComponentTab from "../components/home_sidebar_items/ComponentTab/ComponentTab.vue";
+// import ExportProjectComponent from "../components/file_system_interface/ExportProject.vue";
+// import SaveProjectComponent from "../components/file_system_interface/SaveProjectComponent.vue";
+// import OpenProjectComponent from "../c omponents/file_system_interface/OpenProjectComponent.vue";
+// import UploadImage from "../components/home_sidebar_items/UploadImage.vue";
+// import SlackLoginWindow from "../components/slack_login/SlackLoginWindow.vue";
+// import RouteDisplay from "../components/home_sidebar_items/RouteDisplay.vue";
+// import VuexForm from "../components/home_sidebar_items/VuexForm.vue";
+// import ComponentTab from "../components/home_sidebar_items/ComponentTab/ComponentTab.vue";
 import StoreTab from "../components/home_sidebar_items/StoreTab/StoreTab.vue";
 
 export default {
@@ -137,18 +124,15 @@ export default {
     };
   },
   components: {
-    // HomeSideDropDown,
-    RouteDisplay,
-    // EditDeleteComponents,
-    VuexForm,
+    // RouteDisplay,
+    // VuexForm,
     Dashboard,
-    // CreateComponent,
-    ExportProjectComponent,
-    SaveProjectComponent,
-    OpenProjectComponent,
-    UploadImage,
-    SlackLoginWindow,
-    ComponentTab,
+    // ExportProjectComponent,
+    // SaveProjectComponent,
+    // OpenProjectComponent,
+    // UploadImage,
+    // SlackLoginWindow,
+    // ComponentTab,
     StoreTab,
   },
   methods: {
@@ -163,22 +147,30 @@ export default {
     },
   },
 };
+
 </script>
 
-<style lang="stylus">
+<style lang="scss">
+.text-white {
+  color: white;
+}
 
+q-btn > i {
+  color: white;
+}
+// Must change style lang='scss'
 .fa-backward, .fa-forward {
-  padding: 0 5px
+  padding: 0 5px;
 }
 
 .fa-backward:hover, .fa-forward:hover {
   cursor: pointer;
-  color: #00ffff
+  color: #00ffff;
 }
 
 #unavailable {
   color: grey;
-  cursor: default
+  cursor: default;
 }
 
 .fa-backward:active, .fa-forward:active {
@@ -217,7 +209,6 @@ export default {
 // css styling for entire drawer
 .q-drawer {
   background: $subprimary;
-
 }
 
 // give html background color of grey
@@ -226,29 +217,28 @@ export default {
 }
 
 .left-panel {
-  padding 0 !important
-  height: 100%
+  padding: 0 !important;
+  height: 100%;
 }
 
 .q-tab-panels {
-  height: 100%
+  height: 100%;
 }
 
 .q-panel {
-  height: 100%
+  height: 100%;
 }
 
-.q-tab-panel  {
-  height: 100%
-
+.q-tab-panel {
+  height: 100%;
 }
 
 .left-panels {
-  height: 100%
-
-  }
+  height: 100%;
+}
 
 .scroll {
-overflow: hidden
+  overflow: hidden;
 }
 </style>
+

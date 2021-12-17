@@ -36,15 +36,6 @@ Description:
       <div class="component-title">
         <p style="color: black">{{ componentData.componentName }}</p>
       </div>
-      <!--
-      <div class="component-html-info">
-        <p>Elements in Component:</p>
-        <p class="component-html-info"
-          v-for="htmlElement in componentMap[componentData.componentName]
-          .htmlList" :key="htmlElement" >
-          {{ htmlElement.text }}
-        </p>
-      </div> -->
 
       <q-menu context-menu>
         <q-list color="black" class="menu">
@@ -79,6 +70,8 @@ Description:
         </q-list>
       </q-menu>
     </VueDraggableResizable>
+
+
     <div>
       <q-dialog v-model="modalOpen">
         <q-select
@@ -99,9 +92,12 @@ Description:
 </template>
 
 <script>
+
 import { mapState, mapActions } from "vuex";
 import VueDraggableResizable from "vue-draggable-resizable";
-import "vue-draggable-resizable/dist/VueDraggableResizable.css";
+// import "vue-draggable-resizable/dist/VueDraggableResizable.css";
+// import Vue3DraggableResizable from "vue3-draggable-resizable";
+// import "vue3-draggable-resizable/dist/Vue3DraggableResizable.css";
 
 export default {
   name: "ComponentDisplay",

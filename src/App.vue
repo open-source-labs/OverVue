@@ -1,10 +1,10 @@
+
 <template>
-  <div id="q-app">
-    <router-view />
-  </div>
+  <router-view />
 </template>
 
 <script>
+import { defineComponent } from 'vue';
 const deepEqual = require('lodash.isequal')
 const cloneDeep = require('lodash.clonedeep')
 const throttle = require('lodash.throttle')
@@ -144,10 +144,9 @@ let redoMixin = {
   }
 }
 
-export default {
-  name: 'App',
+export default defineComponent({
+  name: 'App', 
   mixins: [redoMixin]
-}
+})
 </script>
 
-<style></style>

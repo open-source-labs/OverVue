@@ -24,10 +24,12 @@ Description:
 
 <script>
 import { mapState } from 'vuex'
-import PrismEditor from 'vue-prism-editor'
-import 'prismjs'
-import 'prismjs/themes/prism-okaidia.css'
-import 'vue-prism-editor/dist/VuePrismEditor.css'
+import { PrismEditor }from 'vue-prism-editor';
+import 'vue-prism-editor/dist/prismeditor.min.css';
+
+// import 'prismjs'
+// import 'prismjs/themes/prism-okaidia.css'
+// import 'vue-prism-editor/dist/VuePrismEditor.css'
 
 export default {
   data () {
@@ -308,14 +310,17 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="scss" scoped>
 // resize handled by vue lifecycle methods
-.code-editor
-  font-size 12px
+.code-editor {
+  font-size: 12px;
+}
 
-.codesnippet-container
-  margin-bottom 1rem
+.codesnippet-container {
+    margin-bottom: 1rem;
+}
 
-::-webkit-scrollbar
-  display none
+::-webkit-scrollbar {
+    display: none;
+}
 </style>
