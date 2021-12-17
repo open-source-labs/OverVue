@@ -1,0 +1,53 @@
+{
+  "name": "overvue_router",
+  "version": "0.0.1",
+  "description": "A Quasar Framework app",
+  "productName": "OverVue5.0",
+  "author": "",
+  "private": true,
+  "scripts": {
+    "lint": "eslint --ext .js,.vue ./",
+    "test": "echo \"No test specified\" && exit 0"
+  },
+  "dependencies": {
+    "@quasar/extras": "^1.0.0",
+    "@vue/compiler-sfc": "^3.1.0",
+    "core-js": "^3.6.5",
+    "localforage": "^1.10.0",
+    "lodash.clonedeep": "^4.5.0",
+    "lodash.isequal": "^4.5.0",
+    "lodash.throttle": "^4.1.1",
+    "quasar": "^2.0.0",
+    "vue-draggable-resizable": "^2.3.0",
+    "vue-multiselect": "^2.1.6",
+    "vue-prism-editor": "^2.0.0-alpha.2",
+    "vued3tree": "^5.1.0",
+    "vuex": "^4.0.1"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.13.14",
+    "@quasar/app": "^3.0.0",
+    "@vue/devtools": "^5.3.4",
+    "electron": "^16.0.4",
+    "eslint": "^7.14.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-vue": "^7.0.0",
+    "eslint-webpack-plugin": "^2.4.0"
+  },
+  "browserslist": [
+    "last 10 Chrome versions",
+    "last 10 Firefox versions",
+    "last 4 Edge versions",
+    "last 7 Safari versions",
+    "last 8 Android versions",
+    "last 8 ChromeAndroid versions",
+    "last 8 FirefoxAndroid versions",
+    "last 10 iOS versions",
+    "last 5 Opera versions"
+  ],
+  "engines": {
+    "node": ">= 12.22.1",
+    "npm": ">= 6.13.4",
+    "yarn": ">= 1.21.1"
+  }
+}
