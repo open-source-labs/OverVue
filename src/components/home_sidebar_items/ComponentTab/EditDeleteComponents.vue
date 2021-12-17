@@ -145,7 +145,7 @@ Description:
 <script>
 import { mapState, mapActions } from "vuex";
 import Multiselect from "vue-multiselect";
-import { ToggleButton } from "vue-js-toggle-button";
+// import { ToggleButton } from "vue-js-toggle-button";
 import HTMLQueue from "../../dashboard_items/HTMLQueue.vue";
 import Icons from "../Icons.vue";
 import AddProps from "./AddProps.vue";

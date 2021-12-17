@@ -12,6 +12,7 @@
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "@vue/compiler-sfc": "^3.1.0",
+    "@vueform/toggle": "^2.0.1",
     "core-js": "^3.6.5",
     "localforage": "^1.10.0",
     "lodash.clonedeep": "^4.5.0",
