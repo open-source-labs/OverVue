@@ -15,3 +15,20 @@
  *     doAThing: () => {}
  *   })
  */
+// import path from 'path';
+// import fs from 'fs';
+// const { contextBridge } = require('electron');
+
+// contextBridge.exposeInMainWorld(
+//     'path',
+//     {
+//         resolve: (...pathSegments) => path.resolve(pathSegments)
+//     }
+// );
+
+// contextBridge.exposeInMainWorld(
+//     'fs',
+//     {
+//         existsSync: (pathFile) => fs.existsSync(pathFile)
+//     }
+// )

@@ -5,7 +5,6 @@ Description:
   -->
 <!-- 4.0 adjustment: conditional render to switch between new comp name input and editing active comp name, moved from EditDeleteComponents -->
 
-<script src="http://localhost:8098"></script> // Script for Vue Debugger
 
 <template>
   <div class="inner-div drawer-menu">
