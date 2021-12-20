@@ -1,5 +1,5 @@
 {
-  "name": "overvue_router",
+  "name": "overvue",
   "version": "0.0.1",
   "description": "A Quasar Framework app",
   "productName": "OverVue5.0",
@@ -7,12 +7,15 @@
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
-    "test": "echo \"No test specified\" && exit 0"
+    "test": "echo \"No test specified\" && exit 0",
+    "start": "electron ."
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "@vue/compiler-sfc": "^3.1.0",
     "core-js": "^3.6.5",
+    "dotenv": "^10.0.0",
+    "electron-deeplink": "^1.0.9",
     "localforage": "^1.10.0",
     "lodash.clonedeep": "^4.5.0",
     "lodash.isequal": "^4.5.0",
@@ -27,6 +30,8 @@
     "@babel/eslint-parser": "^7.13.14",
     "@quasar/app": "^3.0.0",
     "electron": "^16.0.4",
+    "electron-is-dev": "^2.0.0",
+    "electron-packager": "^15.4.0",
     "eslint": "^7.14.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-vue": "^7.0.0",

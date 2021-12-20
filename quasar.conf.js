@@ -46,6 +46,10 @@ module.exports = configure(function (ctx) {
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
       vueRouterMode: 'history', // available values: 'hash', 'history'
+      // Potential fix for fs errors
+      // extendWebpack(cfg) {
+      //   cfg.target = ['electron-main', 'electron-renderer']
+      // },
 
       // transpile: false,
       // publicPath: '/',
@@ -209,6 +213,8 @@ module.exports = configure(function (ctx) {
       bundler: 'packager', // 'packager' or 'builder'
 
       packager: {
+        protocols: ["overvue"], 
+        appBundleId: "overvue",
         // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
 
         // OS X / Mac App Store
@@ -224,7 +230,7 @@ module.exports = configure(function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'overvue_router'
+        appId: 'overvue'
       },
 
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain

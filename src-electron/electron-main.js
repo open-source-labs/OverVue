@@ -1,6 +1,8 @@
-import { app, BrowserWindow, nativeTheme } from 'electron'
-import path from 'path'
-import os from 'os'
+import { app, BrowserWindow, nativeTheme } from 'electron';
+import { Deeplink } from "electron-deeplink";
+import isDev from 'electron-is-dev';
+import path from 'path';
+import os from 'os';
 
 // needed in case process is undefined under Linux
 const platform = process.platform || os.platform()
@@ -12,8 +14,105 @@ try {
 }
 catch (_) { }
 
-let mainWindow
+let mainWindow;
+// Added 
+let authCode;
+const protocol = isDev ? "overvuedev" : "overvue";
 
+// Used to console log for main process in production mode
+// const deeplink = new Deeplink({
+//   app,
+//   mainWindow,
+//   protocol,
+//   isDev,
+//   debugLogging: true,
+//   // electronPath: '/node_modules/electron/dist/Electron.app'
+// });
+
+// Sends request to Slack for User's information,
+// then sends user information back to renderer process
+function slackErrorHandler(err) {
+  return mainWindow.webContents.send('slackError', err)
+}
+
+function sendTokenRequest() {
+  // Send Post request for user information
+  const request = net.request({
+    method: "POST",
+    url: 'https://slack.com/api/oauth.v2.access?' +
+      "client_id=" +
+      process.env.SLACK_CLIENT_ID +
+      "&client_secret=" +
+      process.env.SLACK_CLIENT_SECRET +
+      "&code=" +
+      authCode +
+      "&grant_type=authorization_code" +
+      "&redirect_uri=" +
+      process.env.SLACK_REDIRECT_URI,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    }
+  });
+
+  // Listens for response from token request
+  request.on("response", response => {
+    // logEverywhere("request.on response received");
+    response.on("end", () => {
+      // logEverywhere("Response ended ");
+    });
+    response.on("data", data => {
+      const decoded = JSON.parse(data.toString())
+      if (decoded.error) {
+        return slackErrorHandler(decoded.error)
+      }
+      // console.log('Is there an error? ', !!decoded.error, 'if true, this shouldnt be logging')
+      mainWindow.webContents.send("tokenReceived", decoded);
+      // getSlackUser(decoded.access_token, decoded.authed_user.id)
+    });
+  });
+  request.end();
+}
+
+function getSlackUser (token, userId) {
+  const request = net.request({
+    method: 'POST',
+    url: 'https://slack.com/api/users.profile.get?' +
+    "token=" + token +
+    "&user=" + userId,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  })
+  request.on('response', response => {
+    response.on('end', () => {
+      // logEverywhere('User data recieved')
+    })
+    response.on('data', data => {
+      const decoded = JSON.parse(data.toString());
+      if (decoded.error) {
+        return slackErrorHandler(decoded.error)
+      }
+      // logEverywhere('slackUser decoded data in getSlackUser' + decoded)
+      mainWindow.webContents.send('slackUser', decoded)
+    })
+  })
+  request.end()
+}
+
+// function setOauthListener() {
+//   // logEverywhere(`process.env.SLACK_CLIENT_ID in electron-main:  ${process.env.SLACK_CLIENT_ID}`);
+//   // logEverywhere(`process.env.SLACK_CLIENT_SECRET in electron-main:  ${process.env.SLACK_CLIENT_SECRET}`);
+
+//   return deeplink.on("received", link => {
+//     // logEverywhere(`auth worked here link: ${link}`);
+//     // Extracts Slack authorization code from deep link
+//     authCode = link.split("=")[1];
+//     sendTokenRequest();
+//   });
+// }
+
+
+// ********************* Default ***************** 
 function createWindow () {
   /**
    * Initial window options
