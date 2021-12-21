@@ -26,14 +26,17 @@ let authCode;
 const protocol = isDev ? "overvuedev" : "overvue";
 
 // Used to console log for main process in production mode
-// const deeplink = new Deeplink({
-//   app,
-//   mainWindow,
-//   protocol,
-//   isDev,
-//   debugLogging: true,
-//   // electronPath: '/node_modules/electron/dist/Electron.app'
-// });
+// ** Only works on production level application; throws errors if you run quasar dev
+if (process.env.PROD) {
+  const deeplink = new Deeplink({
+    app,
+    mainWindow,
+    protocol,
+    isDev,
+    debugLogging: true,
+    // electronPath: '/node_modules/electron/dist/Electron.app'
+  });
+}
 
 // Sends request to Slack for User's information,
 // then sends user information back to renderer process
@@ -105,17 +108,17 @@ function getSlackUser (token, userId) {
   request.end()
 }
 
-// function setOauthListener() {
-//   // logEverywhere(`process.env.SLACK_CLIENT_ID in electron-main:  ${process.env.SLACK_CLIENT_ID}`);
-//   // logEverywhere(`process.env.SLACK_CLIENT_SECRET in electron-main:  ${process.env.SLACK_CLIENT_SECRET}`);
+function setOauthListener() {
+  // logEverywhere(`process.env.SLACK_CLIENT_ID in electron-main:  ${process.env.SLACK_CLIENT_ID}`);
+  // logEverywhere(`process.env.SLACK_CLIENT_SECRET in electron-main:  ${process.env.SLACK_CLIENT_SECRET}`);
 
-//   return deeplink.on("received", link => {
-//     // logEverywhere(`auth worked here link: ${link}`);
-//     // Extracts Slack authorization code from deep link
-//     authCode = link.split("=")[1];
-//     sendTokenRequest();
-//   });
-// }
+  return deeplink.on("received", link => {
+    // logEverywhere(`auth worked here link: ${link}`);
+    // Extracts Slack authorization code from deep link
+    authCode = link.split("=")[1];
+    sendTokenRequest();
+  });
+}
 
 
 // ********************* Default ***************** 
@@ -163,6 +166,7 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
   if (mainWindow === null) {
-    createWindow()
+    createWindow();
+    setOauthListener();
   }
 })
