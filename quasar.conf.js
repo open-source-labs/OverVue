@@ -48,6 +48,7 @@ module.exports = configure(function (ctx) {
       vueRouterMode: 'history', // available values: 'hash', 'history'
       // Potential fix for fs errors
       // extendWebpack(cfg) {
+      //   // cfg.target = ['electron-main', 'electron-renderer']
       //   cfg.target = ['electron-main', 'electron-renderer']
       // },
 

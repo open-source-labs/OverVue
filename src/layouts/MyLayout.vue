@@ -18,7 +18,7 @@ Description:
           ></i>
         </q-btn>
         <q-toolbar-title> OverVue </q-toolbar-title>
-        <!-- <SlackLoginWindow /> -->
+        <SlackLoginWindow />
         <div></div>
         <!-- <i
           v-if="this.$router.app.$children[0].doneAction.length"
@@ -109,7 +109,7 @@ import Dashboard from "../components/dashboard_items/Dashboard.vue";
 // import SaveProjectComponent from "../components/file_system_interface/SaveProjectComponent.vue";
 // import OpenProjectComponent from "../c omponents/file_system_interface/OpenProjectComponent.vue";
 // import UploadImage from "../components/home_sidebar_items/UploadImage.vue";
-// import SlackLoginWindow from "../components/slack_login/SlackLoginWindow.vue";
+import SlackLoginWindow from "../components/slack_login/SlackLoginWindow.vue";
 // import RouteDisplay from "../components/home_sidebar_items/RouteDisplay.vue";
 // import VuexForm from "../components/home_sidebar_items/VuexForm.vue";
 // import ComponentTab from "../components/home_sidebar_items/ComponentTab/ComponentTab.vue";
@@ -131,7 +131,7 @@ export default {
     // SaveProjectComponent,
     // OpenProjectComponent,
     // UploadImage,
-    // SlackLoginWindow,
+    SlackLoginWindow,
     // ComponentTab,
     StoreTab,
   },

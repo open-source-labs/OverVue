@@ -91,7 +91,7 @@
 <script>
 // import { mapState, mapActions } from 'vuex'
 import localforage from "localforage";
-import { shell, ipcRenderer } from "electron";
+// import { shell, ipcRenderer } from "electron";
 
 export default {
   name: "SlackLoginWindow",
@@ -103,30 +103,30 @@ export default {
     };
   },
   created() {
-    ipcRenderer.on("tokenReceived", (event, data) => {
-      // console.log("data in SlackLoginWindow: ", data);
-      // localforage.setItem('slackWebhookURL', data.incoming_webhook.url)
-      //   .then(data => this.closeLogin())
-      return this.saveToLocalForage(
-        "slackWebhookURL",
-        data.incoming_webhook.url
-      );
-    });
-    ipcRenderer.on("slackUser", (event, user) => {
-      // console.log("user received in SlackLoginWindow: ", user);
-      // localforage.setItem('slackUser', user)
-      //   .then(data => this.closeLogin())
-      //   .catch(err => {
-      //     console.log('localforage caught an error when trying to set slackUser: ', err)
-      //     this.errorMessage = err
-      //   })
-      return this.saveToLocalForage("slackUser", user);
-    });
-    ipcRenderer.on("slackError", (event, err) => {
-      // console.log("err received in SlackLoginWindow: ", err);
-      this.printErrorMessage();
-    });
-    // console.log(`process.env: ${process.env}`);
+    // ipcRenderer.on("tokenReceived", (event, data) => {
+    //   // console.log("data in SlackLoginWindow: ", data);
+    //   // localforage.setItem('slackWebhookURL', data.incoming_webhook.url)
+    //   //   .then(data => this.closeLogin())
+    //   return this.saveToLocalForage(
+    //     "slackWebhookURL",
+    //     data.incoming_webhook.url
+    //   );
+    // });
+    // ipcRenderer.on("slackUser", (event, user) => {
+    //   // console.log("user received in SlackLoginWindow: ", user);
+    //   // localforage.setItem('slackUser', user)
+    //   //   .then(data => this.closeLogin())
+    //   //   .catch(err => {
+    //   //     console.log('localforage caught an error when trying to set slackUser: ', err)
+    //   //     this.errorMessage = err
+    //   //   })
+    //   return this.saveToLocalForage("slackUser", user);
+    // });
+    // ipcRenderer.on("slackError", (event, err) => {
+    //   // console.log("err received in SlackLoginWindow: ", err);
+    //   this.printErrorMessage();
+    // });
+    // // console.log(`process.env: ${process.env}`);
   },
   methods: {
     slackOauth: function() {

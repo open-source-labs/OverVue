@@ -4,6 +4,12 @@ import isDev from 'electron-is-dev';
 import path from 'path';
 import os from 'os';
 
+if (process.env.PROD) {
+  global.__statics = require("path")
+    .join(__dirname, "statics")
+    .replace(/\\/g, "\\\\");
+}
+
 // needed in case process is undefined under Linux
 const platform = process.platform || os.platform()
 
