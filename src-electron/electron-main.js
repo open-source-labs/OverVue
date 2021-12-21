@@ -133,6 +133,7 @@ function createWindow () {
     useContentSize: true,
     webPreferences: {
       contextIsolation: true,
+      nodeIntegration: true,
       // More info: /quasar-cli/developing-electron-apps/electron-preload-script
       preload: path.resolve(__dirname, process.env.QUASAR_ELECTRON_PRELOAD)
     }
@@ -156,7 +157,17 @@ function createWindow () {
   })
 }
 
-app.whenReady().then(createWindow)
+// Default from quasar
+// app.whenReady().then(createWindow)
+// New 
+app.whenReady()
+  .then(() => {
+    createWindow();
+    setOauthListener();
+  })
+  .catch((err) => {
+    console.log(err);
+  })
 
 app.on('window-all-closed', () => {
   if (platform !== 'darwin') {

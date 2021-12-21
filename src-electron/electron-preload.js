@@ -15,3 +15,17 @@
  *     doAThing: () => {}
  *   })
  */
+
+
+ const {ipcRenderer, shell, contextBridge} = require('electron');
+ // ipcRenderer contextBridge
+ contextBridge.exposeInMainWorld("ipcRenderer",{
+     on: (channel, func) => ipcRenderer.on(
+         channel,
+         (event, ...args) => func(args)
+     )
+ });
+
+ contextBridge.exposeInMainWorld("shell", {
+     openExternal: (url, options) => shell.openExternal(url, options)
+ })

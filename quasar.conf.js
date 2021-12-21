@@ -11,6 +11,10 @@ const ESLintPlugin = require('eslint-webpack-plugin')
 const { configure } = require('quasar/wrappers');
 
 module.exports = configure(function (ctx) {
+  const env = ctx.dev
+    ? require("quasar-dotenv").config({ path: '.env.development' })
+    : require("quasar-dotenv").config()
+
   return {
     // https://quasar.dev/quasar-cli/supporting-ts
     supportTS: false,
@@ -46,6 +50,7 @@ module.exports = configure(function (ctx) {
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
       vueRouterMode: 'history', // available values: 'hash', 'history'
+      env: env,
       // Potential fix for fs errors
       // extendWebpack(cfg) {
       //   // cfg.target = ['electron-main', 'electron-renderer']
@@ -214,7 +219,8 @@ module.exports = configure(function (ctx) {
       // bundler: 'packager', // 'packager' or 'builder'
       bundler: 'builder',
       packager: {
-        protocols: ["overvue"], 
+        // protocols: ["overvue"], 
+        protocol: "overvue",
         appBundleId: "overvue",
         // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
 
