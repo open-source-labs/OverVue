@@ -139,11 +139,25 @@ export default {
       const clientId = process.env.SLACK_CLIENT_ID;
 
       this.isAuthenticating = true;
+      
+      // Tests
+      // console.log(`${slackBaseUrl}?scope=${scope}&redirect_uri=${redirectUri}&client_id=${clientId}`)
+      // console.log(redirectUri.slice(1, redirectUri.length - 1))
+      const trimmedUri = redirectUri.slice(1, redirectUri.length - 1);
+      const trimmedClientId = clientId.slice(1, clientId.length - 1);
+      console.log(`${slackBaseUrl}?scope=${scope}&redirect_uri=${trimmedUri}&client_id=${trimmedClientId}`)
 
       // console.log("clicked");
+      // **************** ok
+      // shell.openExternal(
+      //   // `${slackBaseUrl}?response_type=${responseType}&scope=${scope}&client_id=${clientId}&redirect_uri=${redirectUri}`,
+      //   `${slackBaseUrl}?scope=${scope}&redirect_uri=${redirectUri}&client_id=${clientId}`,
+      //   { activate: true }
+      // );
+      // ****************** test
       shell.openExternal(
         // `${slackBaseUrl}?response_type=${responseType}&scope=${scope}&client_id=${clientId}&redirect_uri=${redirectUri}`,
-        `${slackBaseUrl}?scope=${scope}&redirect_uri=${redirectUri}&client_id=${clientId}`,
+        `${slackBaseUrl}?scope=${scope}&redirect_uri=${trimmedUri}&client_id=${trimmedClientId}`,
         { activate: true }
       );
     },
