@@ -39,9 +39,9 @@ Description:
           @click="redo"
         ></i>
         <i v-else class="fa fa-forward" id="unavailable" aria-hidden="true"></i> -->
-        <!-- <OpenProjectComponent />
-        <SaveProjectComponent />
-        <ExportProjectComponent /> -->
+        <!-- <OpenProjectComponent /> -->
+        <!-- <SaveProjectComponent /> -->
+        <ExportProjectComponent />
         <!-- </div> -->
         <!-- this button will open the right drawer -->
         <q-btn dense flat color="subaccent" round @click="right = !right">
@@ -105,7 +105,7 @@ Description:
 <script>
 // HomeSideDropDown contains RouteDisplay, VuexForm and Edit but we'll be separating these components across different tabs
 import Dashboard from "../components/dashboard_items/Dashboard.vue";
-// import ExportProjectComponent from "../components/file_system_interface/ExportProject.vue";
+import ExportProjectComponent from "../components/file_system_interface/ExportProject.vue";
 // import SaveProjectComponent from "../components/file_system_interface/SaveProjectComponent.vue";
 // import OpenProjectComponent from "../c omponents/file_system_interface/OpenProjectComponent.vue";
 // import UploadImage from "../components/home_sidebar_items/UploadImage.vue";
@@ -127,7 +127,7 @@ export default {
     // RouteDisplay,
     // VuexForm,
     Dashboard,
-    // ExportProjectComponent,
+    ExportProjectComponent,
     // SaveProjectComponent,
     // OpenProjectComponent,
     // UploadImage,

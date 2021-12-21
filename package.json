@@ -21,6 +21,7 @@
     "core-js": "^3.6.5",
     "dotenv": "^10.0.0",
     "electron-deeplink": "^1.0.9",
+    "fs-extra": "^10.0.0",
     "localforage": "^1.10.0",
     "lodash.clonedeep": "^4.5.0",
     "lodash.isequal": "^4.5.0",

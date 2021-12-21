@@ -1,4 +1,4 @@
-import { app, BrowserWindow, nativeTheme } from 'electron';
+import { app, BrowserWindow, nativeTheme, dialog, ipcMain } from 'electron';
 import { Deeplink } from "electron-deeplink";
 import isDev from 'electron-is-dev';
 import path from 'path';
@@ -38,6 +38,13 @@ if (process.env.PROD) {
   });
 }
 
+// ******************* Handling dialogs for ExportProject *********************
+ipcMain.handle('exportProject', async (event, arg) => {
+  const result = await dialog.showSaveDialog(arg)
+  return result;
+})
+
+// ************** Slack OAuth functions **********************
 // Sends request to Slack for User's information,
 // then sends user information back to renderer process
 function slackErrorHandler(err) {
@@ -120,8 +127,6 @@ function setOauthListener() {
   });
 }
 
-
-// ********************* Default ***************** 
 function createWindow () {
   /**
    * Initial window options
