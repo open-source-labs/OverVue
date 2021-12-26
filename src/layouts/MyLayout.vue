@@ -18,7 +18,7 @@ Description:
           ></i>
         </q-btn>
         <q-toolbar-title> OverVue </q-toolbar-title>
-        <!-- <SlackLoginWindow /> -->
+        <SlackLoginWindow />
         <div></div>
         <!-- <i
           v-if="this.$router.app.$children[0].doneAction.length"
@@ -39,9 +39,9 @@ Description:
           @click="redo"
         ></i>
         <i v-else class="fa fa-forward" id="unavailable" aria-hidden="true"></i> -->
-        <!-- <OpenProjectComponent />
-        <SaveProjectComponent />
-        <ExportProjectComponent /> -->
+        <!-- <OpenProjectComponent /> -->
+        <!-- <SaveProjectComponent /> -->
+        <ExportProjectComponent />
         <!-- </div> -->
         <!-- this button will open the right drawer -->
         <q-btn dense flat color="subaccent" round @click="right = !right">
@@ -105,11 +105,11 @@ Description:
 <script>
 // HomeSideDropDown contains RouteDisplay, VuexForm and Edit but we'll be separating these components across different tabs
 import Dashboard from "../components/dashboard_items/Dashboard.vue";
-// import ExportProjectComponent from "../components/file_system_interface/ExportProject.vue";
+import ExportProjectComponent from "../components/file_system_interface/ExportProject.vue";
 // import SaveProjectComponent from "../components/file_system_interface/SaveProjectComponent.vue";
 // import OpenProjectComponent from "../c omponents/file_system_interface/OpenProjectComponent.vue";
 // import UploadImage from "../components/home_sidebar_items/UploadImage.vue";
-// import SlackLoginWindow from "../components/slack_login/SlackLoginWindow.vue";
+import SlackLoginWindow from "../components/slack_login/SlackLoginWindow.vue";
 // import RouteDisplay from "../components/home_sidebar_items/RouteDisplay.vue";
 // import VuexForm from "../components/home_sidebar_items/VuexForm.vue";
 import ComponentTab from "../components/home_sidebar_items/ComponentTab/ComponentTab.vue";
@@ -127,11 +127,11 @@ export default {
     // RouteDisplay,
     // VuexForm,
     Dashboard,
-    // ExportProjectComponent,
+    ExportProjectComponent,
     // SaveProjectComponent,
     // OpenProjectComponent,
     // UploadImage,
-    // SlackLoginWindow,
+    SlackLoginWindow,
     // ComponentTab,
     StoreTab,
   },

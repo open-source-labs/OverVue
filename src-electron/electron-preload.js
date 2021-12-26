@@ -15,20 +15,34 @@
  *     doAThing: () => {}
  *   })
  */
-// import path from 'path';
-// import fs from 'fs';
-// const { contextBridge } = require('electron');
 
-// contextBridge.exposeInMainWorld(
-//     'path',
-//     {
-//         resolve: (...pathSegments) => path.resolve(pathSegments)
-//     }
-// );
 
-// contextBridge.exposeInMainWorld(
-//     'fs',
-//     {
-//         existsSync: (pathFile) => fs.existsSync(pathFile)
-//     }
-// )
+const {ipcRenderer, shell, contextBridge} = require('electron');
+const path = require('path');
+const fs = require('fs-extra');
+
+ // ipcRenderer contextBridge
+ // on: used in SlackLoginWindow
+ // 
+ contextBridge.exposeInMainWorld("ipcRenderer",{
+     on: (channel, func) => ipcRenderer.on(channel,(event, ...args) => func(args)), 
+     invoke: async (channel, ...args) => await ipcRenderer.invoke(channel, ...args)
+ });
+
+ // shell, used in SlackLoginWindow
+ contextBridge.exposeInMainWorld("shell", {
+     openExternal: (url, options) => shell.openExternal(url, options)
+ })
+
+ // fs from fs-extra, used in ExportProject
+ contextBridge.exposeInMainWorld("fs", {
+    writeFileSync: (file, data, options) => fs.writeFileSync(file, data, options), 
+    existsSync: (data) => fs.existsSync(data), 
+    mkdirSync: (data) => fs.mkdirSync(data)
+})
+
+ // Exposing path module
+ contextBridge.exposeInMainWorld("path", {
+    join: (...paths) => path.join(...paths)
+})
+
