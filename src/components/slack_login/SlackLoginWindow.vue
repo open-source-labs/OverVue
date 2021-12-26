@@ -94,7 +94,6 @@ import localforage from "localforage";
 // import { shell, ipcRenderer } from "electron";
 const { ipcRenderer, shell } = window;
 
-
 export default {
   name: "SlackLoginWindow",
   data() {
@@ -145,7 +144,6 @@ export default {
       // console.log(redirectUri.slice(1, redirectUri.length - 1))
       const trimmedUri = redirectUri.slice(1, redirectUri.length - 1);
       const trimmedClientId = clientId.slice(1, clientId.length - 1);
-      console.log(`${slackBaseUrl}?scope=${scope}&redirect_uri=${trimmedUri}&client_id=${trimmedClientId}`)
 
       // console.log("clicked");
       // **************** ok
