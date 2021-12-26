@@ -40,7 +40,7 @@ Description:
         ></i>
         <i v-else class="fa fa-forward" id="unavailable" aria-hidden="true"></i> -->
         <!-- <OpenProjectComponent /> -->
-        <!-- <SaveProjectComponent /> -->
+        <SaveProjectComponent />
         <ExportProjectComponent />
         <!-- </div> -->
         <!-- this button will open the right drawer -->
@@ -106,7 +106,7 @@ Description:
 // HomeSideDropDown contains RouteDisplay, VuexForm and Edit but we'll be separating these components across different tabs
 import Dashboard from "../components/dashboard_items/Dashboard.vue";
 import ExportProjectComponent from "../components/file_system_interface/ExportProject.vue";
-// import SaveProjectComponent from "../components/file_system_interface/SaveProjectComponent.vue";
+import SaveProjectComponent from "../components/file_system_interface/SaveProjectComponent.vue";
 // import OpenProjectComponent from "../c omponents/file_system_interface/OpenProjectComponent.vue";
 // import UploadImage from "../components/home_sidebar_items/UploadImage.vue";
 import SlackLoginWindow from "../components/slack_login/SlackLoginWindow.vue";
@@ -128,7 +128,7 @@ export default {
     // VuexForm,
     Dashboard,
     ExportProjectComponent,
-    // SaveProjectComponent,
+    SaveProjectComponent,
     // OpenProjectComponent,
     // UploadImage,
     SlackLoginWindow,

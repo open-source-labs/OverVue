@@ -656,6 +656,7 @@ const mutations = {
 
   [types.ADD_PROJECT]: (state, payload) => {
     // console.log('PUSHING ', payload)
+    state.projects = [];
     state.projects.push(payload)
     state.projectNumber++
   },

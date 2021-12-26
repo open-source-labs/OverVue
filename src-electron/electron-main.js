@@ -38,9 +38,15 @@ if (process.env.PROD) {
   });
 }
 
-// ******************* Handling dialogs for ExportProject *********************
+// Handle dialogs for ExportProjectComponent
 ipcMain.handle('exportProject', async (event, arg) => {
   const result = await dialog.showSaveDialog(arg)
+  return result;
+})
+
+// Handle dialogs for SaveProjectComponent
+ipcMain.handle('saveProject', async (event, arg) => {
+  const result = await dialog.showSaveDialog(arg);
   return result;
 })
 

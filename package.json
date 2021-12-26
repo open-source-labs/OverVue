@@ -26,6 +26,7 @@
     "lodash.clonedeep": "^4.5.0",
     "lodash.isequal": "^4.5.0",
     "lodash.throttle": "^4.1.1",
+    "mousetrap": "^1.6.5",
     "quasar": "^2.0.0",
     "quasar-dotenv": "^1.0.5",
     "vue-draggable-resizable": "^2.3.0",
