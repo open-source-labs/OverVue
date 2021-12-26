@@ -325,7 +325,7 @@ export default {
     },
     // creates main.js boilerplate
     createMainFile(location) {
-      let str = `import {createApp} from 'vue'`;
+      let str = `import { createApp } from 'vue'`;
       str += `\nimport App from './App.vue'`;
       str += `\nimport router from './router'`;
       // str += `\n\n import './index.css'`
