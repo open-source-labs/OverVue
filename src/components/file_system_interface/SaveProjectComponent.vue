@@ -103,12 +103,6 @@ export default {
       let fileName = this.parseFileName(data)
       // if valid fileName
       if (fileName) {
-        // $set is not available in Vue3 
-        // this.$set(this.$store.state.projects, this.$store.state.activeTab, {
-        //   filename: fileName,
-        //   lastSavedLocation: data
-        // })
-
         // Modified to remove use of this.$set, no longer needed in Vue3 
         this.addProject({
           filename: fileName, 
@@ -117,7 +111,6 @@ export default {
 
         let state = this.$store.state
         let routes = state.routes
-        console.log(state);
 
         // for each route call parseAndDelete on htmlList
         // eslint-disable-next-line no-unused-vars
