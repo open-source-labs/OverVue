@@ -331,7 +331,7 @@ export default {
       // str += `\n\n import './index.css'`
       str += `\n\n const app = createApp(App)`;
       // str += `\n\trouter,
-      str += `\n\tapp.use(router);`;
+      str += `\napp.use(router);`;
       str += `\n app.mount('#app');`;
       fs.writeFileSync(path.join(location, "src", "main.js"), str);
     },
