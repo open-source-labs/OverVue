@@ -20,8 +20,7 @@ Description:
         <q-toolbar-title> OverVue </q-toolbar-title>
         <SlackLoginWindow />
         <div></div>
-        <!-- <i
-          v-if="this.$router.app.$children[0].doneAction.length"
+        <i v-if="doneAction.length"
           class="fa fa-backward"
           aria-hidden="true"
           @click="undo"
@@ -31,14 +30,15 @@ Description:
           class="fa fa-backward"
           id="unavailable"
           aria-hidden="true"
-        ></i> -->
-        <!-- <i
-          v-if="this.$router.app.$children[0].undoneAction.length"
+        ></i>
+        <i
+          v-if="undoneAction.length"
           class="fa fa-forward"
           aria-hidden="true"
           @click="redo"
         ></i>
-        <i v-else class="fa fa-forward" id="unavailable" aria-hidden="true"></i> -->
+        <i v-else class="fa fa-forward" id="unavailable" aria-hidden="true"></i>
+
         <!-- <OpenProjectComponent /> -->
         <SaveProjectComponent />
         <ExportProjectComponent />
@@ -116,6 +116,8 @@ import SlackLoginWindow from "../components/slack_login/SlackLoginWindow.vue";
 import StoreTab from "../components/home_sidebar_items/StoreTab/StoreTab.vue";
 
 export default {
+  // Passed down from App.vue
+  props: ['doneAction', 'undoneAction'],
   data() {
     return {
       tab: "component",
@@ -139,11 +141,16 @@ export default {
     undo() {
       // console.log('UNDO FROM BUTTON')
       // console.log('look at me ', this.$router.app.$children[0].doneAction)
-      this.$router.app.$children[0].undo();
+      // this.$router.app.$children[0].undo();
+      // console.log(this.doneAction);
+      // Emit custom event, listen in App.vue to trigger undo or redo
+      this.$emit('undo');
     },
     redo() {
       // console.log('REDO FROM BUTTON')
-      this.$router.app.$children[0].redo();
+      // this.$router.app.$children[0].redo();
+      this.$emit('redo');
+      console.log('redo')
     },
   },
 };
