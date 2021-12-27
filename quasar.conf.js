@@ -57,6 +57,10 @@ module.exports = configure(function (ctx) {
       //   cfg.target = ['electron-main', 'electron-renderer']
       // },
 
+      // extendWebpack(cfg) {
+      //   cfg.target = 'electron-main'
+      // },
+      
       // transpile: false,
       // publicPath: '/',
 
@@ -80,22 +84,6 @@ module.exports = configure(function (ctx) {
         chain.plugin('eslint-webpack-plugin')
           .use(ESLintPlugin, [{ extensions: [ 'js', 'vue' ] }]);
 
-          // // Vue Migration Build Config settings
-          // chain.resolve.alias.set('vue', '@vue/compat')
-
-          // chain.module
-          //   .rule('vue')
-          //   .use('vue-loader')
-          //   .tap(options => {
-          //     return {
-          //       ...options,
-          //       compilerOptions: {
-          //         compatConfig: {
-          //           MODE: 2
-          //         }
-          //       }
-          //     }
-          //   })
       },
     },
 

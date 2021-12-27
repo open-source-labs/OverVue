@@ -112,7 +112,7 @@ import OpenProjectComponent from "../components/file_system_interface/OpenProjec
 import SlackLoginWindow from "../components/slack_login/SlackLoginWindow.vue";
 // import RouteDisplay from "../components/home_sidebar_items/RouteDisplay.vue";
 // import VuexForm from "../components/home_sidebar_items/VuexForm.vue";
-// import ComponentTab from "../components/home_sidebar_items/ComponentTab/ComponentTab.vue";
+import ComponentTab from "../components/home_sidebar_items/ComponentTab/ComponentTab.vue";
 import StoreTab from "../components/home_sidebar_items/StoreTab/StoreTab.vue";
 
 export default {
@@ -134,7 +134,7 @@ export default {
     OpenProjectComponent,
     // UploadImage,
     SlackLoginWindow,
-    // ComponentTab,
+    ComponentTab,
     StoreTab,
   },
   methods: {

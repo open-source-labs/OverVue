@@ -3,11 +3,16 @@ module.exports = {
   // This option interrupts the configuration hierarchy at this file
   // Remove this if you have an higher level ESLint config file (it usually happens into a monorepos)
   root: true,
+  
+  rules: {
+    'vue/no-deprecated-slot-attribute': 'off',
+  },
 
   parserOptions: {
     parser: '@babel/eslint-parser',
     ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
-    sourceType: 'module' // Allows for the use of imports
+    sourceType: 'module', // Allows for the use of imports
+    requireConfigFile: false
   },
 
   env: {

@@ -7,14 +7,14 @@ Includes functionality to:
 <template>
   <div>
     <q-input
-      @keyup.enter.native="handleEnterKeyPress "
+      @keyup.enter="handleEnterKeyPress "
       standout="bg-secondary text-white"
       bottom-slots
       v-model="newRoute"
       label="Enter new route"
       dense
       class="input-add"
-      @click.native="resetActiveComponent"
+      @click="resetActiveComponent"
     ></q-input>
 
     <Routes></Routes>
