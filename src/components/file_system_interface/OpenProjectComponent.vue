@@ -14,10 +14,11 @@ Description:
 </template>
 
 <script>
-import fs from "fs-extra";
-const { remote } = require("electron");
+// import fs from "fs-extra";
+// const { remote } = require("electron");
 import { mapActions } from "vuex";
-const Mousetrap = require("mousetrap");
+// const Mousetrap = require("mousetrap");
+const { fs, ipcRenderer } = window;
 
 export default {
   name: "OpenProjectComponent",
