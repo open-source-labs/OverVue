@@ -50,6 +50,13 @@ ipcMain.handle('saveProject', async (event, arg) => {
   return result;
 })
 
+// Handle dialogs for OpenProjectComponent 
+ipcMain.handle('openProject', async (event, arg) => {
+  const result = await dialog.showOpenDialog(arg);
+  return result;
+})
+
+
 // ************** Slack OAuth functions **********************
 // Sends request to Slack for User's information,
 // then sends user information back to renderer process
