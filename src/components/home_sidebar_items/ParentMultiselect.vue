@@ -7,7 +7,7 @@ Description:
 <template>
   <div id="parent-select">
     <br />
-    <multiselect
+    <!-- <multiselect
       v-model="value"
       placeholder="Parent Component"
       :multiple="false"
@@ -18,19 +18,19 @@ Description:
       :max-height="90"
       :option-height="20"
       :searchable="true"
-    >
+    > -->
     <!-- refactor slot syntax here -->
     <!-- <span slot='noResult'>No components found.</span> -->
     <span class='noResult'>
       <slot></slot>
     </span>
-    </multiselect>
+    <!-- </multiselect> -->
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import Multiselect from 'vue-multiselect'
+// import Multiselect from 'vue-multiselect'
 
 export default {
   name: 'ParentMultiselect',
