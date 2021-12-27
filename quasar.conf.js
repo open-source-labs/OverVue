@@ -57,9 +57,9 @@ module.exports = configure(function (ctx) {
       //   cfg.target = ['electron-main', 'electron-renderer']
       // },
 
-      extendWebpack(cfg) {
-        cfg.target = 'electron-main'
-      },
+      // extendWebpack(cfg) {
+      //   cfg.target = 'electron-main'
+      // },
       
       // transpile: false,
       // publicPath: '/',
