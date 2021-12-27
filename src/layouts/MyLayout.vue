@@ -20,8 +20,7 @@ Description:
         <q-toolbar-title> OverVue </q-toolbar-title>
         <SlackLoginWindow />
         <div></div>
-        <!-- <i
-          v-if="this.$router.app.$children[0].doneAction.length"
+        <i v-if="doneAction.length"
           class="fa fa-backward"
           aria-hidden="true"
           @click="undo"
@@ -31,16 +30,17 @@ Description:
           class="fa fa-backward"
           id="unavailable"
           aria-hidden="true"
-        ></i> -->
-        <!-- <i
-          v-if="this.$router.app.$children[0].undoneAction.length"
+        ></i>
+        <i
+          v-if="undoneAction.length"
           class="fa fa-forward"
           aria-hidden="true"
           @click="redo"
         ></i>
-        <i v-else class="fa fa-forward" id="unavailable" aria-hidden="true"></i> -->
-        <!-- <OpenProjectComponent /> -->
-        <!-- <SaveProjectComponent /> -->
+        <i v-else class="fa fa-forward" id="unavailable" aria-hidden="true"></i>
+
+        <OpenProjectComponent />
+        <SaveProjectComponent />
         <ExportProjectComponent />
         <!-- </div> -->
         <!-- this button will open the right drawer -->
@@ -106,8 +106,8 @@ Description:
 // HomeSideDropDown contains RouteDisplay, VuexForm and Edit but we'll be separating these components across different tabs
 import Dashboard from "../components/dashboard_items/Dashboard.vue";
 import ExportProjectComponent from "../components/file_system_interface/ExportProject.vue";
-// import SaveProjectComponent from "../components/file_system_interface/SaveProjectComponent.vue";
-// import OpenProjectComponent from "../c omponents/file_system_interface/OpenProjectComponent.vue";
+import SaveProjectComponent from "../components/file_system_interface/SaveProjectComponent.vue";
+import OpenProjectComponent from "../components/file_system_interface/OpenProjectComponent.vue";
 // import UploadImage from "../components/home_sidebar_items/UploadImage.vue";
 import SlackLoginWindow from "../components/slack_login/SlackLoginWindow.vue";
 // import RouteDisplay from "../components/home_sidebar_items/RouteDisplay.vue";
@@ -116,6 +116,8 @@ import ComponentTab from "../components/home_sidebar_items/ComponentTab/Componen
 import StoreTab from "../components/home_sidebar_items/StoreTab/StoreTab.vue";
 
 export default {
+  // Passed down from App.vue
+  props: ['doneAction', 'undoneAction'],
   data() {
     return {
       tab: "component",
@@ -128,8 +130,8 @@ export default {
     // VuexForm,
     Dashboard,
     ExportProjectComponent,
-    // SaveProjectComponent,
-    // OpenProjectComponent,
+    SaveProjectComponent,
+    OpenProjectComponent,
     // UploadImage,
     SlackLoginWindow,
     // ComponentTab,
@@ -137,13 +139,12 @@ export default {
   },
   methods: {
     undo() {
-      // console.log('UNDO FROM BUTTON')
-      // console.log('look at me ', this.$router.app.$children[0].doneAction)
-      this.$router.app.$children[0].undo();
+      // this.$router.app.$children[0].undo();
+      // Emit custom event, listen in App.vue to trigger undo or redo
+      this.$emit('undo');
     },
     redo() {
-      // console.log('REDO FROM BUTTON')
-      this.$router.app.$children[0].redo();
+      this.$emit('redo');
     },
   },
 };

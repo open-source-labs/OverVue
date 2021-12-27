@@ -37,6 +37,7 @@ const fs = require('fs-extra');
  // fs from fs-extra, used in ExportProject
  contextBridge.exposeInMainWorld("fs", {
     writeFileSync: (file, data, options) => fs.writeFileSync(file, data, options), 
+    readFileSync: (path, options) => fs.readFileSync(path, options),
     existsSync: (data) => fs.existsSync(data), 
     mkdirSync: (data) => fs.mkdirSync(data)
 })
