@@ -7,8 +7,8 @@ Description:
 <template>
   <div id="parent-select">
     <br />
-    <!-- <multiselect
-      v-model="value"
+    <VueMultiselect
+      v-model="selected"
       placeholder="Parent Component"
       :multiple="false"
       :close-on-select="true"
@@ -18,27 +18,27 @@ Description:
       :max-height="90"
       :option-height="20"
       :searchable="true"
-    > -->
+    >
     <!-- refactor slot syntax here -->
     <!-- <span slot='noResult'>No components found.</span> -->
     <span class='noResult'>
       <slot></slot>
     </span>
-    <!-- </multiselect> -->
+    </VueMultiselect>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
-// import Multiselect from 'vue-multiselect'
+import VueMultiselect from 'vue-multiselect'
 
 export default {
   name: 'ParentMultiselect',
   components: {
-    Multiselect
+    VueMultiselect
   },
   data () {
-    return { value: '' }
+    return { selected: '' }
   },
   computed: {
     ...mapState([
@@ -54,8 +54,8 @@ export default {
   },
   methods: {
     ...mapActions(['parentSelected', 'setActiveComponent']),
-    selectParent (value) {
-      this.parentSelected(value)
+    selectParent (selected) {
+      this.parentSelected(selected)
     },
     // when multiselect is opened activeComponent is deselected to allow for parentSelected action
     resetActiveComponent () {
@@ -64,19 +64,19 @@ export default {
       }
     }
   },
-  // clears out value in mutiselect on creation of component
+  // clears out selected in mutiselect on creation of component
   watch: {
     componentMap: {
       handler () {
         // console.log('componentMap has changed')
-        this.value = ''
+        this.selected = ''
       }
     }
   }
 }
 </script>
 
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+<style src="vue-multiselect/dist/vue-multiselect.css"></style>
 <style scoped>
   #parent-select {
     height: 30px;
