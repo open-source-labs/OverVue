@@ -26,15 +26,15 @@ Description:
 
     </form>
     <div class="icon-container">
-      <!-- <Icons
+      <Icons
         class="icons"
         @getClickedIcon="addToSelectedElementList"
         @activeElement="addToComponentElementList"
         @activeHTML="addNestedHTML"
         @activeLayer="addNestedNoActive"
-      /> -->
+      />
     </div>
-    <ParentMultiselect v-if="activeComponent === ''"></ParentMultiselect>
+    <!-- <ParentMultiselect v-if="activeComponent === ''"></ParentMultiselect> -->
     <br />
 
     <q-btn
@@ -50,16 +50,16 @@ Description:
 </template>
 
 <script>
-// import Icons from '../Icons'
-import ParentMultiselect from '../ParentMultiselect.vue'
+import Icons from '../Icons'
+// import ParentMultiselect from '../ParentMultiselect.vue'
 import { mapState, mapActions } from 'vuex'
 
 
 export default {
   name: 'HomeSidebar',
   components: {
-    // Icons,
-    ParentMultiselect
+    Icons
+    // ParentMultiselect
   },
   computed: {
     ...mapState([
