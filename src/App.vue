@@ -33,7 +33,6 @@ let redoMixin = {
       undoneAction: [],
       isTimetraveling: false,
       initialState: {}, 
-      doneActionLength: 0
     }
   },
   created () {

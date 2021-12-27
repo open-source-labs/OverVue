@@ -139,18 +139,12 @@ export default {
   },
   methods: {
     undo() {
-      // console.log('UNDO FROM BUTTON')
-      // console.log('look at me ', this.$router.app.$children[0].doneAction)
       // this.$router.app.$children[0].undo();
-      // console.log(this.doneAction);
       // Emit custom event, listen in App.vue to trigger undo or redo
       this.$emit('undo');
     },
     redo() {
-      // console.log('REDO FROM BUTTON')
-      // this.$router.app.$children[0].redo();
       this.$emit('redo');
-      console.log('redo')
     },
   },
 };
