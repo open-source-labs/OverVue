@@ -134,7 +134,7 @@ export default {
     OpenProjectComponent,
     // UploadImage,
     SlackLoginWindow,
-    // ComponentTab,
+    ComponentTab,
     StoreTab,
   },
   methods: {
