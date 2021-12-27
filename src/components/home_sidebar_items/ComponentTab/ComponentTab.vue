@@ -4,13 +4,13 @@ Functionality includes: if active component is selected, will switch view to edi
   <q-card id="store-cards">
     <!-- <UploadImage v-if="activeComponent === ''"/> -->
     <CreateComponent v-if="activeComponent === ''"/>
-    <!-- <EditDeleteComponents v-if="activeComponent !== ''"/> -->
+    <EditDeleteComponents v-if="activeComponent !== ''"/>
   </q-card>
 </template>
 
 <script>
 import CreateComponent from './CreateComponent.vue'
-// import EditDeleteComponents from './EditDeleteComponents.vue'
+import EditDeleteComponents from './EditDeleteComponents.vue'
 import { mapState } from 'vuex'
 // import UploadImage from '../UploadImage.vue'
 export default {
@@ -26,7 +26,7 @@ export default {
   },
   components: {
     CreateComponent,
-    // EditDeleteComponents,
+    EditDeleteComponents,
     // UploadImage,
   }
 }

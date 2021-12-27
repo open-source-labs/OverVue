@@ -93,23 +93,23 @@ export default {
     // otherwise toggle dashboard to 'Project Tree' tab if no component is selected or the
     // user is in the process of creating a component
 
-    componentNameInputValue: function() {
-      if (this.componentNameInputValue !== "" && this.activeComponent === "") {
-        this.tab = "tree";
-      }
-    },
+    // componentNameInputValue: function() {
+    //   if (this.componentNameInputValue !== "" && this.activeComponent === "") {
+    //     this.tab = "tree";
+    //   }
+    // },
 
     // // toggles dashboard to "Project Tree" tab if:
     // // no component is selected and either:
     // // elements are being added to component or name is being typed
-    selectedElementList: function() {
-      if (
-        this.activeComponent === "" &&
-        this.selectedElementList.length !== 0
-      ) {
-        this.tab = "tree";
-      }
-    }
+    // selectedElementList: function() {
+    //   if (
+    //     this.activeComponent === "" &&
+    //     this.selectedElementList.length !== 0
+    //   ) {
+    //     this.tab = "tree";
+    //   }
+    // }
   }
 };
 

@@ -113,9 +113,13 @@ export default {
         parent: {},
         isActive: false
       }
+
+      console.log(component)
       if (!this.componentMap[component.componentName]) {
+        console.log('line119')
         this.registerComponent(component)
-        this.setActiveComponent(component.componentName)
+        console.log(this.setActiveComponent)
+        // this.setActiveComponent(component.componentName)
       }
     },
   },
