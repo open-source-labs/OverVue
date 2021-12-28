@@ -53,8 +53,6 @@ Description:
 import Icons from '../Icons'
 import ParentMultiselect from '../ParentMultiselect.vue'
 import { mapState, mapActions } from 'vuex'
-
-
 export default {
   name: 'HomeSidebar',
   components: {
@@ -88,7 +86,6 @@ export default {
       'addNestedNoActive',
       'editComponentName',
     ]),
-
     createComponent () {
       if (!this.componentNameInputValue.replace(/[^a-z0-9-_.]/gi, '')) {
         event.preventDefault()
@@ -113,18 +110,14 @@ export default {
         parent: {},
         isActive: false
       }
-
-      console.log(component)
       if (!this.componentMap[component.componentName]) {
-        console.log('line119')
-        this.registerComponent(component)
-        console.log(this.setActiveComponent)
-        // this.setActiveComponent(component.componentName)
+        this.registerComponent(component);
+        console.log(this.$store.state)
+        this.setActiveComponent(component.componentName)
       }
     },
   },
 }
-
 </script>
 
 <style lang="scss" scoped>
@@ -136,7 +129,6 @@ export default {
   margin: 0.75rem;
   width: 90%;
 }
-
 .inner-div {
   display: flex;
   flex-direction: column;
