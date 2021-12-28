@@ -13,8 +13,40 @@ Description:
   >
     <!-- This is the actual component box -->
   <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
-    <VueDraggableResizable
-      class-name="component-box"
+
+<!-- // ***************** Without draggable resizable, this works *********** -->
+  <!-- <div 
+  class="component-box"
+    v-for="componentData in activeRouteArray" 
+      ref="boxes"
+      :key="componentData.componentName"
+      :id="componentData.componentName"
+      :x="componentData.x"
+      :y="componentData.y"
+      :z="componentData.z"
+      :w="componentData.w"
+      :h="componentData.h"
+      :parent="true"
+      :preventDeactivation="true"
+      @activated="onActivated(componentData)"
+      @click="onActivated(componentData)"
+      @deactivated="onDeactivated(componentData)"
+      @dragstop="finishedDrag"
+      @resizestop="finishedResize"
+      :onDragStart="recordInitialPosition"
+      :onResizeStart="recordInitialSize"
+  >
+    {{ componentData.componentName }}
+    {{ componentData.w }}
+    {{ componentData.x }}
+    {{ componentData.y }}
+    {{ componentData.z }}
+    {{ componentData.h }}
+  </div> -->
+
+<!-- ************************** Old vue draggable resizable *************** -->
+    <!-- <vue-draggable-resizable
+      class="component-box"
       v-for="componentData in activeRouteArray"
       ref="boxes"
       :key="componentData.componentName"
@@ -69,9 +101,15 @@ Description:
           </q-item>
         </q-list>
       </q-menu>
-    </VueDraggableResizable>
+    </vue-draggable-resizable> -->
 
 
+
+<!-- ************************ Vue3 draggable resizable ******************* -->
+
+
+
+<!-- ********************* This part works, don't touch it *************** -->
     <div>
       <q-dialog v-model="modalOpen">
         <q-select
@@ -92,17 +130,20 @@ Description:
 </template>
 
 <script>
-
+import { defineComponent } from "vue"
 import { mapState, mapActions } from "vuex";
-import VueDraggableResizable from "vue-draggable-resizable";
+// import Vue3DraggableResizable from 'vue3-draggable-resizable';
+
+// import { DraggableContainer } from 'vue3-draggable-resizable'
+// import VueDraggableResizable from "vue-draggable-resizable";
 // import "vue-draggable-resizable/dist/VueDraggableResizable.css";
-// import Vue3DraggableResizable from "vue3-draggable-resizable";
-// import "vue3-draggable-resizable/dist/Vue3DraggableResizable.css";
+const cloneDeep = require('lodash.clonedeep')
+
 
 export default {
   name: "ComponentDisplay",
   components: {
-    VueDraggableResizable
+    // Vue3DraggableResizable
   },
   data() {
     // console.log("Current Component Map is: ", this.componentMap);
@@ -113,7 +154,7 @@ export default {
       mockImg: false,
       initialPosition: { x: 0, y: 0 },
       initialSize: { w: 0, h: 0 },
-      htmlElements: []
+      htmlElements: [], 
     };
   },
   mounted() {
@@ -125,7 +166,6 @@ export default {
         }
       }
     });
-
     window.addEventListener("keyup", event => {
       if (event.key === "Delete") {
         if (this.activeComponent) {
@@ -141,13 +181,11 @@ export default {
         this.$store.dispatch("copyActiveComponent");
       }
     });
-
     window.addEventListener('paste', () => {
       this.$store.dispatch("pasteActiveComponent");
       // console.log('pasted');
     })
   },
-
   computed: {
     ...mapState([
       "routes",
@@ -158,26 +196,24 @@ export default {
       "imagePath",
       "activeComponentObj"
     ]),
-
     // used in VueDraggableResizeable component
     activeRouteArray() {
       return this.routes[this.activeRoute];
     },
-
     // used to delete active component
     activeComponentData() {
-      return this.activeComponentObj;
+      // Must deep clone this so we are not directly mutating state
+      return cloneDeep(this.activeComponentObj);
     },
-
     // childList () {
     //   return this.componentMap[componentData.componentName].children
     // },
-
     options() {
       // checks if component has any parents and pushes them into lineage
       const checkParents = (component, lineage = [component.componentName]) => {
         if (!Object.keys(component.parent).length) return lineage;
         for (var parents in component.parent) {
+          // Mutating? 
           lineage.push(parents);
           checkParents(component.parent[parents], lineage);
         }
@@ -204,13 +240,11 @@ export default {
         if (!exceptions.has(component)) return component;
       });
     },
-
     userImage() {
       const imgSrc = `file://` + this.imagePath[this.activeRoute];
       // console.log('imgSrc is: ', imgSrc)
       return imgSrc;
     },
-
     // updates display with mockup image
     mockBg() {
       return this.imagePath[this.activeRoute]
@@ -221,30 +255,37 @@ export default {
     }
   },
   updated() {
+    // console.log(this.$refs.boxes);
     // if there are no active components, all boxes are unhighlighted
     if (this.activeComponent === "") {
       if (this.$refs.boxes) {
         this.$refs.boxes.forEach(element => {
           element.enabled = false;
-          element.$emit("deactivated");
-          element.$emit("update:active", false);
+          
+          // element.$emit("deactivated");
+          // element.$emit("update:active", false);
+          this.$emit("deactivated");
+          this.$emit("update:active", false);
         });
       }
     } else {
       // if a component is set to active, highlight it
       this.$refs.boxes.forEach(element => {
         if (
-          this.activeComponent === element.$attrs.id &&
+          // this.activeComponent === element.$attrs.id &&
+          // element.enabled === false
+          this.activeComponent === element.id &&
           element.enabled === false
         ) {
           element.enabled = true;
-          element.$emit("activated");
-          element.$emit("update:active", true);
+          // element.$emit("activated");
+          // element.$emit("update:active", true);
+          this.$emit("activated");
+          this.$emit("update:active", true);
         }
       });
     }
   },
-
   methods: {
     ...mapActions([
       "setActiveComponent",
@@ -256,7 +297,6 @@ export default {
       "updateStartingSize",
       "updateComponentSize"
     ]),
-
     // records component's initial position in case of drag
     recordInitialPosition: function(e) {
       // console.log('recording initial position: ', this.initialPosition)
@@ -266,7 +306,6 @@ export default {
       this.initialPosition.x = this.activeComponentData.x;
       this.initialPosition.y = this.activeComponentData.y;
     },
-
     // records component's initial size/position in case of resize
     recordInitialSize: function(e) {
       // console.log('recording initial size')
@@ -275,7 +314,6 @@ export default {
       this.initialPosition.x = this.activeComponentData.x;
       this.initialPosition.y = this.activeComponentData.y;
     },
-
     // sets component's ending size/position
     finishedResize: function(x, y, w, h) {
       // console.log('FINISHED RESIZING')
@@ -297,7 +335,6 @@ export default {
         this.updateComponentSize(payload);
       }
     },
-
     finishedDrag: function(x, y) {
       // console.log('FINISHED DRAGGING')
       let payload = {
@@ -316,46 +353,44 @@ export default {
         this.updateComponentPosition(payload);
       }
     },
-
     /* Records size/position
       Add @resizing="onResize" to VueDraggableResizable #component-box to use
-
     onResize: function (x, y, width, height) {
       this.activeComponentData.x = x
       this.activeComponentData.y = y
       this.activeComponentData.w = width
       this.activeComponentData.h = height
-
       this.componentMap[this.activeComponent].x = x
       this.componentMap[this.activeComponent].y = y
       this.componentMap[this.activeComponent].w = width
       this.componentMap[this.activeComponent].h = height
     },
     */
-
     /* Records component's position
       Add @dragging="onDrag" to VueDraggableResizable #component-box to use
-
     onDrag: function (x, y) {
       console.log('ondrag')
       this.activeComponentData.x = x
       this.activeComponentData.y = y
-
       this.componentMap[this.activeComponent].x = x
       this.componentMap[this.activeComponent].y = y
     },
     */
-
     // unhighlights all inactive components
     onActivated(componentData) {
+      console.log('This is ACTIVATED')
       // console.log('onActivated - comp display, componentData', componentData)
       if (this.$refs.boxes) {
         this.$refs.boxes.forEach(element => {
-          if (element.$attrs.id !== componentData.componentName) {
+          if (element.id !== componentData.componentName) {
+            console.log('Emit')
             element.enabled = false;
-            element.$emit("deactivated");
-            // this.setActiveComponent(componentData.componentName)
-            element.$emit("update:active", false);
+            // element.$emit("deactivated");
+
+            // element.$emit("update:active", false);
+            this.$emit("deactivated");
+
+            this.$emit("update:active", false);
           }
         });
       }
@@ -364,25 +399,22 @@ export default {
       }
       this.activeComponentData.isActive = true;
     },
-
     // deactivated is emitted before activated
     onDeactivated() {
+      console.log('This is DEACTIVATED')
       if (this.activeComponent !== "") {
         this.activeComponentData.isActive = false;
       }
     },
-
     // renders modal with Update Children and Layer in it
     handleAddChild() {
       this.modalOpen = true;
     },
-
     // used when user selects to add child from dropdown
     handleSelect(value) {
       // console.log('selected child component: ', value)
       this.updateActiveComponentChildrenValue(value);
     },
-
     // user can change component's layer order
     handleLayer(e) {
       // console.log('handeLayer\'s e: ', e)
@@ -397,7 +429,6 @@ export default {
       if (e.target.innerText === "-" && payload.z > 0) payload.z--;
       this.updateComponentLayer(payload);
     },
-
     // if user clicks on display grid, resets active component to ''
     handleClick(event) {
       if (event.target.className === "component-display grid-bg") {
@@ -409,7 +440,6 @@ export default {
     copyActiveComponent() {
       // console.log('copied');
     }
-
   },
   watch: {
     activeComponent: function() {
@@ -420,7 +450,7 @@ export default {
       }
     }
   }
-};
+}
 </script>
 
 <style scoped>
@@ -435,7 +465,6 @@ export default {
   line-height: 1.2;
   z-index: -1;
 }
-
 .component-html-info {
   display: flex;
   font-size: 14px;
@@ -485,7 +514,6 @@ export default {
     #269;
   behavior: url(/pie/PIE.htc);
 }
-
 .menu {
   margin-bottom: 0px !important;
 }

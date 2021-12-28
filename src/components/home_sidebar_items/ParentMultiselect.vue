@@ -74,9 +74,10 @@ export default {
     }
   }
 }
-</script>
 
+</script>
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>
+
 <style scoped>
   #parent-select {
     height: 30px;
