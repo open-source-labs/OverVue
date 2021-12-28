@@ -56,7 +56,6 @@ ipcMain.handle('openProject', async (event, arg) => {
   return result;
 })
 
-
 // ************** Slack OAuth functions **********************
 // Sends request to Slack for User's information,
 // then sends user information back to renderer process
