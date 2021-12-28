@@ -5,64 +5,56 @@ Description:
   -->
 
 <template>
-  <q-btn
-    class="export-btn"
-    color="secondary"
-    label="Open Project"
-    @click="openProjectJSON"
-  />
+  <q-btn class="export-btn" color="secondary" label="Open Project" @click="openProjectJSON"/>
 </template>
 
 <script>
-// import fs from "fs-extra";
-// const { remote } = require("electron");
-import { mapActions } from "vuex";
-// const Mousetrap = require("mousetrap");
-const { fs, ipcRenderer } = window;
+// import fs from 'fs-extra'
+// const { remote } = require('electron')
+import { mapActions } from 'vuex';
+const Mousetrap = require('mousetrap');
+const { fs, ipcRenderer } = window; 
 
 export default {
-  name: "OpenProjectComponent",
+  name: 'OpenProjectComponent',
   methods: {
-    ...mapActions(["openProject"]),
+    ...mapActions(['openProject']),
     // opens project
-    openJSONFile(data) {
-      if (data === undefined) return;
-      const jsonFile = JSON.parse(fs.readFileSync(data[0], "utf8"));
+    openJSONFile (data) {
+      if (data === undefined) return
+      const jsonFile = JSON.parse(fs.readFileSync(data[0], 'utf8'))
       // console.log('json file', jsonFile)
-      this.openProject(jsonFile);
+      this.openProject(jsonFile)
     },
     showOpenJSONDialog() {
-      remote.dialog.showOpenDialog(
-        {
-          properties: ["openFile"],
-          filters: [
-            {
-              name: "JSON Files",
-              extensions: ["json"],
-            },
-          ],
-        },
-        (result) => {
-          // 'result' is the filepath of the .json file being opened
-          this.openJSONFile(result);
-        }
-      );
+      ipcRenderer.invoke('openProject', {
+        properties: ['openFile'],
+        filters: [{
+          name: 'JSON Files',
+          extensions: ['json']
+        }]
+      })
+      .then(res => this.openJSONFile(res.filePaths))
+      .catch(err => console.log(err))
     },
-    openProjectJSON() {
+
+    openProjectJSON () {
       this.showOpenJSONDialog();
-    },
+    }
   },
   // on components creation these key presses will trigger open project
-  created() {
-    Mousetrap.bind(["command+o", "ctrl+o"], () => {
-      this.openProjectJSON();
-    });
-  },
-};
+  created () {
+    Mousetrap.bind(['command+o', 'ctrl+o'], () => {
+      this.openProjectJSON()
+    })
+  }
+}
+
 </script>
 
-<style scoped>
-.mr-sm {
-  margin-right: 0.2rem;
-}
-</style>
+ <style scoped>
+   .mr-sm {
+     margin-right: 0.2rem;
+   }
+ </style>
+

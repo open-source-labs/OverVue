@@ -11,6 +11,10 @@ const ESLintPlugin = require("eslint-webpack-plugin");
 const { configure } = require("quasar/wrappers");
 
 module.exports = configure(function (ctx) {
+  const env = ctx.dev
+    ? require("quasar-dotenv").config({ path: ".env.development" })
+    : require("quasar-dotenv").config();
+
   return {
     // https://quasar.dev/quasar-cli/supporting-ts
     supportTS: false,
@@ -43,9 +47,12 @@ module.exports = configure(function (ctx) {
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
       vueRouterMode: "history", // available values: 'hash', 'history'
-      extendWebpack(cfg) {
-        cfg.target = ["electron-main", "electron-renderer"];
-      },
+      env: env,
+      // Potential fix for fs errors
+      // extendWebpack(cfg) {
+      //   // cfg.target = ['electron-main', 'electron-renderer']
+      //   cfg.target = ['electron-main', 'electron-renderer']
+      // },
 
       // transpile: false,
       // publicPath: '/',
@@ -169,27 +176,27 @@ module.exports = configure(function (ctx) {
         theme_color: "#027be3",
         icons: [
           {
-            src: "icons/icon-128x128.png",
+            src: "statics/icons/icon-128x128.png",
             sizes: "128x128",
             type: "image/png",
           },
           {
-            src: "icons/icon-192x192.png",
+            src: "statics/icons/icon-192x192.png",
             sizes: "192x192",
             type: "image/png",
           },
           {
-            src: "icons/icon-256x256.png",
+            src: "statics/icons/icon-256x256.png",
             sizes: "256x256",
             type: "image/png",
           },
           {
-            src: "icons/icon-384x384.png",
+            src: "statics/icons/icon-384x384.png",
             sizes: "384x384",
             type: "image/png",
           },
           {
-            src: "icons/icon-512x512.png",
+            src: "statics/icons/icon-512x512.png",
             sizes: "512x512",
             type: "image/png",
           },
@@ -209,9 +216,12 @@ module.exports = configure(function (ctx) {
 
     // Full list of options: https://quasar.dev/quasar-cli/developing-electron-apps/configuring-electron
     electron: {
-      bundler: "packager", // 'packager' or 'builder'
-
+      // bundler: 'packager', // 'packager' or 'builder'
+      bundler: "builder",
       packager: {
+        // protocols: ["overvue"],
+        protocol: "overvue",
+        appBundleId: "overvue",
         // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
         // OS X / Mac App Store
         // appBundleId: '',
@@ -225,7 +235,16 @@ module.exports = configure(function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: "overvue_router",
+        appId: "com.electron.OverVue",
+        win: {
+          target: "nsis",
+        },
+        protocols: [
+          {
+            name: "overvue",
+            schemes: ["overvue"],
+          },
+        ],
       },
 
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain

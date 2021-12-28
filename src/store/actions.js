@@ -275,6 +275,11 @@ const actions = {
     commit(types.SET_ROUTES, payload.routes)
   },
 
+  // Add project 
+  [types.addProject]: ({ commit }, payload) => {
+    commit(types.ADD_PROJECT, payload)
+  },
+
   // end of loading///////////////////////////////////////////////////
 }
 
