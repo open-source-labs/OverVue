@@ -13,7 +13,7 @@ Description:
   >
     <!-- This is the actual component box -->
   <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
-    <!-- <VueDraggableResizable
+    <VueDraggableResizable
       class-name="component-box"
       v-for="componentData in activeRouteArray"
       ref="boxes"
@@ -69,7 +69,7 @@ Description:
           </q-item>
         </q-list>
       </q-menu>
-    </VueDraggableResizable> -->
+    </VueDraggableResizable>
 
 
     <div>
