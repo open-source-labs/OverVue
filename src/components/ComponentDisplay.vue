@@ -24,7 +24,6 @@ Description:
       :z="componentData.z"
       :w="componentData.w"
       :h="componentData.h"
-      :parent="true"
       :preventDeactivation="true"
       @activated="onActivated(componentData)"
       @deactivated="onDeactivated(componentData)"
@@ -231,7 +230,7 @@ export default {
         if (
           // this.activeComponent === element.$attrs.id &&
           // element.enabled === false
-          this.activeComponent === element.id &&
+          this.activeComponent === element.$attrs.id &&
           element.enabled === false
         ) {
           element.enabled = true;
@@ -339,7 +338,7 @@ export default {
       // console.log('onActivated - comp display, componentData', componentData)
       if (this.$refs.boxes) {
         this.$refs.boxes.forEach(element => {
-          if (element.id !== componentData.componentName) {
+          if (element.$attrs.id !== componentData.componentName) {
             console.log('Emit')
             element.enabled = false;
             element.$emit("deactivated");
@@ -355,7 +354,7 @@ export default {
       this.activeComponentData.isActive = true;
     },
     // deactivated is emitted before activated
-    onDeactivated() {
+    onDeactivated(type) {
       console.log('This is DEACTIVATED')
       if (this.activeComponent !== "") {
         this.activeComponentData.isActive = false;
@@ -401,7 +400,7 @@ export default {
       if (this.activeComponent) {
         this.onActivated(this.activeComponentObj);
       } else {
-        this.onDeactivated();
+        this.onDeactivated('bgClick');
       }
     }
   }
