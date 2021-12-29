@@ -30,6 +30,7 @@
     "node-gyp": "^8.4.1",
     "quasar": "^2.0.0",
     "quasar-dotenv": "^1.0.5",
+    "vue-draggable-resizable": "^2.3.0",
     "vue-multiselect": "^3.0.0-alpha.1",
     "vue-prism-editor": "^2.0.0-alpha.2",
     "vued3tree": "^5.1.0",
