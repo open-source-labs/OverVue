@@ -13,40 +13,8 @@ Description:
   >
     <!-- This is the actual component box -->
   <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
-
-<!-- // ***************** Without draggable resizable, this works *********** -->
-  <!-- <div 
-  class="component-box"
-    v-for="componentData in activeRouteArray" 
-      ref="boxes"
-      :key="componentData.componentName"
-      :id="componentData.componentName"
-      :x="componentData.x"
-      :y="componentData.y"
-      :z="componentData.z"
-      :w="componentData.w"
-      :h="componentData.h"
-      :parent="true"
-      :preventDeactivation="true"
-      @activated="onActivated(componentData)"
-      @click="onActivated(componentData)"
-      @deactivated="onDeactivated(componentData)"
-      @dragstop="finishedDrag"
-      @resizestop="finishedResize"
-      :onDragStart="recordInitialPosition"
-      :onResizeStart="recordInitialSize"
-  >
-    {{ componentData.componentName }}
-    {{ componentData.w }}
-    {{ componentData.x }}
-    {{ componentData.y }}
-    {{ componentData.z }}
-    {{ componentData.h }}
-  </div> -->
-
-<!-- ************************** Old vue draggable resizable *************** -->
-    <!-- <vue-draggable-resizable
-      class="component-box"
+    <vue-draggable-resizable
+      class-name="component-box"
       v-for="componentData in activeRouteArray"
       ref="boxes"
       :key="componentData.componentName"
@@ -56,7 +24,6 @@ Description:
       :z="componentData.z"
       :w="componentData.w"
       :h="componentData.h"
-      :parent="true"
       :preventDeactivation="true"
       @activated="onActivated(componentData)"
       @deactivated="onDeactivated(componentData)"
@@ -101,15 +68,7 @@ Description:
           </q-item>
         </q-list>
       </q-menu>
-    </vue-draggable-resizable> -->
-
-
-
-<!-- ************************ Vue3 draggable resizable ******************* -->
-
-
-
-<!-- ********************* This part works, don't touch it *************** -->
+    </vue-draggable-resizable>
     <div>
       <q-dialog v-model="modalOpen">
         <q-select
@@ -130,20 +89,16 @@ Description:
 </template>
 
 <script>
-import { defineComponent } from "vue"
 import { mapState, mapActions } from "vuex";
-// import Vue3DraggableResizable from 'vue3-draggable-resizable';
+import VueDraggableResizable from 'vue-draggable-resizable/src/components/vue-draggable-resizable.vue'
+import 'vue-draggable-resizable/src/components/vue-draggable-resizable.css'
 
-// import { DraggableContainer } from 'vue3-draggable-resizable'
-// import VueDraggableResizable from "vue-draggable-resizable";
-// import "vue-draggable-resizable/dist/VueDraggableResizable.css";
 const cloneDeep = require('lodash.clonedeep')
-
 
 export default {
   name: "ComponentDisplay",
   components: {
-    // Vue3DraggableResizable
+    VueDraggableResizable
   },
   data() {
     // console.log("Current Component Map is: ", this.componentMap);
@@ -204,6 +159,7 @@ export default {
     activeComponentData() {
       // Must deep clone this so we are not directly mutating state
       return cloneDeep(this.activeComponentObj);
+      // return this.activeComponentObj;
     },
     // childList () {
     //   return this.componentMap[componentData.componentName].children
@@ -262,10 +218,10 @@ export default {
         this.$refs.boxes.forEach(element => {
           element.enabled = false;
           
-          // element.$emit("deactivated");
-          // element.$emit("update:active", false);
-          this.$emit("deactivated");
-          this.$emit("update:active", false);
+          element.$emit("deactivated");
+          element.$emit("update:active", false);
+          // this.$emit("deactivated");
+          // this.$emit("update:active", false);
         });
       }
     } else {
@@ -274,14 +230,14 @@ export default {
         if (
           // this.activeComponent === element.$attrs.id &&
           // element.enabled === false
-          this.activeComponent === element.id &&
+          this.activeComponent === element.$attrs.id &&
           element.enabled === false
         ) {
           element.enabled = true;
-          // element.$emit("activated");
-          // element.$emit("update:active", true);
-          this.$emit("activated");
-          this.$emit("update:active", true);
+          element.$emit("activated");
+          element.$emit("update:active", true);
+          // this.$emit("activated");
+          // this.$emit("update:active", true);
         }
       });
     }
@@ -382,15 +338,13 @@ export default {
       // console.log('onActivated - comp display, componentData', componentData)
       if (this.$refs.boxes) {
         this.$refs.boxes.forEach(element => {
-          if (element.id !== componentData.componentName) {
+          if (element.$attrs.id !== componentData.componentName) {
             console.log('Emit')
             element.enabled = false;
-            // element.$emit("deactivated");
-
-            // element.$emit("update:active", false);
-            this.$emit("deactivated");
-
-            this.$emit("update:active", false);
+            element.$emit("deactivated");
+            element.$emit("update:active", false);
+            // this.$emit("deactivated");
+            // this.$emit("update:active", false);
           }
         });
       }
@@ -400,7 +354,7 @@ export default {
       this.activeComponentData.isActive = true;
     },
     // deactivated is emitted before activated
-    onDeactivated() {
+    onDeactivated(type) {
       console.log('This is DEACTIVATED')
       if (this.activeComponent !== "") {
         this.activeComponentData.isActive = false;
@@ -446,7 +400,7 @@ export default {
       if (this.activeComponent) {
         this.onActivated(this.activeComponentObj);
       } else {
-        this.onDeactivated();
+        this.onDeactivated('bgClick');
       }
     }
   }
