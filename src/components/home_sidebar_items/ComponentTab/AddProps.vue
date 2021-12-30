@@ -16,7 +16,7 @@
     </q-input>
     
     <div id="props-select">
-      <!-- <multiselect
+      <VueMultiselect
         v-model="selectProps"
         class="multiselect"
         placeholder="Select Props for Component"
@@ -30,7 +30,7 @@
         @search-change="stopDelete($event)"
       >
         <span slot="noResult">No props found.</span>
-      </multiselect> -->
+      </VueMultiselect>
     </div>
     <br/>
     <div>
@@ -48,12 +48,12 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-// import Multiselect from 'vue-multiselect'
+import VueMultiselect from 'vue-multiselect'
 
 export default {
   name: 'addProps',
   components: {
-    // Multiselect
+    VueMultiselect
   },
   data () {
     return {
