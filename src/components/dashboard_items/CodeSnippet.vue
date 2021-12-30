@@ -14,18 +14,25 @@ Description:
     <div v-else>{{ `${this.activeComponent}.vue` }}</div>
     <prism-editor
       v-model="code"
-      language="js"
-      :line-numbers="lineNumbers"
-      class="code-editor fill"
-      :readonly="true"
+      :highlight="highlighter"
+      line-numbers
+      class="my-editor"
+      readonly
     />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+
 import { PrismEditor }from 'vue-prism-editor';
 import 'vue-prism-editor/dist/prismeditor.min.css';
+import { highlight, languages } from 'prismjs/components/prism-core';
+import 'prismjs/components/prism-clike';
+import 'prismjs/components/prism-javascript';
+import 'prismjs/themes/prism-tomorrow.css'; // import syntax highlighting styles
+
+
 
 // import 'prismjs'
 // import 'prismjs/themes/prism-okaidia.css'
@@ -57,6 +64,9 @@ export default {
     }
   },
   methods: {
+    highlighter(myCode) {
+      return highlight(myCode, languages.js)
+    },
     getWindowHeight (e) {
       let minHeight =
         window.outerHeight < 900 ? 22 : window.outerHeight < 1035 ? 24 : 27.5
@@ -281,7 +291,7 @@ export default {
   // },
   beforeDestroy () {
     window.removeEventListener('resize', this.getWindowHeight)
-  }
+  },
   // watch: {
   //   activeComponent: {
   //     handler () {
@@ -310,17 +320,33 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+// Had scoped before, but could not get rid of outline with scoped style
+
+
 // resize handled by vue lifecycle methods
-.code-editor {
+.my-editor {
   font-size: 12px;
+  background: #2d2d2d;
+  color: #ccc;
+  /* you must provide font-family font-size line-height. Example: */
+  font-family: Fira code, Fira Mono, Consolas, Menlo, Courier, monospace;
+  line-height: 1.5;
+  padding: 5px;
 }
 
 .codesnippet-container {
     margin-bottom: 1rem;
 }
 
-::-webkit-scrollbar {
-    display: none;
+.prism-editor__textarea:focus {
+  outline: none; 
 }
+
+</style>
+
+<style lang="scss" scoped>
+  ::-webkit-scrollbar {
+    display: none;
+  }
 </style>

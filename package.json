@@ -28,6 +28,7 @@
     "lodash.throttle": "^4.1.1",
     "mousetrap": "^1.6.5",
     "node-gyp": "^8.4.1",
+    "prismjs": "^1.25.0",
     "quasar": "^2.0.0",
     "quasar-dotenv": "^1.0.5",
     "vue-draggable-resizable": "^2.3.0",

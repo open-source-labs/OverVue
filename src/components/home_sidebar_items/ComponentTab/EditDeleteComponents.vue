@@ -33,7 +33,7 @@ Description:
         
       </q-input>
       <!-- for the icon list -->
-      <!-- <multiselect
+      <VueMultiselect
         v-model="testModel"
         placeholder="Add/Remove Children"
         :multiple="true"
@@ -43,7 +43,7 @@ Description:
         :max-height="90"
         :option-height="20"
         :searchable="false"
-      /> -->
+      />
             
     
       <q-list
@@ -122,7 +122,7 @@ Description:
         indicator-color="secondary"
       >
       <q-expansion-item group="accordion" label="Select another Component">
-        <!-- <multiselect
+        <VueMultiselect
         class="multiselect"
         v-model="value"
         :options="options"
@@ -134,7 +134,7 @@ Description:
         placeholder="Select/Search component"
       >
       <span slot="noResult">No components found.</span>
-      </multiselect> -->
+      </VueMultiselect>
       </q-expansion-item>
  </q-list>
     </div>
@@ -143,7 +143,7 @@ Description:
 
 <script>
 import { mapState, mapActions } from "vuex";
-// import Multiselect from "vue-multiselect";
+import VueMultiselect from "vue-multiselect";
 // import { ToggleButton } from "vue-js-toggle-button";
 import HTMLQueue from "../../dashboard_items/HTMLQueue.vue";
 import Icons from "../Icons.vue";
@@ -165,7 +165,7 @@ export default {
     };
   },
   components: {
-    // Multiselect,
+    VueMultiselect,
     // ToggleButton,
     HTMLQueue,
     Icons,

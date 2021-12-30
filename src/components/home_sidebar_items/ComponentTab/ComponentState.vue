@@ -9,7 +9,7 @@
 <template>
   <div>
     <div id="state-select">
-      <multiselect
+      <VueMultiselect
         v-model="selectState"
         class="multiselect"
         placeholder="Select State for Component"
@@ -23,7 +23,7 @@
         @search-change="stopDelete($event)"
       >
         <span slot="noResult">No state found.</span>
-      </multiselect>
+      </VueMultiselect>
       <br/>
       <q-btn
           v-if="selectState.length"
@@ -62,11 +62,13 @@
 <script>
 import { mapState, mapActions } from "vuex";
 // import Multiselect from 'vue-multiselect';
+import VueMultiselect from 'vue-multiselect'
 
 export default {
   name: "ComponentState",
   components: {
     // Multiselect
+    VueMultiselect
   },
   computed: {
     ...mapState([
