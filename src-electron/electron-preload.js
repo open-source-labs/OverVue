@@ -20,7 +20,6 @@
 const {ipcRenderer, shell, contextBridge} = require('electron');
 const path = require('path');
 const fs = require('fs-extra');
-
  // ipcRenderer contextBridge
  // on: used in SlackLoginWindow
  // 
@@ -46,4 +45,3 @@ const fs = require('fs-extra');
  contextBridge.exposeInMainWorld("path", {
     join: (...paths) => path.join(...paths)
 })
-

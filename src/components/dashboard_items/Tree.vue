@@ -253,7 +253,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .container {
   height: 100%;
   width: 100%;
@@ -266,6 +266,10 @@ export default {
   font-weight: bold;
   fill: #fff;
   transform: rotate(-90deg);
+  /* none of these classes work
+  color: white !important;
+  background: white;
+  margin: 1rem; */
 }
 
 /* changes the circle node color */
@@ -396,5 +400,6 @@ export default {
   stroke-opacity: 0.4;
   stroke-width: 8px;
 }
+
 </style>
 -->

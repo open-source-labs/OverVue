@@ -479,7 +479,7 @@ const mutations = {
     const {
       componentName, htmlList, children, parent, isActive, actions, props
     } = payload
-    const s = payload.state
+    const s = payload.state;
     state.componentMap = {
       ...state.componentMap,
       [componentName]: {
