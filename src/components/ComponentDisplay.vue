@@ -12,8 +12,8 @@ Description:
     v-on:click="handleClick"
   >
     <!-- This is the actual component box -->
-  <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
-    <VueDraggableResizable
+    <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
+    <!-- <VueDraggableResizable
       class-name="component-box"
       v-for="componentData in activeRouteArray"
       ref="boxes"
@@ -56,7 +56,7 @@ Description:
               color="transparent"
               text-color="primary"
               label="-"
-              @click="e => handleLayer(e)"
+              @click="(e) => handleLayer(e)"
             />
             <p id="counter" style="color: white">{{ componentData.z }}</p>
             <q-btn
@@ -64,13 +64,12 @@ Description:
               color="transparent"
               text-color="primary"
               label="+"
-              @click="e => handleLayer(e)"
+              @click="(e) => handleLayer(e)"
             />
           </q-item>
         </q-list>
       </q-menu>
-    </VueDraggableResizable>
-
+    </VueDraggableResizable> -->
 
     <div>
       <q-dialog v-model="modalOpen">
@@ -92,9 +91,8 @@ Description:
 </template>
 
 <script>
-
 import { mapState, mapActions } from "vuex";
-import VueDraggableResizable from "vue-draggable-resizable";
+//import VueDraggableResizable from "vue-draggable-resizable";
 // import "vue-draggable-resizable/dist/VueDraggableResizable.css";
 // import Vue3DraggableResizable from "vue3-draggable-resizable";
 // import "vue3-draggable-resizable/dist/Vue3DraggableResizable.css";
@@ -102,7 +100,7 @@ import VueDraggableResizable from "vue-draggable-resizable";
 export default {
   name: "ComponentDisplay",
   components: {
-    VueDraggableResizable
+    //VueDraggableResizable,
   },
   data() {
     // console.log("Current Component Map is: ", this.componentMap);
@@ -113,12 +111,12 @@ export default {
       mockImg: false,
       initialPosition: { x: 0, y: 0 },
       initialSize: { w: 0, h: 0 },
-      htmlElements: []
+      htmlElements: [],
     };
   },
   mounted() {
     // when component is mounted, add ability to delete
-    window.addEventListener("keyup", event => {
+    window.addEventListener("keyup", (event) => {
       if (event.key === "Backspace") {
         if (this.activeComponent) {
           this.$store.dispatch("deleteActiveComponent");
@@ -126,7 +124,7 @@ export default {
       }
     });
 
-    window.addEventListener("keyup", event => {
+    window.addEventListener("keyup", (event) => {
       if (event.key === "Delete") {
         if (this.activeComponent) {
           this.$store.dispatch("deleteActiveComponent");
@@ -134,7 +132,7 @@ export default {
       }
     });
     // listener for the copy
-    window.addEventListener('copy', () => {
+    window.addEventListener("copy", () => {
       // if there is an activeComponent, copy info to state using dispatch
       if (this.activeComponent) {
         // console.log('copied!', this.activeComponent);
@@ -142,10 +140,10 @@ export default {
       }
     });
 
-    window.addEventListener('paste', () => {
+    window.addEventListener("paste", () => {
       this.$store.dispatch("pasteActiveComponent");
       // console.log('pasted');
-    })
+    });
   },
 
   computed: {
@@ -156,7 +154,7 @@ export default {
       "componentMap",
       "componentChildrenMultiselectValue",
       "imagePath",
-      "activeComponentObj"
+      "activeComponentObj",
     ]),
 
     // used in VueDraggableResizeable component
@@ -198,9 +196,9 @@ export default {
         "App",
         ...lineage,
         ...routes,
-        ...this.testModel
+        ...this.testModel,
       ]);
-      return Object.keys(this.componentMap).filter(component => {
+      return Object.keys(this.componentMap).filter((component) => {
         if (!exceptions.has(component)) return component;
       });
     },
@@ -215,16 +213,16 @@ export default {
     mockBg() {
       return this.imagePath[this.activeRoute]
         ? {
-          background: `url("${this.userImage}") center/contain no-repeat rgba(223, 218, 218, 0.886)`
-      }
+            background: `url("${this.userImage}") center/contain no-repeat rgba(223, 218, 218, 0.886)`,
+          }
         : {};
-    }
+    },
   },
   updated() {
     // if there are no active components, all boxes are unhighlighted
     if (this.activeComponent === "") {
       if (this.$refs.boxes) {
-        this.$refs.boxes.forEach(element => {
+        this.$refs.boxes.forEach((element) => {
           element.enabled = false;
           element.$emit("deactivated");
           element.$emit("update:active", false);
@@ -232,7 +230,7 @@ export default {
       }
     } else {
       // if a component is set to active, highlight it
-      this.$refs.boxes.forEach(element => {
+      this.$refs.boxes.forEach((element) => {
         if (
           this.activeComponent === element.$attrs.id &&
           element.enabled === false
@@ -254,11 +252,11 @@ export default {
       "updateStartingPosition",
       "updateComponentLayer",
       "updateStartingSize",
-      "updateComponentSize"
+      "updateComponentSize",
     ]),
 
     // records component's initial position in case of drag
-    recordInitialPosition: function(e) {
+    recordInitialPosition: function (e) {
       // console.log('recording initial position: ', this.initialPosition)
       if (this.activeComponent !== e.target.id) {
         this.setActiveComponent(e.target.id);
@@ -268,7 +266,7 @@ export default {
     },
 
     // records component's initial size/position in case of resize
-    recordInitialSize: function(e) {
+    recordInitialSize: function (e) {
       // console.log('recording initial size')
       this.initialSize.h = this.activeComponentData.h;
       this.initialSize.w = this.activeComponentData.w;
@@ -277,7 +275,7 @@ export default {
     },
 
     // sets component's ending size/position
-    finishedResize: function(x, y, w, h) {
+    finishedResize: function (x, y, w, h) {
       // console.log('FINISHED RESIZING')
       let payload = {
         x: x,
@@ -286,7 +284,7 @@ export default {
         h: h,
         activeComponent: this.activeComponent,
         routeArray: this.routes[this.activeRoute],
-        activeComponentData: this.activeComponentData
+        activeComponentData: this.activeComponentData,
       };
       if (
         payload.x !== this.initialPosition.x ||
@@ -298,14 +296,14 @@ export default {
       }
     },
 
-    finishedDrag: function(x, y) {
+    finishedDrag: function (x, y) {
       // console.log('FINISHED DRAGGING')
       let payload = {
         x: x,
         y: y,
         activeComponent: this.activeComponent,
         routeArray: this.routes[this.activeRoute],
-        activeComponentData: this.activeComponentData
+        activeComponentData: this.activeComponentData,
       };
       // console.log("Payload.x = ", payload.x, "this.initialPosition.x", this.initialPosition.x)
       // console.log("Payload.y = ", payload.y, "this.initialPosition.y", this.initialPosition.y)
@@ -350,7 +348,7 @@ export default {
     onActivated(componentData) {
       // console.log('onActivated - comp display, componentData', componentData)
       if (this.$refs.boxes) {
-        this.$refs.boxes.forEach(element => {
+        this.$refs.boxes.forEach((element) => {
           if (element.$attrs.id !== componentData.componentName) {
             element.enabled = false;
             element.$emit("deactivated");
@@ -391,7 +389,7 @@ export default {
         activeComponent: this.activeComponent,
         routeArray: this.routes[this.activeRoute],
         activeComponentData: this.activeComponentData,
-        z: this.activeComponentData.z
+        z: this.activeComponentData.z,
       };
       if (e.target.innerText === "+") payload.z++;
       if (e.target.innerText === "-" && payload.z > 0) payload.z--;
@@ -404,22 +402,21 @@ export default {
         if (!(this.activeComponent === "")) this.setActiveComponent("");
       }
     },
-    
+
     // event handler for copying (ctrl+C)
     copyActiveComponent() {
       // console.log('copied');
-    }
-
+    },
   },
   watch: {
-    activeComponent: function() {
+    activeComponent: function () {
       if (this.activeComponent) {
         this.onActivated(this.activeComponentObj);
       } else {
         this.onDeactivated();
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
