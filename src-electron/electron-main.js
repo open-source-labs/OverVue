@@ -55,11 +55,7 @@ ipcMain.handle("saveProject", async (event, arg) => {
 ipcMain.handle("openProject", async (event, arg) => {
   const result = await dialog.showOpenDialog(arg);
   return result;
-<<<<<<< HEAD
 });
-=======
-})
->>>>>>> quasar
 
 // ************** Slack OAuth functions **********************
 // Sends request to Slack for User's information,
@@ -140,23 +136,14 @@ function setOauthListener() {
   // logEverywhere(`process.env.SLACK_CLIENT_ID in electron-main:  ${process.env.SLACK_CLIENT_ID}`);
   // logEverywhere(`process.env.SLACK_CLIENT_SECRET in electron-main:  ${process.env.SLACK_CLIENT_SECRET}`);
 
-<<<<<<< HEAD
-  return deeplink.on("received", (link) => {
-    // logEverywhere(`auth worked here link: ${link}`);
-    // Extracts Slack authorization code from deep link
-    authCode = link.split("=")[1];
-    sendTokenRequest();
-  });
-=======
   if (process.env.PROD) {
-    return deeplink.on("received", link => {
+    return deeplink.on("received", (link) => {
       // logEverywhere(`auth worked here link: ${link}`);
       // Extracts Slack authorization code from deep link
       authCode = link.split("=")[1];
       sendTokenRequest();
     });
   }
->>>>>>> quasar
 }
 
 function createWindow() {

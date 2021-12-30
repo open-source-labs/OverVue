@@ -12,7 +12,7 @@ Description:
     v-on:click="handleClick"
   >
     <!-- This is the actual component box -->
-  <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
+    <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
     <vue-draggable-resizable
       class-name="component-box"
       v-for="componentData in activeRouteArray"
@@ -90,15 +90,15 @@ Description:
 
 <script>
 import { mapState, mapActions } from "vuex";
-import VueDraggableResizable from 'vue-draggable-resizable/src/components/vue-draggable-resizable.vue'
-import 'vue-draggable-resizable/src/components/vue-draggable-resizable.css'
+import VueDraggableResizable from "vue-draggable-resizable/src/components/vue-draggable-resizable.vue";
+import "vue-draggable-resizable/src/components/vue-draggable-resizable.css";
 
-const cloneDeep = require('lodash.clonedeep')
+const cloneDeep = require("lodash.clonedeep");
 
 export default {
   name: "ComponentDisplay",
   components: {
-    //VueDraggableResizable,
+    VueDraggableResizable,
   },
   data() {
     // console.log("Current Component Map is: ", this.componentMap);
@@ -109,7 +109,7 @@ export default {
       mockImg: false,
       initialPosition: { x: 0, y: 0 },
       initialSize: { w: 0, h: 0 },
-      htmlElements: [], 
+      htmlElements: [],
     };
   },
   mounted() {
@@ -121,7 +121,7 @@ export default {
         }
       }
     });
-    window.addEventListener("keyup", event => {
+    window.addEventListener("keyup", (event) => {
       if (event.key === "Delete") {
         if (this.activeComponent) {
           this.$store.dispatch("deleteActiveComponent");
@@ -136,7 +136,7 @@ export default {
         this.$store.dispatch("copyActiveComponent");
       }
     });
-    window.addEventListener('paste', () => {
+    window.addEventListener("paste", () => {
       this.$store.dispatch("pasteActiveComponent");
       // console.log('pasted');
     });
@@ -169,7 +169,7 @@ export default {
       const checkParents = (component, lineage = [component.componentName]) => {
         if (!Object.keys(component.parent).length) return lineage;
         for (var parents in component.parent) {
-          // Mutating? 
+          // Mutating?
           lineage.push(parents);
           checkParents(component.parent[parents], lineage);
         }
@@ -217,7 +217,7 @@ export default {
       if (this.$refs.boxes) {
         this.$refs.boxes.forEach((element) => {
           element.enabled = false;
-          
+
           element.$emit("deactivated");
           element.$emit("update:active", false);
           // this.$emit("deactivated");
@@ -291,7 +291,7 @@ export default {
         this.updateComponentSize(payload);
       }
     },
-    finishedDrag: function(x, y) {
+    finishedDrag: function (x, y) {
       // console.log('FINISHED DRAGGING')
       let payload = {
         x: x,
@@ -334,12 +334,12 @@ export default {
     */
     // unhighlights all inactive components
     onActivated(componentData) {
-      console.log('This is ACTIVATED')
+      console.log("This is ACTIVATED");
       // console.log('onActivated - comp display, componentData', componentData)
       if (this.$refs.boxes) {
         this.$refs.boxes.forEach((element) => {
           if (element.$attrs.id !== componentData.componentName) {
-            console.log('Emit')
+            console.log("Emit");
             element.enabled = false;
             element.$emit("deactivated");
             element.$emit("update:active", false);
@@ -355,7 +355,7 @@ export default {
     },
     // deactivated is emitted before activated
     onDeactivated(type) {
-      console.log('This is DEACTIVATED')
+      console.log("This is DEACTIVATED");
       if (this.activeComponent !== "") {
         this.activeComponentData.isActive = false;
       }
@@ -393,18 +393,18 @@ export default {
     // event handler for copying (ctrl+C)
     copyActiveComponent() {
       // console.log('copied');
-    }
+    },
   },
   watch: {
     activeComponent: function () {
       if (this.activeComponent) {
         this.onActivated(this.activeComponentObj);
       } else {
-        this.onDeactivated('bgClick');
+        this.onDeactivated("bgClick");
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>
