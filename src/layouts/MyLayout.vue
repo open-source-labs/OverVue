@@ -10,7 +10,6 @@ Description:
     <!-- the top header of OverVue -->
     <q-header elevated class="gradient text-white">
       <q-toolbar>
-
         <q-btn dense flat color="subaccent" round @click="left = !left">
           <i
             :class="[left ? 'fas fa-chevron-left' : 'fas fa-list-ul']"
@@ -20,7 +19,8 @@ Description:
         <q-toolbar-title> OverVue </q-toolbar-title>
         <SlackLoginWindow />
         <div></div>
-        <i v-if="doneAction.length"
+        <i
+          v-if="doneAction.length"
           class="fa fa-backward"
           aria-hidden="true"
           @click="undo"
@@ -51,12 +51,10 @@ Description:
             id="btn"
           ></i>
         </q-btn>
-        
       </q-toolbar>
     </q-header>
 
     <q-drawer v-model="left" side="left" behavior="desktop" bordered>
-
       <!-- QTabs setup, not sure what class to set yet -->
       <q-tabs
         v-model="tab"
@@ -65,8 +63,12 @@ Description:
         active-color="secondary"
         indicator-color="secondary"
       >
-        <q-tab name="component" label='Component'><i class="fas fa-edit"></i></q-tab>
-        <q-tab name="store" label='Store'><i class="fas fa-store-alt"></i></q-tab>
+        <q-tab name="component" label="Component"
+          ><i class="fas fa-edit"></i
+        ></q-tab>
+        <q-tab name="store" label="Store"
+          ><i class="fas fa-store-alt"></i
+        ></q-tab>
       </q-tabs>
       <!-- individual tab panel's setup -->
       <q-tab-panels v-model="tab" animated class="html-bg text-white fit">
@@ -117,7 +119,7 @@ import StoreTab from "../components/home_sidebar_items/StoreTab/StoreTab.vue";
 
 export default {
   // Passed down from App.vue
-  props: ['doneAction', 'undoneAction'],
+  props: ["doneAction", "undoneAction"],
   data() {
     return {
       tab: "component",
@@ -141,14 +143,13 @@ export default {
     undo() {
       // this.$router.app.$children[0].undo();
       // Emit custom event, listen in App.vue to trigger undo or redo
-      this.$emit('undo');
+      this.$emit("undo");
     },
     redo() {
-      this.$emit('redo');
+      this.$emit("redo");
     },
   },
 };
-
 </script>
 
 <style lang="scss">
@@ -160,11 +161,13 @@ q-btn > i {
   color: white;
 }
 // Must change style lang='scss'
-.fa-backward, .fa-forward {
+.fa-backward,
+.fa-forward {
   padding: 0 5px;
 }
 
-.fa-backward:hover, .fa-forward:hover {
+.fa-backward:hover,
+.fa-forward:hover {
   cursor: pointer;
   color: #00ffff;
 }
@@ -174,7 +177,8 @@ q-btn > i {
   cursor: default;
 }
 
-.fa-backward:active, .fa-forward:active {
+.fa-backward:active,
+.fa-forward:active {
   box-shadow: 0 1px inherit;
   transform: translateY(1px);
 }
@@ -242,4 +246,3 @@ q-btn > i {
   overflow: hidden;
 }
 </style>
-

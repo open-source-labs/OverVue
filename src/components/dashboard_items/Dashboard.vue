@@ -10,12 +10,16 @@ Description:
     <q-tabs
       v-model="tab"
       dense
-      class="bg-subaccent text-white "
+      class="bg-subaccent text-white"
       active-color="secondary"
       indicator-color="secondary"
       align="left"
     >
-      <q-tab name="detail" label="Component Details" id="label-text" style="border-right: 3px solid black"
+      <q-tab
+        name="detail"
+        label="Component Details"
+        id="label-text"
+        style="border-right: 3px solid black"
         ><i class="fas fa-code"></i
       ></q-tab>
       <q-tab name="tree" label="Project Tree" id="label-text"
@@ -50,15 +54,15 @@ export default {
   components: {
     Tree,
     ComponentDetails,
-    RouteDisplay
+    RouteDisplay,
   },
   computed: {
     ...mapState([
       "activeComponent",
       "componentNameInputValue",
       "selectedElementList",
-      "activeHTML"
-    ])
+      "activeHTML",
+    ]),
   },
   data() {
     return {
@@ -66,7 +70,7 @@ export default {
       open: true,
       height: 40,
       up: "fas fa-chevron-up",
-      down: "fas fa-chevron-down"
+      down: "fas fa-chevron-down",
     };
   },
   methods: {
@@ -87,7 +91,7 @@ export default {
         // if html element classname is not equal to this string that all html elements have
         if (!(this.activeHTML === "")) this.setActiveHTML([""]); // if activeHtml is not already deselected, do so
       }
-    }
+    },
   },
   watch: {
     // otherwise toggle dashboard to 'Project Tree' tab if no component is selected or the
@@ -112,10 +116,9 @@ export default {
     // }
   }
 };
-
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 i {
   font-size: 11px;
 }
@@ -173,12 +176,12 @@ i {
 
 // changes the length of the tab panels
 .q-tab-panels {
-padding: 0px !important;
-border-top: 3px solid black;
+  padding: 0px !important;
+  border-top: 3px solid black;
 }
 
 .q-tabs {
-  background: #11120F
+  background: #11120f;
 }
 
 .toolbar-background {
