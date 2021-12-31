@@ -36,8 +36,8 @@ Description:
       <VueMultiselect
         v-model="testModel"
         placeholder="Add/Remove Children"
-        :multiple="true"
-        :close-on-select="false"
+        :multiple="false"
+        :close-on-select="true"
         :options="childOptions"
         @input="handleAddChild"
         :max-height="90"
@@ -251,7 +251,7 @@ export default {
     ]),
 
     handleAddChild(value) {
-      // console.log('selected child component: ', value)
+      console.log('selected child component: ', value)
       this.updateActiveComponentChildrenValue(value);
     },
 
