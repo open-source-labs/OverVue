@@ -112,9 +112,11 @@ export default {
       }
       if (!this.componentMap[component.componentName]) {
         this.registerComponent(component);
-        console.log(this.$store.state)
+        // console.log(this.$store.state)
         this.setActiveComponent(component.componentName)
       }
+
+      console.log(this.$store.state)
     },
   },
 }

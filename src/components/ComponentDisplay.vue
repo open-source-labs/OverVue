@@ -158,8 +158,8 @@ export default {
     // used to delete active component
     activeComponentData() {
       // Must deep clone this so we are not directly mutating state
-      return cloneDeep(this.activeComponentObj);
       // return this.activeComponentObj;
+      return cloneDeep(this.activeComponentObj);
     },
     // childList () {
     //   return this.componentMap[componentData.componentName].children
@@ -167,6 +167,7 @@ export default {
     options() {
       // checks if component has any parents and pushes them into lineage
       const checkParents = (component, lineage = [component.componentName]) => {
+        console.log('Lineage: ' + lineage)
         if (!Object.keys(component.parent).length) return lineage;
         for (var parents in component.parent) {
           // Mutating?
@@ -183,7 +184,7 @@ export default {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.testModel = this.componentMap[this.activeComponent].children;
         lineage = checkParents(this.componentMap[this.activeComponent]);
-        // console.log('Lineage', lineage);
+        
       }
       const routes = Object.keys(this.routes);
       const exceptions = new Set([
@@ -334,12 +335,12 @@ export default {
     */
     // unhighlights all inactive components
     onActivated(componentData) {
-      console.log("This is ACTIVATED");
+      // console.log("This is ACTIVATED");
       // console.log('onActivated - comp display, componentData', componentData)
       if (this.$refs.boxes) {
         this.$refs.boxes.forEach((element) => {
           if (element.$attrs.id !== componentData.componentName) {
-            console.log("Emit");
+            //  console.log("Emit");
             element.enabled = false;
             element.$emit("deactivated");
             element.$emit("update:active", false);
@@ -355,7 +356,7 @@ export default {
     },
     // deactivated is emitted before activated
     onDeactivated(type) {
-      console.log("This is DEACTIVATED");
+      // console.log("This is DEACTIVATED");
       if (this.activeComponent !== "") {
         this.activeComponentData.isActive = false;
       }

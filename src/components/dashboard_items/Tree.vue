@@ -4,11 +4,9 @@ Description:
   Functionality includes: formating componentMap object to displaying in tree form
   -->
 
-<!-- Trying some shit -->
-
 <template>
   <div class="container">
-    <myTree :nodes="data" />
+    <myTree :nodes="computedTree" />
   </div>
 </template>
 
@@ -22,28 +20,49 @@ export default {
     myTree,
   },
 
-  setup() {
-    const data = ref([
-      {
-        label: "father",
-        nodes: [
-          {
-            label: "son1",
-          },
-        ],
-      },
-    ]);
-    return {
-      data,
-    };
-  },
+  // setup() {
+  //   const data = [
+  //     {
+  //       id: 1,
+  //       label: 'Animal',
+  //       nodes: [
+  //         {
+  //           id: 2,
+  //           label: 'Dog',
+  //         },
+  //         {
+  //           id: 3,
+  //           label: 'Cat',
+  //           nodes: [
+  //             {
+  //               id: 4,
+  //               label: 'Egyptian Mau Cat',
+  //             },
+  //             {
+  //               id: 5,
+  //               label: 'Japanese Bobtail Cat',
+  //             },
+  //           ],
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       id: 6,
+  //       label: 'People',
+  //     },
+  //   ];
+  //   return {
+  //     data,
+  //   };
+  // },
 
   computed: {
     ...mapState(["componentMap", "activeComponent"]),
     // Returns project tree on re-render
     computedTree() {
-      console.log("buildtree", this.buildTree());
-      return this.buildTree();
+      const builtTree = [this.buildTree()];
+      // console.log("buildtree", builtTree);
+      return builtTree;
     },
   },
 
@@ -51,50 +70,83 @@ export default {
     return {
       tree: null,
       treeKey: "key",
-      testTree: {
-        label: "father",
+      testTree: [
+      {
+        id: 1,
+        label: 'Animal',
         nodes: [
           {
-            label: "son1",
+            id: 2,
+            label: 'Dog',
+          },
+          {
+            id: 3,
+            label: 'Cat',
+            nodes: [
+              {
+                id: 4,
+                label: 'Egyptian Mau Cat',
+              },
+              {
+                id: 5,
+                label: 'Japanese Bobtail Cat',
+              },
+            ],
           },
         ],
       },
+      {
+        id: 6,
+        label: 'People',
+      },
+    ],
     };
   },
 
   methods: {
     // Called by transformToTree, formats componentMap
     formatComponentMap(compMap) {
+
+      // console.log('COMP MAP: ', compMap);
       let result = [];
-      Object.values(compMap).forEach((compData) => {
+      // Id to apply to each component, in accordance with Vue3Tree syntax
+      let id = 1;
+      const values = Object.values(compMap)
+
+      // console.log('FormatComponentMap: ', values);
+      values.forEach((compData) => {
         result.push({
-          name: compData.componentName,
-          children: compData.children,
+          id: id++,
+          label: compData.componentName, // previously was labeled 'name'
+          nodes: compData.children, // previously was labeled 'children'
         });
       });
+
+      // console.log('FORMATCOMPONENTMAP result: ', result);
       return result;
     },
     // Called by buildTree, transforms componentMap
+    // we need to change this to clean the data and transform it to something usable by vue3tree
     transformToTree(data) {
       let result = {};
-      const nodes = {};
+      const temp = {};
       const formattedData = this.formatComponentMap(data);
       formattedData.forEach((component) => {
-        if (!nodes[component.name]) {
-          nodes[component.name] = { name: component.name, children: [] };
-          result = nodes;
+        if (!temp[component.label]) {
+          temp[component.label] = { label: component.label, nodes: [] };
+          result = temp;
         }
-        component.children.forEach((child) => {
-          if (!nodes[child]) nodes[child] = { name: child, children: [] };
-          nodes[component.name].children.push(nodes[child]);
+        component.nodes.forEach((child) => {
+          if (!temp[child]) temp[child] = { label: child, nodes: [] };
+          temp[component.label].nodes.push(temp[child]);
         });
       });
-      // console.log(nodes)
-      // console.log(result)
+      // console.log('TRANSFORMTOTREE result', result)
       return result;
     },
     // Called by computedTree, calls transformToTree
     buildTree() {
+      // console.log('COMPONENT MAP:', this.componentMap);
       let build = this.transformToTree(this.componentMap);
       return build["App"];
     },
@@ -103,6 +155,7 @@ export default {
     componentMap: {
       deep: true,
       handler() {
+        console.log(this.$store.state.activeComponent)
         this.buildTree();
       },
     },
