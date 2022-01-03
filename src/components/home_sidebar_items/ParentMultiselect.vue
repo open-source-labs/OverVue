@@ -7,7 +7,7 @@ Description:
 <template>
   <div id="parent-select">
     <br />
-    <multiselect
+    <!-- <VueMultiselect
       v-model="value"
       placeholder="Parent Component"
       :multiple="false"
@@ -18,20 +18,36 @@ Description:
       :max-height="90"
       :option-height="20"
       :searchable="true"
+    > -->
+    <VueMultiselect
+      v-model="value"
+      placeholder="Parent Component"
+      :multiple="false"
+      :close-on-select="true"
+      :options="options"
+      @select="selectParent"
+      @open="resetActiveComponent"
+      :max-height="90"
+      :option-height="20"
+      :searchable="true"
     >
+    <!-- refactor slot syntax here -->
     <span slot='noResult'>No components found.</span>
-    </multiselect>
+    <!-- <span class='noResult'>
+      <slot></slot>
+    </span> -->
+    </VueMultiselect>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import Multiselect from 'vue-multiselect'
+import VueMultiselect from 'vue-multiselect'
 
 export default {
   name: 'ParentMultiselect',
   components: {
-    Multiselect
+    VueMultiselect
   },
   data () {
     return { value: '' }
@@ -42,7 +58,7 @@ export default {
       'componentMap',
       'activeComponent',
       'activeRoute',
-      'routes'
+      // 'routes'
     ]),
     options () {
       return this.routes[this.activeRoute].map(component => component.componentName)
@@ -51,7 +67,9 @@ export default {
   methods: {
     ...mapActions(['parentSelected', 'setActiveComponent']),
     selectParent (value) {
-      this.parentSelected(value)
+      // console.log('Select parent triggered with value: ' + value)
+      this.parentSelected(value);
+      // console.log('Parent selected: ' + this.$store.state.parentSelected)
     },
     // when multiselect is opened activeComponent is deselected to allow for parentSelected action
     resetActiveComponent () {
@@ -60,7 +78,7 @@ export default {
       }
     }
   },
-  // clears out value in mutiselect on creation of component
+  // clears out selected in mutiselect on creation of component
   watch: {
     componentMap: {
       handler () {
@@ -70,9 +88,10 @@ export default {
     }
   }
 }
+
 </script>
 
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+<style src="vue-multiselect/dist/vue-multiselect.css"></style>
 <style scoped>
   #parent-select {
     height: 30px;

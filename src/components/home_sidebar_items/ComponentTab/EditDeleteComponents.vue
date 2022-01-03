@@ -33,13 +33,14 @@ Description:
         
       </q-input>
       <!-- for the icon list -->
-      <multiselect
+      <VueMultiselect
         v-model="testModel"
         placeholder="Add/Remove Children"
-        :multiple="true"
-        :close-on-select="false"
+        multiple
+        :close-on-select="true"
         :options="childOptions"
-        @input="handleAddChild"
+        @select="handleAddChild"
+        @remove="handleDeleteChild"
         :max-height="90"
         :option-height="20"
         :searchable="false"
@@ -122,7 +123,7 @@ Description:
         indicator-color="secondary"
       >
       <q-expansion-item group="accordion" label="Select another Component">
-        <multiselect
+        <VueMultiselect
         class="multiselect"
         v-model="value"
         :options="options"
@@ -130,11 +131,11 @@ Description:
         :close-on-select="true"
         :max-height="90"
         :option-height="20"
-        @input="handleSelect(value)"
+        @select="handleSelect"
         placeholder="Select/Search component"
       >
       <span slot="noResult">No components found.</span>
-      </multiselect>
+      </VueMultiselect>
       </q-expansion-item>
  </q-list>
     </div>
@@ -143,13 +144,14 @@ Description:
 
 <script>
 import { mapState, mapActions } from "vuex";
-import Multiselect from "vue-multiselect";
-import { ToggleButton } from "vue-js-toggle-button";
+import VueMultiselect from "vue-multiselect";
+// import { ToggleButton } from "vue-js-toggle-button";
 import HTMLQueue from "../../dashboard_items/HTMLQueue.vue";
 import Icons from "../Icons.vue";
 import AddProps from "./AddProps.vue";
 import ComponentState from "./ComponentState.vue";
 import ComponentActions from "./ComponentActions.vue";
+const cloneDeep = require("lodash.clonedeep");
 
 export default {
   data() {
@@ -165,8 +167,8 @@ export default {
     };
   },
   components: {
-    Multiselect,
-    ToggleButton,
+    VueMultiselect,
+    // ToggleButton,
     HTMLQueue,
     Icons,
     AddProps,
@@ -189,7 +191,8 @@ export default {
     },
 
     activeComponentData() {
-      return this.activeComponentObj;
+      return cloneDeep(this.activeComponentObj);
+      // return this.activeComponentObj;
     },
 
     // returns options for component multiselect
@@ -251,8 +254,14 @@ export default {
     ]),
 
     handleAddChild(value) {
-      // console.log('selected child component: ', value)
-      this.updateActiveComponentChildrenValue(value);
+      const valueArray = [value];
+      this.updateActiveComponentChildrenValue(valueArray);
+      // this.updateActiveComponentChildrenValue(value);
+    },
+
+    // Handle deleting a child 
+    handleDeleteChild(value) {
+      //To do 
     },
 
     // delete selected state from active component
@@ -274,8 +283,10 @@ export default {
     // },
     // Set component as active component from left side dropdown
     onActivated(componentData) {
-      this.setActiveComponent(componentData.componentName);
-      this.activeComponentData.isActive = true;
+      if (componentData) {
+        this.setActiveComponent(componentData.componentName);
+        this.activeComponentData.isActive = true;
+      }
     },
     //
     // deleteCircumvent (e) {
@@ -341,7 +352,7 @@ export default {
 };
 </script>
 
-<style lang="stylus" scoped>
+<style lang="scss" scoped>
 .toggleRow {
   display: flex;
   /* align-items: center; */

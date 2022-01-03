@@ -54,6 +54,7 @@ const actions = {
   [types.setActiveComponent]: ({ commit }, payload) => {
     commit(types.SET_ACTIVE_COMPONENT, payload)
   },
+  
 
   [types.updateActiveComponentChildrenValue]: ({ commit }, payload) => {
     // console.log('payload', payload)
@@ -273,6 +274,11 @@ const actions = {
     commit(types.SET_IMAGE_PATH, payload.imagePath)
     commit(types.SET_COMPONENT_MAP, payload.componentMap)
     commit(types.SET_ROUTES, payload.routes)
+  },
+
+  // Add project 
+  [types.addProject]: ({ commit }, payload) => {
+    commit(types.ADD_PROJECT, payload)
   },
 
   // end of loading///////////////////////////////////////////////////

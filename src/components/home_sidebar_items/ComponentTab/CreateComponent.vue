@@ -4,6 +4,8 @@ Description:
   Functionality includes: creating a component, preventing users from entering invalid component file names
   -->
 <!-- 4.0 adjustment: conditional render to switch between new comp name input and editing active comp name, moved from EditDeleteComponents -->
+
+
 <template>
   <div class="inner-div drawer-menu">
     <br />
@@ -51,8 +53,6 @@ Description:
 import Icons from '../Icons'
 import ParentMultiselect from '../ParentMultiselect.vue'
 import { mapState, mapActions } from 'vuex'
-
-
 export default {
   name: 'HomeSidebar',
   components: {
@@ -86,7 +86,6 @@ export default {
       'addNestedNoActive',
       'editComponentName',
     ]),
-
     createComponent () {
       if (!this.componentNameInputValue.replace(/[^a-z0-9-_.]/gi, '')) {
         event.preventDefault()
@@ -112,16 +111,18 @@ export default {
         isActive: false
       }
       if (!this.componentMap[component.componentName]) {
-        this.registerComponent(component)
+        this.registerComponent(component);
+        // console.log(this.$store.state)
         this.setActiveComponent(component.componentName)
       }
+
+      console.log(this.$store.state)
     },
   },
 }
-
 </script>
 
-<style type="stylus" scoped>
+<style lang="scss" scoped>
 .is-primary {
   height: 45px;
 }
@@ -130,7 +131,6 @@ export default {
   margin: 0.75rem;
   width: 90%;
 }
-
 .inner-div {
   display: flex;
   flex-direction: column;

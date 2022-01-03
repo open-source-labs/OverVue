@@ -479,7 +479,7 @@ const mutations = {
     const {
       componentName, htmlList, children, parent, isActive, actions, props
     } = payload
-    const s = payload.state
+    const s = payload.state;
     state.componentMap = {
       ...state.componentMap,
       [componentName]: {
@@ -632,7 +632,6 @@ const mutations = {
       // add block
     } else {
       const child = payload.filter(el => !temp.includes(el))
-      // console.log('child added', child)
       state.componentMap[state.activeComponent].children = payload
       state.componentMap[state.activeRoute].children = state.componentMap[state.activeRoute]
         .children.filter(el => !payload.includes(el))
@@ -656,6 +655,7 @@ const mutations = {
 
   [types.ADD_PROJECT]: (state, payload) => {
     // console.log('PUSHING ', payload)
+    state.projects = [];
     state.projects.push(payload)
     state.projectNumber++
   },

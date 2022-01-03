@@ -1,25 +1,18 @@
- <!--
-Description:
-  Displays componentDisplay
-  Functionality includes: N/A
-  -->
-
 <template>
   <q-page class="flex flex-center">
-    <ComponentDisplay />
+    <img
+      alt="Quasar logo"
+      src="~assets/quasar-logo-vertical.svg"
+      style="width: 200px; height: 200px"
+    >
+  <router-link to='/dash'>Dashboard</router-link>
   </q-page>
 </template>
 
-<style>
-</style>
-
 <script>
-import ComponentDisplay from '../components/ComponentDisplay.vue'
+import { defineComponent } from 'vue';
 
-export default {
-  name: 'PageIndex',
-  components: {
-    ComponentDisplay
-  }
-}
+export default defineComponent({
+  name: 'PageIndex'
+})
 </script>

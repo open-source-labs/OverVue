@@ -14,20 +14,29 @@ Description:
     <div v-else>{{ `${this.activeComponent}.vue` }}</div>
     <prism-editor
       v-model="code"
-      language="js"
-      :line-numbers="lineNumbers"
-      class="code-editor fill"
-      :readonly="true"
+      :highlight="highlighter"
+      line-numbers
+      class="my-editor"
+      readonly
     />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import PrismEditor from 'vue-prism-editor'
-import 'prismjs'
-import 'prismjs/themes/prism-okaidia.css'
-import 'vue-prism-editor/dist/VuePrismEditor.css'
+
+import { PrismEditor }from 'vue-prism-editor';
+import 'vue-prism-editor/dist/prismeditor.min.css';
+import { highlight, languages } from 'prismjs/components/prism-core';
+import 'prismjs/components/prism-clike';
+import 'prismjs/components/prism-javascript';
+import 'prismjs/themes/prism-tomorrow.css'; // import syntax highlighting styles
+
+
+
+// import 'prismjs'
+// import 'prismjs/themes/prism-okaidia.css'
+// import 'vue-prism-editor/dist/VuePrismEditor.css'
 
 export default {
   data () {
@@ -45,16 +54,24 @@ export default {
     ...mapState(['componentMap', 'activeComponent', 'activeComponentObj']),
     code: function() {
       let computedCode = 'Your component boilerplate will be displayed here.'
+      // if (this.activeComponent) {
+      //   computedCode = this.createCodeSnippet(
+      //     this.activeComponentObj.componentName,
+      //     this.activeComponentObj.children
+      //   )
       if (this.activeComponent) {
         computedCode = this.createCodeSnippet(
-          this.activeComponentObj.componentName,
-          this.activeComponentObj.children
+          this.componentMap[this.activeComponent].componentName,
+          this.componentMap[this.activeComponent].children
         )
       }
       return computedCode
     }
   },
   methods: {
+    highlighter(myCode) {
+      return highlight(myCode, languages.js)
+    },
     getWindowHeight (e) {
       let minHeight =
         window.outerHeight < 900 ? 22 : window.outerHeight < 1035 ? 24 : 27.5
@@ -236,7 +253,7 @@ export default {
     }
   },
   watch: {
-    // watches activeComponentObj for changes to make it reactive upon mutation
+    // // watches activeComponentObj for changes to make it reactive upon mutation
     // activeComponentObj: {
     //   handler () {
     //     // console.log(this.activeComponentObj.children)
@@ -246,7 +263,7 @@ export default {
     //     )
     //   }
     // },
-    // watches componentMap for changes to make it reactive upon mutation
+    // // // // watches componentMap for changes to make it reactive upon mutation
     // componentMap: {
     //   handler () {
     //     this.code = this.createCodeSnippet(
@@ -279,7 +296,7 @@ export default {
   // },
   beforeDestroy () {
     window.removeEventListener('resize', this.getWindowHeight)
-  }
+  },
   // watch: {
   //   activeComponent: {
   //     handler () {
@@ -292,7 +309,7 @@ export default {
   //     }
   //   }
   // },
-  // If HTML elements or components are added, rerenders Code Snippet
+  // // If HTML elements or components are added, rerenders Code Snippet
   // componentMap: {
   //   deep: true,
   //   handler () {
@@ -308,14 +325,33 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="scss">
+// Had scoped before, but could not get rid of outline with scoped style
+
+
 // resize handled by vue lifecycle methods
-.code-editor
-  font-size 12px
+.my-editor {
+  font-size: 12px;
+  background: #2d2d2d;
+  color: #ccc;
+  /* you must provide font-family font-size line-height. Example: */
+  font-family: Fira code, Fira Mono, Consolas, Menlo, Courier, monospace;
+  line-height: 1.5;
+  padding: 5px;
+}
 
-.codesnippet-container
-  margin-bottom 1rem
+.codesnippet-container {
+    margin-bottom: 1rem;
+}
 
-::-webkit-scrollbar
-  display none
+.prism-editor__textarea:focus {
+  outline: none; 
+}
+
+</style>
+
+<style lang="scss" scoped>
+  ::-webkit-scrollbar {
+    display: none;
+  }
 </style>

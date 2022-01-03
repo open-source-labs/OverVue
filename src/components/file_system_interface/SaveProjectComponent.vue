@@ -12,30 +12,50 @@ Description:
 
 <script>
 import localforage from 'localforage'
-import fs from 'fs-extra'
-const { remote } = require('electron')
+import { mapActions } from 'vuex';
+// import fs from 'fs-extra'
+// const { remote } = require('electron')
 const Mousetrap = require('mousetrap')
+const { fs, ipcRenderer } = window;
 
 // might not be optimal to import like this, since entire slackApiStuff object is imported while only one of its properties is used
-
 export default {
-  name: 'SaveProjetComponent',
+  name: 'SaveProjectComponent',
   methods: {
+    // Action to addProject to store before save
+    ...mapActions([
+      'addProject', //also supports payload `this.nameOfAction(amount)` 
+    ]),
+
     // displays save dialog, success calls saveJSONLocation
     showSaveJSONDialog () {
-      remote.dialog.showSaveDialog({
+      // ************** With outdated remote package ***************
+      // remote.dialog.showSaveDialog({
+      //   title: 'Choose location to save JSON object in',
+      //   // defaultPath: remote.app.getPath('desktop'),
+      //   message: 'Choose location to save JSON object in',
+      //   nameFieldLabel: 'Application State Name',
+      //   filters: [{
+      //     name: 'JSON Files',
+      //     extensions: ['json']
+      //   }]
+      // },
+      // result => {
+      //   this.saveJSONLocation(result)
+      // })
+
+      // ************ New, with ipcRenderer and ipcMain *****************
+      ipcRenderer.invoke('saveProject', {
         title: 'Choose location to save JSON object in',
-        // defaultPath: remote.app.getPath('desktop'),
         message: 'Choose location to save JSON object in',
         nameFieldLabel: 'Application State Name',
         filters: [{
           name: 'JSON Files',
           extensions: ['json']
         }]
-      },
-      result => {
-        this.saveJSONLocation(result)
       })
+      .then(res => this.saveJSONLocation(res.filePath))
+      .catch(err => console.log(err))
     },
     // returns location of where file is stored
     parseFileName (file) {
@@ -83,12 +103,15 @@ export default {
       let fileName = this.parseFileName(data)
       // if valid fileName
       if (fileName) {
-        this.$set(this.$store.state.projects, this.$store.state.activeTab, {
-          filename: fileName,
+        // Modified to remove use of this.$set, no longer needed in Vue3 
+        this.addProject({
+          filename: fileName, 
           lastSavedLocation: data
         })
+
         let state = this.$store.state
         let routes = state.routes
+
         // for each route call parseAndDelete on htmlList
         // eslint-disable-next-line no-unused-vars
         for (let view in routes) {

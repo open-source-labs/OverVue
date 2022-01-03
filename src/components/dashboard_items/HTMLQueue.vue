@@ -115,7 +115,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang='scss' scoped>
 .html-queue {
   padding-bottom: 40px;
 }

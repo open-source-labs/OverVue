@@ -1,10 +1,17 @@
+
 <template>
-  <div id="q-app">
-    <router-view />
-  </div>
+  <!-- Get passed down to MyLayout.vue 
+  & listen for custom events emitted from MyLayout.vue -->
+  <router-view 
+    v-on:undo="undoTrigger" 
+    v-on:redo="redoTrigger"
+    v-bind:done-action="doneAction"
+    v-bind:undone-action="undoneAction"
+  />
 </template>
 
 <script>
+import { defineComponent } from 'vue';
 const deepEqual = require('lodash.isequal')
 const cloneDeep = require('lodash.clonedeep')
 const throttle = require('lodash.throttle')
@@ -25,7 +32,7 @@ let redoMixin = {
       doneAction: [],
       undoneAction: [],
       isTimetraveling: false,
-      initialState: {}
+      initialState: {}, 
     }
   },
   created () {
@@ -35,7 +42,8 @@ let redoMixin = {
         // console.log("We saved the world with a deepclone!", action.payload === cloneDeep)
         action.payload = cloneDeep(action.payload)
       }
-      this.doneAction.push(action)
+      this.doneAction.push(action);
+      // console.log(`From app.vue: ${action.payload}`)
       // console.log('this is the action we are logging',action)
       // console.log('this is in our redo queue', this.undoneAction[this.undoneAction.length-1])
       // console.log("Are these equal to each other?", action == this.undoneAction[this.undoneAction.length-1])
@@ -87,7 +95,6 @@ let redoMixin = {
       }
 
       this.isTimetraveling = true
-
       let undone = this.doneAction.pop()
 
       /* assuming we have have something to undo, we check if we are undoing an action that has no feedback
@@ -140,14 +147,25 @@ let redoMixin = {
         // console.log('in the redo loop')
         this.redo()
       }
+    }, 
+
+    // Undo triggered from MyLayout.vue
+    undoTrigger: function() {
+      const throttledUndo = throttle(this.undo, 300);
+      throttledUndo();
+    },
+
+    // Redo triggered from MyLayout.vue
+    redoTrigger: function() {
+      const throttledRedo = throttle(this.redo, 300);
+      throttledRedo();
     }
   }
 }
 
-export default {
-  name: 'App',
+export default defineComponent({
+  name: 'App', 
   mixins: [redoMixin]
-}
+})
 </script>
 
-<style></style>

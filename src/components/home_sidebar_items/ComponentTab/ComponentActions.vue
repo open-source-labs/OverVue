@@ -9,7 +9,7 @@
 <template>
   <div>
     <div id="action-select">
-      <multiselect
+      <VueMultiselect
         v-model="selectAction"
         class="multiselect"
         placeholder="Select Action for Component"
@@ -23,7 +23,7 @@
         @search-change="stopDelete($event)"
       >
         <span slot="noResult">No actions found.</span>
-      </multiselect>
+      </VueMultiselect>
       <br/>
       <q-btn
           v-if="selectAction.length"
@@ -61,12 +61,12 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import Multiselect from 'vue-multiselect';
+import VueMultiselect from 'vue-multiselect';
 
 export default {
   name: "ComponentActions",
   components: {
-    Multiselect
+    VueMultiselect
   },
   computed: {
     ...mapState([

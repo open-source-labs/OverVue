@@ -9,10 +9,11 @@ Description:
 </template>
 
 <script>
-import fs from 'fs-extra'
-const { remote } = require('electron')
-import { mapActions } from 'vuex'
-const Mousetrap = require('mousetrap')
+// import fs from 'fs-extra'
+// const { remote } = require('electron')
+import { mapActions } from 'vuex';
+const Mousetrap = require('mousetrap');
+const { fs, ipcRenderer } = window; 
 
 export default {
   name: 'OpenProjectComponent',
@@ -25,21 +26,20 @@ export default {
       // console.log('json file', jsonFile)
       this.openProject(jsonFile)
     },
-    showOpenJSONDialog () {
-      remote.dialog.showOpenDialog({
+    showOpenJSONDialog() {
+      ipcRenderer.invoke('openProject', {
         properties: ['openFile'],
         filters: [{
           name: 'JSON Files',
           extensions: ['json']
-        }] },
-      result => {
-        // 'result' is the filepath of the .json file being opened
-        this.openJSONFile(result)
-      }
-      )
+        }]
+      })
+      .then(res => this.openJSONFile(res.filePaths))
+      .catch(err => console.log(err))
     },
+
     openProjectJSON () {
-      this.showOpenJSONDialog()
+      this.showOpenJSONDialog();
     }
   },
   // on components creation these key presses will trigger open project
@@ -49,6 +49,7 @@ export default {
     })
   }
 }
+
 </script>
 
  <style scoped>
@@ -56,3 +57,4 @@ export default {
      margin-right: 0.2rem;
    }
  </style>
+
