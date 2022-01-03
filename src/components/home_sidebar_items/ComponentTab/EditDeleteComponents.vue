@@ -40,6 +40,7 @@ Description:
         :close-on-select="true"
         :options="childOptions"
         @select="handleAddChild"
+        @remove="handleDeleteChild"
         :max-height="90"
         :option-height="20"
         :searchable="false"
@@ -256,6 +257,11 @@ export default {
       const valueArray = [value];
       this.updateActiveComponentChildrenValue(valueArray);
       // this.updateActiveComponentChildrenValue(value);
+    },
+
+    // Handle deleting a child 
+    handleDeleteChild(value) {
+      //To do 
     },
 
     // delete selected state from active component
