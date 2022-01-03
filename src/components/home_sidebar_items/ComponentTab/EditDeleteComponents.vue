@@ -36,7 +36,7 @@ Description:
       <VueMultiselect
         v-model="testModel"
         placeholder="Add/Remove Children"
-        :multiple="false"
+        multiple
         :close-on-select="true"
         :options="childOptions"
         @select="handleAddChild"
@@ -280,7 +280,6 @@ export default {
       if (componentData) {
         this.setActiveComponent(componentData.componentName);
         this.activeComponentData.isActive = true;
-        console.log('onActivated Triggered')
       }
     },
     //
@@ -312,7 +311,6 @@ export default {
 
     // Select active component from multi-select input
     handleSelect(componentName) {
-      console.log('handleSelect ' + componentName)
       this.setActiveComponent(componentName);
       this.value = "";
       this.activeComponentData.isActive = true;

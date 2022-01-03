@@ -632,7 +632,6 @@ const mutations = {
       // add block
     } else {
       const child = payload.filter(el => !temp.includes(el))
-      // console.log('child added', child)
       state.componentMap[state.activeComponent].children = payload
       state.componentMap[state.activeRoute].children = state.componentMap[state.activeRoute]
         .children.filter(el => !payload.includes(el))

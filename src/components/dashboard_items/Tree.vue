@@ -155,7 +155,6 @@ export default {
     componentMap: {
       deep: true,
       handler() {
-        console.log(this.$store.state.activeComponent)
         this.buildTree();
       },
     },

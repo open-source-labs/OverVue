@@ -72,7 +72,7 @@ Description:
     <div>
       <q-dialog v-model="modalOpen">
         <q-select
-          @input="handleSelect"
+          @select="handleSelect"
           id="dropdown"
           filled
           v-model="testModel"
@@ -349,7 +349,6 @@ export default {
         this.setActiveComponent(componentData.componentName);
       }
       this.activeComponentData.isActive = true;
-
     },
     // deactivated is emitted before activated
     onDeactivated() {

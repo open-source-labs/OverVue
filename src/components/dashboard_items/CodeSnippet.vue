@@ -54,10 +54,15 @@ export default {
     ...mapState(['componentMap', 'activeComponent', 'activeComponentObj']),
     code: function() {
       let computedCode = 'Your component boilerplate will be displayed here.'
+      // if (this.activeComponent) {
+      //   computedCode = this.createCodeSnippet(
+      //     this.activeComponentObj.componentName,
+      //     this.activeComponentObj.children
+      //   )
       if (this.activeComponent) {
         computedCode = this.createCodeSnippet(
-          this.activeComponentObj.componentName,
-          this.activeComponentObj.children
+          this.componentMap[this.activeComponent].componentName,
+          this.componentMap[this.activeComponent].children
         )
       }
       return computedCode
@@ -164,8 +169,6 @@ export default {
     },
     // Creates boiler text for <script> and <style>
     createBoiler (componentName, children) {
-      console.log('CreateBoiler componentName: ' + componentName)
-      console.log('CreateBoiler children: ' + children)
       // add import mapstate and mapactions if they exist
       let imports = ''
       if (
