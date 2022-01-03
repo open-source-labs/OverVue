@@ -39,7 +39,7 @@ Description:
         :multiple="false"
         :close-on-select="true"
         :options="childOptions"
-        @input="handleAddChild"
+        @select="handleAddChild"
         :max-height="90"
         :option-height="20"
         :searchable="false"
@@ -130,7 +130,7 @@ Description:
         :close-on-select="true"
         :max-height="90"
         :option-height="20"
-        @input="handleSelect(value)"
+        @select="handleSelect"
         placeholder="Select/Search component"
       >
       <span slot="noResult">No components found.</span>
@@ -150,6 +150,7 @@ import Icons from "../Icons.vue";
 import AddProps from "./AddProps.vue";
 import ComponentState from "./ComponentState.vue";
 import ComponentActions from "./ComponentActions.vue";
+const cloneDeep = require("lodash.clonedeep");
 
 export default {
   data() {
@@ -189,7 +190,8 @@ export default {
     },
 
     activeComponentData() {
-      return this.activeComponentObj;
+      return cloneDeep(this.activeComponentObj);
+      // return this.activeComponentObj;
     },
 
     // returns options for component multiselect
@@ -251,8 +253,9 @@ export default {
     ]),
 
     handleAddChild(value) {
-      console.log('selected child component: ', value)
-      this.updateActiveComponentChildrenValue(value);
+      const valueArray = [value];
+      this.updateActiveComponentChildrenValue(valueArray);
+      // this.updateActiveComponentChildrenValue(value);
     },
 
     // delete selected state from active component
@@ -274,8 +277,11 @@ export default {
     // },
     // Set component as active component from left side dropdown
     onActivated(componentData) {
-      this.setActiveComponent(componentData.componentName);
-      this.activeComponentData.isActive = true;
+      if (componentData) {
+        this.setActiveComponent(componentData.componentName);
+        this.activeComponentData.isActive = true;
+        console.log('onActivated Triggered')
+      }
     },
     //
     // deleteCircumvent (e) {
@@ -306,6 +312,7 @@ export default {
 
     // Select active component from multi-select input
     handleSelect(componentName) {
+      console.log('handleSelect ' + componentName)
       this.setActiveComponent(componentName);
       this.value = "";
       this.activeComponentData.isActive = true;

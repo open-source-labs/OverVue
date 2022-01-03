@@ -212,13 +212,11 @@ export default {
     },
   },
   updated() {
-    // console.log(this.$refs.boxes);
     // if there are no active components, all boxes are unhighlighted
     if (this.activeComponent === "") {
       if (this.$refs.boxes) {
         this.$refs.boxes.forEach((element) => {
           element.enabled = false;
-
           element.$emit("deactivated");
           element.$emit("update:active", false);
           // this.$emit("deactivated");
@@ -229,8 +227,6 @@ export default {
       // if a component is set to active, highlight it
       this.$refs.boxes.forEach((element) => {
         if (
-          // this.activeComponent === element.$attrs.id &&
-          // element.enabled === false
           this.activeComponent === element.$attrs.id &&
           element.enabled === false
         ) {
@@ -353,9 +349,10 @@ export default {
         this.setActiveComponent(componentData.componentName);
       }
       this.activeComponentData.isActive = true;
+
     },
     // deactivated is emitted before activated
-    onDeactivated(type) {
+    onDeactivated() {
       // console.log("This is DEACTIVATED");
       if (this.activeComponent !== "") {
         this.activeComponentData.isActive = false;
@@ -401,7 +398,7 @@ export default {
       if (this.activeComponent) {
         this.onActivated(this.activeComponentObj);
       } else {
-        this.onDeactivated("bgClick");
+        this.onDeactivated();
       }
     },
   },

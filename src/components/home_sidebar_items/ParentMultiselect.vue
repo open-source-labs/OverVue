@@ -7,13 +7,25 @@ Description:
 <template>
   <div id="parent-select">
     <br />
-    <VueMultiselect
+    <!-- <VueMultiselect
       v-model="value"
       placeholder="Parent Component"
       :multiple="false"
       :close-on-select="true"
       :options="options"
       @input="selectParent"
+      @open="resetActiveComponent"
+      :max-height="90"
+      :option-height="20"
+      :searchable="true"
+    > -->
+    <VueMultiselect
+      v-model="value"
+      placeholder="Parent Component"
+      :multiple="false"
+      :close-on-select="true"
+      :options="options"
+      @select="selectParent"
       @open="resetActiveComponent"
       :max-height="90"
       :option-height="20"
@@ -55,7 +67,9 @@ export default {
   methods: {
     ...mapActions(['parentSelected', 'setActiveComponent']),
     selectParent (value) {
+      // console.log('Select parent triggered with value: ' + value)
       this.parentSelected(value);
+      // console.log('Parent selected: ' + this.$store.state.parentSelected)
     },
     // when multiselect is opened activeComponent is deselected to allow for parentSelected action
     resetActiveComponent () {

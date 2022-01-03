@@ -164,6 +164,8 @@ export default {
     },
     // Creates boiler text for <script> and <style>
     createBoiler (componentName, children) {
+      console.log('CreateBoiler componentName: ' + componentName)
+      console.log('CreateBoiler children: ' + children)
       // add import mapstate and mapactions if they exist
       let imports = ''
       if (
@@ -248,7 +250,7 @@ export default {
     }
   },
   watch: {
-    // watches activeComponentObj for changes to make it reactive upon mutation
+    // // watches activeComponentObj for changes to make it reactive upon mutation
     // activeComponentObj: {
     //   handler () {
     //     // console.log(this.activeComponentObj.children)
@@ -258,7 +260,7 @@ export default {
     //     )
     //   }
     // },
-    // watches componentMap for changes to make it reactive upon mutation
+    // // // // watches componentMap for changes to make it reactive upon mutation
     // componentMap: {
     //   handler () {
     //     this.code = this.createCodeSnippet(
@@ -304,7 +306,7 @@ export default {
   //     }
   //   }
   // },
-  // If HTML elements or components are added, rerenders Code Snippet
+  // // If HTML elements or components are added, rerenders Code Snippet
   // componentMap: {
   //   deep: true,
   //   handler () {

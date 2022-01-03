@@ -270,7 +270,7 @@ export default {
         }
         // concat all code within script tags
         let output = "\n\n<script>\n";
-        output += imports + "\nexport default {\n  name: " + componentName;
+        output += imports + "\nexport default {\n  name: '" + componentName + "\'";
         output += ",\n  components: {\n";
         output += childrenComponentNames + "  },\n";
         output += data;
