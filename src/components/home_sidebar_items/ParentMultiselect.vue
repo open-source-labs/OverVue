@@ -7,8 +7,8 @@ Description:
 <template>
   <div id="parent-select">
     <br />
-    <VueMultiselect
-      v-model="selected"
+    <!-- <VueMultiselect
+      v-model="value"
       placeholder="Parent Component"
       :multiple="false"
       :close-on-select="true"
@@ -18,12 +18,24 @@ Description:
       :max-height="90"
       :option-height="20"
       :searchable="true"
+    > -->
+    <VueMultiselect
+      v-model="value"
+      placeholder="Parent Component"
+      :multiple="false"
+      :close-on-select="true"
+      :options="options"
+      @select="selectParent"
+      @open="resetActiveComponent"
+      :max-height="90"
+      :option-height="20"
+      :searchable="true"
     >
     <!-- refactor slot syntax here -->
-    <!-- <span slot='noResult'>No components found.</span> -->
-    <span class='noResult'>
+    <span slot='noResult'>No components found.</span>
+    <!-- <span class='noResult'>
       <slot></slot>
-    </span>
+    </span> -->
     </VueMultiselect>
   </div>
 </template>
@@ -38,7 +50,7 @@ export default {
     VueMultiselect
   },
   data () {
-    return { selected: '' }
+    return { value: '' }
   },
   computed: {
     ...mapState([
@@ -46,7 +58,7 @@ export default {
       'componentMap',
       'activeComponent',
       'activeRoute',
-      'routes'
+      // 'routes'
     ]),
     options () {
       return this.routes[this.activeRoute].map(component => component.componentName)
@@ -54,8 +66,10 @@ export default {
   },
   methods: {
     ...mapActions(['parentSelected', 'setActiveComponent']),
-    selectParent (selected) {
-      this.parentSelected(selected)
+    selectParent (value) {
+      // console.log('Select parent triggered with value: ' + value)
+      this.parentSelected(value);
+      // console.log('Parent selected: ' + this.$store.state.parentSelected)
     },
     // when multiselect is opened activeComponent is deselected to allow for parentSelected action
     resetActiveComponent () {
@@ -69,15 +83,15 @@ export default {
     componentMap: {
       handler () {
         // console.log('componentMap has changed')
-        this.selected = ''
+        this.value = ''
       }
     }
   }
 }
 
 </script>
-<style src="vue-multiselect/dist/vue-multiselect.css"></style>
 
+<style src="vue-multiselect/dist/vue-multiselect.css"></style>
 <style scoped>
   #parent-select {
     height: 30px;

@@ -54,10 +54,15 @@ export default {
     ...mapState(['componentMap', 'activeComponent', 'activeComponentObj']),
     code: function() {
       let computedCode = 'Your component boilerplate will be displayed here.'
+      // if (this.activeComponent) {
+      //   computedCode = this.createCodeSnippet(
+      //     this.activeComponentObj.componentName,
+      //     this.activeComponentObj.children
+      //   )
       if (this.activeComponent) {
         computedCode = this.createCodeSnippet(
-          this.activeComponentObj.componentName,
-          this.activeComponentObj.children
+          this.componentMap[this.activeComponent].componentName,
+          this.componentMap[this.activeComponent].children
         )
       }
       return computedCode
@@ -248,7 +253,7 @@ export default {
     }
   },
   watch: {
-    // watches activeComponentObj for changes to make it reactive upon mutation
+    // // watches activeComponentObj for changes to make it reactive upon mutation
     // activeComponentObj: {
     //   handler () {
     //     // console.log(this.activeComponentObj.children)
@@ -258,7 +263,7 @@ export default {
     //     )
     //   }
     // },
-    // watches componentMap for changes to make it reactive upon mutation
+    // // // // watches componentMap for changes to make it reactive upon mutation
     // componentMap: {
     //   handler () {
     //     this.code = this.createCodeSnippet(
@@ -304,7 +309,7 @@ export default {
   //     }
   //   }
   // },
-  // If HTML elements or components are added, rerenders Code Snippet
+  // // If HTML elements or components are added, rerenders Code Snippet
   // componentMap: {
   //   deep: true,
   //   handler () {

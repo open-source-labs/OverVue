@@ -72,7 +72,7 @@ Description:
     <div>
       <q-dialog v-model="modalOpen">
         <q-select
-          @input="handleSelect"
+          @select="handleSelect"
           id="dropdown"
           filled
           v-model="testModel"
@@ -158,8 +158,8 @@ export default {
     // used to delete active component
     activeComponentData() {
       // Must deep clone this so we are not directly mutating state
-      return cloneDeep(this.activeComponentObj);
       // return this.activeComponentObj;
+      return cloneDeep(this.activeComponentObj);
     },
     // childList () {
     //   return this.componentMap[componentData.componentName].children
@@ -167,6 +167,7 @@ export default {
     options() {
       // checks if component has any parents and pushes them into lineage
       const checkParents = (component, lineage = [component.componentName]) => {
+        console.log('Lineage: ' + lineage)
         if (!Object.keys(component.parent).length) return lineage;
         for (var parents in component.parent) {
           // Mutating?
@@ -183,7 +184,7 @@ export default {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.testModel = this.componentMap[this.activeComponent].children;
         lineage = checkParents(this.componentMap[this.activeComponent]);
-        // console.log('Lineage', lineage);
+        
       }
       const routes = Object.keys(this.routes);
       const exceptions = new Set([
@@ -211,13 +212,11 @@ export default {
     },
   },
   updated() {
-    // console.log(this.$refs.boxes);
     // if there are no active components, all boxes are unhighlighted
     if (this.activeComponent === "") {
       if (this.$refs.boxes) {
         this.$refs.boxes.forEach((element) => {
           element.enabled = false;
-
           element.$emit("deactivated");
           element.$emit("update:active", false);
           // this.$emit("deactivated");
@@ -228,8 +227,6 @@ export default {
       // if a component is set to active, highlight it
       this.$refs.boxes.forEach((element) => {
         if (
-          // this.activeComponent === element.$attrs.id &&
-          // element.enabled === false
           this.activeComponent === element.$attrs.id &&
           element.enabled === false
         ) {
@@ -334,12 +331,12 @@ export default {
     */
     // unhighlights all inactive components
     onActivated(componentData) {
-      console.log("This is ACTIVATED");
+      // console.log("This is ACTIVATED");
       // console.log('onActivated - comp display, componentData', componentData)
       if (this.$refs.boxes) {
         this.$refs.boxes.forEach((element) => {
           if (element.$attrs.id !== componentData.componentName) {
-            console.log("Emit");
+            //  console.log("Emit");
             element.enabled = false;
             element.$emit("deactivated");
             element.$emit("update:active", false);
@@ -354,8 +351,8 @@ export default {
       this.activeComponentData.isActive = true;
     },
     // deactivated is emitted before activated
-    onDeactivated(type) {
-      console.log("This is DEACTIVATED");
+    onDeactivated() {
+      // console.log("This is DEACTIVATED");
       if (this.activeComponent !== "") {
         this.activeComponentData.isActive = false;
       }
@@ -400,7 +397,7 @@ export default {
       if (this.activeComponent) {
         this.onActivated(this.activeComponentObj);
       } else {
-        this.onDeactivated("bgClick");
+        this.onDeactivated();
       }
     },
   },

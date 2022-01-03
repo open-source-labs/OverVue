@@ -4,8 +4,6 @@ Description:
   Functionality includes: formating componentMap object to displaying in tree form
   -->
 
-<!-- Trying some shit -->
-
 <template>
   <div class="container">
     <myTree :nodes="computedTree" />
@@ -22,48 +20,48 @@ export default {
     myTree,
   },
 
-  setup() {
-    const data = [
-      {
-        id: 1,
-        label: 'Animal',
-        nodes: [
-          {
-            id: 2,
-            label: 'Dog',
-          },
-          {
-            id: 3,
-            label: 'Cat',
-            nodes: [
-              {
-                id: 4,
-                label: 'Egyptian Mau Cat',
-              },
-              {
-                id: 5,
-                label: 'Japanese Bobtail Cat',
-              },
-            ],
-          },
-        ],
-      },
-      {
-        id: 6,
-        label: 'People',
-      },
-    ];
-    return {
-      data,
-    };
-  },
+  // setup() {
+  //   const data = [
+  //     {
+  //       id: 1,
+  //       label: 'Animal',
+  //       nodes: [
+  //         {
+  //           id: 2,
+  //           label: 'Dog',
+  //         },
+  //         {
+  //           id: 3,
+  //           label: 'Cat',
+  //           nodes: [
+  //             {
+  //               id: 4,
+  //               label: 'Egyptian Mau Cat',
+  //             },
+  //             {
+  //               id: 5,
+  //               label: 'Japanese Bobtail Cat',
+  //             },
+  //           ],
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       id: 6,
+  //       label: 'People',
+  //     },
+  //   ];
+  //   return {
+  //     data,
+  //   };
+  // },
 
   computed: {
     ...mapState(["componentMap", "activeComponent"]),
     // Returns project tree on re-render
     computedTree() {
       const builtTree = [this.buildTree()];
-      console.log("buildtree", builtTree);
+      // console.log("buildtree", builtTree);
       return builtTree;
     },
   },
@@ -108,11 +106,13 @@ export default {
   methods: {
     // Called by transformToTree, formats componentMap
     formatComponentMap(compMap) {
+
       // console.log('COMP MAP: ', compMap);
       let result = [];
       // Id to apply to each component, in accordance with Vue3Tree syntax
       let id = 1;
       const values = Object.values(compMap)
+
       // console.log('FormatComponentMap: ', values);
       values.forEach((compData) => {
         result.push({
@@ -122,8 +122,7 @@ export default {
         });
       });
 
-
-      console.log('FORMATCOMPONENTMAP result: ', result);
+      // console.log('FORMATCOMPONENTMAP result: ', result);
       return result;
     },
     // Called by buildTree, transforms componentMap
@@ -142,13 +141,12 @@ export default {
           temp[component.label].nodes.push(temp[child]);
         });
       });
-      // console.log('transformToTree nodes:', nodes)
-      console.log('TRANSFORMTOTREE result', result)
+      // console.log('TRANSFORMTOTREE result', result)
       return result;
     },
     // Called by computedTree, calls transformToTree
     buildTree() {
-      console.log('COMPONENT MAP:', this.componentMap);
+      // console.log('COMPONENT MAP:', this.componentMap);
       let build = this.transformToTree(this.componentMap);
       return build["App"];
     },

@@ -54,6 +54,7 @@ const actions = {
   [types.setActiveComponent]: ({ commit }, payload) => {
     commit(types.SET_ACTIVE_COMPONENT, payload)
   },
+  
 
   [types.updateActiveComponentChildrenValue]: ({ commit }, payload) => {
     // console.log('payload', payload)
