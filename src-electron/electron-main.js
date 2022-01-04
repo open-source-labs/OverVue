@@ -63,6 +63,12 @@ ipcMain.handle("uploadImage", async (event, arg) => {
   return result;
 })
 
+// Handle dialogs for clearing a mockup image 
+ipcMain.handle("clearImage", async (event, arg) => {
+  const result = await dialog.showMessageBox(arg);
+  return result;
+})
+
 
 // ************** Slack OAuth functions **********************
 // Sends request to Slack for User's information,

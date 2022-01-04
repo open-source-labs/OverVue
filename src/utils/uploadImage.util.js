@@ -21,9 +21,8 @@ const options = {
 
 // Used in uploadImage.vue
 const uploadImage = async () => {
-  const x = await ipcRenderer.invoke('uploadImage', options)
+  const helper = await ipcRenderer.invoke('uploadImage', options)
     .then(res => {
-      console.log('upload image util: ' + res.filePaths[0]);
       return res.filePaths[0]
     })
     .catch(err => {
@@ -31,7 +30,7 @@ const uploadImage = async () => {
       return err;
     })
 
-    return x;
+    return helper;
 }
 
 export default uploadImage

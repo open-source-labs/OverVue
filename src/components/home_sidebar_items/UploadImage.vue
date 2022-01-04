@@ -67,13 +67,23 @@ export default {
     },
     // removes mockup image
     removeImage () {
-      const res = clearImageDialog()
-      // console.log('REMOVEIMAGE: remove is ', res )
-      if (res === 0) {
-        this.clearImage({ route: this.activeRoute })
-        this.source = this.imagePath[this.activeRoute]
-      }
+      const responsePromise = clearImageDialog()
+
+      responsePromise
+        .then(res => {
+          // res will have format: { response: 0, checkboxChecked: false }
+          // res.response will be 0 if user chose 'Yes'
+          // res.response will be 1 if user chose 'Cancel'
+          if (res.response === 0) {
+            this.clearImage({ route: this.activeRoute })
+            this.source = this.imagePath[this.activeRoute]
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
+
     // imports image on browser
     // currently images aren't able to be stored on browser
     async importMockupBrowser () {
