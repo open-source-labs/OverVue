@@ -1,5 +1,6 @@
 // Telling main Electron process to open a dialog for open an image file
-const { dialog } = require('electron').remote
+// const { dialog } = require('electron').remote
+const { ipcRenderer } = window;
 
 const types = [
   {
@@ -18,13 +19,18 @@ const options = {
  * @returns { String } file path
  */
 
-const uploadImage = () => {
-  const output = dialog.showOpenDialog(options)
-  if (output) {
-    // console.log('image output', output)
-    return output[0]
-  }
-  return ''
+// Used in uploadImage.vue
+const uploadImage = async () => {
+  const helper = await ipcRenderer.invoke('uploadImage', options)
+    .then(res => {
+      return res.filePaths[0]
+    })
+    .catch(err => {
+      console.log(err);
+      return err;
+    })
+
+    return helper;
 }
 
 export default uploadImage

@@ -208,7 +208,7 @@ export default {
         ? {
             background: `url("${this.userImage}") center/contain no-repeat rgba(223, 218, 218, 0.886)`,
           }
-        : {};
+        : { };
     },
   },
   updated() {
