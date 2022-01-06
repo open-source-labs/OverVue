@@ -2,7 +2,9 @@
 /**
  * @jest-environment jsdom
  */
-import { mount, createLocalVue, shallowMount } from "@vue/test-utils";
+// import { mount, createLocalVue, shallowMount } from "@vue/test-utils";
+import { mount, shallowMount } from "@vue/test-utils";
+import { createApp } from "vue";
 import * as All from "quasar";
 const { Quasar, date } = All;
 
@@ -28,8 +30,11 @@ import store from "../../../src/store/state/index";
  */
 
 describe("Test Suite for route actions and related mutations", () => {
-    const localVue = createLocalVue();
-    localVue.use(Quasar, Vuex, { components });
+    // const localVue = createLocalVue();
+    // localVue.use(Quasar, Vuex, { components });
+    const App = {}
+    const app = createApp(App);
+    app.use(Quasar, Vuex, { components });
     const state = { ...store }
     
     test('"[types.addRouteToRouteMap]" action to commit 4 mutations', () => {

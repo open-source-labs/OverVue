@@ -18,6 +18,7 @@
 - [OverVue 2.0 Changelog](#changelog-20)
 - [OverVue 3.0 Changelog](#changelog-30)
 - [OverVue 4.0 Changelog](#changelog-40)
+- [OverVue 5.0 Changelog](#changelog-50)
 - [How to Use](#how-to-use)
 - [Installation](#installation)
   - [General Installation](#installation)
@@ -49,7 +50,8 @@
 - Hotkey shortcuts to copy/paste/delete selected component <sub><sup>(v4.0)</sup></sub>
 - Connect to a Slack Workspace and send Slack Messages through OverVue <sub><sup>(v4.0)</sup></sub>
 - Ability to delete states or actions from the store <sub><sup>(v4.0)</sup></sub>
-- Vue Devtools enabled for Developers <sub><sup>(v4.0)</sup></sub>
+- Vue Devtools enabled for Developers <sub><sup>(v4.0)</sup></sub>/automatically deploys when running electron in dev mode <sub><sup>(v5.0)</sup></sub>
+- Exports fully functional Vue 3/Vuex 4 syntax <sub><sup>(v5.0)</sup></sub>
 
 [↥Back to top](#table-of-contents)
 
@@ -115,6 +117,23 @@
     <li>Fixed children and parent relationship mutations causing type related side effects</li>
     <li>Fixed issue where state/actions deleted in store aren't reflected across components</li>
     <li>Fixed issue with undo feature that would delete inputed text one character at a time</li>
+  </ul>
+</details>
+
+### Changelog 5.0
+
+<details><summary>OverVue 5.0</summary>
+  <ul>
+    <li>Upgraded source code to Vue 3</li>
+    <li>Upgraded major dependencies to newest versions</li>
+    <ul>
+      <li>Upgraded from Vuex 3 to Vuex 4</li>
+      <li>Upgraded from Electron 5 to 16</li>
+      <li>Upgraded from Quasar 1 to 2</li>
+    </ul>
+    <li>Rewrote exports in Vue 3</li>
+    <li>Reconfigured Vue Devtools to launch and connect upon running quasar in dev mode</li>
+    <li>Note that due to breaking changes when upgrading to Vue 3, vued3tree had to be replaced with vue3-tree.Due to this, a bulleted list currently renders instead of a tree.  This is intended to be a short-term change, with the old package being utilized again once it is compatible.</li>
   </ul>
 </details>
 
@@ -196,13 +215,7 @@ Install dependencies
 npm i
 ```
 
-To open Vuejs devtools (devtools should be open before devmode, otherwise, you can justforce reload electron app in dev mode after opening dev tools)
-
-```
-./node_modules/.bin/vue-devtools
-```
-
-To run electron app in dev mode
+To run electron app in dev mode (note: Vue Devtools will launch automatically)
 
 ```
 quasar dev -m electron
@@ -312,7 +325,10 @@ Jeffrey Sul @jeffreysul
 Kenny Lee @kennyea
 Ryan Bender @rdbender
 Sonny Nguyen @sn163
-
+Gabriela Kokhabi @gkokhabi
+Ross Lamerson @lamerson28
+Shanon Lee @shanon98lee
+Zoew McGrath @Z-McGrath
 ```
 
 Inspired by [PreVue](https://github.com/open-source-labs/PreVue)

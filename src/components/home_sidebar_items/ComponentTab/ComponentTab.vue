@@ -32,21 +32,26 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="scss">
 // give html background color of grey
-.html-bg 
-  background-color: #202122
-#store-cards
-  height: 100%
-  border-radius: 0px
-  background-color: #202122
-.q-tab-panel 
-  height 100%
+.html-bg {
+    background-color: #202122;
+}
+#store-cards {
+  height: 100%;
+  border-radius: 0px;
+  background-color: #202122;
+}
+.q-tab-panel {
+  height: 100%;
   // matchs the code editor bg
-  background $subprimary
-// changes the length of the tab panels
-.q-tab-panels
-  height 100%
-.q-tabs
-  background #11120F
+  background: $subprimary;
+  // changes the length of the tab panels
+}
+.q-tab-panels {
+  height: 100%;
+}
+.q-tabs {
+  background: #11120F;
+}
 </style>

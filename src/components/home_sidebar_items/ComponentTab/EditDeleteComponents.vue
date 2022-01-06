@@ -29,30 +29,27 @@ Description:
             @click="editCompName(newName)"
           />
         </template>
-
-        
       </q-input>
       <!-- for the icon list -->
-      <multiselect
+      <VueMultiselect
         v-model="testModel"
         placeholder="Add/Remove Children"
-        :multiple="true"
-        :close-on-select="false"
+        multiple
+        :close-on-select="true"
         :options="childOptions"
-        @input="handleAddChild"
+        @select="handleAddChild"
+        @remove="handleDeleteChild"
         :max-height="90"
         :option-height="20"
         :searchable="false"
       />
-            
-    
+
       <q-list
         class="accordBorder"
         active-color="secondary"
         indicator-color="secondary"
       >
         <q-expansion-item group="accordion" label="HTML">
-         
           <div class="icon-container">
             <Icons
               class="icons"
@@ -62,7 +59,7 @@ Description:
               @activeLayer="addNestedNoActive"
             />
           </div>
-           <br />
+          <br />
         </q-expansion-item>
         <!-- Props item that has AddProps component in it -->
         <q-expansion-item group="accordion" label="Props">
@@ -114,42 +111,42 @@ Description:
         @click="deleteSelectedComp(activeComponentData)"
         label="Delete currently selected"
       />
-      
- <br/>
-       <q-list
+
+      <br />
+      <q-list
         class="accordBorder"
         active-color="secondary"
         indicator-color="secondary"
       >
-      <q-expansion-item group="accordion" label="Select another Component">
-        <multiselect
-        class="multiselect"
-        v-model="value"
-        :options="options"
-        :searchable="true"
-        :close-on-select="true"
-        :max-height="90"
-        :option-height="20"
-        @input="handleSelect(value)"
-        placeholder="Select/Search component"
-      >
-      <span slot="noResult">No components found.</span>
-      </multiselect>
-      </q-expansion-item>
- </q-list>
+        <q-expansion-item group="accordion" label="Select another Component">
+          <VueMultiselect
+            class="multiselect"
+            v-model="value"
+            :options="options"
+            :searchable="true"
+            :close-on-select="true"
+            :max-height="90"
+            :option-height="20"
+            @select="handleSelect"
+            placeholder="Select/Search component"
+          >
+            <span slot="noResult">No components found.</span>
+          </VueMultiselect>
+        </q-expansion-item>
+      </q-list>
     </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from "vuex";
-import Multiselect from "vue-multiselect";
-import { ToggleButton } from "vue-js-toggle-button";
+import VueMultiselect from "vue-multiselect";
 import HTMLQueue from "../../dashboard_items/HTMLQueue.vue";
 import Icons from "../Icons.vue";
 import AddProps from "./AddProps.vue";
 import ComponentState from "./ComponentState.vue";
 import ComponentActions from "./ComponentActions.vue";
+const cloneDeep = require("lodash.clonedeep");
 
 export default {
   data() {
@@ -165,8 +162,8 @@ export default {
     };
   },
   components: {
-    Multiselect,
-    ToggleButton,
+    VueMultiselect,
+    // ToggleButton,
     HTMLQueue,
     Icons,
     AddProps,
@@ -184,12 +181,11 @@ export default {
 
     activeRouteDisplay() {
       let component = this.routes[this.activeRoute];
-      // console.log('component', component)
       return component;
     },
 
     activeComponentData() {
-      return this.activeComponentObj;
+      return cloneDeep(this.activeComponentObj);
     },
 
     // returns options for component multiselect
@@ -213,12 +209,9 @@ export default {
       let lineage = [this.activeComponent];
       // checks to see if there are any existing children
       if (this.componentMap[this.activeComponent]) {
-        // console.log('testmodel', this.testModel)
-        // console.log(this.componentMap[this.activeComponent].children)
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.testModel = this.componentMap[this.activeComponent].children;
         lineage = checkParents(this.componentMap[this.activeComponent]);
-        // console.log('Lineage', lineage);
       }
       const routes = Object.keys(this.routes);
       const exceptions = new Set([
@@ -239,9 +232,6 @@ export default {
       "deleteComponent",
       "deleteActiveComponent",
       "editComponentName",
-      // 'deleteActionFromComponent',
-      // 'deletePropsFromComponent',
-      // 'deleteStateFromComponent',
       "updateComponentLayer",
       "updateActiveComponentChildrenValue",
       "addToSelectedElementList",
@@ -251,36 +241,21 @@ export default {
     ]),
 
     handleAddChild(value) {
-      // console.log('selected child component: ', value)
-      this.updateActiveComponentChildrenValue(value);
+      const valueArray = [value];
+      this.updateActiveComponentChildrenValue(valueArray);
+      // this.updateActiveComponentChildrenValue(value);
     },
 
-    // delete selected state from active component
-    // deleteState (state) {
-    //   this.deleteStateFromComponent(state)
-    //   console.log(this.activeComponentObj)
-    // },
+    // Handle deleting a child
+    handleDeleteChild(value) {},
 
-    // delete selected action from active component
-    // deleteAction (action) {
-    //   this.deleteActionFromComponent(action)
-    //   console.log(this.activeComponentObj)
-    // },
-
-    // delete selected props from active component
-    // deleteProp (prop) {
-    //   this.deletePropsFromComponent(prop)
-    //   console.log(this.activeComponentObj)
-    // },
     // Set component as active component from left side dropdown
     onActivated(componentData) {
-      this.setActiveComponent(componentData.componentName);
-      this.activeComponentData.isActive = true;
+      if (componentData) {
+        this.setActiveComponent(componentData.componentName);
+        this.activeComponentData.isActive = true;
+      }
     },
-    //
-    // deleteCircumvent (e) {
-    //   e.preventDefault()
-    // },
 
     // Deletes the selected component
     deleteSelectedComp(componentData) {
@@ -328,7 +303,6 @@ export default {
       )
         this.editComponentName(name);
       this.setActiveComponent(this.activeComponent);
-      // console.log(this.componentMap);
     },
   },
   watch: {
@@ -341,22 +315,20 @@ export default {
 };
 </script>
 
-<style lang="stylus" scoped>
+<style lang="scss" scoped>
 .toggleRow {
   display: flex;
   /* align-items: center; */
   justify-content: space-between;
 }
+
 /* modifies entire container */
 .edit-sidebar {
   padding: 0.5rem;
   border-radius: 5px;
   margin: 1rem;
 }
-/* modifies top label */
-/* .component {
-  text-transform: uppercase;
-} */
+
 /* modifies each list element */
 .q-list {
   margin-bottom: 0.5rem;
@@ -367,8 +339,6 @@ export default {
 .component-info {
   margin: auto 0;
 }
-
-
 
 /* modifies content in list element */
 .component-container {
@@ -420,11 +390,10 @@ hr {
   background-color: $subsecondary;
 }
 
-.accordBorder{
-   border: 2px solid black;
-   border-radius: 4px;
-   
-  }
+.accordBorder {
+  border: 2px solid black;
+  border-radius: 4px;
+}
 
 .inner-div {
   display: flex;

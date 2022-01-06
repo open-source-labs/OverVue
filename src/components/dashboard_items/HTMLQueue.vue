@@ -104,7 +104,6 @@ export default {
   },
   watch: {
     activeComponent: function () {
-      // console.log('watching activeComponent in HTMLQueue')
       if (this.activeComponent !== '') {
         this.component = true
       } else {
@@ -115,7 +114,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang='scss' scoped>
 .html-queue {
   padding-bottom: 40px;
 }

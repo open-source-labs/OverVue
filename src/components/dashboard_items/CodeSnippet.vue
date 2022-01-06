@@ -14,229 +14,235 @@ Description:
     <div v-else>{{ `${this.activeComponent}.vue` }}</div>
     <prism-editor
       v-model="code"
-      language="js"
-      :line-numbers="lineNumbers"
-      class="code-editor fill"
-      :readonly="true"
+      :highlight="highlighter"
+      line-numbers
+      class="my-editor"
+      readonly
     />
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import PrismEditor from 'vue-prism-editor'
-import 'prismjs'
-import 'prismjs/themes/prism-okaidia.css'
-import 'vue-prism-editor/dist/VuePrismEditor.css'
+import { mapState } from "vuex";
+
+import { PrismEditor } from "vue-prism-editor";
+import "vue-prism-editor/dist/prismeditor.min.css";
+import { highlight, languages } from "prismjs/components/prism-core";
+import "prismjs/components/prism-clike";
+import "prismjs/components/prism-javascript";
+import "prismjs/themes/prism-tomorrow.css"; // import syntax highlighting styles
 
 export default {
-  data () {
+  data() {
     return {
       // code: `Your component boilerplate will be displayed here.`,
       lineNumbers: true,
-      height: null
-    }
+      height: null,
+    };
   },
   components: {
-    PrismEditor
+    PrismEditor,
   },
   computed: {
     // needs access to current component aka activeComponent
-    ...mapState(['componentMap', 'activeComponent', 'activeComponentObj']),
-    code: function() {
-      let computedCode = 'Your component boilerplate will be displayed here.'
+    ...mapState(["componentMap", "activeComponent", "activeComponentObj"]),
+    code: function () {
+      let computedCode = "Your component boilerplate will be displayed here.";
       if (this.activeComponent) {
         computedCode = this.createCodeSnippet(
-          this.activeComponentObj.componentName,
-          this.activeComponentObj.children
-        )
+          this.componentMap[this.activeComponent].componentName,
+          this.componentMap[this.activeComponent].children
+        );
       }
-      return computedCode
-    }
+      return computedCode;
+    },
   },
   methods: {
-    getWindowHeight (e) {
+    highlighter(myCode) {
+      return highlight(myCode, languages.js);
+    },
+    getWindowHeight(e) {
       let minHeight =
-        window.outerHeight < 900 ? 22 : window.outerHeight < 1035 ? 24 : 27.5
-      this.height = minHeight
+        window.outerHeight < 900 ? 22 : window.outerHeight < 1035 ? 24 : 27.5;
+      this.height = minHeight;
     },
     // Calls createTemplate and createBoiler to generate snippet
-    createCodeSnippet (componentName, children) {
+    createCodeSnippet(componentName, children) {
       let result = `${this.createTemplate(
         componentName,
         children
-      )}${this.createBoiler(componentName, children)}`
-      return result
+      )}${this.createBoiler(componentName, children)}`;
+      return result;
     },
     // Creates beginner boilerplate
-    createTemplate (componentName) {
+    createTemplate(componentName) {
       // not sure why output was set up like this, was imputted into return statement
       // using string literal
       // let output = ``
       // output += ` <div>\n`
-      let templateTagStr = this.writeTemplateTag(componentName)
-      return `<template>\n  <div>\n${templateTagStr}  </div>\n</template>`
+      let templateTagStr = this.writeTemplateTag(componentName);
+      return `<template>\n  <div>\n${templateTagStr}  </div>\n</template>`;
     },
     // Creates <template> boilerplate
-    writeTemplateTag (componentName) {
+    writeTemplateTag(componentName) {
       // create reference object
       const htmlElementMap = {
-        div: ['<div>', '</div>'],
-        button: ['<button>', '</button>'],
-        form: ['<form>', '</form>'],
-        img: ['<img>', ''],
-        link: ['<a href="#"/>', ''],
-        list: ['<li>', '</li>'],
-        paragraph: ['<p>', '</p>'],
-        'list-ol': ['<ol>', '</ol>'],
-        'list-ul': ['<ul>', '</ul>'],
-        input: ['<input />', ''],
-        navbar: ['<nav>', '</nav>']
-      }
+        div: ["<div>", "</div>"],
+        button: ["<button>", "</button>"],
+        form: ["<form>", "</form>"],
+        img: ["<img>", ""],
+        link: ['<a href="#"/>', ""],
+        list: ["<li>", "</li>"],
+        paragraph: ["<p>", "</p>"],
+        "list-ol": ["<ol>", "</ol>"],
+        "list-ul": ["<ul>", "</ul>"],
+        input: ["<input />", ""],
+        navbar: ["<nav>", "</nav>"],
+      };
 
       // Helper function that recursively iterates through the given html element's children and their children's children.
       // also adds proper indentation to code snippet
-      function writeNested (childrenArray, indent) {
+      function writeNested(childrenArray, indent) {
         if (!childrenArray.length) {
-          return ''
+          return "";
         }
-        let indented = indent + '  '
-        let nestedString = ''
+        let indented = indent + "  ";
+        let nestedString = "";
 
-        childrenArray.forEach(child => {
-          nestedString += indented
+        childrenArray.forEach((child) => {
+          nestedString += indented;
           if (!child.text) {
-            nestedString += `<${child}/>\n`
+            nestedString += `<${child}/>\n`;
           } else {
             if (child.children.length) {
-              nestedString += htmlElementMap[child.text][0]
-              nestedString += '\n'
-              nestedString += writeNested(child.children, indented)
-              nestedString += indented + htmlElementMap[child.text][1]
-              nestedString += '\n'
+              nestedString += htmlElementMap[child.text][0];
+              nestedString += "\n";
+              nestedString += writeNested(child.children, indented);
+              nestedString += indented + htmlElementMap[child.text][1];
+              nestedString += "\n";
             } else {
               nestedString +=
                 htmlElementMap[child.text][0] +
                 htmlElementMap[child.text][1] +
-                '\n'
+                "\n";
             }
           }
-        })
-        return nestedString
+        });
+        return nestedString;
       }
 
       // Iterates through active component's HTML elements list and adds to code snippet
-      let htmlArr = this.componentMap[componentName].htmlList
-      let outputStr = ``
+      let htmlArr = this.componentMap[componentName].htmlList;
+      let outputStr = ``;
       // eslint-disable-next-line no-unused-vars
       for (let el of htmlArr) {
         if (!el.text) {
           // console.log(htmlArr)
-          outputStr += `    <${el}/>\n`
+          outputStr += `    <${el}/>\n`;
         } else {
-          outputStr += `    `
+          outputStr += `    `;
           if (el.children.length) {
-            outputStr += htmlElementMap[el.text][0]
-            outputStr += '\n'
-            outputStr += writeNested(el.children, `    `)
-            outputStr += `    `
-            outputStr += htmlElementMap[el.text][1]
-            outputStr += `  \n`
+            outputStr += htmlElementMap[el.text][0];
+            outputStr += "\n";
+            outputStr += writeNested(el.children, `    `);
+            outputStr += `    `;
+            outputStr += htmlElementMap[el.text][1];
+            outputStr += `  \n`;
           } else {
             outputStr +=
-              htmlElementMap[el.text][0] + htmlElementMap[el.text][1] + '\n'
+              htmlElementMap[el.text][0] + htmlElementMap[el.text][1] + "\n";
           }
         }
       }
-      return outputStr
+      return outputStr;
     },
     // Creates boiler text for <script> and <style>
-    createBoiler (componentName, children) {
+    createBoiler(componentName, children) {
       // add import mapstate and mapactions if they exist
-      let imports = ''
+      let imports = "";
       if (
         this.activeComponentObj.actions.length ||
         this.activeComponentObj.state.length
       ) {
-        imports += 'import { '
+        imports += "import { ";
         if (
           this.activeComponentObj.actions.length &&
           this.activeComponentObj.state.length
         ) {
-          imports += 'mapState, mapActions'
-        } else if (this.activeComponentObj.state.length) imports += 'mapState'
-        else imports += 'mapActions'
-        imports += ' } from "vuex"\n'
+          imports += "mapState, mapActions";
+        } else if (this.activeComponentObj.state.length) imports += "mapState";
+        else imports += "mapActions";
+        imports += ' } from "vuex"\n';
       }
 
       // add imports for children
-      children.forEach(name => {
-        imports += `import ${name} from '@/components/${name}.vue';\n`
-      })
+      children.forEach((name) => {
+        imports += `import ${name} from '@/components/${name}.vue';\n`;
+      });
 
       // add components section
-      let childrenComponentNames = ''
-      children.forEach(name => {
-        childrenComponentNames += `    ${name},\n`
-      })
+      let childrenComponentNames = "";
+      children.forEach((name) => {
+        childrenComponentNames += `    ${name},\n`;
+      });
 
       // if true add data section and populate with props
-      let data = ''
+      let data = "";
       if (this.activeComponentObj.props.length) {
-        data += '  data () {\n    return {'
-        this.activeComponentObj.props.forEach(prop => {
-          data += `\n      ${prop}: "PLACEHOLDER FOR VALUE",`
-        })
-        data += '\n'
-        data += '    }\n'
-        data += '  },\n'
+        data += "  data () {\n    return {";
+        this.activeComponentObj.props.forEach((prop) => {
+          data += `\n      ${prop}: "PLACEHOLDER FOR VALUE",`;
+        });
+        data += "\n";
+        data += "    }\n";
+        data += "  },\n";
       }
 
       // if true add computed section and populate with state
-      let computed = ''
+      let computed = "";
       if (this.activeComponentObj.state.length) {
-        computed += '  computed: {'
-        computed += '\n    ...mapState(['
-        this.activeComponentObj.state.forEach(state => {
-          computed += `\n      "${state}",`
-        })
-        computed += '\n    ]),\n'
-        computed += '  },\n'
+        computed += "  computed: {";
+        computed += "\n    ...mapState([";
+        this.activeComponentObj.state.forEach((state) => {
+          computed += `\n      "${state}",`;
+        });
+        computed += "\n    ]),\n";
+        computed += "  },\n";
       }
 
       // if true add methods section and populate with actions
-      let methods = ''
+      let methods = "";
       if (this.activeComponentObj.actions.length) {
-        methods += '  methods: {'
-        methods += '\n    ...mapActions(['
-        this.activeComponentObj.actions.forEach(action => {
-          methods += `\n      "${action}",`
-        })
-        methods += '\n    ]),\n'
-        methods += '  },\n'
+        methods += "  methods: {";
+        methods += "\n    ...mapActions([";
+        this.activeComponentObj.actions.forEach((action) => {
+          methods += `\n      "${action}",`;
+        });
+        methods += "\n    ]),\n";
+        methods += "  },\n";
       }
 
       // concat all code within script tags
-      let output = '\n\n<script>\n'
-      output += imports + '\nexport default {\n  name: ' + componentName
-      output += ',\n  components: {\n'
-      output += childrenComponentNames + '  },\n'
-      output += data
-      output += computed
-      output += methods
+      let output = "\n\n<script>\n";
+      output += imports + "\nexport default {\n  name: " + componentName;
+      output += ",\n  components: {\n";
+      output += childrenComponentNames + "  },\n";
+      output += data;
+      output += computed;
+      output += methods;
       // eslint-disable-next-line no-useless-escape
-      output += '};\n<\/script>\n\n<style scoped>\n</style>'
+      output += "};\n<\/script>\n\n<style scoped>\n</style>";
       // add props/data
 
       // eslint-disable-next-line no-useless-escape
       // return `\n\n<script>\n${str}\nexport default {\n  name: '${componentName}',\n
       // components: {\n${childrenComponentNames}  }\n};\n<\/script>\n\n<style scoped>\n
       // </style>`
-      return output
-    }
+      return output;
+    },
   },
   watch: {
-    // watches activeComponentObj for changes to make it reactive upon mutation
+    // // watches activeComponentObj for changes to make it reactive upon mutation
     // activeComponentObj: {
     //   handler () {
     //     // console.log(this.activeComponentObj.children)
@@ -246,7 +252,7 @@ export default {
     //     )
     //   }
     // },
-    // watches componentMap for changes to make it reactive upon mutation
+    // // // // watches componentMap for changes to make it reactive upon mutation
     // componentMap: {
     //   handler () {
     //     this.code = this.createCodeSnippet(
@@ -256,66 +262,47 @@ export default {
     //   }
     // }
   },
-  mounted () {
+  mounted() {
     // https://vuejs.org/v2/api/#Vue-nextTick
     // kinda like a promise, used for the window resize
     this.$nextTick(() => {
-      window.addEventListener('resize', this.getWindowHeight)
+      window.addEventListener("resize", this.getWindowHeight);
 
-      this.getWindowHeight()
-    })
+      this.getWindowHeight();
+    });
   },
-  // Updates code snippet when adding children
-  // updated () {
-    // if (this.componentMap[this.activeComponent]) {
-    //   this.code = `${this.createCodeSnippet(
-    //     this.activeComponent,
-    //     this.componentMap[this.activeComponent].children
-    //   )}`
-    //   // else if there is not existing component/no active component
-    // } else {
-    //   this.code = `Your component boilerplate will be displayed here.`
-    // }
-  // },
-  beforeDestroy () {
-    window.removeEventListener('resize', this.getWindowHeight)
-  }
-  // watch: {
-  //   activeComponent: {
-  //     handler () {
-  //       if (this.componentMap[this.activeComponent]) {
-  //         this.code = `${this.createCodeSnippet(
-  //           this.activeComponent,
-  //           this.componentMap[this.activeComponent].children
-  //         )}`
-  //       }
-  //     }
-  //   }
-  // },
-  // If HTML elements or components are added, rerenders Code Snippet
-  // componentMap: {
-  //   deep: true,
-  //   handler () {
-  //     // console.log('component Map has changed');
-  //     if (this.componentMap[this.activeComponent]) {
-  //       this.code = `${this.createCodeSnippet(
-  //         this.activeComponent,
-  //         this.componentMap[this.activeComponent].children
-  //       )}`
-  //     }
-  //   }
-  // }
-}
+
+  beforeDestroy() {
+    window.removeEventListener("resize", this.getWindowHeight);
+  },
+};
 </script>
 
-<style lang="stylus" scoped>
+<style lang="scss">
+// Had scoped before, but could not get rid of outline with scoped style
+
 // resize handled by vue lifecycle methods
-.code-editor
-  font-size 12px
+.my-editor {
+  font-size: 12px;
+  background: #2d2d2d;
+  color: #ccc;
+  /* you must provide font-family font-size line-height. Example: */
+  font-family: Fira code, Fira Mono, Consolas, Menlo, Courier, monospace;
+  line-height: 1.5;
+  padding: 5px;
+}
 
-.codesnippet-container
-  margin-bottom 1rem
+.codesnippet-container {
+  margin-bottom: 1rem;
+}
 
-::-webkit-scrollbar
-  display none
+.prism-editor__textarea:focus {
+  outline: none;
+}
+</style>
+
+<style lang="scss" scoped>
+::-webkit-scrollbar {
+  display: none;
+}
 </style>

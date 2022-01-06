@@ -12,8 +12,8 @@ Description:
     v-on:click="handleClick"
   >
     <!-- This is the actual component box -->
-  <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
-    <VueDraggableResizable
+    <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
+    <vue-draggable-resizable
       class-name="component-box"
       v-for="componentData in activeRouteArray"
       ref="boxes"
@@ -24,7 +24,6 @@ Description:
       :z="componentData.z"
       :w="componentData.w"
       :h="componentData.h"
-      :parent="true"
       :preventDeactivation="true"
       @activated="onActivated(componentData)"
       @deactivated="onDeactivated(componentData)"
@@ -36,15 +35,6 @@ Description:
       <div class="component-title">
         <p style="color: black">{{ componentData.componentName }}</p>
       </div>
-      <!--
-      <div class="component-html-info">
-        <p>Elements in Component:</p>
-        <p class="component-html-info"
-          v-for="htmlElement in componentMap[componentData.componentName]
-          .htmlList" :key="htmlElement" >
-          {{ htmlElement.text }}
-        </p>
-      </div> -->
 
       <q-menu context-menu>
         <q-list color="black" class="menu">
@@ -65,7 +55,7 @@ Description:
               color="transparent"
               text-color="primary"
               label="-"
-              @click="e => handleLayer(e)"
+              @click="(e) => handleLayer(e)"
             />
             <p id="counter" style="color: white">{{ componentData.z }}</p>
             <q-btn
@@ -73,16 +63,16 @@ Description:
               color="transparent"
               text-color="primary"
               label="+"
-              @click="e => handleLayer(e)"
+              @click="(e) => handleLayer(e)"
             />
           </q-item>
         </q-list>
       </q-menu>
-    </VueDraggableResizable>
+    </vue-draggable-resizable>
     <div>
       <q-dialog v-model="modalOpen">
         <q-select
-          @input="handleSelect"
+          @select="handleSelect"
           id="dropdown"
           filled
           v-model="testModel"
@@ -100,16 +90,17 @@ Description:
 
 <script>
 import { mapState, mapActions } from "vuex";
-import VueDraggableResizable from "vue-draggable-resizable";
-import "vue-draggable-resizable/dist/VueDraggableResizable.css";
+import VueDraggableResizable from "vue-draggable-resizable/src/components/vue-draggable-resizable.vue";
+import "vue-draggable-resizable/src/components/vue-draggable-resizable.css";
+
+const cloneDeep = require("lodash.clonedeep");
 
 export default {
   name: "ComponentDisplay",
   components: {
-    VueDraggableResizable
+    VueDraggableResizable,
   },
   data() {
-    // console.log("Current Component Map is: ", this.componentMap);
     return {
       modalOpen: false,
       abilityToDelete: false,
@@ -117,20 +108,19 @@ export default {
       mockImg: false,
       initialPosition: { x: 0, y: 0 },
       initialSize: { w: 0, h: 0 },
-      htmlElements: []
+      htmlElements: [],
     };
   },
   mounted() {
     // when component is mounted, add ability to delete
-    window.addEventListener("keyup", event => {
+    window.addEventListener("keyup", (event) => {
       if (event.key === "Backspace") {
         if (this.activeComponent) {
           this.$store.dispatch("deleteActiveComponent");
         }
       }
     });
-
-    window.addEventListener("keyup", event => {
+    window.addEventListener("keyup", (event) => {
       if (event.key === "Delete") {
         if (this.activeComponent) {
           this.$store.dispatch("deleteActiveComponent");
@@ -138,20 +128,16 @@ export default {
       }
     });
     // listener for the copy
-    window.addEventListener('copy', () => {
+    window.addEventListener("copy", () => {
       // if there is an activeComponent, copy info to state using dispatch
       if (this.activeComponent) {
-        // console.log('copied!', this.activeComponent);
         this.$store.dispatch("copyActiveComponent");
       }
     });
-
-    window.addEventListener('paste', () => {
+    window.addEventListener("paste", () => {
       this.$store.dispatch("pasteActiveComponent");
-      // console.log('pasted');
-    })
+    });
   },
-
   computed: {
     ...mapState([
       "routes",
@@ -160,28 +146,25 @@ export default {
       "componentMap",
       "componentChildrenMultiselectValue",
       "imagePath",
-      "activeComponentObj"
+      "activeComponentObj",
     ]),
-
     // used in VueDraggableResizeable component
     activeRouteArray() {
       return this.routes[this.activeRoute];
     },
-
     // used to delete active component
     activeComponentData() {
-      return this.activeComponentObj;
+      // Must deep clone this so we are not directly mutating state
+      // return this.activeComponentObj;
+      return cloneDeep(this.activeComponentObj);
     },
-
-    // childList () {
-    //   return this.componentMap[componentData.componentName].children
-    // },
-
     options() {
       // checks if component has any parents and pushes them into lineage
       const checkParents = (component, lineage = [component.componentName]) => {
+        console.log("Lineage: " + lineage);
         if (!Object.keys(component.parent).length) return lineage;
         for (var parents in component.parent) {
+          // Mutating?
           lineage.push(parents);
           checkParents(component.parent[parents], lineage);
         }
@@ -190,45 +173,39 @@ export default {
       let lineage = [this.activeComponent];
       // checks to see if there are any existing children
       if (this.componentMap[this.activeComponent]) {
-        // console.log('testmodel', this.testModel)
-        // console.log(this.componentMap[this.activeComponent].children)
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.testModel = this.componentMap[this.activeComponent].children;
         lineage = checkParents(this.componentMap[this.activeComponent]);
-        // console.log('Lineage', lineage);
       }
       const routes = Object.keys(this.routes);
       const exceptions = new Set([
         "App",
         ...lineage,
         ...routes,
-        ...this.testModel
+        ...this.testModel,
       ]);
-      return Object.keys(this.componentMap).filter(component => {
+      return Object.keys(this.componentMap).filter((component) => {
         if (!exceptions.has(component)) return component;
       });
     },
-
     userImage() {
       const imgSrc = `file://` + this.imagePath[this.activeRoute];
-      // console.log('imgSrc is: ', imgSrc)
       return imgSrc;
     },
-
     // updates display with mockup image
     mockBg() {
       return this.imagePath[this.activeRoute]
         ? {
-          background: `url("${this.userImage}") center/contain no-repeat rgba(223, 218, 218, 0.886)`
-      }
+            background: `url("${this.userImage}") center/contain no-repeat rgba(223, 218, 218, 0.886)`,
+          }
         : {};
-    }
+    },
   },
   updated() {
     // if there are no active components, all boxes are unhighlighted
     if (this.activeComponent === "") {
       if (this.$refs.boxes) {
-        this.$refs.boxes.forEach(element => {
+        this.$refs.boxes.forEach((element) => {
           element.enabled = false;
           element.$emit("deactivated");
           element.$emit("update:active", false);
@@ -236,7 +213,7 @@ export default {
       }
     } else {
       // if a component is set to active, highlight it
-      this.$refs.boxes.forEach(element => {
+      this.$refs.boxes.forEach((element) => {
         if (
           this.activeComponent === element.$attrs.id &&
           element.enabled === false
@@ -248,7 +225,6 @@ export default {
       });
     }
   },
-
   methods: {
     ...mapActions([
       "setActiveComponent",
@@ -258,31 +234,25 @@ export default {
       "updateStartingPosition",
       "updateComponentLayer",
       "updateStartingSize",
-      "updateComponentSize"
+      "updateComponentSize",
     ]),
-
     // records component's initial position in case of drag
-    recordInitialPosition: function(e) {
-      // console.log('recording initial position: ', this.initialPosition)
+    recordInitialPosition: function (e) {
       if (this.activeComponent !== e.target.id) {
         this.setActiveComponent(e.target.id);
       }
       this.initialPosition.x = this.activeComponentData.x;
       this.initialPosition.y = this.activeComponentData.y;
     },
-
     // records component's initial size/position in case of resize
-    recordInitialSize: function(e) {
-      // console.log('recording initial size')
+    recordInitialSize: function (e) {
       this.initialSize.h = this.activeComponentData.h;
       this.initialSize.w = this.activeComponentData.w;
       this.initialPosition.x = this.activeComponentData.x;
       this.initialPosition.y = this.activeComponentData.y;
     },
-
     // sets component's ending size/position
-    finishedResize: function(x, y, w, h) {
-      // console.log('FINISHED RESIZING')
+    finishedResize: function (x, y, w, h) {
       let payload = {
         x: x,
         y: y,
@@ -290,7 +260,7 @@ export default {
         h: h,
         activeComponent: this.activeComponent,
         routeArray: this.routes[this.activeRoute],
-        activeComponentData: this.activeComponentData
+        activeComponentData: this.activeComponentData,
       };
       if (
         payload.x !== this.initialPosition.x ||
@@ -301,18 +271,14 @@ export default {
         this.updateComponentSize(payload);
       }
     },
-
-    finishedDrag: function(x, y) {
-      // console.log('FINISHED DRAGGING')
+    finishedDrag: function (x, y) {
       let payload = {
         x: x,
         y: y,
         activeComponent: this.activeComponent,
         routeArray: this.routes[this.activeRoute],
-        activeComponentData: this.activeComponentData
+        activeComponentData: this.activeComponentData,
       };
-      // console.log("Payload.x = ", payload.x, "this.initialPosition.x", this.initialPosition.x)
-      // console.log("Payload.y = ", payload.y, "this.initialPosition.y", this.initialPosition.y)
       if (
         payload.x !== this.initialPosition.x ||
         payload.y !== this.initialPosition.y
@@ -320,45 +286,36 @@ export default {
         this.updateComponentPosition(payload);
       }
     },
-
     /* Records size/position
       Add @resizing="onResize" to VueDraggableResizable #component-box to use
-
     onResize: function (x, y, width, height) {
       this.activeComponentData.x = x
       this.activeComponentData.y = y
       this.activeComponentData.w = width
       this.activeComponentData.h = height
-
       this.componentMap[this.activeComponent].x = x
       this.componentMap[this.activeComponent].y = y
       this.componentMap[this.activeComponent].w = width
       this.componentMap[this.activeComponent].h = height
     },
     */
-
     /* Records component's position
       Add @dragging="onDrag" to VueDraggableResizable #component-box to use
-
     onDrag: function (x, y) {
       console.log('ondrag')
       this.activeComponentData.x = x
       this.activeComponentData.y = y
-
       this.componentMap[this.activeComponent].x = x
       this.componentMap[this.activeComponent].y = y
     },
     */
-
     // unhighlights all inactive components
     onActivated(componentData) {
-      // console.log('onActivated - comp display, componentData', componentData)
       if (this.$refs.boxes) {
-        this.$refs.boxes.forEach(element => {
+        this.$refs.boxes.forEach((element) => {
           if (element.$attrs.id !== componentData.componentName) {
             element.enabled = false;
             element.$emit("deactivated");
-            // this.setActiveComponent(componentData.componentName)
             element.$emit("update:active", false);
           }
         });
@@ -368,62 +325,52 @@ export default {
       }
       this.activeComponentData.isActive = true;
     },
-
     // deactivated is emitted before activated
     onDeactivated() {
       if (this.activeComponent !== "") {
         this.activeComponentData.isActive = false;
       }
     },
-
     // renders modal with Update Children and Layer in it
     handleAddChild() {
       this.modalOpen = true;
     },
-
     // used when user selects to add child from dropdown
     handleSelect(value) {
-      // console.log('selected child component: ', value)
       this.updateActiveComponentChildrenValue(value);
     },
-
     // user can change component's layer order
     handleLayer(e) {
-      // console.log('handeLayer\'s e: ', e)
       e.preventDefault();
       const payload = {
         activeComponent: this.activeComponent,
         routeArray: this.routes[this.activeRoute],
         activeComponentData: this.activeComponentData,
-        z: this.activeComponentData.z
+        z: this.activeComponentData.z,
       };
       if (e.target.innerText === "+") payload.z++;
       if (e.target.innerText === "-" && payload.z > 0) payload.z--;
       this.updateComponentLayer(payload);
     },
-
     // if user clicks on display grid, resets active component to ''
     handleClick(event) {
       if (event.target.className === "component-display grid-bg") {
         if (!(this.activeComponent === "")) this.setActiveComponent("");
       }
     },
-    
-    // event handler for copying (ctrl+C)
-    copyActiveComponent() {
-      // console.log('copied');
-    }
 
+    // event handler for copying (ctrl+C)
+    copyActiveComponent() {},
   },
   watch: {
-    activeComponent: function() {
+    activeComponent: function () {
       if (this.activeComponent) {
         this.onActivated(this.activeComponentObj);
       } else {
         this.onDeactivated();
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -439,17 +386,10 @@ export default {
   line-height: 1.2;
   z-index: -1;
 }
-
 .component-html-info {
   display: flex;
   font-size: 14px;
-  /* flex-basis: auto; */
   flex-direction: column;
-  /* flex-wrap: wrap; */
-  /* justify-content: center; */
-  /* flex-flow: column wrap; */
-  /* align-content: stretch; */
-  /* align-items: flex-start; */
   font-weight: 800;
 }
 .component-children {
@@ -489,7 +429,6 @@ export default {
     #269;
   behavior: url(/pie/PIE.htc);
 }
-
 .menu {
   margin-bottom: 0px !important;
 }
