@@ -9,7 +9,12 @@ Description:
     <q-list>
       <q-expansion-item expand-separator label="Upload Mockup Image">
         <div class="upload">
-          <q-btn class="upload-btn" color="secondary" label="Upload Mockup" @click="importMockup" />
+          <q-btn
+            class="upload-btn"
+            color="secondary"
+            label="Upload Mockup"
+            @click="importMockup"
+          />
           <q-btn
             v-if="source !== ''"
             class="upload-btn"
@@ -17,11 +22,21 @@ Description:
             label="Clear Image"
             @click="removeImage"
           />
-          <q-btn v-else disable class="upload-btn" color="secondary" label="Clear Image" />
+          <q-btn
+            v-else
+            disable
+            class="upload-btn"
+            color="secondary"
+            label="Clear Image"
+          />
         </div>
         <div class="file-path">
           <q-card>
-            <img class='img' v-if='this.imagePath[this.activeRoute] !== ""' :src="'file:///' + this.imagePath[this.activeRoute]"/>
+            <img
+              class="img"
+              v-if="this.imagePath[this.activeRoute] !== ''"
+              :src="'file:///' + this.imagePath[this.activeRoute]"
+            />
           </q-card>
         </div>
       </q-expansion-item>
@@ -30,87 +45,84 @@ Description:
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import uploadImage from '../../utils/uploadImage.util'
-import clearImageDialog from '../../utils/clearImage.util'
+import { mapState, mapActions } from "vuex";
+import uploadImage from "../../utils/uploadImage.util";
+import clearImageDialog from "../../utils/clearImage.util";
 
 export default {
-  name: 'upload-image',
-  data () {
+  name: "upload-image",
+  data() {
     return {
       files: [],
-      source: ''
-    }
+      source: "",
+    };
   },
   computed: {
-    ...mapState(['imagePath', 'activeRoute'])
+    ...mapState(["imagePath", "activeRoute"]),
   },
   methods: {
-    ...mapActions(['importImage', 'clearImage']),
+    ...mapActions(["importImage", "clearImage"]),
     // imports mockup image
     // ** Importing mockup image ONLY works in build mode due to path differences
     // In dev mode, error thrown is: "Not allowed to load local resource: PATH "
-    importMockup () {
+    importMockup() {
       // A promise gets returned out from uploadImage, imported from uploadImage utils
-      const helperPromise = uploadImage()
+      const helperPromise = uploadImage();
       helperPromise
         // res contains the selected file path (string)
-        .then(res => {
-          if (this.activeRoute !== '') {
-            this.importImage({ img: res, route: this.activeRoute })
+        .then((res) => {
+          if (this.activeRoute !== "") {
+            this.importImage({ img: res, route: this.activeRoute });
             if (this.imagePath[this.activeRoute]) {
-              this.source = 'file:///' + this.imagePath[this.activeRoute]
+              this.source = "file:///" + this.imagePath[this.activeRoute];
             }
           }
         })
-        .catch(err => console.log(err))
+        .catch((err) => console.log(err));
     },
     // removes mockup image
-    removeImage () {
-      const responsePromise = clearImageDialog()
+    removeImage() {
+      const responsePromise = clearImageDialog();
 
       responsePromise
-        .then(res => {
+        .then((res) => {
           // res will have format: { response: 0, checkboxChecked: false }
           // res.response will be 0 if user chose 'Yes'
           // res.response will be 1 if user chose 'Cancel'
           if (res.response === 0) {
-            this.clearImage({ route: this.activeRoute })
-            this.source = this.imagePath[this.activeRoute]
+            this.clearImage({ route: this.activeRoute });
+            this.source = this.imagePath[this.activeRoute];
           }
         })
-        .catch(err => {
-          console.log(err)
-        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
 
     // imports image on browser
     // currently images aren't able to be stored on browser
-    async importMockupBrowser () {
-      // console.log(`importMockupBrowser: ${this.$refs.myFiles.files}`)
-      this.files = this.$refs.myFiles.files[0]
-      await this.importImage(this.files.name)
-      // await console.log(this.files.name)
+    async importMockupBrowser() {
+      this.files = this.$refs.myFiles.files[0];
+      await this.importImage(this.files.name);
     },
     // removes image on browser
-    removeImageBrowser () {
-      this.clearImage()
-    }
+    removeImageBrowser() {
+      this.clearImage();
+    },
   },
   // watches for changes in state to activeRoute
   watch: {
     // once you change your active route, the mockup image should change as well
     activeRoute: function () {
-      // console.log('Route has changed')
       if (this.imagePath[this.activeRoute]) {
         // if there is a uploaded image
-        this.source = 'file:///' + this.imagePath[this.activeRoute]
+        this.source = "file:///" + this.imagePath[this.activeRoute];
       } else {
-        this.source = ''
+        this.source = "";
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss">

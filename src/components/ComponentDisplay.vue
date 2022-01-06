@@ -101,7 +101,6 @@ export default {
     VueDraggableResizable,
   },
   data() {
-    // console.log("Current Component Map is: ", this.componentMap);
     return {
       modalOpen: false,
       abilityToDelete: false,
@@ -132,13 +131,11 @@ export default {
     window.addEventListener("copy", () => {
       // if there is an activeComponent, copy info to state using dispatch
       if (this.activeComponent) {
-        // console.log('copied!', this.activeComponent);
         this.$store.dispatch("copyActiveComponent");
       }
     });
     window.addEventListener("paste", () => {
       this.$store.dispatch("pasteActiveComponent");
-      // console.log('pasted');
     });
   },
   computed: {
@@ -161,13 +158,10 @@ export default {
       // return this.activeComponentObj;
       return cloneDeep(this.activeComponentObj);
     },
-    // childList () {
-    //   return this.componentMap[componentData.componentName].children
-    // },
     options() {
       // checks if component has any parents and pushes them into lineage
       const checkParents = (component, lineage = [component.componentName]) => {
-        console.log('Lineage: ' + lineage)
+        console.log("Lineage: " + lineage);
         if (!Object.keys(component.parent).length) return lineage;
         for (var parents in component.parent) {
           // Mutating?
@@ -179,12 +173,9 @@ export default {
       let lineage = [this.activeComponent];
       // checks to see if there are any existing children
       if (this.componentMap[this.activeComponent]) {
-        // console.log('testmodel', this.testModel)
-        // console.log(this.componentMap[this.activeComponent].children)
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.testModel = this.componentMap[this.activeComponent].children;
         lineage = checkParents(this.componentMap[this.activeComponent]);
-        
       }
       const routes = Object.keys(this.routes);
       const exceptions = new Set([
@@ -199,7 +190,6 @@ export default {
     },
     userImage() {
       const imgSrc = `file://` + this.imagePath[this.activeRoute];
-      // console.log('imgSrc is: ', imgSrc)
       return imgSrc;
     },
     // updates display with mockup image
@@ -208,7 +198,7 @@ export default {
         ? {
             background: `url("${this.userImage}") center/contain no-repeat rgba(223, 218, 218, 0.886)`,
           }
-        : { };
+        : {};
     },
   },
   updated() {
@@ -219,8 +209,6 @@ export default {
           element.enabled = false;
           element.$emit("deactivated");
           element.$emit("update:active", false);
-          // this.$emit("deactivated");
-          // this.$emit("update:active", false);
         });
       }
     } else {
@@ -233,8 +221,6 @@ export default {
           element.enabled = true;
           element.$emit("activated");
           element.$emit("update:active", true);
-          // this.$emit("activated");
-          // this.$emit("update:active", true);
         }
       });
     }
@@ -252,7 +238,6 @@ export default {
     ]),
     // records component's initial position in case of drag
     recordInitialPosition: function (e) {
-      // console.log('recording initial position: ', this.initialPosition)
       if (this.activeComponent !== e.target.id) {
         this.setActiveComponent(e.target.id);
       }
@@ -261,7 +246,6 @@ export default {
     },
     // records component's initial size/position in case of resize
     recordInitialSize: function (e) {
-      // console.log('recording initial size')
       this.initialSize.h = this.activeComponentData.h;
       this.initialSize.w = this.activeComponentData.w;
       this.initialPosition.x = this.activeComponentData.x;
@@ -269,7 +253,6 @@ export default {
     },
     // sets component's ending size/position
     finishedResize: function (x, y, w, h) {
-      // console.log('FINISHED RESIZING')
       let payload = {
         x: x,
         y: y,
@@ -289,7 +272,6 @@ export default {
       }
     },
     finishedDrag: function (x, y) {
-      // console.log('FINISHED DRAGGING')
       let payload = {
         x: x,
         y: y,
@@ -297,8 +279,6 @@ export default {
         routeArray: this.routes[this.activeRoute],
         activeComponentData: this.activeComponentData,
       };
-      // console.log("Payload.x = ", payload.x, "this.initialPosition.x", this.initialPosition.x)
-      // console.log("Payload.y = ", payload.y, "this.initialPosition.y", this.initialPosition.y)
       if (
         payload.x !== this.initialPosition.x ||
         payload.y !== this.initialPosition.y
@@ -331,17 +311,12 @@ export default {
     */
     // unhighlights all inactive components
     onActivated(componentData) {
-      // console.log("This is ACTIVATED");
-      // console.log('onActivated - comp display, componentData', componentData)
       if (this.$refs.boxes) {
         this.$refs.boxes.forEach((element) => {
           if (element.$attrs.id !== componentData.componentName) {
-            //  console.log("Emit");
             element.enabled = false;
             element.$emit("deactivated");
             element.$emit("update:active", false);
-            // this.$emit("deactivated");
-            // this.$emit("update:active", false);
           }
         });
       }
@@ -352,7 +327,6 @@ export default {
     },
     // deactivated is emitted before activated
     onDeactivated() {
-      // console.log("This is DEACTIVATED");
       if (this.activeComponent !== "") {
         this.activeComponentData.isActive = false;
       }
@@ -363,12 +337,10 @@ export default {
     },
     // used when user selects to add child from dropdown
     handleSelect(value) {
-      // console.log('selected child component: ', value)
       this.updateActiveComponentChildrenValue(value);
     },
     // user can change component's layer order
     handleLayer(e) {
-      // console.log('handeLayer\'s e: ', e)
       e.preventDefault();
       const payload = {
         activeComponent: this.activeComponent,
@@ -388,9 +360,7 @@ export default {
     },
 
     // event handler for copying (ctrl+C)
-    copyActiveComponent() {
-      // console.log('copied');
-    },
+    copyActiveComponent() {},
   },
   watch: {
     activeComponent: function () {
@@ -419,13 +389,7 @@ export default {
 .component-html-info {
   display: flex;
   font-size: 14px;
-  /* flex-basis: auto; */
   flex-direction: column;
-  /* flex-wrap: wrap; */
-  /* justify-content: center; */
-  /* flex-flow: column wrap; */
-  /* align-content: stretch; */
-  /* align-items: flex-start; */
   font-weight: 800;
 }
 .component-children {

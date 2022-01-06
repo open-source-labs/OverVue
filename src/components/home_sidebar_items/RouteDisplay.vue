@@ -7,7 +7,7 @@ Includes functionality to:
 <template>
   <div>
     <q-input
-      @keyup.enter="handleEnterKeyPress "
+      @keyup.enter="handleEnterKeyPress"
       standout="bg-secondary text-white"
       bottom-slots
       v-model="newRoute"
@@ -22,44 +22,45 @@ Includes functionality to:
 </template>
 
 <script>
-import Routes from './Routes'
-import { mapState, mapActions } from 'vuex'
+import Routes from "./Routes";
+import { mapState, mapActions } from "vuex";
 
 export default {
-  name: 'RouteDisplay',
+  name: "RouteDisplay",
   components: {
-    Routes
+    Routes,
   },
   computed: {
-    ...mapState(['routes', 'componentMap'])
+    ...mapState(["routes", "componentMap"]),
   },
-  data () {
+  data() {
     return {
-      newRoute: ''
-    }
+      newRoute: "",
+    };
   },
   methods: {
-    ...mapActions(['addRouteToRouteMap', 'setRoutes', 'setActiveComponent']),
-    handleEnterKeyPress () {
-      const newRouteName = this.newRoute.replace(/[^a-z0-9-_.]/gi, '')
-      if (!newRouteName.trim() || this.routes[newRouteName] || this.componentMap[newRouteName]) {
-        event.preventDefault()
-        return false
+    ...mapActions(["addRouteToRouteMap", "setRoutes", "setActiveComponent"]),
+    handleEnterKeyPress() {
+      const newRouteName = this.newRoute.replace(/[^a-z0-9-_.]/gi, "");
+      if (
+        !newRouteName.trim() ||
+        this.routes[newRouteName] ||
+        this.componentMap[newRouteName]
+      ) {
+        event.preventDefault();
+        return false;
       }
-      this.addRouteToRouteMap(newRouteName)
-        .then(() => {
-          this.newRoute = ''
-        })
-
-      // .catch(err => console.log(err))
+      this.addRouteToRouteMap(newRouteName).then(() => {
+        this.newRoute = "";
+      });
     },
-    resetActiveComponent () {
-      if (this.activeComponent !== '') {
-        this.setActiveComponent('')
+    resetActiveComponent() {
+      if (this.activeComponent !== "") {
+        this.setActiveComponent("");
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>

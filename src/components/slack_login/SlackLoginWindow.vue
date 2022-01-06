@@ -5,7 +5,7 @@
       <q-btn class="glossy bg-black openModalBtn" size="5px" @click="openLogin">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          style="height:18px;width:18px;margin-right:0"
+          style="height: 18px; width: 18px; margin-right: 0"
           viewBox="0 0 122.8 122.8"
         >
           <path
@@ -55,7 +55,7 @@
             <q-btn @click="slackOauth" color="purple">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                style="height:20px;width:20px;margin-right:12px"
+                style="height: 20px; width: 20px; margin-right: 12px"
                 viewBox="0 0 122.8 122.8"
               >
                 <path
@@ -78,9 +78,11 @@
               Connect to Slack
             </q-btn>
           </div>
-          <div style="color:red">{{ errorMessage }}</div>
+          <div style="color: red">{{ errorMessage }}</div>
           <div class="skipLogin q-pa-md q-gutter-sm">
-            <q-btn @click="closeLogin()" color="white" text-color="black">Skip</q-btn>
+            <q-btn @click="closeLogin()" color="white" text-color="black"
+              >Skip</q-btn
+            >
           </div>
         </q-card-section>
       </q-card>
@@ -89,9 +91,7 @@
 </template>
 
 <script>
-// import { mapState, mapActions } from 'vuex'
 import localforage from "localforage";
-// import { shell, ipcRenderer } from "electron";
 const { ipcRenderer, shell } = window;
 
 export default {
@@ -100,37 +100,25 @@ export default {
     return {
       isAuthenticating: false,
       showLogin: true,
-      errorMessage: ""
+      errorMessage: "",
     };
   },
   created() {
     ipcRenderer.on("tokenReceived", (event, data) => {
-      // console.log("data in SlackLoginWindow: ", data);
-      // localforage.setItem('slackWebhookURL', data.incoming_webhook.url)
-      //   .then(data => this.closeLogin())
       return this.saveToLocalForage(
         "slackWebhookURL",
         data.incoming_webhook.url
       );
     });
     ipcRenderer.on("slackUser", (event, user) => {
-      // console.log("user received in SlackLoginWindow: ", user);
-      // localforage.setItem('slackUser', user)
-      //   .then(data => this.closeLogin())
-      //   .catch(err => {
-      //     console.log('localforage caught an error when trying to set slackUser: ', err)
-      //     this.errorMessage = err
-      //   })
       return this.saveToLocalForage("slackUser", user);
     });
     ipcRenderer.on("slackError", (event, err) => {
-      // console.log("err received in SlackLoginWindow: ", err);
       this.printErrorMessage();
     });
-    // console.log(`process.env: ${process.env}`);
   },
   methods: {
-    slackOauth: function() {
+    slackOauth: function () {
       const slackBaseUrl = "https://slack.com/oauth/v2/authorize";
       // const responseType = 'code'
       const scope = "incoming-webhook";
@@ -138,7 +126,7 @@ export default {
       const clientId = process.env.SLACK_CLIENT_ID;
 
       this.isAuthenticating = true;
-      
+
       // Tests
       // console.log(`${slackBaseUrl}?scope=${scope}&redirect_uri=${redirectUri}&client_id=${clientId}`)
       // console.log(redirectUri.slice(1, redirectUri.length - 1))
@@ -159,28 +147,24 @@ export default {
         { activate: true }
       );
     },
-    saveToLocalForage: function(key, value) {
+    saveToLocalForage: function (key, value) {
       localforage.setItem(key, value);
       this.closeLogin();
-      // .catch(function (err) {
-      //   console.log('localforage caught an error when trying to set slackUser: ', err)
-      //   this.setErrorMessage(err)
-      // })
     },
-    printErrorMessage: function() {
+    printErrorMessage: function () {
       this.errorMessage = "Failed to Connect to Slack";
     },
-    setErrorMessage: function(err) {
+    setErrorMessage: function (err) {
       this.errorMessage = err;
     },
-    closeLogin: function() {
+    closeLogin: function () {
       this.showLogin = false;
       this.errorMessage = "";
     },
-    openLogin: function() {
+    openLogin: function () {
       this.showLogin = true;
-    }
-  }
+    },
+  },
 };
 </script>
 
