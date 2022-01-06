@@ -128,9 +128,10 @@
     <li>Upgraded from Vuex 3 to Vuex 4</li>
     <li>Upgraded from Electron 5 to 16</li>
     <li>Upgraded from Quasar 1 to 2</li>
+    <li></li>
     <li>Rewrote exports in Vue 3</li>
     <li>Reconfigured Vue Devtools to launch and connect upon running quasar in dev mode</li>
-    <li>Note that due to breaking changes when upgrading to Vue 3, vued3tree had to be replaced with vue3-tree.  This is intended to be a short-term change, with the old package being returned to upon updating.  Due to this, a bulleted list currently renders instead of a tree.</li>
+    <li>Note that due to breaking changes when upgrading to Vue 3, vued3tree had to be replaced with vue3-tree.Due to this, a bulleted list currently renders instead of a tree.  This is intended to be a short-term change, with the old package being utilized again once it is compatible.  </li>
   </ul>
 </details>
 
@@ -322,10 +323,10 @@ Jeffrey Sul @jeffreysul
 Kenny Lee @kennyea
 Ryan Bender @rdbender
 Sonny Nguyen @sn163
-Gabriela Kokhabi // Add Github
-Ross Lamerson // Add Github
-Shanon Lee // Add Github
-Zoew McGrath // Add Github
+Gabriela Kokhabi @gkokhabi
+Ross Lamerson @lamerson28
+Shanon Lee @shanon98lee
+Zoew McGrath @Z-McGrath
 ```
 
 Inspired by [PreVue](https://github.com/open-source-labs/PreVue)
