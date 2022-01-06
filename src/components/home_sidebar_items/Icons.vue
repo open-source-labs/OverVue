@@ -82,9 +82,9 @@ export default {
       }
     },
   },
-  // watch: {
-  //   // // watch for changes to selectedElementList when creating a component
-  // },
+  //  watch: {
+  // watch for changes to selectedElementList when creating a component
+  //  },
 };
 </script>
 
