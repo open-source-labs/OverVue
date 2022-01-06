@@ -14,7 +14,7 @@
         <q-btn round dense flat icon="add" @click="createNewProp(textProps)" />
       </template>
     </q-input>
-    
+
     <div id="props-select">
       <VueMultiselect
         v-model="selectProps"
@@ -32,7 +32,7 @@
         <span slot="noResult">No props found.</span>
       </VueMultiselect>
     </div>
-    <br/>
+    <br />
     <div>
       <q-btn
         v-if="selectProps.length"
@@ -47,61 +47,50 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import VueMultiselect from 'vue-multiselect'
+import { mapState, mapActions } from "vuex";
+import VueMultiselect from "vue-multiselect";
 
 export default {
-  name: 'addProps',
+  name: "addProps",
   components: {
-    VueMultiselect
+    VueMultiselect,
   },
-  data () {
+  data() {
     return {
-      textProps: ''
-    }
+      textProps: "",
+    };
   },
-
   computed: {
-    ...mapState([
-      'selectedProps',
-      'userProps',
-    ]),
-    propsOptions () {
-      return this.userProps
+    ...mapState(["selectedProps", "userProps"]),
+    propsOptions() {
+      return this.userProps;
     },
     selectProps: {
-      get () {
-        return this.selectedProps
+      get() {
+        return this.selectedProps;
       },
-      set (value) {
-        this.addPropsSelected(value)
-      }
-    }
+      set(value) {
+        this.addPropsSelected(value);
+      },
+    },
   },
 
   methods: {
-    ...mapActions([
-      'createProp',
-      'addPropsSelected',
-      'addPropsToComponent'
-    ]),
+    ...mapActions(["createProp", "addPropsSelected", "addPropsToComponent"]),
     // Prevent Delete on changes to searchable multiselect
-    stopDelete (e) {
-      if (e.code === 'Backspace') e.stopPropogation()
-      // console.log(e)
+    stopDelete(e) {
+      if (e.code === "Backspace") e.stopPropogation();
     },
-
     // Create's a new prop that will be stored in the userProps array within store, and it will be added to the props drop-down menu
-    createNewProp (text) {
+    createNewProp(text) {
       if (!this.userProps.includes(text) && text) {
-        this.createProp(text)
-        this.textProps = ''
+        this.createProp(text);
+        this.textProps = "";
       }
     },
-
-    addPropsToComp () {
-      this.addPropsToComponent(this.selectedProps)
-    }
-  }
-}
+    addPropsToComp() {
+      this.addPropsToComponent(this.selectedProps);
+    },
+  },
+};
 </script>

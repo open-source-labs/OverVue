@@ -1,8 +1,8 @@
-import { store } from 'quasar/wrappers'
-import { createStore } from 'vuex'
-import state from './state'
-import actions from './actions.js'
-import mutations from './mutations.js'
+import { store } from "quasar/wrappers";
+import { createStore } from "vuex";
+import state from "./state";
+import actions from "./actions.js";
+import mutations from "./mutations.js";
 // import example from './module-example'
 
 /*
@@ -16,16 +16,13 @@ import mutations from './mutations.js'
 
 export default store(function (/* { ssrContext } */) {
   const Store = createStore({
-    // modules: {
-    //   // example
-    // },
-    state, 
-    mutations, 
+    state,
+    mutations,
     actions,
     // enable strict mode (adds overhead!)
     // for dev mode and --debug builds only
-    strict: process.env.DEBUGGING
-  })
+    strict: process.env.DEBUGGING,
+  });
 
-  return Store
-})
+  return Store;
+});

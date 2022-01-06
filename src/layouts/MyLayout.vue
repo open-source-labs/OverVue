@@ -110,10 +110,7 @@ import Dashboard from "../components/dashboard_items/Dashboard.vue";
 import ExportProjectComponent from "../components/file_system_interface/ExportProject.vue";
 import SaveProjectComponent from "../components/file_system_interface/SaveProjectComponent.vue";
 import OpenProjectComponent from "../components/file_system_interface/OpenProjectComponent.vue";
-// import UploadImage from "../components/home_sidebar_items/UploadImage.vue";
 import SlackLoginWindow from "../components/slack_login/SlackLoginWindow.vue";
-// import RouteDisplay from "../components/home_sidebar_items/RouteDisplay.vue";
-// import VuexForm from "../components/home_sidebar_items/VuexForm.vue";
 import ComponentTab from "../components/home_sidebar_items/ComponentTab/ComponentTab.vue";
 import StoreTab from "../components/home_sidebar_items/StoreTab/StoreTab.vue";
 
@@ -128,13 +125,10 @@ export default {
     };
   },
   components: {
-    // RouteDisplay,
-    // VuexForm,
     Dashboard,
     ExportProjectComponent,
     SaveProjectComponent,
     OpenProjectComponent,
-    // UploadImage,
     SlackLoginWindow,
     ComponentTab,
     StoreTab,

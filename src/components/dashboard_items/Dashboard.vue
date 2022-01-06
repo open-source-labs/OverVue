@@ -86,7 +86,6 @@ export default {
     },
     // function that will handle deselection from active HTML element
     handleHtmlDeselection(event) {
-      // console.log('target html element: ', event.target)
       if (event.target.className !== "list-group-item") {
         // if html element classname is not equal to this string that all html elements have
         if (!(this.activeHTML === "")) this.setActiveHTML([""]); // if activeHtml is not already deselected, do so
@@ -97,7 +96,7 @@ export default {
     // otherwise toggle dashboard to 'Project Tree' tab if no component is selected or the
     // user is in the process of creating a component
 
-    componentNameInputValue: function() {
+    componentNameInputValue: function () {
       if (this.componentNameInputValue !== "" && this.activeComponent === "") {
         this.tab = "tree";
       }
@@ -106,15 +105,15 @@ export default {
     // toggles dashboard to "Project Tree" tab if:
     // no component is selected and either:
     // elements are being added to component or name is being typed
-    selectedElementList: function() {
+    selectedElementList: function () {
       if (
         this.activeComponent === "" &&
         this.selectedElementList.length !== 0
       ) {
         this.tab = "tree";
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -135,19 +134,6 @@ i {
   font-size: 8px;
   margin: 5px;
 }
-
-/* // styling for the entire dashboard
-.q-footer {
-  transition-timing-function: ease-in;
-  transition: 0.2s;
-  background: $subsecondary;
-}
-
-// changes the dashboard toolbar height
-.q-toolbar {
-  min-height: 25px !important;
-  padding: 0 6px !important;
-} */
 
 .q-toolbar__title {
   font-size: 14px;

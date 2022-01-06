@@ -5,14 +5,11 @@ Description:
   -->
 <!-- 4.0 adjustment: conditional render to switch between new comp name input and editing active comp name, moved from EditDeleteComponents -->
 
-
 <template>
   <div class="inner-div drawer-menu">
     <br />
-    <form
-      v-on:submit.prevent="createComponent"
-    >
-    <!-- will render if creating new component -->
+    <form v-on:submit.prevent="createComponent">
+      <!-- will render if creating new component -->
       <q-input
         v-if="activeComponent === ''"
         standout="bg-secondary text-white"
@@ -23,7 +20,6 @@ Description:
         dense
         class="input-add"
       ></q-input>
-
     </form>
     <div class="icon-container">
       <Icons
@@ -38,64 +34,63 @@ Description:
     <br />
 
     <q-btn
-      v-if="activeComponent ===''"
+      v-if="activeComponent === ''"
       id="add-component-btn"
       color="secondary"
       label="Create Component"
       @click="createComponent"
       :disabled="!componentNameInputValue.trim()"
     />
-
-</div>
+  </div>
 </template>
 
 <script>
-import Icons from '../Icons'
-import ParentMultiselect from '../ParentMultiselect.vue'
-import { mapState, mapActions } from 'vuex'
+import Icons from "../Icons";
+import ParentMultiselect from "../ParentMultiselect.vue";
+import { mapState, mapActions } from "vuex";
 export default {
-  name: 'HomeSidebar',
+  name: "HomeSidebar",
   components: {
     Icons,
-    ParentMultiselect
+    ParentMultiselect,
   },
   computed: {
     ...mapState([
-      'componentMap',
-      'selectedElementList',
-      'activeComponent',
-      'activeHTML'
+      "componentMap",
+      "selectedElementList",
+      "activeComponent",
+      "activeHTML",
     ]),
     componentNameInputValue: {
-      get () {
-        return this.$store.state.componentNameInputValue
+      get() {
+        return this.$store.state.componentNameInputValue;
       },
-      set (value) {
-        this.updateComponentNameInputValue(value)
-      }
-    }
+      set(value) {
+        this.updateComponentNameInputValue(value);
+      },
+    },
   },
   methods: {
     ...mapActions([
-      'registerComponent',
-      'addToSelectedElementList',
-      'updateComponentNameInputValue',
-      'setActiveComponent',
-      'addToComponentElementList',
-      'addNestedHTML',
-      'addNestedNoActive',
-      'editComponentName',
+      "registerComponent",
+      "addToSelectedElementList",
+      "updateComponentNameInputValue",
+      "setActiveComponent",
+      "addToComponentElementList",
+      "addNestedHTML",
+      "addNestedNoActive",
+      "editComponentName",
     ]),
-    createComponent () {
-      if (!this.componentNameInputValue.replace(/[^a-z0-9-_.]/gi, '')) {
-        event.preventDefault()
-        return false
+    createComponent() {
+      if (!this.componentNameInputValue.replace(/[^a-z0-9-_.]/gi, "")) {
+        event.preventDefault();
+        return false;
       }
       // boilerplate properties for each component upon creation
       const component = {
         componentName: this.componentNameInputValue.replace(
           /[^a-z0-9-_.]/gi,
-          ''
+          ""
         ),
         x: 0,
         y: 20,
@@ -108,18 +103,17 @@ export default {
         props: [],
         state: [],
         parent: {},
-        isActive: false
-      }
+        isActive: false,
+      };
       if (!this.componentMap[component.componentName]) {
         this.registerComponent(component);
-        // console.log(this.$store.state)
-        this.setActiveComponent(component.componentName)
+        this.setActiveComponent(component.componentName);
       }
 
-      console.log(this.$store.state)
+      console.log(this.$store.state);
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
