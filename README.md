@@ -125,13 +125,15 @@
 <details><summary>OverVue 5.0</summary>
   <ul>
     <li>Upgraded source code to Vue 3</li>
-    <li>Upgraded from Vuex 3 to Vuex 4</li>
-    <li>Upgraded from Electron 5 to 16</li>
-    <li>Upgraded from Quasar 1 to 2</li>
-    <li></li>
+    <li>Upgraded major dependencies to newest versions</li>
+    <ul>
+      <li>Upgraded from Vuex 3 to Vuex 4</li>
+      <li>Upgraded from Electron 5 to 16</li>
+      <li>Upgraded from Quasar 1 to 2</li>
+    </ul>
     <li>Rewrote exports in Vue 3</li>
     <li>Reconfigured Vue Devtools to launch and connect upon running quasar in dev mode</li>
-    <li>Note that due to breaking changes when upgrading to Vue 3, vued3tree had to be replaced with vue3-tree.Due to this, a bulleted list currently renders instead of a tree.  This is intended to be a short-term change, with the old package being utilized again once it is compatible.  </li>
+    <li>Note that due to breaking changes when upgrading to Vue 3, vued3tree had to be replaced with vue3-tree.Due to this, a bulleted list currently renders instead of a tree.  This is intended to be a short-term change, with the old package being utilized again once it is compatible.</li>
   </ul>
 </details>
 
