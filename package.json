@@ -23,10 +23,10 @@
     "concurrently:dev:jest": "concurrently \"quasar dev\" \"jest --watch\""
   },
   "dependencies": {
-    "@quasar/extras": "^1.0.0",
+    "@quasar/extras": "^1.12.5",
     "@vue/compiler-sfc": "^3.1.0",
     "core-js": "^3.6.5",
-    "dotenv": "^10.0.0",
+    "dotenv": "^16.0.0",
     "electron-deeplink": "^1.0.9",
     "fs-extra": "^10.0.0",
     "jest-cli": "^27.5.1",
