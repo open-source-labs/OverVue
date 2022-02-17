@@ -38,6 +38,14 @@ Description:
 
       <q-menu context-menu>
         <q-list color="black" class="menu">
+            <q-item clickable v-ripple v-close-popup @click="handleExportComponent">
+            <q-item-section class="layer" style="color: white"
+              >Export Component</q-item-section
+            >
+            <q-item-section avatar>
+                        <q-icon color="primary" name="upload" />
+                      </q-item-section>
+          </q-item>
           <q-item clickable v-ripple v-close-popup @click="handleAddChild">
             <q-item-section style="color: white"
               >Update Children</q-item-section
@@ -357,6 +365,11 @@ export default {
       if (event.target.className === "component-display grid-bg") {
         if (!(this.activeComponent === "")) this.setActiveComponent("");
       }
+    },
+    // OVERVUE 6.0: if user right clicks on component, ability to export specific component
+    handleExportComponent() {
+
+
     },
 
     // event handler for copying (ctrl+C)

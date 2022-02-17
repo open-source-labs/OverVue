@@ -113,6 +113,13 @@ Description:
       />
 
       <br />
+            <q-btn
+        id="deleteButton"
+        @click=""
+        label="Export currently selected"
+      />
+
+        <br />
       <q-list
         class="accordBorder"
         active-color="secondary"
