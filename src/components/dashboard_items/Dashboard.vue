@@ -48,7 +48,7 @@ Description:
 import { mapState, mapActions } from "vuex";
 import Tree from "./Tree.vue";
 import ComponentDetails from "./ComponentDetails.vue";
-import RouteDisplay from "../home_sidebar_items/RouteDisplay.vue";
+import RouteDisplay from "./RouteDisplay.vue";
 
 export default {
   components: {

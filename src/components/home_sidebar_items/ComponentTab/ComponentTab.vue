@@ -12,7 +12,7 @@ Functionality includes: if active component is selected, will switch view to edi
 import CreateComponent from './CreateComponent.vue'
 import EditDeleteComponents from './EditDeleteComponents.vue'
 import { mapState } from 'vuex'
-import UploadImage from '../UploadImage.vue'
+import UploadImage from './UploadImage.vue'
 export default {
   data () {
     return {

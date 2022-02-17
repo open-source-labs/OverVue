@@ -45,8 +45,8 @@ Description:
 </template>
 
 <script>
-import Icons from "../Icons";
-import ParentMultiselect from "../ParentMultiselect.vue";
+import Icons from "./Icons.vue";
+import ParentMultiselect from "./ParentMultiselect.vue";
 import { mapState, mapActions } from "vuex";
 export default {
   name: "HomeSidebar",
