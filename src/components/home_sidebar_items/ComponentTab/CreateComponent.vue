@@ -45,7 +45,7 @@ Description:
 </template>
 
 <script>
-import Icons from "../Icons";
+import Icons from "./Icons";
 import ParentMultiselect from "../ParentMultiselect.vue";
 import { mapState, mapActions } from "vuex";
 export default {

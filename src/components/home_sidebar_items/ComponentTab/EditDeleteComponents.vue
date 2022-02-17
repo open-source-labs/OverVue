@@ -142,7 +142,7 @@ Description:
 import { mapState, mapActions } from "vuex";
 import VueMultiselect from "vue-multiselect";
 import HTMLQueue from "../../dashboard_items/HTMLQueue.vue";
-import Icons from "../Icons.vue";
+import Icons from "./Icons.vue";
 import AddProps from "./AddProps.vue";
 import ComponentState from "./ComponentState.vue";
 import ComponentActions from "./ComponentActions.vue";
