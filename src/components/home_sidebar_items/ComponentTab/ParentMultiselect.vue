@@ -19,8 +19,9 @@ Description:
       :option-height="20"
       :searchable="true"
     >
+     <template v-slot:noResult>No components found.</template>
+      <!-- <slot name="noResult">Hello world</slot> -->
       <!-- refactor slot syntax here -->
-      <span slot="noResult">No components found.</span>
     </VueMultiselect>
   </div>
 </template>

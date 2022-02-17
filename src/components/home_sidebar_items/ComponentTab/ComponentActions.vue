@@ -22,7 +22,6 @@
         :searchable="false"
         @search-change="stopDelete($event)"
       >
-        <span slot="noResult">No actions found.</span>
       </VueMultiselect>
       <br />
       <q-btn
