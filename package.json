@@ -1,6 +1,6 @@
 {
   "name": "overvue",
-  "version": "5.0.0",
+  "version": "6.0.0",
   "description": "Vue Prototype DevTool",
   "productName": "OverVue",
   "cordovaId": "org.cordova.quasar.app",
@@ -24,8 +24,7 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.12.5",
-    "@vue/compiler-sfc": "^3.1.0",
-    "core-js": "^3.6.5",
+    "core-js": "^3.21.1",
     "dotenv": "^16.0.0",
     "electron-deeplink": "^1.0.9",
     "fs-extra": "^10.0.0",
