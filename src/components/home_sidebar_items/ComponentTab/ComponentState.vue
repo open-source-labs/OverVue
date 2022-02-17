@@ -22,7 +22,7 @@
         :searchable="false"
         @search-change="stopDelete($event)"
       >
-        <span slot="noResult">No state found.</span>
+      
       </VueMultiselect>
       <br />
       <q-btn

@@ -39,7 +39,7 @@
     "quasar": "^2.5.5",
     "quasar-dotenv": "^1.0.5",
     "vue-draggable-resizable": "^2.3.0",
-    "vue-multiselect": "^3.0.0-alpha.1",
+    "vue-multiselect": "^3.0.0-alpha.2",
     "vue-prism-editor": "^2.0.0-alpha.2",
     "vue3-tree": "^0.11.0",
     "vued3tree": "^5.1.0",
