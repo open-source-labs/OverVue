@@ -44,13 +44,13 @@
     "vue-prism-editor": "^2.0.0-alpha.2",
     "vue3-tree": "^0.10.0",
     "vued3tree": "^5.1.0",
-    "vuex": "^4.0.1"
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.13.14",
     "@quasar/app": "^3.0.0",
     "@quasar/quasar-app-extension-testing-unit-jest": "^3.0.0-alpha.7",
-    "@vue/devtools": "^6.0.0-beta.21",
+    "@vue/devtools": "^6.0.12",
     "@vue/test-utils": "^2.0.0-rc.18",
     "@vue/vue3-jest": "^27.0.0-alpha.4",
     "electron": "^16.0.4",
