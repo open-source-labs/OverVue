@@ -49,12 +49,6 @@ export default {
             this.writeStyle(componentName)
         );
     },
-    // creates assets folder
-    createAssetFile(targetLocation, assetLocation) {
-      let saved = remote.nativeImage.createFromPath(assetLocation);
-      let urlData = saved.toPNG();
-      fs.writeFileSync(targetLocation + ".png", urlData);
-    },
     writeTemplateTag(componentName) {
       // create reference object
       const htmlElementMap = {
@@ -128,19 +122,7 @@ export default {
      */
     writeTemplate(componentName, children) {
       let str = "";
-      if (componentName === "App") {
-        str += `<div id="app">\n\t\t<div id="nav">\n`;
-        children.forEach((name) => {
-          if (name === "HomeView") {
-            str += `\t\t\t<router-link to="/">${name}</router-link>\n`;
-          } else {
-            str += `\t\t\t<router-link to="/${name}">${name}</router-link>\n`;
-          }
-        });
-        str += "\t\t\t<router-view></router-view>\n\t\t</div>\n";
-      } else {
-        str += `<div>\n`;
-      }
+      str += `<div>\n`;
       // writes the HTML tag boilerplate
       let templateTagStr = this.writeTemplateTag(componentName);
       return `<template>\n\t${str}${templateTagStr}\t</div>\n</template>`;
@@ -151,250 +133,102 @@ export default {
     writeScript(componentName, children) {
       // add import mapstate and mapactions if they exist
       const currentComponent = this.componentMap[componentName];
-      const routes = Object.keys(this.routes);
-      if (!routes.includes(componentName)) {
-        let imports = "";
-        if (currentComponent.actions.length || currentComponent.state.length) {
-          imports += "import { ";
-          if (
-            currentComponent.actions.length &&
-            currentComponent.state.length
-          ) {
-            imports += "mapState, mapActions";
-          } else if (currentComponent.state.length) imports += "mapState";
-          else imports += "mapActions";
-          imports += ' } from "vuex"\n';
-        }
-        // add imports for children
-        children.forEach((name) => {
-          imports += `import ${name} from '@/components/${name}.vue';\n`;
-        });
-        // add components section
-
-        // if true add data section and populate with props
-        let childrenComponentNames = "";
-        children.forEach((name) => {
-          childrenComponentNames += `    ${name},\n`;
-        });
-        // if true add data section and populate with props
-        let data = "";
-        if (currentComponent.props.length) {
-          data += "  data () {\n    return {";
-          currentComponent.props.forEach((prop) => {
-            data += `\n      ${prop}: "PLACEHOLDER FOR VALUE",`;
-          });
-          data += "\n";
-          data += "    }\n";
-          data += "  },\n";
-        }
-        // if true add computed section and populate with state
-        let computed = "";
-        if (currentComponent.state.length) {
-          computed += "  computed: {";
-          computed += "\n    ...mapState([";
-          currentComponent.state.forEach((state) => {
-            computed += `\n      "${state}",`;
-          });
-          computed += "\n    ]),\n";
-          computed += "  },\n";
-        }
-        // if true add methods section and populate with actions
-        let methods = "";
-        if (currentComponent.actions.length) {
-          methods += "  methods: {";
-          methods += "\n    ...mapActions([";
-          currentComponent.actions.forEach((action) => {
-            methods += `\n      "${action}",`;
-          });
-          methods += "\n    ]),\n";
-          methods += "  },\n";
-        }
-        // concat all code within script tags
-        let output = "\n\n<script>\n";
-        output +=
-          imports + "\nexport default {\n  name: '" + componentName + "'";
-        output += ",\n  components: {\n";
-        output += childrenComponentNames + "  },\n";
-        output += data;
-        output += computed;
-        output += methods;
-        // eslint-disable-next-line no-useless-escape
-        output += "};\n<\/script>";
-        return output;
-      } else {
-        let str = "";
-        children.forEach((name) => {
-          str += `import ${name} from '@/components/${name}.vue';\n`;
-        });
-        let childrenComponentNames = "";
-        children.forEach((name) => {
-          childrenComponentNames += `    ${name},\n`;
-        });
-        // eslint-disable-next-line no-useless-escape
-        return `\n\n<script>\n${str}\nexport default {\n  name: '${componentName}',\n  components: {\n${childrenComponentNames}  }\n};\n<\/script>`;
+      let imports = "";
+      if (currentComponent.actions.length || currentComponent.state.length) {
+        imports += "import { ";
+        if (
+          currentComponent.actions.length &&
+          currentComponent.state.length
+        ) {
+          imports += "mapState, mapActions";
+        } else if (currentComponent.state.length) imports += "mapState";
+        else imports += "mapActions";
+        imports += ' } from "vuex"\n';
       }
+      // add imports for children
+      children.forEach((name) => {
+        imports += `import ${name} from '@/components/${name}.vue';\n`;
+      });
+      // add components section
+
+      // if true add data section and populate with props
+      let childrenComponentNames = "";
+      children.forEach((name) => {
+        childrenComponentNames += `    ${name},\n`;
+      });
+      // if true add data section and populate with props
+      let data = "";
+      if (currentComponent.props.length) {
+        data += "  data () {\n    return {";
+        currentComponent.props.forEach((prop) => {
+          data += `\n      ${prop}: "PLACEHOLDER FOR VALUE",`;
+        });
+        data += "\n";
+        data += "    }\n";
+        data += "  },\n";
+      }
+      // if true add computed section and populate with state
+      let computed = "";
+      if (currentComponent.state.length) {
+        computed += "  computed: {";
+        computed += "\n    ...mapState([";
+        currentComponent.state.forEach((state) => {
+          computed += `\n      "${state}",`;
+        });
+        computed += "\n    ]),\n";
+        computed += "  },\n";
+      }
+      // if true add methods section and populate with actions
+      let methods = "";
+      if (currentComponent.actions.length) {
+        methods += "  methods: {";
+        methods += "\n    ...mapActions([";
+        currentComponent.actions.forEach((action) => {
+          methods += `\n      "${action}",`;
+        });
+        methods += "\n    ]),\n";
+        methods += "  },\n";
+      }
+      // concat all code within script tags
+      let output = "\n\n<script>\n";
+      output +=
+        imports + "\nexport default {\n  name: '" + componentName + "'";
+      output += ",\n  components: {\n";
+      output += childrenComponentNames + "  },\n";
+      output += data;
+      output += computed;
+      output += methods;
+      // eslint-disable-next-line no-useless-escape
+      output += "};\n<\/script>";
+      return output;
     },
     /**
      * @description writes the <style> in vue component
      * if component is 'App', writes css, else returns <style scoped>
      */
     writeStyle(componentName) {
-      let style =
-        componentName !== "App"
-          ? ""
-          : `#app {\n\tfont-family: 'Avenir', Helvetica, Arial, sans-serif;\n\t-webkit-font-smoothing: antialiased;\n\t-moz-osx-font-smoothing: grayscale;\n\ttext-align: center;\n\tcolor: #2C3E50;\n\tmargin-top: 60px;\n}\n`;
-      return `\n\n<style scoped>\n${style}</style>`;
+      return `\n\n<style scoped>\n</style>`;
     },
-    // creates index html
-    createIndexFile(location) {
-      let str = `<!DOCTYPE html>\n<html lang="en">\n\n<head>`;
-      str += `\n\t<meta charset="utf-8">`;
-      str += `\n\t<meta http-equiv="X-UA-Compatible" content="IE=edge">`;
-      str += `\n\t<meta name="viewport" content="width=device-width,initial-scale=1.0">`;
-      str += `\n\t<link rel="icon" href="<%= BASE_URL %>favicon.ico">`;
-      str += `\n\t<title>New Vue Project</title>`;
-      str += `\n</head>\n\n`;
-      str += `<body>`;
-      str += `\n\t<noscript>`;
-      str += `\n\t\t<strong>We're sorry but vue-boiler-plate-routes doesn't work properly without JavaScript enabled. Please enable it
-      to continue.</strong>`;
-      str += `\n\t</noscript>`;
-      str += `\n\t<div id="app"></div>`;
-      str += `\n\t<!-- built files will be auto injected -->`;
-      str += `\n</body>\n\n`;
-      str += `</html>\n`;
-      fs.writeFileSync(path.join(location, "public", "index.html"), str);
-    },
-    // creates main.js boilerplate
-    createMainFile(location) {
-      let str = `import { createApp } from 'vue'`;
-      str += `\nimport App from './App.vue'`;
-      str += `\nimport router from './router'`;
-      // str += `\n\n import './index.css'`
-      str += `\n\n const app = createApp(App)`;
-      // str += `\n\trouter,
-      str += `\napp.use(router);`;
-      str += `\n app.mount('#app');`;
-      fs.writeFileSync(path.join(location, "src", "main.js"), str);
-    },
-    // create babel file
-    createBabel(location) {
-      let str = `module.exports = {`;
-      str += `\n\tpresets: [`;
-      str += `\n\t\t'@vue/app'`;
-      str += `\n\t]`;
-      str += `\n}`;
-      fs.writeFileSync(path.join(location, "babel.config.js"), str);
-    },
-    // create package.json file
-    createPackage(location) {
-      let str = `{`;
-      str += `\n\t"name": "vue-boiler-plate-routes",`;
-      str += `\n\t"version": "0.1.0",`;
-      str += `\n\t"private": true,`;
-      str += `\n\t"scripts": {`;
-      str += `\n\t\t"start": "vue-cli-service serve",`;
-      str += `\n\t\t"build": "vue-cli-service build",`;
-      str += `\n\t\t"lint": "vue-cli-service lint"`;
-      str += `\n\t},`;
-      str += `\n\t"dependencies": {`;
-      str += `\n\t\t"vue": "^3.2.26",`;
-      str += `\n\t\t"vue-router": "^4.0.12",`;
-      str += `\n\t\t"vuex": "^4.0.2"`;
-      str += `\n\t},`;
-      str += `\n\t"devDependencies": {`;
-      str += `\n\t\t"@vue/cli-plugin-babel": "~4.5.0",`;
-      str += `\n\t\t"@vue/cli-plugin-eslint": "~4.5.0",`;
-      str += `\n\t\t"@vue/cli-service": "~4.5.0",`;
-      str += `\n\t\t"babel-eslint": "^10.0.1",`;
-      str += `\n\t\t"eslint": "^6.7.2",`;
-      str += `\n\t\t"eslint-plugin-vue": "^7.0.0-0",`;
-      str += `\n\t\t"@vue/compiler-sfc": "^3.0.0-0"`;
-      str += `\n\t},`;
-      str += `\n\t"eslintConfig": {`;
-      str += `\n\t\t"root": true,`;
-      str += `\n\t\t"env": {`;
-      str += `\n\t\t\t"node": true`;
-      str += `\n\t\t},`;
-      str += `\n\t\t"extends": [`;
-      str += `\n\t\t\t"plugin:vue/essential",`;
-      str += `\n\t\t\t"eslint:recommended"`;
-      str += `\n\t\t],`;
-      str += `\n\t\t"rules": {},`;
-      str += `\n\t\t"parserOptions": {`;
-      str += `\n\t\t\t"parser": "babel-eslint"`;
-      str += `\n\t\t}`;
-      str += `\n\t},`;
-      str += `\n\t"postcss": {`;
-      str += `\n\t\t"plugins": {`;
-      str += `\n\t\t\t"autoprefixer": {}`;
-      str += `\n\t\t}`;
-      str += `\n\t},`;
-      str += `\n\t"browserslist": [`;
-      str += `\n\t\t"> 1%",`;
-      str += `\n\t\t"last 2 versions",`;
-      str += `\n\t\t"not ie <= 8"`;
-      str += `\n\t]`;
-      str += `\n}`;
-      fs.writeFileSync(path.join(location, "package.json"), str);
-    },
+    
     exportFile(data) {
       if (data === undefined) return;
       if (!fs.existsSync(data)) {
         fs.mkdirSync(data);
         // console.log(`data: ${data}`); // displays the directory path
-        fs.mkdirSync(path.join(data, "public"));
-        fs.mkdirSync(path.join(data, "src"));
-        fs.mkdirSync(path.join(data, "src", "assets"));
-        fs.mkdirSync(path.join(data, "src", "components"));
-        fs.mkdirSync(path.join(data, "src", "views"));
-      }
-      // creating basic boilerplate for vue app
-      this.createIndexFile(data);
-      this.createMainFile(data);
-      this.createBabel(data);
-      this.createPackage(data);
-      // exports images to the /assets folder
-      // eslint-disable-next-line no-unused-vars
-      for (let [routeImage, imageLocation] of Object.entries(this.imagePath)) {
-        if (imageLocation !== "") {
-          this.createAssetFile(
-            path.join(data, "src", "assets", routeImage),
-            imageLocation
-          );
-        }
       }
       // main logic below for creating components
-      this.createRouter(data);
       // eslint-disable-next-line no-unused-vars
+      // TO DO: need to update logic to only look at the component being exported and its children
       for (let componentName in this.componentMap) {
-        // if componentName is a route:
-        if (componentName !== "App") {
-          if (this.$store.state.routes[componentName]) {
-            this.createComponentCode(
-              path.join(data, "src", "views", componentName),
-              componentName,
-              this.componentMap[componentName].children
-            );
-            // if componentName is a just a component
-          } else {
-            this.createComponentCode(
-              path.join(data, "src", "components", componentName),
-              componentName,
-              this.componentMap[componentName].children
-            );
-          }
-          // if componentName is App
-        } else {
-          this.createComponentCode(
-            path.join(data, "src", componentName),
-            componentName,
-            this.componentMap[componentName].children
-          );
-        }
+        this.createComponentCode(
+          path.join(data, "src", "components", componentName),
+          componentName,
+          this.componentMap[componentName].children
+        );
       }
     },
   },
+  // TO DO: edit as needed based on updated logic
   computed: {
     ...mapState(["componentMap", "imagePath", "routes"]),
   },
