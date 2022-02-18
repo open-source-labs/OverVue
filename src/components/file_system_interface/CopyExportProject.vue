@@ -22,7 +22,7 @@ import { mapState } from "vuex";
 const { fs, ipcRenderer } = window;
 
 export default {
-  name: "ExportProjectComponent",
+  name: "ExportComponent",
   methods: {
     showExportDialog() {
       ipcRenderer
