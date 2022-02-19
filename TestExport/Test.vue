@@ -1,13 +1,16 @@
 <template>
 	<div>
+    <div></div>
 	</div>
 </template>
 
 <script>
+import ButtonTest from '@/components/ButtonTest.vue';
 
 export default {
-  name: 'Test2',
+  name: 'Test',
   components: {
+    ButtonTest,
   },
 };
 </script>

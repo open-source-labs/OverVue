@@ -5,12 +5,12 @@
 </template>
 
 <script>
-import TestChild from '@/components/TestChild.vue';
+import ButtonTest from '@/components/ButtonTest.vue';
 
 export default {
   name: 'Test',
   components: {
-    TestChild,
+    ButtonTest,
   },
 };
 </script>
