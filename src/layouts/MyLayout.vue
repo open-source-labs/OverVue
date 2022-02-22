@@ -17,6 +17,10 @@ Description:
           ></i>
         </q-btn>
         <q-toolbar-title> OverVue </q-toolbar-title>
+        <label for="typescript" style="margin-right: 10px;"> 
+          <input type="checkbox" name="typescript" id="typescript" />
+          Use Typescript
+        </label>
         <SlackLoginWindow />
         <div></div>
         <i
