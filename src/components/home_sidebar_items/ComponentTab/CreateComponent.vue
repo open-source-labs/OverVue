@@ -41,6 +41,14 @@ Description:
       @click="createComponent"
       :disabled="!componentNameInputValue.trim()"
     />
+
+    <q-btn
+      v-if="activeComponent === ''"
+      id="import-component-btn"
+      color="secondary"
+      label="Import Component"
+      @click="click"
+    />
   </div>
 </template>
 
@@ -81,6 +89,9 @@ export default {
       "addNestedNoActive",
       "editComponentName",
     ]),
+    click() {
+      console.log("click");
+    },
     createComponent() {
       if (!this.componentNameInputValue.replace(/[^a-z0-9-_.]/gi, "")) {
         event.preventDefault();
@@ -123,6 +134,11 @@ export default {
 #add-component-btn {
   height: 15px;
   margin: 0.75rem;
+  width: 90%;
+}
+#import-component-btn {
+  height: 15px;
+  margin: 0 0.75rem;
   width: 90%;
 }
 .inner-div {

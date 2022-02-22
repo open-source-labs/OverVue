@@ -69,6 +69,12 @@ ipcMain.handle("clearImage", async (event, arg) => {
   return result;
 })
 
+// Handle dialogs for exporting a component
+ipcMain.handle("exportComponent", async (event, arg) => {
+  const result = await dialog.showSaveDialog(arg);
+  return result;
+});
+
 
 // ************** Slack OAuth functions **********************
 // Sends request to Slack for User's information,

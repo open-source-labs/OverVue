@@ -113,6 +113,13 @@ Description:
       />
 
       <br />
+            <q-btn
+        id="deleteButton"
+        @click="handleExportComponent"
+        label="Export currently selected"
+      />
+
+        <br />
       <q-list
         class="accordBorder"
         active-color="secondary"
@@ -146,7 +153,9 @@ import Icons from "./Icons.vue";
 import AddProps from "./AddProps.vue";
 import ComponentState from "./ComponentState.vue";
 import ComponentActions from "./ComponentActions.vue";
+import handleExportComponentMixin from "../../ExportComponentMixin.vue";
 const cloneDeep = require("lodash.clonedeep");
+const { fs, ipcRenderer } = window;
 
 export default {
   data() {
@@ -305,6 +314,7 @@ export default {
       this.setActiveComponent(this.activeComponent);
     },
   },
+  mixins: [handleExportComponentMixin],
   watch: {
     // watches for changes in selected component, changes edit name text to newly selected component
     activeComponentObj: function () {
