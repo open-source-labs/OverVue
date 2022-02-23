@@ -41,27 +41,23 @@ Description:
       @click="createComponent"
       :disabled="!componentNameInputValue.trim()"
     />
+    <ImportComponent v-if="activeComponent === ''" />
 
-    <q-btn
-      v-if="activeComponent === ''"
-      id="import-component-btn"
-      color="secondary"
-      label="Import Component"
-      @click="click"
-    />
   </div>
 </template>
 
 <script>
 import Icons from "./Icons.vue";
 import ParentMultiselect from "./ParentMultiselect.vue";
+import ImportComponent from "./ImportComponent.vue"
 import { mapState, mapActions } from "vuex";
 export default {
   name: "HomeSidebar",
   components: {
     Icons,
     ParentMultiselect,
-  },
+    ImportComponent
+},
   computed: {
     ...mapState([
       "componentMap",
@@ -88,10 +84,9 @@ export default {
       "addNestedHTML",
       "addNestedNoActive",
       "editComponentName",
+      "openProject",
     ]),
-    click() {
-      console.log("click");
-    },
+
     createComponent() {
       if (!this.componentNameInputValue.replace(/[^a-z0-9-_.]/gi, "")) {
         event.preventDefault();
@@ -116,6 +111,7 @@ export default {
         parent: {},
         isActive: false,
       };
+      console.log(component.htmlList)
       if (!this.componentMap[component.componentName]) {
         this.registerComponent(component);
         this.setActiveComponent(component.componentName);

@@ -167,6 +167,7 @@ export default {
     activeComponentData() {
       // Must deep clone this so we are not directly mutating state
       // return this.activeComponentObj;
+      console.log(this.activeComponentObj)
       return cloneDeep(this.activeComponentObj);
     },
     options() {

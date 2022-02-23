@@ -273,6 +273,12 @@ const actions = {
     commit(types.SET_ROUTES, payload.routes);
   },
 
+  [types.importComponent]: ({ commit }, payload) => {
+    //import component
+    console.log('inside import component action')
+    console.log(payload)
+  },
+
   // Add project
   [types.addProject]: ({ commit }, payload) => {
     commit(types.ADD_PROJECT, payload);
