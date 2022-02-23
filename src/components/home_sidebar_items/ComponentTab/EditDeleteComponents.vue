@@ -186,6 +186,7 @@ export default {
       "activeComponent",
       "activeComponentObj",
       "componentMap",
+      "exportAsTypescript",
     ]),
 
     activeRouteDisplay() {

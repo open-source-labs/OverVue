@@ -161,7 +161,14 @@ export default {
         methods += "  },\n";
       }
       // concat all code within script tags
-      let output = "\n\n<script>\n";
+      // if exportAsTypescript is on, out should be <script lang="ts">
+      console.log("export as typescript:", this.exportAsTypescript);
+      let output;
+      if (this.exportAsTypescript === 'on') {
+        output = "\n\n<script lang='ts'>\n";
+      } else {
+        output = "\n\n<script>\n";
+      }
       output += imports + "\nexport default {\n  name: '" + componentName + "'";
       output += ",\n  components: {\n";
       output += childrenComponentNames + "  },\n";
@@ -170,6 +177,7 @@ export default {
       output += methods;
       // eslint-disable-next-line no-useless-escape
       output += "};\n<\/script>";
+      console.log('output', output);
       return output;
     },
     /**

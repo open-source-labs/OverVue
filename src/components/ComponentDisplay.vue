@@ -158,6 +158,7 @@ export default {
       "componentChildrenMultiselectValue",
       "imagePath",
       "activeComponentObj",
+      "exportAsTypescript",
     ]),
     // used in VueDraggableResizeable component
     activeRouteArray() {
