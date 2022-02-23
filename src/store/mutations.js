@@ -89,6 +89,11 @@ const mutations = {
 
   // *** VUEX *** //////////////////////////////////////////////
 
+
+  [types.EXPORT_AS_TYPESCRIPT]: (state, payload) => {
+    state.exportAsTypescript = payload; 
+  },
+
   [types.CREATE_ACTION]: (state, payload) => {
     state.userActions.push(payload);
     state.userActions.sort();

@@ -18,7 +18,7 @@ Description:
         </q-btn>
         <q-toolbar-title> OverVue </q-toolbar-title>
         <label for="typescript" style="margin-right: 10px;"> 
-          <input type="checkbox" name="typescript" id="typescript" />
+          <input type="checkbox" name="typescript" id="typescript" :value="exportAsTypescript" @change="syncTypescriptFlag" />
           Use Typescript
         </label>
         <SlackLoginWindow />
@@ -117,6 +117,7 @@ import OpenProjectComponent from "../components/file_system_interface/OpenProjec
 import SlackLoginWindow from "../components/slack_login/SlackLoginWindow.vue";
 import ComponentTab from "../components/home_sidebar_items/ComponentTab/ComponentTab.vue";
 import StoreTab from "../components/home_sidebar_items/StoreTab/StoreTab.vue";
+import { mapState } from "vuex";
 
 export default {
   // Passed down from App.vue
@@ -137,6 +138,11 @@ export default {
     ComponentTab,
     StoreTab,
   },
+  computed: {
+    ...mapState([
+      "exportAsTypescript"
+    ]),
+  },
   methods: {
     undo() {
       // this.$router.app.$children[0].undo();
@@ -145,6 +151,15 @@ export default {
     },
     redo() {
       this.$emit("redo");
+    },
+    syncTypescriptFlag(e) {
+      let checkboxValue;
+      if (e.target.value === "off") {
+        checkboxValue = "on"
+      } else {
+        checkboxValue = "off"
+      }
+      this.$store.commit('EXPORT_AS_TYPESCRIPT', checkboxValue);
     },
   },
 };
