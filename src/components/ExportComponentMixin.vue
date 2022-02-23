@@ -116,6 +116,10 @@ export default {
         else imports += "mapActions";
         imports += ' } from "vuex"\n';
       }
+    // if Typescript toggle is on, import defineComponent
+      if (this.exportAsTypescript === "on") {
+        imports += 'import { defineComponent } from "vue"\n';
+      }
       // add imports for children
       children.forEach((name) => {
         imports += `import ${name} from '@/components/${name}.vue';\n`;
@@ -162,21 +166,27 @@ export default {
       }
       // concat all code within script tags
       // if exportAsTypescript is on, out should be <script lang="ts">
-      console.log("export as typescript:", this.exportAsTypescript);
       let output;
       if (this.exportAsTypescript === 'on') {
         output = "\n\n<script lang='ts'>\n";
+        output += imports + "\nexport default defineComponent ({\n  name: '" + componentName + "'";
       } else {
         output = "\n\n<script>\n";
+        output += imports + "\nexport default {\n  name: '" + componentName + "'";
       }
-      output += imports + "\nexport default {\n  name: '" + componentName + "'";
       output += ",\n  components: {\n";
       output += childrenComponentNames + "  },\n";
       output += data;
       output += computed;
       output += methods;
       // eslint-disable-next-line no-useless-escape
-      output += "};\n<\/script>";
+      if (this.exportAsTypescript === 'on') {
+        output += "});\n<\/script>";
+
+      } else {
+        output += "};\n<\/script>";
+      }
+      
       console.log('output', output);
       return output;
     },
