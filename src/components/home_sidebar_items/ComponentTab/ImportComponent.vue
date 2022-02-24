@@ -49,6 +49,7 @@ export default {
     //parses script tag string for actions
     parsingStringToAction (str){
       let action = [];
+      if (str.indexOf('...mapActions') === -1){return action};
       let trashedSlice = str.slice(str.lastIndexOf('...mapActions')+15);
       let slice = trashedSlice.slice(0, trashedSlice.indexOf('])'));
       let split = slice.split(' ')
@@ -58,12 +59,13 @@ export default {
           action.push(cleanStr)
         }
       }
-      return action
+      return action;
     },
 
     //parses script tag string for state
     parsingStringToState (str){
       let state = [];
+      if (str.indexOf('...mapState') === -1){return state};
       let trashedSlice = str.slice(str.lastIndexOf('...mapState')+15);
       let slice = trashedSlice.slice(0, trashedSlice.indexOf('])'));
       let split = slice.split(' ')  
