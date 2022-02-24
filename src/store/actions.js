@@ -85,6 +85,10 @@ const actions = {
   },
   // paste the active component copy
   [types.pasteActiveComponent]: ({ commit, state }) => {
+    //if nothing is copied, don't commit anything
+    if (!state.copiedComponent.componentName){
+      return
+    }
     commit(types.PASTE_ACTIVE_COMPONENT);
     // if no other parents, update as parent of active route in componentMap
     if (!Object.keys(state.pastedComponent.parent).length) {
