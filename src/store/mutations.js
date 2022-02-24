@@ -279,9 +279,9 @@ const mutations = {
     if (state.copiedComponent) {
       const { copiedComponent } = state;
       // offset duplicate's coordinates
-      copiedComponent.x += 20;
-      copiedComponent.y += 20;
       const pastedComponent = { ...copiedComponent };
+      pastedComponent.x = 20;
+      pastedComponent.y = 20;
       state.componentMap[
         (pastedComponent.componentName += ` (${state.copyNumber})`)
       ] = pastedComponent;
@@ -569,10 +569,16 @@ const mutations = {
   },
 
   [types.SET_ACTIVE_COMPONENT]: (state, payload) => {
+    if (payload === ''){
+      state.activeComponent = '';
+      state.activeComponentObj = {componentName: ''};
+
+    } else {
     state.activeComponent = payload;
     state.activeComponentObj = state.routes[state.activeRoute].filter(
       (comp) => comp.componentName === state.activeComponent
-    )[0];
+      )[0];
+    }
     state.activeHTML = "";
     state.activeLayer = {
       id: "",

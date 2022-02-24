@@ -19,7 +19,7 @@ Description:
       class="my-editor"
       readonly
     />
-  </div>
+    </div>
 </template>
 
 <script>
@@ -304,6 +304,7 @@ export default {
   font-size: 12px;
   background: #2d2d2d;
   color: #ccc;
+  max-height: 70vh;
   /* you must provide font-family font-size line-height. Example: */
   font-family: Fira code, Fira Mono, Consolas, Menlo, Courier, monospace;
   line-height: 1.5;
@@ -319,8 +320,3 @@ export default {
 }
 </style>
 
-<style lang="scss" scoped>
-::-webkit-scrollbar {
-  display: none;
-}
-</style>
