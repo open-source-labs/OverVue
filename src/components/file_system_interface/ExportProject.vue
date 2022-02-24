@@ -63,9 +63,9 @@ export default {
      * @argument: this.componentMap['App'].children
      */
     createRouterImports(appChildren) {
-      let str = "import { createRouter, createWebHistory } from 'vue-router'\n";
+      let str = "import { createRouter, createWebHistory } from 'vue-router';\n";
       appChildren.forEach((child) => {
-        str += `import ${child} from './views/${child}.vue'\n`;
+        str += `import ${child} from './views/${child}.vue';\n`;
       });
       return str;
     },
@@ -73,8 +73,12 @@ export default {
      * @description creates the `export default` code in <script>
      */
     createExport(appChildren) {
-      let str =
-        "export default createRouter({\n\thistory: createWebHistory(),\n\tbase: process.env.BASE_URL,\n\troutes: [\n";
+      let str;
+      if (this.exportAsTypescript === 'on') {
+        str = "export default createRouter({\n\thistory: createWebHistory(process.env.BASE_URL),\n\troutes: [\n";
+      } else {
+        str = "export default createRouter({\n\thistory: createWebHistory(),\n\tbase: process.env.BASE_URL,\n\troutes: [\n";
+      }
       appChildren.forEach((child) => {
         if (child === "HomeView") {
           str += `\t\t{\n\t\t\tpath: '/',\n\t\t\tname:'${child}',\n\t\t\tcomponent:${child}\n\t\t},\n`;
@@ -339,11 +343,11 @@ export default {
     },
     // creates main.js boilerplate
     createMainFile(location) {
-      let str = `import { createApp } from 'vue'`;
-      str += `\nimport App from './App.vue'`;
-      str += `\nimport router from './router'`;
+      let str = `import { createApp } from 'vue';`;
+      str += `\nimport App from './App.vue';`;
+      str += `\nimport router from './router';`;
       // str += `\n\n import './index.css'`
-      str += `\n\n const app = createApp(App)`;
+      str += `\n\n const app = createApp(App);`;
       // str += `\n\trouter,
       str += `\napp.use(router);`;
       str += `\n app.mount('#app');`;
@@ -370,14 +374,7 @@ export default {
     },
     createTSConfig(location) {
       if (this.exportAsTypescript === "on") {
-        let str = `{\n\t"extends": "@vue/tsconfig/tsconfig.web.json",
-        "include": ["src/**/*", "src/**/*.vue"],
-        "compilerOptions": {
-          "baseUrl": ".",
-          "paths": {
-            "@/*": ["./src/*"]
-          }
-        },\n}`;
+        let str = `{\n\t"extends": "@vue/tsconfig/tsconfig.web.json",\n\t"include": ["src/**/*", "src/**/*.vue"],\n\t"compilerOptions": {\n\t\t"baseUrl": ".",\n\t\t"paths": {\n\t\t\t"@/*": ["./src/*"]\n\t\t}\n\t}\n}`;
         fs.writeFileSync(path.join(location, "tsconfig.json"), str);
       } else {
         return;
@@ -406,9 +403,9 @@ export default {
       str += `\n\t\t"babel-eslint": "^10.0.1",`;
       str += `\n\t\t"eslint": "^6.7.2",`;
       str += `\n\t\t"eslint-plugin-vue": "^7.0.0-0",`;
-      str += `\n\t\t"@vue/compiler-sfc": "^3.0.0-0",`;
+      str += `\n\t\t"@vue/compiler-sfc": "^3.0.0-0"`;
       if (this.exportAsTypescript === "on") {
-        str += `\n\t\t"@vue/tsconfig": "^0.1.3",`;
+        str += `,\n\t\t"@vue/tsconfig": "^0.1.3",`;
         str += `\n\t\t"typescript": "~4.5.5",`;
         str += `\n\t\t"vue-tsc": "^0.31.4",`;
         str += `\n\t\t"@babel/preset-typescript": "^7.16.7"`; // not sure we need this?
