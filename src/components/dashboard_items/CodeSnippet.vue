@@ -45,7 +45,7 @@ export default {
   },
   computed: {
     // needs access to current component aka activeComponent
-    ...mapState(["componentMap", "activeComponent", "activeComponentObj"]),
+    ...mapState(["componentMap", "activeComponent", "activeComponentObj", "exportAsTypescript"]),
     code: function () {
       let computedCode = "Your component boilerplate will be displayed here.";
       if (this.activeComponent) {
@@ -172,7 +172,12 @@ export default {
           imports += "mapState, mapActions";
         } else if (this.activeComponentObj.state.length) imports += "mapState";
         else imports += "mapActions";
-        imports += ' } from "vuex"\n';
+        imports += ' } from "vuex";\n';
+      }
+
+       // if Typescript toggle is on, import defineComponent
+      if (this.exportAsTypescript === "on") {
+        imports += 'import { defineComponent } from "vue";\n';
       }
 
       // add imports for children
@@ -223,15 +228,28 @@ export default {
       }
 
       // concat all code within script tags
-      let output = "\n\n<script>\n";
-      output += imports + "\nexport default {\n  name: " + componentName;
+      // if exportAsTypescript is on, out should be <script lang="ts">
+      let output;
+      if (this.exportAsTypescript === 'on') {
+        output = "\n\n<script lang='ts'>\n";
+        output += imports + "\nexport default defineComponent ({\n  name: '" + componentName + "';";
+      } else {
+        output = "\n\n<script>\n";
+        output += imports + "\nexport default {\n  name: '" + componentName + "';";
+      }
       output += ",\n  components: {\n";
       output += childrenComponentNames + "  },\n";
       output += data;
       output += computed;
       output += methods;
+
+      if (this.exportAsTypescript === 'on') {
+        output += "});\n<\/script>\n\n<style scoped>\n</style>"
+
+      } else {
+        output += "};\n<\/script>\n\n<style scoped>\n</style>"
+      }
       // eslint-disable-next-line no-useless-escape
-      output += "};\n<\/script>\n\n<style scoped>\n</style>";
       // add props/data
 
       // eslint-disable-next-line no-useless-escape

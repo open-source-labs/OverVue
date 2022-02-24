@@ -186,6 +186,7 @@ export default {
       "activeComponent",
       "activeComponentObj",
       "componentMap",
+      "exportAsTypescript",
     ]),
 
     activeRouteDisplay() {
@@ -272,6 +273,11 @@ export default {
         // this.setActiveComponent(componentData.componentName)
         this.deleteActiveComponent(componentData.componentName);
       }
+    },
+
+    // Delete prop
+    deleteProp(prop) {
+      this.$store.dispatch('deletePropsFromComponent', prop);
     },
 
     // changes layer of active component

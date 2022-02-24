@@ -1,6 +1,7 @@
 import icons from './icons'
 import htmlElementMap from './htmlElementMap'
 
+
 const cloneDeep = require('lodash.clonedeep')
 
 const newState = {
@@ -54,7 +55,9 @@ const newState = {
   // for storing copied component
   copiedComponent: {},
   copyNumber: 0,
-  pastedComponent: {}
+  pastedComponent: {},
+
+  exportAsTypescript: 'off',
 }
 
 // closured method to ensure we only ever write the default state ONCE

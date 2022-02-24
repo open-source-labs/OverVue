@@ -89,6 +89,11 @@ const mutations = {
 
   // *** VUEX *** //////////////////////////////////////////////
 
+
+  [types.EXPORT_AS_TYPESCRIPT]: (state, payload) => {
+    state.exportAsTypescript = payload; 
+  },
+
   [types.CREATE_ACTION]: (state, payload) => {
     state.userActions.push(payload);
     state.userActions.sort();
@@ -99,7 +104,7 @@ const mutations = {
   },
 
   [types.ADD_ACTION_TO_COMPONENT]: (state, payload) => {
-    const active = state.activeComponentObj;
+    const active = state.componentMap[state.activeComponent];
 
     if (!active.actions) {
       active.actions = payload;
@@ -133,7 +138,7 @@ const mutations = {
   },
 
   [types.ADD_PROPS_TO_COMPONENT]: (state, payload) => {
-    const active = state.activeComponentObj;
+    const active = state.componentMap[state.activeComponent];
 
     if (!active.props) {
       active.props = payload;
@@ -164,7 +169,8 @@ const mutations = {
   },
 
   [types.ADD_STATE_TO_COMPONENT]: (state, payload) => {
-    const active = state.activeComponentObj;
+    // const active = state.activeComponentObj;
+    const active = state.componentMap[state.activeComponent];
 
     if (!state.activeComponentObj.state) {
       state.activeComponentObj.state = payload;
@@ -187,7 +193,7 @@ const mutations = {
   },
 
   [types.DELETE_ACTION_FROM_COMPONENT]: (state, payload) => {
-    const temp = state.activeComponentObj;
+    const temp = state.componentMap[state.activeComponent];
     const newArray = [];
     temp.actions.forEach((element) => {
       if (element !== payload) newArray.push(element);
@@ -198,7 +204,7 @@ const mutations = {
   },
 
   [types.DELETE_PROPS_FROM_COMPONENT]: (state, payload) => {
-    const temp = state.activeComponentObj;
+    const temp = state.componentMap[state.activeComponent];
     const newArray = [];
     temp.props.forEach((element) => {
       if (element !== payload) newArray.push(element);
@@ -209,7 +215,7 @@ const mutations = {
   },
 
   [types.DELETE_STATE_FROM_COMPONENT]: (state, payload) => {
-    const temp = state.activeComponentObj;
+    const temp = state.componentMap[state.activeComponent];
     const newArray = [];
     temp.state.forEach((element) => {
       if (element !== payload) newArray.push(element);
