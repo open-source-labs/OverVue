@@ -41,7 +41,7 @@ Description:
       @click="createComponent"
       :disabled="!componentNameInputValue.trim()"
     />
-    <ImportComponent v-if="activeComponent === ''" />
+    <ImportComponent v-if="activeComponent === ''" @imported="createComponent"/>
 
   </div>
 </template>
@@ -64,6 +64,8 @@ export default {
       "selectedElementList",
       "activeComponent",
       "activeHTML",
+      "userActions",
+      "userState",
     ]),
     componentNameInputValue: {
       get() {
@@ -85,13 +87,32 @@ export default {
       "addNestedNoActive",
       "editComponentName",
       "openProject",
+      "createAction",
+      "createState",
     ]),
 
-    createComponent() {
-      if (!this.componentNameInputValue.replace(/[^a-z0-9-_.]/gi, "")) {
+    createComponent(importObj) {
+      let imported = false;
+      if (importObj.hasOwnProperty('componentName')){
+        imported = true;
+        //Check if state and actions on import exist in the store. If not, add them.
+        for (let i = 0; i < importObj.actions.length; i++){
+          if (!this.userActions.includes(importObj.actions[i])){
+            this.createAction(importObj.actions[i])
+          }
+        }
+        for (let i = 0; i < importObj.state.length; i++){
+          if (!this.userState.includes(importObj.state[i])){
+            this.createState(importObj.state[i])
+          }
+        }
+      }
+
+      if (!this.componentNameInputValue.replace(/[^a-z0-9-_.]/gi, "") && imported === false) {
         event.preventDefault();
         return false;
       }
+
       // boilerplate properties for each component upon creation
       const component = {
         componentName: this.componentNameInputValue.replace(
@@ -111,13 +132,20 @@ export default {
         parent: {},
         isActive: false,
       };
-      console.log(component.htmlList)
+
+      if (imported === true){
+        component.componentName = importObj.componentName;
+        component.htmlList = importObj.htmlList;
+        component.actions = importObj.actions;
+        component.state = importObj.state;
+        component.props = importObj.props;
+      }
+      
       if (!this.componentMap[component.componentName]) {
         this.registerComponent(component);
         this.setActiveComponent(component.componentName);
       }
 
-      console.log(this.$store.state);
     },
   },
 };
