@@ -41,33 +41,31 @@ Description:
       @click="createComponent"
       :disabled="!componentNameInputValue.trim()"
     />
+    <ImportComponent v-if="activeComponent === ''" @imported="createComponent"/>
 
-    <q-btn
-      v-if="activeComponent === ''"
-      id="import-component-btn"
-      color="secondary"
-      label="Import Component"
-      @click="click"
-    />
   </div>
 </template>
 
 <script>
 import Icons from "./Icons.vue";
 import ParentMultiselect from "./ParentMultiselect.vue";
+import ImportComponent from "./ImportComponent.vue"
 import { mapState, mapActions } from "vuex";
 export default {
   name: "HomeSidebar",
   components: {
     Icons,
     ParentMultiselect,
-  },
+    ImportComponent
+},
   computed: {
     ...mapState([
       "componentMap",
       "selectedElementList",
       "activeComponent",
       "activeHTML",
+      "userActions",
+      "userState",
     ]),
     componentNameInputValue: {
       get() {
@@ -88,15 +86,33 @@ export default {
       "addNestedHTML",
       "addNestedNoActive",
       "editComponentName",
+      "openProject",
+      "createAction",
+      "createState",
     ]),
-    click() {
-      console.log("click");
-    },
-    createComponent() {
-      if (!this.componentNameInputValue.replace(/[^a-z0-9-_.]/gi, "")) {
+
+    createComponent(importObj) {
+      let imported = false;
+      if (importObj.hasOwnProperty('componentName')){
+        imported = true;
+        //Check if state and actions on import exist in the store. If not, add them.
+        for (let i = 0; i < importObj.actions.length; i++){
+          if (!this.userActions.includes(importObj.actions[i])){
+            this.createAction(importObj.actions[i])
+          }
+        }
+        for (let i = 0; i < importObj.state.length; i++){
+          if (!this.userState.includes(importObj.state[i])){
+            this.createState(importObj.state[i])
+          }
+        }
+      }
+
+      if (!this.componentNameInputValue.replace(/[^a-z0-9-_.]/gi, "") && imported === false) {
         event.preventDefault();
         return false;
       }
+
       // boilerplate properties for each component upon creation
       const component = {
         componentName: this.componentNameInputValue.replace(
@@ -116,12 +132,20 @@ export default {
         parent: {},
         isActive: false,
       };
+
+      if (imported === true){
+        component.componentName = importObj.componentName;
+        component.htmlList = importObj.htmlList;
+        component.actions = importObj.actions;
+        component.state = importObj.state;
+        component.props = importObj.props;
+      }
+      
       if (!this.componentMap[component.componentName]) {
         this.registerComponent(component);
         this.setActiveComponent(component.componentName);
       }
 
-      console.log(this.$store.state);
     },
   },
 };
