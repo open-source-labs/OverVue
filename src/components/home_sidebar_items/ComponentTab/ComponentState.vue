@@ -98,7 +98,7 @@ export default {
     ]),
     // Prevent Delete on changes to searchable multiselet
     stopDelete(e) {
-      if (e.code === "Backspce") e.stopPropogation();
+      if (e.code === "Backspace") e.stopPropogation();
     },
     // adds a state to the currently selected component
     addStateToComp() {

@@ -118,7 +118,7 @@ export default {
       }
     // if Typescript toggle is on, import defineComponent
       if (this.exportAsTypescript === "on") {
-        imports += 'import { defineComponent } from "vue"\n';
+        imports += 'import { defineComponent } from "vue";\n';
       }
       // add imports for children
       children.forEach((name) => {
@@ -186,8 +186,6 @@ export default {
       } else {
         output += "};\n<\/script>";
       }
-      
-      console.log('output', output);
       return output;
     },
     /**

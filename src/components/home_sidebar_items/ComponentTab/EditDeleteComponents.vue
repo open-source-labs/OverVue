@@ -275,6 +275,11 @@ export default {
       }
     },
 
+    // Delete prop
+    deleteProp(prop) {
+      this.$store.dispatch('deletePropsFromComponent', prop);
+    },
+
     // changes layer of active component
     handleLayer(e) {
       e.preventDefault();
