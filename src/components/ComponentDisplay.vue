@@ -221,7 +221,7 @@ export default {
           element.enabled = false;
           element.$emit("deactivated");
           element.$emit("update:active", false);
-        });
+        }); 
       }
     } else {
       // if a component is set to active, highlight it
@@ -328,17 +328,25 @@ export default {
       }
       if (this.$refs.boxes) {
         this.$refs.boxes.forEach((element) => {
-          if (element.$attrs.id !== componentData?.componentName) {
+          if (element.$attrs.id !== componentData.componentName) {
             element.enabled = false;
             element.$emit("deactivated");
             element.$emit("update:active", false);
+          }
+          if (
+          this.activeComponent === element.$attrs.id &&
+          element.enabled === false
+          ) {
+          element.enabled = true;
+          element.$emit("activated");
+          element.$emit("update:active", true);
           }
         });
       }
       if (!(componentData.componentName === this.activeComponent)) {
         this.setActiveComponent(componentData.componentName);
       }
-      if (componentData){
+      if (componentData && componentData.hasOwnProperty('componentName')){
         this.activeComponentData.isActive = true;
       }
     },
@@ -378,8 +386,11 @@ export default {
     copyActiveComponent() {},
   },
   watch: {
-    activeComponent: function () {
+    activeComponent: {
+    handler(){
       this.onActivated(this.activeComponentObj);
+    },
+    deep: true,
     },
   },
 };

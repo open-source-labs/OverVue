@@ -9,11 +9,12 @@ Description:
   <q-card id="dashboard-cards" class="bord">
     <q-tabs
       v-model="tab"
-      dense
       class="bg-subaccent text-white"
       active-color="secondary"
       indicator-color="secondary"
       align="left"
+      dense
+      breakpoint="1050"
     >
       <q-tab
         name="detail"

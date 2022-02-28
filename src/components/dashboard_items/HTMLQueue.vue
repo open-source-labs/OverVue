@@ -6,15 +6,15 @@ Description:
 
 <template>
   <section class="html-queue">
-    <i v-if='this.activeLayer.id !== ""' class="fas fa fa-chevron-up fa-md" @click="setParentLayer"></i>
+    <i v-if='!this.activeLayer.id' class="fas fa fa-chevron-up fa-md" @click="setParentLayer"></i>
     <span class='list-title' v-if='this.activeLayer.id !== ""'> Viewing Elements in '{{ depth }}' </span>
-    <span class='list-title' v-else-if='this.activeComponent !==""'> </span>
+    <span class='list-title' v-else-if='!this.activeComponent'></span>
     <hr>
     <div
       group="people"
       class="list-group"
     >
-      <p v-if='!this.componentMap[this.activeComponent].htmlList.length'>No HTML elements in component</p>
+      <p v-if='!this.componentMap[this.activeComponent]?.htmlList.length'>No HTML elements in component</p>
       <div
       :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'"
       @dblclick.self="setActiveElement(element)"

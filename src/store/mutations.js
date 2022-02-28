@@ -569,10 +569,17 @@ const mutations = {
   },
 
   [types.SET_ACTIVE_COMPONENT]: (state, payload) => {
+    if (!payload){
+      payload = '';
+    }
     if (payload === ''){
       state.activeComponent = '';
-      state.activeComponentObj = {componentName: ''};
-
+      state.activeComponentObj = {componentName: '', isActive: false};
+      state.activeHTML = "";
+      state.activeLayer = {
+        id: "",
+        lineage: [],
+      };
     } else {
     state.activeComponent = payload;
     state.activeComponentObj = state.routes[state.activeRoute].filter(
