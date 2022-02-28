@@ -32,8 +32,8 @@ Description:
           <HTMLQueue />
         </q-tab-panel>
         <q-tab-panel name="state">
-          <p v-if="!this.activeComponentObj.state.length">
-            No state in component
+          <p v-if="!this?.activeComponentObj?.state?.length">
+            No state in component.
           </p>
           <ul id="stateList">
             <li v-for="comp in compObj.state" :key="comp">
@@ -42,21 +42,21 @@ Description:
           </ul>
         </q-tab-panel>
         <q-tab-panel name="actions">
-          <p v-if="!this.activeComponentObj.actions.length">
+          <p v-if="!this?.activeComponentObj?.actions?.length">
             No actions in component
           </p>
           <ul id="actionList">
-            <li v-for="comp in compObj.actions" :key="comp">
+            <li v-for="comp in compObj?.actions" :key="comp">
               {{ comp }}
             </li>
           </ul>
         </q-tab-panel>
         <q-tab-panel name="props">
-          <p v-if="!this.activeComponentObj.props.length">
+          <p v-if="!this?.activeComponentObj?.props?.length">
             No props in component
           </p>
           <ul id="propsList">
-            <li v-for="comp in compObj.props" :key="comp">
+            <li v-for="comp in compObj?.props" :key="comp">
               {{ comp }}
             </li>
           </ul>
@@ -79,7 +79,7 @@ export default {
     CodeSnippet
   },
   computed: {
-    ...mapState(["activeComponentObj"]),
+    ...mapState(["activeComponentObj","activeComponent"]),
     compObj: {
       get() {
         return this.activeComponentObj;

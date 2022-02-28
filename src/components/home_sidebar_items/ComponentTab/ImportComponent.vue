@@ -84,7 +84,7 @@ export default {
 
       const importObj = {}; //final output
       const htmlList = []; //array populated with substrings '<div>' '</div>' '<p>' etc.
-      let compName = data[0].slice(data[0].lastIndexOf('/')+1).replace(/[^a-z0-9-_.]/gi, '');
+      let compName = data[0].slice(data[0].lastIndexOf('/')+1).replace(/[^a-z0-9-_.]/gi, '').replace(/.vue/, '');
       const vueFile = fs.readFileSync(data[0], "utf8");
 
       for (const key in this.$store.state.componentMap){

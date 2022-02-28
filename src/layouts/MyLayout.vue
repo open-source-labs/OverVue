@@ -5,8 +5,10 @@ Description:
   -->
 
 <template>
+
   <!-- original layout: <q-layout view="hHh LpR lFf"> -->
   <q-layout view="hHh lpr fFf">
+    <div v-if="!this.right" class="resizeDragTwo" @mousedown="hideRight"><div class="dragLineTwo"></div></div>
     <!-- the top header of OverVue -->
     <q-header elevated class="gradient text-white">
       <q-toolbar>
@@ -48,7 +50,7 @@ Description:
         <ExportProjectComponent />
         <!-- </div> -->
         <!-- this button will open the right drawer -->
-        <q-btn dense flat color="subaccent" round @click="right = !right">
+        <q-btn dense flat color="subaccent" round @click="hideRight">
           <!-- fas => fontawesome, refers to icon style -->
           <i
             :class="[right ? 'fas fa-chevron-right' : 'fas fa-list-ul']"
@@ -57,7 +59,7 @@ Description:
         </q-btn>
       </q-toolbar>
     </q-header>
-
+    
     <q-drawer v-model="left" side="left" behavior="desktop" bordered>
       <!-- QTabs setup, not sure what class to set yet -->
       <q-tabs
@@ -86,17 +88,20 @@ Description:
         </q-tab-panel>
       </q-tab-panels>
     </q-drawer>
-
+    
     <!-- rendering dashboard as right sidebar instead of as a footer -->
+    
     <q-drawer
       right-side
       show-if-above
       v-model="right"
       side="right"
       behavior="desktop"
-      :width="400"
+      :width="this.dashWidth"
       bordered
     >
+    <div class="resizeDrag" v-touch-pan.horizontal.prevent.mouse.preserveCursor="handlePan" ref="resizeBox" @click="hideRight"><div class="dragLine"></div></div>
+    <div class="displayCanClose" ref="displayClose"></div>
       <q-list class="q-list-drawer">
         <Dashboard />
       </q-list>
@@ -127,6 +132,10 @@ export default {
       tab: "component",
       left: true,
       right: true,
+      dashWidth: 400,
+      originalWidth: 400,
+      originalLeft: 400,
+      timer: null,
     };
   },
   components: {
@@ -144,9 +153,45 @@ export default {
     ]),
   },
   methods: {
+    hideRight(){
+      this.right = !this.right;
+      if (this.$refs.resizeBox.style.display === 'none'){
+        this.$refs.resizeBox.style.display = 'block';
+      } else {
+        this.$refs.resizeBox.style.display = 'none';
+      }
+    },
+    //adapted from <https://github.com/quasarframework/quasar/issues/7099#issuecomment-907759400>
+    handlePan ({ evt, ...newInfo }) {
+      if (this.right){
+        if (newInfo.isFirst) {
+          this.originalWidth = this.dashWidth;
+          this.originalLeft = newInfo.position.left
+        } else {
+          const newDelta = newInfo.position.left - this.originalLeft;
+          const newWidth = Math.min(950, this.originalWidth - newDelta);
+            this.dashWidth = Math.max(400, newWidth);
+            this.$refs.displayClose.style.display = 'none';
+          if (newWidth > screen.width*0.07 && newWidth < 400){
+            clearTimeout(this.timer)
+            if (newWidth < screen.width*0.13){
+              this.$refs.displayClose.style.display = 'block'
+            }
+            this.dashWidth = 400 - (200-newWidth/2)
+          } else { 
+            this.timer = setTimeout(()=>{this.$refs.displayClose.style.display = 'none'}, 750)
+          }
+          if (newWidth < screen.width*0.07){
+            this.right = !this.right;
+            this.dashWidth = 400;
+            this.$refs.resizeBox.style.display = 'none';
+          }
+        }
+          this.timer = setTimeout(()=>{this.$refs.displayClose.style.display = 'none'}, 750)
+      }
+    },
+    
     undo() {
-      // this.$router.app.$children[0].undo();
-      // Emit custom event, listen in App.vue to trigger undo or redo
       this.$emit("undo");
     },
     redo() {
@@ -177,6 +222,54 @@ q-btn > i {
 .fa-backward,
 .fa-forward {
   padding: 0 5px;
+}
+
+.resizeDrag {
+  position: absolute;
+  left: -5px;
+  top: 50vh;
+  width: 20px;
+  height: 40px;
+  background-color: #202122;
+  border-radius: 4px;
+  z-index: 10;
+  cursor: col-resize;
+}
+
+.resizeDragTwo{
+  position: absolute;
+  left: calc(100vw - 10px);
+  top: calc(50vh + 33.59px);
+  width: 10px;
+  height: 40px;
+  background-color: #202122;
+  border-radius: 4px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  z-index: 10;
+  cursor: col-resize;
+}
+
+.dragLine, .dragLineTwo {
+  position: absolute;
+  left: 4px;
+  top: 5px;
+  height: 30px;
+  width: 3px;
+  border-left: 1px solid grey;
+  border-right: 1px solid grey;
+}
+
+.displayCanClose{
+  position: absolute;
+  left: 60%;
+  display: none;
+  top: 0px;
+  height: 100%;
+  width: 40%;
+  z-index: 10;
+  background-color: rgba(255, 255, 255, 0.301);
+
 }
 
 .fa-backward:hover,

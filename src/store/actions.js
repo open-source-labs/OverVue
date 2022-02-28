@@ -137,7 +137,10 @@ const actions = {
     commit(types.IMPORT_IMAGE, payload);
   },
 
-  [types.setActiveRoute]: ({ commit }, payload) => {
+  [types.setActiveRoute]: ({ state, commit }, payload) => {
+    if (state.routes[payload].length === 0){
+      commit(types.SET_ACTIVE_COMPONENT, '');
+    }
     commit(types.SET_ACTIVE_ROUTE, payload);
   },
 
@@ -279,7 +282,6 @@ const actions = {
 
   [types.importComponent]: ({ commit }, payload) => {
     //import component
-    console.log('inside import component action')
     console.log(payload)
   },
 
