@@ -137,8 +137,6 @@
   </ul>
 </details>
 
-
-
 [↥Back to top](#table-of-contents)
 
 ## How to use
@@ -248,7 +246,7 @@ export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/nu
 export LIBGL_ALWAYS_INDIRECT=1
 ```
 
-followed by the command for the devtools or devmode. If you want both open, enter commands above followed by starting the devtools:
+followed by the command for the s or devmode. If you want both open, enter commands above followed by starting the devtools:
 
 ```
 ./node_modules/.bin/vue-devtools
@@ -293,7 +291,7 @@ SLACK_REDIRECT_URI = "overvuedev://test"
 ### Contributing
 
 We'd love for you to test this application out and submit any issues you encounter. Also feel free to fork to your own repo and submit PRs.
-Here are some features we're thinking about adding: 
+Here are some features we're thinking about adding:
 
 - Option to export files in TypeScript
 - Ability to place child components into HTML elements

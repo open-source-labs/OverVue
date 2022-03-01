@@ -13,7 +13,7 @@ Description:
   <q-btn
     class="export-btn"
     color="secondary"
-    label="Export Project"
+    label="Export"
     @click="exportProject"
   />
 </template>
@@ -401,8 +401,8 @@ export default {
       str += `\n\t\t"@vue/cli-plugin-eslint": "~4.5.0",`;
       str += `\n\t\t"@vue/cli-service": "~4.5.0",`;
       str += `\n\t\t"babel-eslint": "^10.0.1",`;
-      str += `\n\t\t"eslint": "^6.7.2",`;
-      str += `\n\t\t"eslint-plugin-vue": "^7.0.0-0",`;
+      str += `\n\t\t"eslint": "^8.9.0",`;
+      str += `\n\t\t"eslint-plugin-vue": "^8.4.1",`;
       str += `\n\t\t"@vue/compiler-sfc": "^3.0.0-0"`;
       if (this.exportAsTypescript === "on") {
         str += `,\n\t\t"@vue/tsconfig": "^0.1.3",`;

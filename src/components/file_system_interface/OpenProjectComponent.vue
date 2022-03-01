@@ -8,7 +8,7 @@ Description:
   <q-btn
     class="export-btn"
     color="secondary"
-    label="Open Project"
+    label="Import"
     @click="openProjectJSON"
   />
 </template>

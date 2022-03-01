@@ -176,7 +176,7 @@ export default {
       }
 
        // if Typescript toggle is on, import defineComponent
-      if (this.exportAsTypescript === "on") {
+      if (this.exportAsTypescript === 'on') {
         imports += 'import { defineComponent } from "vue";\n';
       }
 

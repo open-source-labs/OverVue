@@ -1,7 +1,7 @@
 <!--<template v-if="show">-->
 <template>
   <div>
-    <div>
+    <!-- <div>
       <q-btn class="glossy bg-black openModalBtn" size="5px" @click="openLogin">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -26,7 +26,7 @@
           ></path>
         </svg>
       </q-btn>
-    </div>
+    </div> -->
 
     <!--
       Slack Login Button:
