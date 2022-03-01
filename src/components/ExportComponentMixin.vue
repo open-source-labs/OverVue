@@ -167,7 +167,7 @@ export default {
       // concat all code within script tags
       // if exportAsTypescript is on, out should be <script lang="ts">
       let output;
-      if (this.exportAsTypescript === 'on') {
+      if (this.exportAsTypescript === "on") {
         output = "\n\n<script lang='ts'>\n";
         output += imports + "\nexport default defineComponent ({\n  name: '" + componentName + "'";
       } else {
@@ -180,7 +180,7 @@ export default {
       output += computed;
       output += methods;
       // eslint-disable-next-line no-useless-escape
-      if (this.exportAsTypescript === 'on') {
+      if (this.exportAsTypescript === "on") {
         output += "});\n<\/script>";
 
       } else {

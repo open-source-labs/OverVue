@@ -52,7 +52,7 @@ Description:
         ></i>
         <i v-else class="fa fa-forward" id="unavailable" aria-hidden="true"></i> -->
         <!-- <q-btn-dropdown dense flat color="subaccent" round > -->
-        <q-btn dropdown-icon="none" icon="fas fa-cog">
+        <q-btn icon="fas fa-cog" size="sm">
           <!-- < fas => fontawesome, refers to icon style -->
           <q-menu>
             
@@ -64,7 +64,6 @@ Description:
               no-caps
             />
            
-              
             <q-btn
               class="menu-btn"
               color="secondary"
@@ -94,7 +93,7 @@ Description:
               </svg>
               Connect to Slack
             </q-btn>
-            <q-toggle v-model="exportAsTypescript" label="Use TypeScript" />
+            <q-toggle v-model="exportAsTypescript" color="primary" label="Use TypeScript"/>
           </div>
           <i id="btn"></i>
           </q-menu>
@@ -258,7 +257,7 @@ export default {
         checkboxValue = "off";
       }
       this.$store.commit("EXPORT_AS_TYPESCRIPT", checkboxValue);
-    },
+    }
   },
 };
 </script>
@@ -410,6 +409,6 @@ q-btn > i {
   box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
 }
 .settings-dropdown {
- background-image: linear-gradient(to right, red , yellow);
+background-image: rgba(223, 218, 218, 0.886)
 }
 </style>

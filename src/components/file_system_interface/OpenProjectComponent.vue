@@ -5,12 +5,15 @@ Description:
   -->
 
 <template>
-  <q-btn
-    class="export-btn"
-    color="secondary"
-    label="Import"
-    @click="openProjectJSON"
-  />
+    <q-btn class="export-btn" color="secondary" label="Import">
+    <q-menu>
+      <div class="settings-dropdown column items-center"> 
+      <q-btn class="menu-btn" no-caps color="secondary" label="Import Project" @click="openProjectJSON"/> 
+      <q-btn class="menu-btn" no-caps color="secondary" label="Import Component" @click="exportProject"/> 
+      </div>
+    </q-menu>
+  
+  </q-btn>
 </template>
 
 <script>

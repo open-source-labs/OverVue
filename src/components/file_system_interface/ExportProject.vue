@@ -10,19 +10,26 @@ Description:
   -->
 
 <template>
-  <q-btn
-    class="export-btn"
-    color="secondary"
-    label="Export"
-    @click="exportProject"
-  />
+  <q-btn class="export-btn" color="secondary" label="Export">
+    <q-menu>
+      <div class="settings-dropdown column items-center"> 
+      <q-btn class="menu-btn" no-caps color="secondary" label="Export Project" @click="exportProject"/> 
+      <!-- Export active component is incorrectly exporting the entire project. Need to also disable this button when no active component is selected
+  -->
+      <q-btn class="menu-btn" no-caps color="secondary" label="Export Active Component" @click="handleExportComponent"/> 
+      </div>
+    </q-menu>
+  
+  </q-btn>
 </template>
 <script>
 import { mapState } from "vuex";
+import handleExportComponentMixin from "../ExportComponentMixin.vue";
 const { fs, ipcRenderer } = window;
 
 export default {
   name: "ExportProjectComponent",
+  mixins: [handleExportComponentMixin],
   methods: {
     showExportDialog() {
       ipcRenderer
@@ -74,7 +81,7 @@ export default {
      */
     createExport(appChildren) {
       let str;
-      if (this.exportAsTypescript === 'on') {
+      if (this.exportAsTypescript === "on") {
         str = "export default createRouter({\n\thistory: createWebHistory(process.env.BASE_URL),\n\troutes: [\n";
       } else {
         str = "export default createRouter({\n\thistory: createWebHistory(),\n\tbase: process.env.BASE_URL,\n\troutes: [\n";
@@ -275,7 +282,7 @@ export default {
         }
         // concat all code within script tags
         let output;
-        if (this.exportAsTypescript === 'on') {
+        if (this.exportAsTypescript === "on") {
           output = "\n\n<script lang='ts'>\n";
           output += imports + "\nexport default defineComponent ({\n  name: '" + componentName + "'";
         } else {
@@ -288,7 +295,7 @@ export default {
         output += computed;
         output += methods;
         // eslint-disable-next-line no-useless-escape
-        if (this.exportAsTypescript === 'on') {
+        if (this.exportAsTypescript === "on") {
           output += "});\n<\/script>";
         } else {
           output += "};\n<\/script>";
@@ -509,4 +516,6 @@ export default {
   text-transform: capitalize;
   padding: 3px 8px;
 }
+
+
 </style>
