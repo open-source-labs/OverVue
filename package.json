@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.12.5",
+    "@ssthouse/vue3-tree-chart": "^0.2.3",
     "core-js": "^3.21.1",
     "dotenv": "^16.0.0",
     "electron-deeplink": "^1.0.9",
