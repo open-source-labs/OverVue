@@ -40,7 +40,7 @@ Description:
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState } from "vuex";
 import VueTree from "@ssthouse/vue3-tree-chart";
 import "@ssthouse/vue3-tree-chart/dist/vue3-tree-chart.css";
 
@@ -152,6 +152,7 @@ export default {
   watch: {
     componentMap: {
       handler(){
+        console.log(this.componentMap)
         this.treeData = this.buildTree(this.componentMap);
       },
       deep: true,

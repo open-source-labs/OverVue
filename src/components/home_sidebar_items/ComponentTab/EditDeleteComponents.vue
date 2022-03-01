@@ -32,18 +32,28 @@ Description:
       </q-input>
       <!-- for the icon list -->
       <VueMultiselect
-        v-model="testModel"
+        v-model="childrenSelected"
         placeholder="Add/Remove Children"
-        multiple
-        :close-on-select="true"
-        :options="childOptions"
+        :multiple="true"
+        :close-on-select="false"
+        :options="options"
+        :show-labels="false"
+        @remove="handleAddChild"
         @select="handleAddChild"
-        @remove="handleDeleteChild"
-        :max-height="90"
+        :max-height="300"
         :option-height="20"
         :searchable="false"
       />
-
+      <!-- <div>
+        <q-btn
+          v-if="childrenSelected.length"
+          id="add-props-btn"
+          class="add-btn"
+          color="secondary"
+          label="Update Children"
+          @click="handleAddChild(childrenSelected)"
+        />
+      </div> -->
       <q-list
         class="accordBorder"
         active-color="secondary"
@@ -160,19 +170,12 @@ const { fs, ipcRenderer } = window;
 export default {
   data() {
     return {
-      // tab: 'details',
       value: "",
-      testModel: [],
       newName: "",
-      // showState: false,
-      // showActions: false,
-      // showProps: false,
-      // showHTML: false
     };
   },
   components: {
     VueMultiselect,
-    // ToggleButton,
     HTMLQueue,
     Icons,
     AddProps,
@@ -188,7 +191,10 @@ export default {
       "componentMap",
       "exportAsTypescript",
     ]),
-
+    childrenSelected(){
+      return this.componentMap[this.activeComponent].children
+    },
+    
     activeRouteDisplay() {
       let component = this.routes[this.activeRoute];
       return component;
@@ -200,40 +206,33 @@ export default {
 
     // returns options for component multiselect
     options() {
+      const compMap = this.componentMap;
+      const activeComp = this.activeComponent;
       const val = this.activeRouteDisplay.map(
         (component) => component.componentName
       );
-      return val;
+      const relatives = [...val]
+        //also need to filter out any parents
+
+      let parentalLineage = [];
+      findLineage(relatives)
+      function findLineage(children){
+        children.forEach((el)=>{
+          parentalLineage.push(el);
+          if (compMap[el].children.length > 0){
+            findLineage(compMap[el].children);
+          }
+          if (el !== activeComp){
+            parentalLineage.pop();
+          } else {
+            return;
+          }
+        })
+      }
+      const optionOutput = val.filter(el => !parentalLineage.includes(el)).filter(el => el !== this.activeComponent); 
+      return optionOutput;
     },
 
-    childOptions() {
-      // checks if component has any parents and pushes them into lineage
-      const checkParents = (component, lineage = [component.componentName]) => {
-        if (!Object.keys(component.parent).length) return lineage;
-        for (var parents in component.parent) {
-          lineage.push(parents);
-          checkParents(component.parent[parents], lineage);
-        }
-        return lineage;
-      };
-      let lineage = [this.activeComponent];
-      // checks to see if there are any existing children
-      if (this.componentMap[this.activeComponent]) {
-        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.testModel = this.componentMap[this.activeComponent].children;
-        lineage = checkParents(this.componentMap[this.activeComponent]);
-      }
-      const routes = Object.keys(this.routes);
-      const exceptions = new Set([
-        "App",
-        ...lineage,
-        ...routes,
-        ...this.testModel,
-      ]);
-      return Object.keys(this.componentMap).filter((component) => {
-        if (!exceptions.has(component)) return component;
-      });
-    },
   },
 
   methods: {
@@ -250,14 +249,9 @@ export default {
       "addNestedNoActive",
     ]),
 
-    handleAddChild(value) {
-      const valueArray = [value];
-      this.updateActiveComponentChildrenValue(valueArray);
-      // this.updateActiveComponentChildrenValue(value);
+    handleAddChild(value) { //actually handles adding or deleting
+      this.updateActiveComponentChildrenValue(value);
     },
-
-    // Handle deleting a child
-    handleDeleteChild(value) {},
 
     // Set component as active component from left side dropdown
     onActivated(componentData) {

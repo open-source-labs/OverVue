@@ -66,6 +66,7 @@ export default {
       "activeHTML",
       "userActions",
       "userState",
+      "userProps",
     ]),
     componentNameInputValue: {
       get() {
@@ -89,6 +90,7 @@ export default {
       "openProject",
       "createAction",
       "createState",
+      "createProp",
     ]),
 
     createComponent(importObj) {
@@ -104,6 +106,11 @@ export default {
         for (let i = 0; i < importObj.state.length; i++){
           if (!this.userState.includes(importObj.state[i])){
             this.createState(importObj.state[i])
+          }
+        }
+        for (let i = 0; i < importObj.props.length; i++){
+          if (!this.userProps.includes(importObj.props[i])){
+            this.createProp(importObj.props[i])
           }
         }
       }

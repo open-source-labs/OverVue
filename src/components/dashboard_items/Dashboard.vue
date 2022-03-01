@@ -6,7 +6,8 @@ Description:
   -->
 
 <template>
-  <q-card id="dashboard-cards" class="bord">
+<span v-if="showTutorial === false">
+  <q-card id="dashboard-cards" class="bord" >
     <q-tabs
       v-model="tab"
       class="bg-subaccent text-white"
@@ -23,10 +24,10 @@ Description:
         style="border-right: 3px solid black"
         ><i class="fas fa-code"></i
       ></q-tab>
-      <q-tab name="tree" label="Project Tree" id="label-text"
+      <q-tab name="tree" label="Project Tree" id="label-text" style="border-right: 3px solid black"
         ><i class="fas fa-code-branch fa-flip-vertical"
       /></q-tab>
-      <q-tab name="routes" label="Routes" id="label-text"
+      <q-tab name="routes" label="Routes" id="label-text" style="border-right: 3px solid black"
         ><i class="fas fa-project-diagram"></i
       ></q-tab>
     </q-tabs>
@@ -43,6 +44,10 @@ Description:
       </q-tab-panel>
     </q-tab-panels>
   </q-card>
+</span>
+<span v-else>
+  <GetStarted />
+</span>
 </template>
 
 <script>
@@ -50,12 +55,14 @@ import { mapState, mapActions } from "vuex";
 import Tree from "./Tree.vue";
 import ComponentDetails from "./ComponentDetails.vue";
 import RouteDisplay from "./RouteDisplay.vue";
+import GetStarted from "./GetStarted.vue";
 
 export default {
   components: {
     Tree,
     ComponentDetails,
     RouteDisplay,
+    GetStarted,
   },
   computed: {
     ...mapState([
@@ -63,6 +70,7 @@ export default {
       "componentNameInputValue",
       "selectedElementList",
       "activeHTML",
+      "showTutorial",
     ]),
   },
   data() {

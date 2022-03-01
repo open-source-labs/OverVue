@@ -55,6 +55,10 @@ const actions = {
     }
   },
 
+  [types.toggleTutorial]: ({ commit }) => {
+    commit(types.TOGGLE_TUTORIAL)
+  },
+  
   [types.setActiveComponent]: ({ commit }, payload) => {
     commit(types.SET_ACTIVE_COMPONENT, payload);
   },
