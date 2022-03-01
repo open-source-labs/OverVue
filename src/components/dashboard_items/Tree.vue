@@ -166,57 +166,6 @@ export default {
     }
   }
 }
-
-// export default {
-//   methods: {
-//     // Called by transformToTree, formats componentMap
-//     formatComponentMap(compMap) {
-//       let result = [];
-//       // Id to apply to each component, in accordance with Vue3Tree syntax
-//       let id = 1;
-//       const values = Object.values(compMap);
-//       values.forEach((compData) => {
-//         result.push({
-//           id: id++,
-//           label: compData.componentName, // previously was labeled 'name'
-//           nodes: compData.children, // previously was labeled 'children'
-//         });
-//       });
-//       return result;
-//     },
-//     // Called by buildTree, transforms componentMap
-//     // we need to change this to clean the data and transform it to something usable by vue3tree
-//     transformToTree(data) {
-//       let result = {};
-//       const temp = {};
-//       const formattedData = this.formatComponentMap(data);
-//       formattedData.forEach((component) => {
-//         if (!temp[component.label]) {
-//           temp[component.label] = { label: component.label, nodes: [] };
-//           result = temp;
-//         }
-//         component.nodes.forEach((child) => {
-//           if (!temp[child]) temp[child] = { label: child, nodes: [] };
-//           temp[component.label].nodes.push(temp[child]);
-//         });
-//       });
-//       return result;
-//     },
-//     // Called by computedTree, calls transformToTree
-//     buildTree() {
-//       let build = this.transformToTree(this.componentMap);
-//       return build["App"];
-//     },
-//   },
-//   watch: {
-//     componentMap: {
-//       deep: true,
-//       handler() {
-//         this.buildTree();
-//       },
-//     },
-//   },
-// };
 </script>
 
 <style lang="scss" scoped>

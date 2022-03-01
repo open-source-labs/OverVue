@@ -44,16 +44,7 @@ Description:
         :option-height="20"
         :searchable="false"
       />
-      <!-- <div>
-        <q-btn
-          v-if="childrenSelected.length"
-          id="add-props-btn"
-          class="add-btn"
-          color="secondary"
-          label="Update Children"
-          @click="handleAddChild(childrenSelected)"
-        />
-      </div> -->
+
       <q-list
         class="accordBorder"
         active-color="secondary"
@@ -172,6 +163,7 @@ export default {
     return {
       value: "",
       newName: "",
+      childrenSelected: [],
     };
   },
   components: {
@@ -191,9 +183,6 @@ export default {
       "componentMap",
       "exportAsTypescript",
     ]),
-    childrenSelected(){
-      return this.componentMap[this.activeComponent].children
-    },
     
     activeRouteDisplay() {
       let component = this.routes[this.activeRoute];
@@ -320,6 +309,11 @@ export default {
     activeComponentObj: function () {
       if (this.activeComponentObj)
         this.newName = this.activeComponentObj.componentName;
+        if (this.activeComponent !== ''){
+          this.childrenSelected = this.componentMap[this.activeComponent].children;
+        } else {
+          this.childrenSelected = [];
+        }
     },
   },
 };
