@@ -278,7 +278,6 @@ const actions = {
   // Loading ///////////////////////////////////////////////////////
 
   [types.openProject]: ({ commit, state }, payload) => {
-    // open project imagePath, componentPath, routePath
     payload.userProps.forEach((prop)=>{commit(types.CREATE_PROP, prop)})
     payload.userActions.forEach((action)=>{commit(types.CREATE_ACTION, action)})
     payload.userState.forEach((state)=>{commit(types.CREATE_STATE, state)})
