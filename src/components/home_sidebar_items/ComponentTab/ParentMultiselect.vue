@@ -6,7 +6,6 @@ Description:
 
 <template>
   <div id="parent-select">
-    <br />
     <VueMultiselect
       v-model="value"
       placeholder="Parent Component"
@@ -15,7 +14,7 @@ Description:
       :options="options"
       @select="selectParent"
       @open="resetActiveComponent"
-      :max-height="90"
+      :max-height="150"
       :option-height="20"
       :searchable="true"
     >
@@ -76,10 +75,31 @@ export default {
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>
-<style scoped>
-#parent-select {
-  height: 30px;
-  margin: 0.75rem;
-  width: 90%;
+<style scoped lang="scss">
+  :global(.multiselect__tags) {
+    background-color: $subprimary;
+    border: 1px solid rgb(180, 180, 180);
+  }
+  :global(.multiselect__input) {
+    background-color: $subprimary;
+    color: white;
+  }
+  :global(.multiselect__content) {
+    background-color: $subprimary;
+    color: white;
+  }
+  :global(.multiselect__option) {
+    color: white;
+  }
+  :global(.multiselect__single) {
+    background-color: $subsecondary;
+    color: white;
+  }
+  :global(.multiselect__single:focus) {
+    background-color: $subsecondary;
+    color: white;
+  }
+  :global(.multiselect__input::placeholder) {
+  color: white;
 }
 </style>

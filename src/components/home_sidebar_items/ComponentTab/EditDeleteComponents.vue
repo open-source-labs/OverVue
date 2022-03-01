@@ -385,7 +385,7 @@ p {
 }
 
 #deleteButton {
-  background-color: #289ead;
+  background-color: $secondary;
   color: white;
 }
 

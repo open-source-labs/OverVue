@@ -2,7 +2,6 @@
 Functionality includes: if active component is selected, will switch view to editing mode. If not, it will be in create mode -->
 <template>
   <q-card id="store-cards">
-    <UploadImage v-if="activeComponent === ''"/>
     <CreateComponent v-if="activeComponent === ''"/>
     <EditDeleteComponents v-if="activeComponent !== ''"/>
   </q-card>
@@ -35,7 +34,7 @@ export default {
 <style lang="scss">
 // give html background color of grey
 .html-bg {
-    background-color: #202122;
+    background-color: $subprimary;
 }
 #store-cards {
   height: 100%;

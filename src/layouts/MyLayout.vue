@@ -25,7 +25,7 @@ Description:
         </label>
         <SlackLoginWindow />
         <div></div>
-        <i
+        <!-- <i
           v-if="doneAction.length"
           class="fa fa-backward"
           aria-hidden="true"
@@ -43,7 +43,7 @@ Description:
           aria-hidden="true"
           @click="redo"
         ></i>
-        <i v-else class="fa fa-forward" id="unavailable" aria-hidden="true"></i>
+        <i v-else class="fa fa-forward" id="unavailable" aria-hidden="true"></i> -->
 
         <OpenProjectComponent />
         <SaveProjectComponent />
@@ -61,6 +61,31 @@ Description:
     </q-header>
     
     <q-drawer v-model="left" side="left" behavior="desktop" bordered>
+      <div id="undo-redo">
+        <q-btn>
+        <i
+          v-if="doneAction.length"
+          class="fa fa-undo"
+          aria-hidden="true"
+          @click="undo"
+        ></i>
+        <i
+          v-else
+          class="fa fa-undo"
+          id="unavailable"
+          aria-hidden="true"
+        ></i>
+        </q-btn>
+        <q-btn>
+        <i
+          v-if="undoneAction.length"
+          class="fa fa-redo"
+          aria-hidden="true"
+          @click="redo"
+        ></i>
+        <i v-else class="fa fa-redo" id="unavailable" aria-hidden="true"></i>
+        </q-btn>
+      </div>
       <!-- QTabs setup, not sure what class to set yet -->
       <q-tabs
         v-model="tab"
@@ -69,12 +94,8 @@ Description:
         active-color="secondary"
         indicator-color="secondary"
       >
-        <q-tab name="component" label="Component"
-          ><i class="fas fa-edit"></i
-        ></q-tab>
-        <q-tab name="store" label="Store"
-          ><i class="fas fa-store-alt"></i
-        ></q-tab>
+        <q-tab name="component" label="Component"></q-tab>
+        <q-tab name="store" label="Store"></q-tab>
       </q-tabs>
       <!-- individual tab panel's setup -->
       <q-tab-panels v-model="tab" animated class="html-bg text-white fit">
@@ -218,9 +239,22 @@ export default {
 q-btn > i {
   color: white;
 }
+
+#undo-redo {
+  display: flex;
+  justify-content: center;
+  align-content: stretch;
+  color: white;
+}
+
+#undo-redo > .q-btn {
+  flex-grow: 1;
+  align-items: center;
+}
+
 // Must change style lang='scss'
-.fa-backward,
-.fa-forward {
+.fa-undo,
+.fa-redo {
   padding: 0 5px;
 }
 
@@ -275,7 +309,7 @@ q-btn > i {
 .fa-backward:hover,
 .fa-forward:hover {
   cursor: pointer;
-  color: #00ffff;
+  color: $secondary;
 }
 
 #unavailable {
@@ -283,8 +317,8 @@ q-btn > i {
   cursor: default;
 }
 
-.fa-backward:active,
-.fa-forward:active {
+.fa-undo:active,
+.fa-redo:active {
   box-shadow: 0 1px inherit;
   transform: translateY(1px);
 }
@@ -308,7 +342,7 @@ q-btn > i {
 
 // css styling for the drawer items
 .drawer-menu {
-  background: $subsecondary;
+  background: $subprimary;
 }
 
 // css styling for the drawer list (not entire bg)
@@ -324,7 +358,7 @@ q-btn > i {
 
 // give html background color of grey
 .html-bg {
-  background-color: #202122;
+  background-color: $subprimary;
 }
 
 .left-panel {

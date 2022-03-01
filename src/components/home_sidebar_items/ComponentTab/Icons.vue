@@ -88,7 +88,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .icon-grid {
   display: grid;
   grid-template-columns: 33% 33% 33%;
@@ -111,11 +111,11 @@ button {
 }
 button:hover {
   cursor: pointer;
-  color: #00ffff;
+  color: $secondary;
 }
 button:focus {
   outline: none;
-  color: #00ffff;
+  color: $secondary;
 }
 button:active {
   box-shadow: 0 5px inherit;
@@ -129,7 +129,7 @@ button:active {
   font-weight: bold;
   float: right;
   border-radius: 50%;
-  background-color: #228585;
+  background-color: $secondary;
   color: white;
 }
 </style>
