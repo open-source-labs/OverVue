@@ -8,7 +8,7 @@ Description:
   <div id="parent-select">
     <VueMultiselect
       v-model="value"
-      placeholder="Parent Component"
+      placeholder="Set parent component"
       :multiple="false"
       :close-on-select="true"
       :options="options"
@@ -92,11 +92,11 @@ export default {
     color: white;
   }
   :global(.multiselect__single) {
-    background-color: $subsecondary;
+    background-color: $subprimary;
     color: white;
   }
   :global(.multiselect__single:focus) {
-    background-color: $subsecondary;
+    background-color: $subprimary;
     color: white;
   }
   :global(.multiselect__input::placeholder) {

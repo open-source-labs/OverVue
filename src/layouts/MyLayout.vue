@@ -12,13 +12,37 @@ Description:
     <!-- the top header of OverVue -->
     <q-header elevated class="gradient text-white">
       <q-toolbar>
-        <q-btn dense flat color="subaccent" round @click="left = !left">
+        <!-- <q-btn dense flat color="subaccent" round @click="left = !left">
           <i
             :class="[left ? 'fas fa-chevron-left' : 'fas fa-list-ul']"
             id="btn"
           ></i>
+        </q-btn> -->
+        <q-toolbar-title><img alt="OverVue" src="../assets/OverVue_navLogo.png" id="nav-logo"><div id="undo-redo">
+        <q-btn>
+        <i
+          v-if="doneAction.length"
+          class="fa fa-undo"
+          aria-hidden="true"
+          @click="undo"
+        ></i>
+        <i
+          v-else
+          class="fa fa-undo"
+          id="unavailable"
+          aria-hidden="true"
+        ></i>
         </q-btn>
-        <q-toolbar-title> OverVue </q-toolbar-title>
+        <q-btn>
+        <i
+          v-if="undoneAction.length"
+          class="fa fa-redo"
+          aria-hidden="true"
+          @click="redo"
+        ></i>
+        <i v-else class="fa fa-redo" id="unavailable" aria-hidden="true"></i>
+        </q-btn>
+      </div></q-toolbar-title>
         <label for="typescript" style="margin-right: 10px;"> 
           <input type="checkbox" name="typescript" id="typescript" :value="exportAsTypescript" @change="syncTypescriptFlag" />
           Use Typescript
@@ -61,31 +85,7 @@ Description:
     </q-header>
     
     <q-drawer v-model="left" side="left" behavior="desktop" bordered>
-      <div id="undo-redo">
-        <q-btn>
-        <i
-          v-if="doneAction.length"
-          class="fa fa-undo"
-          aria-hidden="true"
-          @click="undo"
-        ></i>
-        <i
-          v-else
-          class="fa fa-undo"
-          id="unavailable"
-          aria-hidden="true"
-        ></i>
-        </q-btn>
-        <q-btn>
-        <i
-          v-if="undoneAction.length"
-          class="fa fa-redo"
-          aria-hidden="true"
-          @click="redo"
-        ></i>
-        <i v-else class="fa fa-redo" id="unavailable" aria-hidden="true"></i>
-        </q-btn>
-      </div>
+      
       <!-- QTabs setup, not sure what class to set yet -->
       <q-tabs
         v-model="tab"
@@ -232,6 +232,20 @@ export default {
 </script>
 
 <style lang="scss">
+
+.q-toolbar {
+  height: 50px;
+}
+
+.q-toolbar__title {
+  display: flex;
+  align-items: center;
+}
+
+#nav-logo {
+  margin-right: 20px;
+}
+
 .text-white {
   color: white;
 }
@@ -250,6 +264,7 @@ q-btn > i {
 #undo-redo > .q-btn {
   flex-grow: 1;
   align-items: center;
+  margin-right: 5px;
 }
 
 // Must change style lang='scss'

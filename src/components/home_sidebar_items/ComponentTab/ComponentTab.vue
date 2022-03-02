@@ -39,11 +39,12 @@ export default {
 #store-cards {
   height: 100%;
   border-radius: 0px;
-  background-color: #202122;
+  background-color: $subprimary;
+  
 }
 .q-tab-panel {
   height: 100%;
-  // matchs the code editor bg
+  // matches the code editor bg
   background: $subprimary;
   // changes the length of the tab panels
 }
@@ -51,6 +52,7 @@ export default {
   height: 100%;
 }
 .q-tabs {
-  background: #11120F;
+  background: $subprimary;
+  padding: 20px 0;
 }
 </style>

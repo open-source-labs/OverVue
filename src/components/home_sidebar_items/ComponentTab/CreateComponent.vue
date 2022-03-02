@@ -17,7 +17,7 @@ Description:
           v-if="activeComponent === ''"
           v-on:keyup.delete.stop
           v-model="componentNameInputValue"
-          label="Component Name"
+          label="Set component name *"
           color="accent"
           dark
           dense
@@ -25,6 +25,8 @@ Description:
           item-aligned
           padding="5px"
           class="input-add"
+          reactive-rules
+          :rules="[ val => val.length != 0 || 'Please set a component name', val => !Object.keys(this.componentMap).includes(val) || 'A component with this name already exists' ]"
         ></q-input>
       </form>
 
@@ -39,7 +41,9 @@ Description:
           @activeLayer="addNestedNoActive"
         />
       </div>
-      <div class="componentHTML"></div>
+      <div class="componentHTML">
+        <CreateComponentHTMLQueue></CreateComponentHTMLQueue>
+      </div>
       <br />
 
       <q-btn
@@ -48,7 +52,7 @@ Description:
         color="secondary"
         label="Create Component"
         @click="createComponent"
-        :disabled="!componentNameInputValue.trim()"
+        :disabled="!componentNameInputValue.trim() || Object.keys(this.componentMap).includes(componentNameInputValue.trim())"
       />
     </q-expansion-item>
   </div>
@@ -58,13 +62,15 @@ Description:
 import Icons from "./Icons.vue";
 import ParentMultiselect from "./ParentMultiselect.vue";
 import ImportComponent from "./ImportComponent.vue"
+import CreateComponentHTMLQueue from "./CreateComponentHTMLQueue.vue";
 import { mapState, mapActions } from "vuex";
 export default {
   name: "HomeSidebar",
   components: {
     Icons,
     ParentMultiselect,
-    ImportComponent
+    ImportComponent,
+    CreateComponentHTMLQueue
 },
   computed: {
     ...mapState([
@@ -182,6 +188,7 @@ export default {
   .componentHTML {
     height: 100px;
     margin-top: 20px;
+    background-color: rgba($subsecondary, .5);
     overflow-y: scroll;
     border: 1px solid rgba(245, 245, 245, 0.3);
     border-radius: 5px;
@@ -193,6 +200,10 @@ export default {
   #create-component-btn {
     width: 100%;
   }
+  .q-expansion-item {
+    margin-bottom: 10px;
+  }
+
 // .is-primary {
 //   height: 45px;
 // }
