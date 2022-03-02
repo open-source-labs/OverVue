@@ -53,6 +53,9 @@ export default {
 }
 .q-tabs {
   background: $subprimary;
-  padding: 20px 0;
+}
+
+.q-tab__content{
+  padding: 10px 0;
 }
 </style>
