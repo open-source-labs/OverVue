@@ -31,7 +31,7 @@ export default {
   name: "ExportProjectComponent",
   mixins: [handleExportComponentMixin],
   methods: {
-    showExportDialog() {
+    showExportProjectDialog() {
       ipcRenderer
         .invoke("exportProject", {
           title: "Choose location to save folder in",
@@ -42,7 +42,7 @@ export default {
         .catch((err) => console.log(err));
     },
     exportProject: function () {
-      this.showExportDialog();
+      this.showExportProjectDialog();
     },
     /**
      * @description creates the router.js file
@@ -504,7 +504,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(["componentMap", "imagePath", "routes", "exportAsTypescript"]),
+    ...mapState(["componentMap", "imagePath", "routes", "exportAsTypescript", "activeComponent"]),
   },
 };
 </script>
