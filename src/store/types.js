@@ -63,6 +63,7 @@ export const UPDATE_OPEN_MODAL = 'UPDATE_OPEN_MODAL'
 export const DELETE_USER_ACTIONS = 'DELETE_USER_ACTIONS'
 export const DELETE_USER_STATE = 'DELETE_USER_STATE'
 export const EXPORT_AS_TYPESCRIPT = 'EXPORT_AS_TYPESCRIPT'
+export const TOGGLE_TUTORIAL = 'TOGGLE_TUTORIAL'
 
 // Actions
 export const addActionSelected = 'addActionSelected'
@@ -124,6 +125,7 @@ export const updateStartingPosition = 'updateStartingPosition'
 export const updateStartingSize = 'updateStartingSize'
 export const deleteUserActions = 'deleteUserActions'
 export const deleteUserState = 'deleteUserState'
+export const toggleTutorial = 'toggleTutorial'
 
 
 // inactive mutations

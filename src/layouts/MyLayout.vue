@@ -153,7 +153,7 @@ export default {
       tab: "component",
       left: true,
       right: true,
-      dashWidth: 400,
+      dashWidth: 950,
       originalWidth: 400,
       originalLeft: 400,
       timer: null,

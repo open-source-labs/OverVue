@@ -58,6 +58,7 @@ const newState = {
   pastedComponent: {},
 
   exportAsTypescript: 'off',
+  showTutorial: true,
 }
 
 // closured method to ensure we only ever write the default state ONCE
