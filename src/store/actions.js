@@ -277,8 +277,10 @@ const actions = {
 
   // Loading ///////////////////////////////////////////////////////
 
-  [types.openProject]: ({ commit }, payload) => {
-    // open project imagePath, componentPath, routePath
+  [types.openProject]: ({ commit, state }, payload) => {
+    payload.userProps.forEach((prop)=>{commit(types.CREATE_PROP, prop)})
+    payload.userActions.forEach((action)=>{commit(types.CREATE_ACTION, action)})
+    payload.userState.forEach((state)=>{commit(types.CREATE_STATE, state)})
     commit(types.SET_IMAGE_PATH, payload.imagePath);
     commit(types.SET_COMPONENT_MAP, payload.componentMap);
     commit(types.SET_ROUTES, payload.routes);
