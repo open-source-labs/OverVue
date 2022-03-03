@@ -396,7 +396,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .component-title {
   position: relative;
   font-size: 16px;
@@ -430,25 +430,25 @@ export default {
   background-color: rgba(223, 218, 218, 0.886);
   background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
   background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
-  background-image: -webkit-linear-gradient(white 2px, transparent 2px),
-    -webkit-linear-gradient(0, white 2px, transparent 2px),
+  background-image: -webkit-linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px),
+    -webkit-linear-gradient(0, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
     -webkit-linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
     -webkit-linear-gradient(0, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
-  background-image: -moz-linear-gradient(white 2px, transparent 2px),
-    -moz-linear-gradient(0, white 2px, transparent 2px),
+  background-image: -moz-linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px),
+    -moz-linear-gradient(0, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
     -moz-linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
     -moz-linear-gradient(0, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
-  background-image: linear-gradient(white 2px, transparent 2px),
-    linear-gradient(90deg, white 2px, transparent 2px),
+  background-image: linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
     linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
-  -pie-background: linear-gradient(white 2px, transparent 2px) -2px -2px / 100px,
-    linear-gradient(90deg, white 2px, transparent 2px) -2px -2px / 100px,
+  -pie-background: linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px) -2px -2px / 100px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.8) 1px, transparent 1px) -2px -2px / 100px,
     linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px) -1px -1px /
       20px,
     linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px) -1px -1px /
       20px,
-    #269;
+    $secondary;
   behavior: url(/pie/PIE.htc);
 }
 .menu {
@@ -464,7 +464,7 @@ export default {
   position: absolute;
 }
 .active {
-  background-color: rgba(105, 179, 190, 0.514);
+  background-color: $accent;
   border: 1px dashed rgb(227, 203, 71);
 }
 .btn {

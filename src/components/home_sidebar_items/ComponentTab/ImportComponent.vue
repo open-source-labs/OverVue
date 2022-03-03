@@ -1,6 +1,7 @@
 <template>
       <q-btn
       id="import-component-btn"
+      size="md"
       color="secondary"
       label="Import Component"
       @click="importComponent"
@@ -253,6 +254,14 @@ export default {
 }
 
 </script>
+
+<style scoped>
+  #import-component-btn {
+    margin: 20px 0;
+    width: 100%;
+    align-items: center;
+  }
+</style>
 
 
 

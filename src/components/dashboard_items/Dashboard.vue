@@ -21,15 +21,11 @@ Description:
         name="detail"
         label="Component Details"
         id="label-text"
-        style="border-right: 3px solid black"
-        ><i class="fas fa-code"></i
-      ></q-tab>
-      <q-tab name="tree" label="Project Tree" id="label-text" style="border-right: 3px solid black"
-        ><i class="fas fa-code-branch fa-flip-vertical"
-      /></q-tab>
-      <q-tab name="routes" label="Routes" id="label-text" style="border-right: 3px solid black"
-        ><i class="fas fa-project-diagram"></i
-      ></q-tab>
+        ></q-tab>
+      <q-tab name="tree" label="Project Tree" id="label-text"
+        ></q-tab>
+      <q-tab name="routes" label="Routes" id="label-text"
+        ></q-tab>
     </q-tabs>
     <q-tab-panels v-model="tab" animated class="html-bg text-white">
       <q-tab-panel name="detail">
@@ -172,15 +168,15 @@ i {
 // changes the length of the tab panels
 .q-tab-panels {
   padding: 0px !important;
-  border-top: 3px solid black;
+  // border-top: 3px solid black;
 }
 
 .q-tabs {
-  background: #11120f;
+  background: $subprimary;
 }
 
 .toolbar-background {
-  background: black;
+  background: $subprimary;
 }
 
 #dashboard-cards {
@@ -188,7 +184,7 @@ i {
   flex-direction: column;
   height: 100%;
   border-radius: 0px;
-  background: #737578;
+  background: $subprimary;
 }
 .html-bg {
   /* // give html background color of grey */
@@ -199,8 +195,8 @@ i {
   height: 100%;
 }
 
-.bord {
-  border-left: 3px solid black;
-  border-right: 3px solid black;
-}
+// .bord {
+//   border-left: 3px solid black;
+//   border-right: 3px solid black;
+// }
 </style>

@@ -186,13 +186,14 @@ export default {
   margin: 6px;
   min-height: 28px;
   color: #FFFFFF;
-  background-color: #289EAD;
+  background-color: $secondary;
   text-align: center;
   line-height: 28px;
 }
 
 .tree-node-active {
-  background-color: #155158;
+  background-color: $accent;
+  color: #155158;
   border: 2px solid rgb(196, 154, 19);
 }
 
