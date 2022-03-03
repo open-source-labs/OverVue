@@ -12,20 +12,44 @@ Description:
     <!-- the top header of OverVue -->
     <q-header elevated class="gradient text-white">
       <q-toolbar>
-        <q-btn dense flat color="subaccent" round @click="left = !left">
+        <!-- <q-btn dense flat color="subaccent" round @click="left = !left">
           <i
             :class="[left ? 'fas fa-chevron-left' : 'fas fa-list-ul']"
             id="btn"
           ></i>
+        </q-btn> -->
+        <q-toolbar-title><img alt="OverVue" src="../assets/OverVue_navLogo.png" id="nav-logo"><div id="undo-redo">
+        <q-btn>
+        <i
+          v-if="doneAction.length"
+          class="fa fa-undo"
+          aria-hidden="true"
+          @click="undo"
+        ></i>
+        <i
+          v-else
+          class="fa fa-undo"
+          id="unavailable"
+          aria-hidden="true"
+        ></i>
         </q-btn>
-        <q-toolbar-title> OverVue </q-toolbar-title>
+        <q-btn>
+        <i
+          v-if="undoneAction.length"
+          class="fa fa-redo"
+          aria-hidden="true"
+          @click="redo"
+        ></i>
+        <i v-else class="fa fa-redo" id="unavailable" aria-hidden="true"></i>
+        </q-btn>
+      </div></q-toolbar-title>
         <label for="typescript" style="margin-right: 10px;"> 
           <input type="checkbox" name="typescript" id="typescript" :value="exportAsTypescript" @change="syncTypescriptFlag" />
           Use Typescript
         </label>
         <SlackLoginWindow />
         <div></div>
-        <i
+        <!-- <i
           v-if="doneAction.length"
           class="fa fa-backward"
           aria-hidden="true"
@@ -43,7 +67,7 @@ Description:
           aria-hidden="true"
           @click="redo"
         ></i>
-        <i v-else class="fa fa-forward" id="unavailable" aria-hidden="true"></i>
+        <i v-else class="fa fa-forward" id="unavailable" aria-hidden="true"></i> -->
 
         <OpenProjectComponent />
         <SaveProjectComponent />
@@ -61,6 +85,7 @@ Description:
     </q-header>
     
     <q-drawer v-model="left" side="left" behavior="desktop" bordered>
+      
       <!-- QTabs setup, not sure what class to set yet -->
       <q-tabs
         v-model="tab"
@@ -69,12 +94,8 @@ Description:
         active-color="secondary"
         indicator-color="secondary"
       >
-        <q-tab name="component" label="Component"
-          ><i class="fas fa-edit"></i
-        ></q-tab>
-        <q-tab name="store" label="Store"
-          ><i class="fas fa-store-alt"></i
-        ></q-tab>
+        <q-tab name="component" label="Component"></q-tab>
+        <q-tab name="store" label="Store"></q-tab>
       </q-tabs>
       <!-- individual tab panel's setup -->
       <q-tab-panels v-model="tab" animated class="html-bg text-white fit">
@@ -211,6 +232,20 @@ export default {
 </script>
 
 <style lang="scss">
+
+.q-toolbar {
+  height: 50px;
+}
+
+.q-toolbar__title {
+  display: flex;
+  align-items: center;
+}
+
+#nav-logo {
+  margin-right: 95px;
+}
+
 .text-white {
   color: white;
 }
@@ -218,9 +253,23 @@ export default {
 q-btn > i {
   color: white;
 }
+
+#undo-redo {
+  display: flex;
+  justify-content: center;
+  align-content: stretch;
+  color: white;
+}
+
+#undo-redo > .q-btn {
+  flex-grow: 1;
+  align-items: center;
+  margin-right: 5px;
+}
+
 // Must change style lang='scss'
-.fa-backward,
-.fa-forward {
+.fa-undo,
+.fa-redo {
   padding: 0 5px;
 }
 
@@ -275,7 +324,7 @@ q-btn > i {
 .fa-backward:hover,
 .fa-forward:hover {
   cursor: pointer;
-  color: #00ffff;
+  color: $secondary;
 }
 
 #unavailable {
@@ -283,8 +332,8 @@ q-btn > i {
   cursor: default;
 }
 
-.fa-backward:active,
-.fa-forward:active {
+.fa-undo:active,
+.fa-redo:active {
   box-shadow: 0 1px inherit;
   transform: translateY(1px);
 }
@@ -308,7 +357,7 @@ q-btn > i {
 
 // css styling for the drawer items
 .drawer-menu {
-  background: $subsecondary;
+  background: $subprimary;
 }
 
 // css styling for the drawer list (not entire bg)
@@ -324,7 +373,7 @@ q-btn > i {
 
 // give html background color of grey
 .html-bg {
-  background-color: #202122;
+  background-color: $subprimary;
 }
 
 .left-panel {
