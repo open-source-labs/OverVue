@@ -243,7 +243,7 @@ export default {
 }
 
 #nav-logo {
-  margin-right: 20px;
+  margin-right: 95px;
 }
 
 .text-white {
