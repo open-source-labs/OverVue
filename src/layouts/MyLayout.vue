@@ -20,7 +20,7 @@ Description:
           ></i>
         </q-btn> -->
         <q-toolbar-title> OverVue </q-toolbar-title>
-        <label for="typescript" style="margin-right: 10px">
+        <!-- <label for="typescript" style="margin-right: 10px">
           <input
             type="checkbox"
             name="typescript"
@@ -29,8 +29,8 @@ Description:
             @change="syncTypescriptFlag"
           />
           Use Typescript
-        </label>
-        <SlackLoginWindow />
+        </label> -->
+        <!-- <SlackLoginWindow /> -->
         <div></div>
         <!-- <i
           v-if="doneAction.length"
@@ -52,9 +52,13 @@ Description:
         ></i>
         <i v-else class="fa fa-forward" id="unavailable" aria-hidden="true"></i> -->
         <!-- <q-btn-dropdown dense flat color="subaccent" round > -->
+        <SaveProjectComponent />
+        <OpenProjectComponent />
+        <ExportProjectComponent />
+
         <q-btn icon="fas fa-cog" size="sm">
           <!-- < fas => fontawesome, refers to icon style -->
-          <q-menu>
+          <q-menu class="dropdown">
             
           <div class="settings-dropdown column items-center">
             <q-btn
@@ -68,6 +72,7 @@ Description:
               class="menu-btn"
               color="secondary"
               no-caps
+              @click="openLogin"
             >
                  <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -93,15 +98,20 @@ Description:
               </svg>
               Connect to Slack
             </q-btn>
-            <q-toggle v-model="exportAsTypescript" color="primary" label="Use TypeScript"/>
+            <div> 
+            <label for="typescript"  style="margin-right: 10px" class="switch">
+              <input class="switch-input" type="checkbox" name="typescript" id="typescript" :value="exportAsTypescript" @change="syncTypescriptFlag" />
+                Use Typescript
+                <span class="switch-label" data-on="TypeScript" data-off="JavaScript"></span> 
+                <span class="switch-handle"></span> 
+              </label>
+              </div>
           </div>
           <i id="btn"></i>
-          </q-menu>
+          </q-menu >
         </q-btn>
 
-        <SaveProjectComponent />
-        <OpenProjectComponent />
-        <ExportProjectComponent />
+       
         <!-- </div> -->
         <!-- this button will open the right drawer -->
       </q-toolbar>
@@ -404,11 +414,120 @@ q-btn > i {
   overflow: hidden;
 }
 .menu-btn{
-  width: 90%;
+  width: 85%;
   margin: 10px 0px;
   box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
 }
 .settings-dropdown {
-background-image: rgba(223, 218, 218, 0.886)
+background: #5c5e61;
 }
+.dropdown{
+  width: 15%;
+  height: auto;
+}
+.switch {
+	position: relative;
+	display: block;
+	vertical-align: top;
+	width: 100px;
+	height: 30px;
+	padding: 3px;
+	margin: 0 10px 10px 0;
+	background: linear-gradient(to bottom, #eeeeee, #FFFFFF 25px);
+	background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF 25px);
+	border-radius: 18px;
+	box-shadow: inset 0 -1px white, inset 0 1px 1px rgba(0, 0, 0, 0.05);
+	cursor: pointer;
+	box-sizing:content-box;
+}
+.switch-input {
+	position: absolute;
+	top: 0;
+	left: 0;
+	opacity: 0;
+	box-sizing:content-box;
+}
+.switch-label {
+	position: relative;
+	display: block;
+	height: inherit;
+	font-size: 10px;
+	text-transform: uppercase;
+	background: #eceeef;
+	border-radius: inherit;
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.15);
+	box-sizing:content-box;
+}
+.switch-label:before, .switch-label:after {
+	position: absolute;
+	top: 50%;
+	margin-top: -.5em;
+	line-height: 1;
+	-webkit-transition: inherit;
+	-moz-transition: inherit;
+	-o-transition: inherit;
+	transition: inherit;
+	box-sizing:content-box;
+}
+.switch-label:before {
+	content: attr(data-off);
+	right: 11px;
+	color: #aaaaaa;
+	text-shadow: 0 1px rgba(255, 255, 255, 0.5);
+}
+.switch-label:after {
+	content: attr(data-on);
+	left: 11px;
+	color: #FFFFFF;
+	text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+	opacity: 0;
+}
+.switch-input:checked ~ .switch-label {
+	background: #26e23f;
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
+}
+.switch-input:checked ~ .switch-label:before {
+	opacity: 0;
+}
+.switch-input:checked ~ .switch-label:after {
+	opacity: 1;
+}
+.switch-handle {
+	position: absolute;
+	top: 4px;
+	left: 4px;
+	width: 28px;
+	height: 28px;
+	background: linear-gradient(to bottom, #FFFFFF 40%, #f0f0f0);
+	background-image: -webkit-linear-gradient(top, #FFFFFF 40%, #f0f0f0);
+	border-radius: 100%;
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+.switch-handle:before {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -6px 0 0 -6px;
+	width: 12px;
+	height: 12px;
+	background: linear-gradient(to bottom, #eeeeee, #FFFFFF);
+	background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF);
+	border-radius: 6px;
+	box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
+}
+.switch-input:checked ~ .switch-handle {
+	left: 74px;
+	box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+ 
+/* Transition
+========================== */
+.switch-label, .switch-handle {
+	transition: All 0.3s ease;
+	-webkit-transition: All 0.3s ease;
+	-moz-transition: All 0.3s ease;
+	-o-transition: All 0.3s ease;
+}
+
 </style>

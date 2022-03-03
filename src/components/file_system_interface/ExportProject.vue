@@ -11,12 +11,11 @@ Description:
 
 <template>
   <q-btn class="export-btn" color="secondary" label="Export">
-    <q-menu>
+    <q-menu class="dropdown">
       <div class="settings-dropdown column items-center"> 
-      <q-btn class="menu-btn" no-caps color="secondary" label="Export Project" @click="exportProject"/> 
-      <!-- Export active component is incorrectly exporting the entire project. Need to also disable this button when no active component is selected
-  -->
-      <q-btn class="menu-btn" no-caps color="secondary" label="Export Active Component" @click="handleExportComponent"/> 
+      <p class="center">Export:</p>
+      <q-btn class="menu-btn" no-caps color="secondary" label="Current Project" @click="exportProject"/> 
+      <q-btn class="menu-btn" no-caps color="secondary" label="Active Component" @click="handleExportComponent" :disabled="!activeComponent.trim()"/> 
       </div>
     </q-menu>
   
@@ -512,9 +511,19 @@ export default {
 <style>
 .export-btn {
   min-height: 10px !important;
+  width: auto;
   font-size: 11px;
   text-transform: capitalize;
   padding: 3px 8px;
+}
+.center{
+  display:inline-block;
+  text-align: center;
+  margin-top: 5px;
+  font-weight: bold;
+  background-color: rgb(100, 99, 99);
+  color: white;
+  box-sizing: border-box;
 }
 
 

@@ -6,10 +6,11 @@ Description:
 
 <template>
     <q-btn class="export-btn" color="secondary" label="Import">
-    <q-menu>
+    <q-menu class="dropdown">
       <div class="settings-dropdown column items-center"> 
-      <q-btn class="menu-btn" no-caps color="secondary" label="Import Project" @click="openProjectJSON"/> 
-      <q-btn class="menu-btn" no-caps color="secondary" label="Import Component" @click="exportProject"/> 
+      <p class="center">Import:</p>
+      <q-btn class="menu-btn" no-caps color="secondary" label="Project" @click="openProjectJSON"/> 
+      <q-btn class="menu-btn" no-caps color="secondary" label="Component" @click="exportProject"/> 
       </div>
     </q-menu>
   
