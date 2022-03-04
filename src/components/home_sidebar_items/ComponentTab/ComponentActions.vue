@@ -7,7 +7,7 @@
 -->
 
 <template>
-  <div>
+  <div class="selection-container">
     <div id="action-select">
       <VueMultiselect
         v-model="selectAction"
@@ -98,7 +98,7 @@ export default {
     ]),
     // Prevent Delete on changes to searchable multiselect
     stopDelete(e) {
-      if (e.code === "Backspce") e.stopPropogation();
+      if (e.code === "Backspace") e.stopPropogation();
       // console.log(e);
     },
     // adds an action to the currently selected component
@@ -112,3 +112,16 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.selection-container {
+    padding: 30px 0;
+}
+
+.component-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+</style>

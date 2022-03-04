@@ -51,8 +51,8 @@ Description:
         @click="handleAddNotes" />
       <q-menu context-menu>
         <q-list color="black" class="menu">
-          <q-item clickable v-ripple v-close-popup @click="handleExportComponent">
-            <q-item-section style="color: white"
+            <q-item clickable v-ripple v-close-popup @click="handleExportComponent">
+            <q-item-section style="color: menutext"
               >Export Component</q-item-section
             >
             <q-item-section avatar>
@@ -68,7 +68,7 @@ Description:
                       </q-item-section>
           </q-item>
           <q-item clickable v-ripple v-close-popup @click="handleAddChild">
-            <q-item-section style="color: white"
+            <q-item-section style="color: menutext"
               >Update Children</q-item-section
             >
             <q-item-section avatar>
@@ -76,7 +76,7 @@ Description:
             </q-item-section>
           </q-item>
           <q-item clickable v-ripple v-close-popup>
-            <q-item-section class="layer" style="color: white"
+            <q-item-section class="layer" style="color: menutext"
               >Layer</q-item-section
             >
             <q-btn
@@ -86,7 +86,7 @@ Description:
               label="-"
               @click="(e) => handleLayer(e)"
             />
-            <p id="counter" style="color: white">{{ componentData.z }}</p>
+            <p id="counter" style="color: menutext">{{ componentData.z }}</p>
             <q-btn
               class="btn"
               color="transparent"
@@ -97,7 +97,7 @@ Description:
           </q-item>
         </q-list>
       </q-menu>
-      
+
     </vue-draggable-resizable>
     <div>
       <q-dialog v-model="modalOpen" persistent>
@@ -114,6 +114,37 @@ Description:
           style="width: 250px; background-color: #fd5f00"
         />
       </q-dialog>
+      <!-- some irregularity (delete event listener firing on bkspc/del) with the modal when stored locally, so modal open stored in state, and triggers to local reflect only stateful change.-->
+          <q-dialog v-model="noteModal" @update:model-value="this.handleAddNotes"> 
+            <div class="noteBox">
+              <div class="noteHolder">
+                <p class="title">Adding notes to {{ this.activeComponent }}</p>
+                <div class="noteContainer">
+                  <li v-for="(note, index) in this.componentMap[this.activeComponent].noteList" :key="note" @click="deleteNote">
+                    Note #{{index}}: 
+                    <div class="noteblock">{{ note }}</div>
+                  </li>
+                </div>
+                <q-form class="formBox" autofocus>
+                    <q-input
+                      v-model="noteText"
+                      label="Add your note here"
+                      filled
+                      dark
+                      max-height=15%
+                      autofocus true
+                    ></q-input>
+                    <q-btn 
+                    color="secondary"
+                    label="Submit Note"
+                    type="submit"
+                    :disable="noteText.length > 0 ? false : true"
+                    @click="submitNote"
+                    />
+                </q-form>
+              </div>
+            </div>
+        </q-dialog>
       <!-- some irregularity (delete event listener firing on bkspc/del) with the modal when stored locally, so modal open stored in state, and triggers to local reflect only stateful change.-->
           <q-dialog v-model="noteModal" @update:model-value="this.handleAddNotes"> 
             <div class="noteBox">
@@ -217,6 +248,7 @@ export default {
       "activeComponentObj",
       "exportAsTypescript",
       "noteModalOpen"
+
     ]),
     // used in VueDraggableResizeable component
     activeRouteArray() {
@@ -266,7 +298,8 @@ export default {
     mockBg() {
       return this.imagePath[this.activeRoute]
         ? {
-            background: `url("${this.userImage}") center/contain no-repeat rgba(223, 218, 218, 0.886)`,
+            background: `url("${this.userImage}") no-repeat rgba(223, 218, 218, 0.886) top left`,
+            "background-size": "contain"
           }
         : {};
     },
@@ -310,7 +343,7 @@ export default {
       "openNoteModal",
     ]),
     // records component's initial position in case of drag
-    recordInitialPosition: function (e) {    
+    recordInitialPosition: function (e) {
       if (this.activeComponent !== e.target.id) {
         if (e.target.parentElement?.classList.contains('draggable')){
           //console.log("using vanilla JS to WIN")
@@ -509,13 +542,14 @@ li:hover{
   max-height: 15%;
   justify-self: flex-end;
 }
+
 .component-title {
   position: relative;
   font-size: 16px;
   top: -18px;
   left: 2px;
   color: black;
-  -webkit-text-stroke: 0.4px white;
+  -webkit-text-stroke: 0.4px $menutext;
   font-weight: 800;
   line-height: 1.2;
   z-index: -1;
@@ -534,9 +568,13 @@ li:hover{
   list-style: none;
 }
 .component-display {
-  height: 95.4vh;
+  top: 0px;
+  left: 0px;
   width: 100%;
-  position: relative;
+  height: 100%;
+  min-width: 1600px;
+  min-height: 900px;
+  position: absolute;
 }
 .grid-bg {
   background-color: rgba(223, 218, 218, 0.886);
@@ -580,9 +618,9 @@ li:hover{
 }
 
 .component-box {
-  color: white;
-  border: 1.2px dashed rgb(231, 203, 75);
-  background-color: rgba(172, 83, 83, 0.42);
+  color: $menutext;
+  border: 1.2px dashed $darktext;
+  background-color: rgba($darktext, .42);
   -webkit-transition: background-color 200ms linear;
   -ms-transition: background-color 200ms linear;
   transition: background-color 200ms linear;
@@ -590,7 +628,7 @@ li:hover{
 }
 .active {
   background-color: $accent;
-  border: 1px dashed rgb(227, 203, 71);
+  border: 1px dashed $accent;
 }
 .btn {
   font-size: 25px;
@@ -602,7 +640,7 @@ li:hover{
 .btn:hover,
 .btn:focus,
 .btn:active {
-  color: white;
+  color: $menutext;
   background-color: transparent;
 }
 #counter {

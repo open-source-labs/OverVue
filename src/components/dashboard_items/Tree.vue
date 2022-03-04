@@ -12,24 +12,19 @@ Description:
       :config="treeConfig"
       ref="tree"
       @wheel="zoom">
-      <template v-slot:node="{ node, collapsed }">
+      <template v-slot:node="{ node }">
         <span v-if="this.activeComponent === node.value"
           class="tree-node-active"
-          :style="{ border: collapsed ? '2px solid grey' : '' }"
-          
           >
           {{ node.value }}
         </span>
           <span v-else-if="this.activeRoute === node.value"
           class="tree-node-activeRoute"
-          :style="{ border: collapsed ? '2px solid grey' : '' }"
-          
           >
           {{ node.value }}
         </span>
         <span v-else
           class="tree-node"
-          :style="{ border: collapsed ? '2px solid grey' : '' }"
           @click="activateNode(node.value)"
           >
           {{ node.value }}
@@ -152,7 +147,6 @@ export default {
   watch: {
     componentMap: {
       handler(){
-        console.log(this.componentMap)
         this.treeData = this.buildTree(this.componentMap);
       },
       deep: true,
@@ -161,7 +155,7 @@ export default {
   data() { 
     return {
       treeData: this.buildTree(this.$store.state.componentMap),
-      treeConfig: { nodeWidth: 120, nodeHeight: 80, levelHeight: 200},
+      treeConfig: { nodeWidth: 175, nodeHeight: 100, levelHeight: 200},
       componentData: this.$store.state.componentMap,
     }
   }
@@ -181,25 +175,27 @@ export default {
 
 .tree-node, .tree-node-active, .tree-node-activeRoute {
   display: inline-block;
-  width: 90%;
   padding: 8px;
+  min-width: 80%; 
   margin: 6px;
   min-height: 28px;
-  color: #FFFFFF;
+  color: $menutext;
   background-color: $secondary;
   text-align: center;
   line-height: 28px;
+  border-radius: 4px;
+  word-wrap: break-word;
 }
 
 .tree-node-active {
   background-color: $accent;
-  color: #155158;
-  border: 2px solid rgb(196, 154, 19);
+  color: $darktext;
+  border: 2px solid $menutext;
 }
 
 .tree-node-activeRoute {
-  background-color: #155158;
-  border: 2px solid rgb(196, 154, 19);
+  background-color: $darktext;
+  border: 2px solid $menutext;
 }
 
 

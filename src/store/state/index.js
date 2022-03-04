@@ -57,7 +57,6 @@ const newState = {
   copiedComponent: {},
   copyNumber: 0,
   pastedComponent: {},
-
   exportAsTypescript: 'off',
   showTutorial: true,
 }

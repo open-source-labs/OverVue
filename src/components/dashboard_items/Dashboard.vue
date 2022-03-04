@@ -7,7 +7,7 @@ Description:
 
 <template>
 <span v-if="showTutorial === false">
-  <q-card id="dashboard-cards" class="bord" >
+  <q-card id="dashboard-cards" >
     <q-tabs
       v-model="tab"
       class="bg-subaccent text-white"
@@ -17,17 +17,14 @@ Description:
       dense
       breakpoint="1050"
     >
-      <q-tab
-        name="detail"
-        label="Component Details"
-        id="label-text"
+      <q-tab name="detail" label="Component Details" id="label-text"
         ></q-tab>
       <q-tab name="tree" label="Project Tree" id="label-text"
         ></q-tab>
       <q-tab name="routes" label="Routes" id="label-text"
         ></q-tab>
     </q-tabs>
-    <q-tab-panels v-model="tab" animated class="html-bg text-white">
+    <q-tab-panels v-model="tab" animated>
       <q-tab-panel name="detail">
         <ComponentDetails />
       </q-tab-panel>
@@ -123,15 +120,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-i {
-  font-size: 11px;
-}
 
 .home-sidebar {
-  margin: 1rem;
+  padding: 1rem;
   justify-content: center;
   border-radius: 5px;
-  padding: 0px;
   background: $subsecondary;
 }
 
@@ -146,29 +139,21 @@ i {
   padding: 5px;
 }
 
-/* this class selector does not change anything */
-.q-tab__label {
-  /* // font-size not changing */
-  font-size: 10px !important;
-  line-height: 1.718em;
-  font-weight: 500;
-}
-
 /* // changes the tab label styling */
 #label-text {
   font-size: 4px !important;
-  text-transform: capitalize;
+  text-transform: uppercase;
 }
 
 .q-tab-panel {
-  /* // matchs the code editor bg */
+  /* // matches the code editor bg */
   background: $subprimary;
 }
 
 // changes the length of the tab panels
 .q-tab-panels {
   padding: 0px !important;
-  // border-top: 3px solid black;
+  background: $subprimary;
 }
 
 .q-tabs {
@@ -186,17 +171,9 @@ i {
   border-radius: 0px;
   background: $subprimary;
 }
-.html-bg {
-  /* // give html background color of grey */
-  background-color: #202122;
-}
 
 .inner-div {
   height: 100%;
 }
 
-// .bord {
-//   border-left: 3px solid black;
-//   border-right: 3px solid black;
-// }
 </style>

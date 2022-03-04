@@ -10,21 +10,27 @@ Description:
   -->
 
 <template>
-  <q-btn
-    class="export-btn"
-    color="secondary"
-    label="Export Project"
-    @click="exportProject"
-  />
+  <q-btn class="export-btn" color="secondary" label="Export">
+    <q-menu class="dropdown">
+      <div class="settings-dropdown column items-center"> 
+      <p class="center">Export:</p>
+      <q-btn class="menu-btn" no-caps color="secondary" label="Current Project" @click="exportProject"/> 
+      <q-btn class="menu-btn" no-caps color="secondary" label="Active Component" @click="handleExportComponent" :disabled="!activeComponent.trim()"/> 
+      </div>
+    </q-menu>
+  
+  </q-btn>
 </template>
 <script>
 import { mapState } from "vuex";
+import handleExportComponentMixin from "../ExportComponentMixin.vue";
 const { fs, ipcRenderer } = window;
 
 export default {
   name: "ExportProjectComponent",
+  mixins: [handleExportComponentMixin],
   methods: {
-    showExportDialog() {
+    showExportProjectDialog() {
       ipcRenderer
         .invoke("exportProject", {
           title: "Choose location to save folder in",
@@ -35,7 +41,7 @@ export default {
         .catch((err) => console.log(err));
     },
     exportProject: function () {
-      this.showExportDialog();
+      this.showExportProjectDialog();
     },
     /**
      * @description creates the router.js file
@@ -74,7 +80,7 @@ export default {
      */
     createExport(appChildren) {
       let str;
-      if (this.exportAsTypescript === 'on') {
+      if (this.exportAsTypescript === "on") {
         str = "export default createRouter({\n\thistory: createWebHistory(process.env.BASE_URL),\n\troutes: [\n";
       } else {
         str = "export default createRouter({\n\thistory: createWebHistory(),\n\tbase: process.env.BASE_URL,\n\troutes: [\n";
@@ -289,7 +295,7 @@ export default {
         }
         // concat all code within script tags
         let output;
-        if (this.exportAsTypescript === 'on') {
+        if (this.exportAsTypescript === "on") {
           output = "\n\n<script lang='ts'>\n";
           output += imports + "\nexport default defineComponent ({\n  name: '" + componentName + "'";
         } else {
@@ -302,7 +308,7 @@ export default {
         output += computed;
         output += methods;
         // eslint-disable-next-line no-useless-escape
-        if (this.exportAsTypescript === 'on') {
+        if (this.exportAsTypescript === "on") {
           output += "});\n<\/script>";
         } else {
           output += "};\n<\/script>";
@@ -415,8 +421,8 @@ export default {
       str += `\n\t\t"@vue/cli-plugin-eslint": "~4.5.0",`;
       str += `\n\t\t"@vue/cli-service": "~4.5.0",`;
       str += `\n\t\t"babel-eslint": "^10.0.1",`;
-      str += `\n\t\t"eslint": "^6.7.2",`;
-      str += `\n\t\t"eslint-plugin-vue": "^7.0.0-0",`;
+      str += `\n\t\t"eslint": "^8.9.0",`;
+      str += `\n\t\t"eslint-plugin-vue": "^8.4.1",`;
       str += `\n\t\t"@vue/compiler-sfc": "^3.0.0-0"`;
       if (this.exportAsTypescript === "on") {
         str += `,\n\t\t"@vue/tsconfig": "^0.1.3",`;
@@ -511,7 +517,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(["componentMap", "imagePath", "routes", "exportAsTypescript"]),
+    ...mapState(["componentMap", "imagePath", "routes", "exportAsTypescript", "activeComponent"]),
   },
 };
 </script>
@@ -519,8 +525,20 @@ export default {
 <style>
 .export-btn {
   min-height: 10px !important;
+  width: auto;
   font-size: 11px;
   text-transform: capitalize;
   padding: 3px 8px;
 }
+.center{
+  display:inline-block;
+  text-align: center;
+  margin-top: 5px;
+  font-weight: bold;
+  background-color: rgb(100, 99, 99);
+  color: white;
+  box-sizing: border-box;
+}
+
+
 </style>

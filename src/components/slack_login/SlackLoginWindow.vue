@@ -1,7 +1,7 @@
 <!--<template v-if="show">-->
 <template>
   <div>
-    <div>
+    <!-- <div>
       <q-btn class="glossy bg-black openModalBtn" size="5px" @click="openLogin">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -26,7 +26,7 @@
           ></path>
         </svg>
       </q-btn>
-    </div>
+    </div> -->
 
     <!--
       Slack Login Button:
@@ -42,17 +42,9 @@
       transition-show="flip-down"
       transition-hide="flip-up"
     >
-      <q-card class="qCardBorderColor bg-white text-white" border-rounded>
-        <q-bar class="qCardColor">
-          <i class="fas fa-sign-in-alt"></i>
-          <div>Login</div>
-
-          <q-space />
-        </q-bar>
-
-        <q-card-section class="bg-black q-pt-none">
-          <div class="q-pa-md q-gutter-sm">
-            <q-btn @click="slackOauth" color="purple">
+      <q-card class="slackLogin" border-rounded>
+        <q-card-section class="q-pt-none slackLogin">
+            <q-btn @click="slackOauth" id="slackButton">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 style="height: 20px; width: 20px; margin-right: 12px"
@@ -77,13 +69,9 @@
               </svg>
               Connect to Slack
             </q-btn>
-          </div>
-          <div style="color: red">{{ errorMessage }}</div>
-          <div class="skipLogin q-pa-md q-gutter-sm">
-            <q-btn @click="closeLogin()" color="white" text-color="black"
-              >Skip</q-btn
-            >
-          </div>
+            <div id="slackErrorMsg">{{ errorMessage }}</div>
+            <button @click="closeLogin()" id="skipButton"
+              >Skip</button>
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -168,40 +156,45 @@ export default {
 };
 </script>
 
-<style>
-.slack-login {
+<style lang="scss" scoped>
+.slackLogin {
   display: flex;
   flex-direction: column;
   align-items: center;
+  align-content: center;
+  justify-content: center;
+  background-color: $subprimary;
+  padding: 30px;
 }
 
-.skipBtn {
-  color: #000;
-  font-family: Lato, sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  height: 36px;
-  width: 128px;
-  text-decoration: none;
+#slackButton {
+  color: $menutext;
+  background-color: purple;
+  margin-bottom: 10px;
 }
 
-.skipLogin {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+#skipButton {
+  color: $menutext;
+  background-color: $subprimary;
+  border: 1px solid $subprimary;
+  text-decoration: underline;
+  margin-top: 30px;
 }
 
-.xBtn {
-  justify-content: flex-end;
-  align-items: center;
+#skipButton:hover {
+  cursor: pointer;
+}
+
+#slackErrorMsg {
+  color: $negative;
 }
 
 .qCardColor {
-  background-color: #202122;
-  border: 1px solid #202122;
+  background-color: $subprimary;
+  border: 1px solid $subprimary;
 }
 .qCardBorderColor {
-  border: 1px solid #202122;
+  border: 1px solid $subprimary;
 }
 .openModalBtn {
   border: 1px solid #289ead;

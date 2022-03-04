@@ -1,5 +1,11 @@
 // app global css in SCSS form
 // app global css
+
+body {
+    font-family: 'Mukta', sans-serif;
+    color: $menutext;
+}
+
 main {
     background: #5b6e6e;
     overflow: auto;
@@ -27,12 +33,14 @@ main {
 
 // items in component list + route list
 .list-item {
-    background: $accent;
-    color: white;
+    background: $secondary;
+    color: $menutext;
 }
-.q-field--standout .q-field__control {
-    background: $menuinput;  
-}
+
+.q-field--outlined .q-field__control {
+    padding: 0 0 0 12px;
+  }
+
 .gradient {
     background: rgb(34, 35, 36);
 }
@@ -41,6 +49,7 @@ main {
 {
     width: 10px;
     background-color: $subsecondary;
+    z-index: 15;
 }
 
 ::-webkit-scrollbar-track

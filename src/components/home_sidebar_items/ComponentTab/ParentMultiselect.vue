@@ -19,8 +19,6 @@ Description:
       :searchable="true"
     >
      <template v-slot:noResult>No components found.</template>
-      <!-- <slot name="noResult">Hello world</slot> -->
-      <!-- refactor slot syntax here -->
     </VueMultiselect>
   </div>
 </template>
@@ -82,24 +80,29 @@ export default {
   }
   :global(.multiselect__input) {
     background-color: $subprimary;
-    color: white;
+    color: $menutext;
   }
   :global(.multiselect__content) {
     background-color: $subprimary;
-    color: white;
+    color: $menutext;
   }
   :global(.multiselect__option) {
-    color: white;
+    color: $menutext;
+  }
+  :global(.multiselect__option--selected) {
+    background-color: $accent;
+    color: #155158;
+
   }
   :global(.multiselect__single) {
     background-color: $subprimary;
-    color: white;
+    color: $menutext;
   }
   :global(.multiselect__single:focus) {
     background-color: $subprimary;
-    color: white;
+    color: $menutext;
   }
   :global(.multiselect__input::placeholder) {
-  color: white;
+  color: $menutext;
 }
 </style>

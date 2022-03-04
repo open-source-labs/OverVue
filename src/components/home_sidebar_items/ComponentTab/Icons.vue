@@ -15,7 +15,7 @@ Description:
       <br />
       <i :class="iconString"></i>
       <br />
-      <span class="white--text">{{ elementName }}</span>
+      <span>{{ elementName }}</span>
     </button>
   </section>
 </template>
@@ -106,7 +106,7 @@ export default {
 }
 button {
   background: none;
-  color: white;
+  color: $menutext;
   border: none;
 }
 button:hover {
@@ -130,6 +130,6 @@ button:active {
   float: right;
   border-radius: 50%;
   background-color: $secondary;
-  color: white;
+  color: $menutext;
 }
 </style>

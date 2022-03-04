@@ -150,6 +150,7 @@ export default {
   height: 100%;
   margin: 1rem;
   font-size: 11px;
+
 }
 
 .file-header {
@@ -158,6 +159,7 @@ export default {
 
 .file-content {
   padding: 0em 1em 1em 1em;
+  
 }
 
 .browser-btn {
