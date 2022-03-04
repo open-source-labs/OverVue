@@ -51,6 +51,7 @@ const newState = {
   activeTab: 0,
   componentChildrenMultiselectValue: [],
   modalOpen: false,
+  noteModalOpen: false,
   parentSelected: false,
   // for storing copied component
   copiedComponent: {},

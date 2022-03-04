@@ -103,6 +103,7 @@ export default {
       } else {
         fs.writeFileSync(
           componentLocation + ".vue",
+          this.writeComments(componentName) +
           this.writeTemplate(componentName, children) +
             this.writeScript(componentName, children) +
             this.writeStyle(componentName)
@@ -181,6 +182,19 @@ export default {
         }
       }
       return outputStr;
+    },
+    writeComments(componentName){
+      if (this.componentMap[componentName]?.noteList?.length > 0){
+        let commentStr = '<!--'
+        this.componentMap[componentName].noteList.forEach((el)=>{
+          commentStr += "\n"
+          commentStr += el;
+        })
+        commentStr += '\n-->\n\n'
+        return commentStr;
+      } else {
+        return ''
+      }
     },
     /**
      * @description creates the <router-link> boilerplate for /views/components

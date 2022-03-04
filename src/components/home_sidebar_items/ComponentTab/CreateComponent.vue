@@ -146,6 +146,7 @@ export default {
         w: 200,
         h: 200,
         htmlList: this.selectedElementList,
+        noteList: [],
         children: [],
         actions: [],
         props: [],

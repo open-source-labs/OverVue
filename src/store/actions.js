@@ -16,6 +16,18 @@ const actions = {
   [types.parentSelected]: ({ commit }, payload) => {
     commit(types.PARENT_SELECTED, payload);
   },
+  
+  [types.addActiveComponentNote]: ({ commit }, payload) => {
+    commit(types.ADD_ACTIVE_COMPONENT_NOTE, payload)
+  },
+
+  [types.deleteActiveComponentNote]: ({ commit }, payload) => {
+    commit(types.DELETE_ACTIVE_COMPONENT_NOTE, payload)
+  },
+
+  [types.openNoteModal]: ({ commit }) => {
+    commit(types.OPEN_NOTE_MODAL)
+  },
 
   [types.registerComponent]: ({ state, commit }, payload) => {
     /* this action has a lot of mutations deployed
@@ -284,6 +296,7 @@ const actions = {
     commit(types.SET_IMAGE_PATH, payload.imagePath);
     commit(types.SET_COMPONENT_MAP, payload.componentMap);
     commit(types.SET_ROUTES, payload.routes);
+    commit(types.SET_ACTIVE_COMPONENT, '')
   },
 
   [types.importComponent]: ({ commit }, payload) => {
