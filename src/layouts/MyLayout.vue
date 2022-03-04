@@ -72,7 +72,6 @@ Description:
               class="menu-btn"
               color="secondary"
               no-caps
-              @click="openLogin"
             >
                  <svg
                 xmlns="http://www.w3.org/2000/svg"
