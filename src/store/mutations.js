@@ -690,6 +690,25 @@ const mutations = {
     state.modalOpen = payload;
   },
 
+  [types.ADD_ACTIVE_COMPONENT_NOTE]: (state, payload) => {
+    if (!state.componentMap[state.activeComponent].hasOwnProperty('noteList')){
+      state.componentMap[state.activeComponent].noteList = [];
+    }
+    state.componentMap[state.activeComponent].noteList.push(payload)
+  },
+
+  [types.DELETE_ACTIVE_COMPONENT_NOTE]: (state, payload) => {
+    state.componentMap[state.activeComponent].noteList.forEach((el, ind) =>{
+      if (payload === el){
+        state.componentMap[state.activeComponent].noteList.splice(ind, 1)
+        return;
+      }
+    })
+  },
+
+  [types.OPEN_NOTE_MODAL]: (state) => {
+    state.noteModalOpen = !state.noteModalOpen;
+  },
   // *** PROJECTS *** //////////////////////////////////////////////
 
   [types.ADD_PROJECT]: (state, payload) => {

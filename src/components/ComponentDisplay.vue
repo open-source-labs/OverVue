@@ -35,7 +35,20 @@ Description:
       <div class="component-title">
         <p style="color: black">{{ componentData.componentName }}</p>
       </div>
-
+      <q-icon v-if="this.componentMap[componentData.componentName]?.noteList?.length > 0" 
+        color="red" 
+        size="30px" 
+        z-layer="0" 
+        name="edit_note" 
+        class="compNoteLogo" 
+        @click="handleAddNotes" />
+      <q-icon v-else
+        color="white" 
+        size="30px" 
+        z-layer="0" 
+        name="edit_note" 
+        class="compNoteLogo" 
+        @click="handleAddNotes" />
       <q-menu context-menu>
         <q-list color="black" class="menu">
             <q-item clickable v-ripple v-close-popup @click="handleExportComponent">
@@ -44,6 +57,14 @@ Description:
             >
             <q-item-section avatar>
                         <q-icon color="primary" name="upload" />
+                      </q-item-section>
+          </q-item>
+          <q-item clickable v-ripple v-close-popup @click="handleAddNotes">
+            <q-item-section style="color: white"
+              >Component Notes</q-item-section
+            >
+            <q-item-section avatar>
+                        <q-icon color="primary" name="edit_note" />
                       </q-item-section>
           </q-item>
           <q-item clickable v-ripple v-close-popup @click="handleAddChild">
@@ -76,9 +97,10 @@ Description:
           </q-item>
         </q-list>
       </q-menu>
+
     </vue-draggable-resizable>
     <div>
-      <q-dialog v-model="modalOpen">
+      <q-dialog v-model="modalOpen" persistent>
         <q-select
           @select="handleSelect"
           id="dropdown"
@@ -92,6 +114,68 @@ Description:
           style="width: 250px; background-color: #fd5f00"
         />
       </q-dialog>
+      <!-- some irregularity (delete event listener firing on bkspc/del) with the modal when stored locally, so modal open stored in state, and triggers to local reflect only stateful change.-->
+          <q-dialog v-model="noteModal" @update:model-value="this.handleAddNotes"> 
+            <div class="noteBox">
+              <div class="noteHolder">
+                <p class="title">Adding notes to {{ this.activeComponent }}</p>
+                <div class="noteContainer">
+                  <li v-for="(note, index) in this.componentMap[this.activeComponent].noteList" :key="note" @click="deleteNote">
+                    Note #{{index}}: 
+                    <div class="noteblock">{{ note }}</div>
+                  </li>
+                </div>
+                <q-form class="formBox" autofocus>
+                    <q-input
+                      v-model="noteText"
+                      label="Add your note here"
+                      filled
+                      dark
+                      max-height=15%
+                      autofocus true
+                    ></q-input>
+                    <q-btn 
+                    color="secondary"
+                    label="Submit Note"
+                    type="submit"
+                    :disable="noteText.length > 0 ? false : true"
+                    @click="submitNote"
+                    />
+                </q-form>
+              </div>
+            </div>
+        </q-dialog>
+      <!-- some irregularity (delete event listener firing on bkspc/del) with the modal when stored locally, so modal open stored in state, and triggers to local reflect only stateful change.-->
+          <q-dialog v-model="noteModal" @update:model-value="this.handleAddNotes"> 
+            <div class="noteBox">
+              <div class="noteHolder">
+                <p class="title">Adding notes to {{ this.activeComponent }}</p>
+                <div class="noteContainer">
+                  <li v-for="(note, index) in this.componentMap[this.activeComponent].noteList" :key="note" @click="deleteNote">
+                    Note #{{index}}: 
+                    <div class="noteblock">{{ note }}</div>
+                  </li>
+                </div>
+                <q-form class="formBox" autofocus>
+                    <q-input
+                      v-model="noteText"
+                      label="Add your note here"
+                      filled
+                      dark
+                      max-height=15%
+                      autofocus true
+                    ></q-input>
+                    <q-btn 
+                    color="secondary"
+                    label="Submit Note"
+                    type="submit"
+                    :disable="noteText.length > 0 ? false : true"
+                    @click="submitNote"
+                    />
+                </q-form>
+              </div>
+            </div>
+        </q-dialog>
     </div>
   </div>
 </template>
@@ -114,8 +198,10 @@ export default {
   data() {
     return {
       modalOpen: false,
-      abilityToDelete: false,
+      noteText: '',
+      wasDragged: false,
       testModel: [],
+      noteModal: false,
       mockImg: false,
       initialPosition: { x: 0, y: 0 },
       initialSize: { w: 0, h: 0 },
@@ -126,14 +212,14 @@ export default {
     // when component is mounted, add ability to delete
     window.addEventListener("keyup", (event) => {
       if (event.key === "Backspace") {
-        if (this.activeComponent) {
+        if (this.activeComponent !== '' && this.noteModalOpen === false) {
           this.$store.dispatch("deleteActiveComponent");
         }
       }
     });
     window.addEventListener("keyup", (event) => {
       if (event.key === "Delete") {
-        if (this.activeComponent) {
+        if (this.activeComponent !== '' && this.noteModalOpen === false) {
           this.$store.dispatch("deleteActiveComponent");
         }
       }
@@ -141,12 +227,14 @@ export default {
     // listener for the copy
     window.addEventListener("copy", () => {
       // if there is an activeComponent, copy info to state using dispatch
-      if (this.activeComponent) {
+      if (this.activeComponent !== '' && this.noteModalOpen === false) {
         this.$store.dispatch("copyActiveComponent");
       }
     });
     window.addEventListener("paste", () => {
-      this.$store.dispatch("pasteActiveComponent");
+      if (this.noteModalOpen === false){
+        this.$store.dispatch("pasteActiveComponent");
+      }
     });
   },
   computed: {
@@ -159,6 +247,8 @@ export default {
       "imagePath",
       "activeComponentObj",
       "exportAsTypescript",
+      "noteModalOpen"
+
     ]),
     // used in VueDraggableResizeable component
     activeRouteArray() {
@@ -248,11 +338,19 @@ export default {
       "updateComponentLayer",
       "updateStartingSize",
       "updateComponentSize",
+      "addActiveComponentNote",
+      "deleteActiveComponentNote",
+      "openNoteModal",
     ]),
     // records component's initial position in case of drag
     recordInitialPosition: function (e) {
       if (this.activeComponent !== e.target.id) {
-        this.setActiveComponent(e.target.id);
+        if (e.target.parentElement?.classList.contains('draggable')){
+          //console.log("using vanilla JS to WIN")
+          this.setActiveComponent(e.target.parentElement.id)
+        } else {
+          this.setActiveComponent(e.target.id);
+        }
       }
       this.initialPosition.x = this.activeComponentData.x;
       this.initialPosition.y = this.activeComponentData.y;
@@ -298,31 +396,9 @@ export default {
       ) {
         this.updateComponentPosition(payload);
       }
+      this.wasDragged = true;
+      setTimeout(()=>this.wasDragged = false, 100)
     },
-    /* Records size/position
-      Add @resizing="onResize" to VueDraggableResizable #component-box to use
-    onResize: function (x, y, width, height) {
-      this.activeComponentData.x = x
-      this.activeComponentData.y = y
-      this.activeComponentData.w = width
-      this.activeComponentData.h = height
-      this.componentMap[this.activeComponent].x = x
-      this.componentMap[this.activeComponent].y = y
-      this.componentMap[this.activeComponent].w = width
-      this.componentMap[this.activeComponent].h = height
-    },
-    */
-    /* Records component's position
-      Add @dragging="onDrag" to VueDraggableResizable #component-box to use
-    onDrag: function (x, y) {
-      console.log('ondrag')
-      this.activeComponentData.x = x
-      this.activeComponentData.y = y
-      this.componentMap[this.activeComponent].x = x
-      this.componentMap[this.activeComponent].y = y
-    },
-    */
-    // unhighlights all inactive components
     onActivated(componentData) {
       if (!componentData){
         return;
@@ -358,8 +434,25 @@ export default {
       }
     },
     // renders modal with Update Children and Layer in it
+    handleAddNotes(){
+      if (this.wasDragged === false){
+       this.openNoteModal();
+      }
+    },
     handleAddChild() {
       this.modalOpen = true;
+    },
+    submitNote(e){
+      e.preventDefault()
+      if (this.noteText === ''){
+        return;
+      }
+      this.addActiveComponentNote(this.noteText);
+      this.noteText = '';
+    },
+    deleteNote(e){
+      //currently just deletes the note based on the text alone.
+      this.deleteActiveComponentNote(e.target.innerText);
     },
     // used when user selects to add child from dropdown
     handleSelect(value) {
@@ -387,6 +480,10 @@ export default {
     copyActiveComponent() {},
   },
   watch: {
+    noteModalOpen (){
+      console.log('display note, prevent delete?', this.noteModalOpen)
+      this.noteModal = this.noteModalOpen;
+    },
     activeComponent: {
     handler(){
       this.onActivated(this.activeComponentObj);
@@ -398,6 +495,54 @@ export default {
 </script>
 
 <style scoped lang="scss">
+li{
+  display: flex;
+  font-weight: bold;
+  padding: 3px;
+}
+
+li:hover{
+  background-color: $negative;
+}
+.noteblock{
+  white-space: pre-wrap;
+  font-weight: normal;
+  width: 85%;
+  margin-left: 10px;
+  align-self: flex-end;
+}
+.noteBox{
+  background-color: $subprimary;
+  color: $menutext;
+  width: 65%;
+  height: 60vh;
+  padding: 15px;
+}
+.noteHolder{
+  background-color: $subsecondary;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  border-radius: 4px;
+  overflow-y: hidden;
+}
+.noteDisplay{
+  min-height: 30%;
+}
+.noteContainer{
+  max-height: 400px;
+  border: 1px solid $primary;
+  border-radius: 4px;
+  overflow-y: auto;
+}
+.formBox{
+  max-height: 15%;
+  justify-self: flex-end;
+}
+
 .component-title {
   position: relative;
   font-size: 16px;
@@ -459,6 +604,19 @@ export default {
 .menu {
   margin-bottom: 0px !important;
 }
+
+.compNoteLogo{
+  background: $subprimary;
+  opacity: 90%;
+  border-radius: 4px;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+}
+.compNoteLogo:hover{
+  background: $primary;
+}
+
 .component-box {
   color: $menutext;
   border: 1.2px dashed $darktext;
@@ -487,5 +645,10 @@ export default {
 }
 #counter {
   margin-top: 20px;
+}
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
 }
 </style>
