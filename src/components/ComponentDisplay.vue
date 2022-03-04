@@ -208,7 +208,8 @@ export default {
     mockBg() {
       return this.imagePath[this.activeRoute]
         ? {
-            background: `url("${this.userImage}") center/contain no-repeat rgba(223, 218, 218, 0.886)`,
+            background: `url("${this.userImage}") no-repeat rgba(223, 218, 218, 0.886) top left`,
+            "background-size": "contain"
           }
         : {};
     },
@@ -422,9 +423,13 @@ export default {
   list-style: none;
 }
 .component-display {
-  height: 95.4vh;
+  top: 0px;
+  left: 0px;
   width: 100%;
-  position: relative;
+  height: 100%;
+  min-width: 1600px;
+  min-height: 900px;
+  position: absolute;
 }
 .grid-bg {
   background-color: rgba(223, 218, 218, 0.886);

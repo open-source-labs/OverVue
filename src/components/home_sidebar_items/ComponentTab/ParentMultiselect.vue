@@ -89,6 +89,11 @@ export default {
   :global(.multiselect__option) {
     color: $menutext;
   }
+  :global(.multiselect__option--selected) {
+    background-color: $accent;
+    color: #155158;
+
+  }
   :global(.multiselect__single) {
     background-color: $subprimary;
     color: $menutext;

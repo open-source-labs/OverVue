@@ -5,7 +5,7 @@ Description:
   -->
 
 <template>
-  <q-page class="flex flex-center">
+  <q-page class="flex flex-center" id="compDisplay">
     <ComponentDisplay />
   </q-page>
 </template>
@@ -23,3 +23,12 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+ #compDisplay{
+   overflow-x: scroll;
+   overflow-y: scroll;
+   margin: 0px;
+   padding: 0px;
+ }
+</style>
