@@ -1,12 +1,15 @@
 <template>
 <!--Basic functionality here, add component, copy/paste, undo/redo, add html, saving, loading, exporting-->
-  Basic Functions Here!
+  <section id="basicFunctions">
+    <h6 class="tutorialHeading">Basic Functions Here!</h6>
+    <p class="tutorialContent">Explain some basic functionality here</p>
     <q-btn
-      id="tut-btn"
+      class="tut-btn"
       color="secondary"
       label="Advanced Functionality"
       @click="nextTab"
     />
+  </section>
 </template>
 
 <script>
@@ -24,9 +27,23 @@ export default {
 </script>
 
 <style scoped>
-#tut-btn {
-  height: 15px;
-  margin: 0 0.75rem;
+#basicFunctions{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.tutorialHeading {
+  margin: .75rem;
+}
+
+.tutorialContent {
+  margin: .75rem;
+}
+
+.tut-btn {
+  margin: 0.75rem;
   width: 50%;
 }
 </style>
