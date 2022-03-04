@@ -6,26 +6,29 @@ Description:
   -->
 
 <template>
-  <div class="inner-div">
-    <div class="border-panel">
+  <div class="edit-component-div">
+    <div>
       <p class="title">Update Component</p>
       <!-- name editor component -->
       <q-input
         @keyup.enter.native="editCompName(newName)"
-        standout="bg-secondary text-white"
+        color="white"
         bottom-slots
         v-on:keyup.delete.stop
         v-model="newName"
-        label="Edit name"
+        :placeholder="this.activeComponent"
+        dark
         dense
+        outlined
         class="input-add"
+        no-error-icon
+        reactive-rules
+        :rules="[ val => !Object.keys(this.componentMap).includes(val) || val === this.activeComponent || 'A component with this name already exists' ]"
       >
         <template v-slot:append>
           <q-btn
-            round
-            dense
             flat
-            icon="fas fa-edit"
+            icon="edit"
             @click="editCompName(newName)"
           />
         </template>
@@ -33,7 +36,7 @@ Description:
       <!-- for the icon list -->
       <VueMultiselect
         v-model="childrenSelected"
-        placeholder="Add/Remove Children"
+        placeholder="Add/remove children"
         :multiple="true"
         :close-on-select="false"
         :options="options"
@@ -44,13 +47,12 @@ Description:
         :option-height="20"
         :searchable="false"
       />
-
       <q-list
         class="accordBorder"
         active-color="secondary"
         indicator-color="secondary"
       >
-        <q-expansion-item group="accordion" label="HTML">
+        <q-expansion-item group="accordion" label="HTML Elements">
           <div class="icon-container">
             <Icons
               class="icons"
@@ -60,13 +62,14 @@ Description:
               @activeLayer="addNestedNoActive"
             />
           </div>
+          <div class="componentHTML">
+            <HTMLQueue></HTMLQueue>
+          </div>
           <br />
         </q-expansion-item>
         <!-- Props item that has AddProps component in it -->
         <q-expansion-item group="accordion" label="Props">
-          <br />
           <AddProps />
-          <br />
           <p v-if="!this.activeComponentObj.props.length">
             No props in component
           </p>
@@ -84,7 +87,6 @@ Description:
                         {{ prop }}
                       </div>
                       <q-btn
-                        round
                         flat
                         icon="highlight_off"
                         v-on:click.stop="deleteProp(prop)"
@@ -98,50 +100,23 @@ Description:
         </q-expansion-item>
         <!-- Vuex State item that will have state displayed and option to delete -->
         <q-expansion-item group="accordion" label="State">
-          <br />
           <ComponentState />
         </q-expansion-item>
         <q-expansion-item group="accordion" label="Actions">
-          <br />
           <ComponentActions />
         </q-expansion-item>
       </q-list>
-
+      <q-btn
+        id="exportButton"
+        @click="handleExportComponent"
+        label="Export currently selected"
+      />
       <q-btn
         id="deleteButton"
         @click="deleteSelectedComp(activeComponentData)"
         label="Delete currently selected"
       />
-
-      <br />
-            <q-btn
-        id="deleteButton"
-        @click="handleExportComponent"
-        label="Export currently selected"
-      />
-
-        <br />
-      <q-list
-        class="accordBorder"
-        active-color="secondary"
-        indicator-color="secondary"
-      >
-        <q-expansion-item group="accordion" label="Select another Component">
-          <VueMultiselect
-            class="multiselect"
-            v-model="value"
-            :options="options"
-            :searchable="true"
-            :close-on-select="true"
-            :max-height="90"
-            :option-height="20"
-            @select="handleSelect"
-            placeholder="Select/Search component"
-          >
-            <span slot="noResult">No components found.</span>
-          </VueMultiselect>
-        </q-expansion-item>
-      </q-list>
+      
     </div>
   </div>
 </template>
@@ -320,6 +295,40 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.edit-component-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  margin: 20px;
+}
+
+.q-field {
+  margin: 30px 0 10px;
+}
+
+.q-expansion-item {
+  margin-bottom: 10px;
+}
+
+.q-expansion-item__content {
+  padding: 20px 0;
+}
+
+.componentHTML {
+  height: 100px;
+  margin-top: 20px;
+  padding: 10px;
+  background-color: rgba($subsecondary, .5);
+  overflow-y: scroll;
+  border: 1px solid rgba(245, 245, 245, 0.3);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  resize: vertical;
+}
+
 .toggleRow {
   display: flex;
   /* align-items: center; */
@@ -335,7 +344,7 @@ export default {
 
 /* modifies each list element */
 .q-list {
-  margin-bottom: 0.5rem;
+  margin: 30px 0;
   border-radius: 5px;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 3px 6px 0 rgba(0, 0, 0, 0.13);
 }
@@ -368,19 +377,20 @@ p {
   align-self: flex-end;
 }
 
-.editName {
-  color: white;
+#deleteButton {
+  background-color: rgba($negative, .2);
+  border: 1px solid $negative;
+  color: $negative;
+  width: 100%;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 
-#deleteButton {
+#exportButton {
   background-color: $secondary;
   color: white;
-}
-
-hr {
-  border: 2px solid black;
-  margin-left: -10px;
-  margin-right: -10px;
+  width: 100%;
+  margin-bottom: 30px;
 }
 
 .border-panel {
@@ -392,11 +402,6 @@ hr {
   border: 3px solid black;
   border-radius: 10px;
   background-color: $subsecondary;
-}
-
-.accordBorder {
-  border: 2px solid black;
-  border-radius: 4px;
 }
 
 .inner-div {

@@ -27,12 +27,14 @@ main {
 
 // items in component list + route list
 .list-item {
-    background: $accent;
+    background: $secondary;
     color: white;
 }
-.q-field--standout .q-field__control {
-    background: $menuinput;  
-}
+
+.q-field--outlined .q-field__control {
+    padding: 0 0 0 12px;
+  }
+
 .gradient {
     background: rgb(34, 35, 36);
 }

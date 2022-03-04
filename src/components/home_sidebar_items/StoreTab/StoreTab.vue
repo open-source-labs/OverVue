@@ -22,18 +22,17 @@ Functionality:
         <q-tab-panel name="state">
           <q-input
             @keyup.enter.native="createNewState(textState)"
-            standout="bg-secondary text-white"
-            bottom-slots
+            color="white"
+            dark
+            outlined
             v-model="textState"
-            label="Create State in Store"
+            label="Add state to store"
             dense
             class="input-add"
             v-on:keyup.delete.stop
           >
             <template v-slot:append>
               <q-btn
-                round
-                dense
                 flat
                 icon="add"
                 @click="createNewState(textState)"
@@ -51,9 +50,9 @@ Functionality:
                       {{ state }}
                     </div>
                     <q-btn
-                      round
                       flat
-                      icon="highlight_off"
+                      icon="cancel"
+                      class="inner-button"
                       v-on:click.stop="deleteState(state)"
                     />
                   </div>
@@ -67,18 +66,18 @@ Functionality:
           <!-- creating a new action with input -->
           <q-input
             @keyup.enter.native="createNewAction(textAction)"
-            standout="bg-secondary text-white"
+            color="white"
+            dark
+            outlined
             bottom-slots
             v-model="textAction"
-            label="Create Action in Store"
+            label="Add action to store"
             dense
             class="input-add"
             v-on:keyup.delete.stop
           >
             <template v-slot:append>
               <q-btn
-                round
-                dense
                 flat
                 icon="add"
                 @click="createNewAction(textAction)"
@@ -173,11 +172,6 @@ i {
   font-size: 11px;
 }
 
-.q-btn {
-  font-size: 8px;
-  margin: 5px;
-}
-
 // styling for the entire Dashboard
 .q-footer {
   transition-timing-function: ease-in;
@@ -213,7 +207,7 @@ i {
 
 .q-tab-panel {
   height: 100%;
-  // matchs the code editor bg
+  // matches the code editor bg
   background: $subprimary;
 }
 
@@ -221,14 +215,6 @@ i {
 .q-tab-panels {
   height: 100%;
   padding: 0 !important;
-}
-
-.q-tabs {
-  background: #11120f;
-}
-
-.toolbar-background {
-  background: black;
 }
 
 #store-cards {
@@ -240,5 +226,12 @@ i {
 .html-bg {
   // give html background color of grey
   background-color: #202122;
+}
+
+.component-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>

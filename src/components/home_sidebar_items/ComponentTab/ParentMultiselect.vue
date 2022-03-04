@@ -19,8 +19,6 @@ Description:
       :searchable="true"
     >
      <template v-slot:noResult>No components found.</template>
-      <!-- <slot name="noResult">Hello world</slot> -->
-      <!-- refactor slot syntax here -->
     </VueMultiselect>
   </div>
 </template>

@@ -85,29 +85,35 @@ Description:
     </q-header>
     
     <q-drawer v-model="left" side="left" behavior="desktop" bordered>
-      
-      <!-- QTabs setup, not sure what class to set yet -->
-      <q-tabs
-        v-model="tab"
-        dense
-        class="bg-subaccent text-white"
-        active-color="secondary"
-        indicator-color="secondary"
+      <q-scroll-area
+        visible
+        dark
+        style="height: 100%; max-width: 100%;"
+        bar-style="{ left: '10px' }"
       >
-        <q-tab name="component" label="Component"></q-tab>
-        <q-tab name="store" label="Store"></q-tab>
-      </q-tabs>
-      <!-- individual tab panel's setup -->
-      <q-tab-panels v-model="tab" animated class="html-bg text-white fit">
-        <!--component tab will have creator and editor components -->
-        <q-tab-panel name="component" class="left-panel fit">
-          <ComponentTab />
-        </q-tab-panel>
-        <!-- store will display store elements -->
-        <q-tab-panel name="store" class="left-panel fit">
-          <StoreTab />
-        </q-tab-panel>
-      </q-tab-panels>
+      <!-- QTabs setup, not sure what class to set yet -->
+        <q-tabs
+          v-model="tab"
+          dense
+          class="bg-subaccent text-white"
+          active-color="secondary"
+          indicator-color="secondary"
+        >
+          <q-tab name="component" label="Component"></q-tab>
+          <q-tab name="store" label="Store"></q-tab>
+        </q-tabs>
+        <!-- individual tab panel's setup -->
+        <q-tab-panels v-model="tab" animated class="html-bg text-white fit">
+          <!--component tab will have creator and editor components -->
+          <q-tab-panel name="component" class="left-panel fit">
+            <ComponentTab />
+          </q-tab-panel>
+          <!-- store will display store elements -->
+          <q-tab-panel name="store" class="left-panel fit">
+            <StoreTab />
+          </q-tab-panel>
+        </q-tab-panels>
+       </q-scroll-area>
     </q-drawer>
     
     <!-- rendering dashboard as right sidebar instead of as a footer -->
@@ -398,6 +404,6 @@ q-btn > i {
 }
 
 .scroll {
-  overflow: hidden;
+  // overflow: hidden;
 }
 </style>

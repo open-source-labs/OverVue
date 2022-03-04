@@ -151,7 +151,7 @@ li {
 
 .fa-trash:hover {
   cursor: pointer;
-  color: red;
+  color: $darktext;
 }
 
 .fa-trash {
@@ -169,7 +169,7 @@ li {
 
 .fa-angle-double-down:hover {
   cursor: pointer;
-  color: #41B883;
+  color: $darktext;
 }
 
 .fa-chevron-up {

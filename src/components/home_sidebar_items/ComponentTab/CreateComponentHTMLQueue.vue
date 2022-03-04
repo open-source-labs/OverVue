@@ -157,7 +157,7 @@ li {
 
 .fa-trash:hover {
   cursor: pointer;
-  color: #155158;
+  color: $darktext;
 }
 
 .fa-trash {

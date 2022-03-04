@@ -189,17 +189,18 @@ export default {
   background-color: $secondary;
   text-align: center;
   line-height: 28px;
+  border-radius: 4px;
 }
 
 .tree-node-active {
   background-color: $accent;
-  color: #155158;
-  border: 2px solid rgb(196, 154, 19);
+  color: $darktext;
+  border: 2px solid white;
 }
 
 .tree-node-activeRoute {
   background-color: #155158;
-  border: 2px solid rgb(196, 154, 19);
+  border: 2px solid white;
 }
 
 

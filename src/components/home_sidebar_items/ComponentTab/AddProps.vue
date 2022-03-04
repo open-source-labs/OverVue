@@ -2,16 +2,18 @@
   <div>
     <q-input
       @keyup.enter.native="createNewProp(textProps)"
-      standout="bg-secondary text-white"
+      color="white"
+      dark
+      outlined
       bottom-slots
       v-model="textProps"
-      label="Create Prop"
+      label="Create new prop"
       dense
       class="input-add"
       v-on:keyup.delete.stop
     >
       <template v-slot:append>
-        <q-btn round dense flat icon="add" @click="createNewProp(textProps)" />
+        <q-btn dense flat icon="add" @click="createNewProp(textProps)" />
       </template>
     </q-input>
 
@@ -19,7 +21,7 @@
       <VueMultiselect
         v-model="selectProps"
         class="multiselect"
-        placeholder="Select Props for Component"
+        placeholder="Select from existing props"
         :multiple="true"
         :close-on-select="false"
         :max-height="180"
@@ -94,3 +96,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+  .q-field {
+    margin: 30px 0 10px;
+  }
+</style>
