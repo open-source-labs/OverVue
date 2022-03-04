@@ -21,8 +21,8 @@ Functionality:
         <!-- store state tab -->
         <q-tab-panel name="state">
           <q-input
-            @keyup.enter.native="createNewState(textState)"
-            color="white"
+            @keyup.enter="createNewState(textState)"
+            color="menutext"
             dark
             outlined
             v-model="textState"
@@ -31,13 +31,13 @@ Functionality:
             class="input-add"
             v-on:keyup.delete.stop
           >
-            <template v-slot:append>
-              <q-btn
-                flat
-                icon="add"
-                @click="createNewState(textState)"
-              />
-            </template>
+          <template v-slot:append>
+            <q-btn
+              flat
+              icon="add"
+              @click="createNewState(textState)"
+            />
+          </template>
           </q-input>
           <p v-if="!this.stateOptions.length">No state in store</p>
 
@@ -50,8 +50,8 @@ Functionality:
                       {{ state }}
                     </div>
                     <q-btn
-                      flat
-                      icon="cancel"
+                      round 
+                      flat icon="highlight_off"
                       class="inner-button"
                       v-on:click.stop="deleteState(state)"
                     />
@@ -65,8 +65,8 @@ Functionality:
         <q-tab-panel name="actions">
           <!-- creating a new action with input -->
           <q-input
-            @keyup.enter.native="createNewAction(textAction)"
-            color="white"
+            @keyup.enter="createNewAction(textAction)"
+            color="menutext"
             dark
             outlined
             bottom-slots

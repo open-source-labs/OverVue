@@ -18,13 +18,14 @@ Description:
           v-on:keyup.delete.stop
           v-model="componentNameInputValue"
           label="Set component name *"
-          color="white"
+          color="menutext"
           dark
           dense
           outlined
           item-aligned
           padding="5px"
           class="input-add"
+          no-error-icon
           reactive-rules
           :rules="[ val => val.length != 0 || 'Please set a component name', val => !Object.keys(this.componentMap).includes(val) || 'A component with this name already exists' ]"
         ></q-input>

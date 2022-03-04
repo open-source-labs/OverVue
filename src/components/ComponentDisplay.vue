@@ -39,7 +39,7 @@ Description:
       <q-menu context-menu>
         <q-list color="black" class="menu">
             <q-item clickable v-ripple v-close-popup @click="handleExportComponent">
-            <q-item-section style="color: white"
+            <q-item-section style="color: menutext"
               >Export Component</q-item-section
             >
             <q-item-section avatar>
@@ -47,7 +47,7 @@ Description:
                       </q-item-section>
           </q-item>
           <q-item clickable v-ripple v-close-popup @click="handleAddChild">
-            <q-item-section style="color: white"
+            <q-item-section style="color: menutext"
               >Update Children</q-item-section
             >
             <q-item-section avatar>
@@ -55,7 +55,7 @@ Description:
             </q-item-section>
           </q-item>
           <q-item clickable v-ripple v-close-popup>
-            <q-item-section class="layer" style="color: white"
+            <q-item-section class="layer" style="color: menutext"
               >Layer</q-item-section
             >
             <q-btn
@@ -65,7 +65,7 @@ Description:
               label="-"
               @click="(e) => handleLayer(e)"
             />
-            <p id="counter" style="color: white">{{ componentData.z }}</p>
+            <p id="counter" style="color: menutext">{{ componentData.z }}</p>
             <q-btn
               class="btn"
               color="transparent"
@@ -403,7 +403,7 @@ export default {
   top: -18px;
   left: 2px;
   color: black;
-  -webkit-text-stroke: 0.4px white;
+  -webkit-text-stroke: 0.4px $menutext;
   font-weight: 800;
   line-height: 1.2;
   z-index: -1;
@@ -455,9 +455,9 @@ export default {
   margin-bottom: 0px !important;
 }
 .component-box {
-  color: white;
-  border: 1.2px dashed rgb(231, 203, 75);
-  background-color: rgba(172, 83, 83, 0.42);
+  color: $menutext;
+  border: 1.2px dashed $darktext;
+  background-color: rgba($darktext, .42);
   -webkit-transition: background-color 200ms linear;
   -ms-transition: background-color 200ms linear;
   transition: background-color 200ms linear;
@@ -477,7 +477,7 @@ export default {
 .btn:hover,
 .btn:focus,
 .btn:active {
-  color: white;
+  color: $menutext;
   background-color: transparent;
 }
 #counter {

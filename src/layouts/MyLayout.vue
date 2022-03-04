@@ -253,18 +253,18 @@ export default {
 }
 
 .text-white {
-  color: white;
+  color: $menutext;
 }
 
 q-btn > i {
-  color: white;
+  color: $menutext;
 }
 
 #undo-redo {
   display: flex;
   justify-content: center;
   align-content: stretch;
-  color: white;
+  color: $menutext;
 }
 
 #undo-redo > .q-btn {

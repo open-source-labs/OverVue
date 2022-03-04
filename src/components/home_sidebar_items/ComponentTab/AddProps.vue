@@ -1,8 +1,8 @@
 <template>
   <div>
     <q-input
-      @keyup.enter.native="createNewProp(textProps)"
-      color="white"
+      @keyup.enter="createNewProp(textProps)"
+      color="menutext"
       dark
       outlined
       bottom-slots
@@ -31,7 +31,7 @@
         :searchable="false"
         @search-change="stopDelete($event)"
       >
-        <span slot="noResult">No props found.</span>
+        <template v-slot:noResult>No props found.</template>
       </VueMultiselect>
     </div>
     <br />

@@ -5,7 +5,8 @@ Description:
   -->
 
 <template>
-  <div class="home-sidebar">
+  <div>
+    <p>Click to view route</p>
     <a
       :class="route === activeRoute ? 'panel-block is-active' : 'panel-block'"
       v-for="route in Object.keys(routes)"
@@ -47,9 +48,5 @@ export default {
 </script>
 
 <style scoped>
-.route-view {
-  margin: 1rem;
-  display: flex;
-  flex-direction: column;
-}
+
 </style>

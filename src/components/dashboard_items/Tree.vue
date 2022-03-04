@@ -185,7 +185,7 @@ export default {
   padding: 8px;
   margin: 6px;
   min-height: 28px;
-  color: #FFFFFF;
+  color: $menutext;
   background-color: $secondary;
   text-align: center;
   line-height: 28px;
@@ -195,12 +195,12 @@ export default {
 .tree-node-active {
   background-color: $accent;
   color: $darktext;
-  border: 2px solid white;
+  border: 2px solid $menutext;
 }
 
 .tree-node-activeRoute {
-  background-color: #155158;
-  border: 2px solid white;
+  background-color: $darktext;
+  border: 2px solid $menutext;
 }
 
 

@@ -80,24 +80,24 @@ export default {
   }
   :global(.multiselect__input) {
     background-color: $subprimary;
-    color: white;
+    color: $menutext;
   }
   :global(.multiselect__content) {
     background-color: $subprimary;
-    color: white;
+    color: $menutext;
   }
   :global(.multiselect__option) {
-    color: white;
+    color: $menutext;
   }
   :global(.multiselect__single) {
     background-color: $subprimary;
-    color: white;
+    color: $menutext;
   }
   :global(.multiselect__single:focus) {
     background-color: $subprimary;
-    color: white;
+    color: $menutext;
   }
   :global(.multiselect__input::placeholder) {
-  color: white;
+  color: $menutext;
 }
 </style>

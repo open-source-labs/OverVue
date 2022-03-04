@@ -8,32 +8,29 @@ Description:
 <template>
   <div class="edit-component-div">
     <div>
-      <button class="menu-link" @click="console.log(click)"><i class="fa fa-arrow-left" aria-hidden="true"></i> Create Component Menu</button>
-      <p class="title">Update Component</p>
-      <!-- name editor component -->
+      <button class="menu-link" @click="resetActiveComponent"><i class="fa fa-arrow-left" aria-hidden="true"></i> Create Component Menu</button>
+      <q-card class="expansion-item" dark flat>
+        <div
+          class="text-body2"
+          style="background: #272a2a; padding: 12px"
+        >Update Component</div>
+      </q-card>      <!-- name editor component -->
       <q-input
-        @keyup.enter.native="editCompName(newName)"
-        color="white"
-        bottom-slots
+        @keyup.enter="editCompName(newName)"
         v-on:keyup.delete.stop
         v-model="newName"
         :placeholder="this.activeComponent"
         dark
         dense
         outlined
+        item-aligned
+        padding="5px"
         class="input-add"
+        style="margin-bottom: 30px"
         no-error-icon
         reactive-rules
         :rules="[ val => !Object.keys(this.componentMap).includes(val) || val === this.activeComponent || 'A component with this name already exists' ]"
-      >
-        <template v-slot:append>
-          <q-btn
-            flat
-            icon="edit"
-            @click="editCompName(newName)"
-          />
-        </template>
-      </q-input>
+      ></q-input>
       <!-- for the icon list -->
       <VueMultiselect
         v-model="childrenSelected"
@@ -307,7 +304,7 @@ export default {
 
 .menu-link{
   background-color: $subprimary;
-  color: white;
+  color: $menutext;
   border: 1px solid $subprimary;
   margin-bottom: 20px; 
   padding: 0;
@@ -374,17 +371,17 @@ export default {
 }
 
 p {
-  color: white;
+  color: $menutext;
 }
 
 .title {
   font-size: 20px;
   font-weight: bold;
-  color: white;
+  color: $menutext;
 }
 
 .toggleText {
-  color: white;
+  color: $menutext;
 }
 
 .toggle {
@@ -402,7 +399,7 @@ p {
 
 #exportButton {
   background-color: $secondary;
-  color: white;
+  color: $menutext;
   width: 100%;
   margin-bottom: 30px;
 }

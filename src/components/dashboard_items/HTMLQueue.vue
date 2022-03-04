@@ -142,7 +142,7 @@ li {
   min-width: 175px;
   width: 30%;
   border-radius: 0.5cm;
-  border: 2px solid white;
+  border: 2px solid $menutext;
   background-color: $secondary;
   height: 35px;
   padding-top: 6px;

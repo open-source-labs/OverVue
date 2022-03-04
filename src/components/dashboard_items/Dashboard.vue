@@ -17,10 +17,7 @@ Description:
       dense
       breakpoint="1050"
     >
-      <q-tab
-        name="detail"
-        label="Component Details"
-        id="label-text"
+      <q-tab name="detail" label="Component Details" id="label-text"
         ></q-tab>
       <q-tab name="tree" label="Project Tree" id="label-text"
         ></q-tab>
@@ -146,18 +143,10 @@ i {
   padding: 5px;
 }
 
-/* this class selector does not change anything */
-.q-tab__label {
-  /* // font-size not changing */
-  font-size: 10px !important;
-  line-height: 1.718em;
-  font-weight: 500;
-}
-
 /* // changes the tab label styling */
 #label-text {
   font-size: 4px !important;
-  text-transform: capitalize;
+  text-transform: uppercase;
 }
 
 .q-tab-panel {
