@@ -7,7 +7,7 @@
 -->
 
 <template>
-  <div>
+  <div class="selection-container">
     <div id="state-select">
       <VueMultiselect
         v-model="selectState"
@@ -111,3 +111,16 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+  .selection-container {
+    padding: 30px 0;
+  }
+
+  .component-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+</style>

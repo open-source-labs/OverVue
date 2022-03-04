@@ -5,18 +5,30 @@ Includes functionality to:
 -->
 
 <template>
-  <div>
+  <div class="route-display">
     <q-input
       @keyup.enter="handleEnterKeyPress"
-      standout="bg-secondary text-white"
+      color="white"
+      dark
+      outlined
       bottom-slots
       v-model="newRoute"
-      label="Enter new route"
+      label="Add new route"
       dense
+      no-error-icon
       class="input-add"
       @click="resetActiveComponent"
-    ></q-input>
-
+      reactive-rules
+      :rules="[val => !Object.keys(this.componentMap).includes(val) || 'A component with this name already exists' ]"
+    >
+    <template v-slot:append>
+      <q-btn
+        flat
+        icon="add"
+        @click="handleEnterKeyPress"
+      />
+    </template>
+    </q-input>
     <Routes></Routes>
   </div>
 </template>
@@ -65,13 +77,8 @@ export default {
 
 <style scoped>
 .route-display {
-  border: 1px solid rgba(208, 208, 208, 0.694);
   overflow: auto;
-  height: 60%;
-  padding: 0;
-  margin: 1rem;
-  padding: 0.5rem;
-  border-radius: 5px;
+  padding: 1rem;
 }
 
 i:hover {

@@ -1,5 +1,5 @@
 <template>
-  <div class="fullscreen bg-blue text-white text-center q-pa-md flex flex-center">
+  <div class="fullscreen bg-blue text-center q-pa-md flex flex-center" style="color: menutext">
     <div>
       <div style="font-size: 30vh">
         404
@@ -11,7 +11,7 @@
 
       <q-btn
         class="q-mt-xl"
-        color="white"
+        color="menutext"
         text-color="blue"
         unelevated
         to="/"

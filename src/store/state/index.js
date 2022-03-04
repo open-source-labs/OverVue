@@ -56,8 +56,8 @@ const newState = {
   copiedComponent: {},
   copyNumber: 0,
   pastedComponent: {},
-
-  exportAsTypescript: "off",
+  exportAsTypescript: 'off',
+  showTutorial: true,
 }
 
 // closured method to ensure we only ever write the default state ONCE

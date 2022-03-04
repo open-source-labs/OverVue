@@ -22,6 +22,10 @@ const mutations = {
     payload.store.replaceState(cloneDeep(payload.initialState));
   },
 
+  [types.TOGGLE_TUTORIAL]: (state) => {
+    state.showTutorial = !state.showTutorial;
+  },
+
   // *** ROUTES *** //////////////////////////////////////////////
   [types.ADD_ROUTE]: (state, payload) => {
     state.routes = {
@@ -282,9 +286,11 @@ const mutations = {
       const pastedComponent = { ...copiedComponent };
       pastedComponent.x = 20;
       pastedComponent.y = 20;
-      state.componentMap[
-        (pastedComponent.componentName += ` (${state.copyNumber})`)
-      ] = pastedComponent;
+      pastedComponent.componentName += ` (${state.copyNumber})`
+      while(state.componentMap.hasOwnProperty(pastedComponent.componentName)){
+        pastedComponent.componentName += ` copy`
+      }
+      state.componentMap[pastedComponent.componentName] = pastedComponent;
 
       // increment copyNumber
       state.copyNumber += 1;
@@ -642,36 +648,40 @@ const mutations = {
   },
 
   [types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE]: (state, payload) => {
+    //temp is the activeComponent's children array
+    if (state.activeComponent === payload){return}
     const temp = state.componentMap[state.activeComponent].children;
     // delete block
-    if (payload.length < temp.length) {
-      const child = temp.filter((el) => !payload.includes(el));
+    if ((temp.filter((el) => payload === el)).length > 0) { 
+      //commented stuff below does not seem necessary for the functionality of this if block.
+      //children will be current children EXCLUDING payload
+      // const child = temp.filter((el) => payload.includes(el));
+      console.log('delete block')
       let childCount = 0;
       const components = Object.values(state.componentMap);
       for (const comp of components) {
-        if (comp.children.includes(child[0])) childCount++;
+        if (comp.children.includes(payload)) childCount++; //if the component has 2 parents, do not assign the component to the route
       }
-      state.componentMap[state.activeComponent].children = payload;
+        state.componentMap[state.activeComponent].children = (temp.filter((el) => payload !== el));
       if (childCount <= 1) {
-        state.componentMap[state.activeRoute].children.push(
-          ...temp.filter((el) => !payload.includes(el))
-        );
+        state.componentMap[state.activeRoute].children.push(...temp.filter((el) => payload === el));
       }
-      const newHTMLList = state.componentMap[
-        state.activeComponent
-      ].htmlList.filter((el) => el !== child[0]);
-      state.componentMap[state.activeComponent].htmlList = newHTMLList;
-      const newMap = { ...state.componentMap };
-      state.componentMap = { ...newMap };
-      delete state.componentMap[child[0]].parent[state.activeComponent];
+      // const newHTMLList = state.componentMap[
+      //   state.activeComponent
+      // ].htmlList.filter((el) => el !== child[0]);
+      // state.componentMap[state.activeComponent].htmlList = newHTMLList;
+      // const newMap = { ...state.componentMap };
+      // state.componentMap = { ...newMap };
+      delete state.componentMap[payload].parent[state.activeComponent];
       // add block
     } else {
-      const child = payload.filter((el) => !temp.includes(el));
-      state.componentMap[state.activeComponent].children = payload;
+      const child = temp;
+      child.push(payload)
+      state.componentMap[state.activeComponent].children = child;
       state.componentMap[state.activeRoute].children = state.componentMap[
         state.activeRoute
-      ].children.filter((el) => !payload.includes(el));
-      state.componentMap[child[0]].parent[state.activeComponent] =
+      ].children.filter((el) => payload !== el);
+      state.componentMap[child[child.length-1]].parent[state.activeComponent] =
         state.componentMap[state.activeComponent];
     }
   },

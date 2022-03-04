@@ -6,15 +6,15 @@ Description:
 
 <template>
   <section class="html-queue">
-    <i v-if='!this.activeLayer.id' class="fas fa fa-chevron-up fa-md" @click="setParentLayer"></i>
-    <span class='list-title' v-if='this.activeLayer.id !== ""'> Viewing Elements in '{{ depth }}' </span>
-    <span class='list-title' v-else-if='!this.activeComponent'></span>
-    <hr>
+    <!-- <i v-if='!this.activeLayer.id' class="fas fa fa-chevron-up fa-md" @click="setParentLayer"></i> -->
+    <!-- <span class='list-title' v-if='this.activeLayer.id !== ""'> Viewing Elements in '{{ depth }}' </span>
+    <span class='list-title' v-else-if='!this.activeComponent'></span> -->
+    <!-- <hr> -->
     <div
       group="people"
       class="list-group"
     >
-      <p v-if='!this.componentMap[this.activeComponent]?.htmlList.length'>No HTML elements in component</p>
+      <!-- <p v-if='!this.componentMap[this.activeComponent]?.htmlList.length'>No HTML elements in component</p> -->
       <div
       :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'"
       @dblclick.self="setActiveElement(element)"
@@ -33,8 +33,8 @@ Description:
 <script>
 
 import { mapState, mapActions } from 'vuex'
-import { setSelectedElementList, deleteSelectedElement, deleteFromComponentHtmlList } from '../../store/types'
-import { breadthFirstSearch } from '../../utils/search.util'
+import { setSelectedElementList, deleteSelectedElement, deleteFromComponentHtmlList } from '../../../store/types'
+import { breadthFirstSearch } from '../../../utils/search.util'
 
 export default {
   name: 'HTMLQueue',
@@ -123,6 +123,12 @@ li {
   list-style-type: none;
 }
 
+.list-group {
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 .list-group-item {
   display: inline-block;
   margin: 2px 1.5%;
@@ -169,7 +175,7 @@ li {
 
 .fa-angle-double-down:hover {
   cursor: pointer;
-  color: $darktext;
+  color: #41B883;
 }
 
 .fa-chevron-up {

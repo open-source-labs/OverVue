@@ -6,7 +6,8 @@ Description:
   -->
 
 <template>
-  <q-card id="dashboard-cards" class="bord">
+<span v-if="showTutorial === false">
+  <q-card id="dashboard-cards" >
     <q-tabs
       v-model="tab"
       class="bg-subaccent text-white"
@@ -16,21 +17,14 @@ Description:
       dense
       breakpoint="1050"
     >
-      <q-tab
-        name="detail"
-        label="Component Details"
-        id="label-text"
-        style="border-right: 3px solid black"
-        ><i class="fas fa-code"></i
-      ></q-tab>
+      <q-tab name="detail" label="Component Details" id="label-text"
+        ></q-tab>
       <q-tab name="tree" label="Project Tree" id="label-text"
-        ><i class="fas fa-code-branch fa-flip-vertical"
-      /></q-tab>
+        ></q-tab>
       <q-tab name="routes" label="Routes" id="label-text"
-        ><i class="fas fa-project-diagram"></i
-      ></q-tab>
+        ></q-tab>
     </q-tabs>
-    <q-tab-panels v-model="tab" animated class="html-bg text-white">
+    <q-tab-panels v-model="tab" animated>
       <q-tab-panel name="detail">
         <ComponentDetails />
       </q-tab-panel>
@@ -43,6 +37,10 @@ Description:
       </q-tab-panel>
     </q-tab-panels>
   </q-card>
+</span>
+<span v-else>
+  <GetStarted />
+</span>
 </template>
 
 <script>
@@ -50,12 +48,14 @@ import { mapState, mapActions } from "vuex";
 import Tree from "./Tree.vue";
 import ComponentDetails from "./ComponentDetails.vue";
 import RouteDisplay from "./RouteDisplay.vue";
+import GetStarted from "./GetStarted.vue";
 
 export default {
   components: {
     Tree,
     ComponentDetails,
     RouteDisplay,
+    GetStarted,
   },
   computed: {
     ...mapState([
@@ -63,6 +63,7 @@ export default {
       "componentNameInputValue",
       "selectedElementList",
       "activeHTML",
+      "showTutorial",
     ]),
   },
   data() {
@@ -119,15 +120,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-i {
-  font-size: 11px;
-}
 
 .home-sidebar {
-  margin: 1rem;
+  padding: 1rem;
   justify-content: center;
   border-radius: 5px;
-  padding: 0px;
   background: $subsecondary;
 }
 
@@ -142,37 +139,29 @@ i {
   padding: 5px;
 }
 
-/* this class selector does not change anything */
-.q-tab__label {
-  /* // font-size not changing */
-  font-size: 10px !important;
-  line-height: 1.718em;
-  font-weight: 500;
-}
-
 /* // changes the tab label styling */
 #label-text {
   font-size: 4px !important;
-  text-transform: capitalize;
+  text-transform: uppercase;
 }
 
 .q-tab-panel {
-  /* // matchs the code editor bg */
+  /* // matches the code editor bg */
   background: $subprimary;
 }
 
 // changes the length of the tab panels
 .q-tab-panels {
   padding: 0px !important;
-  border-top: 3px solid black;
+  background: $subprimary;
 }
 
 .q-tabs {
-  background: #11120f;
+  background: $subprimary;
 }
 
 .toolbar-background {
-  background: black;
+  background: $subprimary;
 }
 
 #dashboard-cards {
@@ -180,19 +169,11 @@ i {
   flex-direction: column;
   height: 100%;
   border-radius: 0px;
-  background: #737578;
-}
-.html-bg {
-  /* // give html background color of grey */
-  background-color: #202122;
+  background: $subprimary;
 }
 
 .inner-div {
   height: 100%;
 }
 
-.bord {
-  border-left: 3px solid black;
-  border-right: 3px solid black;
-}
 </style>

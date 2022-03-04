@@ -39,7 +39,7 @@ Description:
       <q-menu context-menu>
         <q-list color="black" class="menu">
             <q-item clickable v-ripple v-close-popup @click="handleExportComponent">
-            <q-item-section style="color: white"
+            <q-item-section style="color: menutext"
               >Export Component</q-item-section
             >
             <q-item-section avatar>
@@ -47,7 +47,7 @@ Description:
                       </q-item-section>
           </q-item>
           <q-item clickable v-ripple v-close-popup @click="handleAddChild">
-            <q-item-section style="color: white"
+            <q-item-section style="color: menutext"
               >Update Children</q-item-section
             >
             <q-item-section avatar>
@@ -55,7 +55,7 @@ Description:
             </q-item-section>
           </q-item>
           <q-item clickable v-ripple v-close-popup>
-            <q-item-section class="layer" style="color: white"
+            <q-item-section class="layer" style="color: menutext"
               >Layer</q-item-section
             >
             <q-btn
@@ -65,7 +65,7 @@ Description:
               label="-"
               @click="(e) => handleLayer(e)"
             />
-            <p id="counter" style="color: white">{{ componentData.z }}</p>
+            <p id="counter" style="color: menutext">{{ componentData.z }}</p>
             <q-btn
               class="btn"
               color="transparent"
@@ -208,7 +208,8 @@ export default {
     mockBg() {
       return this.imagePath[this.activeRoute]
         ? {
-            background: `url("${this.userImage}") center/contain no-repeat rgba(223, 218, 218, 0.886)`,
+            background: `url("${this.userImage}") no-repeat rgba(223, 218, 218, 0.886) top left`,
+            "background-size": "contain"
           }
         : {};
     },
@@ -396,14 +397,14 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .component-title {
   position: relative;
   font-size: 16px;
   top: -18px;
   left: 2px;
   color: black;
-  -webkit-text-stroke: 0.4px white;
+  -webkit-text-stroke: 0.4px $menutext;
   font-weight: 800;
   line-height: 1.2;
   z-index: -1;
@@ -422,50 +423,54 @@ export default {
   list-style: none;
 }
 .component-display {
-  height: 95.4vh;
+  top: 0px;
+  left: 0px;
   width: 100%;
-  position: relative;
+  height: 100%;
+  min-width: 1600px;
+  min-height: 900px;
+  position: absolute;
 }
 .grid-bg {
   background-color: rgba(223, 218, 218, 0.886);
   background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
   background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
-  background-image: -webkit-linear-gradient(white 2px, transparent 2px),
-    -webkit-linear-gradient(0, white 2px, transparent 2px),
+  background-image: -webkit-linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px),
+    -webkit-linear-gradient(0, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
     -webkit-linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
     -webkit-linear-gradient(0, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
-  background-image: -moz-linear-gradient(white 2px, transparent 2px),
-    -moz-linear-gradient(0, white 2px, transparent 2px),
+  background-image: -moz-linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px),
+    -moz-linear-gradient(0, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
     -moz-linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
     -moz-linear-gradient(0, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
-  background-image: linear-gradient(white 2px, transparent 2px),
-    linear-gradient(90deg, white 2px, transparent 2px),
+  background-image: linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
     linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
-  -pie-background: linear-gradient(white 2px, transparent 2px) -2px -2px / 100px,
-    linear-gradient(90deg, white 2px, transparent 2px) -2px -2px / 100px,
+  -pie-background: linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px) -2px -2px / 100px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.8) 1px, transparent 1px) -2px -2px / 100px,
     linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px) -1px -1px /
       20px,
     linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px) -1px -1px /
       20px,
-    #269;
+    $secondary;
   behavior: url(/pie/PIE.htc);
 }
 .menu {
   margin-bottom: 0px !important;
 }
 .component-box {
-  color: white;
-  border: 1.2px dashed rgb(231, 203, 75);
-  background-color: rgba(172, 83, 83, 0.42);
+  color: $menutext;
+  border: 1.2px dashed $darktext;
+  background-color: rgba($darktext, .42);
   -webkit-transition: background-color 200ms linear;
   -ms-transition: background-color 200ms linear;
   transition: background-color 200ms linear;
   position: absolute;
 }
 .active {
-  background-color: rgba(105, 179, 190, 0.514);
-  border: 1px dashed rgb(227, 203, 71);
+  background-color: $accent;
+  border: 1px dashed $accent;
 }
 .btn {
   font-size: 25px;
@@ -477,7 +482,7 @@ export default {
 .btn:hover,
 .btn:focus,
 .btn:active {
-  color: white;
+  color: $menutext;
   background-color: transparent;
 }
 #counter {

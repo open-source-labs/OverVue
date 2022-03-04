@@ -12,24 +12,19 @@ Description:
       :config="treeConfig"
       ref="tree"
       @wheel="zoom">
-      <template v-slot:node="{ node, collapsed }">
+      <template v-slot:node="{ node }">
         <span v-if="this.activeComponent === node.value"
           class="tree-node-active"
-          :style="{ border: collapsed ? '2px solid grey' : '' }"
-          
           >
           {{ node.value }}
         </span>
           <span v-else-if="this.activeRoute === node.value"
           class="tree-node-activeRoute"
-          :style="{ border: collapsed ? '2px solid grey' : '' }"
-          
           >
           {{ node.value }}
         </span>
         <span v-else
           class="tree-node"
-          :style="{ border: collapsed ? '2px solid grey' : '' }"
           @click="activateNode(node.value)"
           >
           {{ node.value }}
@@ -40,7 +35,7 @@ Description:
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState } from "vuex";
 import VueTree from "@ssthouse/vue3-tree-chart";
 import "@ssthouse/vue3-tree-chart/dist/vue3-tree-chart.css";
 
@@ -160,62 +155,11 @@ export default {
   data() { 
     return {
       treeData: this.buildTree(this.$store.state.componentMap),
-      treeConfig: { nodeWidth: 120, nodeHeight: 80, levelHeight: 200},
+      treeConfig: { nodeWidth: 175, nodeHeight: 100, levelHeight: 200},
       componentData: this.$store.state.componentMap,
     }
   }
 }
-
-// export default {
-//   methods: {
-//     // Called by transformToTree, formats componentMap
-//     formatComponentMap(compMap) {
-//       let result = [];
-//       // Id to apply to each component, in accordance with Vue3Tree syntax
-//       let id = 1;
-//       const values = Object.values(compMap);
-//       values.forEach((compData) => {
-//         result.push({
-//           id: id++,
-//           label: compData.componentName, // previously was labeled 'name'
-//           nodes: compData.children, // previously was labeled 'children'
-//         });
-//       });
-//       return result;
-//     },
-//     // Called by buildTree, transforms componentMap
-//     // we need to change this to clean the data and transform it to something usable by vue3tree
-//     transformToTree(data) {
-//       let result = {};
-//       const temp = {};
-//       const formattedData = this.formatComponentMap(data);
-//       formattedData.forEach((component) => {
-//         if (!temp[component.label]) {
-//           temp[component.label] = { label: component.label, nodes: [] };
-//           result = temp;
-//         }
-//         component.nodes.forEach((child) => {
-//           if (!temp[child]) temp[child] = { label: child, nodes: [] };
-//           temp[component.label].nodes.push(temp[child]);
-//         });
-//       });
-//       return result;
-//     },
-//     // Called by computedTree, calls transformToTree
-//     buildTree() {
-//       let build = this.transformToTree(this.componentMap);
-//       return build["App"];
-//     },
-//   },
-//   watch: {
-//     componentMap: {
-//       deep: true,
-//       handler() {
-//         this.buildTree();
-//       },
-//     },
-//   },
-// };
 </script>
 
 <style lang="scss" scoped>
@@ -231,24 +175,27 @@ export default {
 
 .tree-node, .tree-node-active, .tree-node-activeRoute {
   display: inline-block;
-  width: 90%;
   padding: 8px;
+  min-width: 80%; 
   margin: 6px;
   min-height: 28px;
-  color: #FFFFFF;
-  background-color: #289EAD;
+  color: $menutext;
+  background-color: $secondary;
   text-align: center;
   line-height: 28px;
+  border-radius: 4px;
+  word-wrap: break-word;
 }
 
 .tree-node-active {
-  background-color: #155158;
-  border: 2px solid rgb(196, 154, 19);
+  background-color: $accent;
+  color: $darktext;
+  border: 2px solid $menutext;
 }
 
 .tree-node-activeRoute {
-  background-color: #155158;
-  border: 2px solid rgb(196, 154, 19);
+  background-color: $darktext;
+  border: 2px solid $menutext;
 }
 
 

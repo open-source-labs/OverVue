@@ -19,17 +19,31 @@ Description:
             id="btn"
           ></i>
         </q-btn> -->
-        <q-toolbar-title> OverVue </q-toolbar-title>
-        <!-- <label for="typescript" style="margin-right: 10px">
-          <input
-            type="checkbox"
-            name="typescript"
-            id="typescript"
-            :value="exportAsTypescript"
-            @change="syncTypescriptFlag"
-          />
-          Use Typescript
-        </label> -->
+        <q-toolbar-title><img alt="OverVue" src="../assets/OverVue_navLogo.png" id="nav-logo"><div id="undo-redo">
+        <q-btn>
+        <i
+          v-if="doneAction.length"
+          class="fa fa-undo"
+          aria-hidden="true"
+          @click="undo"
+        ></i>
+        <i
+          v-else
+          class="fa fa-undo"
+          id="unavailable"
+          aria-hidden="true"
+        ></i>
+        </q-btn>
+        <q-btn>
+        <i
+          v-if="undoneAction.length"
+          class="fa fa-redo"
+          aria-hidden="true"
+          @click="redo"
+        ></i>
+        <i v-else class="fa fa-redo" id="unavailable" aria-hidden="true"></i>
+        </q-btn>
+      </div></q-toolbar-title>
         <!-- <SlackLoginWindow /> -->
         <div></div>
         <!-- <i
@@ -51,11 +65,11 @@ Description:
           @click="redo"
         ></i>
         <i v-else class="fa fa-forward" id="unavailable" aria-hidden="true"></i> -->
-        <!-- <q-btn-dropdown dense flat color="subaccent" round > -->
+        
         <SaveProjectComponent />
         <OpenProjectComponent />
         <ExportProjectComponent />
-
+        
         <q-btn icon="fas fa-cog" size="sm">
           <!-- < fas => fontawesome, refers to icon style -->
           <q-menu class="dropdown">
@@ -116,28 +130,37 @@ Description:
     </q-header>
 
     <q-drawer v-model="left" side="left" behavior="desktop" bordered>
-      <!-- QTabs setup, not sure what class to set yet -->
-      <q-tabs
-        v-model="tab"
-        dense
-        class="bg-subaccent text-white"
-        active-color="secondary"
-        indicator-color="secondary"
+      <q-scroll-area
+        visible
+        dark
+        style="height: 100%; max-width: 100%;"
+        bar-style="{ left: '10px' }"
       >
-        <q-tab name="component" label="Component"><i class="fas fa-edit"></i></q-tab>
-        <q-tab name="store" label="Store"><i class="fas fa-store-alt"></i></q-tab>
-      </q-tabs>
-      <!-- individual tab panel's setup -->
-      <q-tab-panels v-model="tab" animated class="html-bg text-white fit">
-        <!--component tab will have creator and editor components -->
-        <q-tab-panel name="component" class="left-panel fit">
-          <ComponentTab />
-        </q-tab-panel>
-        <!-- store will display store elements -->
-        <q-tab-panel name="store" class="left-panel fit">
-          <StoreTab />
-        </q-tab-panel>
-      </q-tab-panels>
+      <q-card>
+      <!-- QTabs setup, not sure what class to set yet -->
+        <q-tabs
+          v-model="tab"
+          dense
+          class="bg-subaccent text-white"
+          active-color="secondary"
+          indicator-color="secondary"
+        >
+          <q-tab name="component" label="Component"></q-tab>
+          <q-tab name="store" label="Store"></q-tab>
+        </q-tabs>
+        <!-- individual tab panel's setup -->
+        <q-tab-panels v-model="tab" animated class="html-bg text-white fit">
+          <!--component tab will have creator and editor components -->
+          <q-tab-panel name="component" class="left-panel fit">
+            <ComponentTab />
+          </q-tab-panel>
+          <!-- store will display store elements -->
+          <q-tab-panel name="store" class="left-panel fit">
+            <StoreTab />
+          </q-tab-panel>
+        </q-tab-panels>
+      </q-card>
+      </q-scroll-area>
     </q-drawer>
 
     <!-- rendering dashboard as right sidebar instead of as a footer -->
@@ -190,7 +213,7 @@ export default {
       tab: "component",
       left: true,
       right: true,
-      dashWidth: 400,
+      dashWidth: 950,
       originalWidth: 400,
       originalLeft: 400,
       timer: null,
@@ -271,42 +294,72 @@ export default {
 </script>
 
 <style lang="scss">
+
+.q-toolbar {
+  height: 50px;
+}
+
+.q-toolbar__title {
+  display: flex;
+  align-items: center;
+}
+
+#nav-logo {
+  margin-right: 95px;
+}
+
 .text-white {
-  color: white;
+  color: $menutext;
 }
 
 q-btn > i {
-  color: white;
+  color: $menutext;
 }
+
+#undo-redo {
+  display: flex;
+  justify-content: center;
+  align-content: stretch;
+  color: $menutext;
+}
+
+#undo-redo > .q-btn {
+  flex-grow: 1;
+  align-items: center;
+  margin-right: 5px;
+}
+
 // Must change style lang='scss'
-.fa-backward,
-.fa-forward {
+.fa-undo,
+.fa-redo {
   padding: 0 5px;
 }
 
 .resizeDrag {
   position: absolute;
-  left: -5px;
-  top: 50vh;
+  left: -20px;
+  top: 50%;
   width: 20px;
   height: 40px;
-  background-color: #202122;
+  background-image: linear-gradient(to right, #202122 50%, rgba(255, 255, 255, 0) 50%);
   border-radius: 4px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
   z-index: 10;
   cursor: col-resize;
 }
 
 .resizeDragTwo {
   position: absolute;
-  left: calc(100vw - 10px);
-  top: calc(50vh + 33.59px);
-  width: 10px;
+  left: calc(100vw - 20px);
+  top: calc(50vh + 25px);
+  width: 20px;
   height: 40px;
-  background-color: #202122;
+  background-image: linear-gradient(to right, #202122 50%, rgba(255, 255, 255, 0) 50%);
   border-radius: 4px;
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
-  z-index: 10;
+  z-index: 1;
   cursor: col-resize;
 }
 
@@ -335,7 +388,7 @@ q-btn > i {
 .fa-backward:hover,
 .fa-forward:hover {
   cursor: pointer;
-  color: #00ffff;
+  color: $secondary;
 }
 
 #unavailable {
@@ -343,8 +396,8 @@ q-btn > i {
   cursor: default;
 }
 
-.fa-backward:active,
-.fa-forward:active {
+.fa-undo:active,
+.fa-redo:active {
   box-shadow: 0 1px inherit;
   transform: translateY(1px);
 }
@@ -368,7 +421,7 @@ q-btn > i {
 
 // css styling for the drawer items
 .drawer-menu {
-  background: $subsecondary;
+  background: $subprimary;
 }
 
 // css styling for the drawer list (not entire bg)
@@ -384,7 +437,7 @@ q-btn > i {
 
 // give html background color of grey
 .html-bg {
-  background-color: #202122;
+  background-color: $subprimary;
 }
 
 .left-panel {
@@ -394,6 +447,7 @@ q-btn > i {
 
 .q-tab-panels {
   height: 100%;
+  padding:16px;
 }
 
 .q-panel {
@@ -402,6 +456,7 @@ q-btn > i {
 
 .q-tab-panel {
   height: 100%;
+  padding: 0;
 }
 
 .left-panels {
@@ -409,7 +464,7 @@ q-btn > i {
 }
 
 .scroll {
-  overflow: hidden;
+  // overflow: hidden;
 }
 .menu-btn{
   width: 85%;
