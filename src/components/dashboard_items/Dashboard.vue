@@ -7,7 +7,7 @@ Description:
 
 <template>
 <span v-if="showTutorial === false">
-  <q-card id="dashboard-cards" class="bord" >
+  <q-card id="dashboard-cards" >
     <q-tabs
       v-model="tab"
       class="bg-subaccent text-white"
@@ -24,7 +24,7 @@ Description:
       <q-tab name="routes" label="Routes" id="label-text"
         ></q-tab>
     </q-tabs>
-    <q-tab-panels v-model="tab" animated class="html-bg text-white">
+    <q-tab-panels v-model="tab" animated>
       <q-tab-panel name="detail">
         <ComponentDetails />
       </q-tab-panel>
@@ -120,9 +120,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-i {
-  font-size: 11px;
-}
 
 .home-sidebar {
   margin: 1rem;
@@ -150,14 +147,14 @@ i {
 }
 
 .q-tab-panel {
-  /* // matchs the code editor bg */
+  /* // matches the code editor bg */
   background: $subprimary;
 }
 
 // changes the length of the tab panels
 .q-tab-panels {
   padding: 0px !important;
-  // border-top: 3px solid black;
+  background: $subprimary;
 }
 
 .q-tabs {
@@ -175,17 +172,9 @@ i {
   border-radius: 0px;
   background: $subprimary;
 }
-.html-bg {
-  /* // give html background color of grey */
-  background-color: #202122;
-}
 
 .inner-div {
   height: 100%;
 }
 
-// .bord {
-//   border-left: 3px solid black;
-//   border-right: 3px solid black;
-// }
 </style>

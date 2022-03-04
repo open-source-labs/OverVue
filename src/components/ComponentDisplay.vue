@@ -465,7 +465,7 @@ export default {
 }
 .active {
   background-color: $accent;
-  border: 1px dashed rgb(227, 203, 71);
+  border: 1px dashed $accent;
 }
 .btn {
   font-size: 25px;

@@ -8,7 +8,7 @@ Description:
 <template>
   <div class="edit-component-div">
     <div>
-      <button class="menu-link" @click="resetActiveComponent"><i class="fa fa-arrow-left" aria-hidden="true"></i> Create Component Menu</button>
+      <button class="menu-link" @click="resetActiveComponent"><i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp; &nbsp; Create Component Menu</button>
       <q-card class="expansion-item" dark flat>
         <div
           class="text-body2"
@@ -20,6 +20,7 @@ Description:
         v-on:keyup.delete.stop
         v-model="newName"
         :placeholder="this.activeComponent"
+        color="white"
         dark
         dense
         outlined

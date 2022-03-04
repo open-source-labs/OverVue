@@ -46,6 +46,7 @@ export default {
   height: 100%;
   // matches the code editor bg
   background: $subprimary;
+  padding: 0px;
   // changes the length of the tab panels
 }
 .q-tab-panels {

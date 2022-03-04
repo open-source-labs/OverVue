@@ -85,12 +85,14 @@ Description:
     </q-header>
     
     <q-drawer v-model="left" side="left" behavior="desktop" bordered>
+      
       <q-scroll-area
         visible
         dark
         style="height: 100%; max-width: 100%;"
         bar-style="{ left: '10px' }"
       >
+      <q-card>
       <!-- QTabs setup, not sure what class to set yet -->
         <q-tabs
           v-model="tab"
@@ -113,7 +115,9 @@ Description:
             <StoreTab />
           </q-tab-panel>
         </q-tab-panels>
-       </q-scroll-area>
+      </q-card>
+      </q-scroll-area>
+       
     </q-drawer>
     
     <!-- rendering dashboard as right sidebar instead of as a footer -->
@@ -389,6 +393,7 @@ q-btn > i {
 
 .q-tab-panels {
   height: 100%;
+  padding:16px;
 }
 
 .q-panel {
@@ -397,6 +402,7 @@ q-btn > i {
 
 .q-tab-panel {
   height: 100%;
+  padding: 0;
 }
 
 .left-panels {
