@@ -98,14 +98,13 @@ Description:
               </svg>
               Connect to Slack
             </q-btn>
-            <div> 
-            <label for="typescript"  style="margin-right: 10px" class="switch">
+            <div>
+            <label for="typescript"  class="switch">
               <input class="switch-input" type="checkbox" name="typescript" id="typescript" :value="exportAsTypescript" @change="syncTypescriptFlag" />
-                Use Typescript
                 <span class="switch-label" data-on="TypeScript" data-off="JavaScript"></span> 
                 <span class="switch-handle"></span> 
               </label>
-              </div>
+             </div>
           </div>
           <i id="btn"></i>
           </q-menu >
@@ -472,7 +471,7 @@ background: #5c5e61;
 .switch-label:before {
 	content: attr(data-off);
 	right: 11px;
-	color: #aaaaaa;
+	color: #000000;
 	text-shadow: 0 1px rgba(255, 255, 255, 0.5);
 }
 .switch-label:after {
@@ -483,7 +482,7 @@ background: #5c5e61;
 	opacity: 0;
 }
 .switch-input:checked ~ .switch-label {
-	background: #26e23f;
+	background: #289ead;
 	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
 }
 .switch-input:checked ~ .switch-label:before {
@@ -529,5 +528,4 @@ background: #5c5e61;
 	-moz-transition: All 0.3s ease;
 	-o-transition: All 0.3s ease;
 }
-
 </style>
