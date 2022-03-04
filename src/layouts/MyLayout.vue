@@ -5,10 +5,11 @@ Description:
   -->
 
 <template>
-
   <!-- original layout: <q-layout view="hHh LpR lFf"> -->
   <q-layout view="hHh lpr fFf">
-    <div v-if="!this.right" class="resizeDragTwo" @mousedown="hideRight"><div class="dragLineTwo"></div></div>
+    <div v-if="!this.right" class="resizeDragTwo" @mousedown="hideRight">
+      <div class="dragLineTwo"></div>
+    </div>
     <!-- the top header of OverVue -->
     <q-header elevated class="gradient text-white">
       <q-toolbar>
@@ -43,11 +44,7 @@ Description:
         <i v-else class="fa fa-redo" id="unavailable" aria-hidden="true"></i>
         </q-btn>
       </div></q-toolbar-title>
-        <label for="typescript" style="margin-right: 10px;"> 
-          <input type="checkbox" name="typescript" id="typescript" :value="exportAsTypescript" @change="syncTypescriptFlag" />
-          Use Typescript
-        </label>
-        <SlackLoginWindow />
+        <!-- <SlackLoginWindow /> -->
         <div></div>
         <!-- <i
           v-if="doneAction.length"
@@ -68,24 +65,71 @@ Description:
           @click="redo"
         ></i>
         <i v-else class="fa fa-forward" id="unavailable" aria-hidden="true"></i> -->
-
-        <OpenProjectComponent />
+        
         <SaveProjectComponent />
+        <OpenProjectComponent />
         <ExportProjectComponent />
+        
+        <q-btn icon="fas fa-cog" size="sm">
+          <!-- < fas => fontawesome, refers to icon style -->
+          <q-menu class="dropdown">
+            
+          <div class="settings-dropdown column items-center">
+            <q-btn
+              class="menu-btn"
+              color="secondary"
+              label="Getting Started"
+              no-caps
+            />
+           
+            <q-btn
+              class="menu-btn"
+              color="secondary"
+              no-caps
+            >
+                 <svg
+                xmlns="http://www.w3.org/2000/svg"
+                style="height: 20px; width: 20px; margin-right: 12px"
+                viewBox="0 0 122.8 122.8"
+              >
+                <path
+                  d="M25.8 77.6c0 7.1-5.8 12.9-12.9 12.9S0 84.7 0 77.6s5.8-12.9 12.9-12.9h12.9v12.9zm6.5 0c0-7.1 5.8-12.9 12.9-12.9s12.9 5.8 12.9 12.9v32.3c0 7.1-5.8 12.9-12.9 12.9s-12.9-5.8-12.9-12.9V77.6z"
+                  fill="#e01e5a"
+                ></path>
+                <path 
+                  d="M45.2 25.8c-7.1 0-12.9-5.8-12.9-12.9S38.1 0 45.2 0s12.9 5.8 12.9 12.9v12.9H45.2zm0 6.5c7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9H12.9C5.8 58.1 0 52.3 0 45.2s5.8-12.9 12.9-12.9h32.3z"
+                  fill="#36c5f0"
+                ></path>
+                <path
+                  d="M97 45.2c0-7.1 5.8-12.9 12.9-12.9s12.9 5.8 12.9 12.9-5.8 12.9-12.9 12.9H97V45.2zm-6.5 0c0 7.1-5.8 12.9-12.9 12.9s-12.9-5.8-12.9-12.9V12.9C64.7 5.8 70.5 0 77.6 0s12.9 5.8 12.9 12.9v32.3z"
+                  fill="#2eb67d"
+                ></path>
+                <path
+                  d="M77.6 97c7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9-12.9-5.8-12.9-12.9V97h12.9zm0-6.5c-7.1 0-12.9-5.8-12.9-12.9s5.8-12.9 12.9-12.9h32.3c7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9H77.6z"
+                  fill="#ecb22e"
+                ></path>
+              </svg>
+              Connect to Slack
+            </q-btn>
+            <div>
+            <label for="typescript"  class="switch">
+              <input class="switch-input" type="checkbox" name="typescript" id="typescript" :value="exportAsTypescript" @change="syncTypescriptFlag" />
+                <span class="switch-label" data-on="TypeScript" data-off="JavaScript"></span> 
+                <span class="switch-handle"></span> 
+              </label>
+             </div>
+          </div>
+          <i id="btn"></i>
+          </q-menu >
+        </q-btn>
+
+       
         <!-- </div> -->
         <!-- this button will open the right drawer -->
-        <q-btn dense flat color="subaccent" round @click="hideRight">
-          <!-- fas => fontawesome, refers to icon style -->
-          <i
-            :class="[right ? 'fas fa-chevron-right' : 'fas fa-list-ul']"
-            id="btn"
-          ></i>
-        </q-btn>
       </q-toolbar>
     </q-header>
-    
+
     <q-drawer v-model="left" side="left" behavior="desktop" bordered>
-      
       <q-scroll-area
         visible
         dark
@@ -117,11 +161,10 @@ Description:
         </q-tab-panels>
       </q-card>
       </q-scroll-area>
-       
     </q-drawer>
-    
+
     <!-- rendering dashboard as right sidebar instead of as a footer -->
-    
+
     <q-drawer
       right-side
       show-if-above
@@ -131,8 +174,15 @@ Description:
       :width="this.dashWidth"
       bordered
     >
-    <div class="resizeDrag" v-touch-pan.horizontal.prevent.mouse.preserveCursor="handlePan" ref="resizeBox" @click="hideRight"><div class="dragLine"></div></div>
-    <div class="displayCanClose" ref="displayClose"></div>
+      <div
+        class="resizeDrag"
+        v-touch-pan.horizontal.prevent.mouse.preserveCursor="handlePan"
+        ref="resizeBox"
+        @click="hideRight"
+      >
+        <div class="dragLine"></div>
+      </div>
+      <div class="displayCanClose" ref="displayClose"></div>
       <q-list class="q-list-drawer">
         <Dashboard />
       </q-list>
@@ -179,64 +229,66 @@ export default {
     StoreTab,
   },
   computed: {
-    ...mapState([
-      "exportAsTypescript"
-    ]),
+    ...mapState(["exportAsTypescript", "toggleTutorial"]),
   },
   methods: {
-    hideRight(){
+    hideRight() {
       this.right = !this.right;
-      if (this.$refs.resizeBox.style.display === 'none'){
-        this.$refs.resizeBox.style.display = 'block';
+      if (this.$refs.resizeBox.style.display === "none") {
+        this.$refs.resizeBox.style.display = "block";
       } else {
-        this.$refs.resizeBox.style.display = 'none';
+        this.$refs.resizeBox.style.display = "none";
       }
     },
     //adapted from <https://github.com/quasarframework/quasar/issues/7099#issuecomment-907759400>
-    handlePan ({ evt, ...newInfo }) {
-      if (this.right){
+    handlePan({ evt, ...newInfo }) {
+      if (this.right) {
         if (newInfo.isFirst) {
           this.originalWidth = this.dashWidth;
-          this.originalLeft = newInfo.position.left
+          this.originalLeft = newInfo.position.left;
         } else {
           const newDelta = newInfo.position.left - this.originalLeft;
           const newWidth = Math.min(950, this.originalWidth - newDelta);
-            this.dashWidth = Math.max(400, newWidth);
-            this.$refs.displayClose.style.display = 'none';
-          if (newWidth > screen.width*0.07 && newWidth < 400){
-            clearTimeout(this.timer)
-            if (newWidth < screen.width*0.13){
-              this.$refs.displayClose.style.display = 'block'
+          this.dashWidth = Math.max(400, newWidth);
+          this.$refs.displayClose.style.display = "none";
+          if (newWidth > screen.width * 0.07 && newWidth < 400) {
+            clearTimeout(this.timer);
+            if (newWidth < screen.width * 0.13) {
+              this.$refs.displayClose.style.display = "block";
             }
-            this.dashWidth = 400 - (200-newWidth/2)
-          } else { 
-            this.timer = setTimeout(()=>{this.$refs.displayClose.style.display = 'none'}, 750)
+            this.dashWidth = 400 - (200 - newWidth / 2);
+          } else {
+            this.timer = setTimeout(() => {
+              this.$refs.displayClose.style.display = "none";
+            }, 750);
           }
-          if (newWidth < screen.width*0.07){
+          if (newWidth < screen.width * 0.07) {
             this.right = !this.right;
             this.dashWidth = 400;
-            this.$refs.resizeBox.style.display = 'none';
+            this.$refs.resizeBox.style.display = "none";
           }
         }
-          this.timer = setTimeout(()=>{this.$refs.displayClose.style.display = 'none'}, 750)
+        this.timer = setTimeout(() => {
+          this.$refs.displayClose.style.display = "none";
+        }, 750);
       }
     },
-    
-    undo() {
-      this.$emit("undo");
-    },
-    redo() {
-      this.$emit("redo");
-    },
+
+    // undo() {
+    //   this.$emit("undo");
+    // },
+    // redo() {
+    //   this.$emit("redo");
+    // },
     syncTypescriptFlag(e) {
       let checkboxValue;
       if (e.target.value === "off") {
-        checkboxValue = "on"
+        checkboxValue = "on";
       } else {
-        checkboxValue = "off"
+        checkboxValue = "off";
       }
-      this.$store.commit('EXPORT_AS_TYPESCRIPT', checkboxValue);
-    },
+      this.$store.commit("EXPORT_AS_TYPESCRIPT", checkboxValue);
+    }
   },
 };
 </script>
@@ -297,7 +349,7 @@ q-btn > i {
   cursor: col-resize;
 }
 
-.resizeDragTwo{
+.resizeDragTwo {
   position: absolute;
   left: calc(100vw - 20px);
   top: calc(50vh + 25px);
@@ -311,7 +363,8 @@ q-btn > i {
   cursor: col-resize;
 }
 
-.dragLine, .dragLineTwo {
+.dragLine,
+.dragLineTwo {
   position: absolute;
   left: 4px;
   top: 5px;
@@ -321,7 +374,7 @@ q-btn > i {
   border-right: 1px solid grey;
 }
 
-.displayCanClose{
+.displayCanClose {
   position: absolute;
   left: 60%;
   display: none;
@@ -330,7 +383,6 @@ q-btn > i {
   width: 40%;
   z-index: 10;
   background-color: rgba(255, 255, 255, 0.301);
-
 }
 
 .fa-backward:hover,
@@ -413,5 +465,121 @@ q-btn > i {
 
 .scroll {
   // overflow: hidden;
+}
+.menu-btn{
+  width: 85%;
+  margin: 10px 0px;
+  box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
+}
+.settings-dropdown {
+background: #5c5e61;
+}
+.dropdown{
+  width: 15%;
+  height: auto;
+}
+.switch {
+	position: relative;
+	display: block;
+	vertical-align: top;
+	width: 100px;
+	height: 30px;
+	padding: 3px;
+	margin: 0 10px 10px 0;
+	background: linear-gradient(to bottom, #eeeeee, #FFFFFF 25px);
+	background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF 25px);
+	border-radius: 18px;
+	box-shadow: inset 0 -1px white, inset 0 1px 1px rgba(0, 0, 0, 0.05);
+	cursor: pointer;
+	box-sizing:content-box;
+}
+.switch-input {
+	position: absolute;
+	top: 0;
+	left: 0;
+	opacity: 0;
+	box-sizing:content-box;
+}
+.switch-label {
+	position: relative;
+	display: block;
+	height: inherit;
+	font-size: 10px;
+	text-transform: uppercase;
+	background: #eceeef;
+	border-radius: inherit;
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.15);
+	box-sizing:content-box;
+}
+.switch-label:before, .switch-label:after {
+	position: absolute;
+	top: 50%;
+	margin-top: -.5em;
+	line-height: 1;
+	-webkit-transition: inherit;
+	-moz-transition: inherit;
+	-o-transition: inherit;
+	transition: inherit;
+	box-sizing:content-box;
+}
+.switch-label:before {
+	content: attr(data-off);
+	right: 11px;
+	color: #000000;
+	text-shadow: 0 1px rgba(255, 255, 255, 0.5);
+}
+.switch-label:after {
+	content: attr(data-on);
+	left: 11px;
+	color: #FFFFFF;
+	text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+	opacity: 0;
+}
+.switch-input:checked ~ .switch-label {
+	background: #289ead;
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
+}
+.switch-input:checked ~ .switch-label:before {
+	opacity: 0;
+}
+.switch-input:checked ~ .switch-label:after {
+	opacity: 1;
+}
+.switch-handle {
+	position: absolute;
+	top: 4px;
+	left: 4px;
+	width: 28px;
+	height: 28px;
+	background: linear-gradient(to bottom, #FFFFFF 40%, #f0f0f0);
+	background-image: -webkit-linear-gradient(top, #FFFFFF 40%, #f0f0f0);
+	border-radius: 100%;
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+.switch-handle:before {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -6px 0 0 -6px;
+	width: 12px;
+	height: 12px;
+	background: linear-gradient(to bottom, #eeeeee, #FFFFFF);
+	background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF);
+	border-radius: 6px;
+	box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
+}
+.switch-input:checked ~ .switch-handle {
+	left: 74px;
+	box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+ 
+/* Transition
+========================== */
+.switch-label, .switch-handle {
+	transition: All 0.3s ease;
+	-webkit-transition: All 0.3s ease;
+	-moz-transition: All 0.3s ease;
+	-o-transition: All 0.3s ease;
 }
 </style>

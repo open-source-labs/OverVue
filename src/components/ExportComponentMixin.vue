@@ -1,14 +1,14 @@
 <script>
 export default {
   methods: {
-    showExportDialog() {
+    showExportComponentDialog() {
       ipcRenderer
         .invoke("exportComponent", {
           title: "Choose location to save folder in",
           message: "Choose location to save folder in",
           nameFieldLabel: "Component Name",
         })
-        .then((result) => this.exportFile(result.filePath))
+        .then((result) => this.exportComponentFile(result.filePath))
         .catch((err) => console.log(err));
     },
     /**
@@ -167,7 +167,7 @@ export default {
       // concat all code within script tags
       // if exportAsTypescript is on, out should be <script lang="ts">
       let output;
-      if (this.exportAsTypescript === 'on') {
+      if (this.exportAsTypescript === "on") {
         output = "\n\n<script lang='ts'>\n";
         output += imports + "\nexport default defineComponent ({\n  name: '" + componentName + "'";
       } else {
@@ -180,7 +180,7 @@ export default {
       output += computed;
       output += methods;
       // eslint-disable-next-line no-useless-escape
-      if (this.exportAsTypescript === 'on') {
+      if (this.exportAsTypescript === "on") {
         output += "});\n<\/script>";
 
       } else {
@@ -196,7 +196,7 @@ export default {
       return `\n\n<style scoped>\n</style>`;
     },
 
-    exportFile(data) {
+    exportComponentFile(data) {
       if (data === undefined) return;
       if (!fs.existsSync(data)) {
         fs.mkdirSync(data);
@@ -212,7 +212,7 @@ export default {
     },
     // OVERVUE 6.0: export active component
     handleExportComponent(event) {
-      this.showExportDialog();
+      this.showExportComponentDialog();
     },
   },
 };
