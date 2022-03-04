@@ -48,6 +48,8 @@ export default {
 .tut-btn {
   margin: 0.75rem;
   width: 50%;
+  min-height: 42px;
+  height: auto;
 }
 
 #closeTutorialButton {
