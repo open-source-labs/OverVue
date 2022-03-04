@@ -18,7 +18,7 @@ Description:
           v-on:keyup.delete.stop
           v-model="componentNameInputValue"
           label="Set component name *"
-          color="menutext"
+          color="white"
           dark
           dense
           outlined
@@ -179,7 +179,7 @@ export default {
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
-    margin: 20px;
+    margin: 4px;
   }
   .create-component-form {
     display: flex;

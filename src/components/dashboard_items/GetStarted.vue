@@ -1,5 +1,5 @@
 <template>
-  <q-card id="dashboard-cards" class="board" >
+  <q-card id="dashboard-cards" class="sidebar-border" >
     <q-tabs
       v-model="tutorialPage"
       class="bg-subaccent text-white"
@@ -13,25 +13,22 @@
         name="landing"
         label="Welcome to Overvue"
         id="label-text"
-        style="border-right: 3px solid black"
         >
       </q-tab>
       <q-tab 
         name="basics" 
         label="Basic Functions" 
         id="label-text"
-        style="border-right: 3px solid black"
         >
       </q-tab>
       <q-tab 
         name="advanced" 
         label="Advanced Functions" 
         id="label-text"
-        style="border-right: 3px solid black"
         >
       </q-tab>
     </q-tabs>
-    <q-tab-panels v-model="tutorialPage" animated class="html-bg text-white">
+    <q-tab-panels v-model="tutorialPage" animated>
       <q-tab-panel name="landing">
         <Landing @nextTab="tutorialPage = 'basics'"/>
       </q-tab-panel>
@@ -66,17 +63,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-i {
-  font-size: 11px;
-}
-
-.home-sidebar {
-  margin: 1rem;
-  justify-content: center;
-  border-radius: 5px;
-  padding: 0px;
-  background: $subsecondary;
-}
 
 .q-btn {
   font-size: 8px;
@@ -110,35 +96,18 @@ i {
 
 .q-tab-panels {
   padding: 0px !important;
-  border-top: 3px solid black;
+  background: $subprimary;
 }
 
 .q-tabs {
-  background: #11120f;
-}
-
-.toolbar-background {
-  background: black;
-}
-
-#dashboard-cards {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  border-radius: 0px;
-  background: #737578;
-}
-.html-bg {
-  /* // give html background color of grey */
-  background-color: #202122;
+  background: $subprimary;
 }
 
 .inner-div {
   height: 100%;
 }
 
-.board {
+.sidebar-border {
   border-left: 3px solid black;
-  border-right: 3px solid black;
 }
 </style>

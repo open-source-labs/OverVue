@@ -2,7 +2,7 @@
   <div>
     <q-input
       @keyup.enter="createNewProp(textProps)"
-      color="menutext"
+      color="white"
       dark
       outlined
       bottom-slots

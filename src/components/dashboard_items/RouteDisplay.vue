@@ -8,7 +8,7 @@ Includes functionality to:
   <div class="route-display">
     <q-input
       @keyup.enter="handleEnterKeyPress"
-      color="menutext"
+      color="white"
       dark
       outlined
       bottom-slots

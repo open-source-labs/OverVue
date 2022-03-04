@@ -22,7 +22,7 @@ Functionality:
         <q-tab-panel name="state">
           <q-input
             @keyup.enter="createNewState(textState)"
-            color="menutext"
+            color="white"
             dark
             outlined
             v-model="textState"
@@ -215,6 +215,10 @@ i {
 .q-tab-panels {
   height: 100%;
   padding: 0 !important;
+}
+
+.q-tabs {
+  background: #11120F;
 }
 
 #store-cards {

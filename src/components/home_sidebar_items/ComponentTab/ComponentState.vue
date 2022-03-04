@@ -116,4 +116,11 @@ export default {
   .selection-container {
     padding: 30px 0;
   }
+
+  .component-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
 </style>
