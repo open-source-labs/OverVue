@@ -195,6 +195,14 @@ export default {
 
     // returns options for component multiselect
     options() {
+      if (this.activeComponent !== '')
+        this.newName = this.activeComponentObj.componentName;
+        if (this.activeComponent !== ''){
+          this.childrenSelected = [];
+          this.childrenSelected = this.componentMap[this.activeComponent].children;
+        } else {
+          this.childrenSelected = [];
+      }
       const compMap = this.componentMap;
       const activeComp = this.activeComponent;
       const val = this.activeRouteDisplay.map(
@@ -304,18 +312,6 @@ export default {
     },
   },
   mixins: [handleExportComponentMixin],
-  watch: {
-    // watches for changes in selected component, changes edit name text to newly selected component
-    activeComponentObj: function () {
-      if (this.activeComponentObj)
-        this.newName = this.activeComponentObj.componentName;
-        if (this.activeComponent !== ''){
-          this.childrenSelected = this.componentMap[this.activeComponent].children;
-        } else {
-          this.childrenSelected = [];
-        }
-    },
-  },
 };
 </script>
 

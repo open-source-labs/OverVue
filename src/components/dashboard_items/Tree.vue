@@ -152,7 +152,6 @@ export default {
   watch: {
     componentMap: {
       handler(){
-        console.log(this.componentMap)
         this.treeData = this.buildTree(this.componentMap);
       },
       deep: true,
