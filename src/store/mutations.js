@@ -22,6 +22,7 @@ const mutations = {
   [types.EMPTY_STATE]: (state, payload) => {
     payload.store.replaceState(cloneDeep(payload.initialState));
   },
+
   [types.REMOVE_ALL_STATE_PROPS_ACTIONS]: (state) =>{
     const emptyObj = {
       userProps: [],
@@ -30,6 +31,7 @@ const mutations = {
     }
     Object.assign(state, emptyObj)
   },
+  
   [types.TOGGLE_TUTORIAL]: (state) => {
     state.showTutorial = !state.showTutorial;
   },  
