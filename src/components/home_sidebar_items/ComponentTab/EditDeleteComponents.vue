@@ -8,6 +8,7 @@ Description:
 <template>
   <div class="edit-component-div">
     <div>
+      <button class="menu-link" @click="console.log(click)"><i class="fa fa-arrow-left" aria-hidden="true"></i> Create Component Menu</button>
       <p class="title">Update Component</p>
       <!-- name editor component -->
       <q-input
@@ -295,12 +296,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .edit-component-div {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
   margin: 20px;
+}
+
+.menu-link{
+  background-color: $subprimary;
+  color: white;
+  border: 1px solid $subprimary;
+  margin-bottom: 20px; 
+  padding: 0;
+}
+
+.menu-link:hover{
+  color: $accent;
 }
 
 .q-field {
