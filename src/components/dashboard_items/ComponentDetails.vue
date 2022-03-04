@@ -143,6 +143,7 @@ i {
   height: 100%;
   // matchs the code editor bg
   background: $subprimary;
+  padding-top: 20px;
 }
 
 // changes the length of the tab panels
