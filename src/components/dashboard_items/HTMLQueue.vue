@@ -142,7 +142,7 @@ li {
   min-width: 175px;
   width: 30%;
   border-radius: 0.5cm;
-  border: 2px solid white;
+  border: 2px solid $menutext;
   background-color: $secondary;
   height: 35px;
   padding-top: 6px;
@@ -151,7 +151,7 @@ li {
 
 .fa-trash:hover {
   cursor: pointer;
-  color: red;
+  color: $darktext;
 }
 
 .fa-trash {
@@ -169,7 +169,7 @@ li {
 
 .fa-angle-double-down:hover {
   cursor: pointer;
-  color: #41B883;
+  color: $darktext;
 }
 
 .fa-chevron-up {

@@ -1,5 +1,10 @@
 // app global css in SCSS form
 // app global css
+
+// font-family: 'Montserrat', sans-serif;
+// font-family: 'Mukta', sans-serif;
+// font-family: 'Nunito Sans', sans-serif;
+
 main {
     background: #5b6e6e;
     overflow: auto;
@@ -27,12 +32,14 @@ main {
 
 // items in component list + route list
 .list-item {
-    background: $accent;
-    color: white;
+    background: $secondary;
+    color: $menutext;
 }
-.q-field--standout .q-field__control {
-    background: $menuinput;  
-}
+
+.q-field--outlined .q-field__control {
+    padding: 0 0 0 12px;
+  }
+
 .gradient {
     background: rgb(34, 35, 36);
 }

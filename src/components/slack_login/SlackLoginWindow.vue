@@ -42,7 +42,7 @@
       transition-show="flip-down"
       transition-hide="flip-up"
     >
-      <q-card class="qCardBorderColor bg-white text-white" border-rounded>
+      <q-card class="qCardBorderColor" style="color: menutext; background-color: menutext" border-rounded>
         <q-bar class="qCardColor">
           <i class="fas fa-sign-in-alt"></i>
           <div>Login</div>
@@ -80,7 +80,7 @@
           </div>
           <div style="color: red">{{ errorMessage }}</div>
           <div class="skipLogin q-pa-md q-gutter-sm">
-            <q-btn @click="closeLogin()" color="white" text-color="black"
+            <q-btn @click="closeLogin()" color="menutext" text-color="black"
               >Skip</q-btn
             >
           </div>

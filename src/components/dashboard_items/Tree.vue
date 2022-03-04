@@ -179,24 +179,23 @@ export default {
   min-width: 80%; 
   margin: 6px;
   min-height: 28px;
-  color: #FFFFFF;
+  color: $menutext;
   background-color: $secondary;
   text-align: center;
   line-height: 28px;
-  border-radius: 3px;
+  border-radius: 4px;
   word-wrap: break-word;
 }
 
 .tree-node-active {
   background-color: $accent;
-  color: #155158;
-  border: 2px solid rgb(196, 154, 19);
+  color: $darktext;
+  border: 2px solid $menutext;
 }
 
 .tree-node-activeRoute {
-  background-color: $accent;
-  color: #155158;
-  border: 2px solid rgb(196, 154, 19);
+  background-color: $darktext;
+  border: 2px solid $menutext;
 }
 
 

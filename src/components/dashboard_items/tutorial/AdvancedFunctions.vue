@@ -1,7 +1,7 @@
 <template>
   <!--Typescript option, mock image?, nested HTML elements, import component/limitations -->
-  Advanced Functions Here!
-      <q-btn
+    <p>Advanced Functions Here!</p>
+    <q-btn
       id="tut-btn"
       color="secondary"
       label="Get Started with OverVue"

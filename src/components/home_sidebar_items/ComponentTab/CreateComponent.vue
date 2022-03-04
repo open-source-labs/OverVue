@@ -6,7 +6,7 @@ Description:
 <!-- 4.0 adjustment: conditional render to switch between new comp name input and editing active comp name, moved from EditDeleteComponents -->
 
 <template>
-  <div class="create-component-div inner-div drawer-menu">
+  <div class="create-component-div drawer-menu">
     <q-expansion-item group="accordion" label="Import Component">
       <ImportComponent v-if="activeComponent === ''" @imported="createComponent" />
     </q-expansion-item>
@@ -18,13 +18,14 @@ Description:
           v-on:keyup.delete.stop
           v-model="componentNameInputValue"
           label="Set component name *"
-          color="accent"
+          color="menutext"
           dark
           dense
           outlined
           item-aligned
           padding="5px"
           class="input-add"
+          no-error-icon
           reactive-rules
           :rules="[ val => val.length != 0 || 'Please set a component name', val => !Object.keys(this.componentMap).includes(val) || 'A component with this name already exists' ]"
         ></q-input>
@@ -202,6 +203,7 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+    resize: vertical;
   }
 
   #create-component-btn {
@@ -209,6 +211,7 @@ export default {
   }
   .q-expansion-item {
     margin-bottom: 10px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 3px 6px 0 rgba(0, 0, 0, 0.13);
   }
 
 // .is-primary {
