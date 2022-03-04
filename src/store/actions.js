@@ -4,6 +4,9 @@ import * as types from "./types";
 const actions = {
   // Actions that primarily affect componentDisplay.vue //////
   [types.deleteActiveComponent]: ({ state, commit }) => {
+    if (state.noteModalOpen === true){
+      return;
+    }
     commit(types.DELETE_ACTIVE_COMPONENT);
     const activeRouteArray = [...state.routes[state.activeRoute]];
     const newActiveRouteArray = activeRouteArray.filter(
@@ -290,6 +293,7 @@ const actions = {
   // Loading ///////////////////////////////////////////////////////
 
   [types.openProject]: ({ commit, state }, payload) => {
+    commit(types.REMOVE_ALL_STATE_PROPS_ACTIONS)
     payload.userProps.forEach((prop)=>{commit(types.CREATE_PROP, prop)})
     payload.userActions.forEach((action)=>{commit(types.CREATE_ACTION, action)})
     payload.userState.forEach((state)=>{commit(types.CREATE_STATE, state)})
