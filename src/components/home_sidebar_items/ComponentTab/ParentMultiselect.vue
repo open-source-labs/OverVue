@@ -91,12 +91,17 @@ export default {
   :global(.multiselect__option) {
     color: white;
   }
+  :global(.multiselect__option--selected) {
+    background-color: $accent;
+    color: #155158;
+
+  }
   :global(.multiselect__single) {
     background-color: $subprimary;
     color: white;
   }
   :global(.multiselect__single:focus) {
-    background-color: $subprimary;
+    background-color: $negative;
     color: white;
   }
   :global(.multiselect__input::placeholder) {

@@ -286,9 +286,11 @@ const mutations = {
       const pastedComponent = { ...copiedComponent };
       pastedComponent.x = 20;
       pastedComponent.y = 20;
-      state.componentMap[
-        (pastedComponent.componentName += ` (${state.copyNumber})`)
-      ] = pastedComponent;
+      pastedComponent.componentName += ` (${state.copyNumber})`
+      while(state.componentMap.hasOwnProperty(pastedComponent.componentName)){
+        pastedComponent.componentName += ` copy`
+      }
+      state.componentMap[pastedComponent.componentName] = pastedComponent;
 
       // increment copyNumber
       state.copyNumber += 1;
@@ -650,19 +652,19 @@ const mutations = {
     if (state.activeComponent === payload){return}
     const temp = state.componentMap[state.activeComponent].children;
     // delete block
-    if ((temp.filter((el) => payload.includes(el))).length > 0) { 
+    if ((temp.filter((el) => payload === el)).length > 0) { 
       //commented stuff below does not seem necessary for the functionality of this if block.
-      
       //children will be current children EXCLUDING payload
       // const child = temp.filter((el) => payload.includes(el));
+      console.log('delete block')
       let childCount = 0;
       const components = Object.values(state.componentMap);
       for (const comp of components) {
         if (comp.children.includes(payload)) childCount++; //if the component has 2 parents, do not assign the component to the route
       }
-        state.componentMap[state.activeComponent].children = (temp.filter((el) => !payload.includes(el)));
+        state.componentMap[state.activeComponent].children = (temp.filter((el) => payload !== el));
       if (childCount <= 1) {
-        state.componentMap[state.activeRoute].children.push(...temp.filter((el) => payload.includes(el)));
+        state.componentMap[state.activeRoute].children.push(...temp.filter((el) => payload === el));
       }
       // const newHTMLList = state.componentMap[
       //   state.activeComponent
