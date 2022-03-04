@@ -148,6 +148,7 @@ export default {
 .q-tab-panel {
   /* // matches the code editor bg */
   background: $subprimary;
+  padding: 16px;
 }
 
 // changes the length of the tab panels
@@ -170,6 +171,7 @@ export default {
   height: 100%;
   border-radius: 0px;
   background: $subprimary;
+  padding: 16px;
 }
 
 .inner-div {
