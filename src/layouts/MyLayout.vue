@@ -275,27 +275,29 @@ q-btn > i {
 
 .resizeDrag {
   position: absolute;
-  left: -5px;
-  top: 50vh;
+  left: -20px;
+  top: 50%;
   width: 20px;
   height: 40px;
-  background-color: #202122;
+  background-image: linear-gradient(to right, #202122 50%, rgba(255, 255, 255, 0) 50%);
   border-radius: 4px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
   z-index: 10;
   cursor: col-resize;
 }
 
 .resizeDragTwo{
   position: absolute;
-  left: calc(100vw - 10px);
-  top: calc(50vh + 33.59px);
-  width: 10px;
+  left: calc(100vw - 20px);
+  top: calc(50vh + 25px);
+  width: 20px;
   height: 40px;
-  background-color: #202122;
+  background-image: linear-gradient(to right, #202122 50%, rgba(255, 255, 255, 0) 50%);
   border-radius: 4px;
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
-  z-index: 10;
+  z-index: 1;
   cursor: col-resize;
 }
 

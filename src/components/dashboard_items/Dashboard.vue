@@ -128,10 +128,9 @@ i {
 }
 
 .home-sidebar {
-  margin: 1rem;
+  padding: 1rem;
   justify-content: center;
   border-radius: 5px;
-  padding: 0px;
   background: $subsecondary;
 }
 
