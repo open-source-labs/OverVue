@@ -44,13 +44,13 @@ Description:
         <OpenProjectComponent />
         <ExportProjectComponent />
         
-        <q-btn icon="fas fa-cog" size="sm">
+        <q-btn class="nav-btn" icon="fas fa-cog" size="sm">
           <!-- < fas => fontawesome, refers to icon style -->
-          <q-menu class="dropdown">
+          <q-menu :offset="[0, 15]" class="dropdown">
             
           <div class="settings-dropdown column items-center">
             <q-btn
-              class="menu-btn"
+              class="tut-btn"
               color="secondary"
               label="Getting Started"
               no-caps
@@ -59,13 +59,15 @@ Description:
            
         <SlackLoginWindow />
             <div class="typescript">
-              <p> <b>TypeScript: </b> </p> 
-              <label for="typescript"  class="switch"> 
-              <input class="switch-input" type="checkbox" name="typescript" id="typescript" :value="exportAsTypescript" @change="syncTypescriptFlag" />
-                <span class="switch-label" data-on="On" data-off="Off"></span> 
-                <span class="switch-handle"></span> 
+              <p class="typescript-text"> <b>TypeScript: </b> </p> 
+              <label for="typescript"  class="switch" >
+              <input v-if="this.exportAsTypescript === 'on'" class="switch-input" type="checkbox" name="typescript" id="typescript" :value="this.exportAsTypescript" @change="syncTypescriptFlag" checked/>
+              <input v-else class="switch-input" type="checkbox" name="typescript" id="typescript" :value="this.exportAsTypescript" @change="syncTypescriptFlag"/>  
+                <span class="switch-label" :value="this.exportAsTypescript" data-on="on" data-off="off"></span> 
+                <span class="switch-handle" :value="this.exportAsTypescript"></span> 
               </label>
              </div>
+            
           </div>
           <i id="btn"></i>
           </q-menu >
@@ -230,6 +232,8 @@ export default {
     //   this.$emit("redo");
     // },
     syncTypescriptFlag(e) {
+      console.log("Test")
+      console.log(e.target.value)
       let checkboxValue;
       if (e.target.value === "off") {
         checkboxValue = "on";
@@ -240,6 +244,13 @@ export default {
     }
   },
 };
+
+function check (a){
+  if(a === true){
+    return checked
+  }
+  return
+}
 </script>
 
 <style lang="scss">
@@ -334,11 +345,11 @@ q-btn > i {
   background-color: rgba(255, 255, 255, 0.301);
 }
 
-.fa-backward:hover,
-.fa-forward:hover {
-  cursor: pointer;
-  color: $secondary;
-}
+// .fa-backward:hover,
+// .fa-forward:hover {
+//   cursor: pointer;
+//   color: $secondary;
+// }
 
 #unavailable {
   color: grey;
@@ -355,8 +366,9 @@ q-btn > i {
   transition-timing-function: ease-in;
 }
 
-.export-btn {
-  margin-left: 0.3rem;
+.nav-btn {
+  margin-left: 0.5rem;
+  // height: 25px
 }
 
 .q-toolbar {
@@ -412,26 +424,37 @@ q-btn > i {
   height: 100%;
 }
 
-.scroll {
-  // overflow: hidden;
-}
 .menu-btn{
-  width: 85%;
+  width: 80%;
   margin: 10px 0px;
-  box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
 }
-.settings-dropdown {
-background: #5c5e61;
+
+.tut-btn{
+    width: 80%;
+    margin: 20px 0px 10px;
+
 }
+
+.menu-btn:disabled{
+  background: #437962 !important;
+  opacity: 100% !important;
+  color: #959a98 !important;
+}
+
 .dropdown{
-  width: 15%;
+  width: 200px;
   height: auto;
+  overflow:visible;
+  background: rgba(#000000, .8);
 }
+/* Typescript toggle
+========================== */
+
 .switch {
 	position: relative;
 	display: block;
 	vertical-align: top;
-	width: 100%;
+	width: 65px;
 	height: 30px;
 	padding: 3px;
 	margin: 0 10px 10px 0;
@@ -462,8 +485,8 @@ background: #5c5e61;
 }
 .switch-label:before, .switch-label:after {
 	position: absolute;
-	top: 50%;
-	margin-top: -.5em;
+	top: 20px;
+	margin-top: -.8em;
 	line-height: 1;
 	-webkit-transition: inherit;
 	-moz-transition: inherit;
@@ -508,8 +531,8 @@ background: #5c5e61;
 .switch-handle:before {
 	content: "";
 	position: absolute;
-	top: 50%;
-	left: 50%;
+	top: 20px;
+	left: 20px;
 	margin: -6px 0 0 -6px;
 	width: 12px;
 	height: 12px ;
@@ -519,7 +542,7 @@ background: #5c5e61;
 	box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
 }
 .switch-input:checked ~ .switch-handle {
-	left: 56%;
+	left: 40px;
 	box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
 }
  
@@ -533,9 +556,11 @@ background: #5c5e61;
 }
 .typescript{
   display: flex;
-  justify-content: space-around;
   align-items: flex-end;
-  width: 90%;
+  margin: 10px;
   flex-direction: row;
+}
+.typescript-text{
+  margin-right: 10px;
 }
 </style>

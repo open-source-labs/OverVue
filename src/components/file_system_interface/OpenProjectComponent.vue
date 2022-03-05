@@ -5,12 +5,12 @@ Description:
   -->
 
 <template>
-    <q-btn class="export-btn" color="secondary" label="Import">
-    <q-menu class="dropdown">
+    <q-btn class="nav-btn" color="secondary" label="Import">
+    <q-menu :offset="[0, 15]" class="dropdown">
       <div class="settings-dropdown column items-center"> 
       <p class="center">Import:</p>
       <q-btn class="menu-btn" no-caps color="secondary" label="Project" @click="openProjectJSON"/> 
-      <!-- <ImportComponent title="Component"/> -->
+      <ImportComponent class="import-comp" no-caps title="Component"/>
       <!-- <q-btn class="menu-btn" no-caps color="secondary" label="Component" @click="exportProject"/>  -->
       </div>
     </q-menu>
@@ -70,8 +70,12 @@ export default {
   margin-right: 0.2rem;
 }
 .menu-btn{
-  width: 85%;
+  width: 80%;
   margin: 10px 0px;
-  box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
+}
+
+.import-comp{
+  width: 80% !important;
+  margin: 10px 0px;
 }
 </style>

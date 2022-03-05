@@ -141,7 +141,6 @@ i {
 
 .q-tab-panel {
   height: 100%;
-  // matchs the code editor bg
   background: $subprimary;
   padding-top: 20px;
 }
@@ -158,6 +157,7 @@ i {
 
 .toolbar-background {
   background: black;
+  
 }
 
 #store-cards {
