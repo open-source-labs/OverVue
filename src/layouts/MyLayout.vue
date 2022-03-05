@@ -13,6 +13,12 @@ Description:
     <!-- the top header of OverVue -->
     <q-header elevated class="gradient text-white">
       <q-toolbar>
+        <!-- <q-btn dense flat color="subaccent" round @click="left = !left">
+          <i
+            :class="[left ? 'fas fa-chevron-left' : 'fas fa-list-ul']"
+            id="btn"
+          ></i>
+        </q-btn> -->
         <q-toolbar-title><img alt="OverVue" src="../assets/OverVue_navLogo.png" id="nav-logo"><div id="undo-redo">
         <q-btn>
         <i
@@ -38,8 +44,28 @@ Description:
         <i v-else class="fa fa-redo" id="unavailable" aria-hidden="true"></i>
         </q-btn>
       </div></q-toolbar-title>
+        <!-- <SlackLoginWindow /> -->
         <div></div>
-      
+        <!-- <i
+          v-if="doneAction.length"
+          class="fa fa-backward"
+          aria-hidden="true"
+          @click="undo"
+        ></i>
+        <i
+          v-else
+          class="fa fa-backward"
+          id="unavailable"
+          aria-hidden="true"
+        ></i>
+        <i
+          v-if="undoneAction.length"
+          class="fa fa-forward"
+          aria-hidden="true"
+          @click="redo"
+        ></i>
+        <i v-else class="fa fa-forward" id="unavailable" aria-hidden="true"></i> -->
+        
         <SaveProjectComponent />
         <OpenProjectComponent />
         <ExportProjectComponent />
@@ -54,7 +80,6 @@ Description:
               color="secondary"
               label="Getting Started"
               no-caps
-              @click= "this.toggleTutorial"
             />
            
         <SlackLoginWindow />
@@ -65,6 +90,7 @@ Description:
               <input v-else class="switch-input" type="checkbox" name="typescript" id="typescript" :value="this.exportAsTypescript" @change="syncTypescriptFlag"/>  
                 <span class="switch-label" :value="this.exportAsTypescript" data-on="on" data-off="off"></span> 
                 <span class="switch-handle" :value="this.exportAsTypescript"></span> 
+                
               </label>
              </div>
             
@@ -86,7 +112,7 @@ Description:
         style="height: 100%; max-width: 100%;"
         bar-style="{ left: '10px' }"
       >
-      <q-card>
+      <q-card class="no-shadow">
       <!-- QTabs setup, not sure what class to set yet -->
         <q-tabs
           v-model="tab"
@@ -153,7 +179,7 @@ import OpenProjectComponent from "../components/file_system_interface/OpenProjec
 import SlackLoginWindow from "../components/slack_login/SlackLoginWindow.vue";
 import ComponentTab from "../components/home_sidebar_items/ComponentTab/ComponentTab.vue";
 import StoreTab from "../components/home_sidebar_items/StoreTab/StoreTab.vue";
-import { mapState, mapActions } from "vuex";
+import { mapState } from "vuex";
 
 export default {
   // Passed down from App.vue
@@ -163,7 +189,7 @@ export default {
       tab: "component",
       left: true,
       right: true,
-      dashWidth: 650,
+      dashWidth: 950,
       originalWidth: 400,
       originalLeft: 400,
       timer: null,
@@ -179,10 +205,9 @@ export default {
     StoreTab,
   },
   computed: {
-    ...mapState(["exportAsTypescript"]),
+    ...mapState(["exportAsTypescript", "toggleTutorial"]),
   },
   methods: {
-    ...mapActions(["toggleTutorial"]),
     hideRight() {
       this.right = !this.right;
       if (this.$refs.resizeBox.style.display === "none") {
@@ -476,7 +501,7 @@ q-btn > i {
 	position: relative;
 	display: block;
 	height: inherit;
-	font-size: 0.8rem;
+	font-size: 10px;
 	text-transform: uppercase;
 	background: #eceeef;
 	border-radius: inherit;
@@ -508,7 +533,7 @@ q-btn > i {
 	opacity: 0;
 }
 .switch-input:checked ~ .switch-label {
-	background: #42B883;
+	background: #289ead;
 	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
 }
 .switch-input:checked ~ .switch-label:before {
@@ -535,7 +560,7 @@ q-btn > i {
 	left: 20px;
 	margin: -6px 0 0 -6px;
 	width: 12px;
-	height: 12px ;
+	height: 12px;
 	background: linear-gradient(to bottom, #eeeeee, #FFFFFF);
 	background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF);
 	border-radius: 6px;
@@ -554,6 +579,7 @@ q-btn > i {
 	-moz-transition: All 0.3s ease;
 	-o-transition: All 0.3s ease;
 }
+
 .typescript{
   display: flex;
   align-items: flex-end;
@@ -563,4 +589,5 @@ q-btn > i {
 .typescript-text{
   margin-right: 10px;
 }
+
 </style>

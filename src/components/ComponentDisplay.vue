@@ -33,85 +33,76 @@
       :onResizeStart="recordInitialSize"
     >
       <div class="component-title">
-        <p style="color: black">{{ componentData.componentName }}</p>
+        <p>{{ componentData.componentName }}</p>
       </div>
       <q-icon v-if="this.componentMap[componentData.componentName]?.noteList?.length > 0" 
-        color="red" 
         size="30px" 
         z-layer="0" 
         name="edit_note" 
         class="compNoteLogo" 
         @click="handleAddNotes" />
       <q-icon v-else
-        color="white" 
         size="30px" 
         z-layer="0" 
         name="edit_note" 
-        class="compNoteLogo" 
+        class="compNoteLogoEmpty" 
         @click="handleAddNotes" />
       <q-menu context-menu>
         <q-list color="black" class="menu">
-            <q-item clickable v-ripple v-close-popup @click="handleExportComponent">
-            <q-item-section style="color: menutext"
-              >Export Component</q-item-section
-            >
-            <q-item-section avatar>
-                        <q-icon color="primary" name="upload" />
-                      </q-item-section>
-          </q-item>
-          <q-item clickable v-ripple v-close-popup @click="handleAddNotes">
-            <q-item-section style="color: white"
-              >Component Notes</q-item-section
-            >
-            <q-item-section avatar>
-                        <q-icon color="primary" name="edit_note" />
-                      </q-item-section>
-          </q-item>
-          <q-item clickable v-ripple v-close-popup @click="handleAddChild">
-            <q-item-section style="color: menutext"
-              >Update Children</q-item-section
-            >
-            <q-item-section avatar>
-              <q-icon color="primary" name="add" />
-            </q-item-section>
-          </q-item>
-          <q-item clickable v-ripple v-close-popup>
-            <q-item-section class="layer" style="color: menutext"
-              >Layer</q-item-section
-            >
+          <q-item clickable v-ripple v-close-popup id="layer-item">
+            <q-item-section class="layer">Layer</q-item-section>
             <q-btn
-              class="btn"
+              class="minorAction"
               color="transparent"
               text-color="primary"
-              label="-"
+              label="&ndash;"
               @click="(e) => handleLayer(e)"
             />
-            <p id="counter" style="color: menutext">{{ componentData.z }}</p>
+            <p id="counter">{{ componentData.z }}</p>
             <q-btn
-              class="btn"
+              class="minorAction"
               color="transparent"
               text-color="primary"
               label="+"
               @click="(e) => handleLayer(e)"
             />
           </q-item>
+          <q-item clickable v-ripple v-close-popup @click="handleAddChild">
+            <q-item-section>Update Children</q-item-section>
+            <q-item-section avatar>
+              <q-icon color="primary" name="add" />
+            </q-item-section>
+          </q-item>
+          <q-item clickable v-ripple v-close-popup @click="handleAddNotes">
+            <q-item-section>Component Notes</q-item-section>
+            <q-item-section avatar>
+              <q-icon color="primary" name="edit_note" />
+            </q-item-section>
+          </q-item>
+          <q-item clickable v-ripple v-close-popup @click="handleExportComponent">
+            <q-item-section>Export Component</q-item-section>
+            <q-item-section avatar>
+              <q-icon color="primary" name="upload" />
+            </q-item-section>
+          </q-item>
         </q-list>
       </q-menu>
 
     </vue-draggable-resizable>
     <div>
-      <q-dialog v-model="modalOpen" persistent>
+      <q-dialog v-model="modalOpen">
         <q-select
           @select="handleSelect"
-          id="dropdown"
+          id="childrenDropdown"
           filled
           v-model="testModel"
           multiple
           :options="options"
           use-chips
           stack-label
+          dark
           label="Select children"
-          style="width: 250px; background-color: #fd5f00"
+          style="width: 250px; background-color: #201221;"
         />
       </q-dialog>
 
@@ -555,7 +546,7 @@ li:hover{
   font-size: 16px;
   top: -18px;
   left: 2px;
-  color: black;
+  color: $subprimary;
   -webkit-text-stroke: 0.4px $menutext;
   font-weight: 800;
   line-height: 1.2;
@@ -613,15 +604,30 @@ li:hover{
 }
 
 .compNoteLogo{
-  background: $subprimary;
-  opacity: 90%;
+  background: rgba($subprimary, .9);
+  color: $secondary;
+  border-radius: 4px;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+}
+
+.compNoteLogoEmpty{
+  background: rgba($subprimary, .9);
+  color: rgba($primary, 1);
   border-radius: 4px;
   position: absolute;
   top: 4px;
   left: 4px;
 }
 .compNoteLogo:hover{
-  background: $primary;
+  background: rgba($subprimary, .6);
+  color: rgba($secondary, .8);
+}
+
+.compNoteLogoEmpty:hover{
+  background: rgba($subprimary, .6);
+  color: rgba($menutext, .4);
 }
 
 .component-box {
@@ -637,11 +643,10 @@ li:hover{
   background-color: $accent;
   border: 1px dashed $accent;
 }
-.btn {
-  font-size: 25px;
-  padding: 0 20px;
+.minorAction {
+  font-weight: bolder !important;
   width: 10px;
-  height: 10px;
+  height: 30px !important;
   transition: none;
 }
 .btn:hover,
@@ -650,8 +655,20 @@ li:hover{
   color: $menutext;
   background-color: transparent;
 }
+
+#layer-item {
+  align-items: center;
+}
+
 #counter {
-  margin-top: 20px;
+  margin: 0 10px 0;
+  color: $menutext;
+}
+
+#childrenDropdown {
+  width: 250px;
+  background: $subprimary;
+  color: $menutext;
 }
 .title {
   font-size: 20px;

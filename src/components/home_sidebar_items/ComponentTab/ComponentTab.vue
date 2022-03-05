@@ -2,7 +2,6 @@
 Functionality includes: if active component is selected, will switch view to editing mode. If not, it will be in create mode -->
 <template>
   <q-card id="store-cards">
-    <UploadImage />
     <CreateComponent v-if="activeComponent === ''"/>
     <EditDeleteComponents v-if="activeComponent !== ''"/>
   </q-card>

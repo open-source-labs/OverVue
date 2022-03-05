@@ -5,9 +5,9 @@ Description:
   -->
 
 <template>
-  <div class="home-sidebar drawer-menu">
+  <div id="uploadImgMenuItem">
     <q-list>
-      <q-expansion-item expand-separator label="Upload Mockup Image">
+      <q-expansion-item expand-separator :label="this.activeRoute">
         <div class="upload">
           <q-btn
             class="upload-btn"
@@ -126,13 +126,17 @@ export default {
 </script>
 
 <style lang="scss">
-.home-sidebar {
-  margin: 1rem;
-  justify-content: center;
-  border-radius: 5px;
-  padding: 0px;
-  background: $subsecondary;
+#uploadImgMenuItem {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  margin-top: 30px;
 }
+
+.q-expansion-item {
+    margin-bottom: 10px;
+  }
 
 .upload-btn {
   text-transform: capitalize;

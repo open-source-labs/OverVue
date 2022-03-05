@@ -17,23 +17,19 @@ Description:
       dense
       breakpoint="1050"
     >
-      <q-tab name="detail" label="Component Details" id="label-text"
-        ></q-tab>
-      <q-tab name="tree" label="Project Tree" id="label-text"
-        ></q-tab>
-      <q-tab name="routes" label="Routes" id="label-text"
-        ></q-tab>
+      <q-tab name="routes" label="Routes" id="label-text"></q-tab>
+      <q-tab name="tree" label="Project Tree" id="label-text"></q-tab>
+      <q-tab name="detail" label="Component Details" id="label-text"></q-tab>
     </q-tabs>
     <q-tab-panels v-model="tab" animated>
-      <q-tab-panel name="detail">
-        <ComponentDetails />
+      <q-tab-panel name="routes">
+        <RouteDisplay />
       </q-tab-panel>
       <q-tab-panel name="tree">
         <Tree />
       </q-tab-panel>
-      <!-- added Routes to the right side -->
-      <q-tab-panel name="routes">
-        <RouteDisplay />
+      <q-tab-panel name="detail">
+        <ComponentDetails />
       </q-tab-panel>
     </q-tab-panels>
   </q-card>

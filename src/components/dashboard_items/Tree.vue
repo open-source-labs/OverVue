@@ -1,7 +1,7 @@
 <!--
 Description:
   Displays project tree in Dashboard
-  Functionality includes: formating componentMap object to displaying in tree form
+  Functionality includes: formatting componentMap object to displaying in tree form
   -->
 
 <template>
