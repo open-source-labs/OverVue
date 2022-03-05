@@ -46,11 +46,11 @@ Description:
         
         <q-btn class="nav-btn" icon="fas fa-cog" size="sm">
           <!-- < fas => fontawesome, refers to icon style -->
-          <q-menu class="dropdown">
+          <q-menu :offset="[0, 10]" class="dropdown">
             
           <div class="settings-dropdown column items-center">
             <q-btn
-              class="menu-btn"
+              class="tut-btn"
               color="secondary"
               label="Getting Started"
               no-caps
@@ -427,7 +427,12 @@ q-btn > i {
 .menu-btn{
   width: 80%;
   margin: 10px 0px;
-  box-shadow:inset 0 -0.6em 0 -0.35em rgba(0, 0, 0, 0.055);
+}
+
+.tut-btn{
+    width: 80%;
+    margin: 20px 0px 10px;
+
 }
 
 .menu-btn:disabled{

@@ -6,7 +6,7 @@ Description:
 
 <template>
     <q-btn class="nav-btn" color="secondary" label="Import">
-    <q-menu class="dropdown">
+    <q-menu :offset="[0, 10]" class="dropdown">
       <div class="settings-dropdown column items-center"> 
       <p class="center">Import:</p>
       <q-btn class="menu-btn" no-caps color="secondary" label="Project" @click="openProjectJSON"/> 
@@ -72,12 +72,10 @@ export default {
 .menu-btn{
   width: 80%;
   margin: 10px 0px;
-  box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
 }
 
 .import-comp{
   width: 80% !important;
   margin: 10px 0px;
-  box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
 }
 </style>
