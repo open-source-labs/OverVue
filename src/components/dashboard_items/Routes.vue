@@ -8,13 +8,12 @@ Description:
   <div>
     <p>Click to view route</p>
     <a
-      :class="route === activeRoute ? 'panel-block is-active' : 'panel-block'"
       v-for="route in Object.keys(routes)"
       :key="route"
       @click="selectRoute(route)"
     >
       <q-list bordered separator class="list-item">
-        <q-item clickable v-ripple class="list-item">
+        <q-item clickable v-ripple :class="route === activeRoute ? 'panel-block is-active list-item' : 'panel-block list-item'">
           <q-item-section>{{route}}</q-item-section>
           <span v-if="route !== 'HomeView'">
             <q-btn round flat icon="highlight_off" v-on:click.stop="deleteSelectedRoute(route)" />
@@ -47,6 +46,14 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+  .panel-block {
+    background: $secondary !important;
+    color: $menutext !important;;
+  }
+  .is-active {
+    background: $secondary !important;
+    color: $menutext !important;
+    border: 2px solid $menutext !important;
+  }
 </style>

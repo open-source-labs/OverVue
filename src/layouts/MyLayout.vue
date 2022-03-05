@@ -13,6 +13,12 @@ Description:
     <!-- the top header of OverVue -->
     <q-header elevated class="gradient text-white">
       <q-toolbar>
+        <!-- <q-btn dense flat color="subaccent" round @click="left = !left">
+          <i
+            :class="[left ? 'fas fa-chevron-left' : 'fas fa-list-ul']"
+            id="btn"
+          ></i>
+        </q-btn> -->
         <q-toolbar-title><img alt="OverVue" src="../assets/OverVue_navLogo.png" id="nav-logo"><div id="undo-redo">
         <q-btn>
         <i
@@ -38,8 +44,28 @@ Description:
         <i v-else class="fa fa-redo" id="unavailable" aria-hidden="true"></i>
         </q-btn>
       </div></q-toolbar-title>
+        <!-- <SlackLoginWindow /> -->
         <div></div>
-      
+        <!-- <i
+          v-if="doneAction.length"
+          class="fa fa-backward"
+          aria-hidden="true"
+          @click="undo"
+        ></i>
+        <i
+          v-else
+          class="fa fa-backward"
+          id="unavailable"
+          aria-hidden="true"
+        ></i>
+        <i
+          v-if="undoneAction.length"
+          class="fa fa-forward"
+          aria-hidden="true"
+          @click="redo"
+        ></i>
+        <i v-else class="fa fa-forward" id="unavailable" aria-hidden="true"></i> -->
+        
         <SaveProjectComponent />
         <OpenProjectComponent />
         <ExportProjectComponent />
@@ -54,15 +80,41 @@ Description:
               color="secondary"
               label="Getting Started"
               no-caps
-              @click= "this.toggleTutorial"
             />
            
-        <SlackLoginWindow />
-            <div class="typescript">
-              <p> <b>TypeScript: </b> </p> 
-              <label for="typescript"  class="switch"> 
+            <q-btn
+              class="menu-btn"
+              color="secondary"
+              no-caps
+            >
+                 <svg
+                xmlns="http://www.w3.org/2000/svg"
+                style="height: 20px; width: 20px; margin-right: 12px"
+                viewBox="0 0 122.8 122.8"
+              >
+                <path
+                  d="M25.8 77.6c0 7.1-5.8 12.9-12.9 12.9S0 84.7 0 77.6s5.8-12.9 12.9-12.9h12.9v12.9zm6.5 0c0-7.1 5.8-12.9 12.9-12.9s12.9 5.8 12.9 12.9v32.3c0 7.1-5.8 12.9-12.9 12.9s-12.9-5.8-12.9-12.9V77.6z"
+                  fill="#e01e5a"
+                ></path>
+                <path 
+                  d="M45.2 25.8c-7.1 0-12.9-5.8-12.9-12.9S38.1 0 45.2 0s12.9 5.8 12.9 12.9v12.9H45.2zm0 6.5c7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9H12.9C5.8 58.1 0 52.3 0 45.2s5.8-12.9 12.9-12.9h32.3z"
+                  fill="#36c5f0"
+                ></path>
+                <path
+                  d="M97 45.2c0-7.1 5.8-12.9 12.9-12.9s12.9 5.8 12.9 12.9-5.8 12.9-12.9 12.9H97V45.2zm-6.5 0c0 7.1-5.8 12.9-12.9 12.9s-12.9-5.8-12.9-12.9V12.9C64.7 5.8 70.5 0 77.6 0s12.9 5.8 12.9 12.9v32.3z"
+                  fill="#2eb67d"
+                ></path>
+                <path
+                  d="M77.6 97c7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9-12.9-5.8-12.9-12.9V97h12.9zm0-6.5c-7.1 0-12.9-5.8-12.9-12.9s5.8-12.9 12.9-12.9h32.3c7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9H77.6z"
+                  fill="#ecb22e"
+                ></path>
+              </svg>
+              Connect to Slack
+            </q-btn>
+            <div>
+            <label for="typescript"  class="switch">
               <input class="switch-input" type="checkbox" name="typescript" id="typescript" :value="exportAsTypescript" @change="syncTypescriptFlag" />
-                <span class="switch-label" data-on="On" data-off="Off"></span> 
+                <span class="switch-label" data-on="TypeScript" data-off="JavaScript"></span> 
                 <span class="switch-handle"></span> 
               </label>
              </div>
@@ -84,7 +136,7 @@ Description:
         style="height: 100%; max-width: 100%;"
         bar-style="{ left: '10px' }"
       >
-      <q-card>
+      <q-card class="no-shadow">
       <!-- QTabs setup, not sure what class to set yet -->
         <q-tabs
           v-model="tab"
@@ -151,7 +203,7 @@ import OpenProjectComponent from "../components/file_system_interface/OpenProjec
 import SlackLoginWindow from "../components/slack_login/SlackLoginWindow.vue";
 import ComponentTab from "../components/home_sidebar_items/ComponentTab/ComponentTab.vue";
 import StoreTab from "../components/home_sidebar_items/StoreTab/StoreTab.vue";
-import { mapState, mapActions } from "vuex";
+import { mapState } from "vuex";
 
 export default {
   // Passed down from App.vue
@@ -161,7 +213,7 @@ export default {
       tab: "component",
       left: true,
       right: true,
-      dashWidth: 650,
+      dashWidth: 950,
       originalWidth: 400,
       originalLeft: 400,
       timer: null,
@@ -177,10 +229,9 @@ export default {
     StoreTab,
   },
   computed: {
-    ...mapState(["exportAsTypescript"]),
+    ...mapState(["exportAsTypescript", "toggleTutorial"]),
   },
   methods: {
-    ...mapActions(["toggleTutorial"]),
     hideRight() {
       this.right = !this.right;
       if (this.$refs.resizeBox.style.display === "none") {
@@ -431,7 +482,7 @@ background: #5c5e61;
 	position: relative;
 	display: block;
 	vertical-align: top;
-	width: 100%;
+	width: 100px;
 	height: 30px;
 	padding: 3px;
 	margin: 0 10px 10px 0;
@@ -453,7 +504,7 @@ background: #5c5e61;
 	position: relative;
 	display: block;
 	height: inherit;
-	font-size: 0.8rem;
+	font-size: 10px;
 	text-transform: uppercase;
 	background: #eceeef;
 	border-radius: inherit;
@@ -485,7 +536,7 @@ background: #5c5e61;
 	opacity: 0;
 }
 .switch-input:checked ~ .switch-label {
-	background: #42B883;
+	background: #289ead;
 	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
 }
 .switch-input:checked ~ .switch-label:before {
@@ -512,14 +563,14 @@ background: #5c5e61;
 	left: 50%;
 	margin: -6px 0 0 -6px;
 	width: 12px;
-	height: 12px ;
+	height: 12px;
 	background: linear-gradient(to bottom, #eeeeee, #FFFFFF);
 	background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF);
 	border-radius: 6px;
 	box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
 }
 .switch-input:checked ~ .switch-handle {
-	left: 56%;
+	left: 74px;
 	box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
 }
  
@@ -530,12 +581,5 @@ background: #5c5e61;
 	-webkit-transition: All 0.3s ease;
 	-moz-transition: All 0.3s ease;
 	-o-transition: All 0.3s ease;
-}
-.typescript{
-  display: flex;
-  justify-content: space-around;
-  align-items: flex-end;
-  width: 90%;
-  flex-direction: row;
 }
 </style>

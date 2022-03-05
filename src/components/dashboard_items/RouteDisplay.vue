@@ -30,18 +30,22 @@ Includes functionality to:
     </template>
     </q-input>
     <Routes></Routes>
+    <UploadImage></UploadImage>
   </div>
+  
 </template>
 
 <script>
 import Routes from "./Routes";
 import { mapState, mapActions } from "vuex";
+import UploadImage from "../home_sidebar_items/ComponentTab/UploadImage.vue";
 
 export default {
   name: "RouteDisplay",
   components: {
     Routes,
-  },
+    UploadImage
+},
   computed: {
     ...mapState(["routes", "componentMap"]),
   },
