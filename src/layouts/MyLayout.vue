@@ -70,54 +70,30 @@ Description:
         <OpenProjectComponent />
         <ExportProjectComponent />
         
-        <q-btn icon="fas fa-cog" size="sm">
+        <q-btn class="nav-btn" icon="fas fa-cog" size="sm">
           <!-- < fas => fontawesome, refers to icon style -->
-          <q-menu class="dropdown">
+          <q-menu :offset="[0, 15]" class="dropdown">
             
           <div class="settings-dropdown column items-center">
             <q-btn
-              class="menu-btn"
+              class="tut-btn"
               color="secondary"
               label="Getting Started"
               no-caps
             />
            
-            <q-btn
-              class="menu-btn"
-              color="secondary"
-              no-caps
-            >
-                 <svg
-                xmlns="http://www.w3.org/2000/svg"
-                style="height: 20px; width: 20px; margin-right: 12px"
-                viewBox="0 0 122.8 122.8"
-              >
-                <path
-                  d="M25.8 77.6c0 7.1-5.8 12.9-12.9 12.9S0 84.7 0 77.6s5.8-12.9 12.9-12.9h12.9v12.9zm6.5 0c0-7.1 5.8-12.9 12.9-12.9s12.9 5.8 12.9 12.9v32.3c0 7.1-5.8 12.9-12.9 12.9s-12.9-5.8-12.9-12.9V77.6z"
-                  fill="#e01e5a"
-                ></path>
-                <path 
-                  d="M45.2 25.8c-7.1 0-12.9-5.8-12.9-12.9S38.1 0 45.2 0s12.9 5.8 12.9 12.9v12.9H45.2zm0 6.5c7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9H12.9C5.8 58.1 0 52.3 0 45.2s5.8-12.9 12.9-12.9h32.3z"
-                  fill="#36c5f0"
-                ></path>
-                <path
-                  d="M97 45.2c0-7.1 5.8-12.9 12.9-12.9s12.9 5.8 12.9 12.9-5.8 12.9-12.9 12.9H97V45.2zm-6.5 0c0 7.1-5.8 12.9-12.9 12.9s-12.9-5.8-12.9-12.9V12.9C64.7 5.8 70.5 0 77.6 0s12.9 5.8 12.9 12.9v32.3z"
-                  fill="#2eb67d"
-                ></path>
-                <path
-                  d="M77.6 97c7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9-12.9-5.8-12.9-12.9V97h12.9zm0-6.5c-7.1 0-12.9-5.8-12.9-12.9s5.8-12.9 12.9-12.9h32.3c7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9H77.6z"
-                  fill="#ecb22e"
-                ></path>
-              </svg>
-              Connect to Slack
-            </q-btn>
-            <div>
-            <label for="typescript"  class="switch">
-              <input class="switch-input" type="checkbox" name="typescript" id="typescript" :value="exportAsTypescript" @change="syncTypescriptFlag" />
-                <span class="switch-label" data-on="TypeScript" data-off="JavaScript"></span> 
-                <span class="switch-handle"></span> 
+        <SlackLoginWindow />
+            <div class="typescript">
+              <p class="typescript-text"> <b>TypeScript: </b> </p> 
+              <label for="typescript"  class="switch" >
+              <input v-if="this.exportAsTypescript === 'on'" class="switch-input" type="checkbox" name="typescript" id="typescript" :value="this.exportAsTypescript" @change="syncTypescriptFlag" checked/>
+              <input v-else class="switch-input" type="checkbox" name="typescript" id="typescript" :value="this.exportAsTypescript" @change="syncTypescriptFlag"/>  
+                <span class="switch-label" :value="this.exportAsTypescript" data-on="on" data-off="off"></span> 
+                <span class="switch-handle" :value="this.exportAsTypescript"></span> 
+                
               </label>
              </div>
+            
           </div>
           <i id="btn"></i>
           </q-menu >
@@ -281,6 +257,8 @@ export default {
     //   this.$emit("redo");
     // },
     syncTypescriptFlag(e) {
+      console.log("Test")
+      console.log(e.target.value)
       let checkboxValue;
       if (e.target.value === "off") {
         checkboxValue = "on";
@@ -291,6 +269,13 @@ export default {
     }
   },
 };
+
+function check (a){
+  if(a === true){
+    return checked
+  }
+  return
+}
 </script>
 
 <style lang="scss">
@@ -385,11 +370,11 @@ q-btn > i {
   background-color: rgba(255, 255, 255, 0.301);
 }
 
-.fa-backward:hover,
-.fa-forward:hover {
-  cursor: pointer;
-  color: $secondary;
-}
+// .fa-backward:hover,
+// .fa-forward:hover {
+//   cursor: pointer;
+//   color: $secondary;
+// }
 
 #unavailable {
   color: grey;
@@ -406,8 +391,9 @@ q-btn > i {
   transition-timing-function: ease-in;
 }
 
-.export-btn {
-  margin-left: 0.3rem;
+.nav-btn {
+  margin-left: 0.5rem;
+  // height: 25px
 }
 
 .q-toolbar {
@@ -463,26 +449,37 @@ q-btn > i {
   height: 100%;
 }
 
-.scroll {
-  // overflow: hidden;
-}
 .menu-btn{
-  width: 85%;
+  width: 80%;
   margin: 10px 0px;
-  box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
 }
-.settings-dropdown {
-background: #5c5e61;
+
+.tut-btn{
+    width: 80%;
+    margin: 20px 0px 10px;
+
 }
+
+.menu-btn:disabled{
+  background: #437962 !important;
+  opacity: 100% !important;
+  color: #959a98 !important;
+}
+
 .dropdown{
-  width: 15%;
+  width: 200px;
   height: auto;
+  overflow:visible;
+  background: rgba(#000000, .8);
 }
+/* Typescript toggle
+========================== */
+
 .switch {
 	position: relative;
 	display: block;
 	vertical-align: top;
-	width: 100px;
+	width: 65px;
 	height: 30px;
 	padding: 3px;
 	margin: 0 10px 10px 0;
@@ -513,8 +510,8 @@ background: #5c5e61;
 }
 .switch-label:before, .switch-label:after {
 	position: absolute;
-	top: 50%;
-	margin-top: -.5em;
+	top: 20px;
+	margin-top: -.8em;
 	line-height: 1;
 	-webkit-transition: inherit;
 	-moz-transition: inherit;
@@ -559,8 +556,8 @@ background: #5c5e61;
 .switch-handle:before {
 	content: "";
 	position: absolute;
-	top: 50%;
-	left: 50%;
+	top: 20px;
+	left: 20px;
 	margin: -6px 0 0 -6px;
 	width: 12px;
 	height: 12px;
@@ -570,7 +567,7 @@ background: #5c5e61;
 	box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
 }
 .switch-input:checked ~ .switch-handle {
-	left: 74px;
+	left: 40px;
 	box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
 }
  
@@ -582,4 +579,15 @@ background: #5c5e61;
 	-moz-transition: All 0.3s ease;
 	-o-transition: All 0.3s ease;
 }
+
+.typescript{
+  display: flex;
+  align-items: flex-end;
+  margin: 10px;
+  flex-direction: row;
+}
+.typescript-text{
+  margin-right: 10px;
+}
+
 </style>
