@@ -60,12 +60,14 @@ Description:
         <SlackLoginWindow />
             <div class="typescript">
               <p> <b>TypeScript: </b> </p> 
-              <label for="typescript"  class="switch"> 
-              <input class="switch-input" type="checkbox" name="typescript" id="typescript" :value="exportAsTypescript" @change="syncTypescriptFlag" />
-                <span class="switch-label" data-on="On" data-off="Off"></span> 
-                <span class="switch-handle"></span> 
+              <label for="typescript"  class="switch" >
+              <input v-if="this.exportAsTypescript === 'on'" class="switch-input" type="checkbox" name="typescript" id="typescript" :value="this.exportAsTypescript" @change="syncTypescriptFlag" checked/>
+              <input v-else class="switch-input" type="checkbox" name="typescript" id="typescript" :value="this.exportAsTypescript" @change="syncTypescriptFlag"/>  
+                <span class="switch-label" :value="this.exportAsTypescript" data-on="on" data-off="off"></span> 
+                <span class="switch-handle" :value="this.exportAsTypescript"></span> 
               </label>
              </div>
+            
           </div>
           <i id="btn"></i>
           </q-menu >
@@ -230,6 +232,8 @@ export default {
     //   this.$emit("redo");
     // },
     syncTypescriptFlag(e) {
+      console.log("Test")
+      console.log(e.target.value)
       let checkboxValue;
       if (e.target.value === "off") {
         checkboxValue = "on";
@@ -240,6 +244,13 @@ export default {
     }
   },
 };
+
+function check (a){
+  if(a === true){
+    return checked
+  }
+  return
+}
 </script>
 
 <style lang="scss">
