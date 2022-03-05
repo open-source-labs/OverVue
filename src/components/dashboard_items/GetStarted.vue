@@ -1,5 +1,5 @@
 <template>
-  <q-card id="dashboard-cards" class="sidebar-border" >
+  <q-card id="dashboard-cards">
     <q-tabs
       v-model="tutorialPage"
       class="bg-subaccent text-white"
@@ -107,7 +107,4 @@ export default {
   height: 100%;
 }
 
-.sidebar-border {
-  border-left: 3px solid black;
-}
 </style>
