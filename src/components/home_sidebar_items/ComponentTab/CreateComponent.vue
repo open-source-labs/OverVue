@@ -8,7 +8,7 @@ Description:
 <template>
   <div class="create-component-div drawer-menu">
     <q-expansion-item group="accordion" label="Import Component">
-      <ImportComponent v-if="activeComponent === ''" @imported="createComponent" />
+      <ImportComponent v-if="activeComponent === ''" @imported="createComponent" title="Import Component" />
     </q-expansion-item>
     <q-expansion-item group="accordion" label="Create Component">
       <form class="create-component-form" v-on:submit.prevent="createComponent">

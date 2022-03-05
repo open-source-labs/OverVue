@@ -1,9 +1,9 @@
 <template>
-      <q-btn
+    <q-btn
       id="import-component-btn"
       size="md"
       color="secondary"
-      label="Import Component"
+      :label=title
       @click="importComponent"
     />
 </template>
@@ -11,7 +11,7 @@
 <script>
 const { fs, ipcRenderer } = window;
 export default {
-
+  props: ['title'],
   methods: {
     //emitter to send the importedObj to CreateComponent when fully parsed.
     createImport(importObj){
@@ -256,11 +256,11 @@ export default {
 </script>
 
 <style scoped>
-  #import-component-btn {
-    margin: 20px 0;
-    width: 100%;
-    align-items: center;
-  }
+#import-component-btn{
+  width: 85%;
+  margin: 10px 0px;
+  box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
+}
 </style>
 
 
