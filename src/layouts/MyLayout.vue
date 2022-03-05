@@ -424,20 +424,23 @@ q-btn > i {
   height: 100%;
 }
 
-.scroll {
-  // overflow: hidden;
-}
 .menu-btn{
   width: 80%;
   margin: 10px 0px;
-  box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
+  box-shadow:inset 0 -0.6em 0 -0.35em rgba(0, 0, 0, 0.055);
 }
-.settings-dropdown {
-background: #5c5e61;
+
+.menu-btn:disabled{
+  background: #437962 !important;
+  opacity: 100% !important;
+  color: #959a98 !important;
 }
+
 .dropdown{
-  width: 15%;
+  width: 200px;
   height: auto;
+  overflow:visible;
+  background: rgba(#000000, .8);
 }
 /* Typescript toggle
 ========================== */
