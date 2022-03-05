@@ -105,70 +105,44 @@
           style="width: 250px; background-color: #201221;"
         />
       </q-dialog>
+
       <!-- some irregularity (delete event listener firing on bkspc/del) with the modal when stored locally, so modal open stored in state, and triggers to local reflect only stateful change.-->
           <q-dialog v-model="noteModal" @update:model-value="this.handleAddNotes"> 
             <div class="noteBox">
               <div class="noteHolder">
                 <p class="title">Adding notes to {{ this.activeComponent }}</p>
                 <div class="noteContainer">
-                  <li v-for="(note, index) in this.componentMap[this.activeComponent].noteList" :key="note" @click="deleteNote">
-                    Note #{{index}}: 
-                    <div class="noteblock">{{ note }}</div>
+                  <li v-for="(note, index) in this.componentMap[this.activeComponent].noteList" :key="note">
+                    <span class="noteNum">Note {{index}}: </span>
+                    <div class="noteblock">{{ note }}</div><span id="noteDelete" @click="deleteNote">X</span>
                   </li>
                 </div>
-                <q-form class="formBox" autofocus>
+                <div class="formBox">
+                <q-form autofocus v-on:submit.prevent="submitNote">
                     <q-input
                       v-model="noteText"
                       label="Add your note here"
                       filled
                       dark
-                      max-height="15%"
                       autofocus true
+                      hide-bottom-space
+                      :hint="hint"
+                      @keyup.enter="submitNote"
                     ></q-input>
                     <q-btn 
-                    color="secondary"
-                    label="Submit Note"
-                    type="submit"
-                    :disable="noteText.length > 0 ? false : true"
-                    @click="submitNote"
-                    />
-                </q-form>
-              </div>
-            </div>
-        </q-dialog>
-      <!-- some irregularity (delete event listener firing on bkspc/del) with the modal when stored locally, so modal open stored in state, and triggers to local reflect only stateful change.-->
-          <q-dialog v-model="noteModal" @update:model-value="this.handleAddNotes"> 
-            <div class="noteBox">
-              <div class="noteHolder">
-                <p class="title">Adding notes to {{ this.activeComponent }}</p>
-                <div class="noteContainer">
-                  <li v-for="(note, index) in this.componentMap[this.activeComponent].noteList" :key="note" @click="deleteNote">
-                    Note #{{index}}: 
-                    <div class="noteblock">{{ note }}</div>
-                  </li>
-                </div>
-                <q-form class="formBox" autofocus>
-                    <q-input
-                      v-model="noteText"
-                      label="Add your note here"
-                      filled
-                      dark
-                      autogrow
-                      max-height=15%
-                      autofocus true
-                    ></q-input>
-                    <q-btn 
+                    id="comp-btn"
                     color="secondary"
                     label="Submit Note"
                     :disable="noteText.length > 0 ? false : true"
                     @click="submitNote"
                     />
                     <q-btn
-                    color="secondary"
+                    id="note-btn-close"
                     label="Exit Notes"
                     @click="this.openNoteModal"
                     />
                 </q-form>
+                </div>
               </div>
             </div>
         </q-dialog>
@@ -447,8 +421,7 @@ export default {
       this.noteText = '';
     },
     deleteNote(e){
-      //currently just deletes the note based on the text alone.
-      this.deleteActiveComponentNote(e.target.innerText);
+      this.deleteActiveComponentNote(e.target.previousElementSibling.innerText);
     },
     // used when user selects to add child from dropdown
     handleSelect(value) {
@@ -477,11 +450,15 @@ export default {
   },
   watch: {
     noteModalOpen (){
-      console.log('display note, prevent delete?', this.noteModalOpen)
       this.noteModal = this.noteModalOpen;
     },
     activeComponent: {
     handler(){
+      if (this.activeComponent !== '' && 
+        this.$store.state.showTutorial === true && 
+        this.$store.state.tutorialFirstOpen === true){
+        this.$store.commit("TOGGLE_TUTORIAL");
+      }
       this.onActivated(this.activeComponentObj);
     },
     deep: true,
@@ -498,45 +475,70 @@ li{
 }
 
 li:hover{
-  background-color: $negative;
+  background-color: $subprimary;
 }
 .noteblock{
   white-space: pre-wrap;
   font-weight: normal;
-  width: 85%;
+  width: 80%;
   margin-left: 10px;
-  align-self: flex-end;
+  margin-right: 10px;
 }
 .noteBox{
   background-color: $subprimary;
   color: $menutext;
   width: 65%;
-  height: 60vh;
   padding: 15px;
+  height: 65vh;
+  max-height: 80vh;
+}
+.noteNum{
+  width: 10%;
+}
+#noteDelete{
+  background-color: $secondary;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-self: flex-end;
+  border-radius: 50%;
+  color: $menutext;
+  user-select: none;
+  align-self: center;
+}
+#noteDelete:hover{
+  background-color: $negative;
 }
 .noteHolder{
   background-color: $subsecondary;
   width: 100%;
-  height: 100%;
   padding: 10px;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
   border-radius: 4px;
   overflow-y: hidden;
+  height: 100%;
 }
-.noteDisplay{
-  min-height: 30%;
-}
+
 .noteContainer{
-  max-height: 400px;
+  height: 280px;
+  max-height: 280px;
   border: 1px solid $primary;
   border-radius: 4px;
   overflow-y: auto;
+  word-break: break-all;
+  max-width: 100%;
+  display:flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
+
 .formBox{
-  max-height: 15%;
-  justify-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .component-title {
@@ -673,4 +675,19 @@ li:hover{
   font-weight: bold;
   color: white;
 }
+
+#comp-btn{
+  width: 100%;
+  box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
+}
+
+#note-btn-close {
+  background-color: rgba($negative, .2);
+  border: 1px solid $negative;
+  color: $negative;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 </style>

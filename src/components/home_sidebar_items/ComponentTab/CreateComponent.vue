@@ -214,25 +214,4 @@ export default {
     margin-bottom: 10px;
   }
 
-// .is-primary {
-//   height: 45px;
-// }
-// #add-component-btn {
-//   height: 15px;
-//   margin: 0.75rem;
-//   width: 90%;
-// }
-// #import-component-btn {
-//   height: 15px;
-//   margin: 0 0.75rem;
-//   width: 90%;
-// }
-// .inner-div {
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: flex-start;
-//   padding-left: 15px;
-//   padding-right: 15px;
-//   height: 100%;
-// }
 </style>
