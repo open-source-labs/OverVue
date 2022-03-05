@@ -14,6 +14,7 @@ import {
 } from "../utils/search.util";
 import _ from "lodash";
 
+
 const cloneDeep = require("lodash.clonedeep");
 
 const mutations = {
@@ -22,9 +23,18 @@ const mutations = {
     payload.store.replaceState(cloneDeep(payload.initialState));
   },
 
+  [types.REMOVE_ALL_STATE_PROPS_ACTIONS]: (state) =>{
+    const emptyObj = {
+      userProps: [],
+      userState: [],
+      userActions: [],
+    }
+    Object.assign(state, emptyObj)
+  },
+  
   [types.TOGGLE_TUTORIAL]: (state) => {
     state.showTutorial = !state.showTutorial;
-  },
+  },  
 
   // *** ROUTES *** //////////////////////////////////////////////
   [types.ADD_ROUTE]: (state, payload) => {
@@ -186,8 +196,6 @@ const mutations = {
       }
     }
     state.selectedState = [];
-    // state.activeComponentObj = null;
-    // state.activeComponentObj = active;
     state.activeComponentObj = { ...active };
 
     state.componentMap = {

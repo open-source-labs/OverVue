@@ -1,5 +1,5 @@
-<!--
-Description:
+  <!--
+  Description:
   Handles display grid functionality
   Functionality includes: resizing/dragging component boxes, display grid image, active component
   -->
@@ -162,15 +162,20 @@ Description:
                       label="Add your note here"
                       filled
                       dark
+                      autogrow
                       max-height=15%
                       autofocus true
                     ></q-input>
                     <q-btn 
                     color="secondary"
                     label="Submit Note"
-                    type="submit"
                     :disable="noteText.length > 0 ? false : true"
                     @click="submitNote"
+                    />
+                    <q-btn
+                    color="secondary"
+                    label="Exit Notes"
+                    @click="this.openNoteModal"
                     />
                 </q-form>
               </div>
@@ -435,7 +440,7 @@ export default {
     },
     // renders modal with Update Children and Layer in it
     handleAddNotes(){
-      if (this.wasDragged === false){
+      if (this.wasDragged === false && this.activeComponent !== ''){
        this.openNoteModal();
       }
     },
