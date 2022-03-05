@@ -215,25 +215,4 @@ export default {
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 3px 6px 0 rgba(0, 0, 0, 0.13);
   }
 
-// .is-primary {
-//   height: 45px;
-// }
-// #add-component-btn {
-//   height: 15px;
-//   margin: 0.75rem;
-//   width: 90%;
-// }
-// #import-component-btn {
-//   height: 15px;
-//   margin: 0 0.75rem;
-//   width: 90%;
-// }
-// .inner-div {
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: flex-start;
-//   padding-left: 15px;
-//   padding-right: 15px;
-//   height: 100%;
-// }
 </style>

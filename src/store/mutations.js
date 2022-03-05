@@ -33,6 +33,9 @@ const mutations = {
   },
   
   [types.TOGGLE_TUTORIAL]: (state) => {
+    if (state.tutorialFirstOpen === true){
+      state.tutorialFirstOpen = false;
+    }
     state.showTutorial = !state.showTutorial;
   },  
 
@@ -701,6 +704,9 @@ const mutations = {
   [types.ADD_ACTIVE_COMPONENT_NOTE]: (state, payload) => {
     if (!state.componentMap[state.activeComponent].hasOwnProperty('noteList')){
       state.componentMap[state.activeComponent].noteList = [];
+    }
+    while(state.componentMap[state.activeComponent].noteList.includes(payload)){
+      payload = 'DUPLICATE: ' + payload
     }
     state.componentMap[state.activeComponent].noteList.push(payload)
   },
