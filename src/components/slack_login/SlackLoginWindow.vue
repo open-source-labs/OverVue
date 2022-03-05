@@ -1,18 +1,5 @@
 <!--<template v-if="show">-->
 <template>
-  <div>
-    <!-- <div>
-      <q-btn class="glossy bg-black openModalBtn" size="5px" @click="openLogin">
-      </q-btn>
-    </div> -->
-
-    <!--
-      Slack Login Button:
-      -->
-
-    <!--
-        Skip button:
-        -->
                 <q-btn
               class="menu-btn"
               color= "purple"
@@ -43,6 +30,20 @@
               </svg>
               Slack Login
             </q-btn>
+  <div>
+    <!-- <div>
+      <q-btn class="glossy bg-black openModalBtn" size="5px" @click="openLogin">
+      </q-btn>
+    </div> -->
+
+    <!--
+      Slack Login Button:
+      -->
+
+    <!--
+        Skip button:
+        -->
+
 
     <q-dialog
       v-model="showLogin"
@@ -211,8 +212,8 @@ export default {
   border: 1px solid #289ead;
 }
 .menu-btn{
-  width: 100%;
-  margin-bottom:20px;
+  width: 80%;
+  margin: 10px 0px;
 }
 
 

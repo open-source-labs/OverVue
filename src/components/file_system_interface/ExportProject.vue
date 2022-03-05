@@ -14,7 +14,7 @@ Description:
     <q-menu class="dropdown">
       <div class="settings-dropdown column items-center"> 
       <p class="center">Export:</p>
-      <q-btn class="menu-btn" no-caps color="secondary" label="Current Project" @click="exportProject"/> 
+      <q-btn class="menu-btn" no-caps color="secondary" label="Project" @click="exportProject"/> 
       <q-btn class="menu-btn" no-caps color="secondary" label="Active Component" @click="handleExportComponent" :disabled="!activeComponent.trim()"/> 
       </div>
     </q-menu>
@@ -523,19 +523,16 @@ export default {
 </script>
 
 <style>
-/* .nav-btn {
-  min-height: 10px !important;
-  width: auto;
-  font-size: 11px;
+.nav-btn {
+  min-height: 30px !important;
   text-transform: capitalize;
-  padding: 3px 8px;
-} */
+}
 .center{
   display:inline-block;
   text-align: center;
-  margin-top: 5px;
+  margin-top: 10px;
+  margin-bottom: 5px;
   font-weight: bold;
-  background-color: rgb(100, 99, 99);
   color: white;
   box-sizing: border-box;
 }
