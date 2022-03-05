@@ -44,7 +44,7 @@ Description:
         <OpenProjectComponent />
         <ExportProjectComponent />
         
-        <q-btn icon="fas fa-cog" size="sm">
+        <q-btn class="nav-btn" icon="fas fa-cog" size="sm">
           <!-- < fas => fontawesome, refers to icon style -->
           <q-menu class="dropdown">
             
@@ -345,11 +345,11 @@ q-btn > i {
   background-color: rgba(255, 255, 255, 0.301);
 }
 
-.fa-backward:hover,
-.fa-forward:hover {
-  cursor: pointer;
-  color: $secondary;
-}
+// .fa-backward:hover,
+// .fa-forward:hover {
+//   cursor: pointer;
+//   color: $secondary;
+// }
 
 #unavailable {
   color: grey;
@@ -366,8 +366,9 @@ q-btn > i {
   transition-timing-function: ease-in;
 }
 
-.export-btn {
-  margin-left: 0.3rem;
+.nav-btn {
+  margin-left: 0.5rem;
+  // height: 25px
 }
 
 .q-toolbar {
@@ -438,6 +439,9 @@ background: #5c5e61;
   width: 15%;
   height: auto;
 }
+/* Typescript toggle
+========================== */
+
 .switch {
 	position: relative;
 	display: block;

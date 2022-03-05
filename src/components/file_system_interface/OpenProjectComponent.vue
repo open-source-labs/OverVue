@@ -5,7 +5,7 @@ Description:
   -->
 
 <template>
-    <q-btn class="export-btn" color="secondary" label="Import">
+    <q-btn class="nav-btn" color="secondary" label="Import">
     <q-menu class="dropdown">
       <div class="settings-dropdown column items-center"> 
       <p class="center">Import:</p>

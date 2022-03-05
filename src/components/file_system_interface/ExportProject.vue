@@ -10,7 +10,7 @@ Description:
   -->
 
 <template>
-  <q-btn class="export-btn" color="secondary" label="Export">
+  <q-btn class="nav-btn" color="secondary" label="Export">
     <q-menu class="dropdown">
       <div class="settings-dropdown column items-center"> 
       <p class="center">Export:</p>
@@ -523,13 +523,13 @@ export default {
 </script>
 
 <style>
-.export-btn {
+/* .nav-btn {
   min-height: 10px !important;
   width: auto;
   font-size: 11px;
   text-transform: capitalize;
   padding: 3px 8px;
-}
+} */
 .center{
   display:inline-block;
   text-align: center;
