@@ -437,7 +437,7 @@ export default {
         z: this.activeComponentData.z,
       };
       if (e.target.innerText === "+") payload.z++;
-      if (e.target.innerText === "-" && payload.z > 0) payload.z--;
+      if (e.target.innerText === "–" && payload.z > 0) payload.z--;
       this.updateComponentLayer(payload);
     },
     // if user clicks on display grid, resets active component to ''
