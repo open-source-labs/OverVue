@@ -180,7 +180,6 @@ export default {
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
-    margin: 4px;
   }
   .create-component-form {
     display: flex;

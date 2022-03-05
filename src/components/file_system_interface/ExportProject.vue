@@ -11,7 +11,7 @@ Description:
 
 <template>
   <q-btn class="nav-btn" color="secondary" label="Export">
-    <q-menu class="dropdown" :offset="[0, 10]">
+    <q-menu class="dropdown" :offset="[0, 15]">
       <div class="settings-dropdown column items-center"> 
       <p class="center">Export:</p>
       <q-btn class="menu-btn" no-caps color="secondary" label="Project" @click="exportProject"/> 

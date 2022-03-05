@@ -46,7 +46,7 @@ Description:
         
         <q-btn class="nav-btn" icon="fas fa-cog" size="sm">
           <!-- < fas => fontawesome, refers to icon style -->
-          <q-menu :offset="[0, 10]" class="dropdown">
+          <q-menu :offset="[0, 15]" class="dropdown">
             
           <div class="settings-dropdown column items-center">
             <q-btn

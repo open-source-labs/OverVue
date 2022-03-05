@@ -6,7 +6,7 @@ Description:
 
 <template>
     <q-btn class="nav-btn" color="secondary" label="Import">
-    <q-menu :offset="[0, 10]" class="dropdown">
+    <q-menu :offset="[0, 15]" class="dropdown">
       <div class="settings-dropdown column items-center"> 
       <p class="center">Import:</p>
       <q-btn class="menu-btn" no-caps color="secondary" label="Project" @click="openProjectJSON"/> 
