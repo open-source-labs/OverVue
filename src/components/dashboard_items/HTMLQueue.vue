@@ -6,8 +6,11 @@ Description:
 
 <template>
   <section class="html-queue">
-    <i v-if='!this.activeLayer.id' class="fas fa fa-chevron-up fa-md" @click="setParentLayer"></i>
-    <span class='list-title' v-if='this.activeLayer.id !== ""'> Viewing Elements in '{{ depth }}' </span>
+    <span class='list-title' v-if='this.activeLayer.id !== ""'>
+      <i class="fas fa fa-chevron-up fa-md" @click="setParentLayer"></i>
+      <!-- <button v-if='this.activeLayer.id' @click="upOneLayer">Up</button>  -->
+      &nbsp; &nbsp; Viewing Elements in '{{ depth }}' 
+    </span>
     <span class='list-title' v-else-if='!this.activeComponent'></span>
     <hr>
     <div
@@ -74,11 +77,11 @@ export default {
       }
     },
     depth: function () {
-      let newTitle = ''
+      let newTitle = '';
       this.activeLayer.lineage.forEach(el => {
         newTitle += ` > ${el}`
       })
-      return newTitle
+      return newTitle;
     }
 
   },

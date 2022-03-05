@@ -49,22 +49,8 @@
         @click="handleAddNotes" />
       <q-menu context-menu>
         <q-list color="black" class="menu">
-          <q-item clickable v-ripple v-close-popup @click="handleAddNotes">
-            <q-item-section>Component Notes</q-item-section>
-            <q-item-section avatar>
-              <q-icon color="primary" name="edit_note" />
-            </q-item-section>
-          </q-item>
-          <q-item clickable v-ripple v-close-popup @click="handleAddChild">
-            <q-item-section>Update Children</q-item-section>
-            <q-item-section avatar>
-              <q-icon color="primary" name="add" />
-            </q-item-section>
-          </q-item>
           <q-item clickable v-ripple v-close-popup id="layer-item">
-            <q-item-section class="layer"
-              >Layer</q-item-section
-            >
+            <q-item-section class="layer">Layer</q-item-section>
             <q-btn
               class="minorAction"
               color="transparent"
@@ -81,6 +67,18 @@
               @click="(e) => handleLayer(e)"
             />
           </q-item>
+          <q-item clickable v-ripple v-close-popup @click="handleAddChild">
+            <q-item-section>Update Children</q-item-section>
+            <q-item-section avatar>
+              <q-icon color="primary" name="add" />
+            </q-item-section>
+          </q-item>
+          <q-item clickable v-ripple v-close-popup @click="handleAddNotes">
+            <q-item-section>Component Notes</q-item-section>
+            <q-item-section avatar>
+              <q-icon color="primary" name="edit_note" />
+            </q-item-section>
+          </q-item>
           <q-item clickable v-ripple v-close-popup @click="handleExportComponent">
             <q-item-section>Export Component</q-item-section>
             <q-item-section avatar>
@@ -92,18 +90,19 @@
 
     </vue-draggable-resizable>
     <div>
-      <q-dialog v-model="modalOpen" persistent>
+      <q-dialog v-model="modalOpen">
         <q-select
           @select="handleSelect"
-          id="dropdown"
+          id="childrenDropdown"
           filled
           v-model="testModel"
           multiple
           :options="options"
           use-chips
           stack-label
+          dark
           label="Select children"
-          style="width: 250px; background-color: #fd5f00"
+          style="width: 250px; background-color: #201221;"
         />
       </q-dialog>
       <!-- some irregularity (delete event listener firing on bkspc/del) with the modal when stored locally, so modal open stored in state, and triggers to local reflect only stateful change.-->
@@ -661,6 +660,12 @@ li:hover{
 
 #counter {
   margin: 0 10px 0;
+  color: $menutext;
+}
+
+#childrenDropdown {
+  width: 250px;
+  background: $subprimary;
   color: $menutext;
 }
 .title {
