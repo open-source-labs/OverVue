@@ -9,7 +9,7 @@
 </template>
 
 <script>
-
+const { fs, ipcRenderer } = window;
 export default {
 
   methods: {
@@ -21,8 +21,8 @@ export default {
     //renders the open file
     importComponent() {
       ipcRenderer
-        .invoke("openProject", {
-          properties: ["openProject"],
+        .invoke("importComponent", {
+          properties: ["openFile"],
           filters: [
             {
               name: "Vue Files",

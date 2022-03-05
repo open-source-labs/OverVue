@@ -75,6 +75,12 @@ ipcMain.handle("exportComponent", async (event, arg) => {
   return result;
 });
 
+// Handle dialogs for importing a component
+ipcMain.handle("importComponent", async (event, arg) => {
+  const result = await dialog.showOpenDialog(arg);
+  return result;
+});
+
 
 // ************** Slack OAuth functions **********************
 // Sends request to Slack for User's information,
