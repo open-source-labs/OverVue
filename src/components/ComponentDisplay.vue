@@ -131,6 +131,7 @@
                     ></q-input>
                     <q-btn 
                     id="comp-btn"
+                    class="sidebar-btn"
                     color="secondary"
                     label="Submit Note"
                     :disable="noteText.length > 0 ? false : true"
@@ -138,7 +139,8 @@
                     />
                     <q-btn
                     id="note-btn-close"
-                    label="Exit Notes"
+                    class="sidebar-btn"
+                    label="Close"
                     @click="this.openNoteModal"
                     />
                 </q-form>
@@ -485,7 +487,7 @@ li:hover{
   margin-right: 10px;
 }
 .noteBox{
-  background-color: $subprimary;
+  background-color: $subsecondary;
   color: $menutext;
   width: 65%;
   padding: 15px;
@@ -498,7 +500,7 @@ li:hover{
 #noteDelete{
   background-color: $secondary;
   width: 20px;
-  height: 20px;
+  min-height: 42px;
   display: flex;
   justify-content: center;
   align-self: flex-end;
@@ -682,9 +684,9 @@ li:hover{
 }
 
 #note-btn-close {
-  background-color: rgba($negative, .2);
-  border: 1px solid $negative;
-  color: $negative;
+  background-color: $subprimary;
+  color: $menutext;
+  border: 1px solid $menutext;
   width: 100%;
   margin-top: 10px;
   margin-bottom: 10px;
