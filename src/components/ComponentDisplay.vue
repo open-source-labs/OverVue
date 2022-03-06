@@ -10,6 +10,7 @@
     class="component-display grid-bg"
     :style="mockBg"
     v-on:click="handleClick"
+    v-on:click.right="handleRight"
   >
     <!-- This is the actual component box -->
     <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
@@ -325,7 +326,6 @@ export default {
     recordInitialPosition: function (e) {
       if (this.activeComponent !== e.target.id) {
         if (e.target.parentElement?.classList.contains('draggable')){
-          //console.log("using vanilla JS to WIN")
           this.setActiveComponent(e.target.parentElement.id)
         } else {
           this.setActiveComponent(e.target.id);
@@ -455,7 +455,11 @@ export default {
         this.setActiveComponent("");
       }
     },
-    copyActiveComponent() {},
+    handleRight(event) {
+      if (event.target.className === "component-display grid-bg") {
+        //right click modal to make a component?
+      }
+    },
   },
   watch: {
     noteModalOpen (){
