@@ -9,7 +9,7 @@ Description:
   <div class="edit-component-div">
     <div>
       <button class="menu-link" @click="resetActiveComponent"><i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp; &nbsp; Create Component Menu</button>
-      <q-card class="expansion-item" dark flat>
+      <q-card class="expansion-item no-shadow" dark flat>
         <div
           class="text-body2"
           style="background: #272a2a; padding: 12px"
