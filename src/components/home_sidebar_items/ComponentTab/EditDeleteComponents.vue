@@ -107,11 +107,13 @@ Description:
       </q-list>
       <q-btn
         id="exportButton"
+        class="sidebar-btn"
         @click="handleExportComponent"
         label="Export currently selected"
       />
       <q-btn
         id="deleteButton"
+        class="sidebar-btn"
         @click="deleteSelectedComp(activeComponentData)"
         label="Delete currently selected"
       />
