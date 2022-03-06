@@ -9,8 +9,7 @@
       @click="nextTab"
     />
       <q-btn
-      class="tut-btn"
-      id="closeTutorialButton"
+      class="tut-btn abandonAction"
       label="Close Tutorial"
       @click="toggleTutorial"
     />
@@ -50,12 +49,6 @@ export default {
   width: 50%;
   min-height: 42px;
   height: auto;
-}
-
-#closeTutorialButton {
-  background-color: $subprimary;
-  color: $menutext;
-  border: 1px solid $menutext;
 }
 
 </style>
