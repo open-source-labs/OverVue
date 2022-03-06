@@ -64,7 +64,7 @@ export default {
   },
   data() {
     return {
-      tab: "code",
+      tab: "routes",
       open: true,
       height: 40,
       up: "fas fa-chevron-up",

@@ -80,6 +80,7 @@ Description:
               color="secondary"
               label="Getting Started"
               no-caps
+              @click="this.toggleTutorial"
             />
            
         <SlackLoginWindow />
@@ -179,7 +180,7 @@ import OpenProjectComponent from "../components/file_system_interface/OpenProjec
 import SlackLoginWindow from "../components/slack_login/SlackLoginWindow.vue";
 import ComponentTab from "../components/home_sidebar_items/ComponentTab/ComponentTab.vue";
 import StoreTab from "../components/home_sidebar_items/StoreTab/StoreTab.vue";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   // Passed down from App.vue
@@ -205,9 +206,10 @@ export default {
     StoreTab,
   },
   computed: {
-    ...mapState(["exportAsTypescript", "toggleTutorial"]),
+    ...mapState(["exportAsTypescript"]),
   },
   methods: {
+    ...mapActions(["toggleTutorial"]),
     hideRight() {
       this.right = !this.right;
       if (this.$refs.resizeBox.style.display === "none") {
