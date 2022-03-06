@@ -49,6 +49,7 @@ Description:
 
       <q-btn
         id="create-component-btn"
+        class="sidebar-btn"
         v-if="activeComponent === ''"
         color="secondary"
         label="Create Component"
@@ -180,6 +181,7 @@ export default {
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
+    margin: 4px;
   }
   .create-component-form {
     display: flex;

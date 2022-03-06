@@ -296,7 +296,7 @@ export default {
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
-  margin: 20px;
+  margin: 4px;
 }
 
 .menu-link{

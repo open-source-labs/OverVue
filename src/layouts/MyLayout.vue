@@ -44,27 +44,7 @@ Description:
         <i v-else class="fa fa-redo" id="unavailable" aria-hidden="true"></i>
         </q-btn>
       </div></q-toolbar-title>
-        <!-- <SlackLoginWindow /> -->
         <div></div>
-        <!-- <i
-          v-if="doneAction.length"
-          class="fa fa-backward"
-          aria-hidden="true"
-          @click="undo"
-        ></i>
-        <i
-          v-else
-          class="fa fa-backward"
-          id="unavailable"
-          aria-hidden="true"
-        ></i>
-        <i
-          v-if="undoneAction.length"
-          class="fa fa-forward"
-          aria-hidden="true"
-          @click="redo"
-        ></i>
-        <i v-else class="fa fa-forward" id="unavailable" aria-hidden="true"></i> -->
         
         <SaveProjectComponent />
         <OpenProjectComponent />
@@ -312,6 +292,8 @@ q-btn > i {
   flex-grow: 1;
   align-items: center;
   margin-right: 5px;
+  width: 40px;
+  border: 1px solid rgba($primary, .5);
 }
 
 // Must change style lang='scss'

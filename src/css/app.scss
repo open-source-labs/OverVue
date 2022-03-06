@@ -33,6 +33,10 @@ main {
     text-transform: capitalize;
 }
 
+.sidebar-btn {
+    min-height: 42px !important;
+}
+
 .q-item {
     background: $subsecondary;  
 }

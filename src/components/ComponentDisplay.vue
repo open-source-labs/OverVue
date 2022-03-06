@@ -640,7 +640,7 @@ li:hover{
   position: absolute;
 }
 .active {
-  background-color: $accent;
+  background-color: rgba($accent, .7);
   border: 1px dashed $accent;
 }
 .minorAction {

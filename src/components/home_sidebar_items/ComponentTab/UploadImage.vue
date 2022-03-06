@@ -142,7 +142,7 @@ export default {
   }
 
 .upload-btn {
-  text-transform: capitalize;
+  text-transform: uppercase;
   font-size: 12px;
   width: 150px;
   height: auto;
