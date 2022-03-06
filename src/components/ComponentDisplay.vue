@@ -50,7 +50,7 @@
       <q-menu context-menu>
         <q-list color="black" class="menu">
           <q-item clickable v-ripple v-close-popup id="layer-item">
-            <q-item-section class="layer">Layer</q-item-section>
+            <q-item-section class="layer">Component Layer</q-item-section>
             <q-btn
               class="minorAction"
               color="transparent"
@@ -91,19 +91,22 @@
     </vue-draggable-resizable>
     <div>
       <q-dialog v-model="modalOpen">
-        <q-select
-          @select="handleSelect"
-          id="childrenDropdown"
-          filled
-          v-model="testModel"
-          multiple
-          :options="options"
-          use-chips
-          stack-label
-          dark
-          label="Select children"
-          style="width: 250px; background-color: #201221;"
-        />
+      <div class="addChild">
+      <p>Add/Remove Children</p>
+      <VueMultiselect
+        v-model="childrenSelected"
+        placeholder="Add/remove children"
+        :multiple="true"
+        :close-on-select="false"
+        :options="options"
+        :show-labels="false"
+        @remove="handleSelect"
+        @select="handleSelect"
+        :height="300"
+        :option-height="40"
+        :searchable="false"
+      />
+      </div>
       </q-dialog>
 
       <!-- some irregularity (delete event listener firing on bkspc/del) with the modal when stored locally, so modal open stored in state, and triggers to local reflect only stateful change.-->
@@ -153,6 +156,7 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import VueDraggableResizable from "vue-draggable-resizable/src/components/vue-draggable-resizable.vue";
+import VueMultiselect from "vue-multiselect";
 import "vue-draggable-resizable/src/components/vue-draggable-resizable.css";
 import handleExportComponentMixin from "./ExportComponentMixin.vue";
 const { fs, ipcRenderer } = window;
@@ -163,6 +167,7 @@ export default {
   name: "ComponentDisplay",
   components: {
     VueDraggableResizable,
+    VueMultiselect,
   },
   mixins: [handleExportComponentMixin],
   data() {
@@ -176,6 +181,7 @@ export default {
       initialPosition: { x: 0, y: 0 },
       initialSize: { w: 0, h: 0 },
       htmlElements: [],
+      childrenSelected: [],
     };
   },
   mounted() {
@@ -203,7 +209,7 @@ export default {
     });
     window.addEventListener("paste", () => {
       if (this.noteModalOpen === false){
-        this.$store.dispatch("pasteActiveComponent");
+          this.$store.dispatch("pasteActiveComponent");
       }
     });
   },
@@ -217,8 +223,8 @@ export default {
       "imagePath",
       "activeComponentObj",
       "exportAsTypescript",
-      "noteModalOpen"
-
+      "noteModalOpen",
+      "activeRouteDisplay"
     ]),
     // used in VueDraggableResizeable component
     activeRouteArray() {
@@ -231,34 +237,38 @@ export default {
       return cloneDeep(this.activeComponentObj);
     },
     options() {
-      // checks if component has any parents and pushes them into lineage
-      const checkParents = (component, lineage = [component.componentName]) => {
-        console.log("Lineage: " + lineage);
-        if (!Object.keys(component.parent).length) return lineage;
-        for (var parents in component.parent) {
-          // Mutating?
-          lineage.push(parents);
-          checkParents(component.parent[parents], lineage);
-        }
-        return lineage;
-      };
-      let lineage = [this.activeComponent];
-      // checks to see if there are any existing children
-      if (this.componentMap[this.activeComponent]) {
-        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.testModel = this.componentMap[this.activeComponent].children;
-        lineage = checkParents(this.componentMap[this.activeComponent]);
+      if (this.activeComponent !== ''){
+          this.childrenSelected = [];
+          this.childrenSelected = this.componentMap[this.activeComponent].children;
+      } else {
+        this.childrenSelected = [];
       }
-      const routes = Object.keys(this.routes);
-      const exceptions = new Set([
-        "App",
-        ...lineage,
-        ...routes,
-        ...this.testModel,
-      ]);
-      return Object.keys(this.componentMap).filter((component) => {
-        if (!exceptions.has(component)) return component;
-      });
+      const compMap = this.componentMap;
+      const activeComp = this.activeComponent;
+      const val = this.routes[this.activeRoute].map(
+        (component) => component.componentName
+      );
+        console.log(val)
+      const relatives = [...val]
+        //also need to filter out any parents
+
+      let parentalLineage = [];
+      findLineage(relatives)
+      function findLineage(children){
+        children.forEach((el)=>{
+          parentalLineage.push(el);
+          if (compMap[el].children.length > 0){
+            findLineage(compMap[el].children);
+          }
+          if (el !== activeComp){
+            parentalLineage.pop();
+          } else {
+            return;
+          }
+        })
+      }
+      const optionOutput = val.filter(el => !parentalLineage.includes(el)).filter(el => el !== this.activeComponent); 
+      return optionOutput;
     },
     userImage() {
       const imgSrc = `file://` + this.imagePath[this.activeRoute];
@@ -424,7 +434,7 @@ export default {
       this.deleteActiveComponentNote(e.target.previousElementSibling.innerText);
     },
     // used when user selects to add child from dropdown
-    handleSelect(value) {
+    handleSelect(value) { //actually handles adding or deleting
       this.updateActiveComponentChildrenValue(value);
     },
     // user can change component's layer order
@@ -468,6 +478,17 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
+.addChild{
+  width: 25vh;
+  height: 25vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: $subsecondary;
+  padding: 10px;
+}
+
 li{
   display: flex;
   font-weight: bold;
@@ -477,6 +498,8 @@ li{
 li:hover{
   background-color: $subprimary;
 }
+
+
 .noteblock{
   white-space: pre-wrap;
   font-weight: normal;

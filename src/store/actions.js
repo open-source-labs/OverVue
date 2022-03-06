@@ -108,6 +108,11 @@ const actions = {
     if (!state.copiedComponent.componentName){
       return
     }
+    if (Date.now() < state.pasteTimer){
+      return;
+    } else {
+      commit(types.UPDATE_PASTE_TIMER) //throttles pasting
+    }
     commit(types.PASTE_ACTIVE_COMPONENT);
     // if no other parents, update as parent of active route in componentMap
     if (!Object.keys(state.pastedComponent.parent).length) {

@@ -288,6 +288,9 @@ const mutations = {
     // reset the number of copies created
     state.copyNumber = 0;
   },
+  [types.UPDATE_PASTE_TIMER]: (state) => {
+    state.pasteTimer = Date.now() + 1000;
+  },
 
   [types.PASTE_ACTIVE_COMPONENT]: (state) => {
     // check if copied exists
