@@ -58,6 +58,7 @@ export default {
           this.code = 'Your component boilerplate will be displayed here.'
       }
     },
+    //highlighter does not work: OverVue 6.0;
     highlighter(myCode) {
       return highlight(myCode, languages.js);
     },
@@ -249,13 +250,6 @@ export default {
       } else {
         output += "};\n<\/script>\n\n<style scoped>\n</style>"
       }
-      // eslint-disable-next-line no-useless-escape
-      // add props/data
-
-      // eslint-disable-next-line no-useless-escape
-      // return `\n\n<script>\n${str}\nexport default {\n  name: '${componentName}',\n
-      // components: {\n${childrenComponentNames}  }\n};\n<\/script>\n\n<style scoped>\n
-      // </style>`
       return output;
     },
   },
@@ -278,7 +272,7 @@ export default {
   mounted() {
     // https://vuejs.org/v2/api/#Vue-nextTick
     // kinda like a promise, used for the window resize
-    this.snippetInvoke()
+    this.snippetInvoke(); //generates the code snippet whenever this is mounted
     this.$nextTick(() => {
       window.addEventListener("resize", this.getWindowHeight);
 
@@ -300,7 +294,7 @@ export default {
   font-size: 12px;
   background: #2d2d2d;
   color: #ccc;
-  max-height: 70vh;
+  max-height: 100%;
   /* you must provide font-family font-size line-height. Example: */
   font-family: Fira code, Fira Mono, Consolas, Menlo, Courier, monospace;
   line-height: 1.5;
@@ -308,7 +302,10 @@ export default {
 }
 
 .codesnippet-container {
-  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  height: 95%;
 }
 
 .prism-editor__textarea:focus {

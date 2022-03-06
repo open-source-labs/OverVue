@@ -208,37 +208,18 @@ const mutations = {
   },
 
   [types.DELETE_ACTION_FROM_COMPONENT]: (state, payload) => {
-    const temp = state.componentMap[state.activeComponent];
-    const newArray = [];
-    temp.actions.forEach((element) => {
-      if (element !== payload) newArray.push(element);
-    });
-    temp.actions = newArray;
-    state.activeComponentObj = null;
-    state.activeComponentObj = temp;
+    state.componentMap[state.activeComponent].actions = state.componentMap[state.activeComponent].actions.filter(
+      (action) => action !== payload);
   },
 
   [types.DELETE_PROPS_FROM_COMPONENT]: (state, payload) => {
-    const temp = state.componentMap[state.activeComponent];
-    const newArray = [];
-    temp.props.forEach((element) => {
-      if (element !== payload) newArray.push(element);
-    });
-    temp.props = newArray;
-    state.activeComponentObj = null;
-    state.activeComponentObj = temp;
+    state.componentMap[state.activeComponent].props = state.componentMap[state.activeComponent].props.filter(
+      (prop) => prop !== payload);
   },
 
   [types.DELETE_STATE_FROM_COMPONENT]: (state, payload) => {
-    const temp = state.componentMap[state.activeComponent];
-    const newArray = [];
-    temp.state.forEach((element) => {
-      if (element !== payload) newArray.push(element);
-    });
-    temp.state = newArray;
-    state.activeComponentObj = null;
-    state.activeComponentObj = temp;
-    console.log(state.componentMap)
+    state.componentMap[state.activeComponent].state = state.componentMap[state.activeComponent].state.filter(
+      (state) => state !== payload);
   },
 
   [types.DELETE_USER_STATE]: (state, payload) => {
@@ -248,7 +229,7 @@ const mutations = {
       if (component === "App" || component === "HomeView") continue;
       // splice out if there is a match
       state.componentMap[component].state = state.componentMap[component].state.filter(
-        (action) => action !== payload)
+        (action) => action !== payload);
     }
     // remove from userState
     let index = state.userState.indexOf(payload);
@@ -261,7 +242,7 @@ const mutations = {
       if (component === "App" || component === "HomeView") continue;
       // splice out if there is a match
       state.componentMap[component].actions = state.componentMap[component].actions.filter(
-        (action) => action !== payload)
+        (action) => action !== payload);
     }
     let index = state.userActions.indexOf(payload);
     state.userActions.splice(index, 1);

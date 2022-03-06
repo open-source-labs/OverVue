@@ -248,7 +248,6 @@ export default {
       const val = this.routes[this.activeRoute].map(
         (component) => component.componentName
       );
-        console.log(val)
       const relatives = [...val]
         //also need to filter out any parents
 
@@ -481,7 +480,7 @@ export default {
 
 .addChild{
   width: 25vh;
-  height: 25vh;
+  height: 50vh;
   display: flex;
   flex-direction: column;
   align-items: center;
