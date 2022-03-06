@@ -82,7 +82,6 @@ export default {
 <style scoped>
 .route-display {
   overflow: auto;
-  padding: 1rem;
 }
 
 i:hover {
