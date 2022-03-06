@@ -167,7 +167,6 @@ export default {
   height: 100%;
   border-radius: 0px;
   background: $subprimary;
-  padding: 16px;
 }
 
 .inner-div {
