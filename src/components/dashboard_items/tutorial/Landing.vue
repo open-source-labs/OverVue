@@ -9,7 +9,7 @@
       @click="nextTab"
     />
       <q-btn
-      class="tut-btn abandonAction"
+      class="tut-btn closeAction"
       label="Close Tutorial"
       @click="toggleTutorial"
     />

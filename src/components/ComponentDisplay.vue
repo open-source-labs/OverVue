@@ -139,7 +139,7 @@
                     />
                     <q-btn
                     id="note-btn-close"
-                    class="sidebar-btn abandonAction"
+                    class="sidebar-btn closeAction"
                     label="Close"
                     @click="this.openNoteModal"
                     />
