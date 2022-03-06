@@ -27,7 +27,7 @@ Description:
           class="input-add"
           no-error-icon
           reactive-rules
-          :rules="[ val => val.length != 0 || 'Please set a component name', val => !Object.keys(this.componentMap).includes(val) || 'A component with this name already exists' ]"
+          :rules="[ val => val.length != 0 || 'Please set a component name', val => !Object.keys(this.componentMap).includes(val) || 'A component/route with this name already exists' ]"
         ></q-input>
       </form>
 
