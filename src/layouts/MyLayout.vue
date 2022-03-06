@@ -352,12 +352,6 @@ q-btn > i {
   background-color: rgba(255, 255, 255, 0.301);
 }
 
-// .fa-backward:hover,
-// .fa-forward:hover {
-//   cursor: pointer;
-//   color: $secondary;
-// }
-
 #unavailable {
   color: grey;
   cursor: default;
@@ -515,7 +509,7 @@ q-btn > i {
 	opacity: 0;
 }
 .switch-input:checked ~ .switch-label {
-	background: #289ead;
+	background: $secondary;
 	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
 }
 .switch-input:checked ~ .switch-label:before {
@@ -540,7 +534,7 @@ q-btn > i {
 	position: absolute;
 	top: 20px;
 	left: 20px;
-	margin: -6px 0 0 -6px;
+	margin: -12px -12px;
 	width: 12px;
 	height: 12px;
 	background: linear-gradient(to bottom, #eeeeee, #FFFFFF);
