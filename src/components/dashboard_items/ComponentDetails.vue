@@ -9,7 +9,7 @@ Description:
 
 <template>
   <div class="inner-div">
-    <q-card id="store-cards" v-if="this.activeComponentObj">
+    <q-card id="store-cards" class="no-shadow" v-if="this.activeComponentObj">
       <q-tabs
         v-model="tab"
         dense
