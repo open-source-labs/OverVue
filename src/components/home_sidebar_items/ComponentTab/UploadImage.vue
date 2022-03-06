@@ -147,12 +147,14 @@ export default {
   width: 150px;
   height: auto;
   min-height: 42px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .upload {
   margin: 1rem;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
 }
 
 .file-path {
