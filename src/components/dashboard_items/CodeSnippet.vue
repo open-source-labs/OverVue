@@ -35,7 +35,7 @@ import "prismjs/themes/prism-tomorrow.css"; // import syntax highlighting styles
 export default {
   data() {
     return {
-      // code: `Your component boilerplate will be displayed here.`,
+      code: `Your component boilerplate will be displayed here.`,
       lineNumbers: true,
       height: null,
     };
@@ -46,18 +46,18 @@ export default {
   computed: {
     // needs access to current component aka activeComponent
     ...mapState(["componentMap", "activeComponent", "activeComponentObj", "exportAsTypescript"]),
-    code: function () {
-      let computedCode = "Your component boilerplate will be displayed here.";
-      if (this.activeComponent) {
-        computedCode = this.createCodeSnippet(
-          this.componentMap[this.activeComponent].componentName,
-          this.componentMap[this.activeComponent].children
-        );
-      }
-      return computedCode;
-    },
   },
   methods: {
+    snippetInvoke(){
+      if (this.activeComponent !== ''){
+        this.code = this.createCodeSnippet(
+          this.componentMap[this.activeComponent].componentName,
+          this.componentMap[this.activeComponent].children
+        )
+        } else {
+          this.code = 'Your component boilerplate will be displayed here.'
+      }
+    },
     highlighter(myCode) {
       return highlight(myCode, languages.js);
     },
@@ -161,16 +161,16 @@ export default {
       // add import mapstate and mapactions if they exist
       let imports = "";
       if (
-        this.activeComponentObj.actions.length ||
-        this.activeComponentObj.state.length
+        this.componentMap[this.activeComponent].actions.length ||
+        this.componentMap[this.activeComponent].state.length
       ) {
         imports += "import { ";
         if (
-          this.activeComponentObj.actions.length &&
-          this.activeComponentObj.state.length
+          this.componentMap[this.activeComponent].actions.length &&
+          this.componentMap[this.activeComponent].state.length
         ) {
           imports += "mapState, mapActions";
-        } else if (this.activeComponentObj.state.length) imports += "mapState";
+        } else if (this.componentMap[this.activeComponent].state.length) imports += "mapState";
         else imports += "mapActions";
         imports += ' } from "vuex";\n';
       }
@@ -193,9 +193,9 @@ export default {
 
       // if true add data section and populate with props
       let data = "";
-      if (this.activeComponentObj.props.length) {
+      if (this.componentMap[this.activeComponent].props.length) {
         data += "  data () {\n    return {";
-        this.activeComponentObj.props.forEach((prop) => {
+        this.componentMap[this.activeComponent].props.forEach((prop) => {
           data += `\n      ${prop}: "PLACEHOLDER FOR VALUE",`;
         });
         data += "\n";
@@ -205,10 +205,10 @@ export default {
 
       // if true add computed section and populate with state
       let computed = "";
-      if (this.activeComponentObj.state.length) {
+      if (this.componentMap[this.activeComponent].state.length) {
         computed += "  computed: {";
         computed += "\n    ...mapState([";
-        this.activeComponentObj.state.forEach((state) => {
+        this.componentMap[this.activeComponent].state.forEach((state) => {
           computed += `\n      "${state}",`;
         });
         computed += "\n    ]),\n";
@@ -217,10 +217,10 @@ export default {
 
       // if true add methods section and populate with actions
       let methods = "";
-      if (this.activeComponentObj.actions.length) {
+      if (this.componentMap[this.activeComponent].actions.length) {
         methods += "  methods: {";
         methods += "\n    ...mapActions([";
-        this.activeComponentObj.actions.forEach((action) => {
+        this.componentMap[this.activeComponent].actions.forEach((action) => {
           methods += `\n      "${action}",`;
         });
         methods += "\n    ]),\n";
@@ -260,29 +260,25 @@ export default {
     },
   },
   watch: {
-    // // watches activeComponentObj for changes to make it reactive upon mutation
-    // activeComponentObj: {
-    //   handler () {
-    //     // console.log(this.activeComponentObj.children)
-    //     this.code = this.createCodeSnippet(
-    //       this.activeComponentObj.componentName,
-    //       this.activeComponentObj.children
-    //     )
-    //   }
-    // },
-    // // // // watches componentMap for changes to make it reactive upon mutation
-    // componentMap: {
-    //   handler () {
-    //     this.code = this.createCodeSnippet(
-    //       this.activeComponentObj.componentName,
-    //       this.activeComponentObj.children
-    //     )
-    //   }
-    // }
+    // watches activeComponentObj for changes to make it reactive upon mutation
+    // // // watches componentMap for changes to make it reactive upon mutation
+    activeComponent: {
+      handler () {
+        this.snippetInvoke();
+      },
+      deep: true
+    },
+    componentMap: {
+      handler () {
+        this.snippetInvoke();
+      },
+      deep: true
+    }
   },
   mounted() {
     // https://vuejs.org/v2/api/#Vue-nextTick
     // kinda like a promise, used for the window resize
+    this.snippetInvoke()
     this.$nextTick(() => {
       window.addEventListener("resize", this.getWindowHeight);
 

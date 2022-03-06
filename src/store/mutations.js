@@ -238,6 +238,7 @@ const mutations = {
     temp.state = newArray;
     state.activeComponentObj = null;
     state.activeComponentObj = temp;
+    console.log(state.componentMap)
   },
 
   [types.DELETE_USER_STATE]: (state, payload) => {
@@ -246,14 +247,8 @@ const mutations = {
       // first don't go through if component is App or Homeview
       if (component === "App" || component === "HomeView") continue;
       // splice out if there is a match
-      const newState = state.componentMap[component].state;
-      const index = newState.indexOf(payload);
-      if (index > -1) {
-        newState.splice(index, 1);
-        state.componentMap[component].state = newState;
-      } else {
-        continue;
-      }
+      state.componentMap[component].state = state.componentMap[component].state.filter(
+        (action) => action !== payload)
     }
     // remove from userState
     let index = state.userState.indexOf(payload);
@@ -265,14 +260,8 @@ const mutations = {
       // first don't go through if component is App or Homeview
       if (component === "App" || component === "HomeView") continue;
       // splice out if there is a match
-      const newActions = state.componentMap[component].actions;
-      const index = newActions.indexOf(payload);
-      if (index > -1) {
-        newActions.splice(index, 1);
-        state.componentMap[component].actions = newActions;
-      } else {
-        continue;
-      }
+      state.componentMap[component].actions = state.componentMap[component].actions.filter(
+        (action) => action !== payload)
     }
     let index = state.userActions.indexOf(payload);
     state.userActions.splice(index, 1);
