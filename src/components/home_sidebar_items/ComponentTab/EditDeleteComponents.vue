@@ -113,7 +113,7 @@ Description:
       />
       <q-btn
         id="deleteButton"
-        class="sidebar-btn"
+        class="sidebar-btn deleteAction"
         @click="deleteSelectedComp(activeComponentData)"
         label="Delete currently selected"
       />
@@ -310,7 +310,7 @@ export default {
 }
 
 .menu-link:hover{
-  color: $accent;
+  color: $primary;
 }
 
 .q-field {
@@ -388,9 +388,6 @@ p {
 }
 
 #deleteButton {
-  background-color: rgba($negative, .2);
-  border: 1px solid $negative;
-  color: $negative;
   width: 100%;
   margin-top: 30px;
   margin-bottom: 30px;

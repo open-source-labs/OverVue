@@ -25,8 +25,7 @@ Description:
           <q-btn
             v-else
             disable
-            class="upload-btn"
-            color="secondary"
+            class="upload-btn deleteAction"
             label="Clear Image"
           />
         </div>

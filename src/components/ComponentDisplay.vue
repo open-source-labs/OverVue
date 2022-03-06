@@ -139,7 +139,7 @@
                     />
                     <q-btn
                     id="note-btn-close"
-                    class="sidebar-btn"
+                    class="sidebar-btn abandonAction"
                     label="Close"
                     @click="this.openNoteModal"
                     />
@@ -684,9 +684,6 @@ li:hover{
 }
 
 #note-btn-close {
-  background-color: $subprimary;
-  color: $menutext;
-  border: 1px solid $menutext;
   width: 100%;
   margin-top: 10px;
   margin-bottom: 10px;

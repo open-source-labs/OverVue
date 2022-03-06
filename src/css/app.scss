@@ -37,6 +37,18 @@ main {
     min-height: 42px !important;
 }
 
+.deleteAction {
+  background-color: rgba($negative, .2);
+  color: $negative;
+  border: 1px solid $negative;
+}
+
+.abandonAction {
+  background-color: $subprimary;
+  color: $menutext;
+  border: 1px solid $menutext;
+}
+
 .q-item {
     background: $subsecondary;  
 }
