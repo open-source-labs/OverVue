@@ -522,11 +522,8 @@ export default {
 };
 </script>
 
-<style>
-.nav-btn {
-  min-height: 30px !important;
-  text-transform: capitalize;
-}
+<style scoped>
+
 .center{
   display:inline-block;
   text-align: center;

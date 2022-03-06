@@ -13,11 +13,17 @@ Description:
       @click="selectRoute(route)"
     >
       <q-list bordered separator class="list-item">
-        <q-item clickable v-ripple :class="route === activeRoute ? 'panel-block is-active list-item' : 'panel-block list-item'">
-          <q-item-section>{{route}}</q-item-section>
-          <span v-if="route !== 'HomeView'">
-            <q-btn round flat icon="highlight_off" v-on:click.stop="deleteSelectedRoute(route)" />
-          </span>
+        <q-item clickable dense v-ripple :class="route === activeRoute ? 'panel-block is-active list-item' : 'panel-block list-item'">
+          <q-item-section>
+            <div class="block-container">
+              <div class="block-info">
+              {{route}}
+              </div>
+              <span v-if="route !== 'HomeView'">
+              <q-btn round flat icon="highlight_off" v-on:click.stop="deleteSelectedRoute(route)" />
+              </span>
+            </div>
+          </q-item-section>
         </q-item>
       </q-list>
     </a>
@@ -47,9 +53,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+ 
   .panel-block {
     background: $secondary !important;
-    color: $menutext !important;;
+    color: $menutext !important;
+    min-height: 45px;
   }
   .is-active {
     background: $secondary !important;
