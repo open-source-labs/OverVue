@@ -60,6 +60,7 @@ const newState = {
   exportAsTypescript: 'off',
   showTutorial: true,
   tutorialFirstOpen: true,
+  pasteTimer: 0,
 }
 
 // closured method to ensure we only ever write the default state ONCE

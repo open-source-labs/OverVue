@@ -183,6 +183,6 @@ i {
   flex-direction: column;
   justify-content: flex-start;
   align-content: stretch;
-  height: 100%;
+  max-height: 95%;
 }
 </style>

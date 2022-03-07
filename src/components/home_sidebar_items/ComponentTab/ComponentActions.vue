@@ -33,10 +33,10 @@
         @click="addActionToComp"
       />
     </div>
-    <p v-if="!this.activeComponentObj.actions.length">
+    <p v-if="!this.componentMap[this.activeComponent].actions.length">
       No actions in component
     </p>
-    <a v-else v-for="action in this.activeComponentData.actions" :key="action">
+    <a v-else v-for="action in this.componentMap[this.activeComponent].actions" :key="action">
       <q-list class="list-item" dense bordered separator>
         <q-item clickable v-ripple class="list-item">
           <q-item-section>
@@ -69,15 +69,7 @@ export default {
     VueMultiselect,
   },
   computed: {
-    ...mapState(["activeComponentObj", "selectedActions", "userActions"]),
-    activeComponentData() {
-      return this.activeComponentObj;
-    },
-    compObj: {
-      get() {
-        return this.activeComponentObj;
-      },
-    },
+    ...mapState(["selectedActions", "userActions", "componentMap", "activeComponent"]),
     actionOptions() {
       return this.userActions;
     },

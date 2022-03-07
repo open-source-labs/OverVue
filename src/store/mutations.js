@@ -208,36 +208,18 @@ const mutations = {
   },
 
   [types.DELETE_ACTION_FROM_COMPONENT]: (state, payload) => {
-    const temp = state.componentMap[state.activeComponent];
-    const newArray = [];
-    temp.actions.forEach((element) => {
-      if (element !== payload) newArray.push(element);
-    });
-    temp.actions = newArray;
-    state.activeComponentObj = null;
-    state.activeComponentObj = temp;
+    state.componentMap[state.activeComponent].actions = state.componentMap[state.activeComponent].actions.filter(
+      (action) => action !== payload);
   },
 
   [types.DELETE_PROPS_FROM_COMPONENT]: (state, payload) => {
-    const temp = state.componentMap[state.activeComponent];
-    const newArray = [];
-    temp.props.forEach((element) => {
-      if (element !== payload) newArray.push(element);
-    });
-    temp.props = newArray;
-    state.activeComponentObj = null;
-    state.activeComponentObj = temp;
+    state.componentMap[state.activeComponent].props = state.componentMap[state.activeComponent].props.filter(
+      (prop) => prop !== payload);
   },
 
   [types.DELETE_STATE_FROM_COMPONENT]: (state, payload) => {
-    const temp = state.componentMap[state.activeComponent];
-    const newArray = [];
-    temp.state.forEach((element) => {
-      if (element !== payload) newArray.push(element);
-    });
-    temp.state = newArray;
-    state.activeComponentObj = null;
-    state.activeComponentObj = temp;
+    state.componentMap[state.activeComponent].state = state.componentMap[state.activeComponent].state.filter(
+      (state) => state !== payload);
   },
 
   [types.DELETE_USER_STATE]: (state, payload) => {
@@ -246,14 +228,8 @@ const mutations = {
       // first don't go through if component is App or Homeview
       if (component === "App" || component === "HomeView") continue;
       // splice out if there is a match
-      const newState = state.componentMap[component].state;
-      const index = newState.indexOf(payload);
-      if (index > -1) {
-        newState.splice(index, 1);
-        state.componentMap[component].state = newState;
-      } else {
-        continue;
-      }
+      state.componentMap[component].state = state.componentMap[component].state.filter(
+        (action) => action !== payload);
     }
     // remove from userState
     let index = state.userState.indexOf(payload);
@@ -265,14 +241,8 @@ const mutations = {
       // first don't go through if component is App or Homeview
       if (component === "App" || component === "HomeView") continue;
       // splice out if there is a match
-      const newActions = state.componentMap[component].actions;
-      const index = newActions.indexOf(payload);
-      if (index > -1) {
-        newActions.splice(index, 1);
-        state.componentMap[component].actions = newActions;
-      } else {
-        continue;
-      }
+      state.componentMap[component].actions = state.componentMap[component].actions.filter(
+        (action) => action !== payload);
     }
     let index = state.userActions.indexOf(payload);
     state.userActions.splice(index, 1);
@@ -287,6 +257,9 @@ const mutations = {
     state.copiedComponent = copy;
     // reset the number of copies created
     state.copyNumber = 0;
+  },
+  [types.UPDATE_PASTE_TIMER]: (state) => {
+    state.pasteTimer = Date.now() + 1000;
   },
 
   [types.PASTE_ACTIVE_COMPONENT]: (state) => {
