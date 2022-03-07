@@ -19,7 +19,7 @@ Includes functionality to:
       class="input-add"
       @click="resetActiveComponent"
       reactive-rules
-      :rules="[val => !Object.keys(this.componentMap).includes(val) || 'A component with this name already exists' ]"
+      :rules="[val => !Object.keys(this.componentMap).includes(val) || 'A component/route with this name already exists' ]"
     >
     <template v-slot:append>
       <q-btn
@@ -82,7 +82,6 @@ export default {
 <style scoped>
 .route-display {
   overflow: auto;
-  padding: 1rem;
 }
 
 i:hover {

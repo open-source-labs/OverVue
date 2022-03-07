@@ -29,7 +29,10 @@ Functionality:
             label="Add state to store"
             dense
             class="input-add"
-            v-on:keyup.delete.stop
+            no-error-icon
+            reactive-rules
+            :rules="[val => !this.userState.includes(val) || 'A state with this name already exists']"
+            @keyup.delete.stop
           >
           <template v-slot:append>
             <q-btn
@@ -74,7 +77,10 @@ Functionality:
             label="Add action to store"
             dense
             class="input-add"
-            v-on:keyup.delete.stop
+            @keyup.delete.stop
+            no-error-icon
+            reactive-rules
+            :rules="[val => !this.userActions.includes(val) || 'An action with this name already exists']"
           >
             <template v-slot:append>
               <q-btn

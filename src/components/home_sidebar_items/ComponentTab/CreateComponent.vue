@@ -27,7 +27,7 @@ Description:
           class="input-add"
           no-error-icon
           reactive-rules
-          :rules="[ val => val.length != 0 || 'Please set a component name', val => !Object.keys(this.componentMap).includes(val) || 'A component with this name already exists' ]"
+          :rules="[ val => val.length != 0 || 'Please set a component name', val => !Object.keys(this.componentMap).includes(val) || 'A component/route with this name already exists' ]"
         ></q-input>
       </form>
 
@@ -49,6 +49,7 @@ Description:
 
       <q-btn
         id="create-component-btn"
+        class="sidebar-btn"
         v-if="activeComponent === ''"
         color="secondary"
         label="Create Component"
@@ -180,6 +181,7 @@ export default {
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
+    margin: 4px;
   }
   .create-component-form {
     display: flex;

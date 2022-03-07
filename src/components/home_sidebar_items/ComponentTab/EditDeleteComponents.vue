@@ -9,7 +9,7 @@ Description:
   <div class="edit-component-div">
     <div>
       <button class="menu-link" @click="resetActiveComponent"><i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp; &nbsp; Create Component Menu</button>
-      <q-card class="expansion-item" dark flat>
+      <q-card class="expansion-item no-shadow" dark flat>
         <div
           class="text-body2"
           style="background: #272a2a; padding: 12px"
@@ -107,11 +107,13 @@ Description:
       </q-list>
       <q-btn
         id="exportButton"
+        class="sidebar-btn"
         @click="handleExportComponent"
         label="Export currently selected"
       />
       <q-btn
         id="deleteButton"
+        class="sidebar-btn deleteAction"
         @click="deleteSelectedComp(activeComponentData)"
         label="Delete currently selected"
       />
@@ -296,7 +298,7 @@ export default {
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
-  margin: 20px;
+  margin: 4px;
 }
 
 .menu-link{
@@ -308,7 +310,7 @@ export default {
 }
 
 .menu-link:hover{
-  color: $accent;
+  color: $primary;
 }
 
 .q-field {
@@ -386,9 +388,6 @@ p {
 }
 
 #deleteButton {
-  background-color: rgba($negative, .2);
-  border: 1px solid $negative;
-  color: $negative;
   width: 100%;
   margin-top: 30px;
   margin-bottom: 30px;

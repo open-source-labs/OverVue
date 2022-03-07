@@ -7,7 +7,7 @@ Description:
 <template>
   <div id="uploadImgMenuItem">
     <q-list>
-      <q-expansion-item expand-separator :label="this.activeRoute">
+      <q-expansion-item expand-separator :label="this.mockupUploadLabel">
         <div class="upload">
           <q-btn
             class="upload-btn"
@@ -25,8 +25,7 @@ Description:
           <q-btn
             v-else
             disable
-            class="upload-btn"
-            color="secondary"
+            class="upload-btn deleteAction"
             label="Clear Image"
           />
         </div>
@@ -55,6 +54,7 @@ export default {
     return {
       files: [],
       source: "",
+      mockupUploadLabel: `Upload mockup image for ${this.$store.state.activeRoute}`,
     };
   },
   computed: {
@@ -114,6 +114,7 @@ export default {
   watch: {
     // once you change your active route, the mockup image should change as well
     activeRoute: function () {
+      this.mockupUploadLabel = `Upload mockup image for ${this.activeRoute}`
       if (this.imagePath[this.activeRoute]) {
         // if there is a uploaded image
         this.source = "file:///" + this.imagePath[this.activeRoute];
@@ -126,6 +127,7 @@ export default {
 </script>
 
 <style lang="scss">
+
 #uploadImgMenuItem {
   display: flex;
   flex-direction: column;
@@ -139,14 +141,19 @@ export default {
   }
 
 .upload-btn {
-  text-transform: capitalize;
+  text-transform: uppercase;
   font-size: 12px;
+  width: 150px;
+  height: auto;
+  min-height: 42px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .upload {
-  margin: 0.5rem;
+  margin: 1rem;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
 }
 
 .file-path {

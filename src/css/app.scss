@@ -25,9 +25,30 @@ main {
 }
 .q-btn {
     align-items: center;
-    height: 20px;
-    width: 65px;
 }
+
+.nav-btn {
+    min-height: 30px !important;
+    width: 65px;
+    text-transform: capitalize;
+}
+
+.sidebar-btn {
+    min-height: 42px !important;
+}
+
+.deleteAction {
+  background-color: rgba($negative, .2);
+  color: $negative;
+  border: 1px solid $negative;
+}
+
+.closeAction {
+  background-color: $subprimary;
+  color: $menutext;
+  border: 1px solid $menutext;
+}
+
 .q-item {
     background: $subsecondary;  
 }
@@ -36,6 +57,14 @@ main {
 .list-item {
     background: $secondary;
     color: $menutext;
+}
+
+// TO DO: update component-container in store tab and remove block container
+.block-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .q-field--outlined .q-field__control {

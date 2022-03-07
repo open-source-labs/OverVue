@@ -135,6 +135,7 @@
                     ></q-input>
                     <q-btn 
                     id="comp-btn"
+                    class="sidebar-btn"
                     color="secondary"
                     label="Submit Note"
                     :disable="noteText.length > 0 ? false : true"
@@ -142,7 +143,8 @@
                     />
                     <q-btn
                     id="note-btn-close"
-                    label="Exit Notes"
+                    class="sidebar-btn closeAction"
+                    label="Close"
                     @click="this.openNoteModal"
                     />
                 </q-form>
@@ -446,7 +448,7 @@ export default {
         z: this.activeComponentData.z,
       };
       if (e.target.innerText === "+") payload.z++;
-      if (e.target.innerText === "-" && payload.z > 0) payload.z--;
+      if (e.target.innerText === "–" && payload.z > 0) payload.z--;
       this.updateComponentLayer(payload);
     },
     // if user clicks on display grid, resets active component to ''
@@ -511,7 +513,7 @@ li:hover{
   margin-right: 10px;
 }
 .noteBox{
-  background-color: $subprimary;
+  background-color: $subsecondary;
   color: $menutext;
   width: 65%;
   padding: 15px;
@@ -524,7 +526,7 @@ li:hover{
 #noteDelete{
   background-color: $secondary;
   width: 20px;
-  height: 20px;
+  min-height: 42px;
   display: flex;
   justify-content: center;
   align-self: flex-end;
@@ -666,7 +668,7 @@ li:hover{
   position: absolute;
 }
 .active {
-  background-color: $accent;
+  background-color: rgba($secondary, .42);
   border: 1px dashed $accent;
 }
 .minorAction {
@@ -708,9 +710,6 @@ li:hover{
 }
 
 #note-btn-close {
-  background-color: rgba($negative, .2);
-  border: 1px solid $negative;
-  color: $negative;
   width: 100%;
   margin-top: 10px;
   margin-bottom: 10px;

@@ -44,27 +44,7 @@ Description:
         <i v-else class="fa fa-redo" id="unavailable" aria-hidden="true"></i>
         </q-btn>
       </div></q-toolbar-title>
-        <!-- <SlackLoginWindow /> -->
         <div></div>
-        <!-- <i
-          v-if="doneAction.length"
-          class="fa fa-backward"
-          aria-hidden="true"
-          @click="undo"
-        ></i>
-        <i
-          v-else
-          class="fa fa-backward"
-          id="unavailable"
-          aria-hidden="true"
-        ></i>
-        <i
-          v-if="undoneAction.length"
-          class="fa fa-forward"
-          aria-hidden="true"
-          @click="redo"
-        ></i>
-        <i v-else class="fa fa-forward" id="unavailable" aria-hidden="true"></i> -->
         
         <SaveProjectComponent />
         <OpenProjectComponent />
@@ -314,6 +294,8 @@ q-btn > i {
   flex-grow: 1;
   align-items: center;
   margin-right: 5px;
+  width: 40px;
+  border: 1px solid rgba($primary, .5);
 }
 
 // Must change style lang='scss'
@@ -372,12 +354,6 @@ q-btn > i {
   background-color: rgba(255, 255, 255, 0.301);
 }
 
-// .fa-backward:hover,
-// .fa-forward:hover {
-//   cursor: pointer;
-//   color: $secondary;
-// }
-
 #unavailable {
   color: grey;
   cursor: default;
@@ -400,11 +376,6 @@ q-btn > i {
 
 .q-toolbar {
   min-height: 30px;
-}
-
-.deano-size {
-  min-height: 2in;
-  height: 3in;
 }
 
 // css styling for the drawer items
@@ -535,7 +506,7 @@ q-btn > i {
 	opacity: 0;
 }
 .switch-input:checked ~ .switch-label {
-	background: #289ead;
+	background: $secondary;
 	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
 }
 .switch-input:checked ~ .switch-label:before {
@@ -560,7 +531,7 @@ q-btn > i {
 	position: absolute;
 	top: 20px;
 	left: 20px;
-	margin: -6px 0 0 -6px;
+	margin: -12px -12px;
 	width: 12px;
 	height: 12px;
 	background: linear-gradient(to bottom, #eeeeee, #FFFFFF);

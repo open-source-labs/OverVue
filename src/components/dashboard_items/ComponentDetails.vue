@@ -9,7 +9,7 @@ Description:
 
 <template>
   <div class="inner-div">
-    <q-card id="store-cards" v-if="this.activeComponentObj">
+    <q-card id="store-cards" class="no-shadow" v-if="this.activeComponentObj">
       <q-tabs
         v-model="tab"
         dense
@@ -142,7 +142,7 @@ i {
 .q-tab-panel {
   height: 100%;
   background: $subprimary;
-  padding-top: 20px;
+  padding-top: 20px !important;
 }
 
 // changes the length of the tab panels
