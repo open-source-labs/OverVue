@@ -23,7 +23,7 @@ EXPOSE 3000
 USER node
 CMD bash
 
-# IN YOUR WSL 3 TERMINAL:
+# IN YOUR WSL 2 TERMINAL:
 # export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
 # export LIBGL_ALWAYS_INDIRECT=1
 #
