@@ -504,7 +504,6 @@ li:hover{
   background-color: $subprimary;
 }
 
-
 .noteblock{
   white-space: pre-wrap;
   font-weight: normal;
@@ -526,7 +525,7 @@ li:hover{
 #noteDelete{
   background-color: $secondary;
   width: 20px;
-  min-height: 42px;
+  height: 20px;
   display: flex;
   justify-content: center;
   align-self: flex-end;
