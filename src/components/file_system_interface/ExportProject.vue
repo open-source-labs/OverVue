@@ -52,13 +52,13 @@ export default {
     createRouter(location) {
       if (this.exportAsTypescript === "on") {
         fs.writeFileSync(
-          path.join(location, "src", "router.ts"),
+          path.join(location, "src", "router", "index.ts"),
           this.createRouterImports(this.componentMap["App"].children) +
             this.createExport(this.componentMap["App"].children)
         );
       } else {
         fs.writeFileSync(
-          path.join(location, "src", "router.js"),
+          path.join(location, "src", "router", "index.js"),
           this.createRouterImports(this.componentMap["App"].children) +
             this.createExport(this.componentMap["App"].children)
         );
@@ -71,7 +71,7 @@ export default {
     createRouterImports(appChildren) {
       let str = "import { createRouter, createWebHistory } from 'vue-router';\n";
       appChildren.forEach((child) => {
-        str += `import ${child} from './views/${child}.vue';\n`;
+        str += `import ${child} from '../views/${child}.vue';\n`;
       });
       return str;
     },
@@ -79,17 +79,12 @@ export default {
      * @description creates the `export default` code in <script>
      */
     createExport(appChildren) {
-      let str;
-      if (this.exportAsTypescript === "on") {
-        str = "export default createRouter({\n\thistory: createWebHistory(process.env.BASE_URL),\n\troutes: [\n";
-      } else {
-        str = "export default createRouter({\n\thistory: createWebHistory(),\n\tbase: process.env.BASE_URL,\n\troutes: [\n";
-      }
+      let str = "export default createRouter({\n\thistory: createWebHistory(import.meta.env.BASE_URL),\n\troutes: [\n";
       appChildren.forEach((child) => {
         if (child === "HomeView") {
           str += `\t\t{\n\t\t\tpath: '/',\n\t\t\tname:'${child}',\n\t\t\tcomponent:${child}\n\t\t},\n`;
         } else {
-          str += `\t\t{\n\t\t\tpath: '/${child}',\n\t\t\tname:'${child}',\n\t\t\tcomponent: ${child}\n\t\t},\n`;
+          str += `\t\t{\n\t\t\tpath: '/${child}',\n\t\t\tname:'${child}',\n\t\t\tcomponent: () => import('../views/${child}.vue')\n\t\t},\n`;
         }
       });
       str += `\t]\n})\n`;
@@ -347,8 +342,8 @@ export default {
       str += `\n\t<meta charset="utf-8">`;
       str += `\n\t<meta http-equiv="X-UA-Compatible" content="IE=edge">`;
       str += `\n\t<meta name="viewport" content="width=device-width,initial-scale=1.0">`;
-      str += `\n\t<link rel="icon" href="<%= BASE_URL %>favicon.ico">`;
-      str += `\n\t<title>New Vue Project</title>`;
+      str += `\n\t<link rel="icon" href="/favicon.ico">`;
+      str += `\n\t<title>New OverVue Project</title>`;
       str += `\n</head>\n\n`;
       str += `<body>`;
       str += `\n\t<noscript>`;
@@ -356,10 +351,14 @@ export default {
       to continue.</strong>`;
       str += `\n\t</noscript>`;
       str += `\n\t<div id="app"></div>`;
-      str += `\n\t<!-- built files will be auto injected -->`;
+      if (this.exportAsTypescript === "on"){
+      str += `\n\t<script type="module" src="/src/main.ts"><\/script>`;
+      } else {
+      str += `\n\t<script type="module" src="/src/main.js"><\/script>`;
+      }
       str += `\n</body>\n\n`;
       str += `</html>\n`;
-      fs.writeFileSync(path.join(location, "public", "index.html"), str);
+      fs.writeFileSync(path.join(location, "index.html"), str);
     },
     // creates main.js boilerplate
     createMainFile(location) {
@@ -379,22 +378,56 @@ export default {
       }
     },
     // create babel file
-    createBabel(location) {
-      let str = `module.exports = {`;
-      str += `\n\tpresets: [`;
-      str += `\n\t\t'@vue/app'`;
-      str += `\n\t]`;
-      str += `\n}`;
+    createViteConfig(location) {
+      let str = `import { fileURLToPath, URL } from 'url';\n\n`;
+      str += `import { defineConfig } from 'vite';\n`;
+      str += `import vue from '@vitejs/plugin-vue';\n\n`;
+      str += `export default defineConfig({\n`
+      str += `\tplugins: [vue()],\n`
+      str += `\tresolve: {\n`
+      str += `\t\t alias: {\n`
+      str += `\t\t\t'@': fileURLToPath(new URL('./src', import.meta.url))\n`
+      str += `\t\t}\n\t}\n})`
+
       // if using typescript, export with .ts extension
       if (this.exportAsTypescript === "on") {
-        fs.writeFileSync(path.join(location, "src", "babel.config.ts"), str);
+        fs.writeFileSync(path.join(location, "vite.config.ts"), str);
       } else {
-        fs.writeFileSync(path.join(location, "babel.config.js"), str);
+        fs.writeFileSync(path.join(location, "vite.config.js"), str);
+      }
+    },
+    createESLintRC(location) {
+      let str;
+      if (this.exportAsTypescript === "on"){
+        str += `require("@rushstack/eslint-patch/modern-module-resolution");\n\n`;
+      }
+      str += `module.exports = {\n`;
+      str += `\t"root": true,\n`;
+      str += `\t"extends": [\n`;
+      str += `\t\t"plugin:vue/vue3-essential",\n`
+      str += `\t\t"eslint:recommended"`
+      if (this.exportAsTypescript === "on"){
+        str += `,\n\t\t"@vue/eslint-config-typescript/recommended"\n`
+      }
+      str += `\n\t],\n`
+      str += `\t"env": {\n`
+      str += `\t\t"vue/setup-compiler-macros": true\n`
+      str += `\t}\n}`
+      fs.writeFileSync(path.join(location, ".eslintrc.cjs"), str);
+    },
+    createTSViteConfig(location) {
+      if (this.exportAsTypescript === "on") {
+        let str = `{\n\t"extends": "@vue/tsconfig/tsconfig.node.json",\n\t"include": ["vite.config.*"],\n\t"compilerOptions": {\n\t\t"composite": true,\n\t\t"types": ["node", "viteset"]\n\t}\n}`;
+        fs.writeFileSync(path.join(location, "tsconfig.vite-config.json"), str);
+      } else {
+        return;
       }
     },
     createTSConfig(location) {
       if (this.exportAsTypescript === "on") {
-        let str = `{\n\t"extends": "@vue/tsconfig/tsconfig.web.json",\n\t"include": ["src/**/*", "src/**/*.vue"],\n\t"compilerOptions": {\n\t\t"baseUrl": ".",\n\t\t"paths": {\n\t\t\t"@/*": ["./src/*"]\n\t\t}\n\t}\n}`;
+        let str = `{\n\t"extends": "@vue/tsconfig/tsconfig.web.json",\n\t"include": ["env.d.ts", "src/**/*", "src/**/*.vue"],\n\t"compilerOptions": {\n\t\t"baseUrl": ".",\n\t\t"paths": {\n\t\t\t"@/*": ["./src/*"]\n\t\t}\n\t},`;
+        str += `\t"references": [\n`
+        str += `\t\t{\n\t\t\t"path": "./tsconfig.vite-config.json"\n\t\t}\n\t]\n}`
         fs.writeFileSync(path.join(location, "tsconfig.json"), str);
       } else {
         return;
@@ -403,59 +436,39 @@ export default {
     // create package.json file
     createPackage(location) {
       let str = `{`;
-      str += `\n\t"name": "vue-boiler-plate-routes",`;
-      str += `\n\t"version": "0.1.0",`;
-      str += `\n\t"private": true,`;
+      str += `\n\t"name": "My-OverVue-Project",`;
+      str += `\n\t"version": "0.0.0",`;
       str += `\n\t"scripts": {`;
-      str += `\n\t\t"start": "vue-cli-service serve",`;
-      str += `\n\t\t"build": "vue-cli-service build",`;
-      str += `\n\t\t"lint": "vue-cli-service lint"`;
+      str += `\n\t\t"dev": "vite",`;
+      if (this.exportAsTypescript === "on") {
+        str += `\n\t\t"build": "vue-tsc --noEmit && vite build",`;
+        str += `\n\t\t"typecheck": "vue-tsc --noEmit",`;
+        str += `\n\t\t"lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",`;
+      } else {
+        str += `\n\t\t"build": "vite build",`;
+        str += `\n\t\t"lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",`;
+      }
+      str += `\n\t\t"preview": "vite preview --port 5050"`;
       str += `\n\t},`;
       str += `\n\t"dependencies": {`;
-      str += `\n\t\t"vue": "^3.2.26",`;
+      str += `\n\t\t"vue": "^3.2.31",`;
       str += `\n\t\t"vue-router": "^4.0.12",`;
       str += `\n\t\t"vuex": "^4.0.2"`;
       str += `\n\t},`;
       str += `\n\t"devDependencies": {`;
-      str += `\n\t\t"@vue/cli-plugin-babel": "~4.5.0",`;
-      str += `\n\t\t"@vue/cli-plugin-eslint": "~4.5.0",`;
-      str += `\n\t\t"@vue/cli-service": "~4.5.0",`;
-      str += `\n\t\t"babel-eslint": "^10.0.1",`;
-      str += `\n\t\t"eslint": "^8.9.0",`;
-      str += `\n\t\t"eslint-plugin-vue": "^8.4.1",`;
-      str += `\n\t\t"@vue/compiler-sfc": "^3.0.0-0"`;
+      str += `\n\t\t"@vitejs/plugin-vue": "^2.2.2",`;
+      str += `\n\t\t"eslint": "^8.5.0",`;
+      str += `\n\t\t"eslint-plugin-vue": "^8.2.0",`;
+      str += `\n\t\t"vite": "^2.8.4"`
       if (this.exportAsTypescript === "on") {
-        str += `,\n\t\t"@vue/tsconfig": "^0.1.3",`;
+        str += `,\n\t\t"@rushstack/eslint-patch": "^1.1.0",`
+        str += `\n\t\t"@vue/tsconfig": "^0.1.3",`;
         str += `\n\t\t"typescript": "~4.5.5",`;
         str += `\n\t\t"vue-tsc": "^0.31.4",`;
-        str += `\n\t\t"@babel/preset-typescript": "^7.16.7"`; // not sure we need this?
+        str += `\n\t\t"@types/node": "^16.11.25",`;
+        str += `\n\t\t"@vue/eslint-config-typescript": "^10.0.0"`;
       }
-      str += `\n\t},`;
-      str += `\n\t"eslintConfig": {`;
-      str += `\n\t\t"root": true,`;
-      str += `\n\t\t"env": {`;
-      str += `\n\t\t\t"node": true`;
-      str += `\n\t\t},`;
-      str += `\n\t\t"extends": [`;
-      str += `\n\t\t\t"plugin:vue/essential",`;
-      str += `\n\t\t\t"eslint:recommended"`;
-      str += `\n\t\t],`;
-      str += `\n\t\t"rules": {},`;
-      str += `\n\t\t"parserOptions": {`;
-      str += `\n\t\t\t"parser": "babel-eslint"`;
-      str += `\n\t\t}`;
-      str += `\n\t},`;
-      str += `\n\t"postcss": {`;
-      str += `\n\t\t"plugins": {`;
-      str += `\n\t\t\t"autoprefixer": {}`;
-      str += `\n\t\t}`;
-      str += `\n\t},`;
-      str += `\n\t"browserslist": [`;
-      str += `\n\t\t"> 1%",`;
-      str += `\n\t\t"last 2 versions",`;
-      str += `\n\t\t"not ie <= 8"`;
-      str += `\n\t]`;
-      str += `\n}`;
+      str += `\n\t}\n}`;
       fs.writeFileSync(path.join(location, "package.json"), str);
     },
     exportFile(data) {
@@ -468,12 +481,15 @@ export default {
         fs.mkdirSync(path.join(data, "src", "assets"));
         fs.mkdirSync(path.join(data, "src", "components"));
         fs.mkdirSync(path.join(data, "src", "views"));
+        fs.mkdirSync(path.join(data, "src", "router"));
       }
       // creating basic boilerplate for vue app
       this.createIndexFile(data);
       this.createMainFile(data);
-      this.createBabel(data);
+      this.createViteConfig(data);
+      this.createESLintRC(data);
       this.createTSConfig(data);
+      this.createTSViteConfig(data);
       this.createPackage(data);
       // exports images to the /assets folder
       // eslint-disable-next-line no-unused-vars
