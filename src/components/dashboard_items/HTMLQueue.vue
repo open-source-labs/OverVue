@@ -9,7 +9,7 @@ Description:
     <span class='list-title' v-if='this.activeLayer.id !== ""'>
       <i class="fas fa fa-chevron-up fa-md" @click="setParentLayer"></i>
       <!-- <button v-if='this.activeLayer.id' @click="upOneLayer">Up</button>  -->
-      &nbsp; &nbsp; Viewing Elements in '{{ depth }}'
+      &nbsp; &nbsp; Viewing Elements in {{this.activeComponent}} '{{ depth }}'
       <hr> 
     </span>
     <span class='list-title' v-else-if='!this.activeComponent'></span>
