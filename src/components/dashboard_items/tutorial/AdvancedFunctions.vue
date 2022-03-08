@@ -32,6 +32,8 @@ export default {
 
 .tutorialHeading {
   margin: .75rem;
+  font-size: 2rem;
+  padding-top: 15px;
 }
 
 .tutorialContent {

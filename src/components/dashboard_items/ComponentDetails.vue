@@ -33,7 +33,10 @@ Description:
         </q-tab-panel>
         <q-tab-panel name="state">
           <p v-if="!this?.activeComponentObj?.state?.length">
-            No state in component.
+             {{this.activeComponent ? `No state in ${this.activeComponent}` : 'Select a component.' }}
+          </p>
+          <p v-else>
+            State in {{this.activeComponent}}:
           </p>
           <ul id="stateList">
             <li v-for="comp in compObj.state" :key="comp">
@@ -43,7 +46,10 @@ Description:
         </q-tab-panel>
         <q-tab-panel name="actions">
           <p v-if="!this?.activeComponentObj?.actions?.length">
-            No actions in component
+            {{this.activeComponent ? `No actions in ${this.activeComponent}` : 'Select a component.' }}
+          </p>
+          <p v-else>
+            Actions in {{this.activeComponent}}:
           </p>
           <ul id="actionList">
             <li v-for="comp in compObj?.actions" :key="comp">
@@ -53,7 +59,10 @@ Description:
         </q-tab-panel>
         <q-tab-panel name="props">
           <p v-if="!this?.activeComponentObj?.props?.length">
-            No props in component
+            {{this.activeComponent ? `No props in ${this.activeComponent}` : 'Select a component.' }}
+          </p>
+          <p v-else>
+            Props in {{this.activeComponent}}:
           </p>
           <ul id="propsList">
             <li v-for="comp in compObj?.props" :key="comp">
