@@ -415,6 +415,16 @@ export default {
       str += `\t}\n}`
       fs.writeFileSync(path.join(location, ".eslintrc.cjs"), str);
     },
+    createTSConfig(location) {
+      if (this.exportAsTypescript === "on") {
+        let str = `{\n\t"extends": "@vue/tsconfig/tsconfig.web.json",\n\t"include": ["env.d.ts", "src/**/*", "src/**/*.vue"],\n\t"compilerOptions": {\n\t\t"baseUrl": ".",\n\t\t"paths": {\n\t\t\t"@/*": ["./src/*"]\n\t\t}\n\t},`;
+        str += `\t"references": [\n`
+        str += `\t\t{\n\t\t\t"path": "./tsconfig.vite-config.json"\n\t\t}\n\t]\n}`
+        fs.writeFileSync(path.join(location, "tsconfig.json"), str);
+      } else {
+        return;
+      }
+    },
     createTSViteConfig(location) {
       if (this.exportAsTypescript === "on") {
         let str = `{\n\t"extends": "@vue/tsconfig/tsconfig.node.json",\n\t"include": ["vite.config.*"],\n\t"compilerOptions": {\n\t\t"composite": true,\n\t\t"types": ["node", "viteset"]\n\t}\n}`;
@@ -423,12 +433,10 @@ export default {
         return;
       }
     },
-    createTSConfig(location) {
+    createTSDeclaration(location) {
       if (this.exportAsTypescript === "on") {
-        let str = `{\n\t"extends": "@vue/tsconfig/tsconfig.web.json",\n\t"include": ["env.d.ts", "src/**/*", "src/**/*.vue"],\n\t"compilerOptions": {\n\t\t"baseUrl": ".",\n\t\t"paths": {\n\t\t\t"@/*": ["./src/*"]\n\t\t}\n\t},`;
-        str += `\t"references": [\n`
-        str += `\t\t{\n\t\t\t"path": "./tsconfig.vite-config.json"\n\t\t}\n\t]\n}`
-        fs.writeFileSync(path.join(location, "tsconfig.json"), str);
+        let str = `/// <reference types="vite/client" />`;
+        fs.writeFileSync(path.join(location, "env.d.ts"), str);
       } else {
         return;
       }
@@ -490,6 +498,7 @@ export default {
       this.createESLintRC(data);
       this.createTSConfig(data);
       this.createTSViteConfig(data);
+      this.createTSDeclaration(data);
       this.createPackage(data);
       // exports images to the /assets folder
       // eslint-disable-next-line no-unused-vars
