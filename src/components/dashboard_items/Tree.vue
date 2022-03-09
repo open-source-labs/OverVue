@@ -1,147 +1,204 @@
 <!--
 Description:
   Displays project tree in Dashboard
-  Functionality includes: formating componentMap object to displaying in tree form
+  Functionality includes: formatting componentMap object to displaying in tree form
   -->
 
 <template>
   <div class="container">
-    <myTree :nodes="computedTree" />
+    <vue-tree
+      style="width: 100%; height: 80vh; border: 1px solid gray;"
+      :dataset="treeData"
+      :config="treeConfig"
+      ref="tree"
+      @wheel="zoom">
+      <template v-slot:node="{ node }">
+        <span v-if="this.activeComponent === node.value"
+          class="tree-node-active"
+          >
+          {{ node.value }}
+        </span>
+          <span v-else-if="this.activeRoute === node.value"
+          class="tree-node-activeRoute"
+          >
+          {{ node.value }}
+        </span>
+        <span v-else
+          class="tree-node"
+          @click="activateNode(node.value)"
+          >
+          {{ node.value }}
+        </span>
+      </template>
+    </vue-tree>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
-import myTree from "vue3-tree";
-import { ref } from "vue";
+import VueTree from "@ssthouse/vue3-tree-chart";
+import "@ssthouse/vue3-tree-chart/dist/vue3-tree-chart.css";
+
 export default {
   name: "Tree",
-  components: {
-    myTree,
-  },
-
+  components: { VueTree },
   computed: {
-    ...mapState(["componentMap", "activeComponent"]),
-    // Returns project tree on re-render
-    computedTree() {
-      const builtTree = [this.buildTree()];
-      // console.log("buildtree", builtTree);
-      return builtTree;
-    },
+    ...mapState([
+    'activeComponent',
+    'activeRoute',
+    'routes',
+    'componentMap',
+    ])
   },
-
-  data() {
-    return {
-      tree: null,
-      treeKey: "key",
-      testTree: [
-        {
-          id: 1,
-          label: "Animal",
-          nodes: [
-            {
-              id: 2,
-              label: "Dog",
-            },
-            {
-              id: 3,
-              label: "Cat",
-              nodes: [
-                {
-                  id: 4,
-                  label: "Egyptian Mau Cat",
-                },
-                {
-                  id: 5,
-                  label: "Japanese Bobtail Cat",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          id: 6,
-          label: "People",
-        },
-      ],
-    };
-  },
-
   methods: {
-    // Called by transformToTree, formats componentMap
-    formatComponentMap(compMap) {
-      let result = [];
-      // Id to apply to each component, in accordance with Vue3Tree syntax
-      let id = 1;
-      const values = Object.values(compMap);
-      values.forEach((compData) => {
-        result.push({
-          id: id++,
-          label: compData.componentName, // previously was labeled 'name'
-          nodes: compData.children, // previously was labeled 'children'
-        });
-      });
-      return result;
+    zoom(){
+      if (event.deltaY < 0){
+        this.$refs.tree.zoomIn();
+      } else {
+        this.$refs.tree.zoomOut();
+      }
     },
-    // Called by buildTree, transforms componentMap
-    // we need to change this to clean the data and transform it to something usable by vue3tree
-    transformToTree(data) {
-      let result = {};
-      const temp = {};
-      const formattedData = this.formatComponentMap(data);
-      formattedData.forEach((component) => {
-        if (!temp[component.label]) {
-          temp[component.label] = { label: component.label, nodes: [] };
-          result = temp;
+    activateNode(nodeToActivate){
+      if (nodeToActivate === "App"){
+        return;
+      }
+      //check first, activating a route? if so, activate that route and then dispatch no active component.
+      for (const key in this.routes){
+        if (nodeToActivate === key){
+          this.$store.dispatch('setActiveRoute', nodeToActivate)
+          if (this.routes[key].length > 0){
+            this.$store.dispatch('setActiveComponent', '')
+          }
+          return;
         }
-        component.nodes.forEach((child) => {
-          if (!temp[child]) temp[child] = { label: child, nodes: [] };
-          temp[component.label].nodes.push(temp[child]);
-        });
-      });
-      return result;
+      }
+
+      //if we click a component, check which route, and then if needed dispatch the route THEN the component
+      for (const view of this.treeData.children){
+        if (view.children.length > 0){
+          view.children.forEach((el)=>{
+            if (view.value !== this.activeRoute){ //only check where the view.value is NOT the active route
+              if (nodeToActivate === el.value){
+                this.$store.dispatch('setActiveRoute', view.value)
+                return;
+              }
+              if (el.children.length > 0){
+                this.evalChildren(el.children, nodeToActivate, view);
+              }
+            }
+          })
+        }
+      }
+      if (this.activeComponent !== nodeToActivate) {
+        this.$store.dispatch('setActiveComponent', nodeToActivate);
+      }
     },
-    // Called by computedTree, calls transformToTree
-    buildTree() {
-      let build = this.transformToTree(this.componentMap);
-      return build["App"];
+    evalChildren(children, targetString, view){
+        children.forEach((el)=>{
+          if (el.value === targetString){
+            this.$store.dispatch('setActiveRoute', view.value)
+            return;
+          } else if (el.children.length >0){
+            return this.evalChildren(el.children, targetString, view)
+        }
+      })
     },
+
+    buildTree(componentData){
+      //App is always the root of the tree.  
+      const treeData = {     
+        value: 'App',
+        children: []
+      }
+      //Views come after the root, as its children. No components will be children of App.
+      //ONLY Views will have components as children.
+      for (const child of componentData.App.children){
+        treeData.children.push({
+          value: child,
+          children: buildTreeChildren(componentData[child].children),
+        })
+      }
+      
+      function buildTreeChildren (array){
+        if (array.length === 0){
+          return [];
+        } else {
+          const outputArray = [];
+          array.forEach((el)=>{
+            const outputObj = {
+            value: el,
+            children: []
+            }
+            for (const component in componentData){
+              if (component === el){
+                if (componentData[component].children.length > 0){
+                  outputObj.children = buildTreeChildren(componentData[component].children);
+                }
+              }
+            }
+            outputArray.push(outputObj);
+          })
+          return outputArray;
+        }
+      }
+      return treeData;
+    }
   },
   watch: {
     componentMap: {
-      deep: true,
-      handler() {
-        this.buildTree();
+      handler(){
+        this.treeData = this.buildTree(this.componentMap);
       },
+      deep: true,
     },
   },
-};
+  data() { 
+    return {
+      treeData: this.buildTree(this.$store.state.componentMap),
+      treeConfig: { nodeWidth: 175, nodeHeight: 100, levelHeight: 200},
+      componentData: this.$store.state.componentMap,
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
 .container {
   height: 100%;
   width: 100%;
+  
 }
 
-.treeclass .nodetree text {
-  font-size: 19px !important;
-  cursor: pointer;
-  text-shadow: none !important;
-  font-weight: bold;
-  fill: #fff;
-  transform: rotate(-90deg);
+.container:hover{
+  cursor: move;
 }
 
-/* changes the circle node color */
-.treeclass .nodetree circle {
-  fill: #a2d9ff;
+.tree-node, .tree-node-active, .tree-node-activeRoute {
+  display: inline-block;
+  padding: 8px;
+  min-width: 80%; 
+  margin: 6px;
+  min-height: 28px;
+  color: $menutext;
+  background-color: $secondary;
+  text-align: center;
+  line-height: 28px;
+  border-radius: 4px;
+  word-wrap: break-word;
 }
 
-/* changes the stroke color */
-.treeclass .linktree {
-  stroke: $secondary !important;
-  stroke-opacity: 0.4;
-  stroke-width: 8px;
+.tree-node-active {
+  background-color: $accent;
+  color: $darktext;
+  border: 2px solid $menutext;
 }
+
+.tree-node-activeRoute {
+  background-color: $darktext;
+  border: 2px solid $menutext;
+}
+
+
 </style>
+
+

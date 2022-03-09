@@ -9,7 +9,7 @@ Description:
 
 <template>
   <div class="inner-div">
-    <q-card id="store-cards" v-if="this.activeComponentObj">
+    <q-card id="store-cards" class="no-shadow" v-if="this.activeComponentObj">
       <q-tabs
         v-model="tab"
         dense
@@ -32,8 +32,11 @@ Description:
           <HTMLQueue />
         </q-tab-panel>
         <q-tab-panel name="state">
-          <p v-if="!this.activeComponentObj.state.length">
-            No state in component
+          <p v-if="!this?.activeComponentObj?.state?.length">
+             {{this.activeComponent ? `No state in ${this.activeComponent}` : 'Select a component.' }}
+          </p>
+          <p v-else>
+            State in {{this.activeComponent}}:
           </p>
           <ul id="stateList">
             <li v-for="comp in compObj.state" :key="comp">
@@ -42,21 +45,27 @@ Description:
           </ul>
         </q-tab-panel>
         <q-tab-panel name="actions">
-          <p v-if="!this.activeComponentObj.actions.length">
-            No actions in component
+          <p v-if="!this?.activeComponentObj?.actions?.length">
+            {{this.activeComponent ? `No actions in ${this.activeComponent}` : 'Select a component.' }}
+          </p>
+          <p v-else>
+            Actions in {{this.activeComponent}}:
           </p>
           <ul id="actionList">
-            <li v-for="comp in compObj.actions" :key="comp">
+            <li v-for="comp in compObj?.actions" :key="comp">
               {{ comp }}
             </li>
           </ul>
         </q-tab-panel>
         <q-tab-panel name="props">
-          <p v-if="!this.activeComponentObj.props.length">
-            No props in component
+          <p v-if="!this?.activeComponentObj?.props?.length">
+            {{this.activeComponent ? `No props in ${this.activeComponent}` : 'Select a component.' }}
+          </p>
+          <p v-else>
+            Props in {{this.activeComponent}}:
           </p>
           <ul id="propsList">
-            <li v-for="comp in compObj.props" :key="comp">
+            <li v-for="comp in compObj?.props" :key="comp">
               {{ comp }}
             </li>
           </ul>
@@ -79,7 +88,7 @@ export default {
     CodeSnippet
   },
   computed: {
-    ...mapState(["activeComponentObj"]),
+    ...mapState(["activeComponentObj","activeComponent"]),
     compObj: {
       get() {
         return this.activeComponentObj;
@@ -141,8 +150,8 @@ i {
 
 .q-tab-panel {
   height: 100%;
-  // matchs the code editor bg
   background: $subprimary;
+  padding-top: 20px !important;
 }
 
 // changes the length of the tab panels
@@ -157,6 +166,7 @@ i {
 
 .toolbar-background {
   background: black;
+  
 }
 
 #store-cards {
@@ -182,6 +192,6 @@ i {
   flex-direction: column;
   justify-content: flex-start;
   align-content: stretch;
-  height: 100%;
+  max-height: 95%;
 }
 </style>

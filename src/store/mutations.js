@@ -14,6 +14,7 @@ import {
 } from "../utils/search.util";
 import _ from "lodash";
 
+
 const cloneDeep = require("lodash.clonedeep");
 
 const mutations = {
@@ -21,6 +22,22 @@ const mutations = {
   [types.EMPTY_STATE]: (state, payload) => {
     payload.store.replaceState(cloneDeep(payload.initialState));
   },
+
+  [types.REMOVE_ALL_STATE_PROPS_ACTIONS]: (state) =>{
+    const emptyObj = {
+      userProps: [],
+      userState: [],
+      userActions: [],
+    }
+    Object.assign(state, emptyObj)
+  },
+  
+  [types.TOGGLE_TUTORIAL]: (state) => {
+    if (state.tutorialFirstOpen === true){
+      state.tutorialFirstOpen = false;
+    }
+    state.showTutorial = !state.showTutorial;
+  },  
 
   // *** ROUTES *** //////////////////////////////////////////////
   [types.ADD_ROUTE]: (state, payload) => {
@@ -89,6 +106,11 @@ const mutations = {
 
   // *** VUEX *** //////////////////////////////////////////////
 
+
+  [types.EXPORT_AS_TYPESCRIPT]: (state, payload) => {
+    state.exportAsTypescript = payload; 
+  },
+
   [types.CREATE_ACTION]: (state, payload) => {
     state.userActions.push(payload);
     state.userActions.sort();
@@ -99,7 +121,7 @@ const mutations = {
   },
 
   [types.ADD_ACTION_TO_COMPONENT]: (state, payload) => {
-    const active = state.activeComponentObj;
+    const active = state.componentMap[state.activeComponent];
 
     if (!active.actions) {
       active.actions = payload;
@@ -133,7 +155,7 @@ const mutations = {
   },
 
   [types.ADD_PROPS_TO_COMPONENT]: (state, payload) => {
-    const active = state.activeComponentObj;
+    const active = state.componentMap[state.activeComponent];
 
     if (!active.props) {
       active.props = payload;
@@ -164,7 +186,8 @@ const mutations = {
   },
 
   [types.ADD_STATE_TO_COMPONENT]: (state, payload) => {
-    const active = state.activeComponentObj;
+    // const active = state.activeComponentObj;
+    const active = state.componentMap[state.activeComponent];
 
     if (!state.activeComponentObj.state) {
       state.activeComponentObj.state = payload;
@@ -176,8 +199,6 @@ const mutations = {
       }
     }
     state.selectedState = [];
-    // state.activeComponentObj = null;
-    // state.activeComponentObj = active;
     state.activeComponentObj = { ...active };
 
     state.componentMap = {
@@ -187,36 +208,18 @@ const mutations = {
   },
 
   [types.DELETE_ACTION_FROM_COMPONENT]: (state, payload) => {
-    const temp = state.activeComponentObj;
-    const newArray = [];
-    temp.actions.forEach((element) => {
-      if (element !== payload) newArray.push(element);
-    });
-    temp.actions = newArray;
-    state.activeComponentObj = null;
-    state.activeComponentObj = temp;
+    state.componentMap[state.activeComponent].actions = state.componentMap[state.activeComponent].actions.filter(
+      (action) => action !== payload);
   },
 
   [types.DELETE_PROPS_FROM_COMPONENT]: (state, payload) => {
-    const temp = state.activeComponentObj;
-    const newArray = [];
-    temp.props.forEach((element) => {
-      if (element !== payload) newArray.push(element);
-    });
-    temp.props = newArray;
-    state.activeComponentObj = null;
-    state.activeComponentObj = temp;
+    state.componentMap[state.activeComponent].props = state.componentMap[state.activeComponent].props.filter(
+      (prop) => prop !== payload);
   },
 
   [types.DELETE_STATE_FROM_COMPONENT]: (state, payload) => {
-    const temp = state.activeComponentObj;
-    const newArray = [];
-    temp.state.forEach((element) => {
-      if (element !== payload) newArray.push(element);
-    });
-    temp.state = newArray;
-    state.activeComponentObj = null;
-    state.activeComponentObj = temp;
+    state.componentMap[state.activeComponent].state = state.componentMap[state.activeComponent].state.filter(
+      (state) => state !== payload);
   },
 
   [types.DELETE_USER_STATE]: (state, payload) => {
@@ -225,14 +228,8 @@ const mutations = {
       // first don't go through if component is App or Homeview
       if (component === "App" || component === "HomeView") continue;
       // splice out if there is a match
-      const newState = state.componentMap[component].state;
-      const index = newState.indexOf(payload);
-      if (index > -1) {
-        newState.splice(index, 1);
-        state.componentMap[component].state = newState;
-      } else {
-        continue;
-      }
+      state.componentMap[component].state = state.componentMap[component].state.filter(
+        (action) => action !== payload);
     }
     // remove from userState
     let index = state.userState.indexOf(payload);
@@ -244,14 +241,8 @@ const mutations = {
       // first don't go through if component is App or Homeview
       if (component === "App" || component === "HomeView") continue;
       // splice out if there is a match
-      const newActions = state.componentMap[component].actions;
-      const index = newActions.indexOf(payload);
-      if (index > -1) {
-        newActions.splice(index, 1);
-        state.componentMap[component].actions = newActions;
-      } else {
-        continue;
-      }
+      state.componentMap[component].actions = state.componentMap[component].actions.filter(
+        (action) => action !== payload);
     }
     let index = state.userActions.indexOf(payload);
     state.userActions.splice(index, 1);
@@ -267,18 +258,23 @@ const mutations = {
     // reset the number of copies created
     state.copyNumber = 0;
   },
+  [types.UPDATE_PASTE_TIMER]: (state) => {
+    state.pasteTimer = Date.now() + 1000;
+  },
 
   [types.PASTE_ACTIVE_COMPONENT]: (state) => {
     // check if copied exists
     if (state.copiedComponent) {
       const { copiedComponent } = state;
       // offset duplicate's coordinates
-      copiedComponent.x += 20;
-      copiedComponent.y += 20;
       const pastedComponent = { ...copiedComponent };
-      state.componentMap[
-        (pastedComponent.componentName += ` (${state.copyNumber})`)
-      ] = pastedComponent;
+      pastedComponent.x = 20;
+      pastedComponent.y = 20;
+      pastedComponent.componentName += ` (${state.copyNumber})`
+      while(state.componentMap.hasOwnProperty(pastedComponent.componentName)){
+        pastedComponent.componentName += ` copy`
+      }
+      state.componentMap[pastedComponent.componentName] = pastedComponent;
 
       // increment copyNumber
       state.copyNumber += 1;
@@ -563,10 +559,23 @@ const mutations = {
   },
 
   [types.SET_ACTIVE_COMPONENT]: (state, payload) => {
+    if (!payload){
+      payload = '';
+    }
+    if (payload === ''){
+      state.activeComponent = '';
+      state.activeComponentObj = {componentName: '', isActive: false};
+      state.activeHTML = "";
+      state.activeLayer = {
+        id: "",
+        lineage: [],
+      };
+    } else {
     state.activeComponent = payload;
     state.activeComponentObj = state.routes[state.activeRoute].filter(
       (comp) => comp.componentName === state.activeComponent
-    )[0];
+      )[0];
+    }
     state.activeHTML = "";
     state.activeLayer = {
       id: "",
@@ -623,36 +632,40 @@ const mutations = {
   },
 
   [types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE]: (state, payload) => {
+    //temp is the activeComponent's children array
+    if (state.activeComponent === payload){return}
     const temp = state.componentMap[state.activeComponent].children;
     // delete block
-    if (payload.length < temp.length) {
-      const child = temp.filter((el) => !payload.includes(el));
+    if ((temp.filter((el) => payload === el)).length > 0) { 
+      //commented stuff below does not seem necessary for the functionality of this if block.
+      //children will be current children EXCLUDING payload
+      // const child = temp.filter((el) => payload.includes(el));
+      console.log('delete block')
       let childCount = 0;
       const components = Object.values(state.componentMap);
       for (const comp of components) {
-        if (comp.children.includes(child[0])) childCount++;
+        if (comp.children.includes(payload)) childCount++; //if the component has 2 parents, do not assign the component to the route
       }
-      state.componentMap[state.activeComponent].children = payload;
+        state.componentMap[state.activeComponent].children = (temp.filter((el) => payload !== el));
       if (childCount <= 1) {
-        state.componentMap[state.activeRoute].children.push(
-          ...temp.filter((el) => !payload.includes(el))
-        );
+        state.componentMap[state.activeRoute].children.push(...temp.filter((el) => payload === el));
       }
-      const newHTMLList = state.componentMap[
-        state.activeComponent
-      ].htmlList.filter((el) => el !== child[0]);
-      state.componentMap[state.activeComponent].htmlList = newHTMLList;
-      const newMap = { ...state.componentMap };
-      state.componentMap = { ...newMap };
-      delete state.componentMap[child[0]].parent[state.activeComponent];
+      // const newHTMLList = state.componentMap[
+      //   state.activeComponent
+      // ].htmlList.filter((el) => el !== child[0]);
+      // state.componentMap[state.activeComponent].htmlList = newHTMLList;
+      // const newMap = { ...state.componentMap };
+      // state.componentMap = { ...newMap };
+      delete state.componentMap[payload].parent[state.activeComponent];
       // add block
     } else {
-      const child = payload.filter((el) => !temp.includes(el));
-      state.componentMap[state.activeComponent].children = payload;
+      const child = temp;
+      child.push(payload)
+      state.componentMap[state.activeComponent].children = child;
       state.componentMap[state.activeRoute].children = state.componentMap[
         state.activeRoute
-      ].children.filter((el) => !payload.includes(el));
-      state.componentMap[child[0]].parent[state.activeComponent] =
+      ].children.filter((el) => payload !== el);
+      state.componentMap[child[child.length-1]].parent[state.activeComponent] =
         state.componentMap[state.activeComponent];
     }
   },
@@ -661,6 +674,28 @@ const mutations = {
     state.modalOpen = payload;
   },
 
+  [types.ADD_ACTIVE_COMPONENT_NOTE]: (state, payload) => {
+    if (!state.componentMap[state.activeComponent].hasOwnProperty('noteList')){
+      state.componentMap[state.activeComponent].noteList = [];
+    }
+    while(state.componentMap[state.activeComponent].noteList.includes(payload)){
+      payload = 'DUPLICATE: ' + payload
+    }
+    state.componentMap[state.activeComponent].noteList.push(payload)
+  },
+
+  [types.DELETE_ACTIVE_COMPONENT_NOTE]: (state, payload) => {
+    state.componentMap[state.activeComponent].noteList.forEach((el, ind) =>{
+      if (payload === el){
+        state.componentMap[state.activeComponent].noteList.splice(ind, 1)
+        return;
+      }
+    })
+  },
+
+  [types.OPEN_NOTE_MODAL]: (state) => {
+    state.noteModalOpen = !state.noteModalOpen;
+  },
   // *** PROJECTS *** //////////////////////////////////////////////
 
   [types.ADD_PROJECT]: (state, payload) => {

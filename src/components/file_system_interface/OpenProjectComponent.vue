@@ -5,21 +5,30 @@ Description:
   -->
 
 <template>
-  <q-btn
-    class="export-btn"
-    color="secondary"
-    label="Open Project"
-    @click="openProjectJSON"
-  />
+    <q-btn class="nav-btn" color="secondary" label="Import">
+    <q-menu :offset="[0, 15]" class="dropdown">
+      <div class="settings-dropdown column items-center"> 
+      <p class="center">Import:</p>
+      <q-btn class="menu-btn" no-caps color="secondary" label="Project" @click="openProjectJSON"/> 
+      <ImportComponent class="import-comp" no-caps title="Component"/>
+      <!-- <q-btn class="menu-btn" no-caps color="secondary" label="Component" @click="exportProject"/>  -->
+      </div>
+    </q-menu>
+  
+  </q-btn>
 </template>
 
 <script>
 import { mapActions } from "vuex";
+import ImportComponent from "../home_sidebar_items/ComponentTab/ImportComponent.vue"
 const Mousetrap = require("mousetrap");
 const { fs, ipcRenderer } = window;
 
 export default {
   name: "OpenProjectComponent",
+  components: {
+    ImportComponent
+  },
   methods: {
     ...mapActions(["openProject"]),
     // opens project
@@ -59,5 +68,14 @@ export default {
 <style scoped>
 .mr-sm {
   margin-right: 0.2rem;
+}
+.menu-btn{
+  width: 80%;
+  margin: 10px 0px;
+}
+
+.import-comp{
+  width: 80% !important;
+  margin: 10px 0px;
 }
 </style>

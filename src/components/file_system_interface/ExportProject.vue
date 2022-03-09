@@ -10,21 +10,27 @@ Description:
   -->
 
 <template>
-  <q-btn
-    class="export-btn"
-    color="secondary"
-    label="Export Project"
-    @click="exportProject"
-  />
+  <q-btn class="nav-btn" color="secondary" label="Export">
+    <q-menu class="dropdown" :offset="[0, 15]">
+      <div class="settings-dropdown column items-center"> 
+      <p class="center">Export:</p>
+      <q-btn class="menu-btn" no-caps color="secondary" label="Project" @click="exportProject"/> 
+      <q-btn class="menu-btn" no-caps color="secondary" label="Active Component" @click="handleExportComponent" :disabled="!activeComponent.trim()"/> 
+      </div>
+    </q-menu>
+  
+  </q-btn>
 </template>
 <script>
 import { mapState } from "vuex";
+import handleExportComponentMixin from "../ExportComponentMixin.vue";
 const { fs, ipcRenderer } = window;
 
 export default {
   name: "ExportProjectComponent",
+  mixins: [handleExportComponentMixin],
   methods: {
-    showExportDialog() {
+    showExportProjectDialog() {
       ipcRenderer
         .invoke("exportProject", {
           title: "Choose location to save folder in",
@@ -35,7 +41,7 @@ export default {
         .catch((err) => console.log(err));
     },
     exportProject: function () {
-      this.showExportDialog();
+      this.showExportProjectDialog();
     },
     /**
      * @description creates the router.js file
@@ -44,20 +50,28 @@ export default {
      *          createExport(this.componentMap['App'].children)
      *  */
     createRouter(location) {
-      fs.writeFileSync(
-        path.join(location, "src", "router.js"),
-        this.createRouterImports(this.componentMap["App"].children) +
-          this.createExport(this.componentMap["App"].children)
-      );
+      if (this.exportAsTypescript === "on") {
+        fs.writeFileSync(
+          path.join(location, "src", "router", "index.ts"),
+          this.createRouterImports(this.componentMap["App"].children) +
+            this.createExport(this.componentMap["App"].children)
+        );
+      } else {
+        fs.writeFileSync(
+          path.join(location, "src", "router", "index.js"),
+          this.createRouterImports(this.componentMap["App"].children) +
+            this.createExport(this.componentMap["App"].children)
+        );
+      }
     },
     /**
      * @description import routed components from the /views/ dir
      * @argument: this.componentMap['App'].children
      */
     createRouterImports(appChildren) {
-      let str = "import { createRouter, createWebHistory } from 'vue-router'\n";
+      let str = "import { createRouter, createWebHistory } from 'vue-router';\n";
       appChildren.forEach((child) => {
-        str += `import ${child} from './views/${child}.vue'\n`;
+        str += `import ${child} from '../views/${child}.vue';\n`;
       });
       return str;
     },
@@ -65,13 +79,12 @@ export default {
      * @description creates the `export default` code in <script>
      */
     createExport(appChildren) {
-      let str =
-        "export default createRouter({\n\thistory: createWebHistory(),\n\tbase: process.env.BASE_URL,\n\troutes: [\n";
+      let str = "export default createRouter({\n\thistory: createWebHistory(import.meta.env.BASE_URL),\n\troutes: [\n";
       appChildren.forEach((child) => {
         if (child === "HomeView") {
           str += `\t\t{\n\t\t\tpath: '/',\n\t\t\tname:'${child}',\n\t\t\tcomponent:${child}\n\t\t},\n`;
         } else {
-          str += `\t\t{\n\t\t\tpath: '/${child}',\n\t\t\tname:'${child}',\n\t\t\tcomponent: ${child}\n\t\t},\n`;
+          str += `\t\t{\n\t\t\tpath: '/${child}',\n\t\t\tname:'${child}',\n\t\t\tcomponent: () => import('../views/${child}.vue')\n\t\t},\n`;
         }
       });
       str += `\t]\n})\n`;
@@ -91,6 +104,7 @@ export default {
       } else {
         fs.writeFileSync(
           componentLocation + ".vue",
+          this.writeComments(componentName) +
           this.writeTemplate(componentName, children) +
             this.writeScript(componentName, children) +
             this.writeStyle(componentName)
@@ -170,6 +184,19 @@ export default {
       }
       return outputStr;
     },
+    writeComments(componentName){
+      if (this.componentMap[componentName]?.noteList?.length > 0){
+        let commentStr = '<!--'
+        this.componentMap[componentName].noteList.forEach((el)=>{
+          commentStr += "\n"
+          commentStr += el;
+        })
+        commentStr += '\n-->\n\n'
+        return commentStr;
+      } else {
+        return ''
+      }
+    },
     /**
      * @description creates the <router-link> boilerplate for /views/components
      * also creates the <template></template> tag for each component
@@ -211,7 +238,11 @@ export default {
             imports += "mapState, mapActions";
           } else if (currentComponent.state.length) imports += "mapState";
           else imports += "mapActions";
-          imports += ' } from "vuex"\n';
+          imports += ' } from "vuex";\n';
+        }
+        // if in Typescript mode, import defineComponent
+        if (this.exportAsTypescript === "on") {
+          imports += 'import { defineComponent } from "vue";\n';
         }
         // add imports for children
         children.forEach((name) => {
@@ -258,16 +289,25 @@ export default {
           methods += "  },\n";
         }
         // concat all code within script tags
-        let output = "\n\n<script>\n";
-        output +=
-          imports + "\nexport default {\n  name: '" + componentName + "'";
+        let output;
+        if (this.exportAsTypescript === "on") {
+          output = "\n\n<script lang='ts'>\n";
+          output += imports + "\nexport default defineComponent ({\n  name: '" + componentName + "'";
+        } else {
+          output = "\n\n<script>\n";
+          output += imports + "\nexport default {\n  name: '" + componentName + "'";
+        }
         output += ",\n  components: {\n";
         output += childrenComponentNames + "  },\n";
         output += data;
         output += computed;
         output += methods;
         // eslint-disable-next-line no-useless-escape
-        output += "};\n<\/script>";
+        if (this.exportAsTypescript === "on") {
+          output += "});\n<\/script>";
+        } else {
+          output += "};\n<\/script>";
+        }
         return output;
       } else {
         let str = "";
@@ -279,6 +319,9 @@ export default {
           childrenComponentNames += `    ${name},\n`;
         });
         // eslint-disable-next-line no-useless-escape
+        if (this.exportAsTypescript === "on") {
+          return `\n\n<script lang="ts">\nimport { defineComponent } from "vue";\n ${str}\nexport default defineComponent ({\n  name: '${componentName}',\n  components: {\n${childrenComponentNames}  }\n});\n<\/script>`;
+        }
         return `\n\n<script>\n${str}\nexport default {\n  name: '${componentName}',\n  components: {\n${childrenComponentNames}  }\n};\n<\/script>`;
       }
     },
@@ -299,8 +342,8 @@ export default {
       str += `\n\t<meta charset="utf-8">`;
       str += `\n\t<meta http-equiv="X-UA-Compatible" content="IE=edge">`;
       str += `\n\t<meta name="viewport" content="width=device-width,initial-scale=1.0">`;
-      str += `\n\t<link rel="icon" href="<%= BASE_URL %>favicon.ico">`;
-      str += `\n\t<title>New Vue Project</title>`;
+      str += `\n\t<link rel="icon" href="/favicon.ico">`;
+      str += `\n\t<title>New OverVue Project</title>`;
       str += `\n</head>\n\n`;
       str += `<body>`;
       str += `\n\t<noscript>`;
@@ -308,82 +351,132 @@ export default {
       to continue.</strong>`;
       str += `\n\t</noscript>`;
       str += `\n\t<div id="app"></div>`;
-      str += `\n\t<!-- built files will be auto injected -->`;
+      if (this.exportAsTypescript === "on"){
+      str += `\n\t<script type="module" src="/src/main.ts"><\/script>`;
+      } else {
+      str += `\n\t<script type="module" src="/src/main.js"><\/script>`;
+      }
       str += `\n</body>\n\n`;
       str += `</html>\n`;
-      fs.writeFileSync(path.join(location, "public", "index.html"), str);
+      fs.writeFileSync(path.join(location, "index.html"), str);
     },
     // creates main.js boilerplate
     createMainFile(location) {
-      let str = `import { createApp } from 'vue'`;
-      str += `\nimport App from './App.vue'`;
-      str += `\nimport router from './router'`;
+      let str = `import { createApp } from 'vue';`;
+      str += `\nimport App from './App.vue';`;
+      str += `\nimport router from './router';`;
       // str += `\n\n import './index.css'`
-      str += `\n\n const app = createApp(App)`;
+      str += `\n\n const app = createApp(App);`;
       // str += `\n\trouter,
       str += `\napp.use(router);`;
       str += `\n app.mount('#app');`;
-      fs.writeFileSync(path.join(location, "src", "main.js"), str);
+      // if using typescript, export with .ts extension
+      if (this.exportAsTypescript === "on") {
+        fs.writeFileSync(path.join(location, "src", "main.ts"), str);
+      } else {
+        fs.writeFileSync(path.join(location, "src", "main.js"), str);
+      }
     },
     // create babel file
-    createBabel(location) {
-      let str = `module.exports = {`;
-      str += `\n\tpresets: [`;
-      str += `\n\t\t'@vue/app'`;
-      str += `\n\t]`;
-      str += `\n}`;
-      fs.writeFileSync(path.join(location, "babel.config.js"), str);
+    createViteConfig(location) {
+      let str = `import { fileURLToPath, URL } from 'url';\n\n`;
+      str += `import { defineConfig } from 'vite';\n`;
+      str += `import vue from '@vitejs/plugin-vue';\n\n`;
+      str += `export default defineConfig({\n`
+      str += `\tplugins: [vue()],\n`
+      str += `\tresolve: {\n`
+      str += `\t\t alias: {\n`
+      str += `\t\t\t'@': fileURLToPath(new URL('./src', import.meta.url))\n`
+      str += `\t\t}\n\t}\n})`
+
+      // if using typescript, export with .ts extension
+      if (this.exportAsTypescript === "on") {
+        fs.writeFileSync(path.join(location, "vite.config.ts"), str);
+      } else {
+        fs.writeFileSync(path.join(location, "vite.config.js"), str);
+      }
+    },
+    createESLintRC(location) {
+      let str;
+      if (this.exportAsTypescript === "on"){
+        str += `require("@rushstack/eslint-patch/modern-module-resolution");\n\n`;
+      }
+      str += `module.exports = {\n`;
+      str += `\t"root": true,\n`;
+      str += `\t"extends": [\n`;
+      str += `\t\t"plugin:vue/vue3-essential",\n`
+      str += `\t\t"eslint:recommended"`
+      if (this.exportAsTypescript === "on"){
+        str += `,\n\t\t"@vue/eslint-config-typescript/recommended"\n`
+      }
+      str += `\n\t],\n`
+      str += `\t"env": {\n`
+      str += `\t\t"vue/setup-compiler-macros": true\n`
+      str += `\t}\n}`
+      fs.writeFileSync(path.join(location, ".eslintrc.cjs"), str);
+    },
+    createTSConfig(location) {
+      if (this.exportAsTypescript === "on") {
+        let str = `{\n\t"extends": "@vue/tsconfig/tsconfig.web.json",\n\t"include": ["env.d.ts", "src/**/*", "src/**/*.vue"],\n\t"compilerOptions": {\n\t\t"baseUrl": ".",\n\t\t"paths": {\n\t\t\t"@/*": ["./src/*"]\n\t\t}\n\t},`;
+        str += `\t"references": [\n`
+        str += `\t\t{\n\t\t\t"path": "./tsconfig.vite-config.json"\n\t\t}\n\t]\n}`
+        fs.writeFileSync(path.join(location, "tsconfig.json"), str);
+      } else {
+        return;
+      }
+    },
+    createTSViteConfig(location) {
+      if (this.exportAsTypescript === "on") {
+        let str = `{\n\t"extends": "@vue/tsconfig/tsconfig.node.json",\n\t"include": ["vite.config.*"],\n\t"compilerOptions": {\n\t\t"composite": true,\n\t\t"types": ["node", "viteset"]\n\t}\n}`;
+        fs.writeFileSync(path.join(location, "tsconfig.vite-config.json"), str);
+      } else {
+        return;
+      }
+    },
+    createTSDeclaration(location) {
+      if (this.exportAsTypescript === "on") {
+        let str = `/// <reference types="vite/client" />`;
+        fs.writeFileSync(path.join(location, "env.d.ts"), str);
+      } else {
+        return;
+      }
     },
     // create package.json file
     createPackage(location) {
       let str = `{`;
-      str += `\n\t"name": "vue-boiler-plate-routes",`;
-      str += `\n\t"version": "0.1.0",`;
-      str += `\n\t"private": true,`;
+      str += `\n\t"name": "My-OverVue-Project",`;
+      str += `\n\t"version": "0.0.0",`;
       str += `\n\t"scripts": {`;
-      str += `\n\t\t"start": "vue-cli-service serve",`;
-      str += `\n\t\t"build": "vue-cli-service build",`;
-      str += `\n\t\t"lint": "vue-cli-service lint"`;
+      str += `\n\t\t"dev": "vite",`;
+      if (this.exportAsTypescript === "on") {
+        str += `\n\t\t"build": "vue-tsc --noEmit && vite build",`;
+        str += `\n\t\t"typecheck": "vue-tsc --noEmit",`;
+        str += `\n\t\t"lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",`;
+      } else {
+        str += `\n\t\t"build": "vite build",`;
+        str += `\n\t\t"lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",`;
+      }
+      str += `\n\t\t"preview": "vite preview --port 5050"`;
       str += `\n\t},`;
       str += `\n\t"dependencies": {`;
-      str += `\n\t\t"vue": "^3.2.26",`;
+      str += `\n\t\t"vue": "^3.2.31",`;
       str += `\n\t\t"vue-router": "^4.0.12",`;
       str += `\n\t\t"vuex": "^4.0.2"`;
       str += `\n\t},`;
       str += `\n\t"devDependencies": {`;
-      str += `\n\t\t"@vue/cli-plugin-babel": "~4.5.0",`;
-      str += `\n\t\t"@vue/cli-plugin-eslint": "~4.5.0",`;
-      str += `\n\t\t"@vue/cli-service": "~4.5.0",`;
-      str += `\n\t\t"babel-eslint": "^10.0.1",`;
-      str += `\n\t\t"eslint": "^6.7.2",`;
-      str += `\n\t\t"eslint-plugin-vue": "^7.0.0-0",`;
-      str += `\n\t\t"@vue/compiler-sfc": "^3.0.0-0"`;
-      str += `\n\t},`;
-      str += `\n\t"eslintConfig": {`;
-      str += `\n\t\t"root": true,`;
-      str += `\n\t\t"env": {`;
-      str += `\n\t\t\t"node": true`;
-      str += `\n\t\t},`;
-      str += `\n\t\t"extends": [`;
-      str += `\n\t\t\t"plugin:vue/essential",`;
-      str += `\n\t\t\t"eslint:recommended"`;
-      str += `\n\t\t],`;
-      str += `\n\t\t"rules": {},`;
-      str += `\n\t\t"parserOptions": {`;
-      str += `\n\t\t\t"parser": "babel-eslint"`;
-      str += `\n\t\t}`;
-      str += `\n\t},`;
-      str += `\n\t"postcss": {`;
-      str += `\n\t\t"plugins": {`;
-      str += `\n\t\t\t"autoprefixer": {}`;
-      str += `\n\t\t}`;
-      str += `\n\t},`;
-      str += `\n\t"browserslist": [`;
-      str += `\n\t\t"> 1%",`;
-      str += `\n\t\t"last 2 versions",`;
-      str += `\n\t\t"not ie <= 8"`;
-      str += `\n\t]`;
-      str += `\n}`;
+      str += `\n\t\t"@vitejs/plugin-vue": "^2.2.2",`;
+      str += `\n\t\t"eslint": "^8.5.0",`;
+      str += `\n\t\t"eslint-plugin-vue": "^8.2.0",`;
+      str += `\n\t\t"vite": "^2.8.4"`
+      if (this.exportAsTypescript === "on") {
+        str += `,\n\t\t"@rushstack/eslint-patch": "^1.1.0",`
+        str += `\n\t\t"@vue/tsconfig": "^0.1.3",`;
+        str += `\n\t\t"typescript": "~4.5.5",`;
+        str += `\n\t\t"vue-tsc": "^0.31.4",`;
+        str += `\n\t\t"@types/node": "^16.11.25",`;
+        str += `\n\t\t"@vue/eslint-config-typescript": "^10.0.0"`;
+      }
+      str += `\n\t}\n}`;
       fs.writeFileSync(path.join(location, "package.json"), str);
     },
     exportFile(data) {
@@ -396,11 +489,16 @@ export default {
         fs.mkdirSync(path.join(data, "src", "assets"));
         fs.mkdirSync(path.join(data, "src", "components"));
         fs.mkdirSync(path.join(data, "src", "views"));
+        fs.mkdirSync(path.join(data, "src", "router"));
       }
       // creating basic boilerplate for vue app
       this.createIndexFile(data);
       this.createMainFile(data);
-      this.createBabel(data);
+      this.createViteConfig(data);
+      this.createESLintRC(data);
+      this.createTSConfig(data);
+      this.createTSViteConfig(data);
+      this.createTSDeclaration(data);
       this.createPackage(data);
       // exports images to the /assets folder
       // eslint-disable-next-line no-unused-vars
@@ -444,16 +542,22 @@ export default {
     },
   },
   computed: {
-    ...mapState(["componentMap", "imagePath", "routes"]),
+    ...mapState(["componentMap", "imagePath", "routes", "exportAsTypescript", "activeComponent"]),
   },
 };
 </script>
 
-<style>
-.export-btn {
-  min-height: 10px !important;
-  font-size: 11px;
-  text-transform: capitalize;
-  padding: 3px 8px;
+<style scoped>
+
+.center{
+  display:inline-block;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: white;
+  box-sizing: border-box;
 }
+
+
 </style>

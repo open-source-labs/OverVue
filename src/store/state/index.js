@@ -1,6 +1,7 @@
 import icons from './icons'
 import htmlElementMap from './htmlElementMap'
 
+
 const cloneDeep = require('lodash.clonedeep')
 
 const newState = {
@@ -50,11 +51,16 @@ const newState = {
   activeTab: 0,
   componentChildrenMultiselectValue: [],
   modalOpen: false,
+  noteModalOpen: false,
   parentSelected: false,
   // for storing copied component
   copiedComponent: {},
   copyNumber: 0,
-  pastedComponent: {}
+  pastedComponent: {},
+  exportAsTypescript: 'off',
+  showTutorial: true,
+  tutorialFirstOpen: true,
+  pasteTimer: 0,
 }
 
 // closured method to ensure we only ever write the default state ONCE

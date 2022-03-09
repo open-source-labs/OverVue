@@ -7,7 +7,7 @@
 -->
 
 <template>
-  <div>
+  <div class="selection-container">
     <div id="action-select">
       <VueMultiselect
         v-model="selectAction"
@@ -22,7 +22,6 @@
         :searchable="false"
         @search-change="stopDelete($event)"
       >
-        <span slot="noResult">No actions found.</span>
       </VueMultiselect>
       <br />
       <q-btn
@@ -34,10 +33,10 @@
         @click="addActionToComp"
       />
     </div>
-    <p v-if="!this.activeComponentObj.actions.length">
+    <p v-if="!this.componentMap[this.activeComponent].actions.length">
       No actions in component
     </p>
-    <a v-else v-for="action in this.activeComponentData.actions" :key="action">
+    <a v-else v-for="action in this.componentMap[this.activeComponent].actions" :key="action">
       <q-list class="list-item" dense bordered separator>
         <q-item clickable v-ripple class="list-item">
           <q-item-section>
@@ -70,15 +69,7 @@ export default {
     VueMultiselect,
   },
   computed: {
-    ...mapState(["activeComponentObj", "selectedActions", "userActions"]),
-    activeComponentData() {
-      return this.activeComponentObj;
-    },
-    compObj: {
-      get() {
-        return this.activeComponentObj;
-      },
-    },
+    ...mapState(["selectedActions", "userActions", "componentMap", "activeComponent"]),
     actionOptions() {
       return this.userActions;
     },
@@ -99,7 +90,7 @@ export default {
     ]),
     // Prevent Delete on changes to searchable multiselect
     stopDelete(e) {
-      if (e.code === "Backspce") e.stopPropogation();
+      if (e.code === "Backspace") e.stopPropogation();
       // console.log(e);
     },
     // adds an action to the currently selected component
@@ -113,3 +104,16 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.selection-container {
+    padding: 30px 0;
+}
+
+.component-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+</style>

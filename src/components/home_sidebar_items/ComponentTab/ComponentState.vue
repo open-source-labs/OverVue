@@ -7,7 +7,7 @@
 -->
 
 <template>
-  <div>
+  <div class="selection-container">
     <div id="state-select">
       <VueMultiselect
         v-model="selectState"
@@ -22,7 +22,7 @@
         :searchable="false"
         @search-change="stopDelete($event)"
       >
-        <span slot="noResult">No state found.</span>
+      
       </VueMultiselect>
       <br />
       <q-btn
@@ -34,8 +34,8 @@
         @click="addStateToComp"
       />
     </div>
-    <p v-if="!this.activeComponentObj.state.length">No state in component</p>
-    <a v-else v-for="state in this.activeComponentData.state" :key="state">
+    <p v-if="!this.componentMap[this.activeComponent].state.length">No state in component</p>
+    <a v-else v-for="state in this.componentMap[this.activeComponent].state" :key="state">
       <q-list class="list-item" dense bordered separator>
         <q-item clickable v-ripple class="list-item">
           <q-item-section>
@@ -65,19 +65,11 @@ import VueMultiselect from "vue-multiselect";
 export default {
   name: "ComponentState",
   components: {
-    // Multiselect
     VueMultiselect,
   },
   computed: {
-    ...mapState(["activeComponentObj", "selectedState", "userState"]),
-    activeComponentData() {
-      return this.activeComponentObj;
-    },
-    compObj: {
-      get() {
-        return this.activeComponentObj;
-      },
-    },
+    ...mapState(["selectedState", "userState", "componentMap", "activeComponent"]),
+
     stateOptions() {
       return this.userState;
     },
@@ -98,7 +90,7 @@ export default {
     ]),
     // Prevent Delete on changes to searchable multiselet
     stopDelete(e) {
-      if (e.code === "Backspce") e.stopPropogation();
+      if (e.code === "Backspace") e.stopPropogation();
     },
     // adds a state to the currently selected component
     addStateToComp() {
@@ -111,3 +103,16 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+  .selection-container {
+    padding: 30px 0;
+  }
+
+  .component-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+</style>
