@@ -267,6 +267,11 @@ export default {
         this.snippetInvoke();
       },
       deep: true
+    },
+    exportAsTypescript: {
+      handler () {
+        this.snippetInvoke();
+      },
     }
   },
   mounted() {
