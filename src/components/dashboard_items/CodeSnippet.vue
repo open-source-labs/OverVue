@@ -19,7 +19,7 @@ Description:
       class="my-editor"
       readonly
     />
-  </div>
+    </div>
 </template>
 
 <script>
@@ -35,7 +35,7 @@ import "prismjs/themes/prism-tomorrow.css"; // import syntax highlighting styles
 export default {
   data() {
     return {
-      // code: `Your component boilerplate will be displayed here.`,
+      code: `Your component boilerplate will be displayed here.`,
       lineNumbers: true,
       height: null,
     };
@@ -45,19 +45,20 @@ export default {
   },
   computed: {
     // needs access to current component aka activeComponent
-    ...mapState(["componentMap", "activeComponent", "activeComponentObj"]),
-    code: function () {
-      let computedCode = "Your component boilerplate will be displayed here.";
-      if (this.activeComponent) {
-        computedCode = this.createCodeSnippet(
-          this.componentMap[this.activeComponent].componentName,
-          this.componentMap[this.activeComponent].children
-        );
-      }
-      return computedCode;
-    },
+    ...mapState(["componentMap", "activeComponent", "activeComponentObj", "exportAsTypescript"]),
   },
   methods: {
+    snippetInvoke(){
+      if (this.activeComponent !== ''){
+        this.code = this.createCodeSnippet(
+          this.componentMap[this.activeComponent].componentName,
+          this.componentMap[this.activeComponent].children
+        )
+        } else {
+          this.code = 'Your component boilerplate will be displayed here.'
+      }
+    },
+    //highlighter does not work: OverVue 6.0;
     highlighter(myCode) {
       return highlight(myCode, languages.js);
     },
@@ -161,18 +162,23 @@ export default {
       // add import mapstate and mapactions if they exist
       let imports = "";
       if (
-        this.activeComponentObj.actions.length ||
-        this.activeComponentObj.state.length
+        this.componentMap[this.activeComponent].actions.length ||
+        this.componentMap[this.activeComponent].state.length
       ) {
         imports += "import { ";
         if (
-          this.activeComponentObj.actions.length &&
-          this.activeComponentObj.state.length
+          this.componentMap[this.activeComponent].actions.length &&
+          this.componentMap[this.activeComponent].state.length
         ) {
           imports += "mapState, mapActions";
-        } else if (this.activeComponentObj.state.length) imports += "mapState";
+        } else if (this.componentMap[this.activeComponent].state.length) imports += "mapState";
         else imports += "mapActions";
-        imports += ' } from "vuex"\n';
+        imports += ' } from "vuex";\n';
+      }
+
+       // if Typescript toggle is on, import defineComponent
+      if (this.exportAsTypescript === "on") {
+        imports += 'import { defineComponent } from "vue";\n';
       }
 
       // add imports for children
@@ -188,9 +194,9 @@ export default {
 
       // if true add data section and populate with props
       let data = "";
-      if (this.activeComponentObj.props.length) {
+      if (this.componentMap[this.activeComponent].props.length) {
         data += "  data () {\n    return {";
-        this.activeComponentObj.props.forEach((prop) => {
+        this.componentMap[this.activeComponent].props.forEach((prop) => {
           data += `\n      ${prop}: "PLACEHOLDER FOR VALUE",`;
         });
         data += "\n";
@@ -200,10 +206,10 @@ export default {
 
       // if true add computed section and populate with state
       let computed = "";
-      if (this.activeComponentObj.state.length) {
+      if (this.componentMap[this.activeComponent].state.length) {
         computed += "  computed: {";
         computed += "\n    ...mapState([";
-        this.activeComponentObj.state.forEach((state) => {
+        this.componentMap[this.activeComponent].state.forEach((state) => {
           computed += `\n      "${state}",`;
         });
         computed += "\n    ]),\n";
@@ -212,10 +218,10 @@ export default {
 
       // if true add methods section and populate with actions
       let methods = "";
-      if (this.activeComponentObj.actions.length) {
+      if (this.componentMap[this.activeComponent].actions.length) {
         methods += "  methods: {";
         methods += "\n    ...mapActions([";
-        this.activeComponentObj.actions.forEach((action) => {
+        this.componentMap[this.activeComponent].actions.forEach((action) => {
           methods += `\n      "${action}",`;
         });
         methods += "\n    ]),\n";
@@ -223,48 +229,55 @@ export default {
       }
 
       // concat all code within script tags
-      let output = "\n\n<script>\n";
-      output += imports + "\nexport default {\n  name: " + componentName;
+      // if exportAsTypescript is on, out should be <script lang="ts">
+      let output;
+      if (this.exportAsTypescript === "on") {
+        output = "\n\n<script lang='ts'>\n";
+        output += imports + "\nexport default defineComponent ({\n  name: '" + componentName + "';";
+      } else {
+        output = "\n\n<script>\n";
+        output += imports + "\nexport default {\n  name: '" + componentName + "';";
+      }
       output += ",\n  components: {\n";
       output += childrenComponentNames + "  },\n";
       output += data;
       output += computed;
       output += methods;
-      // eslint-disable-next-line no-useless-escape
-      output += "};\n<\/script>\n\n<style scoped>\n</style>";
-      // add props/data
 
-      // eslint-disable-next-line no-useless-escape
-      // return `\n\n<script>\n${str}\nexport default {\n  name: '${componentName}',\n
-      // components: {\n${childrenComponentNames}  }\n};\n<\/script>\n\n<style scoped>\n
-      // </style>`
+      if (this.exportAsTypescript === "on") {
+        output += "});\n<\/script>\n\n<style scoped>\n</style>"
+
+      } else {
+        output += "};\n<\/script>\n\n<style scoped>\n</style>"
+      }
       return output;
     },
   },
   watch: {
-    // // watches activeComponentObj for changes to make it reactive upon mutation
-    // activeComponentObj: {
-    //   handler () {
-    //     // console.log(this.activeComponentObj.children)
-    //     this.code = this.createCodeSnippet(
-    //       this.activeComponentObj.componentName,
-    //       this.activeComponentObj.children
-    //     )
-    //   }
-    // },
-    // // // // watches componentMap for changes to make it reactive upon mutation
-    // componentMap: {
-    //   handler () {
-    //     this.code = this.createCodeSnippet(
-    //       this.activeComponentObj.componentName,
-    //       this.activeComponentObj.children
-    //     )
-    //   }
-    // }
+    // watches activeComponentObj for changes to make it reactive upon mutation
+    // // // watches componentMap for changes to make it reactive upon mutation
+    activeComponent: {
+      handler () {
+        this.snippetInvoke();
+      },
+      deep: true
+    },
+    componentMap: {
+      handler () {
+        this.snippetInvoke();
+      },
+      deep: true
+    },
+    exportAsTypescript: {
+      handler () {
+        this.snippetInvoke();
+      },
+    }
   },
   mounted() {
     // https://vuejs.org/v2/api/#Vue-nextTick
     // kinda like a promise, used for the window resize
+    this.snippetInvoke(); //generates the code snippet whenever this is mounted
     this.$nextTick(() => {
       window.addEventListener("resize", this.getWindowHeight);
 
@@ -286,6 +299,7 @@ export default {
   font-size: 12px;
   background: #2d2d2d;
   color: #ccc;
+  max-height: 100%;
   /* you must provide font-family font-size line-height. Example: */
   font-family: Fira code, Fira Mono, Consolas, Menlo, Courier, monospace;
   line-height: 1.5;
@@ -293,7 +307,10 @@ export default {
 }
 
 .codesnippet-container {
-  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  height: 95%;
 }
 
 .prism-editor__textarea:focus {
@@ -301,8 +318,3 @@ export default {
 }
 </style>
 
-<style lang="scss" scoped>
-::-webkit-scrollbar {
-  display: none;
-}
-</style>

@@ -5,31 +5,47 @@ Includes functionality to:
 -->
 
 <template>
-  <div>
+  <div class="route-display">
     <q-input
       @keyup.enter="handleEnterKeyPress"
-      standout="bg-secondary text-white"
+      color="white"
+      dark
+      outlined
       bottom-slots
       v-model="newRoute"
-      label="Enter new route"
+      label="Add new route"
       dense
+      no-error-icon
       class="input-add"
       @click="resetActiveComponent"
-    ></q-input>
-
+      reactive-rules
+      :rules="[val => !Object.keys(this.componentMap).includes(val) || 'A component/route with this name already exists' ]"
+    >
+    <template v-slot:append>
+      <q-btn
+        flat
+        icon="add"
+        @click="handleEnterKeyPress"
+      />
+    </template>
+    </q-input>
     <Routes></Routes>
+    <UploadImage></UploadImage>
   </div>
+  
 </template>
 
 <script>
 import Routes from "./Routes";
 import { mapState, mapActions } from "vuex";
+import UploadImage from "../home_sidebar_items/ComponentTab/UploadImage.vue";
 
 export default {
   name: "RouteDisplay",
   components: {
     Routes,
-  },
+    UploadImage
+},
   computed: {
     ...mapState(["routes", "componentMap"]),
   },
@@ -65,13 +81,7 @@ export default {
 
 <style scoped>
 .route-display {
-  border: 1px solid rgba(208, 208, 208, 0.694);
   overflow: auto;
-  height: 60%;
-  padding: 0;
-  margin: 1rem;
-  padding: 0.5rem;
-  border-radius: 5px;
 }
 
 i:hover {

@@ -7,7 +7,7 @@ Description:
 
 <template>
   <q-btn
-    class="export-btn"
+    class="nav-btn"
     color="secondary"
     label="Save"
     @click="saveProjectJSON"

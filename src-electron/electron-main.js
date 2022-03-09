@@ -69,6 +69,18 @@ ipcMain.handle("clearImage", async (event, arg) => {
   return result;
 })
 
+// Handle dialogs for exporting a component
+ipcMain.handle("exportComponent", async (event, arg) => {
+  const result = await dialog.showSaveDialog(arg);
+  return result;
+});
+
+// Handle dialogs for importing a component
+ipcMain.handle("importComponent", async (event, arg) => {
+  const result = await dialog.showOpenDialog(arg);
+  return result;
+});
+
 
 // ************** Slack OAuth functions **********************
 // Sends request to Slack for User's information,
@@ -170,7 +182,6 @@ function createWindow() {
     useContentSize: true,
     webPreferences: {
       contextIsolation: true,
-      // nodeIntegration: true,
       // More info: /quasar-cli/developing-electron-apps/electron-preload-script
       preload: path.resolve(__dirname, process.env.QUASAR_ELECTRON_PRELOAD),
     },

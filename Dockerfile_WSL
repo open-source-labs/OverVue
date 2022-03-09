@@ -1,0 +1,37 @@
+FROM node:16.14
+
+RUN apt-get update && apt-get install \
+    git libx11-xcb1 libxss1 libxcb-dri3-0 libgconf2-dev libxtst6 \
+    xvfb dbus-x11 libnss3 libudev-dev libatk-bridge2.0-0 libgtk-3-0 \
+    libxss1 libasound2 libdrm2 libgtkextra-dev libgbm1 \
+    -yq --no-install-suggests --no-install-recommends \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /OverVue
+COPY . .
+RUN chown -R node /OverVue
+RUN npm i -g @quasar/cli
+
+USER node
+RUN npm install
+
+USER root
+RUN chown root /OverVue/node_modules/electron/dist/chrome-sandbox
+RUN chmod 4755 /OverVue/node_modules/electron/dist/chrome-sandbox
+EXPOSE 3000
+
+USER node
+CMD bash
+
+# IN YOUR WSL 2 TERMINAL:
+# export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
+# export LIBGL_ALWAYS_INDIRECT=1
+#
+# MUST BE RUNNING SOME XSERVER SUCH AS VcXsrv OR OTHER
+#
+# RUN WITH:
+# docker run -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY -v`pwd:/app --rm -it <yourimagename> bash 
+# 
+# INSIDE CONTAINER:
+# quasar dev -m electron -- --no-sandbox
+# 

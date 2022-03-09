@@ -5,9 +5,9 @@ Description:
   -->
 
 <template>
-  <div class="home-sidebar drawer-menu">
+  <div id="uploadImgMenuItem">
     <q-list>
-      <q-expansion-item expand-separator label="Upload Mockup Image">
+      <q-expansion-item expand-separator :label="this.mockupUploadLabel">
         <div class="upload">
           <q-btn
             class="upload-btn"
@@ -25,8 +25,7 @@ Description:
           <q-btn
             v-else
             disable
-            class="upload-btn"
-            color="secondary"
+            class="upload-btn deleteAction"
             label="Clear Image"
           />
         </div>
@@ -46,8 +45,8 @@ Description:
 
 <script>
 import { mapState, mapActions } from "vuex";
-import uploadImage from "../../utils/uploadImage.util";
-import clearImageDialog from "../../utils/clearImage.util";
+import uploadImage from "../../../utils/uploadImage.util";
+import clearImageDialog from "../../../utils/clearImage.util";
 
 export default {
   name: "upload-image",
@@ -55,6 +54,7 @@ export default {
     return {
       files: [],
       source: "",
+      mockupUploadLabel: `Upload mockup image for ${this.$store.state.activeRoute}`,
     };
   },
   computed: {
@@ -114,6 +114,7 @@ export default {
   watch: {
     // once you change your active route, the mockup image should change as well
     activeRoute: function () {
+      this.mockupUploadLabel = `Upload mockup image for ${this.activeRoute}`
       if (this.imagePath[this.activeRoute]) {
         // if there is a uploaded image
         this.source = "file:///" + this.imagePath[this.activeRoute];
@@ -126,23 +127,33 @@ export default {
 </script>
 
 <style lang="scss">
-.home-sidebar {
-  margin: 1rem;
-  justify-content: center;
-  border-radius: 5px;
-  padding: 0px;
-  background: $subsecondary;
+
+#uploadImgMenuItem {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  margin-top: 30px;
 }
 
+.q-expansion-item {
+    margin-bottom: 10px;
+  }
+
 .upload-btn {
-  text-transform: capitalize;
+  text-transform: uppercase;
   font-size: 12px;
+  width: 150px;
+  height: auto;
+  min-height: 42px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .upload {
-  margin: 0.5rem;
+  margin: 1rem;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
 }
 
 .file-path {
@@ -150,6 +161,7 @@ export default {
   height: 100%;
   margin: 1rem;
   font-size: 11px;
+
 }
 
 .file-header {
@@ -158,6 +170,7 @@ export default {
 
 .file-content {
   padding: 0em 1em 1em 1em;
+  
 }
 
 .browser-btn {

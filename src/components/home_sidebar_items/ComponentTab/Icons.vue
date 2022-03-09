@@ -15,7 +15,7 @@ Description:
       <br />
       <i :class="iconString"></i>
       <br />
-      <span class="white--text">{{ elementName }}</span>
+      <span>{{ elementName }}</span>
     </button>
   </section>
 </template>
@@ -88,7 +88,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .icon-grid {
   display: grid;
   grid-template-columns: 33% 33% 33%;
@@ -106,16 +106,16 @@ export default {
 }
 button {
   background: none;
-  color: white;
+  color: $menutext;
   border: none;
 }
 button:hover {
   cursor: pointer;
-  color: #00ffff;
+  color: $secondary;
 }
 button:focus {
   outline: none;
-  color: #00ffff;
+  color: $secondary;
 }
 button:active {
   box-shadow: 0 5px inherit;
@@ -129,7 +129,7 @@ button:active {
   font-weight: bold;
   float: right;
   border-radius: 50%;
-  background-color: #228585;
-  color: white;
+  background-color: $secondary;
+  color: $menutext;
 }
 </style>

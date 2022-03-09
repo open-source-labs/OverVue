@@ -1,8 +1,7 @@
 <!-- Component Tab Container that holds components for creating components, editing and deleting, and adding props.
 Functionality includes: if active component is selected, will switch view to editing mode. If not, it will be in create mode -->
 <template>
-  <q-card id="store-cards">
-    <UploadImage v-if="activeComponent === ''"/>
+  <q-card id="store-cards" class="no-shadow">
     <CreateComponent v-if="activeComponent === ''"/>
     <EditDeleteComponents v-if="activeComponent !== ''"/>
   </q-card>
@@ -12,7 +11,7 @@ Functionality includes: if active component is selected, will switch view to edi
 import CreateComponent from './CreateComponent.vue'
 import EditDeleteComponents from './EditDeleteComponents.vue'
 import { mapState } from 'vuex'
-import UploadImage from '../UploadImage.vue'
+import UploadImage from './UploadImage.vue'
 export default {
   data () {
     return {
@@ -35,23 +34,29 @@ export default {
 <style lang="scss">
 // give html background color of grey
 .html-bg {
-    background-color: #202122;
+    background-color: $subprimary;
 }
 #store-cards {
   height: 100%;
   border-radius: 0px;
-  background-color: #202122;
+  background-color: $subprimary;
+  
 }
 .q-tab-panel {
-  height: 100%;
-  // matchs the code editor bg
+  height: calc(100% - 30px);
+  // matches the code editor bg
   background: $subprimary;
+  padding: 0px;
   // changes the length of the tab panels
 }
 .q-tab-panels {
   height: 100%;
 }
 .q-tabs {
-  background: #11120F;
+  background: $subprimary;
+}
+
+.q-tab__content{
+  padding: 10px 0;
 }
 </style>
