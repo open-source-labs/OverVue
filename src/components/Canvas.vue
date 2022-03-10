@@ -171,7 +171,7 @@ const { fs, ipcRenderer } = window;
 const cloneDeep = require("lodash.clonedeep");
 
 export default {
-  name: "ComponentDisplay",
+  name: "Canvas",
   components: {
     VueDraggableResizable,
     VueMultiselect,

@@ -64,7 +64,7 @@ Description:
         </q-expansion-item>
         <!-- Props item that has AddProps component in it -->
         <q-expansion-item group="accordion" label="Props">
-          <AddProps />
+          <PropsSubMenu />
           <p v-if="!this.activeComponentObj.props.length">
             No props in component
           </p>
@@ -95,10 +95,10 @@ Description:
         </q-expansion-item>
         <!-- Vuex State item that will have state displayed and option to delete -->
         <q-expansion-item group="accordion" label="State">
-          <ComponentState />
+          <StateSubMenu />
         </q-expansion-item>
         <q-expansion-item group="accordion" label="Actions">
-          <ComponentActions />
+          <ActionsSubMenu />
         </q-expansion-item>
       </q-list>
       <q-btn
@@ -126,11 +126,11 @@ Description:
 <script>
 import { mapState, mapActions } from "vuex";
 import VueMultiselect from "vue-multiselect";
-import HTMLQueue from "../../dashboard_items/HTMLQueue.vue";
+import HTMLQueue from "../../right-sidebar/HTMLQueue.vue";
 import Icons from "./Icons.vue";
-import AddProps from "./AddProps.vue";
-import ComponentState from "./ComponentState.vue";
-import ComponentActions from "./ComponentActions.vue";
+import PropsSubMenu from "./PropsSubMenu.vue";
+import StateSubMenu from "./StateSubMenu.vue";
+import ActionsSubMenu from "./ActionsSubMenu.vue";
 
 const cloneDeep = require("lodash.clonedeep");
 const { fs, ipcRenderer } = window;
@@ -147,9 +147,9 @@ export default {
     VueMultiselect,
     HTMLQueue,
     Icons,
-    AddProps,
-    ComponentState,
-    ComponentActions,
+    PropsSubMenu,
+    StateSubMenu,
+    ActionsSubMenu,
   },
   computed: {
     ...mapState([

@@ -39,9 +39,9 @@ Description:
       </div></q-toolbar-title>
         <div></div>
         
-        <SaveProjectComponent />
-        <OpenProjectComponent />
-        <ExportProjectComponent />
+        <SaveProject />
+        <ImportMenu />
+        <ExportMenu />
         
         <q-btn class="nav-btn" icon="fas fa-cog" unelevated size="sm">
         
@@ -127,7 +127,7 @@ Description:
       </div>
       <div class="displayCanClose" ref="displayClose"></div>
       <q-list class="q-list-drawer">
-        <Dashboard />
+        <RightSidebar />
       </q-list>
     </q-drawer>
 
@@ -139,13 +139,13 @@ Description:
 
 <script>
 // HomeSideDropDown contains RouteDisplay, VuexForm and Edit but we'll be separating these components across different tabs
-import Dashboard from "../components/dashboard_items/Dashboard.vue";
-import ExportProjectComponent from "../components/file_system_interface/ExportProject.vue";
-import SaveProjectComponent from "../components/file_system_interface/SaveProjectComponent.vue";
-import OpenProjectComponent from "../components/file_system_interface/OpenProjectComponent.vue";
+import RightSidebar from "../components/right-sidebar/RightSidebar.vue";
+import ExportMenu from "../components/nav-buttons/ExportMenu.vue";
+import SaveProject from "../components/nav-buttons/SaveProject.vue";
+import ImportMenu from "../components/nav-buttons/ImportMenu.vue";
 import SlackLoginWindow from "../components/slack_login/SlackLoginWindow.vue";
-import ComponentTab from "../components/home_sidebar_items/ComponentTab/ComponentTab.vue";
-import StoreTab from "../components/home_sidebar_items/StoreTab/StoreTab.vue";
+import ComponentTab from "../components/left-sidebar/ComponentTab/ComponentTab.vue";
+import StoreTab from "../components/left-sidebar/StoreTab/StoreTab.vue";
 import { mapState, mapActions } from "vuex";
 
 export default {
@@ -163,14 +163,14 @@ export default {
     };
   },
   components: {
-    Dashboard,
-    ExportProjectComponent,
-    SaveProjectComponent,
-    OpenProjectComponent,
+    RightSidebar,
+    ExportMenu,
+    SaveProject,
+    ImportMenu,
     SlackLoginWindow,
     ComponentTab,
     StoreTab,
-  },
+},
   computed: {
     ...mapState(["exportAsTypescript"]),
   },

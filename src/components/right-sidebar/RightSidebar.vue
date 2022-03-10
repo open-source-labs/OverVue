@@ -23,7 +23,7 @@ Description:
     </q-tabs>
     <q-tab-panels v-model="tab" animated>
       <q-tab-panel name="routes">
-        <RouteDisplay />
+        <RoutesTab />
       </q-tab-panel>
       <q-tab-panel name="tree">
         <Tree />
@@ -43,16 +43,16 @@ Description:
 import { mapState, mapActions } from "vuex";
 import Tree from "./Tree.vue";
 import ComponentDetails from "./ComponentDetails.vue";
-import RouteDisplay from "./RouteDisplay.vue";
+import RoutesTab from "./RoutesTab.vue";
 import GetStarted from "./GetStarted.vue";
 
 export default {
   components: {
     Tree,
     ComponentDetails,
-    RouteDisplay,
     GetStarted,
-  },
+    RoutesTab
+},
   computed: {
     ...mapState([
       "activeComponent",

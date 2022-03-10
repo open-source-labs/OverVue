@@ -3,7 +3,7 @@ Description:
   Handles create component menu on left-side
   Functionality includes: creating a component, preventing users from entering invalid component file names
   -->
-<!-- 4.0 adjustment: conditional render to switch between new comp name input and editing active comp name, moved from EditDeleteComponents -->
+<!-- 4.0 adjustment: conditional render to switch between new comp name input and editing active comp name, moved from UpdateMenu -->
 
 <template>
   <div class="create-component-div drawer-menu">
@@ -43,7 +43,7 @@ Description:
         />
       </div>
       <div class="componentHTML">
-        <CreateComponentHTMLQueue></CreateComponentHTMLQueue>
+        <CreateMenuHTMLQueue></CreateMenuHTMLQueue>
       </div>
       <br />
 
@@ -68,15 +68,15 @@ Description:
 import Icons from "./Icons.vue";
 import ParentMultiselect from "./ParentMultiselect.vue";
 import ImportComponent from "./ImportComponent.vue"
-import CreateComponentHTMLQueue from "./CreateComponentHTMLQueue.vue";
+import CreateMenuHTMLQueue from "./CreateMenuHTMLQueue.vue";
 import { mapState, mapActions } from "vuex";
 export default {
-  name: "HomeSidebar",
+  name: "CreateMenu",
   components: {
     Icons,
     ParentMultiselect,
     ImportComponent,
-    CreateComponentHTMLQueue
+    CreateMenuHTMLQueue
 },
   computed: {
     ...mapState([
