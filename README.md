@@ -22,7 +22,8 @@
 - [How to use](#how-to-use)
 - [Installation](#installation)
   - [WSL Installation](#wsl-installation)
-  - [Running as Containerized Docker Image](#running-as-containerized-docker-image)
+  - [Running as Containerized Docker Image: WSL 2](#running-as-containerized-docker-image-wsl-2)
+  - [Running as Containerized Docker Image: Mac](#running-as-containerized-docker-image-mac)
 - [BETA](#beta)
   - [Slack OAuth](#slack-oauth)
 - [Contributing](#contributing)
@@ -170,8 +171,10 @@
 
 ## How to use
 
-- Upon opening the application a Connect to Slack button will appear. To skip this step click 'Skip'
-- Click the button to open a browser window, log in to your Slack workspace and select a channel to send save notifications.
+- Please take a few minutes to watch a quick, yet thorough YouTube tutorial of how to navigate our app : 
+  <iframe width ='400' height='315' src='https://youtu.be/dQw4w9WgXcQ'> </iframe>
+- Please take a few minutes to read a quick, yet thorough <a href='https://github.com/open-source-labs/OverVue'> Tutorial </a>  of how to navigate our app.
+<!-- - Click the settings button to open a browser window, log in to your Slack workspace and select a channel to send save notifications.
 - If you have logged in to Slack, upon saving your project file you will receive a prompt with the option to notify your team.
   ![](./src/assets/readme/v4Slack_Oauth.gif)
 
@@ -199,9 +202,9 @@
   ![](./src/assets/readme/v4Copying_Route.gif)
 
 - State and actions can be created, edited, and assigned to components.
-  ![](./src/assets/readme/v4State_and_actions.gif)
+  ![](./src/assets/readme/v4State_and_actions.gif) -->
 
-- When finished creating, you can export to a file location of your choice. Below is the exported file structure:
+- Below is the exported file structure:
 
 ```
 public/
@@ -287,13 +290,63 @@ Then open a new terminal instance, set the DISPLAY value again (re-enter above c
 ```
 quasar dev -m electron
 ```
-### Running as Containerized Docker Image
 
-In your terminal, run :
+### Running as Containerized Docker Image: WSL 2
+
+MUST BE RUNNING SOME XSERVER SUCH AS VcXsrv OR OTHER!
+
+In your WSL 2 terminal:
 
 ```
-docker run -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY -v`pwd`/src:/app/src --rm -it <OverVue file name> bash
+export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
+export LIBGL_ALWAYS_INDIRECT=1
 ```
+
+To build the Image, first you'll need to run: 
+
+```
+docker build -t <File Name> . -f Dockerfile_WSL
+```
+
+Then, run:
+```
+docker run -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY -v`pwd`:/app --rm -it <yourimagename> bash 
+```
+Once you've build your container, you'll want to run the following command inside of the terminal:
+
+```
+quasar dev -m electron -- --no-sandbox
+```
+IMPORTANT!!
+
+ You might get an error that reads:
+
+ 'Module not found: "Can't resolve imported dependency "@ssthouse/vue3-tree-chart
+ Did you forget to install it? You can run: npm install --save @ssthouse vue3-tree-chart'
+
+ You'll need to run the following command in your terminal:
+ ```
+ npm install @ssthouse/vue3-tree-chart
+```
+ And then re-run:  
+ ```
+quasar dev -m electron -- --no-sandbox
+```
+Or error that reads:
+
+'Module not found: Can't resolve imported dependency "@ssthouse/vue3-tree-chart/dist/vue3-tree-chart.css"
+ Did you forget to install it? You can run: npm install --save @ssthouse/vue3-tree-chart/dist/vue3-tree-chart.css'
+
+ You'll need to run the following command in your terminal: 
+ ```
+ npm install @ssthouse/vue3-tree-chart/dist/vue3-tree-chart.css
+```
+ And then re-run: 
+ ```
+  quasar dev -m electron -- --no-sandbox
+```
+### Running as Containerized Docker Image: Mac
+
 ## BETA
 ### Slack OAuth
 
