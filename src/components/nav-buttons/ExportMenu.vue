@@ -22,11 +22,9 @@ Description:
   </q-btn>
 </template>
 
-<script setup>
-  import { useExportComponent } from "../composables/useExportComponent.js";
-</script>
 
 <script>
+import { useExportComponent } from "../composables/useExportComponent.js";
 import { mapState } from "vuex";
 const { fs, ipcRenderer } = window;
 

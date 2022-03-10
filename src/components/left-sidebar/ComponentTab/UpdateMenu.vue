@@ -119,11 +119,9 @@ Description:
   </div>
 </template>
 
-<script setup>
-  import { useExportComponent } from "../../composables/useExportComponent.js";
-</script>
 
 <script>
+import { useExportComponent } from "../../composables/useExportComponent.js";
 import { mapState, mapActions } from "vuex";
 import VueMultiselect from "vue-multiselect";
 import HTMLQueue from "../../right-sidebar/HTMLQueue.vue";

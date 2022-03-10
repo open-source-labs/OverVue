@@ -60,11 +60,8 @@ Description:
   </div>
 </template>
 
-<script setup>
-  import { useCreateComponent } from "../../composables/useCreateComponent.js";
-</script>
-
 <script>
+import { useCreateComponent } from "../../composables/useCreateComponent.js";
 import Icons from "./Icons.vue";
 import ParentMultiselect from "./ParentMultiselect.vue";
 import ImportComponent from "./ImportComponent.vue"

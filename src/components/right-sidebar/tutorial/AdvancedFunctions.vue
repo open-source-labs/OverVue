@@ -77,7 +77,7 @@ export default {
 
 .tut-screenshot {
   margin: 4px;
-  border: 1px solid $menutext;
+  border: 1px solid $primary;
   max-width: 300px;
 }
 
