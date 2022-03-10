@@ -22,8 +22,7 @@
 - [How to use](#how-to-use)
 - [Installation](#installation)
   - [WSL Installation](#wsl-installation)
-  - [Running as Containerized Docker Image: WSL 2](#running-as-containerized-docker-image-wsl-2)
-  - [Running as Containerized Docker Image: Mac](#running-as-containerized-docker-image-mac)
+  - [Running the Docker Image](#running-the-docker-image)
 - [BETA](#beta)
   - [Slack OAuth](#slack-oauth)
 - [Contributing](#contributing)
@@ -169,6 +168,65 @@
 
 [↥Back to top](#table-of-contents)
 
+## How to use
+
+- Upon opening the application a Connect to Slack button will appear. To skip this step click 'Skip'
+- Click the button to open a browser window, log in to your Slack workspace and select a channel to send save notifications.
+- If you have logged in to Slack, upon saving your project file you will receive a prompt with the option to notify your team.
+  ![](./src/assets/readme/v4Slack_Oauth.gif)
+
+- OverVue will assign a default root App component and a default route called "HomeView"
+- Upload a mockup from your filesystem if you'd like. Remove the mockup and choose a new one if needed.
+  ![](./src/assets/readme/v4Upload_image.gif)
+
+- To add a new component, type its name in the component name box and select any HTML elements that should be rendered by that component.
+- HTML elements can also be added after creation by selecting the component in the display, then selecting HTML elements.
+- Select a parent component for the new component if needed.
+- After adding, you can move and resize the component in the display.
+  ![](./src/assets/readme/v4Creating_Component.gif)
+
+- You can also duplicate components with Ctrl/Cmd C & V and see the component tree updated in real time.
+- Duplicate components will appear offset from their original and retain the same state and route assignments.
+  ![](./src/assets/readme/v4Copy_Child_Components.gif)
+
+- Child components will inherit the same parents, but parent components will not inherit duplicate children.
+  ![](./src/assets/readme/v4Copy_Parent_Component.gif)
+
+- The right-side drawer displays live code snippets for the selected element.  
+  ![](./src/assets/readme/v4Code_Snippet.gif)
+
+- You can view and add new routes and associated components in the left-hand drawer.
+  ![](./src/assets/readme/v4Copying_Route.gif)
+
+- State and actions can be created, edited, and assigned to components.
+  ![](./src/assets/readme/v4State_and_actions.gif)
+
+- When finished creating, you can export to a file location of your choice. Below is the exported file structure:
+
+```
+public/
+  index.html
+src/
+  assets/
+  components/
+    UserCreatedComponent1.vue
+    UserCreatedComponent2.vue
+    ...
+  router/
+    index.js
+  views/
+    HomeView.vue
+    UserCreatedRouteComponent1.vue
+    UserCreatedRouteComponent2.vue
+    ...
+  App.vue
+  main.js
+babel.config.js
+package.json
+```
+<br/> 
+
+[↥Back to top](#table-of-contents)
 
 ## Installation
 
@@ -230,62 +288,83 @@ Then open a new terminal instance, set the DISPLAY value again (re-enter above c
 ```
 quasar dev -m electron
 ```
+## Running the Docker Image
 
-### Running as Containerized Docker Image: WSL 2
+To run the built version, pull down the docker image from [Docker repo]
 
-MUST BE RUNNING SOME XSERVER SUCH AS VcXsrv OR OTHER!
-
-In your WSL 2 terminal:
-
-```
-export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
-export LIBGL_ALWAYS_INDIRECT=1
-```
-
-To build the Image, first you'll need to run: 
+In your terminal, run:
 
 ```
-docker build -t <File Name> . -f Dockerfile_WSL
+docker run -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY -v`pwd`/src:/app/src --rm -it overvue
+```
+### Running the dev environment on Docker as a Mac User
+To run OverVue through Docker on a Mac, you'll need to install XQuartz:
+```
+brew install --cask xquartz
 ```
 
-Then, run:
-```
-docker run -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY -v`pwd`:/app --rm -it <yourimagename> bash 
-```
-Once you've build your container, you'll want to run the following command inside of the terminal:
+<strong>Important:</strong> RESTART your computer.
 
+Update your PATH variable to /opt/x11/bin to your .zshrc. For example:
 ```
-quasar dev -m electron -- --no-sandbox
+export PATH=/opt/X11/bin:$PATH
 ```
-IMPORTANT!!
 
- You might get an error that reads:
+Set up XQuartz:
+<ul>
+<li>Launch XQuartz</li>
+<li>Under the XQuartz menu, select Preferences.</li>
+<li>Go to the security tab and ensure "Allow connections from network clients" is checked.</li>
+<li>Restart XQuartz</li>
+</ul>
 
- 'Module not found: "Can't resolve imported dependency "@ssthouse/vue3-tree-chart
- Did you forget to install it? You can run: npm install --save @ssthouse vue3-tree-chart'
+Run the following command in your terminal (replacing localhostname with your local host name)
+```
+xhost +localhostname
+```
+If you don't know your local host name, run the following command to find it:
+```
+echo $(hostname)
+```
 
- You'll need to run the following command in your terminal:
- ```
- npm install @ssthouse/vue3-tree-chart
+Build the image using Dockerfile-Mac:
 ```
- And then re-run:  
- ```
-quasar dev -m electron -- --no-sandbox
+docker build -t overvue -f Dockerfile-Mac .
 ```
-Or error that reads:
 
-'Module not found: Can't resolve imported dependency "@ssthouse/vue3-tree-chart/dist/vue3-tree-chart.css"
- Did you forget to install it? You can run: npm install --save @ssthouse/vue3-tree-chart/dist/vue3-tree-chart.css'
+Run the image using the following command
+```
+docker run -it --env="DISPLAY=$(ifconfig en0 | grep inet | awk '$1=="inet" {print$2}'):0" --security-opt seccomp=./chrome.json overvue
+```
 
- You'll need to run the following command in your terminal: 
- ```
- npm install @ssthouse/vue3-tree-chart/dist/vue3-tree-chart.css
+Run in dev mode using:
 ```
- And then re-run: 
- ```
-  quasar dev -m electron -- --no-sandbox
+npm run dev 
 ```
-### Running as Containerized Docker Image: Mac
+
+For more information about running Electron through Docker on a Mac, check out these posts:
+<li><a href="https://jaked.org/blog/2021-02-18-How-to-run-Electron-on-Linux-on-Docker-on-Mac">How to run Electron on Linux on Docker on Mac</a></li>
+<li><a href="https://gist.github.com/paul-krohn/e45f96181b1cf5e536325d1bdee6c949">Workaround for sockets on Docker on macOS</a></li>
+<li><a href="https://blog.jessfraz.com/post/how-to-use-new-docker-seccomp-profiles/">How to use new Docker seccomp profiles</a></li>
+<br/>
+
+### Running the dev environment on Docker as a WSL user
+
+Build the image using Dockerfile-WSL:
+```
+docker build -t overvue -f Dockerfile-WSL .
+```
+
+To run 
+```
+docker run -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY -v`pwd`/src:/app/src --rm -it overvue bash
+```
+
+Run in dev mode using:
+```
+npm run dev
+```
+<br/>
 
 ## BETA
 ### Slack OAuth
@@ -328,7 +407,7 @@ Here are some features we're thinking about adding:
 - More semantic HTML tag options
 - Ability to export Vuex store boilerplate
 - Ability to add two-way binding to input elements
-- More typing options for Typescript mode
+- More granular typing options for TypeScript mode
 
 If you make changes and wish to update the website, here is the link to the repo: https://github.com/TeamOverVue/OverVuePage
 

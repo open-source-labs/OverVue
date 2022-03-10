@@ -17,9 +17,9 @@ Description:
       dense
       breakpoint="1050"
     >
-      <q-tab name="routes" label="Routes" id="label-text"></q-tab>
-      <q-tab name="tree" label="Project Tree" id="label-text"></q-tab>
-      <q-tab name="detail" label="Component Details" id="label-text"></q-tab>
+      <q-tab name="routes" label="Routes" class="label-text"></q-tab>
+      <q-tab name="tree" label="Project Tree" class="label-text"></q-tab>
+      <q-tab name="detail" label="Component Details" class="label-text"></q-tab>
     </q-tabs>
     <q-tab-panels v-model="tab" animated>
       <q-tab-panel name="routes">
@@ -136,7 +136,7 @@ export default {
 }
 
 /* // changes the tab label styling */
-#label-text {
+.label-text {
   font-size: 4px !important;
   text-transform: uppercase;
 }

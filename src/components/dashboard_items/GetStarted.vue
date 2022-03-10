@@ -17,13 +17,13 @@
       </q-tab>
       <q-tab 
         name="basics" 
-        label="Basic Functions" 
+        label="The Basics" 
         id="label-text"
         >
       </q-tab>
       <q-tab 
         name="advanced" 
-        label="Advanced Functions" 
+        label="Advanced Functionality" 
         id="label-text"
         >
       </q-tab>

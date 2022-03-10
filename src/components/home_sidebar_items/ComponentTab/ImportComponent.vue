@@ -1,7 +1,6 @@
 <template>
     <q-btn
       id="import-component-btn"
-      class="sidebar-btn"
       size="md"
       color="secondary"
       :label=title
@@ -278,11 +277,11 @@ export default {
 
 </script>
 
- <style>
- #import-component-btn{
-   width: 100%;
-   margin: 10px 0px 15px; 
-   }
+<style scoped>
+#import-component-btn {
+  width: 100%;
+  margin: 30px 0px;
+}
 </style>
 
 

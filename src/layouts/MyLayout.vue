@@ -11,7 +11,7 @@ Description:
       <div class="dragLineTwo"></div>
     </div>
     <!-- the top header of OverVue -->
-    <q-header elevated class="gradient text-white">
+    <q-header elevated class="gradient">
       <q-toolbar>
         <q-toolbar-title><img alt="OverVue" src="../assets/OverVue_navLogo.png" id="nav-logo"><div id="undo-redo">
         <q-btn>
@@ -23,8 +23,7 @@ Description:
         ></i>
         <i
           v-else
-          class="fa fa-undo"
-          id="unavailable"
+          class="fa fa-undo unavailable"
           aria-hidden="true"
         ></i>
         </q-btn>
@@ -35,7 +34,7 @@ Description:
           aria-hidden="true"
           @click="redo"
         ></i>
-        <i v-else class="fa fa-redo" id="unavailable" aria-hidden="true"></i>
+        <i v-else class="fa fa-redo unavailable" aria-hidden="true"></i>
         </q-btn>
       </div></q-toolbar-title>
         <div></div>
@@ -45,10 +44,10 @@ Description:
         <ExportProjectComponent />
         
         <q-btn class="nav-btn" icon="fas fa-cog" unelevated size="sm">
-          <!-- < fas => fontawesome, refers to icon style -->
+        
           <q-menu :offset="[0, 15]" class="dropdown">
             
-          <div class="settings-dropdown column items-center">
+          <div class="column items-center">
             <q-btn
               class="tut-btn"
               color="secondary"
@@ -65,16 +64,12 @@ Description:
               <input v-else class="switch-input" type="checkbox" name="typescript" id="typescript" :value="this.exportAsTypescript" @change="syncTypescriptFlag"/>  
                 <span class="switch-label" :value="this.exportAsTypescript" data-on="on" data-off="off"></span> 
                 <span class="switch-handle" :value="this.exportAsTypescript"></span> 
-                
               </label>
              </div>
-            
           </div>
           <i id="btn"></i>
           </q-menu >
         </q-btn>
-
-        <!-- this button will open the right drawer -->
       </q-toolbar>
     </q-header>
 
@@ -86,7 +81,6 @@ Description:
         bar-style="{ left: '10px' }"
       >
       <q-card class="no-shadow">
-      <!-- QTabs setup, not sure what class to set yet -->
         <q-tabs
           v-model="tab"
           dense
@@ -258,9 +252,9 @@ function check (a){
   margin-right: 95px;
 }
 
-.text-white {
-  color: $menutext;
-}
+// .text-white {
+//   color: $menutext;
+// }
 
 q-btn > i {
   color: $menutext;
@@ -337,7 +331,7 @@ q-btn > i {
   background-color: rgba(255, 255, 255, 0.301);
 }
 
-#unavailable {
+.unavailable {
   color: grey;
   cursor: default;
 }

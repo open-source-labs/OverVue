@@ -17,7 +17,7 @@ Description:
           />
           <q-btn
             v-if="source !== ''"
-            class="upload-btn"
+            class="upload-btn deleteAction"
             color="secondary"
             label="Clear Image"
             @click="removeImage"

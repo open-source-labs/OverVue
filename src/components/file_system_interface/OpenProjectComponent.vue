@@ -7,10 +7,10 @@ Description:
 <template>
     <q-btn class="nav-btn" color="secondary" label="Import">
     <q-menu :offset="[0, 15]" class="dropdown">
-      <div class="settings-dropdown column items-center"> 
+      <div class="column items-center"> 
       <p class="center">Import:</p>
       <q-btn class="menu-btn" no-caps color="secondary" label="Project JSON" @click="openProjectJSON"/> 
-      <ImportComponent id="import-btn" no-caps title="Component"/>
+      <ImportComponent class="import-comp menu-btn" no-caps title="Vue Component"/>
       </div>
     </q-menu>
   
@@ -70,21 +70,12 @@ export default {
 }
 .menu-btn{
   width: 80%;
-  margin: 5px 0px;
+  margin: 10px 0px;
+  max-height: 36px !important;
 }
 
-#import-btn{
-  width: 80%;
-  margin: 10px 0px 15px;
-}
-
-.center{
-  display:inline-block;
-  text-align: center;
-  margin-top: 10px;
-  margin-bottom: 5px;
-  font-weight: bold;
-  color: white;
-  box-sizing: border-box;
+.import-comp{
+  width: 80% !important;
+  margin: 10px 0 20px 0 !important;
 }
 </style>

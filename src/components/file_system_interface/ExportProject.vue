@@ -12,10 +12,10 @@ Description:
 <template>
   <q-btn class="nav-btn" color="secondary" label="Export">
     <q-menu class="dropdown" :offset="[0, 15]">
-      <div class="settings-dropdown column items-center"> 
+      <div class="column items-center"> 
       <p class="center">Export:</p>
       <q-btn class="menu-btn" no-caps color="secondary" label="Project" @click="exportProject"/> 
-      <q-btn class="active-comp-btn" no-caps color="secondary" label="Active Component" @click="useExportComponentBound" :disabled="!activeComponent.trim()"/> 
+      <q-btn class="menu-btn" id="export-component-nav-btn" no-caps color="secondary" label="Active Component" @click="useExportComponentBound" :disabled="!activeComponent.trim()"/> 
       </div>
     </q-menu>
   
@@ -553,21 +553,7 @@ export default {
 </script>
 
 <style scoped>
-
-.center{
-  display:inline-block;
-  text-align: center;
-  margin-top: 10px;
-  margin-bottom: 5px;
-  font-weight: bold;
-  color: white;
-  box-sizing: border-box;
+#export-component-nav-btn {
+  margin-bottom: 20px;
 }
-
-.active-comp-btn{
-  width: 80%;
-  margin: 5px 0px 15px;
-}
-
-
 </style>
