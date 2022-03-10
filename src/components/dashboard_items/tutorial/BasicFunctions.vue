@@ -22,7 +22,7 @@
     <p class="tutorialContent">In the right sidebar, you'll find the Routes, Project Tree, and Component Details tabs:</p>
     <img alt="Right Sidebar tabs" src="../../../assets/rightsidebar.png" class="tut-screenshot">
     <h class="tutorial-sub-heading">Routes</h>
-    <p class="tutorialContent">You can find all your routes in the Routes tab. To add a route, enter the name in the input field and click the ‘+’ or press enter. Once added, you can click on a route to navigate to it. To delete a route, click on the ‘x’ on the right side of the route block. (Note: The default route HomeView cannot be deleted.)
+    <p class="tutorialContent">You can find all of your routes in the Routes tab. To add a route, enter the name in the input field and click the ‘+’, or press enter. Once added, you can click on a route to navigate to it. To delete a route, click on the ‘x’ on the right side of the route block. (Note: The default route HomeView cannot be deleted.)
     </p>
     <img alt="Routes tab" src="../../../assets/routes.png" class="tut-screenshot">
     <h class="tutorial-sub-heading">Uploading mockups</h>
