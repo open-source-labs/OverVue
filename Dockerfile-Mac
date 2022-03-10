@@ -1,4 +1,4 @@
-FROM node:14.16
+FROM node:16.14
 
 # install electron dependencies or more if your library has other dependencies
 RUN apt-get update && apt-get install \
