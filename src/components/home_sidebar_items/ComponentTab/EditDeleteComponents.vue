@@ -108,7 +108,7 @@ Description:
       <q-btn
         id="exportButton"
         class="sidebar-btn"
-        @click="handleExportComponent"
+        @click="useExportComponentBound"
         label="Export currently selected"
       />
       <q-btn
@@ -122,6 +122,10 @@ Description:
   </div>
 </template>
 
+<script setup>
+  import { useExportComponent } from "../../composables/useExportComponent.js";
+</script>
+
 <script>
 import { mapState, mapActions } from "vuex";
 import VueMultiselect from "vue-multiselect";
@@ -130,7 +134,7 @@ import Icons from "./Icons.vue";
 import AddProps from "./AddProps.vue";
 import ComponentState from "./ComponentState.vue";
 import ComponentActions from "./ComponentActions.vue";
-import handleExportComponentMixin from "../../ExportComponentMixin.vue";
+
 const cloneDeep = require("lodash.clonedeep");
 const { fs, ipcRenderer } = window;
 
@@ -219,9 +223,11 @@ export default {
       "addToSelectedElementList",
       "addToComponentElementList",
       "addNestedHTML",
-      "addNestedNoActive",
+      "addNestedNoActive"
     ]),
-
+    useExportComponentBound(){
+      useExportComponent.bind(this)();
+    },
     handleAddChild(value) { //actually handles adding or deleting
       this.updateActiveComponentChildrenValue(value);
     },
@@ -287,7 +293,6 @@ export default {
       this.setActiveComponent(this.activeComponent);
     },
   },
-  mixins: [handleExportComponentMixin],
 };
 </script>
 
