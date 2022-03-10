@@ -9,16 +9,38 @@
     />
 </template>
 
+<script setup>
+  import { useCreateComponent } from "../../composables/useCreateComponent.js";
+</script>
+
 <script>
 const { fs, ipcRenderer } = window;
+import { mapState, mapActions } from "vuex";
 export default {
   props: ['title'],
+  computed: {
+    ...mapState([
+      "componentMap",
+      "selectedElementList",
+      "activeComponent",
+      "activeHTML",
+      "userActions",
+      "userState",
+      "userProps",
+    ]),
+  },
   methods: {
     //emitter to send the importedObj to CreateComponent when fully parsed.
     createImport(importObj){
-      this.$emit('imported', importObj)
+      useCreateComponent.bind(this)(importObj) //this is where we will want to invoke the composabreplacele
     },
-
+    ...mapActions([
+      "registerComponent",
+      "setActiveComponent",
+      "createAction",
+      "createState",
+      "createProp",
+    ]),
     //renders the open file
     importComponent() {
       ipcRenderer
@@ -259,7 +281,7 @@ export default {
 <style scoped>
 #import-component-btn{
   width: 100%;
-  margin: 30px 0px;
+  margin: 10px 0px 20px;
 }
 </style>
 

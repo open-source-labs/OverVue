@@ -9,7 +9,7 @@ Description:
     <q-menu :offset="[0, 15]" class="dropdown">
       <div class="settings-dropdown column items-center"> 
       <p class="center">Import:</p>
-      <q-btn class="menu-btn" no-caps color="secondary" label="Project" @click="openProjectJSON"/> 
+      <q-btn class="menu-btn" no-caps color="secondary" label="Project JSON" @click="openProjectJSON"/> 
       <ImportComponent class="import-comp" no-caps title="Component"/>
       <!-- <q-btn class="menu-btn" no-caps color="secondary" label="Component" @click="exportProject"/>  -->
       </div>
@@ -71,7 +71,7 @@ export default {
 }
 .menu-btn{
   width: 80%;
-  margin: 10px 0px;
+  margin: 5px 0px;
 }
 
 .import-comp{
