@@ -23,7 +23,7 @@
       </q-tab>
       <q-tab 
         name="advanced" 
-        label="Advanced Functions" 
+        label="Advanced Functionality" 
         id="label-text"
         >
       </q-tab>

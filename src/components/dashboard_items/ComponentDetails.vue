@@ -9,7 +9,7 @@ Description:
 
 <template>
   <div class="inner-div">
-    <q-card id="store-cards" class="no-shadow" v-if="this.activeComponentObj">
+    <q-card id="code-window" class="no-shadow" v-if="this.activeComponentObj">
       <q-tabs
         v-model="tab"
         dense
@@ -18,11 +18,11 @@ Description:
         indicator-color="secondary"
         align="left"
       >
-        <q-tab name="code" label="Code Snippet" id="label-text" />
-        <q-tab name="html" label="HTML Elements" id="label-text" />
-        <q-tab name="state" label="Component State" id="label-text" />
-        <q-tab name="actions" label="Component Actions" id="label-text" />
-        <q-tab name="props" label="Component Props" id="label-text" />
+        <q-tab name="code" label="Code Snippet" class="label-text" />
+        <q-tab name="html" label="HTML Elements" class="label-text" />
+        <q-tab name="state" label="Component State" class="label-text" />
+        <q-tab name="actions" label="Component Actions" class="label-text" />
+        <q-tab name="props" label="Component Props" class="label-text" />
       </q-tabs>
       <q-tab-panels v-model="tab" animated class="html-bg text-white">
         <q-tab-panel name="code">
@@ -143,7 +143,7 @@ i {
 }
 
 // changes the tab label styling
-#label-text {
+.label-text {
   font-size: 4px !important;
   text-transform: capitalize;
 }
@@ -169,7 +169,7 @@ i {
   
 }
 
-#store-cards {
+#code-window {
   height: 100%;
   border-radius: 0;
   background: #737578;
@@ -179,6 +179,7 @@ i {
   height: 100%;
   border-radius: 0;
   background-color: #202122;
+  box-shadow: none;
 }
 
 .html-bg {

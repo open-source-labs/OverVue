@@ -13,7 +13,7 @@
       v-on:keyup.delete.stop
     >
       <template v-slot:append>
-        <q-btn dense flat icon="add" @click="createNewProp(textProps)" />
+        <q-btn flat icon="add" @click="createNewProp(textProps)" />
       </template>
     </q-input>
 

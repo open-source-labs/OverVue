@@ -33,6 +33,16 @@ main {
     text-transform: capitalize;
 }
 
+.center{
+    display:inline-block;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: white;
+    box-sizing: border-box;
+  }
+
 .sidebar-btn {
     min-height: 42px !important;
 }

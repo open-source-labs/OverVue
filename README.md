@@ -22,7 +22,7 @@
 - [How to use](#how-to-use)
 - [Installation](#installation)
   - [WSL Installation](#wsl-installation)
-  - [Running as Containerized Docker Image](#running-as-containerized-docker-image)
+  - [Running the Docker Image](#running-the-docker-image)
 - [BETA](#beta)
   - [Slack OAuth](#slack-oauth)
 - [Contributing](#contributing)
@@ -212,6 +212,8 @@ src/
     UserCreatedComponent1.vue
     UserCreatedComponent2.vue
     ...
+  router/
+    index.js
   views/
     HomeView.vue
     UserCreatedRouteComponent1.vue
@@ -219,7 +221,6 @@ src/
     ...
   App.vue
   main.js
-  router.js
 babel.config.js
 package.json
 ```
@@ -287,13 +288,84 @@ Then open a new terminal instance, set the DISPLAY value again (re-enter above c
 ```
 quasar dev -m electron
 ```
-### Running as Containerized Docker Image
+## Running the Docker Image
 
-In your terminal, run :
+To run the built version, pull down the docker image from [Docker repo]
+
+In your terminal, run:
 
 ```
-docker run -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY -v`pwd`/src:/app/src --rm -it <OverVue file name> bash
+docker run -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY -v`pwd`/src:/app/src --rm -it overvue
 ```
+### Running the dev environment on Docker as a Mac User
+To run OverVue through Docker on a Mac, you'll need to install XQuartz:
+```
+brew install --cask xquartz
+```
+
+<strong>Important:</strong> RESTART your computer.
+
+Update your PATH variable to /opt/x11/bin to your .zshrc. For example:
+```
+export PATH=/opt/X11/bin:$PATH
+```
+
+Set up XQuartz:
+<ul>
+<li>Launch XQuartz</li>
+<li>Under the XQuartz menu, select Preferences.</li>
+<li>Go to the security tab and ensure "Allow connections from network clients" is checked.</li>
+<li>Restart XQuartz</li>
+</ul>
+
+Run the following command in your terminal (replacing localhostname with your local host name)
+```
+xhost +localhostname
+```
+If you don't know your local host name, run the following command to find it:
+```
+echo $(hostname)
+```
+
+Build the image using Dockerfile-Mac:
+```
+docker build -t overvue -f Dockerfile-Mac .
+```
+
+Run the image using the following command
+```
+docker run -it --env="DISPLAY=$(ifconfig en0 | grep inet | awk '$1=="inet" {print$2}'):0" --security-opt seccomp=./chrome.json overvue
+```
+
+Run in dev mode using:
+```
+npm run dev 
+```
+
+For more information about running Electron through Docker on a Mac, check out these posts:
+<li><a href="https://jaked.org/blog/2021-02-18-How-to-run-Electron-on-Linux-on-Docker-on-Mac">How to run Electron on Linux on Docker on Mac</a></li>
+<li><a href="https://gist.github.com/paul-krohn/e45f96181b1cf5e536325d1bdee6c949">Workaround for sockets on Docker on macOS</a></li>
+<li><a href="https://blog.jessfraz.com/post/how-to-use-new-docker-seccomp-profiles/">How to use new Docker seccomp profiles</a></li>
+<br/>
+
+### Running the dev environment on Docker as a WSL user
+
+Build the image using Dockerfile-WSL:
+```
+docker build -t overvue -f Dockerfile-WSL .
+```
+
+To run 
+```
+docker run -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY -v`pwd`/src:/app/src --rm -it overvue bash
+```
+
+Run in dev mode using:
+```
+npm run dev
+```
+<br/>
+
 ## BETA
 ### Slack OAuth
 
@@ -335,7 +407,7 @@ Here are some features we're thinking about adding:
 - More semantic HTML tag options
 - Ability to export Vuex store boilerplate
 - Ability to add two-way binding to input elements
-- More typing options for Typescript mode
+- More granular typing options for TypeScript mode
 
 If you make changes and wish to update the website, here is the link to the repo: https://github.com/TeamOverVue/OverVuePage
 

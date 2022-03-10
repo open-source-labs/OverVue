@@ -9,12 +9,8 @@ Description:
   <div class="edit-component-div">
     <div>
       <button class="menu-link" @click="resetActiveComponent"><i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp; &nbsp; Create Component Menu</button>
-      <q-card class="expansion-item no-shadow" dark flat>
-        <div
-          class="text-body2"
-          style="background: #272a2a; padding: 12px"
-        >Update Component</div>
-      </q-card>      <!-- name editor component -->
+      <q-card class="no-shadow" dark flat>
+      <q-expansion-item default-opened label="Update Component">
       <q-input
         @keyup.enter="editCompName(newName)"
         v-on:keyup.delete.stop
@@ -47,7 +43,7 @@ Description:
         :searchable="false"
       />
       <q-list
-        class="accordBorder"
+        class="accordBorder no-shadow"
         active-color="secondary"
         indicator-color="secondary"
       >
@@ -117,7 +113,8 @@ Description:
         @click="deleteSelectedComp(activeComponentData)"
         label="Delete currently selected"
       />
-      
+     </q-expansion-item>
+     </q-card>  
     </div>
   </div>
 </template>
@@ -319,6 +316,7 @@ export default {
 
 .q-expansion-item {
   margin-bottom: 10px;
+  background-color: $subprimary;
 }
 
 .q-expansion-item__content {
