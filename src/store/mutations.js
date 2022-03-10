@@ -248,7 +248,7 @@ const mutations = {
     state.userActions.splice(index, 1);
   },
   // copy and paste functionality
-  [types.COPY_ACTIVE_COMPONENT]: (state, payload) => {
+  [types.COPY_ACTIVE_COMPONENT]: (state) => {
     // copy activeComponentObj and place in the state but without children
     const copy = { ...state.activeComponentObj };
     // copy.componentName;
