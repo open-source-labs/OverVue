@@ -169,66 +169,6 @@
 
 [↥Back to top](#table-of-contents)
 
-## How to use
-
-- Please take a few minutes to watch a quick, yet thorough YouTube tutorial of how to navigate our app : 
-  <iframe width ='400' height='315' src='https://youtu.be/dQw4w9WgXcQ'> </iframe>
-- Please take a few minutes to read a quick, yet thorough <a href='https://github.com/open-source-labs/OverVue'> Tutorial </a>  of how to navigate our app.
-<!-- - Click the settings button to open a browser window, log in to your Slack workspace and select a channel to send save notifications.
-- If you have logged in to Slack, upon saving your project file you will receive a prompt with the option to notify your team.
-  ![](./src/assets/readme/v4Slack_Oauth.gif)
-
-- OverVue will assign a default root App component and a default route called "HomeView"
-- Upload a mockup from your filesystem if you'd like. Remove the mockup and choose a new one if needed.
-  ![](./src/assets/readme/v4Upload_image.gif)
-
-- To add a new component, type its name in the component name box and select any HTML elements that should be rendered by that component.
-- HTML elements can also be added after creation by selecting the component in the display, then selecting HTML elements.
-- Select a parent component for the new component if needed.
-- After adding, you can move and resize the component in the display.
-  ![](./src/assets/readme/v4Creating_Component.gif)
-
-- You can also duplicate components with Ctrl/Cmd C & V and see the component tree updated in real time.
-- Duplicate components will appear offset from their original and retain the same state and route assignments.
-  ![](./src/assets/readme/v4Copy_Child_Components.gif)
-
-- Child components will inherit the same parents, but parent components will not inherit duplicate children.
-  ![](./src/assets/readme/v4Copy_Parent_Component.gif)
-
-- The right-side drawer displays live code snippets for the selected element.  
-  ![](./src/assets/readme/v4Code_Snippet.gif)
-
-- You can view and add new routes and associated components in the left-hand drawer.
-  ![](./src/assets/readme/v4Copying_Route.gif)
-
-- State and actions can be created, edited, and assigned to components.
-  ![](./src/assets/readme/v4State_and_actions.gif) -->
-
-- Below is the exported file structure:
-
-```
-public/
-  index.html
-src/
-  assets/
-  components/
-    UserCreatedComponent1.vue
-    UserCreatedComponent2.vue
-    ...
-  views/
-    HomeView.vue
-    UserCreatedRouteComponent1.vue
-    UserCreatedRouteComponent2.vue
-    ...
-  App.vue
-  main.js
-  router.js
-babel.config.js
-package.json
-```
-<br/> 
-
-[↥Back to top](#table-of-contents)
 
 ## Installation
 
