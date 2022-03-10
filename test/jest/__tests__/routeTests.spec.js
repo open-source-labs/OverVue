@@ -93,16 +93,14 @@ describe("Test Suite for route actions and related mutations", () => {
     test('"[types.ADD_COMPONENT_TO_COMPONENT_CHILDREN]" mutation to add created route as one of Apps children', () => {
       let component = 'App';
       let value = state.componentMap[state.activeRoute].componentName;
-      // console.log('pre: ', state.componentMap[component].children);
       expect(state.componentMap[component].children.length).toBe(1);
       mutations[types.ADD_COMPONENT_TO_COMPONENT_CHILDREN](state, {component, value});
-      // console.log('post: ', state.componentMap[component].children);
       expect(state.componentMap[component].children.length).toBe(2);
       expect(state.componentMap[component].children[state.componentMap[component].children.length-1]).toBe(value);
       
     });
     
-    test('"[types.DELETE_ROUTE]" mutation to ---', () => {
+    test('"[types.DELETE_ROUTE]" mutation to update state by removing a route', () => {
       const payload = 'testRoute';
       let flag = false;
       // pre mutation tests
