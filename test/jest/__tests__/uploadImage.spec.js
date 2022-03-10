@@ -78,8 +78,6 @@ describe("Test Suite for Image Upload", () => {
   test('"[types.clearImage]" action calls the "CLEAR_IMAGE" mutation in newState', () => {
     store.imagePath = "/Users/dev/Documents/delete_test_img.jpg";
     const commit = jest.fn();
-    // console.log(commit);
-    // console.log(actions[types.clearImage])
     actions[types.clearImage]({ commit }, { route: "HomeView" });
     expect(commit).toHaveBeenCalledWith("CLEAR_IMAGE", { route: "HomeView" });
     // expect(store.imagePath).toBe("");

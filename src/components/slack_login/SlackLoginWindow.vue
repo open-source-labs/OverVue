@@ -1,4 +1,3 @@
-<!--<template v-if="show">-->
 <template>
   <q-btn class="menu-btn" color= "purple" no-caps @click="openLogin">
     <!-- Slack logo -->
@@ -11,19 +10,6 @@
       Slack Login
   </q-btn>
   <div>
-    <!-- <div>
-      <q-btn class="glossy bg-black openModalBtn" size="5px" @click="openLogin">
-      </q-btn>
-    </div> -->
-
-    <!--
-      Slack Login Button:
-      -->
-
-    <!--
-        Skip button:
-        -->
-
 
     <q-dialog
       v-model="showLogin"
@@ -105,22 +91,10 @@ export default {
 
       this.isAuthenticating = true;
 
-      // Tests
-      // console.log(`${slackBaseUrl}?scope=${scope}&redirect_uri=${redirectUri}&client_id=${clientId}`)
-      // console.log(redirectUri.slice(1, redirectUri.length - 1))
       const trimmedUri = redirectUri.slice(1, redirectUri.length - 1);
       const trimmedClientId = clientId.slice(1, clientId.length - 1);
 
-      // console.log("clicked");
-      // **************** ok
-      // shell.openExternal(
-      //   // `${slackBaseUrl}?response_type=${responseType}&scope=${scope}&client_id=${clientId}&redirect_uri=${redirectUri}`,
-      //   `${slackBaseUrl}?scope=${scope}&redirect_uri=${redirectUri}&client_id=${clientId}`,
-      //   { activate: true }
-      // );
-      // ****************** test
       shell.openExternal(
-        // `${slackBaseUrl}?response_type=${responseType}&scope=${scope}&client_id=${clientId}&redirect_uri=${redirectUri}`,
         `${slackBaseUrl}?scope=${scope}&redirect_uri=${trimmedUri}&client_id=${trimmedClientId}`,
         { activate: true }
       );
@@ -140,7 +114,6 @@ export default {
       this.errorMessage = "";
     },
     openLogin: function () {
-      console.log('trying to open!')
       this.showLogin = true;
     },
   },

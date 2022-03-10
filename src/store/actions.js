@@ -100,7 +100,7 @@ const actions = {
 
   // copy the active component
   [types.copyActiveComponent]: ({ commit }, payload) => {
-    commit(types.COPY_ACTIVE_COMPONENT, payload);
+    commit(types.COPY_ACTIVE_COMPONENT);
   },
   // paste the active component copy
   [types.pasteActiveComponent]: ({ commit, state }) => {
@@ -164,7 +164,7 @@ const actions = {
   [types.setActiveRoute]: ({ state, commit }, payload) => {
     if (state.routes[payload].length === 0){
       commit(types.SET_ACTIVE_COMPONENT, '');
-    }
+    } 
     commit(types.SET_ACTIVE_ROUTE, payload);
   },
 
@@ -297,7 +297,7 @@ const actions = {
 
   // Loading ///////////////////////////////////////////////////////
 
-  [types.openProject]: ({ commit, state }, payload) => {
+  [types.openProject]: ({ commit }, payload) => {
     commit(types.REMOVE_ALL_STATE_PROPS_ACTIONS)
     commit(types.SET_ACTIVE_ROUTE, "HomeView");
     payload.userProps.forEach((prop)=>{commit(types.CREATE_PROP, prop)})
@@ -307,11 +307,6 @@ const actions = {
     commit(types.SET_COMPONENT_MAP, payload.componentMap);
     commit(types.SET_ROUTES, payload.routes);
     commit(types.SET_ACTIVE_COMPONENT, '')
-  },
-
-  [types.importComponent]: ({ commit }, payload) => {
-    //import component
-    console.log(payload)
   },
 
   // Add project

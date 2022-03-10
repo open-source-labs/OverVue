@@ -15,21 +15,27 @@ Description:
       <div class="column items-center"> 
       <p class="center">Export:</p>
       <q-btn class="menu-btn" no-caps color="secondary" label="Project" @click="exportProject"/> 
-      <q-btn class="menu-btn" id="export-component-nav-btn" no-caps color="secondary" label="Active Component" @click="handleExportComponent" :disabled="!activeComponent.trim()"/> 
+      <q-btn class="menu-btn" id="export-component-nav-btn" no-caps color="secondary" label="Active Component" @click="useExportComponentBound" :disabled="!activeComponent.trim()"/> 
       </div>
     </q-menu>
   
   </q-btn>
 </template>
+
+<script setup>
+  import { useExportComponent } from "../composables/useExportComponent.js";
+</script>
+
 <script>
 import { mapState } from "vuex";
-import handleExportComponentMixin from "../ExportComponentMixin.vue";
 const { fs, ipcRenderer } = window;
 
 export default {
   name: "ExportProjectComponent",
-  mixins: [handleExportComponentMixin],
   methods: {
+    useExportComponentBound(){
+      useExportComponent.bind(this)();
+    },
     showExportProjectDialog() {
       ipcRenderer
         .invoke("exportProject", {
@@ -483,7 +489,6 @@ export default {
       if (data === undefined) return;
       if (!fs.existsSync(data)) {
         fs.mkdirSync(data);
-        // console.log(`data: ${data}`); // displays the directory path
         fs.mkdirSync(path.join(data, "public"));
         fs.mkdirSync(path.join(data, "src"));
         fs.mkdirSync(path.join(data, "src", "assets"));
@@ -551,5 +556,4 @@ export default {
 #export-component-nav-btn {
   margin-bottom: 20px;
 }
-
 </style>

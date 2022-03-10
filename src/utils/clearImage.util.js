@@ -12,8 +12,6 @@ const clearImageDialog = async () => {
   // return dialog.showMessageBox(options)
   const helper = await ipcRenderer.invoke('clearImage', options)
     .then(res => {
-      console.log('Res from clear image util: ')
-      console.log(res)
       return res;
     })
     .catch(err => console.log(err))

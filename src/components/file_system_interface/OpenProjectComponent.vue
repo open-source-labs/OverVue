@@ -9,7 +9,7 @@ Description:
     <q-menu :offset="[0, 15]" class="dropdown">
       <div class="column items-center"> 
       <p class="center">Import:</p>
-      <q-btn class="menu-btn" no-caps color="secondary" label="Project (JSON)" @click="openProjectJSON"/> 
+      <q-btn class="menu-btn" no-caps color="secondary" label="Project JSON" @click="openProjectJSON"/> 
       <ImportComponent class="import-comp menu-btn" no-caps title="Vue Component"/>
       </div>
     </q-menu>

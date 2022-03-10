@@ -13,12 +13,6 @@ Description:
     <!-- the top header of OverVue -->
     <q-header elevated class="gradient">
       <q-toolbar>
-        <!-- <q-btn dense flat color="subaccent" round @click="left = !left">
-          <i
-            :class="[left ? 'fas fa-chevron-left' : 'fas fa-list-ul']"
-            id="btn"
-          ></i>
-        </q-btn> -->
         <q-toolbar-title><img alt="OverVue" src="../assets/OverVue_navLogo.png" id="nav-logo"><div id="undo-redo">
         <q-btn>
         <i
@@ -49,7 +43,8 @@ Description:
         <OpenProjectComponent />
         <ExportProjectComponent />
         
-        <q-btn class="nav-btn" icon="fas fa-cog" size="sm">
+        <q-btn class="nav-btn" icon="fas fa-cog" unelevated size="sm">
+        
           <q-menu :offset="[0, 15]" class="dropdown">
             
           <div class="column items-center">
@@ -222,10 +217,7 @@ export default {
         }, 750);
       }
     },
-
     syncTypescriptFlag(e) {
-      console.log("Test")
-      console.log(e.target.value)
       let checkboxValue;
       if (e.target.value === "off") {
         checkboxValue = "on";
@@ -356,7 +348,7 @@ q-btn > i {
 
 .nav-btn {
   margin-left: 0.5rem;
-  // height: 25px
+  box-shadow: none !important;
 }
 
 .q-toolbar {

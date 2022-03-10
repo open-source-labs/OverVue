@@ -50,13 +50,9 @@ describe("Test Suite for route actions and related mutations", () => {
     test('"[types.setActiveRoute]" action to commit SET_ACTIVE_ROUTE mutation with string payload', () => {
       const commit = jest.fn();
       const payload = 'HomeView';
-      actions[types.setActiveRoute]({ commit }, payload);
+      actions[types.setActiveRoute]({ state, commit }, payload);
       expect(commit).toHaveBeenCalledWith(types.SET_ACTIVE_ROUTE, payload);
     });
-
-    test('"[types.setRoutes]" action to ---', () => {
-      // action is not called anywhere and mutation is not used
-    }); 
 
     test('"[types.deleteRoute]" action to commit DELETE_ROUTE mutation with string payload', () => {
       const commit = jest.fn();
@@ -72,7 +68,6 @@ describe("Test Suite for route actions and related mutations", () => {
     });
 
     test('"[types.SET_ACTIVE_ROUTE]" mutation to ---', () => {
-      // console.log(state)
       const payload = 'testRoute';
 
       // expect at test start for there to be two routes and HomeView to be active Route
@@ -88,7 +83,6 @@ describe("Test Suite for route actions and related mutations", () => {
     test('"[types.ADD_ROUTE_TO_COMPONENT_MAP]" mutation to add route object containing 3 keys to state.componentMap', () => {
       expect(Object.keys(state.componentMap).length).toBe(2);
       mutations[types.ADD_ROUTE_TO_COMPONENT_MAP](state, { route: state.activeRoute , children: [] });
-      // console.log('post: ', state.componentMap)
       expect(Object.keys(state.componentMap).length).toBe(3);
       // to contain componentName, children, and htmlList keys
       expect(Object.keys(state.componentMap[state.activeRoute])).toMatchObject([ 'componentName', 'children', 'htmlList' ])
@@ -97,16 +91,14 @@ describe("Test Suite for route actions and related mutations", () => {
     test('"[types.ADD_COMPONENT_TO_COMPONENT_CHILDREN]" mutation to add created route as one of Apps children', () => {
       let component = 'App';
       let value = state.componentMap[state.activeRoute].componentName;
-      // console.log('pre: ', state.componentMap[component].children);
       expect(state.componentMap[component].children.length).toBe(1);
       mutations[types.ADD_COMPONENT_TO_COMPONENT_CHILDREN](state, {component, value});
-      // console.log('post: ', state.componentMap[component].children);
       expect(state.componentMap[component].children.length).toBe(2);
       expect(state.componentMap[component].children[state.componentMap[component].children.length-1]).toBe(value);
       
     });
     
-    test('"[types.DELETE_ROUTE]" mutation to ---', () => {
+    test('"[types.DELETE_ROUTE]" mutation to update state by removing a route', () => {
       const payload = 'testRoute';
       let flag = false;
       // pre mutation tests
@@ -114,7 +106,6 @@ describe("Test Suite for route actions and related mutations", () => {
       expect(state.componentMap[payload]).not.toBe(undefined)
       expect(state.imagePath[payload]).not.toBe(undefined)
       if (state.activeRoute === payload) {
-        // console.log(state.activeRoute)
         flag = true;
       }
       mutations[types.DELETE_ROUTE](state, payload);
