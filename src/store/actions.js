@@ -100,7 +100,7 @@ const actions = {
 
   // copy the active component
   [types.copyActiveComponent]: ({ commit }, payload) => {
-    commit(types.COPY_ACTIVE_COMPONENT, payload);
+    commit(types.COPY_ACTIVE_COMPONENT);
   },
   // paste the active component copy
   [types.pasteActiveComponent]: ({ commit, state }) => {
