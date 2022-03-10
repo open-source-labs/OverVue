@@ -1,7 +1,3 @@
-/* eslint-disable */
-/**
- * @jest-environment jsdom
- */
 import { mount, createLocalVue, shallowMount } from "@vue/test-utils";
 import { createApp } from "vue";
 import * as All from "quasar";
@@ -29,8 +25,6 @@ import store from "../../../src/store/state/index";
  */
 
 describe("Test Suite for Image Upload", () => {
-    // const localVue = createLocalVue();
-    // localVue.use(Quasar, Vuex, { components });
     const App = {}
     const app = createApp(App);
     app.use(Quasar, Vuex, { components });
@@ -43,7 +37,8 @@ describe("Test Suite for Image Upload", () => {
         },
         "routes":{"HomeView":[{"componentName":"a","x":0,"y":20,"z":0,"w":200,"h":200,"htmlList":[],"children":[],"parent":{},"isActive":false}],"b":[]},
         "userActions":[],
-        "userState":{},
+        "userState":[],
+        "userProps":[],
         "componentNameInputValue":"",
         "projects":[{"filename":"test.json","lastSavedLocation":"/Users/joju/Desktop/test.json"}],
         "activeRoute":"b","activeComponent":"","activeHTML":"","activeLayer":{"id":"","lineage":[]},
@@ -60,6 +55,9 @@ describe("Test Suite for Image Upload", () => {
         expect(commit).toHaveBeenCalledWith("SET_IMAGE_PATH", payload.imagePath);
         expect(commit).toHaveBeenCalledWith("SET_COMPONENT_MAP", payload.componentMap);
         expect(commit).toHaveBeenCalledWith("SET_ROUTES", payload.routes);
+        expect(commit).toHaveBeenCalledWith("REMOVE_ALL_STATE_PROPS_ACTIONS");
+        expect(commit).toHaveBeenCalledWith("SET_ACTIVE_ROUTE", 'HomeView');
+        expect(commit).toHaveBeenCalledWith("SET_ACTIVE_COMPONENT", '')
       });
     
     test('"[types.SET_IMAGE_PATH]" mutation expect add payload to imagePath object in state', ()=>{
@@ -68,9 +66,7 @@ describe("Test Suite for Image Upload", () => {
                 HomeView: '',
             }
         }
-        // mutation takes our state, and our payload which is payload.imagePath
         mutations[types.SET_IMAGE_PATH](openState, payload.imagePath);
-        // console.log(openState.imagePath, { ...openState.imagePath, ... payload.imagePath})
         expect(openState.imagePath).toMatchObject({ ...openState.imagePath, ... payload.imagePath});
     });
     test('"[types.SET_COMPONENT_MAP]" mutation expect state.componentMap object to match payload.componentMap', ()=>{
@@ -88,7 +84,6 @@ describe("Test Suite for Image Upload", () => {
                 }
               }
         }
-        // mutation takes in payload of payload.componentMap
         mutations[types.SET_COMPONENT_MAP](openState, payload.componentMap);
         expect(openState.componentMap).toMatchObject(payload.componentMap);
     });
@@ -99,7 +94,6 @@ describe("Test Suite for Image Upload", () => {
               }
         }
 
-        // mutation takes in payload of payload.routes
         mutations[types.SET_ROUTES](openState, payload.routes);
         expect(openState.routes).toMatchObject(payload.routes);
     });
