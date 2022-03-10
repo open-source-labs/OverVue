@@ -70,7 +70,6 @@ describe("Test Suite for Image Upload", () => {
         }
         // mutation takes our state, and our payload which is payload.imagePath
         mutations[types.SET_IMAGE_PATH](openState, payload.imagePath);
-        // console.log(openState.imagePath, { ...openState.imagePath, ... payload.imagePath})
         expect(openState.imagePath).toMatchObject({ ...openState.imagePath, ... payload.imagePath});
     });
     test('"[types.SET_COMPONENT_MAP]" mutation expect state.componentMap object to match payload.componentMap', ()=>{

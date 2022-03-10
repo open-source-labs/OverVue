@@ -32,7 +32,7 @@ export default {
   methods: {
     //emitter to send the importedObj to CreateComponent when fully parsed.
     createImport(importObj){
-      useCreateComponent.bind(this)(importObj) //this is where we will want to invoke the composabreplacele
+      useCreateComponent.bind(this)(importObj) //this is where we will want to invoke the composable
     },
     ...mapActions([
       "registerComponent",
@@ -278,11 +278,11 @@ export default {
 
 </script>
 
-<style scoped>
-#import-component-btn{
-  width: 100%;
-  margin: 10px 0px 20px;
-}
+ <style>
+ #import-component-btn{
+   width: 100%;
+   margin: 10px 0px 15px; 
+   }
 </style>
 
 

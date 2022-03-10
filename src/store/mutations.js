@@ -640,7 +640,6 @@ const mutations = {
       //commented stuff below does not seem necessary for the functionality of this if block.
       //children will be current children EXCLUDING payload
       // const child = temp.filter((el) => payload.includes(el));
-      console.log('delete block')
       let childCount = 0;
       const components = Object.values(state.componentMap);
       for (const comp of components) {

@@ -16,7 +16,6 @@ const breadthFirstSearch = (array, id) => {
       queue.push(...evaluated.children)
     }
   }
-  // console.log("We shouldn't be ever getting here, how did you even search an id that didn't exist?")
 }
 
 // this would find you the parent of a given id
@@ -35,7 +34,6 @@ const breadthFirstSearchParent = (array, id) => {
         queue.push(...evaluated.children)
       }
     }
-    // console.log("We shouldn't be ever getting here, how did you even search an id that didn't exist?")
   }
 }
 

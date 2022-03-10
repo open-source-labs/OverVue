@@ -309,11 +309,6 @@ const actions = {
     commit(types.SET_ACTIVE_COMPONENT, '')
   },
 
-  [types.importComponent]: ({ commit }, payload) => {
-    //import component
-    console.log(payload)
-  },
-
   // Add project
   [types.addProject]: ({ commit }, payload) => {
     commit(types.ADD_PROJECT, payload);

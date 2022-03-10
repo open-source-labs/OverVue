@@ -56,7 +56,6 @@ export default {
     parseAndDelete(htmlList) {
       htmlList.forEach((element) => {
         if (!Array.isArray(element.children))
-          console.log("This should be an array", element.children);
         if (element.children.length > 0) {
           this.parseAndDelete(element.children);
         }
@@ -122,7 +121,6 @@ export default {
         );
         localforage.getItem("slackWebhookURL", (err, value) => {
           // TODO: handle error
-          console.log("error: ", err);
           if (value) this.notifySlack(fileName, value);
         });
       }

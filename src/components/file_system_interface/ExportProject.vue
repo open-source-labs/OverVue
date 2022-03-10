@@ -15,7 +15,7 @@ Description:
       <div class="settings-dropdown column items-center"> 
       <p class="center">Export:</p>
       <q-btn class="menu-btn" no-caps color="secondary" label="Project" @click="exportProject"/> 
-      <q-btn class="menu-btn" no-caps color="secondary" label="Active Component" @click="useExportComponentBound" :disabled="!activeComponent.trim()"/> 
+      <q-btn class="active-comp-btn" no-caps color="secondary" label="Active Component" @click="useExportComponentBound" :disabled="!activeComponent.trim()"/> 
       </div>
     </q-menu>
   
@@ -489,7 +489,6 @@ export default {
       if (data === undefined) return;
       if (!fs.existsSync(data)) {
         fs.mkdirSync(data);
-        // console.log(`data: ${data}`); // displays the directory path
         fs.mkdirSync(path.join(data, "public"));
         fs.mkdirSync(path.join(data, "src"));
         fs.mkdirSync(path.join(data, "src", "assets"));
@@ -563,6 +562,11 @@ export default {
   font-weight: bold;
   color: white;
   box-sizing: border-box;
+}
+
+.active-comp-btn{
+  width: 80%;
+  margin: 5px 0px 15px;
 }
 
 
