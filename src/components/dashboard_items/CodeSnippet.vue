@@ -77,10 +77,6 @@ export default {
     },
     // Creates beginner boilerplate
     createTemplate(componentName) {
-      // not sure why output was set up like this, was imputted into return statement
-      // using string literal
-      // let output = ``
-      // output += ` <div>\n`
       let templateTagStr = this.writeTemplateTag(componentName);
       return `<template>\n  <div>\n${templateTagStr}  </div>\n</template>`;
     },
@@ -138,7 +134,6 @@ export default {
       // eslint-disable-next-line no-unused-vars
       for (let el of htmlArr) {
         if (!el.text) {
-          // console.log(htmlArr)
           outputStr += `    <${el}/>\n`;
         } else {
           outputStr += `    `;

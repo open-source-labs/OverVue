@@ -80,7 +80,7 @@
               <q-icon color="primary" name="edit_note" />
             </q-item-section>
           </q-item>
-          <q-item clickable v-ripple v-close-popup @click="handleExportComponent">
+          <q-item clickable v-ripple v-close-popup @click="useExportComponentBound">
             <q-item-section>Export Component</q-item-section>
             <q-item-section avatar>
               <q-icon color="primary" name="upload" />
@@ -156,12 +156,16 @@
   </div>
 </template>
 
+<script setup>
+  import { useExportComponent } from "./composables/useExportComponent.js";
+</script>
+
 <script>
 import { mapState, mapActions } from "vuex";
 import VueDraggableResizable from "vue-draggable-resizable/src/components/vue-draggable-resizable.vue";
 import VueMultiselect from "vue-multiselect";
 import "vue-draggable-resizable/src/components/vue-draggable-resizable.css";
-import handleExportComponentMixin from "./ExportComponentMixin.vue";
+
 const { fs, ipcRenderer } = window;
 
 const cloneDeep = require("lodash.clonedeep");
@@ -172,7 +176,6 @@ export default {
     VueDraggableResizable,
     VueMultiselect,
   },
-  mixins: [handleExportComponentMixin],
   data() {
     return {
       modalOpen: false,
@@ -324,6 +327,9 @@ export default {
       "deleteActiveComponentNote",
       "openNoteModal",
     ]),
+    useExportComponentBound(){
+      useExportComponent.bind(this)();
+    },
     // records component's initial position in case of drag
     recordInitialPosition: function (e) {
       if (this.activeComponent !== e.target.id) {

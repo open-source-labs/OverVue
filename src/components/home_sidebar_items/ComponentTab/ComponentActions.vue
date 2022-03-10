@@ -91,7 +91,6 @@ export default {
     // Prevent Delete on changes to searchable multiselect
     stopDelete(e) {
       if (e.code === "Backspace") e.stopPropogation();
-      // console.log(e);
     },
     // adds an action to the currently selected component
     addActionToComp() {
