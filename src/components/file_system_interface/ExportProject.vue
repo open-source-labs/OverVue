@@ -369,13 +369,14 @@ export default {
     // creates main.js boilerplate
     createMainFile(location) {
       let str = `import { createApp } from 'vue';`;
+      str += `\nimport store from './store'`
       str += `\nimport App from './App.vue';`;
-      str += `\nimport router from './router';`;
-      // str += `\n\n import './index.css'`
-      str += `\n\n const app = createApp(App);`;
-      // str += `\n\trouter,
+      str += `\nimport router from './router';\n`;
+      str += `\nconst app = createApp(App);`;
       str += `\napp.use(router);`;
-      str += `\n app.mount('#app');`;
+      str += `\napp.use(store)`;
+      str += `\napp.mount('#app');`;
+      
       // if using typescript, export with .ts extension
       if (this.exportAsTypescript === "on") {
         fs.writeFileSync(path.join(location, "src", "main.ts"), str);
@@ -447,6 +448,50 @@ export default {
         return;
       }
     },
+    createStore(location) {
+      let str = `import { createStore } from 'vuex';\n`;
+      str += `\nconst store = createStore({`;
+      str += `\n\tstate () {`;
+      str += `\n\t\treturn {`;
+      if (!this.userState.length){
+        str += `\n\t\t\t//placeholder for state`
+      }
+      for (let i = 0; i < this.userState.length; i++){
+        str+= `\n\t\t\t${this.userState[i]}: "PLACEHOLDER FOR VALUE",`
+        if (i === this.userState.length-1){str = str.slice(0, -1)}
+      }
+      str += `\n\t\t}`;
+      str += `\n\t},`;
+      str += `\n\tmutations: {`;
+      if (!this.userActions.length){
+        str += `\n\t\t\t//placeholder for mutations`
+      }
+      for (let i = 0; i < this.userActions.length; i++){
+        str += `\n\t\t${this.userActions[i]} (state) {`;
+        str += `\n\t\t\t//placeholder for your mutation`;
+        str += `\n\t\t},`;
+        if (i === this.userActions.length-1){str = str.slice(0, -1)}
+      }
+      str += `\n\t},`;
+      str += `\n\tactions: {`;
+      if (!this.userActions.length){
+        str += `\n\t\t\t//placeholder for actions`
+      }
+      for (let i = 0; i < this.userActions.length; i++){
+        str += `\n\t\t${this.userActions[i]} () {`;
+        str += `\n\t\t\tstore.commit('${this.userActions[i]}')`;
+        str += `\n\t\t},`;
+        if (i === this.userActions.length-1){str = str.slice(0, -1)}
+      }
+      str += `\n\t}`;
+      str += '\n})\n';
+      str += `\nexport default store;`
+      if (this.exportAsTypescript === "on") {
+        fs.writeFileSync(path.join(location, "src", "store", "index.ts"), str);
+      } else {
+        fs.writeFileSync(path.join(location, "src", "store", "index.js"), str);
+      }
+    },
     // create package.json file
     createPackage(location) {
       let str = `{`;
@@ -495,6 +540,7 @@ export default {
         fs.mkdirSync(path.join(data, "src", "components"));
         fs.mkdirSync(path.join(data, "src", "views"));
         fs.mkdirSync(path.join(data, "src", "router"));
+        fs.mkdirSync(path.join(data, "src", "store"));
       }
       // creating basic boilerplate for vue app
       this.createIndexFile(data);
@@ -505,6 +551,7 @@ export default {
       this.createTSViteConfig(data);
       this.createTSDeclaration(data);
       this.createPackage(data);
+      this.createStore(data);
       // exports images to the /assets folder
       // eslint-disable-next-line no-unused-vars
       for (let [routeImage, imageLocation] of Object.entries(this.imagePath)) {
@@ -547,7 +594,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(["componentMap", "imagePath", "routes", "exportAsTypescript", "activeComponent"]),
+    ...mapState(["componentMap", "imagePath", "routes", "exportAsTypescript", "activeComponent", "userState", "userActions"]),
   },
 };
 </script>
