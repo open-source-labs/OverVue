@@ -50,13 +50,9 @@ describe("Test Suite for route actions and related mutations", () => {
     test('"[types.setActiveRoute]" action to commit SET_ACTIVE_ROUTE mutation with string payload', () => {
       const commit = jest.fn();
       const payload = 'HomeView';
-      actions[types.setActiveRoute]({ commit }, payload);
+      actions[types.setActiveRoute]({ state, commit }, payload);
       expect(commit).toHaveBeenCalledWith(types.SET_ACTIVE_ROUTE, payload);
     });
-
-    test('"[types.setRoutes]" action to ---', () => {
-      // action is not called anywhere and mutation is not used
-    }); 
 
     test('"[types.deleteRoute]" action to commit DELETE_ROUTE mutation with string payload', () => {
       const commit = jest.fn();
