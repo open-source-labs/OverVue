@@ -2,16 +2,15 @@
 Functionality includes: if active component is selected, will switch view to editing mode. If not, it will be in create mode -->
 <template>
   <q-card id="store-cards" class="no-shadow">
-    <CreateComponent v-if="activeComponent === ''"/>
-    <EditDeleteComponents v-if="activeComponent !== ''"/>
+    <CreateMenu v-if="activeComponent === ''"/>
+    <UpdateMenu v-if="activeComponent !== ''"/>
   </q-card>
 </template>
 
 <script>
-import CreateComponent from './CreateComponent.vue'
-import EditDeleteComponents from './EditDeleteComponents.vue'
+import CreateMenu from './CreateMenu.vue'
+import UpdateMenu from './UpdateMenu.vue'
 import { mapState } from 'vuex'
-import UploadImage from './UploadImage.vue'
 export default {
   data () {
     return {
@@ -24,9 +23,8 @@ export default {
     ])
   },
   components: {
-    CreateComponent,
-    EditDeleteComponents,
-    UploadImage,
+    CreateMenu,
+    UpdateMenu,
   }
 }
 </script>

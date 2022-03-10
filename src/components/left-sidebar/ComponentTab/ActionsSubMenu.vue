@@ -64,7 +64,7 @@ import { mapState, mapActions } from "vuex";
 import VueMultiselect from "vue-multiselect";
 
 export default {
-  name: "ComponentActions",
+  name: "ActionsSubMenu",
   components: {
     VueMultiselect,
   },

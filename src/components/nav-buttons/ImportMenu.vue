@@ -19,12 +19,12 @@ Description:
 
 <script>
 import { mapActions } from "vuex";
-import ImportComponent from "../home_sidebar_items/ComponentTab/ImportComponent.vue"
+import ImportComponent from "../left-sidebar/ComponentTab/ImportComponent.vue"
 const Mousetrap = require("mousetrap");
 const { fs, ipcRenderer } = window;
 
 export default {
-  name: "OpenProjectComponent",
+  name: "ImportMenu",
   components: {
     ImportComponent
   },

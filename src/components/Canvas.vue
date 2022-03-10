@@ -5,7 +5,7 @@
   -->
 
 <template>
-  <!-- the background canvas grid -->
+  <!-- the background Canvas grid -->
   <div
     class="component-display grid-bg"
     :style="mockBg"
@@ -111,7 +111,7 @@
       </q-dialog>
 
       <!-- some irregularity (delete event listener firing on bkspc/del) with the modal when stored locally, so modal open stored in state, and triggers to local reflect only stateful change.-->
-          <q-dialog v-model="noteModal" @update:model-value="this.handleAddNotes"> 
+          <q-dialog v-model="noteModal" @update:model-value="handleAddNotes"> 
             <div class="noteBox">
               <div class="noteHolder">
                 <p class="title">Adding notes to {{ this.activeComponent }}</p>
@@ -156,11 +156,9 @@
   </div>
 </template>
 
-<script setup>
-  import { useExportComponent } from "./composables/useExportComponent.js";
-</script>
 
 <script>
+import { useExportComponent } from "./composables/useExportComponent.js";
 import { mapState, mapActions } from "vuex";
 import VueDraggableResizable from "vue-draggable-resizable/src/components/vue-draggable-resizable.vue";
 import VueMultiselect from "vue-multiselect";
@@ -171,7 +169,7 @@ const { fs, ipcRenderer } = window;
 const cloneDeep = require("lodash.clonedeep");
 
 export default {
-  name: "ComponentDisplay",
+  name: "Canvas",
   components: {
     VueDraggableResizable,
     VueMultiselect,

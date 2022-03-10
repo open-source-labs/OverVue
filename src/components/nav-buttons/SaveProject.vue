@@ -22,7 +22,7 @@ const { fs, ipcRenderer } = window;
 
 // might not be optimal to import like this, since entire slackApiStuff object is imported while only one of its properties is used
 export default {
-  name: "SaveProjectComponent",
+  name: "SaveProject",
   methods: {
     // Action to addProject to store before save
     ...mapActions([

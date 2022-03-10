@@ -2,7 +2,7 @@
 import * as types from "./types";
 
 const actions = {
-  // Actions that primarily affect componentDisplay.vue //////
+  // Actions that primarily affect Canvas.vue //////
   [types.deleteActiveComponent]: ({ state, commit }) => {
     if (state.noteModalOpen === true){
       return;
@@ -130,7 +130,7 @@ const actions = {
       state.pastedComponent
     );
   },
-  // End of componentDisplay Section//////////////////////////////////
+  // End of Canvas Section//////////////////////////////////
 
   // Actions that affect Routing //////////////////////////////////////
 
@@ -323,7 +323,7 @@ const actions = {
 /*
 [types.updateStartingPosition]: ({ commit }, payload) => {
   // does the same as update component position
-  // but needed to record the initial spot of the ."draggable-resizeable" in componentDisplay.vue
+  // but needed to record the initial spot of the ."draggable-resizeable" in Canvas.vue
   // or else undo/redo won't work
     commit(types.UPDATE_COMPONENT_POSITION, payload)
   },

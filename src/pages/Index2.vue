@@ -1,12 +1,12 @@
  <!--
 Description:
-  Displays componentDisplay
+  Displays Canvas
   Functionality includes: N/A
   -->
 
 <template>
   <q-page class="flex flex-center" id="compDisplay">
-    <ComponentDisplay />
+    <Canvas />
   </q-page>
 </template>
 
@@ -14,13 +14,13 @@ Description:
 </style>
 
 <script>
-import ComponentDisplay from '../components/ComponentDisplay.vue'
+import Canvas from '../components/Canvas.vue'
 
 export default {
   name: 'PageIndex',
   components: {
-    ComponentDisplay
-  }
+    Canvas
+}
 }
 </script>
 

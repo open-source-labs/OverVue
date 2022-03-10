@@ -53,7 +53,7 @@ import { mapState, mapActions } from "vuex";
 import VueMultiselect from "vue-multiselect";
 
 export default {
-  name: "addProps",
+  name: "PropsSubMenu",
   components: {
     VueMultiselect,
   },

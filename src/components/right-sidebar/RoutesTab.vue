@@ -30,7 +30,7 @@ Includes functionality to:
     </template>
     </q-input>
     <Routes></Routes>
-    <UploadImage></UploadImage>
+    <UploadMockup></UploadMockup>
   </div>
   
 </template>
@@ -38,13 +38,13 @@ Includes functionality to:
 <script>
 import Routes from "./Routes";
 import { mapState, mapActions } from "vuex";
-import UploadImage from "../home_sidebar_items/ComponentTab/UploadImage.vue";
+import UploadMockup from "./UploadMockup.vue";
 
 export default {
-  name: "RouteDisplay",
+  name: "RoutesTab",
   components: {
     Routes,
-    UploadImage
+    UploadMockup
 },
   computed: {
     ...mapState(["routes", "componentMap"]),

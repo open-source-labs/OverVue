@@ -6,10 +6,10 @@ body {
     color: $menutext;
 }
 
-main {
-    background: #5b6e6e;
-    overflow: auto;
-}
+// main {
+//     background: #5b6e6e;
+//     overflow: auto;
+// }
   
 .q-item__label {
     color: $menutext;  
@@ -48,8 +48,8 @@ main {
 }
 
 .deleteAction {
-  background-color: rgba($negative, .2);
-  color: $negative;
+  background-color: rgba($negative, .2) !important;
+  color: $negative !important;
   border: 1px solid $negative;
 }
 

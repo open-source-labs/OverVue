@@ -8,12 +8,10 @@
     />
 </template>
 
-<script setup>
-  import { useCreateComponent } from "../../composables/useCreateComponent.js";
-</script>
 
 <script>
 const { fs, ipcRenderer } = window;
+import { useCreateComponent } from "../../composables/useCreateComponent.js";
 import { mapState, mapActions } from "vuex";
 export default {
   props: ['title'],

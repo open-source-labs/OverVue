@@ -1,8 +1,3 @@
-/* eslint-disable no-unused-vars */ /* eslint-disable no-unused-vars */ /*
-eslint-disable no-unused-vars */ /* eslint-disable no-unused-vars */ /*
-eslint-disable no-unused-vars */ /* eslint-disable no-unused-vars */ /*
-eslint-disable no-unused-vars */ /* eslint-disable no-useless-escape */ /*
-eslint-disable no-useless-escape */
 <!--
 Description:
   Displays Export Project button and allows users to export project
@@ -22,11 +17,8 @@ Description:
   </q-btn>
 </template>
 
-<script setup>
-  import { useExportComponent } from "../composables/useExportComponent.js";
-</script>
-
 <script>
+import { useExportComponent } from "../composables/useExportComponent.js";
 import { mapState } from "vuex";
 const { fs, ipcRenderer } = window;
 
