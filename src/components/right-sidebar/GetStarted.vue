@@ -11,7 +11,7 @@
     >
       <q-tab
         name="landing"
-        label="Welcome to Overvue"
+        label="Welcome to OverVue"
         id="label-text"
         >
       </q-tab>
