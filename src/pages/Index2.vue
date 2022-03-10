@@ -1,6 +1,6 @@
  <!--
 Description:
-  Displays componentDisplay
+  Displays Canvas
   Functionality includes: N/A
   -->
 

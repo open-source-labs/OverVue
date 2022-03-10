@@ -7,4 +7,4 @@
 /node_modules
 .eslintrc.js
 babel.config.js
-/src/components/ComponentDisplay.vue
+/src/components/Canvas.vue

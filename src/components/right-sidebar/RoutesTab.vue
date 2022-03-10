@@ -30,7 +30,7 @@ Includes functionality to:
     </template>
     </q-input>
     <Routes></Routes>
-    <UploadImage></UploadImage>
+    <UploadMockup></UploadMockup>
   </div>
   
 </template>
