@@ -69,6 +69,18 @@ ipcMain.handle("clearImage", async (event, arg) => {
   return result;
 })
 
+// Handle dialogs for exporting a component
+ipcMain.handle("exportComponent", async (event, arg) => {
+  const result = await dialog.showSaveDialog(arg);
+  return result;
+});
+
+// Handle dialogs for importing a component
+ipcMain.handle("importComponent", async (event, arg) => {
+  const result = await dialog.showOpenDialog(arg);
+  return result;
+});
+
 
 // ************** Slack OAuth functions **********************
 // Sends request to Slack for User's information,
@@ -99,18 +111,14 @@ function sendTokenRequest() {
 
   // Listens for response from token request
   request.on("response", (response) => {
-    // logEverywhere("request.on response received");
     response.on("end", () => {
-      // logEverywhere("Response ended ");
     });
     response.on("data", (data) => {
       const decoded = JSON.parse(data.toString());
       if (decoded.error) {
         return slackErrorHandler(decoded.error);
       }
-      // console.log('Is there an error? ', !!decoded.error, 'if true, this shouldnt be logging')
       mainWindow.webContents.send("tokenReceived", decoded);
-      // getSlackUser(decoded.access_token, decoded.authed_user.id)
     });
   });
   request.end();
@@ -131,14 +139,12 @@ function getSlackUser(token, userId) {
   });
   request.on("response", (response) => {
     response.on("end", () => {
-      // logEverywhere('User data recieved')
     });
     response.on("data", (data) => {
       const decoded = JSON.parse(data.toString());
       if (decoded.error) {
         return slackErrorHandler(decoded.error);
       }
-      // logEverywhere('slackUser decoded data in getSlackUser' + decoded)
       mainWindow.webContents.send("slackUser", decoded);
     });
   });
@@ -146,12 +152,9 @@ function getSlackUser(token, userId) {
 }
 
 function setOauthListener() {
-  // logEverywhere(`process.env.SLACK_CLIENT_ID in electron-main:  ${process.env.SLACK_CLIENT_ID}`);
-  // logEverywhere(`process.env.SLACK_CLIENT_SECRET in electron-main:  ${process.env.SLACK_CLIENT_SECRET}`);
 
   if (process.env.PROD) {
     return deeplink.on("received", (link) => {
-      // logEverywhere(`auth worked here link: ${link}`);
       // Extracts Slack authorization code from deep link
       authCode = link.split("=")[1];
       sendTokenRequest();
@@ -170,7 +173,6 @@ function createWindow() {
     useContentSize: true,
     webPreferences: {
       contextIsolation: true,
-      // nodeIntegration: true,
       // More info: /quasar-cli/developing-electron-apps/electron-preload-script
       preload: path.resolve(__dirname, process.env.QUASAR_ELECTRON_PRELOAD),
     },

@@ -2,8 +2,11 @@
 import * as types from "./types";
 
 const actions = {
-  // Actions that primarily affect componentDisplay.vue //////
+  // Actions that primarily affect Canvas.vue //////
   [types.deleteActiveComponent]: ({ state, commit }) => {
+    if (state.noteModalOpen === true){
+      return;
+    }
     commit(types.DELETE_ACTIVE_COMPONENT);
     const activeRouteArray = [...state.routes[state.activeRoute]];
     const newActiveRouteArray = activeRouteArray.filter(
@@ -15,6 +18,18 @@ const actions = {
 
   [types.parentSelected]: ({ commit }, payload) => {
     commit(types.PARENT_SELECTED, payload);
+  },
+  
+  [types.addActiveComponentNote]: ({ commit }, payload) => {
+    commit(types.ADD_ACTIVE_COMPONENT_NOTE, payload)
+  },
+
+  [types.deleteActiveComponentNote]: ({ commit }, payload) => {
+    commit(types.DELETE_ACTIVE_COMPONENT_NOTE, payload)
+  },
+
+  [types.openNoteModal]: ({ commit }) => {
+    commit(types.OPEN_NOTE_MODAL)
   },
 
   [types.registerComponent]: ({ state, commit }, payload) => {
@@ -55,6 +70,10 @@ const actions = {
     }
   },
 
+  [types.toggleTutorial]: ({ commit }) => {
+    commit(types.TOGGLE_TUTORIAL)
+  },
+  
   [types.setActiveComponent]: ({ commit }, payload) => {
     commit(types.SET_ACTIVE_COMPONENT, payload);
   },
@@ -81,10 +100,19 @@ const actions = {
 
   // copy the active component
   [types.copyActiveComponent]: ({ commit }, payload) => {
-    commit(types.COPY_ACTIVE_COMPONENT, payload);
+    commit(types.COPY_ACTIVE_COMPONENT);
   },
   // paste the active component copy
   [types.pasteActiveComponent]: ({ commit, state }) => {
+    //if nothing is copied, don't commit anything
+    if (!state.copiedComponent.componentName){
+      return
+    }
+    if (Date.now() < state.pasteTimer){
+      return;
+    } else {
+      commit(types.UPDATE_PASTE_TIMER) //throttles pasting
+    }
     commit(types.PASTE_ACTIVE_COMPONENT);
     // if no other parents, update as parent of active route in componentMap
     if (!Object.keys(state.pastedComponent.parent).length) {
@@ -102,7 +130,7 @@ const actions = {
       state.pastedComponent
     );
   },
-  // End of componentDisplay Section//////////////////////////////////
+  // End of Canvas Section//////////////////////////////////
 
   // Actions that affect Routing //////////////////////////////////////
 
@@ -133,7 +161,10 @@ const actions = {
     commit(types.IMPORT_IMAGE, payload);
   },
 
-  [types.setActiveRoute]: ({ commit }, payload) => {
+  [types.setActiveRoute]: ({ state, commit }, payload) => {
+    if (state.routes[payload].length === 0){
+      commit(types.SET_ACTIVE_COMPONENT, '');
+    } 
     commit(types.SET_ACTIVE_ROUTE, payload);
   },
 
@@ -267,10 +298,15 @@ const actions = {
   // Loading ///////////////////////////////////////////////////////
 
   [types.openProject]: ({ commit }, payload) => {
-    // open project imagePath, componentPath, routePath
+    commit(types.REMOVE_ALL_STATE_PROPS_ACTIONS)
+    commit(types.SET_ACTIVE_ROUTE, "HomeView");
+    payload.userProps.forEach((prop)=>{commit(types.CREATE_PROP, prop)})
+    payload.userActions.forEach((action)=>{commit(types.CREATE_ACTION, action)})
+    payload.userState.forEach((state)=>{commit(types.CREATE_STATE, state)})
     commit(types.SET_IMAGE_PATH, payload.imagePath);
     commit(types.SET_COMPONENT_MAP, payload.componentMap);
     commit(types.SET_ROUTES, payload.routes);
+    commit(types.SET_ACTIVE_COMPONENT, '')
   },
 
   // Add project
@@ -287,7 +323,7 @@ const actions = {
 /*
 [types.updateStartingPosition]: ({ commit }, payload) => {
   // does the same as update component position
-  // but needed to record the initial spot of the ."draggable-resizeable" in componentDisplay.vue
+  // but needed to record the initial spot of the ."draggable-resizeable" in Canvas.vue
   // or else undo/redo won't work
     commit(types.UPDATE_COMPONENT_POSITION, payload)
   },

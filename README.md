@@ -1,10 +1,8 @@
 <h1 align="center">
-  <img src="https://raw.githubusercontent.com/jeisele2/OverVue/master/src/assets/overvue-icons/apple-icon-72x72.png">
-  <br/>
-  OverVue 
+  <img src="src/assets/overvue_256x256.png">
 </h1>
 
-<p align="center"><b>Prototyping Tool for Vue Developers</b></p>
+<p align="center"><b>Prototyping Development Tool for Vue Developers</b></p>
 
 <p>OverVue is a prototyping tool that allows developers to dynamically create and visualize a Vue application, implementing a real-time intuitive tree display of component hierarchy and a live-generated code preview. The resulting boilerplate can be exported as a template for further development.</p>
 
@@ -14,16 +12,19 @@
 
 ## Table of Contents
 
-- [Features](#features)
-- [OverVue 2.0 Changelog](#changelog-20)
-- [OverVue 3.0 Changelog](#changelog-30)
-- [OverVue 4.0 Changelog](#changelog-40)
-- [OverVue 5.0 Changelog](#changelog-50)
-- [How to Use](#how-to-use)
+- [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Changelog 2.0](#changelog-20)
+  - [Changelog 3.0](#changelog-30)
+  - [Changelog 4.0](#changelog-40)
+  - [Changelog 5.0](#changelog-50)
+  - [Changelog 6.0](#changelog-60)
+- [How to use](#how-to-use)
 - [Installation](#installation)
-  - [General Installation](#installation)
-  - [For WSL](#wsl-installation)
-  - [For Slack OAuth](#slack-oauth)
+  - [WSL Installation](#wsl-installation)
+  - [Running the Docker Image](#running-the-docker-image)
+- [BETA](#beta)
+  - [Slack OAuth](#slack-oauth)
 - [Contributing](#contributing)
 - [Authors](#authors)
 
@@ -52,6 +53,11 @@
 - Ability to delete states or actions from the store <sub><sup>(v4.0)</sup></sub>
 - Vue Devtools enabled for Developers <sub><sup>(v4.0)</sup></sub>/automatically deploys when running electron in dev mode <sub><sup>(v5.0)</sup></sub>
 - Exports fully functional Vue 3/Vuex 4 syntax <sub><sup>(v5.0)</sup></sub>
+- Import of individual components <sub><sup>(v6.0)</sup></sub>
+- Containerized the application <sub><sup>(v6.0)</sup></sub>
+- Introduced TypeScript Mode <sub><sup>(v6.0)</sup></sub>
+- Adding notes functionality  <sub><sup>(v6.0)</sup></sub>
+- Enhanced component tree hierarchy display <sub><sup>(v6.0)</sup></sub>
 
 [↥Back to top](#table-of-contents)
 
@@ -137,7 +143,28 @@
   </ul>
 </details>
 
+### Changelog 6.0
 
+<details><summary>OverVue 6.0</summary>
+  <ul>
+    <li>Toggle to TypeScript mode to generate code snippets and export your project or individual components in TypeScript</li>
+    <li>An interactive and real-time tree display of your component hierarchy allows you to easily visualize parent-child component relationships and the Vue Router structure</li>
+    <li>Enhance your workflow by adding notes to your components. When you export your project or components into your favorite IDE, notes will be converted into comments within your Vue files.</li>
+    <li>Now with a “Get Started” tutorial, a visual queue of your HTML elements, and an overall simplified UI, OveVue is as intuitive as ever. </li>
+    <li>OverVue is now containerized with Docker to bring developers the same experience, regardless of your operating system.</li>
+    <br>
+    <h4><strong>Bug Fixes</strong></h4>
+    <li>Fixed drawer disappearing when the window size is smaller</li>
+    <li>Fixed inability to delete parent/child relationship</li>
+    <li>Fixed the inability to add multiple children to parent except when making a new component</li>
+    <li>Fixed CodeSnippet does not scroll when it overflows the container</li>
+    <li>Fixed clicking canvas does not fully deactivate active component</li>
+    <li>Fixed Error handling for 'pasting' component when no component is copied</li>
+    <li>Fixed dancing components</li>
+    <li>Fixed project tree visulization</li> 
+  </ul>
+</details>
+<br/>
 
 [↥Back to top](#table-of-contents)
 
@@ -185,6 +212,8 @@ src/
     UserCreatedComponent1.vue
     UserCreatedComponent2.vue
     ...
+  router/
+    index.js
   views/
     HomeView.vue
     UserCreatedRouteComponent1.vue
@@ -192,14 +221,14 @@ src/
     ...
   App.vue
   main.js
-  router.js
 babel.config.js
 package.json
 ```
+<br/> 
 
 [↥Back to top](#table-of-contents)
 
-### Installation
+## Installation
 
 To download the development version for windows or mac, please visit https://www.Overvue.io
 
@@ -248,7 +277,7 @@ export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/nu
 export LIBGL_ALWAYS_INDIRECT=1
 ```
 
-followed by the command for the devtools or devmode. If you want both open, enter commands above followed by starting the devtools:
+followed by the command for the s or devmode. If you want both open, enter commands above followed by starting the devtools:
 
 ```
 ./node_modules/.bin/vue-devtools
@@ -259,7 +288,85 @@ Then open a new terminal instance, set the DISPLAY value again (re-enter above c
 ```
 quasar dev -m electron
 ```
+## Running the Docker Image
 
+To run the built version, pull down the docker image from [Docker repo]
+
+In your terminal, run:
+
+```
+docker run -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY -v`pwd`/src:/app/src --rm -it overvue
+```
+### Running the dev environment on Docker as a Mac User
+To run OverVue through Docker on a Mac, you'll need to install XQuartz:
+```
+brew install --cask xquartz
+```
+
+<strong>Important:</strong> RESTART your computer.
+
+Update your PATH variable to /opt/x11/bin to your .zshrc. For example:
+```
+export PATH=/opt/X11/bin:$PATH
+```
+
+Set up XQuartz:
+<ul>
+<li>Launch XQuartz</li>
+<li>Under the XQuartz menu, select Preferences.</li>
+<li>Go to the security tab and ensure "Allow connections from network clients" is checked.</li>
+<li>Restart XQuartz</li>
+</ul>
+
+Run the following command in your terminal (replacing localhostname with your local host name)
+```
+xhost +localhostname
+```
+If you don't know your local host name, run the following command to find it:
+```
+echo $(hostname)
+```
+
+Build the image using Dockerfile-Mac:
+```
+docker build -t overvue -f Dockerfile-Mac .
+```
+
+Run the image using the following command
+```
+docker run -it --env="DISPLAY=$(ifconfig en0 | grep inet | awk '$1=="inet" {print$2}'):0" --security-opt seccomp=./chrome.json overvue
+```
+
+Run in dev mode using:
+```
+npm run dev 
+```
+
+For more information about running Electron through Docker on a Mac, check out these posts:
+<li><a href="https://jaked.org/blog/2021-02-18-How-to-run-Electron-on-Linux-on-Docker-on-Mac">How to run Electron on Linux on Docker on Mac</a></li>
+<li><a href="https://gist.github.com/paul-krohn/e45f96181b1cf5e536325d1bdee6c949">Workaround for sockets on Docker on macOS</a></li>
+<li><a href="https://blog.jessfraz.com/post/how-to-use-new-docker-seccomp-profiles/">How to use new Docker seccomp profiles</a></li>
+<br/>
+
+### Running the dev environment on Docker as a WSL user
+
+Build the image using Dockerfile-WSL:
+```
+docker build -t overvue -f Dockerfile-WSL .
+```
+
+To run 
+```
+docker run -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY -v`pwd`/src:/app/src --rm -it overvue bash
+```
+
+Run in dev mode using:
+```
+npm run dev
+```
+<br/>
+
+## BETA
 ### Slack OAuth
 
 For the Slack OAuth, you will need to create a Slack app through their website (https://api.slack.com/apps?new_app=1), so that you have your own Client Secret and Client ID. Then create two .env files (one for development and one for production).
@@ -290,21 +397,25 @@ SLACK_REDIRECT_URI = "overvuedev://test"
 
 [↥Back to top](#table-of-contents)
 
-### Contributing
+## Contributing
 
 We'd love for you to test this application out and submit any issues you encounter. Also feel free to fork to your own repo and submit PRs.
-Here are some features we're thinking about adding: 
+Here are some features we're thinking about adding:
 
-- Option to export files in TypeScript
+
 - Ability to place child components into HTML elements
-- Integration with Storybook
-- Edit State and Actions in the Vuex Store
+- More semantic HTML tag options
+- Ability to export Vuex store boilerplate
+- Ability to add two-way binding to input elements
+- More granular typing options for TypeScript mode
 
 If you make changes and wish to update the website, here is the link to the repo: https://github.com/TeamOverVue/OverVuePage
 
+<br/>
+
 [↥Back to top](#table-of-contents)
 
-### Authors
+## Authors
 
 ```
 Contributors:
@@ -329,8 +440,15 @@ Gabriela Kokhabi @gkokhabi
 Ross Lamerson @lamerson28
 Shanon Lee @shanonlee541
 Zoew McGrath @Z-McGrath
+Aram Paparian @apaparian
+Bryan Bart @MrBeeAreWhy
+Julia Bakerink @jbbake
+Kerolos Nesem @Kerolos-Nesem
+Megan Nadkarni @megatera
 ```
 
 Inspired by [PreVue](https://github.com/open-source-labs/PreVue)
+
+<br/>
 
 [↥Back to top](#table-of-contents)
