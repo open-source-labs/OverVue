@@ -37,7 +37,7 @@
     "lodash.throttle": "^4.1.1",
     "mousetrap": "^1.6.5",
     "node-gyp": "^8.4.1",
-    "prismjs": "^1.26.0",
+    "prismjs": "^1.27.0",
     "quasar": "^2.5.5",
     "quasar-dotenv": "^1.0.5",
     "vue":"3.2.31",
