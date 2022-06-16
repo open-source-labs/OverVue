@@ -56,7 +56,7 @@
     "@vue/devtools": "^6.0.12",
     "@vue/test-utils": "^2.0.0-rc.18",
     "@vue/vue3-jest": "^27.0.0-alpha.4",
-    "electron": "^17.0.1",
+    "electron": "^17.2.0",
     "electron-builder": "^22.14.13",
     "electron-is-dev": "^2.0.0",
     "electron-packager": "^15.4.0",
