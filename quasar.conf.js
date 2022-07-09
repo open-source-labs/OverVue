@@ -81,6 +81,19 @@ module.exports = configure(function (ctx) {
         chain.plugin('eslint-webpack-plugin')
           .use(ESLintPlugin, [{ extensions: [ 'js', 'vue' ] }]);
 
+          chain.resolve.alias.set('child_process', false);// Added this
+          chain.resolve.alias.set('crypto', false);
+          chain.resolve.alias.set('fs', false);
+          chain.resolve.alias.set('http', false);
+          chain.resolve.alias.set('https', false);
+          chain.resolve.alias.set('os', false);
+          chain.resolve.alias.set('path', false);
+          chain.resolve.alias.set('stream', false);
+          chain.resolve.alias.set('tls', false);
+          chain.resolve.alias.set('tty', false);
+          chain.resolve.alias.set('url', false);
+          chain.resolve.alias.set('util', false);
+          chain.resolve.alias.set('zlib', false);
       },
     },
 
