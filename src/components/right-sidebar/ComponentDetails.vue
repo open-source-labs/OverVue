@@ -21,8 +21,6 @@ Description:
         <q-tab name="code" label="Code Snippet" class="label-text" />
         <q-tab name="html" label="HTML Elements" class="label-text" />
         <q-tab name="state" label="Component Properties" class="label-text" />
-        <!-- <q-tab name="actions" label="Component Actions" class="label-text" />
-        <q-tab name="props" label="Component Props" class="label-text" /> -->
       </q-tabs>
       <q-tab-panels v-model="tab" animated class="html-bg text-white">
         <q-tab-panel name="code">
@@ -206,5 +204,7 @@ i {
 
 .componentProperties {
   margin-bottom:2em;
+
 }
+
 </style>

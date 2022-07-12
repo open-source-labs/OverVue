@@ -28,7 +28,7 @@ describe("Test Suite for Image Upload", () => {
     const App = {}
     const app = createApp(App);
     app.use(Quasar, Vuex, { components });
-    const payload = {"icons":{"div":"far fa-square fa-lg","button":"fas fa-toggle-off fa-lg","form":"fab fa-wpforms fa-lg","img":"far fa-image fa-lg","link":"fas fa-link fa-lg","list":"fas fa-circle fa-lg","paragraph":"fas fa-paragraph fa-lg","list-ol":"fas fa-list-ol fa-lg","list-ul":"fas fa-list-ul fa-lg","input":"fas fa-pen fa-lg","navbar":"fas fa-window-maximize fa-lg"},
+    const payload = {"icons":{"div":"far fa-square fa-lg","button":"fas fa-toggle-off fa-lg","form":"fab fa-wpforms fa-lg","img":"far fa-image fa-lg","link":"fas fa-link fa-lg","list":"fas fa-circle fa-lg","paragraph":"fas fa-paragraph fa-lg","list-ol":"fas fa-list-ol fa-lg","list-ul":"fas fa-list-ul fa-lg","input":"fas fa-pen fa-lg","navbar":"fas fa-window-maximize fa-lg", "unicorn":"fa-duotone fa-alicorn"},
         "htmlElementMap":{"div":["<div>","</div>"],"button":["<button>","</button>"],"form":["<form>","</form>"],"img":["<img>",""],"link":["<a href=\"#\"/>",""],"list":["<li>","</li>"],"paragraph":["<p>","</p>"],"list-ol":["<ol>","</ol>"],"list-ul":["<ul>","</ul>"],"input":["<input />",""],"navbar":["<nav>","</nav>"]},
         "componentMap":{"App":{"componentName":"App","children":["HomeView","b"],"htmlList":[]},
             "HomeView":{"componentName":"HomeView","children":["a"],"htmlList":[]},
