@@ -19,7 +19,7 @@ Description:
           v-if="doneAction.length"
           class="fa fa-undo"
           aria-hidden="true"
-          @click="undo"
+          @click="clickedUndo"
         ></i>
         <i
           v-else
@@ -32,7 +32,7 @@ Description:
           v-if="undoneAction.length"
           class="fa fa-redo"
           aria-hidden="true"
-          @click="redo"
+          @click="clickedRedo"
         ></i>
         <i v-else class="fa fa-redo unavailable" aria-hidden="true"></i>
         </q-btn>
@@ -150,7 +150,7 @@ import { mapState, mapActions } from "vuex";
 
 export default {
   // Passed down from App.vue
-  props: ["doneAction", "undoneAction"],
+  props: ["doneAction", "undoneAction", "undoTrigger", "redoTrigger"],
   data() {
     return {
       tab: "component",
@@ -225,6 +225,12 @@ export default {
         checkboxValue = "off";
       }
       this.$store.commit("EXPORT_AS_TYPESCRIPT", checkboxValue);
+    },
+    clickedUndo() {
+      this.$emit('undo');
+    },
+    clickedRedo(){
+      this.$emit('redo')
     }
   },
 };
