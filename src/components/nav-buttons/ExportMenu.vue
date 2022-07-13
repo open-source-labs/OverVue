@@ -7,13 +7,14 @@ Description:
 <template>
   <q-btn class="nav-btn" color="secondary" label="Export">
     <q-menu class="dropdown" :offset="[0, 15]">
-      <div class="column items-center"> 
-      <p class="center">Export:</p>
-      <q-btn class="menu-btn" no-caps color="secondary" label="Project" @click="exportProject"/> 
-      <q-btn class="menu-btn" id="export-component-nav-btn" no-caps color="secondary" label="Active Component" @click="useExportComponentBound" :disabled="!activeComponent.trim()"/> 
+      <div class="column items-center">
+        <p class="center">Export:</p>
+        <q-btn class="menu-btn" no-caps color="secondary" label="Project" @click="exportProject" />
+        <q-btn class="menu-btn" id="export-component-nav-btn" no-caps color="secondary" label="Active Component"
+          @click="useExportComponentBound" :disabled="!activeComponent.trim()" />
       </div>
     </q-menu>
-  
+
   </q-btn>
 </template>
 
@@ -25,7 +26,7 @@ const { fs, ipcRenderer } = window;
 export default {
   name: "ExportProjectComponent",
   methods: {
-    useExportComponentBound(){
+    useExportComponentBound() {
       useExportComponent.bind(this)();
     },
     showExportProjectDialog() {
@@ -35,14 +36,17 @@ export default {
           message: "Choose location to save folder in",
           nameFieldLabel: "Application Name",
         })
-        .then((result) => this.exportFile(result.filePath))
+        .then((result) => {
+          this.exportFile(result.filePath)
+          alert('Successfully Exported')
+        })
         .catch((err) => console.log(err));
     },
     exportProject: function () {
       this.showExportProjectDialog();
     },
     /**
-     * @description creates the router.js file
+     * @description creates the .js file
      * argument: location = path to dir
      * invokes: createRouterImports(this.componentMap['App'].children),
      *          createExport(this.componentMap['App'].children)
@@ -52,13 +56,13 @@ export default {
         fs.writeFileSync(
           path.join(location, "src", "router", "index.ts"),
           this.createRouterImports(this.componentMap["App"].children) +
-            this.createExport(this.componentMap["App"].children)
+          this.createExport(this.componentMap["App"].children)
         );
       } else {
         fs.writeFileSync(
           path.join(location, "src", "router", "index.js"),
           this.createRouterImports(this.componentMap["App"].children) +
-            this.createExport(this.componentMap["App"].children)
+          this.createExport(this.componentMap["App"].children)
         );
       }
     },
@@ -97,15 +101,15 @@ export default {
         fs.writeFileSync(
           componentLocation + ".vue",
           this.writeTemplate(componentName, children) +
-            this.writeStyle(componentName)
+          this.writeStyle(componentName)
         );
       } else {
         fs.writeFileSync(
           componentLocation + ".vue",
           this.writeComments(componentName) +
           this.writeTemplate(componentName, children) +
-            this.writeScript(componentName, children) +
-            this.writeStyle(componentName)
+          this.writeScript(componentName, children) +
+          this.writeStyle(componentName)
         );
       }
     },
@@ -191,10 +195,10 @@ export default {
       }
       return outputStr;
     },
-    writeComments(componentName){
-      if (this.componentMap[componentName]?.noteList?.length > 0){
+    writeComments(componentName) {
+      if (this.componentMap[componentName]?.noteList?.length > 0) {
         let commentStr = '<!--'
-        this.componentMap[componentName].noteList.forEach((el)=>{
+        this.componentMap[componentName].noteList.forEach((el) => {
           commentStr += "\n"
           commentStr += el;
         })
@@ -358,10 +362,10 @@ export default {
       to continue.</strong>`;
       str += `\n\t</noscript>`;
       str += `\n\t<div id="app"></div>`;
-      if (this.exportAsTypescript === "on"){
-      str += `\n\t<script type="module" src="/src/main.ts"><\/script>`;
+      if (this.exportAsTypescript === "on") {
+        str += `\n\t<script type="module" src="/src/main.ts"><\/script>`;
       } else {
-      str += `\n\t<script type="module" src="/src/main.js"><\/script>`;
+        str += `\n\t<script type="module" src="/src/main.js"><\/script>`;
       }
       str += `\n</body>\n\n`;
       str += `</html>\n`;
@@ -377,7 +381,7 @@ export default {
       str += `\napp.use(router);`;
       str += `\napp.use(store)`;
       str += `\napp.mount('#app');`;
-      
+
       // if using typescript, export with .ts extension
       if (this.exportAsTypescript === "on") {
         fs.writeFileSync(path.join(location, "src", "main.ts"), str);
@@ -406,7 +410,7 @@ export default {
     },
     createESLintRC(location) {
       let str;
-      if (this.exportAsTypescript === "on"){
+      if (this.exportAsTypescript === "on") {
         str += `require("@rushstack/eslint-patch/modern-module-resolution");\n\n`;
       }
       str += `module.exports = {\n`;
@@ -414,7 +418,7 @@ export default {
       str += `\t"extends": [\n`;
       str += `\t\t"plugin:vue/vue3-essential",\n`
       str += `\t\t"eslint:recommended"`
-      if (this.exportAsTypescript === "on"){
+      if (this.exportAsTypescript === "on") {
         str += `,\n\t\t"@vue/eslint-config-typescript/recommended"\n`
       }
       str += `\n\t],\n`
@@ -454,35 +458,35 @@ export default {
       str += `\nconst store = createStore({`;
       str += `\n\tstate () {`;
       str += `\n\t\treturn {`;
-      if (!this.userState.length){
+      if (!this.userState.length) {
         str += `\n\t\t\t//placeholder for state`
       }
-      for (let i = 0; i < this.userState.length; i++){
-        str+= `\n\t\t\t${this.userState[i]}: "PLACEHOLDER FOR VALUE",`
-        if (i === this.userState.length-1){str = str.slice(0, -1)}
+      for (let i = 0; i < this.userState.length; i++) {
+        str += `\n\t\t\t${this.userState[i]}: "PLACEHOLDER FOR VALUE",`
+        if (i === this.userState.length - 1) { str = str.slice(0, -1) }
       }
       str += `\n\t\t}`;
       str += `\n\t},`;
       str += `\n\tmutations: {`;
-      if (!this.userActions.length){
+      if (!this.userActions.length) {
         str += `\n\t\t\t//placeholder for mutations`
       }
-      for (let i = 0; i < this.userActions.length; i++){
+      for (let i = 0; i < this.userActions.length; i++) {
         str += `\n\t\t${this.userActions[i]} (state) {`;
         str += `\n\t\t\t//placeholder for your mutation`;
         str += `\n\t\t},`;
-        if (i === this.userActions.length-1){str = str.slice(0, -1)}
+        if (i === this.userActions.length - 1) { str = str.slice(0, -1) }
       }
       str += `\n\t},`;
       str += `\n\tactions: {`;
-      if (!this.userActions.length){
+      if (!this.userActions.length) {
         str += `\n\t\t\t//placeholder for actions`
       }
-      for (let i = 0; i < this.userActions.length; i++){
+      for (let i = 0; i < this.userActions.length; i++) {
         str += `\n\t\t${this.userActions[i]} () {`;
         str += `\n\t\t\tstore.commit('${this.userActions[i]}')`;
         str += `\n\t\t},`;
-        if (i === this.userActions.length-1){str = str.slice(0, -1)}
+        if (i === this.userActions.length - 1) { str = str.slice(0, -1) }
       }
       str += `\n\t}`;
       str += '\n})\n';
