@@ -31,7 +31,19 @@ const actions = {
   [types.openNoteModal]: ({ commit }) => {
     commit(types.OPEN_NOTE_MODAL)
   },
+  //test
+  [types.openAttributeModal]: ({ commit }, payload) => {
+    commit(types.OPEN_ATTRIBUTE_MODAL, payload)
+  },
 
+  [types.addActiveComponentClass]: ({ commit }, payload) => {
+    commit(types.ADD_ACTIVE_COMPONENT_CLASS, payload)
+  },
+
+  [types.deleteActiveComponentClass]: ({ commit }, payload) => {
+    commit(types.DELETE_ACTIVE_COMPONENT_CLASS, payload)
+  },
+  //
   [types.registerComponent]: ({ state, commit }, payload) => {
     /* this action has a lot of mutations deployed
     Because we have to initialize a whole bunch of properties

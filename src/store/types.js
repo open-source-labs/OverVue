@@ -67,11 +67,21 @@ export const TOGGLE_TUTORIAL = 'TOGGLE_TUTORIAL'
 export const ADD_ACTIVE_COMPONENT_NOTE = 'ADD_ACTIVE_COMPONENT_NOTE'
 export const DELETE_ACTIVE_COMPONENT_NOTE = 'DELETE_ACTIVE_COMPONENT_NOTE'
 export const OPEN_NOTE_MODAL = 'OPEN_NOTE_MODAL'
+//Jace practest
+export const OPEN_ATTRIBUTE_MODAL = 'OPEN_ATTRIBUTE_MODAL'
+export const ADD_ACTIVE_COMPONENT_CLASS = 'ADD_ACTIVE_COMPONENT_CLASS'
+export const DELETE_ACTIVE_COMPONENT_CLASS = 'DELETE_ACTIVE_COMPONENT_CLASS'
+//
 export const REMOVE_ALL_STATE_PROPS_ACTIONS = 'REMOVE_ALL_STATE_PROPS_ACTIONS'
 export const UPDATE_PASTE_TIMER = 'UPDATE_PASTE_TIMER'
 
 // Actions
 export const openNoteModal = 'openNoteModal'
+//Jace practest
+export const openAttributeModal = 'openAttributeModal'
+export const addActiveComponentClass = 'addActiveComponentClass'
+export const deleteActiveComponentClass = 'deleteActiveComponentClass'
+//
 export const deleteActiveComponentNote = 'deleteActiveComponentNote'
 export const addActiveComponentNote = 'addActiveComponentNote'
 export const addActionSelected = 'addActionSelected'

@@ -42,9 +42,9 @@ Description:
           @activeLayer="addNestedNoActive"
         />
       </div>
-      <div class="componentHTML">
+      <button class="componentHTML">
         <CreateMenuHTMLQueue></CreateMenuHTMLQueue>
-      </div>
+      </button>
       <br />
 
       <q-btn
