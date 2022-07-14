@@ -95,7 +95,7 @@ export default {
         "list-ul": ["<ul>", "</ul>"],
         input: ["<input />", ""],
         navbar: ["<nav>", "</nav>"],
-        header:["<header>", "</header>"],
+        header:["<header>","</header>"],
         footer:["<footer>", "</footer>"],
         meta: ["<meta>", "</meta>"],
         h1:["<h1>", "</h1>"],
@@ -105,7 +105,20 @@ export default {
         h5:["<h5>", "</h5>"],
         h6:["<h6>", "</h6>"],
       };
-
+   //test//
+    //   function writeClass(componentName) {
+    //   if (this.componentMap[componentName]?.classList?.length > 0) {
+    //     let commentStr = '<!--'
+    //     this.componentMap[componentName].classList.forEach((el) => {
+    //       commentStr += "\n"
+    //       commentStr += el;
+    //     })
+    //     commentStr += '\n-->\n\n'
+    //     return commentStr;
+    //   } else {
+    //     return ''
+    //   }
+    //  };
       // Helper function that recursively iterates through the given html element's children and their children's children.
       // also adds proper indentation to code snippet
       function writeNested(childrenArray, indent) {

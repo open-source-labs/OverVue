@@ -19,7 +19,7 @@ Description:
       <p v-if='!this.componentMap[this.activeComponent]?.htmlList.length'>No HTML elements in component</p>
       <div id="tooltipCon"
       :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'"
-      @dblclick.self="setActiveElement(element)"
+      @click="setActiveElement(element)"
       v-for="(element) in renderList" :key="element[1] + Date.now()"
       >
       
@@ -31,6 +31,43 @@ Description:
       </div>
 
     </div>
+
+
+      <!-- attribute pop-up -->
+          <q-dialog v-model="attributeModal" > 
+          <!-- @update:model-value="setActiveElement" -->
+            <div class="AttributeBox" >
+                <p class="title">Added attributes to {{ this.activeComponent }}</p>
+                <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList" :key="element[1] + Date.now()" >
+                    <p v-if='element.id === this.activeHTML'>Your class is - {{element.class}}</p>
+                </div>
+                <div class="formBox">
+                <q-form autofocus v-on:submit.prevent="submitClass">
+                    <p class="title">Add Class Name:</p><q-input
+                      label="Add your note here"
+                      filled
+                      dark
+                      autofocus true
+                      hide-bottom-space
+                      v-model="classText"
+                      @keyup.enter="submitClass"
+                    ></q-input>
+                    <q-btn 
+                    id="comp-btn"
+                    class="sidebar-btn"
+                    color="secondary"
+                    label="Submit Attribute"
+                    :disable="classText.length > 0 ? false : true"
+                    @click="submitClass(classText, this.activeHTML)"
+                    />
+                    <q-btn
+                    label="Close"
+                    @click="this.openAttributeModal"
+                    />
+                </q-form>
+              </div>
+            </div>
+        </q-dialog>
   </section>
 </template>
 
@@ -52,11 +89,13 @@ export default {
   },
   data () {
     return {
-      exceptions: ['input', 'img', 'link']
+      exceptions: ['input', 'img', 'link'],
+      attributeModal: false,
+      classText: ''
     }
   },
   computed: {
-    ...mapState(['selectedElementList', 'componentMap', 'activeComponent', 'activeHTML', 'activeLayer']),
+    ...mapState(['selectedElementList', 'componentMap', 'activeComponent', 'activeHTML', 'activeLayer', 'attributeModalOpen']),
     renderList: {
       get () {
         if (this.activeComponent === '') return this.selectedElementList.map((el, index) => [el.text, index, el.id])
@@ -87,14 +126,15 @@ export default {
 
   },
   methods: {
-    ...mapActions(['setActiveHTML', 'setActiveLayer', 'upOneLayer']),
+    ...mapActions(['setActiveHTML', 'setActiveLayer', 'upOneLayer', 'openAttributeModal','addActiveComponentClass']),
     deleteElement (id) {
       if (this.activeComponent === '') this.$store.dispatch(deleteSelectedElement, id[0])
       else this.$store.dispatch(deleteFromComponentHtmlList, id[1])
     },
     setActiveElement (element) {
       if (this.activeComponent !== '' && !this.exceptions.includes(element[0])) {
-        this.setActiveHTML(element)
+        this.setActiveHTML(element);
+        this.openAttributeModal(element);
       }
     },
     setLayer (element) {
@@ -104,9 +144,23 @@ export default {
       if (this.activeLayer.id !== '') {
         this.upOneLayer(this.activeLayer.id)
       }
-    }
+    },
+     submitClass(element, idNum){
+      if (element === ''){
+        return;
+      }
+      let payload = {
+        class: element,
+        id: idNum
+      }
+      this.addActiveComponentClass(payload);
+      this.classText = '';
+    },
   },
   watch: {
+    attributeModalOpen (){
+      this.attributeModal = this.attributeModalOpen;
+    },
     activeComponent: function () {
       if (this.activeComponent !== '') {
         this.component = true
@@ -198,6 +252,7 @@ hr {
 #tooltipCon {
   position: relative;
   cursor: pointer;
+  margin-top: 1.3em;
 }
 
 
@@ -233,4 +288,15 @@ hr {
 
 }
 
+.AttributeBox {
+  background-color: $subsecondary;
+  color: $menutext;
+  width: 65%;
+  padding: 15px;
+  height: 65vh;
+  max-height: 80vh;
+}
+
+
 </style>
+

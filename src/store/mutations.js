@@ -348,6 +348,7 @@ const mutations = {
       text: payload.elementName,
       id: payload.date,
       children: [],
+      class: ''
     });
   },
 
@@ -365,6 +366,7 @@ const mutations = {
       text: payload.elementName,
       id: payload.date,
       children: [],
+      class: ''
     });
   },
 
@@ -377,6 +379,7 @@ const mutations = {
       text: payload.elementName,
       id: payload.date,
       children: [],
+      class: ''
     });
   },
 
@@ -385,6 +388,7 @@ const mutations = {
       text: payload.elementName,
       id: payload.date,
       children: [],
+      class: ''
     });
   },
 
@@ -694,6 +698,26 @@ const mutations = {
 
   [types.OPEN_NOTE_MODAL]: (state) => {
     state.noteModalOpen = !state.noteModalOpen;
+  },
+  //Jace practice for future, not place classList directly in activeComponent
+  [types.OPEN_ATTRIBUTE_MODAL]: (state) => {
+    state.attributeModalOpen = !state.attributeModalOpen;
+  },
+
+  [types.ADD_ACTIVE_COMPONENT_CLASS]: (state, payload) => {
+    state.componentMap[state.activeComponent].htmlList.forEach((el) => {
+      if (payload.id  === el.id) {
+        el.class = payload.class
+      }
+    })
+  },
+  [types.DELETE_ACTIVE_COMPONENT_CLASS]: (state, payload) => {
+    state.componentMap[state.activeComponent].classList.forEach((el, ind) =>{
+      if (payload === el){
+        state.componentMap[state.activeComponent].classList.splice(ind, 1)
+        return;
+      }
+    })
   },
   // *** PROJECTS *** //////////////////////////////////////////////
 
