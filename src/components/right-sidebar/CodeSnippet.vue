@@ -129,7 +129,7 @@ export default {
             } else {
               nestedString +=
                 htmlElementMap[child.text][0] +
-                htmlElementMap[child.text][1] +
+                 htmlElementMap[child.text][1] +
                 "\n";
             }
           }

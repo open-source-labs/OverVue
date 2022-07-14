@@ -12,20 +12,22 @@ Description:
       <hr> 
     </span>
     <span class='list-title' v-else-if='!this.activeComponent'></span>
-    <div
+    <div 
       group="people"
       class="list-group"
     >
       <p v-if='!this.componentMap[this.activeComponent]?.htmlList.length'>No HTML elements in component</p>
-      <div
+      <div id="tooltipCon"
       :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'"
       @dblclick.self="setActiveElement(element)"
       v-for="(element) in renderList" :key="element[1] + Date.now()"
       >
+      
         <i v-if='activeComponent === "" || exceptions.includes(element[0]) '></i>
         <i v-else class="fas fa fa-angle-double-down fa-md" @click="setLayer({text: element[0], id: element[2]})"></i>
         {{ element[0] }}
         <i class="fas fa fa-trash fa-md" @click.self="deleteElement([element[1],element[2]])"></i>
+        <div class="tooltip"> Edit {{element[0]}} attributes </div>
       </div>
 
     </div>
@@ -191,4 +193,44 @@ li {
 hr {
   border: 1px solid grey
 }
+
+
+#tooltipCon {
+  position: relative;
+  cursor: pointer;
+}
+
+
+
+.tooltip {
+  visibility: hidden;
+  z-index: 1;
+  opacity: .40;
+  
+  width: 100%;
+
+  background: rgba(223, 215, 215, 0.774);
+  color: black;
+  
+  position: absolute;
+  // top:-140%;
+  top:-50%;
+  
+
+  border-radius: 9px;
+  transform: translateY(9px);
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 0 3px rgba(56, 54, 54, 0.86);
+}
+
+
+#tooltipCon:hover .tooltip{
+  visibility: visible;
+  transform: translateY(-10px);
+  opacity: 1;
+    transition: .3s linear;
+  animation: odsoky 1s ease-in-out infinite  alternate;
+
+}
+
 </style>
