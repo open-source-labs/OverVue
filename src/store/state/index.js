@@ -52,6 +52,9 @@ const newState = {
   componentChildrenMultiselectValue: [],
   modalOpen: false,
   noteModalOpen: false,
+  //test
+  noteAttributeOpen: false,
+  //
   parentSelected: false,
   // for storing copied component
   copiedComponent: {},
