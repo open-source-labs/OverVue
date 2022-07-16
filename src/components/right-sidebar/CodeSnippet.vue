@@ -84,26 +84,26 @@ export default {
     writeTemplateTag(componentName) {
       // create reference object
       const htmlElementMap = {
-        div: ["<div>", "</div>"],
-        button: ["<button>", "</button>"],
-        form: ["<form>", "</form>"],
-        img: ["<img>", ""],
-        link: ['<a href="#"/>', ""],
-        list: ["<li>", "</li>"],
-        paragraph: ["<p>", "</p>"],
-        "list-ol": ["<ol>", "</ol>"],
-        "list-ul": ["<ul>", "</ul>"],
-        input: ["<input />", ""],
-        navbar: ["<nav>", "</nav>"],
-        header:["<header>","</header>"],
-        footer:["<footer>", "</footer>"],
-        meta: ["<meta>", "</meta>"],
-        h1:["<h1>", "</h1>"],
-        h2:["<h2>", "</h2>"],
-        h3:["<h3>", "</h3>"],
-        h4:["<h4>", "</h4>"],
-        h5:["<h5>", "</h5>"],
-        h6:["<h6>", "</h6>"],
+        div: ["<div", "</div>"],
+        button: ["<button", "</button>"],
+        form: ["<form", "</form>"],
+        img: ["<img", ""], //single
+        link: ['<a href="#"', ""], //single
+        list: ["<li", "</li>"],
+        paragraph: ["<p", "</p>"],
+        "list-ol": ["<ol", "</ol>"],
+        "list-ul": ["<ul", "</ul>"],
+        input: ["<input", ""], //single
+        navbar: ["<nav", "</nav>"],
+        header:["<header","</header>"],
+        footer:["<footer", "</footer>"],
+        meta: ["<meta", "</meta>"],
+        h1:["<h1", "</h1>"],
+        h2:["<h2", "</h2>"],
+        h3:["<h3", "</h3>"],
+        h4:["<h4", "</h4>"],
+        h5:["<h5", "</h5>"],
+        h6:["<h6", "</h6>"],
       };
    //test//
     //   function writeClass(componentName) {
@@ -133,17 +133,21 @@ export default {
           if (!child.text) {
             nestedString += `<${child}/>\n`;
           } else {
+            nestedString += htmlElementMap[child.text][0];
+              if(child.class !== "") {
+                nestedString += " " + "class = " + `"${el.class}"`;
+                }
+              if(child.text === "img" || child.text === "input" || child.text === "link") {
+                nestedString += "/>";
+              } else {nestedString += ">";}
+                
             if (child.children.length) {
-              nestedString += htmlElementMap[child.text][0];
               nestedString += "\n";
               nestedString += writeNested(child.children, indented);
               nestedString += indented + htmlElementMap[child.text][1];
               nestedString += "\n";
             } else {
-              nestedString +=
-                htmlElementMap[child.text][0] +
-                htmlElementMap[child.text][1] +
-                "\n";
+              nestedString += htmlElementMap[child.text][1] + "\n";
             }
           }
         });
@@ -152,6 +156,9 @@ export default {
 
       // Iterates through active component's HTML elements list and adds to code snippet
       let htmlArr = this.componentMap[componentName].htmlList;
+      console.log("ALERT")
+      console.log(htmlArr[0].class)
+      console.log(htmlArr[0].children)
       let outputStr = ``;
       // eslint-disable-next-line no-unused-vars
       for (let el of htmlArr) {
@@ -159,16 +166,20 @@ export default {
           outputStr += `    <${el}/>\n`;
         } else {
           outputStr += `    `;
+            outputStr += htmlElementMap[el.text][0]
+      //if conditional to check class
+            if(el.class !== "") {
+              outputStr += " " + "class = " + `"${el.class}"`;
+            }
+              outputStr += ">";
           if (el.children.length) {
-            outputStr += htmlElementMap[el.text][0];
             outputStr += "\n";
             outputStr += writeNested(el.children, `    `);
             outputStr += `    `;
             outputStr += htmlElementMap[el.text][1];
             outputStr += `  \n`;
           } else {
-            outputStr +=
-              htmlElementMap[el.text][0] + htmlElementMap[el.text][1] + "\n";
+            outputStr += htmlElementMap[el.text][1] + "\n";
           }
         }
       }

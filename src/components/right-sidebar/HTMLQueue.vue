@@ -12,32 +12,35 @@ Description:
       <hr> 
     </span>
     <span class='list-title' v-else-if='!this.activeComponent'></span>
-    <div
+    <div 
       group="people"
       class="list-group"
     >
       <p v-if='!this.componentMap[this.activeComponent]?.htmlList.length'>No HTML elements in component</p>
       <div 
+      id="tooltipCon"
       :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'"
-      @dblclick.self="setActiveElement(element)"
       v-for="(element) in renderList" :key="element[1] + Date.now()"
+      
       >
+      
+      <button class = "attributeButton" @click="setActiveElement(element)">
+      <div class="tooltip"> Edit {{element[0]}} attributes </div>
+      </button>
         <i v-if='activeComponent === "" || exceptions.includes(element[0]) '></i>
         <i v-else class="fas fa fa-angle-double-down fa-md" @click="setLayer({text: element[0], id: element[2]})"></i>
         {{ element[0] }}
         <i class="fas fa fa-trash fa-md" @click.self="deleteElement([element[1],element[2]])"></i>
       </div>
-
     </div>
-
 
       <!-- attribute pop-up -->
           <q-dialog v-model="attributeModal" > 
           <!-- @update:model-value="setActiveElement" -->
             <div class="AttributeBox" >
                 <p class="title">Added attributes to {{ this.activeComponent }}</p>
-                <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList" :key="element[1] + Date.now()" >
-                    <p v-if='element.id === this.activeHTML'>Your class is - {{element.class}}</p>
+                <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList" :key="element.id + Date.now()" >
+                    <p v-if= "element.id === this.activeHTML" >Your class is - {{element.class}}</p>
                 </div>
                 <div class="formBox">
                 <q-form autofocus v-on:submit.prevent="submitClass">
@@ -89,7 +92,7 @@ export default {
     return {
       exceptions: ['input', 'img', 'link'],
       attributeModal: false,
-      classText: ''
+      classText: '',
     }
   },
   computed: {
@@ -130,13 +133,16 @@ export default {
       else this.$store.dispatch(deleteFromComponentHtmlList, id[1])
     },
     setActiveElement (element) {
-      if (this.activeComponent !== '' && !this.exceptions.includes(element[0])) {
+      if (this.activeComponent !== '') {
         this.setActiveHTML(element);
         this.openAttributeModal(element);
       }
     },
     setLayer (element) {
       this.setActiveLayer(element)
+      element.id = this.activeHTML
+      console.log(element)
+      console.log(this.activeHTML)
     },
     setParentLayer () {
       if (this.activeLayer.id !== '') {
@@ -245,6 +251,38 @@ li {
 hr {
   border: 1px solid grey
 }
+
+
+#tooltipCon {
+  position:relative;
+  cursor: pointer;
+  margin-top:2em;
+}
+
+.tooltip {
+  visibility: hidden;
+  z-index: 1;
+  opacity: .40;
+  
+  width: 300%;
+
+  background: rgba(223, 215, 215, 0.774);
+  color: black;
+  
+  position: absolute;
+  top:-180%;
+  left:-100%;
+  
+
+  border-radius: 9px;
+  transform: translateY(9px);
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 0 3px rgba(56, 54, 54, 0.86);
+}
+
+
+
+
 .AttributeBox {
   background-color: $subsecondary;
   color: $menutext;
@@ -253,5 +291,27 @@ hr {
   height: 65vh;
   max-height: 80vh;
 }
+
+.attributeButton {
+  width: 50px;
+  height: 15px;
+  position:absolute;
+  background:rgba(255, 255, 255, 0);
+  border:none;
+left:35%;
+bottom: 25%
+}
+
+.attributeButton:hover .tooltip{
+  visibility: visible;
+  transform: translateY(-10px);
+  opacity: 1;
+    transition: .3s linear;
+  animation: odsoky 1s ease-in-out infinite  alternate;
+}
+.attributeButton:hover {
+cursor:pointer;
+}
+
 </style>
 

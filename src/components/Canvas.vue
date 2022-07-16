@@ -12,6 +12,69 @@
     v-on:click="handleClick"
     v-on:click.right="handleRight"
   >
+  <!--color selector-->
+  <ColorPicker 
+  class="colorPicker"
+  default-format="hex"
+  id="color-picker-1"
+  :visible-formats="['hex']"
+  :color="{
+    h: 1,
+    s: 1,
+    l: 0.5,
+    a: 1
+  }"
+  @color-change="updateColor"
+>
+  <template #hue-range-input-label>
+    <span class="sr-only">Hue</span>
+  </template>
+
+  <template #alpha-range-input-label>
+    <span class="sr-only">Alpha</span>
+  </template>
+
+  <template #copy-button>
+    <span class="sr-only">Copy color</span>
+
+    <svg 
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+      width="15"
+      height="15"
+      viewBox="0 0 15 15"
+    >
+      <path 
+        d="M5 0v2H1v13h12v-3h-1v2H2V5h10v3h1V2H9V0zm1 1h2v2h3v1H3V3h3z"
+        fill="currentColor"
+      />
+
+      <path 
+        d="M10 7v2h5v2h-5v2l-3-3zM3 6h5v1H3zm0 2h3v1H3zm0 2h3v1H3zm0 2h5v1H3z"
+        fill="currentColor"
+      />
+    </svg>
+  </template>
+
+  <template #format-switch-button>
+    <span class="sr-only">Switch format</span>
+
+    <svg 
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="15"
+      viewBox="0 0 16 15"
+    >
+      <path 
+        d="M8 15l5-5-1-1-4 2-4-2-1 1zm4-9l1-1-5-5-5 5 1 1 4-2z"
+        fill="currentColor"
+      />
+    </svg>
+  </template>
+</ColorPicker>
+
+
     <!-- This is the actual component box -->
     <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
     <vue-draggable-resizable
@@ -33,6 +96,7 @@
       :onDragStart="recordInitialPosition"
       :onResizeStart="recordInitialSize"
     >
+
       <div class="component-title">
         <p>{{ componentData.componentName }}</p>
       </div>
@@ -48,6 +112,8 @@
         name="edit_note" 
         class="compNoteLogoEmpty" 
         @click="handleAddNotes" />
+
+        <!-- start of right click function-->
       <q-menu context-menu>
         <q-list color="black" class="menu">
           <q-item clickable v-ripple v-close-popup id="layer-item">
@@ -86,11 +152,17 @@
               <q-icon color="primary" name="upload" />
             </q-item-section>
           </q-item>
+          <q-item clickable v-ripple v-close-popup @click="handleAddChild">
+            <q-item-section>Edit Color</q-item-section>
+            <q-item-section avatar>
+              <q-icon color="primary" name="edit" />
+            </q-item-section>
+          </q-item>
         </q-list>
       </q-menu>
 
     </vue-draggable-resizable>
-    <div>
+<div>
       <q-dialog v-model="modalOpen">
       <div class="addChild">
       <p>Add/Remove Children</p>
@@ -163,6 +235,7 @@ import { mapState, mapActions } from "vuex";
 import VueDraggableResizable from "vue-draggable-resizable/src/components/vue-draggable-resizable.vue";
 import VueMultiselect from "vue-multiselect";
 import "vue-draggable-resizable/src/components/vue-draggable-resizable.css";
+import { ColorPicker } from 'vue-accessible-color-picker'
 
 const { fs, ipcRenderer } = window;
 
@@ -173,6 +246,7 @@ export default {
   components: {
     VueDraggableResizable,
     VueMultiselect,
+    ColorPicker,
   },
   data() {
     return {
@@ -340,6 +414,11 @@ export default {
       this.initialPosition.x = this.activeComponentData.x;
       this.initialPosition.y = this.activeComponentData.y;
     },
+  //color change function
+    updateColor (data) {
+        console.log(data)
+        },
+
     // records component's initial size/position in case of resize
     recordInitialSize: function (e) {
       this.initialSize.h = this.activeComponentData.h;
@@ -484,6 +563,7 @@ export default {
     },
   },
 };
+
 </script>
 
 <style scoped lang="scss">
@@ -716,6 +796,24 @@ li:hover{
   width: 100%;
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+.sr-only {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  white-space: nowrap;
+}
+
+
+.colorPicker {
+  color: black;
+  background: rgba(177, 171, 171, 0.562);
 }
 
 </style>
