@@ -31,6 +31,10 @@ const actions = {
   [types.openNoteModal]: ({ commit }) => {
     commit(types.OPEN_NOTE_MODAL)
   },
+
+  [types.openColorModal]: ({ commit }) => {
+    commit(types.OPEN_COLOR_MODAL)
+  },
   //test
   [types.openAttributeModal]: ({ commit }, payload) => {
     commit(types.OPEN_ATTRIBUTE_MODAL, payload)

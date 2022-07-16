@@ -54,6 +54,7 @@ const newState = {
   noteModalOpen: false,
   //test
   noteAttributeOpen: false,
+  colorModalOpen: false,
   //
   parentSelected: false,
   // for storing copied component
