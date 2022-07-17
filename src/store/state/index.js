@@ -1,5 +1,6 @@
 import icons from './icons'
 import htmlElementMap from './htmlElementMap'
+import styleClassmap from './styleClassMap'
 
 
 const cloneDeep = require('lodash.clonedeep')
@@ -17,7 +18,7 @@ const newState = {
     HomeView: {
       componentName: 'HomeView',
       children: [],
-      htmlList: []
+      htmlList: [],
     }
   },
   routes: {
@@ -70,7 +71,7 @@ const newState = {
 const writeTheDefault = () => {
   let initial = {}
   let needsToRun = true
-  function onced (payload) {
+  function onced(payload) {
     if (needsToRun) {
       initial = cloneDeep(payload)
       needsToRun = false
