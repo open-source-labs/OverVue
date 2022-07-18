@@ -41,7 +41,7 @@ export function useCreateComponent(importObj) {
       state: [],
       parent: {},
       isActive: false,
-      color: "#ffffff00"
+      color: "#ffffff85"
     };
 
     if (imported === true){
