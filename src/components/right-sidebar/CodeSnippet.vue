@@ -236,18 +236,6 @@ export default {
         methods += "\n    ]),\n";
         methods += "  },\n";
       }
-      //creating a styleString too add to style scope1d style
-      // let classArr = this.componentMap[componentName].htmlList;
-      // console.log('thisone', classArr[0].class);
-      // const styleStr = ' ';
-      // for (const htmlKey of classArr) {
-      //   if (!htmlKey.text) return;
-      //   if (htmlKey.class) {
-      //     styleStr += `.${htmlKey.class}{\n}`
-      //   }
-      //   //left off here: think there is an issue to render this information:::::::: 
-      //   return styleStr;
-      // }
 
       let htmlArray = this.componentMap[componentName].htmlList;
       console.log("down here", htmlArray);
@@ -258,10 +246,6 @@ export default {
           styleString += `.${html.class} {\n}\n`
         }
       }
-      // const accessProxy = new Proxy(htmlArray, getHandler)
-      // const getHandler = {
-      //   get: function (htmlArray, )
-      // };
 
       // concat all code within script tags
       // if exportAsTypescript is on, out should be <script lang="ts">
