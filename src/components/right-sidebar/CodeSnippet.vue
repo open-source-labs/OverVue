@@ -137,11 +137,12 @@ export default {
       // Iterates through active component's HTML elements list and adds to code snippet
       let htmlArr = this.componentMap[componentName].htmlList;
       console.log("ALERT")
-      console.log(htmlArr[0].class)
-      console.log(htmlArr[0].children)
+      console.log('hellloo')
+      console.log("here", htmlArr[0].class)
+      console.log(htmlArr[0].children);
       let outputStr = ``;
       // eslint-disable-next-line no-unused-vars
-      for (let el of htmlArr) {
+      for (const el of htmlArr) {
         if (!el.text) {
           outputStr += `    <${el}/>\n`;
         } else {
@@ -235,19 +236,32 @@ export default {
         methods += "\n    ]),\n";
         methods += "  },\n";
       }
-      //creating a styleString too add to style scoped style
-      let classArr = this.componentMap[componentName].htmlList;
-      console.log('thisone', classArr);
-      const styleStr = ' ';
-      for (const hmtl of classArr) {
-        if (!html.text) return;
-        if (html.class) {
-          styleStr += `.${html.class}{\n}`
-        }
-        //left off here: think there is an issue to render this information:::::::: 
-        return styleStr;
-      }
+      //creating a styleString too add to style scope1d style
+      // let classArr = this.componentMap[componentName].htmlList;
+      // console.log('thisone', classArr[0].class);
+      // const styleStr = ' ';
+      // for (const htmlKey of classArr) {
+      //   if (!htmlKey.text) return;
+      //   if (htmlKey.class) {
+      //     styleStr += `.${htmlKey.class}{\n}`
+      //   }
+      //   //left off here: think there is an issue to render this information:::::::: 
+      //   return styleStr;
+      // }
 
+      let htmlArray = this.componentMap[componentName].htmlList;
+      console.log("down here", htmlArray);
+      let styleString = "";
+      for (const html of htmlArray) {
+        if (!html.class) styleString = "";
+        if (html.class) {
+          styleString += `.${html.class} {\n}\n`
+        }
+      }
+      // const accessProxy = new Proxy(htmlArray, getHandler)
+      // const getHandler = {
+      //   get: function (htmlArray, )
+      // };
 
       // concat all code within script tags
       // if exportAsTypescript is on, out should be <script lang="ts">
@@ -269,7 +283,7 @@ export default {
         output += "});\n<\/script>\n\n<style scoped>\n</style>"
 
       } else {
-        output += `};\n<\/script>\n\n<style scoped>\n${styleStr}</style>`
+        output += `}; \n <\/script>\n\n<style scoped>\n${styleString}</style > `
       }
       return output
     },
