@@ -113,7 +113,10 @@ const actions = {
   [types.updateComponentSize]: ({ commit }, payload) => {
     commit(types.UPDATE_COMPONENT_SIZE, payload);
   },
-
+  //color updater
+  [types.updateColor]: ({ commit }, payload) => {
+    commit(types.UPDATE_COLOR, payload);
+  },
   // copy the active component
   [types.copyActiveComponent]: ({ commit }, payload) => {
     commit(types.COPY_ACTIVE_COMPONENT);

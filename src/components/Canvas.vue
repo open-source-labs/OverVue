@@ -32,7 +32,9 @@
       @resizestop="finishedResize"
       :onDragStart="recordInitialPosition"
       :onResizeStart="recordInitialSize"
+      :style="{'background-color': componentData.color}"
     >
+    
 
       <div class="component-title">
         <p>{{ componentData.componentName }}</p>
@@ -171,18 +173,14 @@
 
 <!--color selector-->
 <q-dialog v-model="colorModal" @update:model-value="handleEditColor">
+<!--may need to change starting to be current state?-->
 <ColorPicker 
   class="colorPicker"
   default-format="hex"
   id="color-picker-1"
   :visible-formats="['hex']"
-  :color="{
-    h: 1,
-    s: 1,
-    l: 0.5,
-    a: 1
-  }"
-  @color-change="updateColor"
+  :color="this.activeComponentData.color"
+  @color-change="updateColors"
 >
   <template #hue-range-input-label>
     <span class="sr-only">Hue</span>
@@ -415,6 +413,7 @@ export default {
       "deleteActiveComponentNote",
       "openNoteModal",
       "openColorModal",
+      "updateColor",
     ]),
     useExportComponentBound(){
       useExportComponent.bind(this)();
@@ -432,8 +431,15 @@ export default {
       this.initialPosition.y = this.activeComponentData.y;
     },
   //color change function
-    updateColor (data) {
-        console.log(data)
+    updateColors (data) {
+      let payload = {
+        color: data.cssColor,
+        activeComponent: this.activeComponent,
+        routeArray: this.routes[this.activeRoute],
+        activeComponentData: this.activeComponentData,
+      }
+        this.updateColor(payload)
+        
         },
 
     // records component's initial size/position in case of resize
@@ -796,15 +802,15 @@ li:hover{
 .component-box {
   color: $menutext;
   border: 1.2px dashed $darktext;
-  background-color: rgba($darktext, .42);
+  // background-color: rgba($darktext, .42);
   -webkit-transition: background-color 200ms linear;
   -ms-transition: background-color 200ms linear;
   transition: background-color 200ms linear;
   position: absolute;
 }
 .active {
-  background-color: rgba($secondary, .42);
-  border: 1px dashed $accent;
+  // background-color: rgba($secondary, .42);
+  border: 3px solid $primary;
 }
 .minorAction {
   font-weight: bolder !important;
