@@ -319,7 +319,6 @@ export default {
     ]),
     // used in VueDraggableResizeable component
     activeRouteArray() {
-      console.log(this.routes[this.activeRoute])
       return this.routes[this.activeRoute];
     },
     // used to delete active component
