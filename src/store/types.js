@@ -84,6 +84,7 @@ export const openColorModal = 'openColorModal'
 export const openAttributeModal = 'openAttributeModal'
 export const addActiveComponentClass = 'addActiveComponentClass'
 export const deleteActiveComponentClass = 'deleteActiveComponentClass'
+
 //
 export const deleteActiveComponentNote = 'deleteActiveComponentNote'
 export const addActiveComponentNote = 'addActiveComponentNote'
