@@ -136,10 +136,10 @@ export default {
 
       // Iterates through active component's HTML elements list and adds to code snippet
       let htmlArr = this.componentMap[componentName].htmlList;
-      console.log("ALERT")
-      console.log('hellloo')
-      console.log("here", htmlArr[0].class)
-      console.log(htmlArr[0].children);
+      // console.log("ALERT")
+      // console.log('hellloo')
+      // console.log("here", htmlArr[0].class)
+      // console.log(htmlArr[0].children);
       let outputStr = ``;
       // eslint-disable-next-line no-unused-vars
       for (const el of htmlArr) {
@@ -241,7 +241,7 @@ export default {
       console.log("down here", htmlArray);
       let styleString = "";
       for (const html of htmlArray) {
-        if (!html.class) styleString = "";
+        if (html.class === ' ') styleString = "";
         if (html.class) {
           styleString += `.${html.class} {\n}\n`
         }
