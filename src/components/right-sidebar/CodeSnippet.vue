@@ -156,9 +156,6 @@ export default {
 
       // Iterates through active component's HTML elements list and adds to code snippet
       let htmlArr = this.componentMap[componentName].htmlList;
-      console.log("ALERT")
-      console.log(htmlArr[0].class)
-      console.log(htmlArr[0].children)
       let outputStr = ``;
       // eslint-disable-next-line no-unused-vars
       for (let el of htmlArr) {
