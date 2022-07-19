@@ -40,11 +40,11 @@
     "prismjs": "^1.26.0",
     "quasar": "^2.5.5",
     "quasar-dotenv": "^1.0.5",
-    "vue":"3.2.31",
-    "vue-router": "4.0.13",
+    "vue": "3.2.31",
     "vue-draggable-resizable": "^2.3.0",
     "vue-multiselect": "^3.0.0-alpha.2",
     "vue-prism-editor": "^2.0.0-alpha.2",
+    "vue-router": "4.0.13",
     "vue3-tree": "^0.11.0",
     "vued3tree": "^5.1.0",
     "vuex": "^4.0.2"

@@ -41,6 +41,8 @@ export function useCreateComponent(importObj) {
       state: [],
       parent: {},
       isActive: false,
+      idDrag: '',
+      idDrop: ''
     };
 
     if (imported === true){

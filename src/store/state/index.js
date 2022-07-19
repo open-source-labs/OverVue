@@ -47,6 +47,8 @@ const newState = {
   selectedState: [],
   selectedActions: [],
   selectedElementList: [],
+  selectedIdDrag: '',
+  selectedIdDrop: '',
   projectNumber: 2,
   activeTab: 0,
   componentChildrenMultiselectValue: [],
