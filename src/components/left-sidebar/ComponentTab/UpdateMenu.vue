@@ -62,6 +62,9 @@ Description:
           </div>
           <br />
         </q-expansion-item>
+        <q-expansion-item group="accordion" label="HTML Attributes">
+          <AttributesSubMenu />
+        </q-expansion-item>
         <!-- Props item that has AddProps component in it -->
         <q-expansion-item group="accordion" label="Props">
           <PropsSubMenu />
@@ -100,6 +103,7 @@ Description:
         <q-expansion-item group="accordion" label="Actions">
           <ActionsSubMenu />
         </q-expansion-item>
+        
       </q-list>
       <q-btn
         id="exportButton"
@@ -129,6 +133,7 @@ import Icons from "./Icons.vue";
 import PropsSubMenu from "./PropsSubMenu.vue";
 import StateSubMenu from "./StateSubMenu.vue";
 import ActionsSubMenu from "./ActionsSubMenu.vue";
+import AttributesSubMenu from "./AttributesSubMenu.vue";
 
 const cloneDeep = require("lodash.clonedeep");
 const { fs, ipcRenderer } = window;
@@ -148,6 +153,7 @@ export default {
     PropsSubMenu,
     StateSubMenu,
     ActionsSubMenu,
+    AttributesSubMenu
   },
   computed: {
     ...mapState([

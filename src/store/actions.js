@@ -31,6 +31,10 @@ const actions = {
   [types.openNoteModal]: ({ commit }) => {
     commit(types.OPEN_NOTE_MODAL)
   },
+
+  [types.openColorModal]: ({ commit }) => {
+    commit(types.OPEN_COLOR_MODAL)
+  },
   //test
   [types.openAttributeModal]: ({ commit }, payload) => {
     commit(types.OPEN_ATTRIBUTE_MODAL, payload)
@@ -109,7 +113,10 @@ const actions = {
   [types.updateComponentSize]: ({ commit }, payload) => {
     commit(types.UPDATE_COMPONENT_SIZE, payload);
   },
-
+  //color updater
+  [types.updateColor]: ({ commit }, payload) => {
+    commit(types.UPDATE_COLOR, payload);
+  },
   // copy the active component
   [types.copyActiveComponent]: ({ commit }, payload) => {
     commit(types.COPY_ACTIVE_COMPONENT);
@@ -206,6 +213,11 @@ const actions = {
 
   [types.addPropsToComponent]: ({ commit }, payload) => {
     commit(types.ADD_PROPS_TO_COMPONENT, payload);
+  },
+
+  //edit parent attribute
+  [types.editAttribute]: ({ commit }, payload) => {
+    commit(types.EDIT_ATTRIBUTE, payload);
   },
 
   [types.createState]: ({ commit }, payload) => {
