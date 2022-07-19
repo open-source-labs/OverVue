@@ -8,6 +8,7 @@ Description:
   <section class="html-queue" @dragover="dragOver($event), false">
     <span class='list-title' v-if='this.activeLayer.id !== ""'>
       <i class="fas fa fa-chevron-up fa-md" @click="setParentLayer"></i>
+      
       &nbsp; &nbsp; Viewing Elements in {{this.activeComponent}} '{{ depth }}'
       <hr>
     </span>
@@ -16,17 +17,23 @@ Description:
     <div group="people" class="list-group">
 
       <p v-if='!this.componentMap[this.activeComponent]?.htmlList.length'>No HTML elements in component</p>
+      <!---->
         <div 
+        id="tooltipCon"
         v-for="(element) in renderList" :key="element[1] + Date.now()" 
         @dragenter="dragEnter($event, element[2])"
         >  
-          <div 
+          <div
           :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'"
           @dblclick.self="setActiveElement(element)"
           @dragstart="startDrag($event, element[2])" 
           @dragend="endDrag($event)"
           draggable="true"
           >
+          <!--invisible button for tooltip-->
+            <button class="attributeButton" @click="setActiveElement(element)">
+              <div class="tooltip"> Edit {{ element[0] }} attributes </div>
+            </button>
             <i v-if='activeComponent === "" || exceptions.includes(element[0]) '></i>
             <i v-else class="fas fa fa-angle-double-down fa-md" @click="setLayer({text: element[0], id: element[2]})"></i>
             {{ element[0] }}
@@ -35,6 +42,48 @@ Description:
         </div>
     </div>
 
+<!--START OF CHANGES-->>
+      <!-- &nbsp; &nbsp; Viewing Elements in {{ this.activeComponent }} '{{ depth }}'
+      <hr>
+    </span>
+    <span class='list-title' v-else-if='!this.activeComponent'></span>
+    <div group="people" class="list-group">
+      <p v-if='!this.componentMap[this.activeComponent]?.htmlList.length'>No HTML elements in component</p>
+
+      <div id="tooltipCon" :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'"
+        v-for="(element) in renderList" :key="element[1] + Date.now()">
+
+        <button class="attributeButton" @click="setActiveElement(element)">
+          <div class="tooltip"> Edit {{ element[0] }} attributes </div>
+        </button>
+        <i v-if='activeComponent === "" || exceptions.includes(element[0])'></i>
+        <i v-else class="fas fa fa-angle-double-down fa-md" @click="setLayer({ text: element[0], id: element[2] })"></i>
+        {{ element[0] }}
+        <i class="fas fa fa-trash fa-md" @click.self="deleteElement([element[1], element[2]])"></i>
+      </div>
+    </div> -->
+
+    <!-- attribute pop-up -->
+    <q-dialog v-model="attributeModal">
+      <!-- @update:model-value="setActiveElement" -->
+      <div class="AttributeBox">
+        <p class="title">Added attributes to {{ this.activeComponent }}</p>
+        <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList"
+          :key="element.id + Date.now()">
+          <p v-if="element.id === this.activeHTML">Your class is - {{ element.class }}</p>
+        </div>
+        <div class="formBox">
+          <q-form autofocus v-on:submit.prevent="submitClass">
+            <p class="title">Add Class Name:</p>
+            <q-input label="Add your note here" filled dark autofocus true hide-bottom-space v-model="classText"
+              @keyup.enter="submitClass"></q-input>
+            <q-btn id="comp-btn" class="sidebar-btn" color="secondary" label="Submit Attribute"
+              :disable="classText.length > 0 ? false : true" @click="submitClass(classText, this.activeHTML)" />
+            <q-btn label="Close" @click="this.openAttributeModal" />
+          </q-form>
+        </div>
+      </div>
+    </q-dialog>
   </section>
 </template>
 
@@ -55,15 +104,17 @@ export default {
       type: Array
     }
   },
-  data () {
+  data() {
     return {
-      exceptions: ['input', 'img', 'link']
+      exceptions: ['input', 'img', 'link'],
+      attributeModal: false,
+      classText: '',
     }
   },
   computed: {
-    ...mapState(['selectedElementList', 'componentMap', 'activeComponent', 'activeHTML', 'activeLayer']),
+    ...mapState(['selectedElementList', 'componentMap', 'activeComponent', 'activeHTML', 'activeLayer', 'attributeModalOpen']),
     renderList: {
-      get () {
+      get() {
         if (this.activeComponent === '') return this.selectedElementList.map((el, index) => [el.text, index, el.id])
         // change activeComponent's htmlList into an array of arrays ([element/component name, index in state])
         if (this.activeComponent !== '' && this.activeLayer.id === '') {
@@ -78,7 +129,7 @@ export default {
         })
         return sortedHTML
       },
-      set (value) {
+      set(value) {
         this.$store.dispatch(setSelectedElementList, value)
       }
     },
@@ -92,20 +143,24 @@ export default {
 
   },
   methods: {
-    ...mapActions(['setActiveHTML', 'setActiveLayer', 'upOneLayer', 'setSelectedIdDrag', 'setIdDrag', 'setSelectedIdDrop', 'setIdDrop', 'dragDropSortHtmlElements', 'dragDropSortSelectedHtmlElements']),
+    ...mapActions(['setActiveHTML', 'setActiveLayer', 'upOneLayer', 'setSelectedIdDrag', 'setIdDrag', 'setSelectedIdDrop', 'setIdDrop', 'dragDropSortHtmlElements', 'dragDropSortSelectedHtmlElements', 'openAttributeModal', 'addActiveComponentClass']),
     deleteElement (id) {
       if (this.activeComponent === '') this.$store.dispatch(deleteSelectedElement, id[0])
       else this.$store.dispatch(deleteFromComponentHtmlList, id[1])
     },
-    setActiveElement (element) {
-      if (this.activeComponent !== '' && !this.exceptions.includes(element[0])) {
-        this.setActiveHTML(element)
+    setActiveElement(element) {
+      if (this.activeComponent !== '') {
+        this.setActiveHTML(element);
+        this.openAttributeModal(element);
       }
     },
-    setLayer (element) {
+    setLayer(element) {
       this.setActiveLayer(element)
+      element.id = this.activeHTML
+      console.log(element)
+      console.log(this.activeHTML)
     },
-    setParentLayer () {
+    setParentLayer() {
       if (this.activeLayer.id !== '') {
         this.upOneLayer(this.activeLayer.id)
       }
@@ -136,9 +191,22 @@ export default {
       if (this.activeComponent === '') this.dragDropSortSelectedHtmlElements()
       else this.dragDropSortHtmlElements()
     },
-
+    submitClass(element, idNum) {
+      if (element === '') {
+        return;
+      }
+      let payload = {
+        class: element,
+        id: idNum
+      }
+      this.addActiveComponentClass(payload);
+      this.classText = '';
+    },
   },
   watch: {
+    attributeModalOpen() {
+      this.attributeModal = this.attributeModalOpen;
+    },
     activeComponent: function () {
       if (this.activeComponent !== '') {
         this.component = true
@@ -198,6 +266,7 @@ li {
   right: 35px;
   float: right;
 }
+
 .fa-angle-double-down {
   position: relative;
   top: 2px;
@@ -235,4 +304,65 @@ hr {
 .ignoreByDragover {
   pointer-events: none;
 }
+#tooltipCon {
+  position: relative;
+  cursor: pointer;
+  margin-top: 2em;
+}
+
+.tooltip {
+  visibility: hidden;
+  z-index: 1;
+  opacity: .40;
+
+  width: 300%;
+
+  background: rgba(223, 215, 215, 0.774);
+  color: black;
+
+  position: absolute;
+  top: -180%;
+  left: -100%;
+
+
+  border-radius: 9px;
+  transform: translateY(9px);
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 0 3px rgba(56, 54, 54, 0.86);
+}
+
+
+
+
+.AttributeBox {
+  background-color: $subsecondary;
+  color: $menutext;
+  width: 65%;
+  padding: 15px;
+  height: 65vh;
+  max-height: 80vh;
+}
+
+.attributeButton {
+  width: 50px;
+  height: 15px;
+  position: absolute;
+  background: rgba(255, 255, 255, 0);
+  border: none;
+  left: 35%;
+  bottom: 25%
+}
+
+.attributeButton:hover .tooltip {
+  visibility: visible;
+  transform: translateY(-10px);
+  opacity: 1;
+  transition: .3s linear;
+  animation: odsoky 1s ease-in-out infinite alternate;
+}
+
+.attributeButton:hover {
+  cursor: pointer;
+}
 </style>
+

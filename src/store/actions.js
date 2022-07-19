@@ -4,7 +4,7 @@ import * as types from "./types";
 const actions = {
   // Actions that primarily affect Canvas.vue //////
   [types.deleteActiveComponent]: ({ state, commit }) => {
-    if (state.noteModalOpen === true){
+    if (state.noteModalOpen === true) {
       return;
     }
     commit(types.DELETE_ACTIVE_COMPONENT);
@@ -19,7 +19,7 @@ const actions = {
   [types.parentSelected]: ({ commit }, payload) => {
     commit(types.PARENT_SELECTED, payload);
   },
-  
+
   [types.addActiveComponentNote]: ({ commit }, payload) => {
     commit(types.ADD_ACTIVE_COMPONENT_NOTE, payload)
   },
@@ -32,6 +32,22 @@ const actions = {
     commit(types.OPEN_NOTE_MODAL)
   },
 
+  [types.openColorModal]: ({ commit }) => {
+    commit(types.OPEN_COLOR_MODAL)
+  },
+  //test
+  [types.openAttributeModal]: ({ commit }, payload) => {
+    commit(types.OPEN_ATTRIBUTE_MODAL, payload)
+  },
+
+  [types.addActiveComponentClass]: ({ commit }, payload) => {
+    commit(types.ADD_ACTIVE_COMPONENT_CLASS, payload)
+  },
+
+  [types.deleteActiveComponentClass]: ({ commit }, payload) => {
+    commit(types.DELETE_ACTIVE_COMPONENT_CLASS, payload)
+  },
+  //
   [types.registerComponent]: ({ state, commit }, payload) => {
     /* this action has a lot of mutations deployed
     Because we have to initialize a whole bunch of properties
@@ -73,7 +89,7 @@ const actions = {
   [types.toggleTutorial]: ({ commit }) => {
     commit(types.TOGGLE_TUTORIAL)
   },
-  
+
   [types.setActiveComponent]: ({ commit }, payload) => {
     commit(types.SET_ACTIVE_COMPONENT, payload);
   },
@@ -97,7 +113,10 @@ const actions = {
   [types.updateComponentSize]: ({ commit }, payload) => {
     commit(types.UPDATE_COMPONENT_SIZE, payload);
   },
-
+  //color updater
+  [types.updateColor]: ({ commit }, payload) => {
+    commit(types.UPDATE_COLOR, payload);
+  },
   // copy the active component
   [types.copyActiveComponent]: ({ commit }, payload) => {
     commit(types.COPY_ACTIVE_COMPONENT);
@@ -105,10 +124,10 @@ const actions = {
   // paste the active component copy
   [types.pasteActiveComponent]: ({ commit, state }) => {
     //if nothing is copied, don't commit anything
-    if (!state.copiedComponent.componentName){
+    if (!state.copiedComponent.componentName) {
       return
     }
-    if (Date.now() < state.pasteTimer){
+    if (Date.now() < state.pasteTimer) {
       return;
     } else {
       commit(types.UPDATE_PASTE_TIMER) //throttles pasting
@@ -162,9 +181,9 @@ const actions = {
   },
 
   [types.setActiveRoute]: ({ state, commit }, payload) => {
-    if (state.routes[payload].length === 0){
+    if (state.routes[payload].length === 0) {
       commit(types.SET_ACTIVE_COMPONENT, '');
-    } 
+    }
     commit(types.SET_ACTIVE_ROUTE, payload);
   },
 
@@ -194,6 +213,11 @@ const actions = {
 
   [types.addPropsToComponent]: ({ commit }, payload) => {
     commit(types.ADD_PROPS_TO_COMPONENT, payload);
+  },
+
+  //edit parent attribute
+  [types.editAttribute]: ({ commit }, payload) => {
+    commit(types.EDIT_ATTRIBUTE, payload);
   },
 
   [types.createState]: ({ commit }, payload) => {
@@ -324,9 +348,9 @@ const actions = {
   [types.openProject]: ({ commit }, payload) => {
     commit(types.REMOVE_ALL_STATE_PROPS_ACTIONS)
     commit(types.SET_ACTIVE_ROUTE, "HomeView");
-    payload.userProps.forEach((prop)=>{commit(types.CREATE_PROP, prop)})
-    payload.userActions.forEach((action)=>{commit(types.CREATE_ACTION, action)})
-    payload.userState.forEach((state)=>{commit(types.CREATE_STATE, state)})
+    payload.userProps.forEach((prop) => { commit(types.CREATE_PROP, prop) })
+    payload.userActions.forEach((action) => { commit(types.CREATE_ACTION, action) })
+    payload.userState.forEach((state) => { commit(types.CREATE_STATE, state) })
     commit(types.SET_IMAGE_PATH, payload.imagePath);
     commit(types.SET_COMPONENT_MAP, payload.componentMap);
     commit(types.SET_ROUTES, payload.routes);

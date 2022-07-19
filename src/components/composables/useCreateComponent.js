@@ -42,7 +42,12 @@ export function useCreateComponent(importObj) {
       parent: {},
       isActive: false,
       idDrag: '',
-      idDrop: ''
+      idDrop: '',
+      color: "#ffffff85",
+      htmlAttributes:{
+        class:"",
+        id:"",
+      }
     };
 
     if (imported === true){

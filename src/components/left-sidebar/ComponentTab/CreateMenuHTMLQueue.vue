@@ -10,7 +10,9 @@ Description:
       group="people"
       class="list-group"
     >
-      <div
+      <div 
+      :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'"
+      @dblclick.self="setActiveElement(element)"
       v-for="(element) in renderList" :key="element[1] + Date.now()"
       @dragenter="dragEnter($event, element[2])"
       >

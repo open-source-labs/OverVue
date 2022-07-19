@@ -12,8 +12,17 @@
     v-on:click="handleClick"
     v-on:click.right="handleRight"
   >
+
+  <div
+  class="cssContainer">
     <!-- This is the actual component box -->
     <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
+    <p
+    class="cssContainerText"
+    >
+    CSS Container</p>
+
+
     <vue-draggable-resizable
       class-name="component-box"
       v-for="componentData in activeRouteArray"
@@ -32,22 +41,35 @@
       @resizestop="finishedResize"
       :onDragStart="recordInitialPosition"
       :onResizeStart="recordInitialSize"
+      :style="{'background-color': componentData.color}"
+      :parent="true"
     >
+    
       <div class="component-title">
         <p>{{ componentData.componentName }}</p>
       </div>
-      <q-icon v-if="this.componentMap[componentData.componentName]?.noteList?.length > 0" 
-        size="30px" 
+      <q-icon v-if="componentData.componentName === this.activeComponent" 
+        size="25px" 
         z-layer="0" 
         name="edit_note" 
         class="compNoteLogo" 
         @click="handleAddNotes" />
-      <q-icon v-else
+
+      <!-- <q-icon "
         size="30px" 
         z-layer="0" 
         name="edit_note" 
         class="compNoteLogoEmpty" 
-        @click="handleAddNotes" />
+        @click="handleAddNotes" /> -->
+
+      <q-icon v-if="componentData.componentName === this.activeComponent"
+        size="25px" 
+        z-layer="0" 
+        name="palette" 
+        class="colorLogo" 
+        @click="handleEditColor" />
+
+        <!-- start of right click function-->
       <q-menu context-menu>
         <q-list color="black" class="menu">
           <q-item clickable v-ripple v-close-popup id="layer-item">
@@ -86,11 +108,17 @@
               <q-icon color="primary" name="upload" />
             </q-item-section>
           </q-item>
+          <q-item clickable v-ripple v-close-popup @click="handleEditColor">
+            <q-item-section>Edit Color</q-item-section>
+            <q-item-section avatar>
+              <q-icon color="primary" name="edit" />
+            </q-item-section>
+          </q-item>
         </q-list>
       </q-menu>
 
     </vue-draggable-resizable>
-    <div>
+<div>
       <q-dialog v-model="modalOpen">
       <div class="addChild">
       <p>Add/Remove Children</p>
@@ -148,21 +176,89 @@
                     @click="this.openNoteModal"
                     />
                 </q-form>
+                
                 </div>
               </div>
             </div>
         </q-dialog>
+
+
+<!--color selector-->
+<q-dialog v-model="colorModal" @update:model-value="handleEditColor">
+<!--may need to change starting to be current state?-->
+<ColorPicker 
+  class="colorPicker"
+  default-format="hex"
+  id="color-picker-1"
+  :visible-formats="['hex']"
+  :color="this.activeComponentData.color"
+  @color-change="updateColors"
+>
+  <template #hue-range-input-label>
+    <span class="sr-only">Hue</span>
+  </template>
+
+  <template #alpha-range-input-label>
+    <span class="sr-only">Alpha</span>
+  </template>
+
+  <template #copy-button>
+    <span class="sr-only">Copy color</span>
+
+    <svg 
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+      width="15"
+      height="15"
+      viewBox="0 0 15 15"
+    >
+      <path 
+        d="M5 0v2H1v13h12v-3h-1v2H2V5h10v3h1V2H9V0zm1 1h2v2h3v1H3V3h3z"
+        fill="currentColor"
+      />
+
+      <path 
+        d="M10 7v2h5v2h-5v2l-3-3zM3 6h5v1H3zm0 2h3v1H3zm0 2h3v1H3zm0 2h5v1H3z"
+        fill="currentColor"
+      />
+    </svg>
+  </template>
+
+  <template #format-switch-button>
+    <span class="sr-only">Switch format</span>
+
+    <svg 
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="15"
+      viewBox="0 0 16 15"
+    >
+      <path 
+        d="M8 15l5-5-1-1-4 2-4-2-1 1zm4-9l1-1-5-5-5 5 1 1 4-2z"
+        fill="currentColor"
+      />
+    </svg>
+  </template>
+</ColorPicker>
+</q-dialog>
+    </div>
     </div>
   </div>
+  
 </template>
+
 
 
 <script>
 import { useExportComponent } from "./composables/useExportComponent.js";
 import { mapState, mapActions } from "vuex";
 import VueDraggableResizable from "vue-draggable-resizable/src/components/vue-draggable-resizable.vue";
+import Vue3DraggableResizable from 'vue3-draggable-resizable'
 import VueMultiselect from "vue-multiselect";
 import "vue-draggable-resizable/src/components/vue-draggable-resizable.css";
+import 'vue3-draggable-resizable/dist/Vue3DraggableResizable.css'
+import { ColorPicker } from 'vue-accessible-color-picker'
 
 const { fs, ipcRenderer } = window;
 
@@ -171,8 +267,10 @@ const cloneDeep = require("lodash.clonedeep");
 export default {
   name: "Canvas",
   components: {
+    Vue3DraggableResizable,
     VueDraggableResizable,
     VueMultiselect,
+    ColorPicker,
   },
   data() {
     return {
@@ -181,6 +279,7 @@ export default {
       wasDragged: false,
       testModel: [],
       noteModal: false,
+      colorModal: false,
       mockImg: false,
       initialPosition: { x: 0, y: 0 },
       initialSize: { w: 0, h: 0 },
@@ -228,6 +327,7 @@ export default {
       "activeComponentObj",
       "exportAsTypescript",
       "noteModalOpen",
+      "colorModalOpen",
       "activeRouteDisplay"
     ]),
     // used in VueDraggableResizeable component
@@ -324,6 +424,8 @@ export default {
       "addActiveComponentNote",
       "deleteActiveComponentNote",
       "openNoteModal",
+      "openColorModal",
+      "updateColor",
     ]),
     useExportComponentBound(){
       useExportComponent.bind(this)();
@@ -340,6 +442,17 @@ export default {
       this.initialPosition.x = this.activeComponentData.x;
       this.initialPosition.y = this.activeComponentData.y;
     },
+  //color change function
+    updateColors (data) {
+      let payload = {
+        color: data.cssColor,
+        activeComponent: this.activeComponent,
+        routeArray: this.routes[this.activeRoute],
+        activeComponentData: this.activeComponentData,
+      }
+        this.updateColor(payload)
+        },
+
     // records component's initial size/position in case of resize
     recordInitialSize: function (e) {
       this.initialSize.h = this.activeComponentData.h;
@@ -424,6 +537,13 @@ export default {
        this.openNoteModal();
       }
     },
+    
+    handleEditColor(){
+      if (this.wasDragged === false && this.activeComponent !== ''){
+       this.openColorModal();
+      }
+    },
+
     handleAddChild() {
       this.modalOpen = true;
     },
@@ -471,6 +591,9 @@ export default {
     noteModalOpen (){
       this.noteModal = this.noteModalOpen;
     },
+    colorModalOpen (){
+      this.colorModal = this.colorModalOpen;
+    },
     activeComponent: {
     handler(){
       if (this.activeComponent !== '' && 
@@ -484,6 +607,7 @@ export default {
     },
   },
 };
+
 </script>
 
 <style scoped lang="scss">
@@ -523,6 +647,16 @@ li:hover{
   height: 65vh;
   max-height: 80vh;
 }
+.colorBox{
+  background-color: $subsecondary;
+  color: $menutext;
+  width: 65%;
+  padding: 15px;
+  height: 65vh;
+  max-height: 80vh;
+}
+
+
 .noteNum{
   width: 10%;
 }
@@ -630,6 +764,21 @@ li:hover{
     $secondary;
   behavior: url(/pie/PIE.htc);
 }
+
+.cssContainer {
+  margin:6.1%;
+  border: 1px solid black;
+  width: 1000px;
+  height:900px;
+}
+.cssContainerText {
+position:absolute;
+font-size: 3em;
+margin-top: -4%;
+margin-left: 23%;
+color:black;
+}
+
 .menu {
   margin-bottom: 0px !important;
 }
@@ -641,6 +790,20 @@ li:hover{
   position: absolute;
   top: 4px;
   left: 4px;
+}
+
+.colorLogo {
+  background: rgba($subprimary, .9);
+  color: $secondary;
+  border-radius: 4px;
+  position: absolute;
+  top: 4px;
+  left: 32px;
+}
+
+.colorLogo:hover{
+  background: rgba($subprimary, .6);
+  color: rgba($secondary, .8);
 }
 
 .compNoteLogoEmpty{
@@ -656,6 +819,7 @@ li:hover{
   color: rgba($secondary, .8);
 }
 
+
 .compNoteLogoEmpty:hover{
   background: rgba($subprimary, .6);
   color: rgba($menutext, .4);
@@ -664,15 +828,15 @@ li:hover{
 .component-box {
   color: $menutext;
   border: 1.2px dashed $darktext;
-  background-color: rgba($darktext, .42);
+  // background-color: rgba($darktext, .42);
   -webkit-transition: background-color 200ms linear;
   -ms-transition: background-color 200ms linear;
   transition: background-color 200ms linear;
   position: absolute;
 }
 .active {
-  background-color: rgba($secondary, .42);
-  border: 1px dashed $accent;
+  // background-color: rgba($secondary, .42);
+  border: 3px solid $primary;
 }
 .minorAction {
   font-weight: bolder !important;
@@ -716,6 +880,29 @@ li:hover{
   width: 100%;
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+.sr-only {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  white-space: nowrap;
+}
+
+
+.colorPicker {
+  color: black;
+  background: rgba(177, 171, 171, 0.562);
+}
+
+.colorContainer {
+  position:relative;
+  background: black
 }
 
 </style>
