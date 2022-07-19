@@ -80,8 +80,9 @@ export default {
     // Creates beginner boilerplate
     createTemplate(componentName) {
       let templateTagStr = this.writeTemplateTag(componentName);
-        if(this.activeComponentObj.htmlAttributes.class !== "") return `<template>\n  <div class = "${this.activeComponentObj.htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
-          else return `<template>\n  <div>\n${templateTagStr}  </div>\n</template>`;
+      console.log(this.activeComponentObj)
+        // if(this.activeComponentObj.htmlAttributes.class !== "") return `<template>\n  <div class = "${this.activeComponentObj.htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
+        //   else return `<template>\n  <div>\n${templateTagStr}  </div>\n</template>`;
       
     },
     // Creates <template> boilerplate

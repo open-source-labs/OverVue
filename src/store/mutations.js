@@ -489,6 +489,7 @@ const mutations = {
       isActive,
       actions,
       props,
+      htmlAttributes,
     } = payload;
     const s = payload.state;
     state.componentMap = {
@@ -507,6 +508,7 @@ const mutations = {
         actions,
         props,
         state: s,
+        htmlAttributes,
       },
     };
   },
