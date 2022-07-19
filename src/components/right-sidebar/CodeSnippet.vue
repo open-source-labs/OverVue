@@ -12,14 +12,8 @@ Description:
       Select a component
     </div>
     <div v-else>{{ `${this.activeComponent}.vue` }}</div>
-    <prism-editor
-      v-model="code"
-      :highlight="highlighter"
-      line-numbers
-      class="my-editor"
-      readonly
-    />
-    </div>
+    <prism-editor v-model="code" :highlight="highlighter" line-numbers class="my-editor" readonly />
+  </div>
 </template>
 
 <script>
@@ -48,14 +42,14 @@ export default {
     ...mapState(["componentMap", "activeComponent", "activeComponentObj", "exportAsTypescript"]),
   },
   methods: {
-    snippetInvoke(){
-      if (this.activeComponent !== ''){
+    snippetInvoke() {
+      if (this.activeComponent !== '') {
         this.code = this.createCodeSnippet(
           this.componentMap[this.activeComponent].componentName,
           this.componentMap[this.activeComponent].children
         )
-        } else {
-          this.code = 'Your component boilerplate will be displayed here.'
+      } else {
+        this.code = 'Your component boilerplate will be displayed here.'
       }
     },
     //highlighter does not work: OverVue 6.0;
@@ -95,30 +89,30 @@ export default {
         "list-ul": ["<ul", "</ul>"],
         input: ["<input", ""], //single
         navbar: ["<nav", "</nav>"],
-        header:["<header","</header>"],
-        footer:["<footer", "</footer>"],
+        header: ["<header", "</header>"],
+        footer: ["<footer", "</footer>"],
         meta: ["<meta", "</meta>"],
-        h1:["<h1", "</h1>"],
-        h2:["<h2", "</h2>"],
-        h3:["<h3", "</h3>"],
-        h4:["<h4", "</h4>"],
-        h5:["<h5", "</h5>"],
-        h6:["<h6", "</h6>"],
+        h1: ["<h1", "</h1>"],
+        h2: ["<h2", "</h2>"],
+        h3: ["<h3", "</h3>"],
+        h4: ["<h4", "</h4>"],
+        h5: ["<h5", "</h5>"],
+        h6: ["<h6", "</h6>"],
       };
-   //test//
-    //   function writeClass(componentName) {
-    //   if (this.componentMap[componentName]?.classList?.length > 0) {
-    //     let commentStr = '<!--'
-    //     this.componentMap[componentName].classList.forEach((el) => {
-    //       commentStr += "\n"
-    //       commentStr += el;
-    //     })
-    //     commentStr += '\n-->\n\n'
-    //     return commentStr;
-    //   } else {
-    //     return ''
-    //   }
-    //  };
+      //test//
+      //   function writeClass(componentName) {
+      //   if (this.componentMap[componentName]?.classList?.length > 0) {
+      //     let commentStr = '<!--'
+      //     this.componentMap[componentName].classList.forEach((el) => {
+      //       commentStr += "\n"
+      //       commentStr += el;
+      //     })
+      //     commentStr += '\n-->\n\n'
+      //     return commentStr;
+      //   } else {
+      //     return ''
+      //   }
+      //  };
       // Helper function that recursively iterates through the given html element's children and their children's children.
       // also adds proper indentation to code snippet
       function writeNested(childrenArray, indent) {
@@ -134,13 +128,13 @@ export default {
             nestedString += `<${child}/>\n`;
           } else {
             nestedString += htmlElementMap[child.text][0];
-              if(child.class !== "") {
-                nestedString += " " + "class = " + `"${el.class}"`;
-                }
-              if(child.text === "img" || child.text === "input" || child.text === "link") {
-                nestedString += "/>";
-              } else {nestedString += ">";}
-                
+            if (child.class !== "") {
+              nestedString += " " + "class = " + `"${el.class}"`;
+            }
+            if (child.text === "img" || child.text === "input" || child.text === "link") {
+              nestedString += "/>";
+            } else { nestedString += ">"; }
+
             if (child.children.length) {
               nestedString += "\n";
               nestedString += writeNested(child.children, indented);
@@ -156,9 +150,6 @@ export default {
 
       // Iterates through active component's HTML elements list and adds to code snippet
       let htmlArr = this.componentMap[componentName].htmlList;
-      console.log("ALERT")
-      console.log(htmlArr[0].class)
-      console.log(htmlArr[0].children)
       let outputStr = ``;
       // eslint-disable-next-line no-unused-vars
       for (let el of htmlArr) {
@@ -166,12 +157,12 @@ export default {
           outputStr += `    <${el}/>\n`;
         } else {
           outputStr += `    `;
-            outputStr += htmlElementMap[el.text][0]
-      //if conditional to check class
-            if(el.class !== "") {
-              outputStr += " " + "class = " + `"${el.class}"`;
-            }
-              outputStr += ">";
+          outputStr += htmlElementMap[el.text][0]
+          //if conditional to check class
+          if (el.class !== "") {
+            outputStr += " " + "class = " + `"${el.class}"`;
+          }
+          outputStr += ">";
           if (el.children.length) {
             outputStr += "\n";
             outputStr += writeNested(el.children, `    `);
@@ -204,7 +195,7 @@ export default {
         imports += ' } from "vuex";\n';
       }
 
-       // if Typescript toggle is on, import defineComponent
+      // if Typescript toggle is on, import defineComponent
       if (this.exportAsTypescript === "on") {
         imports += 'import { defineComponent } from "vue";\n';
       }
@@ -285,19 +276,19 @@ export default {
     // watches activeComponentObj for changes to make it reactive upon mutation
     // // // watches componentMap for changes to make it reactive upon mutation
     activeComponent: {
-      handler () {
+      handler() {
         this.snippetInvoke();
       },
       deep: true
     },
     componentMap: {
-      handler () {
+      handler() {
         this.snippetInvoke();
       },
       deep: true
     },
     exportAsTypescript: {
-      handler () {
+      handler() {
         this.snippetInvoke();
       },
     }

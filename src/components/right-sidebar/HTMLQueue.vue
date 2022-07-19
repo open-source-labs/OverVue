@@ -160,6 +160,14 @@ export default {
       this.addActiveComponentClass(payload);
       this.classText = '';
     },
+    // submitBinding(element, idNum) {
+    //   if (element === '') {
+    //     return;
+    //   }
+    //   let payload = {
+
+    //   }
+    // }
   },
   watch: {
     attributeModalOpen (){
