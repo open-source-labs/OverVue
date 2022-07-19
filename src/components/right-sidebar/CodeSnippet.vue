@@ -11,7 +11,9 @@ Description:
     <div class="top-p" v-if="this.activeComponent === ''">
       Select a component
     </div>
-    <div v-else>{{ `${this.activeComponent}.vue` }}</div>
+    <div v-else>{{ `${this.activeComponent}.vue` }}</div> <button class="refreshCode">
+      <q-icon size="25px" z-layer="0" name="refresh" @click="this.snippetInvoke" />
+    </button>
     <prism-editor v-model="code" :highlight="highlighter" line-numbers class="my-editor" readonly />
   </div>
 </template>
@@ -22,6 +24,7 @@ import { mapState } from "vuex";
 import { PrismEditor } from "vue-prism-editor";
 import "vue-prism-editor/dist/prismeditor.min.css";
 import { highlight, languages } from "prismjs/components/prism-core";
+import styleClassMap from '../../store/state/styleClassMap'
 import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism-tomorrow.css"; // import syntax highlighting styles
@@ -38,6 +41,7 @@ export default {
     PrismEditor,
   },
   computed: {
+    //add 
     // needs access to current component aka activeComponent
     ...mapState(["componentMap", "activeComponent", "activeComponentObj", "exportAsTypescript"]),
   },
@@ -72,7 +76,9 @@ export default {
     // Creates beginner boilerplate
     createTemplate(componentName) {
       let templateTagStr = this.writeTemplateTag(componentName);
-      return `<template>\n  <div>\n${templateTagStr}  </div>\n</template>`;
+      if (this.activeComponentObj.htmlAttributes.class !== "") return `<template>\n  <div class = "${this.activeComponentObj.htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
+      else return `<template>\n  <div>\n${templateTagStr}  </div>\n</template>`;
+
     },
     // Creates <template> boilerplate
     writeTemplateTag(componentName) {
@@ -99,22 +105,6 @@ export default {
         h5: ["<h5", "</h5>"],
         h6: ["<h6", "</h6>"],
       };
-      //test//
-      //   function writeClass(componentName) {
-      //   if (this.componentMap[componentName]?.classList?.length > 0) {
-      //     let commentStr = '<!--'
-      //     this.componentMap[componentName].classList.forEach((el) => {
-      //       commentStr += "\n"
-      //       commentStr += el;
-      //     })
-      //     commentStr += '\n-->\n\n'
-      //     return commentStr;
-      //   } else {
-      //     return ''
-      //   }
-      //  };
-      // Helper function that recursively iterates through the given html element's children and their children's children.
-      // also adds proper indentation to code snippet
       function writeNested(childrenArray, indent) {
         if (!childrenArray.length) {
           return "";
@@ -152,7 +142,7 @@ export default {
       let htmlArr = this.componentMap[componentName].htmlList;
       let outputStr = ``;
       // eslint-disable-next-line no-unused-vars
-      for (let el of htmlArr) {
+      for (const el of htmlArr) {
         if (!el.text) {
           outputStr += `    <${el}/>\n`;
         } else {
@@ -247,6 +237,26 @@ export default {
         methods += "  },\n";
       }
 
+      let htmlArray = this.componentMap[componentName].htmlList;
+      let styleString = "";
+
+      if (this.activeComponentObj.htmlAttributes.class !== "") {
+        styleString += `.${this.activeComponentObj.htmlAttributes.class} {\nbackground-color: ${this.activeComponentObj.color};
+width: ${this.activeComponentObj.w}px;
+height: ${this.activeComponentObj.h}px;
+z-index: ${this.activeComponentObj.z}px;
+}\n`
+      }
+
+      for (const html of htmlArray) {
+        if (html.class === ' ') styleString = "";
+        if (html.class) {
+          console.log(this.activeComponentObj)
+          styleString += `.${html.class} {\n
+}\n`
+        }
+      }
+
       // concat all code within script tags
       // if exportAsTypescript is on, out should be <script lang="ts">
       let output;
@@ -267,9 +277,9 @@ export default {
         output += "});\n<\/script>\n\n<style scoped>\n</style>"
 
       } else {
-        output += "};\n<\/script>\n\n<style scoped>\n</style>"
+        output += `}; \n <\/script>\n\n<style scoped>\n${styleString}</style > `
       }
-      return output;
+      return output
     },
   },
   watch: {
@@ -334,6 +344,18 @@ export default {
 
 .prism-editor__textarea:focus {
   outline: none;
+}
+
+.refreshCode {
+  position: absolute;
+  background-color: black;
+  color: $secondary;
+  bottom: 96%;
+  right: 5%;
+}
+
+.refreshCode:hover {
+  cursor: pointer;
 }
 </style>
 
