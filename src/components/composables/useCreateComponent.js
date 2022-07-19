@@ -43,7 +43,7 @@ export function useCreateComponent(importObj) {
       isActive: false,
       color: "#ffffff85",
       htmlAttributes:{
-        class:"test",
+        class:"",
         id:"",
       }
     };
