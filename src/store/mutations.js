@@ -626,22 +626,6 @@ const mutations = {
     updatedComponent.x = payload.x;
     updatedComponent.y = payload.y;
   },
-  //color updater
-  [types.UPDATE_COLOR]: (state, payload) => {
-    const updatedComponent = state.routes[state.activeRoute].filter(
-      (element) => element.componentName === payload.activeComponent
-    )[0];
-    
-    updatedComponent.color = payload.color
-  },
-
-  [types.EDIT_ATTRIBUTE]: (state, payload) => {
-    const updatedComponent = state.routes[state.activeRoute].filter(
-      (element) => element.componentName === payload.activeComponent
-    )[0];
-    console.log(updatedComponent)
-    updatedComponent.htmlAttributes[payload.attribute] = payload.value
-  },
 
   [types.UPDATE_COMPONENT_LAYER]: (state, payload) => {
     const updatedComponent = state.routes[state.activeRoute].filter(
@@ -714,10 +698,6 @@ const mutations = {
 
   [types.OPEN_NOTE_MODAL]: (state) => {
     state.noteModalOpen = !state.noteModalOpen;
-  }, 
-  
-  [types.OPEN_COLOR_MODAL]: (state) => {
-    state.colorModalOpen = !state.colorModalOpen;
   },
   //Jace practice for future, not place classList directly in activeComponent
   [types.OPEN_ATTRIBUTE_MODAL]: (state) => {
