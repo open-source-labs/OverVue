@@ -11,9 +11,7 @@ Description:
     <div class="top-p" v-if="this.activeComponent === ''">
       Select a component
     </div>
-    <div v-else>{{ `${this.activeComponent}.vue` }}</div> <button class="refreshCode">
-      <q-icon size="25px" z-layer="0" name="refresh" @click="this.snippetInvoke" />
-    </button>
+    <div v-else>{{ `${this.activeComponent}.vue` }}</div>
     <prism-editor v-model="code" :highlight="highlighter" line-numbers class="my-editor" readonly />
   </div>
 </template>
@@ -76,16 +74,7 @@ export default {
     // Creates beginner boilerplate
     createTemplate(componentName) {
       let templateTagStr = this.writeTemplateTag(componentName);
-<<<<<<< HEAD
-      if (this.activeComponentObj.htmlAttributes.class !== "") return `<template>\n  <div class = "${this.activeComponentObj.htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
-      else return `<template>\n  <div>\n${templateTagStr}  </div>\n</template>`;
-
-=======
-      console.log(this.activeComponentObj)
-        // if(this.activeComponentObj.htmlAttributes.class !== "") return `<template>\n  <div class = "${this.activeComponentObj.htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
-        //   else return `<template>\n  <div>\n${templateTagStr}  </div>\n</template>`;
-      
->>>>>>> d43111c7d7f70bf069d8763816730ae516810d3f
+      return `<template>\n  <div>\n${templateTagStr}  </div>\n</template>`;
     },
     // Creates <template> boilerplate
     writeTemplateTag(componentName) {
@@ -207,7 +196,7 @@ export default {
       children.forEach((name) => {
         childrenComponentNames += `    ${name},\n`;
       });
-
+      console.log("lets look at data", this.componentMap[this.activeComponent])
       // if true add data section and populate with props
       let data = "";
       if (this.componentMap[this.activeComponent].props.length) {
@@ -246,21 +235,10 @@ export default {
 
       let htmlArray = this.componentMap[componentName].htmlList;
       let styleString = "";
-
-      if (this.activeComponentObj.htmlAttributes.class !== "") {
-        styleString += `.${this.activeComponentObj.htmlAttributes.class} {\nbackground-color: ${this.activeComponentObj.color};
-width: ${this.activeComponentObj.w}px;
-height: ${this.activeComponentObj.h}px;
-z-index: ${this.activeComponentObj.z}px;
-}\n`
-      }
-
       for (const html of htmlArray) {
         if (html.class === ' ') styleString = "";
         if (html.class) {
-          console.log(this.activeComponentObj)
-          styleString += `.${html.class} {\n
-}\n`
+          styleString += `.${html.class} {\n}\n`
         }
       }
 
@@ -351,18 +329,6 @@ z-index: ${this.activeComponentObj.z}px;
 
 .prism-editor__textarea:focus {
   outline: none;
-}
-
-.refreshCode {
-  position: absolute;
-  background-color: black;
-  color: $secondary;
-  bottom: 96%;
-  right: 5%;
-}
-
-.refreshCode:hover {
-  cursor: pointer;
 }
 </style>
 

@@ -86,6 +86,8 @@ export const openAttributeModal = 'openAttributeModal'
 export const addActiveComponentClass = 'addActiveComponentClass'
 export const deleteActiveComponentClass = 'deleteActiveComponentClass'
 
+//adding vmodel info
+export const ADD_BINDING = 'ADD_BINDING'
 //
 export const deleteActiveComponentNote = 'deleteActiveComponentNote'
 export const addActiveComponentNote = 'addActiveComponentNote'

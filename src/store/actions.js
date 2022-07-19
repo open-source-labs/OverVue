@@ -109,6 +109,9 @@ const actions = {
   [types.updateComponentPosition]: ({ commit }, payload) => {
     commit(types.UPDATE_COMPONENT_POSITION, payload);
   },
+  [types.addBinding]: ({ commit }, payload) => {
+    commit(types.ADD_BINDING, payload);
+  },
 
   [types.updateComponentSize]: ({ commit }, payload) => {
     commit(types.UPDATE_COMPONENT_SIZE, payload);
