@@ -41,7 +41,11 @@ export function useCreateComponent(importObj) {
       state: [],
       parent: {},
       isActive: false,
-      color: "#ffffff85"
+      color: "#ffffff85",
+      htmlAttributes:{
+        class:"test",
+        id:"",
+      }
     };
 
     if (imported === true){

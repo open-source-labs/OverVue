@@ -12,8 +12,17 @@
     v-on:click="handleClick"
     v-on:click.right="handleRight"
   >
+
+  <div
+  class="cssContainer">
     <!-- This is the actual component box -->
     <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
+    <p
+    class="cssContainerText"
+    >
+    CSS Container</p>
+
+
     <vue-draggable-resizable
       class-name="component-box"
       v-for="componentData in activeRouteArray"
@@ -33,26 +42,28 @@
       :onDragStart="recordInitialPosition"
       :onResizeStart="recordInitialSize"
       :style="{'background-color': componentData.color}"
+      :parent="true"
     >
     
-
       <div class="component-title">
         <p>{{ componentData.componentName }}</p>
       </div>
-      <q-icon v-if="this.componentMap[componentData.componentName]?.noteList?.length > 0" 
-        size="30px" 
+      <q-icon v-if="componentData.componentName === this.activeComponent" 
+        size="25px" 
         z-layer="0" 
         name="edit_note" 
         class="compNoteLogo" 
         @click="handleAddNotes" />
-      <q-icon v-else
+
+      <!-- <q-icon "
         size="30px" 
         z-layer="0" 
         name="edit_note" 
         class="compNoteLogoEmpty" 
-        @click="handleAddNotes" />
-      <q-icon 
-        size="30px" 
+        @click="handleAddNotes" /> -->
+
+      <q-icon v-if="componentData.componentName === this.activeComponent"
+        size="25px" 
         z-layer="0" 
         name="palette" 
         class="colorLogo" 
@@ -165,6 +176,7 @@
                     @click="this.openNoteModal"
                     />
                 </q-form>
+                
                 </div>
               </div>
             </div>
@@ -230,9 +242,10 @@
   </template>
 </ColorPicker>
 </q-dialog>
-
+    </div>
     </div>
   </div>
+  
 </template>
 
 
@@ -438,7 +451,6 @@ export default {
         activeComponentData: this.activeComponentData,
       }
         this.updateColor(payload)
-        
         },
 
     // records component's initial size/position in case of resize
@@ -752,6 +764,21 @@ li:hover{
     $secondary;
   behavior: url(/pie/PIE.htc);
 }
+
+.cssContainer {
+  margin:6.1%;
+  border: 1px solid black;
+  width: 1000px;
+  height:900px;
+}
+.cssContainerText {
+position:absolute;
+font-size: 3em;
+margin-top: -4%;
+margin-left: 23%;
+color:black;
+}
+
 .menu {
   margin-bottom: 0px !important;
 }
@@ -771,7 +798,7 @@ li:hover{
   border-radius: 4px;
   position: absolute;
   top: 4px;
-  left: 40px;
+  left: 32px;
 }
 
 .colorLogo:hover{

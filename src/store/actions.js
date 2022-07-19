@@ -215,6 +215,11 @@ const actions = {
     commit(types.ADD_PROPS_TO_COMPONENT, payload);
   },
 
+  //edit parent attribute
+  [types.editAttribute]: ({ commit }, payload) => {
+    commit(types.EDIT_ATTRIBUTE, payload);
+  },
+
   [types.createState]: ({ commit }, payload) => {
     commit(types.CREATE_STATE, payload);
   },

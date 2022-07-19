@@ -635,6 +635,14 @@ const mutations = {
     updatedComponent.color = payload.color
   },
 
+  [types.EDIT_ATTRIBUTE]: (state, payload) => {
+    const updatedComponent = state.routes[state.activeRoute].filter(
+      (element) => element.componentName === payload.activeComponent
+    )[0];
+    console.log(updatedComponent)
+    updatedComponent.htmlAttributes[payload.attribute] = payload.value
+  },
+
   [types.UPDATE_COMPONENT_LAYER]: (state, payload) => {
     const updatedComponent = state.routes[state.activeRoute].filter(
       (element) => element.componentName === payload.activeComponent
