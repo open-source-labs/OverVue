@@ -628,6 +628,21 @@ const mutations = {
     updatedComponent.x = payload.x;
     updatedComponent.y = payload.y;
   },
+  //color updater
+  [types.UPDATE_COLOR]: (state, payload) => {
+    const updatedComponent = state.routes[state.activeRoute].filter(
+      (element) => element.componentName === payload.activeComponent
+    )[0];
+
+    updatedComponent.color = payload.color
+  },
+
+  [types.EDIT_ATTRIBUTE]: (state, payload) => {
+    const updatedComponent = state.routes[state.activeRoute].filter(
+      (element) => element.componentName === payload.activeComponent
+    )[0];
+    updatedComponent.htmlAttributes[payload.attribute] = payload.value
+  },
 
   [types.UPDATE_COMPONENT_LAYER]: (state, payload) => {
     const updatedComponent = state.routes[state.activeRoute].filter(

@@ -451,7 +451,8 @@ export default {
         activeComponentData: this.activeComponentData,
       }
         this.updateColor(payload)
-        },
+        this.refresh();
+  },
 
     // records component's initial size/position in case of resize
     recordInitialSize: function (e) {
@@ -478,8 +479,25 @@ export default {
         payload.h !== this.initialSize.h
       ) {
         this.updateComponentSize(payload);
+        
       }
+      this.refresh();
     },
+
+  //refresh function - super ghetto refresh function
+    refresh() {
+      const payload = {
+        activeComponent: this.activeComponent,
+        routeArray: this.routes[this.activeRoute],
+        activeComponentData: this.activeComponentData,
+        z: this.activeComponentData.z,
+      };
+      payload.z++;
+      this.updateComponentLayer(payload);
+      payload.z--;
+      this.updateComponentLayer(payload);
+    },
+
     finishedDrag: function (x, y) {
       let payload = {
         x: x,
@@ -496,6 +514,7 @@ export default {
       }
       this.wasDragged = true;
       setTimeout(()=>this.wasDragged = false, 100)
+      this.refresh();
     },
     onActivated(componentData) {
       if (!componentData){
@@ -571,6 +590,7 @@ export default {
         activeComponentData: this.activeComponentData,
         z: this.activeComponentData.z,
       };
+
       if (e.target.innerText === "+") payload.z++;
       if (e.target.innerText === "–" && payload.z > 0) payload.z--;
       this.updateComponentLayer(payload);
