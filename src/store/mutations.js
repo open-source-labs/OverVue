@@ -641,7 +641,6 @@ const mutations = {
     const updatedComponent = state.routes[state.activeRoute].filter(
       (element) => element.componentName === payload.activeComponent
     )[0];
-    console.log(updatedComponent)
     updatedComponent.htmlAttributes[payload.attribute] = payload.value
   },
 
