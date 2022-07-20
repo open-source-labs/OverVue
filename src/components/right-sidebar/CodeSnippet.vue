@@ -86,7 +86,7 @@ export default {
     },
     // Creates <template> boilerplate
     writeTemplateTag(componentName) {
-      console.log(this.activeComponentObj)
+      // console.log(this.activeComponentObj)
       // create reference object
       const htmlElementMap = {
         div: ["<div", "</div>"],

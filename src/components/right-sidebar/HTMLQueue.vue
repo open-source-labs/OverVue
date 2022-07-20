@@ -17,15 +17,13 @@ Description:
     <div group="people" class="list-group">
 
       <p v-if='!this.componentMap[this.activeComponent]?.htmlList.length'>No HTML elements in component</p>
-      <!---->
         <div 
-        id="tooltipCon"
         v-for="(element) in renderList" :key="element[1] + Date.now()" 
         @dragenter="dragEnter($event, element[2])"
-        >  
+        >
           <div
+          id="tooltipCon"
           :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'"
-          @dblclick.self="setActiveElement(element)"
           @dragstart="startDrag($event, element[2])" 
           @dragend="endDrag($event)"
           draggable="true"
@@ -42,7 +40,7 @@ Description:
         </div>
     </div>
 
-<!--START OF CHANGES-->>
+<!--START OF CHANGES-->
       <!-- &nbsp; &nbsp; Viewing Elements in {{ this.activeComponent }} '{{ depth }}'
       <hr>
     </span>
@@ -151,20 +149,15 @@ export default {
       else this.$store.dispatch(deleteFromComponentHtmlList, id[1])
     },
     setActiveElement(element) {
-      // if (this.activeComponent !== '') {
-      //   }
-      console.log(this.activeHTML)
+      if (this.activeComponent !== '') {
         this.setActiveHTML(element);
         this.openAttributeModal(element);
-        
-        console.log(this.activeHTML)
+        }
       
     },
     setLayer(element) {
       this.setActiveLayer(element)
       element.id = this.activeHTML
-      console.log(element)
-      console.log(this.activeHTML)
     },
     setParentLayer() {
       if (this.activeLayer.id !== '') {
@@ -304,7 +297,7 @@ hr {
 }
 
 .currentlyDragging {
-  opacity: .5;
+  opacity: 1;
 }
 
 .ignoreByDragover {
@@ -313,7 +306,7 @@ hr {
 #tooltipCon {
   position: relative;
   cursor: pointer;
-  margin-top: 2em;
+  margin-top: 1em;
 }
 
 .tooltip {
