@@ -86,6 +86,7 @@ export default {
     },
     // Creates <template> boilerplate
     writeTemplateTag(componentName) {
+      console.log(this.activeComponentObj)
       // create reference object
       const htmlElementMap = {
         div: ["<div", "</div>"],
@@ -248,7 +249,7 @@ export default {
         styleString += `.${this.activeComponentObj.htmlAttributes.class} {\nbackground-color: ${this.activeComponentObj.color};
 width: ${this.activeComponentObj.w}px;
 height: ${this.activeComponentObj.h}px;
-z-index: ${this.activeComponentObj.z}px;
+z-index: ${this.activeComponentObj.z};
 }\n`
       }
 

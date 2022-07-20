@@ -31,15 +31,17 @@ Description:
     <q-dialog v-model="attributeModal">
       <!-- @update:model-value="setActiveElement" -->
       <div class="AttributeBox">
-        <p class="title">Added attributes to {{ this.activeComponent }}</p>
+        <p class="title">Add attributes to: {{ this.activeComponent }}</p>
+        <!--attribute child-->
         <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList"
           :key="element.id + Date.now()">
           <p v-if="element.id === this.activeHTML">Your class is - {{ element.class }}</p>
         </div>
+
         <div class="formBox">
           <q-form autofocus v-on:submit.prevent="submitClass">
             <p class="title">Add Class Name:</p>
-            <q-input label="Add your note here" filled dark autofocus true hide-bottom-space v-model="classText"
+            <q-input label="Add your class here" filled dark autofocus true hide-bottom-space v-model="classText"
               @keyup.enter="submitClass"></q-input>
             <q-btn id="comp-btn" class="sidebar-btn" color="secondary" label="Submit Attribute"
               :disable="classText.length > 0 ? false : true" @click="submitClass(classText, this.activeHTML)" />
@@ -112,10 +114,14 @@ export default {
       else this.$store.dispatch(deleteFromComponentHtmlList, id[1])
     },
     setActiveElement(element) {
-      if (this.activeComponent !== '') {
+      // if (this.activeComponent !== '') {
+      //   }
+      console.log(this.activeHTML)
         this.setActiveHTML(element);
         this.openAttributeModal(element);
-      }
+        
+        console.log(this.activeHTML)
+      
     },
     setLayer(element) {
       this.setActiveLayer(element)

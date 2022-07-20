@@ -636,7 +636,7 @@ const mutations = {
     
     updatedComponent.color = payload.color
   },
-
+//Attribute updater for parent
   [types.EDIT_ATTRIBUTE]: (state, payload) => {
     const updatedComponent = state.routes[state.activeRoute].filter(
       (element) => element.componentName === payload.activeComponent
