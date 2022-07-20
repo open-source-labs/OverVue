@@ -319,6 +319,30 @@ const actions = {
   [types.upOneLayer]: ({ commit }, payload) => {
     commit(types.UP_ONE_LAYER, payload);
   },
+  //FOR MUTATING HTML WITH DRAG AND DROP
+  [types.setIdDrag]: ({ commit }, payload) => {
+    commit(types.SET_ID_DRAG, payload)
+  },
+
+  [types.setIdDrop]: ({ commit }, payload) => {
+    commit(types.SET_ID_DROP, payload)
+  },
+
+  [types.setSelectedIdDrag]: ({ commit }, payload) => {
+    commit(types.SET_SELECTED_ID_DRAG, payload)
+  },
+
+  [types.setSelectedIdDrop]: ({ commit }, payload) => {
+    commit(types.SET_SELECTED_ID_DROP, payload)
+  },
+
+  [types.dragDropSortHtmlElements]: ({ commit }, payload) => {
+    commit(types.DRAG_DROP_SORT_HTML_ELEMENTS)
+  },
+
+  [types.dragDropSortSelectedHtmlElements]: ({ commit }, payload) => {
+    commit(types.DRAG_DROP_SORT_SELECTED_HTML_ELEMENTS)
+  },
 
   // end of HTML segment ////////////////////////////////////////////////
 

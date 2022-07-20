@@ -5,15 +5,42 @@ Description:
 -->
 
 <template>
-  <section class="html-queue">
+  <section class="html-queue" @dragover="dragOver($event), false">
     <span class='list-title' v-if='this.activeLayer.id !== ""'>
       <i class="fas fa fa-chevron-up fa-md" @click="setParentLayer"></i>
+
       &nbsp; &nbsp; Viewing Elements in {{ this.activeComponent }} '{{ depth }}'
+      <hr>
+    </span>
+    <span class='list-title' v-else-if='!this.activeComponent'></span>
+
+    <div group="people" class="list-group">
+
+      <p v-if='!this.componentMap[this.activeComponent]?.htmlList.length'>No HTML elements in component</p>
+      <div v-for="(element) in renderList" :key="element[1] + Date.now()" @dragenter="dragEnter($event, element[2])">
+        <div id="tooltipCon" :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'"
+          @dragstart="startDrag($event, element[2])" @dragend="endDrag($event)" draggable="true">
+          <!--invisible button for tooltip-->
+          <button class="attributeButton" @click="setActiveElement(element)">
+            <div class="tooltip"> Edit {{ element[0] }} attributes </div>
+          </button>
+          <i v-if='activeComponent === "" || exceptions.includes(element[0])'></i>
+          <i v-else class="fas fa fa-angle-double-down fa-md"
+            @click="setLayer({ text: element[0], id: element[2] })"></i>
+          {{ element[0] }}
+          <i class="fas fa fa-trash fa-md" @click.self="deleteElement([element[1], element[2]])"></i>
+        </div>
+      </div>
+    </div>
+
+    <!--START OF CHANGES-->
+    <!-- &nbsp; &nbsp; Viewing Elements in {{ this.activeComponent }} '{{ depth }}'
       <hr>
     </span>
     <span class='list-title' v-else-if='!this.activeComponent'></span>
     <div group="people" class="list-group">
       <p v-if='!this.componentMap[this.activeComponent]?.htmlList.length'>No HTML elements in component</p>
+
       <div id="tooltipCon" :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'"
         v-for="(element) in renderList" :key="element[1] + Date.now()">
 
@@ -25,21 +52,23 @@ Description:
         {{ element[0] }}
         <i class="fas fa fa-trash fa-md" @click.self="deleteElement([element[1], element[2]])"></i>
       </div>
-    </div>
+    </div> -->
 
     <!-- attribute pop-up -->
     <q-dialog v-model="attributeModal">
       <!-- @update:model-value="setActiveElement" -->
       <div class="AttributeBox">
-        <p class="title">Added attributes to {{ this.activeComponent }}</p>
+        <p class="title">Add attributes to: {{ this.activeComponent }}</p>
+        <!--attribute child-->
         <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList"
           :key="element.id + Date.now()">
           <p v-if="element.id === this.activeHTML">Your class is - {{ element.class }}</p>
         </div>
+
         <div class="formBox">
           <q-form autofocus v-on:submit.prevent="submitClass">
             <p class="title">Add Class Name:</p>
-            <q-input label="Add your note here" filled dark autofocus true hide-bottom-space v-model="classText"
+            <q-input label="Add your class here" filled dark autofocus true hide-bottom-space v-model="classText"
               @keyup.enter="submitClass"></q-input>
             <q-btn id="comp-btn" class="sidebar-btn" color="secondary" label="Submit Attribute"
               :disable="classText.length > 0 ? false : true" @click="submitClass(classText, this.activeHTML)" />
@@ -53,6 +82,7 @@ Description:
 
 <script>
 
+import { keys } from 'localforage'
 import { mapState, mapActions } from 'vuex'
 import { setSelectedElementList, deleteSelectedElement, deleteFromComponentHtmlList } from '../../store/types'
 import { breadthFirstSearch } from '../../utils/search.util'
@@ -106,27 +136,47 @@ export default {
 
   },
   methods: {
-    ...mapActions(['setActiveHTML', 'setActiveLayer', 'upOneLayer', 'openAttributeModal', 'addActiveComponentClass']),
+    ...mapActions(['setActiveHTML', 'setActiveLayer', 'upOneLayer', 'setSelectedIdDrag', 'setIdDrag', 'setSelectedIdDrop', 'setIdDrop', 'dragDropSortHtmlElements', 'dragDropSortSelectedHtmlElements', 'openAttributeModal', 'addActiveComponentClass']),
     deleteElement(id) {
       if (this.activeComponent === '') this.$store.dispatch(deleteSelectedElement, id[0])
-      else this.$store.dispatch(deleteFromComponentHtmlList, id[1])
-    },
-    setActiveElement(element) {
-      if (this.activeComponent !== '') {
-        this.setActiveHTML(element);
-        this.openAttributeModal(element);
-      }
+      this.setActiveHTML(element);
+      this.openAttributeModal(element);
+
     },
     setLayer(element) {
       this.setActiveLayer(element)
       element.id = this.activeHTML
-      console.log(element)
-      console.log(this.activeHTML)
     },
     setParentLayer() {
       if (this.activeLayer.id !== '') {
         this.upOneLayer(this.activeLayer.id)
       }
+    },
+    //METHODS FOR DRAG-AND-DROP
+    startDrag(event, id) {
+      //add a class of 'currentlyDragging' to the HTML element that you are currently dragging
+      event.target.classList.add('currentlyDragging')
+      const dragId = id;
+      if (this.activeComponent === '') this.setSelectedIdDrag(dragId)
+      else this.setIdDrag(dragId)
+    },
+    dragEnter(event, id) {
+      event.preventDefault();
+      const dropId = id;
+      if (this.activeComponent === '') this.setSelectedIdDrop(dropId)
+      else this.setIdDrop(dropId)
+    },
+    dragOver(event) {
+      //needed stop the dragend animation so endDrag is invoked automatically
+      event.preventDefault();
+    },
+    endDrag(event) {
+      //remove the 'currentlyDragging' class after the HTML is dropped
+      event.preventDefault();
+      event.target.classList.remove('currentlyDragging')
+      //invoke the action that will use the idDrag and idDrop to sort the HtmlList
+      if (this.activeComponent === '') this.dragDropSortSelectedHtmlElements()
+      else this.dragDropSortHtmlElements()
     },
     submitClass(element, idNum) {
       if (element === '') {
@@ -139,14 +189,15 @@ export default {
       this.addActiveComponentClass(payload);
       this.classText = '';
     },
-    // submitBinding(element, idNum) {
+    // addBinding(element, idNum) {
     //   if (element === '') {
     //     return;
     //   }
     //   let payload = {
-
+    //     binding: element,
+    //     id: idNum
     //   }
-    // }
+    // },
   },
   watch: {
     attributeModalOpen() {
@@ -183,11 +234,12 @@ li {
   height: 35px;
   padding-top: 6px;
   text-align: center;
+  cursor: move;
 }
 
 .list-group-item-selected {
   display: inline-block;
-  margin: 2px 1.5%;
+  margin: 4px 1.5%;
   min-width: 175px;
   width: 30%;
   border-radius: 0.5cm;
@@ -196,6 +248,7 @@ li {
   height: 35px;
   padding-top: 6px;
   text-align: center;
+  cursor: move;
 }
 
 .fa-trash:hover {
@@ -240,11 +293,18 @@ hr {
   border: 1px solid grey
 }
 
+.currentlyDragging {
+  opacity: 1;
+}
+
+.ignoreByDragover {
+  pointer-events: none;
+}
 
 #tooltipCon {
   position: relative;
   cursor: pointer;
-  margin-top: 2em;
+  margin-top: 1em;
 }
 
 .tooltip {
@@ -267,8 +327,6 @@ hr {
   transition: all 0.3s ease-in-out;
   box-shadow: 0 0 3px rgba(56, 54, 54, 0.86);
 }
-
-
 
 
 .AttributeBox {

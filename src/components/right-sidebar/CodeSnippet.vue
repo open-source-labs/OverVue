@@ -86,6 +86,7 @@ export default {
     },
     // Creates <template> boilerplate
     writeTemplateTag(componentName) {
+      // console.log(this.activeComponentObj)
       // create reference object
       const htmlElementMap = {
         div: ["<div", "</div>"],
@@ -243,6 +244,15 @@ export default {
 
       let htmlArray = this.componentMap[componentName].htmlList;
       let styleString = "";
+
+      if (this.activeComponentObj.htmlAttributes.class !== "") {
+        styleString += `.${this.activeComponentObj.htmlAttributes.class} {\nbackground-color: ${this.activeComponentObj.color};
+width: ${this.activeComponentObj.w}px;
+height: ${this.activeComponentObj.h}px;
+z-index: ${this.activeComponentObj.z};
+}\n`
+      }
+
       for (const html of htmlArray) {
         if (html.class === ' ') styleString = "";
         if (html.class) {
