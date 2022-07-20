@@ -17,15 +17,13 @@ Description:
     <div group="people" class="list-group">
 
       <p v-if='!this.componentMap[this.activeComponent]?.htmlList.length'>No HTML elements in component</p>
-      <!---->
         <div 
-        id="tooltipCon"
         v-for="(element) in renderList" :key="element[1] + Date.now()" 
         @dragenter="dragEnter($event, element[2])"
-        >  
+        >
           <div
+          id="tooltipCon"
           :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'"
-          @dblclick.self="setActiveElement(element)"
           @dragstart="startDrag($event, element[2])" 
           @dragend="endDrag($event)"
           draggable="true"
@@ -42,7 +40,7 @@ Description:
         </div>
     </div>
 
-<!--START OF CHANGES-->>
+<!--START OF CHANGES-->
       <!-- &nbsp; &nbsp; Viewing Elements in {{ this.activeComponent }} '{{ depth }}'
       <hr>
     </span>
@@ -67,11 +65,13 @@ Description:
     <q-dialog v-model="attributeModal">
       <!-- @update:model-value="setActiveElement" -->
       <div class="AttributeBox">
-        <p class="title">Added attributes to {{ this.activeComponent }}</p>
+        <p class="title">Add attributes to: {{ this.activeComponent }}</p>
+        <!--attribute child-->
         <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList"
           :key="element.id + Date.now()">
           <p v-if="element.id === this.activeHTML">Your class is - {{ element.class }}</p>
         </div>
+
         <div class="formBox">
           <q-form autofocus v-on:submit.prevent="submitClass">
             <p class="title">Add Class Name:</p>
@@ -152,13 +152,12 @@ export default {
       if (this.activeComponent !== '') {
         this.setActiveHTML(element);
         this.openAttributeModal(element);
-      }
+        }
+      
     },
     setLayer(element) {
       this.setActiveLayer(element)
       element.id = this.activeHTML
-      console.log(element)
-      console.log(this.activeHTML)
     },
     setParentLayer() {
       if (this.activeLayer.id !== '') {
@@ -298,7 +297,7 @@ hr {
 }
 
 .currentlyDragging {
-  opacity: .5;
+  opacity: 1;
 }
 
 .ignoreByDragover {
@@ -307,7 +306,7 @@ hr {
 #tooltipCon {
   position: relative;
   cursor: pointer;
-  margin-top: 2em;
+  margin-top: 1em;
 }
 
 .tooltip {

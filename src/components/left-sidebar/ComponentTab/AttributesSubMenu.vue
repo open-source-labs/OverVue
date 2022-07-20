@@ -17,7 +17,6 @@
       </q-list>
     </q-btn-dropdown>
 
-
     <q-input
       @keyup.enter="createAttribute(attributeText)"
       color="white"
@@ -35,6 +34,9 @@
       </template>
     </q-input>
 
+    <button v-if = "this.activeComponentObj.htmlAttributes.class !== ''" class = "deleteButton" @click="deleteAttribute('class')" color="primary">Remove class</button>
+
+    <button v-if = "this.activeComponentObj.htmlAttributes.id !== ''" class = "deleteButton" @click="deleteAttribute('id')" color="primary">Remove id</button>
 
     <!-- <div>
       <q-btn
@@ -61,7 +63,8 @@ export default {
   data() {
     return {
       attributeText: "",
-      attributeSelection: "ID",
+      attributeSelection: "id",
+      deleteText:"",
     };
   },
   computed: {
@@ -94,8 +97,19 @@ export default {
         activeComponentData: this.activeComponentData,
       })
     },
+
     changeAttribute(attribute) {
       this.attributeSelection = attribute;
+    },
+
+    deleteAttribute(attribute) {
+      this.editAttribute({
+        attribute: attribute,
+        value: "",
+        activeComponent: this.activeComponent,
+        routeArray: this.routes[this.activeRoute],
+        activeComponentData: this.activeComponentData,
+      }) 
     }
   },
 };
@@ -110,9 +124,23 @@ export default {
   }
 
   .input-add {
-    position:absolute;
-    margin-left: 7em;
-    bottom:-60%;
-    // padding:20px;
+    // position:absolute;
+    // margin-left: 7em;
+    // bottom:-100%;
+    margin-top:1em;
+    margin-bottom: -1em;
   }
+  .deleteButton{
+    width:100px;
+    height:30px;
+    background-color:rgba(204, 190, 190, 0.164);
+    color: $menutext;
+    margin-right:2em;
+  }
+
+  .deleteButton:hover{
+    cursor: pointer;
+  }
+
+
 </style>

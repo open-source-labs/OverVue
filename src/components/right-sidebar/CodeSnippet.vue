@@ -11,13 +11,7 @@ Description:
     <div class="top-p" v-if="this.activeComponent === ''">
       Select a component
     </div>
-    <div v-else>{{ `${this.activeComponent}.vue` }}</div> <button class="refreshCode">
-      <q-icon
-        size="25px" 
-        z-layer="0" 
-        name="refresh" 
-        @click="this.snippetInvoke" />
-        </button>
+    <div v-else>{{ `${this.activeComponent}.vue` }}</div>
     <prism-editor v-model="code" :highlight="highlighter" line-numbers class="my-editor" readonly />
   </div>
 </template>
@@ -92,6 +86,7 @@ export default {
     },
     // Creates <template> boilerplate
     writeTemplateTag(componentName) {
+      // console.log(this.activeComponentObj)
       // create reference object
       const htmlElementMap = {
         div: ["<div", "</div>"],
@@ -254,14 +249,13 @@ export default {
         styleString += `.${this.activeComponentObj.htmlAttributes.class} {\nbackground-color: ${this.activeComponentObj.color};
 width: ${this.activeComponentObj.w}px;
 height: ${this.activeComponentObj.h}px;
-z-index: ${this.activeComponentObj.z}px;
+z-index: ${this.activeComponentObj.z};
 }\n`
       }
 
       for (const html of htmlArray) {
         if (html.class === ' ') styleString = "";
         if (html.class) {
-          console.log(this.activeComponentObj)
           styleString += `.${html.class} {\n
 }\n`
         }
