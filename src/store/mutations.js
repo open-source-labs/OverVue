@@ -207,10 +207,10 @@ const mutations = {
     };
   },
   // //add binding 
-  [types.ADD_BINDING]: (state, payload) => {
+  [types.addBindingText]: (state, payload) => {
     //access the htmlList, add payload to the empty bind obj
     //state.component
-    console.log(state.componentMap[state.activeComponenet])
+    console.log(state.componentMap[state.activeComponent])
   },
   [types.DELETE_ACTION_FROM_COMPONENT]: (state, payload) => {
     state.componentMap[state.activeComponent].actions = state.componentMap[state.activeComponent].actions.filter(
@@ -393,7 +393,8 @@ const mutations = {
       text: payload.elementName,
       id: payload.date,
       children: [],
-      class: ''
+      class: '',
+      binding: ""
     });
   },
 
@@ -492,25 +493,25 @@ const mutations = {
     const idDrag = state.componentMap[componentName].idDrag;
     const idDrop = state.componentMap[componentName].idDrop;
 
-    if(idDrag !== idDrop && idDrag !== '' && idDrop !== '') {
+    if (idDrag !== idDrop && idDrag !== '' && idDrop !== '') {
       let indexDrag;
       let indexDrop;
       const htmlList = state.componentMap[componentName].htmlList.slice(0)
 
       if (state.activeLayer.id === "") {
         htmlList.forEach((el, i) => {
-          if(el.id === idDrag){
+          if (el.id === idDrag) {
             indexDrag = i;
-          } else if (el.id === idDrop){
+          } else if (el.id === idDrop) {
             indexDrop = i;
           }
         })
         const draggedEl = htmlList.splice(indexDrag, 1)[0]
-        htmlList.splice(indexDrop,0,draggedEl)
+        htmlList.splice(indexDrop, 0, draggedEl)
       } else {
         const nestedDrag = breadthFirstSearchParent(htmlList, idDrag);
         const nestedDrop = breadthFirstSearchParent(htmlList, idDrop);
-        let nestedEl =nestedDrag.evaluated.children.splice(nestedDrag.index, 1)[0]
+        let nestedEl = nestedDrag.evaluated.children.splice(nestedDrag.index, 1)[0]
         nestedDrop.evaluated.children.splice(nestedDrop.index, 0, nestedEl)
       }
       state.componentMap[componentName].htmlList = htmlList;
@@ -523,22 +524,22 @@ const mutations = {
     const selectedIdDrag = state.selectedIdDrag;
     const selectedIdDrop = state.selectedIdDrop;
 
-    if(selectedIdDrag !== selectedIdDrop && selectedIdDrag !== '' && selectedIdDrop !== ''){
+    if (selectedIdDrag !== selectedIdDrop && selectedIdDrag !== '' && selectedIdDrop !== '') {
       const htmlList = state.selectedElementList.slice(0)
 
       let indexDrag;
       let indexDrop;
 
       htmlList.forEach((el, i) => {
-        if(el.id === selectedIdDrag){
+        if (el.id === selectedIdDrag) {
           indexDrag = i;
-        } else if (el.id === selectedIdDrop){
+        } else if (el.id === selectedIdDrop) {
           indexDrop = i;
         }
       })
 
       const draggedEl = htmlList.splice(indexDrag, 1)[0]
-      htmlList.splice(indexDrop,0,draggedEl)
+      htmlList.splice(indexDrop, 0, draggedEl)
       state.selectedElementList = htmlList;
     }
     state.selectedIdDrag = '';
@@ -720,7 +721,7 @@ const mutations = {
 
     updatedComponent.color = payload.color
   },
-//Attribute updater for parent
+  //Attribute updater for parent
   [types.EDIT_ATTRIBUTE]: (state, payload) => {
     const updatedComponent = state.routes[state.activeRoute].filter(
       (element) => element.componentName === payload.activeComponent
