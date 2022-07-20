@@ -464,6 +464,81 @@ const mutations = {
     state.activeHTML = "";
   },
 
+  [types.SET_ID_DRAG]: (state, payload) => {
+    const componentName = state.activeComponent;
+    state.componentMap[componentName].idDrag = payload;
+  },
+
+  [types.SET_ID_DROP]: (state, payload) => {
+    const componentName = state.activeComponent;
+    state.componentMap[componentName].idDrop = payload;
+  },
+
+  [types.SET_SELECTED_ID_DRAG]: (state, payload) => {
+    state.selectedIdDrag = payload;
+  },
+
+  [types.SET_SELECTED_ID_DROP]: (state, payload) => {
+    state.selectedIdDrop = payload;
+  },
+
+  [types.DRAG_DROP_SORT_HTML_ELEMENTS]: (state) => {
+    const componentName = state.activeComponent;
+    const idDrag = state.componentMap[componentName].idDrag;
+    const idDrop = state.componentMap[componentName].idDrop;
+
+    if(idDrag !== idDrop && idDrag !== '' && idDrop !== '') {
+      let indexDrag;
+      let indexDrop;
+      const htmlList = state.componentMap[componentName].htmlList.slice(0)
+
+      if (state.activeLayer.id === "") {
+        htmlList.forEach((el, i) => {
+          if(el.id === idDrag){
+            indexDrag = i;
+          } else if (el.id === idDrop){
+            indexDrop = i;
+          }
+        })
+        const draggedEl = htmlList.splice(indexDrag, 1)[0]
+        htmlList.splice(indexDrop,0,draggedEl)
+      } else {
+        const nestedDrag = breadthFirstSearchParent(htmlList, idDrag);
+        const nestedDrop = breadthFirstSearchParent(htmlList, idDrop);
+        let nestedEl =nestedDrag.evaluated.children.splice(nestedDrag.index, 1)[0]
+        nestedDrop.evaluated.children.splice(nestedDrop.index, 0, nestedEl)
+      }
+      state.componentMap[componentName].htmlList = htmlList;
+    }
+    state.componentMap[componentName].idDrag = '';
+    state.componentMap[componentName].idDrop = '';
+  },
+
+  [types.DRAG_DROP_SORT_SELECTED_HTML_ELEMENTS]: (state) => {
+    const selectedIdDrag = state.selectedIdDrag;
+    const selectedIdDrop = state.selectedIdDrop;
+
+    if(selectedIdDrag !== selectedIdDrop && selectedIdDrag !== '' && selectedIdDrop !== ''){
+      const htmlList = state.selectedElementList.slice(0)
+
+      let indexDrag;
+      let indexDrop;
+
+      htmlList.forEach((el, i) => {
+        if(el.id === selectedIdDrag){
+          indexDrag = i;
+        } else if (el.id === selectedIdDrop){
+          indexDrop = i;
+        }
+      })
+
+      const draggedEl = htmlList.splice(indexDrag, 1)[0]
+      htmlList.splice(indexDrop,0,draggedEl)
+      state.selectedElementList = htmlList;
+    }
+    state.selectedIdDrag = '';
+    state.selectedIdDrop = '';
+  },
   // *** COMPONENTS *** //////////////////////////////////////////////
   // adds the component to the selected route (ex: HomeView)
   [types.ADD_COMPONENT_TO_ACTIVE_ROUTE_CHILDREN]: (state, payload) => {
@@ -489,6 +564,8 @@ const mutations = {
       isActive,
       actions,
       props,
+      idDrag,
+      idDrop,
       htmlAttributes,
     } = payload;
     const s = payload.state;
@@ -508,6 +585,8 @@ const mutations = {
         actions,
         props,
         state: s,
+        idDrag,
+        idDrop,
         htmlAttributes,
       },
     };

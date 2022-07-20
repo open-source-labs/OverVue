@@ -5,7 +5,7 @@ Description:
 -->
 
 <template>
-  <section class="html-queue">
+  <section class="html-queue" @dragover="dragOver($event), false">
     <div
       group="people"
       class="list-group"
@@ -14,13 +14,21 @@ Description:
       :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'"
       @dblclick.self="setActiveElement(element)"
       v-for="(element) in renderList" :key="element[1] + Date.now()"
+      @dragenter="dragEnter($event, element[2])"
       >
-        <i v-if='activeComponent === "" || exceptions.includes(element[0]) '></i>
-        <i v-else class="fas fa fa-angle-double-down fa-md" @click="setLayer({text: element[0], id: element[2]})"></i>
-        {{ element[0] }}
-        <i class="fas fa fa-trash fa-md" @click.self="deleteElement([element[1],element[2]])"></i>
+        <div
+        :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'"
+        @dblclick.self="setActiveElement(element)"
+        @dragstart="startDrag($event, element[2])" 
+        @dragend="endDrag($event)"
+        draggable="true"
+        >
+          <i v-if='activeComponent === "" || exceptions.includes(element[0]) '></i>
+          <i v-else class="fas fa fa-angle-double-down fa-md" @click="setLayer({text: element[0], id: element[2]})"></i>
+          {{ element[0] }}
+          <i class="fas fa fa-trash fa-md" @click.self="deleteElement([element[1],element[2]])"></i>
+        </div>
       </div>
-
     </div>
   </section>
 </template>
@@ -78,7 +86,7 @@ export default {
 
   },
   methods: {
-    ...mapActions(['setActiveHTML', 'setActiveLayer', 'upOneLayer']),
+    ...mapActions(['setActiveHTML', 'setActiveLayer', 'upOneLayer', 'setSelectedIdDrag', 'setIdDrag', 'setSelectedIdDrop', 'setIdDrop', 'dragDropSortHtmlElements', 'dragDropSortSelectedHtmlElements']),
     deleteElement (id) {
       if (this.activeComponent === '') this.$store.dispatch(deleteSelectedElement, id[0])
       else this.$store.dispatch(deleteFromComponentHtmlList, id[1])
@@ -95,7 +103,33 @@ export default {
       if (this.activeLayer.id !== '') {
         this.upOneLayer(this.activeLayer.id)
       }
-    }
+    },
+    //METHODS FOR DRAG-AND-DROP
+    startDrag (event, id) {
+      //add a class of 'currentlyDragging' to the HTML element that you are currently dragging
+      event.target.classList.add('currentlyDragging')
+      const dragId = id;
+      if (this.activeComponent === '') this.setSelectedIdDrag(dragId)
+      else this.setIdDrag(dragId)
+    },
+    dragEnter (event, id) {
+      event.preventDefault();
+      const dropId = id;
+      if (this.activeComponent === '') this.setSelectedIdDrop(dropId)
+      else this.setIdDrop(dropId)
+    },
+    dragOver (event) {
+      //needed stop the dragend animation so endDrag is invoked automatically
+      event.preventDefault();
+    },
+    endDrag (event) {
+      //remove the 'currentlyDragging' class after the HTML is dropped
+      event.preventDefault();
+      event.target.classList.remove('currentlyDragging')
+      //invoke the action that will use the idDrag and idDrop to sort the HtmlList
+      if (this.activeComponent === '') this.dragDropSortSelectedHtmlElements()
+      else this.dragDropSortHtmlElements()
+    },
   },
   watch: {
     activeComponent: function () {
