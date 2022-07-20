@@ -1,21 +1,21 @@
 export function useCreateComponent(importObj) {
   const createComponent = (importObj) => {
     let imported = false;
-    if (importObj.hasOwnProperty('componentName')){
+    if (importObj.hasOwnProperty('componentName')) {
       imported = true;
       //Check if state and actions on import exist in the store. If not, add them.
-      for (let i = 0; i < importObj.actions.length; i++){
-        if (!this.userActions.includes(importObj.actions[i])){
+      for (let i = 0; i < importObj.actions.length; i++) {
+        if (!this.userActions.includes(importObj.actions[i])) {
           this.createAction(importObj.actions[i])
         }
       }
-      for (let i = 0; i < importObj.state.length; i++){
-        if (!this.userState.includes(importObj.state[i])){
+      for (let i = 0; i < importObj.state.length; i++) {
+        if (!this.userState.includes(importObj.state[i])) {
           this.createState(importObj.state[i])
         }
       }
-      for (let i = 0; i < importObj.props.length; i++){
-        if (!this.userProps.includes(importObj.props[i])){
+      for (let i = 0; i < importObj.props.length; i++) {
+        if (!this.userProps.includes(importObj.props[i])) {
           this.createProp(importObj.props[i])
         }
       }
@@ -42,22 +42,23 @@ export function useCreateComponent(importObj) {
       parent: {},
       isActive: false,
       color: "#ffffff85",
-      htmlAttributes:{
-        class:"",
-        id:"",
+      htmlAttributes: {
+        class: "",
+        id: "",
+        binding: "",
       }
     };
 
-    if (imported === true){
+    if (imported === true) {
       component.componentName = importObj.componentName;
       component.htmlList = importObj.htmlList;
       component.actions = importObj.actions;
       component.state = importObj.state;
       component.props = importObj.props;
     } else {
-      component.componentName = this.componentNameInputValue.replace(/[^a-z0-9-_.]/gi,"");
+      component.componentName = this.componentNameInputValue.replace(/[^a-z0-9-_.]/gi, "");
     }
-    
+
     if (!this.componentMap[component.componentName]) {
       this.registerComponent(component);
       this.setActiveComponent(component.componentName);

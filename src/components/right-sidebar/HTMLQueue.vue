@@ -106,7 +106,7 @@ export default {
 
   },
   methods: {
-    ...mapActions(['setActiveHTML', 'setActiveLayer', 'upOneLayer', 'openAttributeModal', 'addActiveComponentClass']),
+    ...mapActions(['setActiveHTML', 'setActiveLayer', 'upOneLayer', 'openAttributeModal', 'addActiveComponentClass, addBinding']),
     deleteElement(id) {
       if (this.activeComponent === '') this.$store.dispatch(deleteSelectedElement, id[0])
       else this.$store.dispatch(deleteFromComponentHtmlList, id[1])
@@ -120,8 +120,6 @@ export default {
     setLayer(element) {
       this.setActiveLayer(element)
       element.id = this.activeHTML
-      console.log(element)
-      console.log(this.activeHTML)
     },
     setParentLayer() {
       if (this.activeLayer.id !== '') {
@@ -139,14 +137,15 @@ export default {
       this.addActiveComponentClass(payload);
       this.classText = '';
     },
-    // submitBinding(element, idNum) {
+    // addBinding(element, idNum) {
     //   if (element === '') {
     //     return;
     //   }
     //   let payload = {
-
+    //     binding: element,
+    //     id: idNum
     //   }
-    // }
+    // },
   },
   watch: {
     attributeModalOpen() {
