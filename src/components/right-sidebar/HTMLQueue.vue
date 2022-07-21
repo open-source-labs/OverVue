@@ -33,27 +33,6 @@ Description:
       </div>
     </div>
 
-    <!--START OF CHANGES-->
-    <!-- &nbsp; &nbsp; Viewing Elements in {{ this.activeComponent }} '{{ depth }}'
-      <hr>
-    </span>
-    <span class='list-title' v-else-if='!this.activeComponent'></span>
-    <div group="people" class="list-group">
-      <p v-if='!this.componentMap[this.activeComponent]?.htmlList.length'>No HTML elements in component</p>
-
-      <div id="tooltipCon" :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'"
-        v-for="(element) in renderList" :key="element[1] + Date.now()">
-
-        <button class="attributeButton" @click="setActiveElement(element)">
-          <div class="tooltip"> Edit {{ element[0] }} attributes </div>
-        </button>
-        <i v-if='activeComponent === "" || exceptions.includes(element[0])'></i>
-        <i v-else class="fas fa fa-angle-double-down fa-md" @click="setLayer({ text: element[0], id: element[2] })"></i>
-        {{ element[0] }}
-        <i class="fas fa fa-trash fa-md" @click.self="deleteElement([element[1], element[2]])"></i>
-      </div>
-    </div> -->
-
     <!-- attribute pop-up -->
     <q-dialog v-model="attributeModal">
       <!-- @update:model-value="setActiveElement" -->
@@ -63,7 +42,12 @@ Description:
         <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList"
           :key="element.id + Date.now()">
           <p v-if="element.id === this.activeHTML">Your class is - {{ element.class }}</p>
+          <p v-if="element.id === this.activeHTML"> You've binded to - {{ element.binding }}</p>
         </div>
+        <!-- <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList"
+          :key="element.id + Date.now()">
+          
+        </div> -->
 
         <div class="formBox">
           <q-form autofocus v-on:submit.prevent="submitClass">
@@ -72,8 +56,17 @@ Description:
               @keyup.enter="submitClass"></q-input>
             <q-btn id="comp-btn" class="sidebar-btn" color="secondary" label="Submit Attribute"
               :disable="classText.length > 0 ? false : true" @click="submitClass(classText, this.activeHTML)" />
-            <q-btn label="Close" @click="this.openAttributeModal" />
           </q-form>
+          <q-form autofocus v-on:submit.prevent="addBinding">
+            <p class="title">Add Binding:</p>
+
+            <q-input label="Add two way binding here" filled dark autofocus true hide-bottom-space v-model="bindingText"
+              @keyup.enter="addBinding"></q-input>
+            <q-btn id="comp-btn" class="sidebar-btn" color="secondary" label="Add Binding"
+              :disable="bindingText.length > 0 ? false : true" @click="addBinding(bindingText, this.activeHTML)">
+            </q-btn>
+          </q-form>
+          <q-btn label="Close" @click="this.openAttributeModal" />
         </div>
       </div>
     </q-dialog>
@@ -102,6 +95,7 @@ export default {
       exceptions: ['input', 'img', 'link'],
       attributeModal: false,
       classText: '',
+      bindingText: '',
     }
   },
   computed: {
@@ -136,12 +130,18 @@ export default {
 
   },
   methods: {
-    ...mapActions(['setActiveHTML', 'setActiveLayer', 'upOneLayer', 'setSelectedIdDrag', 'setIdDrag', 'setSelectedIdDrop', 'setIdDrop', 'dragDropSortHtmlElements', 'dragDropSortSelectedHtmlElements', 'openAttributeModal', 'addActiveComponentClass']),
+    ...mapActions(['setActiveHTML', 'setActiveLayer', 'upOneLayer', 'setSelectedIdDrag', 'setIdDrag', 'setSelectedIdDrop', 'setIdDrop', 'dragDropSortHtmlElements', 'dragDropSortSelectedHtmlElements', 'openAttributeModal', 'addActiveComponentClass', 'addBindingText']),
     deleteElement(id) {
       if (this.activeComponent === '') this.$store.dispatch(deleteSelectedElement, id[0])
       this.setActiveHTML(element);
       this.openAttributeModal(element);
 
+    },
+    setActiveElement(element) {
+      if (this.activeComponent !== '') {
+        this.setActiveHTML(element);
+        this.openAttributeModal(element);
+      }
     },
     setLayer(element) {
       this.setActiveLayer(element)
@@ -182,6 +182,7 @@ export default {
       if (element === '') {
         return;
       }
+
       let payload = {
         class: element,
         id: idNum
@@ -189,15 +190,17 @@ export default {
       this.addActiveComponentClass(payload);
       this.classText = '';
     },
-    // addBinding(element, idNum) {
-    //   if (element === '') {
-    //     return;
-    //   }
-    //   let payload = {
-    //     binding: element,
-    //     id: idNum
-    //   }
-    // },
+    addBinding(input, idNum) {
+      if (input === '') {
+        return;
+      }
+      const payload = {
+        binding: input,
+        id: idNum
+      }
+      this.addBindingText(payload);
+      this.bindingText = '';
+    },
   },
   watch: {
     attributeModalOpen() {

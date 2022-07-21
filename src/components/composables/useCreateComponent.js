@@ -46,8 +46,7 @@ export function useCreateComponent(importObj) {
       color: "#ffffff85",
       htmlAttributes: {
         class: "",
-        id: "",
-        binding: "",
+        id: ""
       }
     };
 
@@ -60,7 +59,6 @@ export function useCreateComponent(importObj) {
     } else {
       component.componentName = this.componentNameInputValue.replace(/[^a-z0-9-_.]/gi, "");
     }
-
     if (!this.componentMap[component.componentName]) {
       this.registerComponent(component);
       this.setActiveComponent(component.componentName);
