@@ -19,7 +19,7 @@ Description:
       <p v-if='!this.componentMap[this.activeComponent]?.htmlList.length'>No HTML elements in component</p>
       <div 
       :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'"
-      @dblclick.self="setActiveElement(element)"
+      @click.self="setActiveElement(element)"
       v-for="(element) in renderList" :key="element[1] + Date.now()"
       >
         <i v-if='activeComponent === "" || exceptions.includes(element[0]) '></i>
@@ -27,45 +27,44 @@ Description:
         {{ element[0] }}
         <i class="fas fa fa-trash fa-md" @click.self="deleteElement([element[1],element[2]])"></i>
       </div>
-
     </div>
-
-
       <!-- attribute pop-up -->
-          <q-dialog v-model="attributeModal" > 
-          <!-- @update:model-value="setActiveElement" -->
-            <div class="AttributeBox" >
-                <p class="title">Added attributes to {{ this.activeComponent }}</p>
-                <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList" :key="element[1] + Date.now()" >
-                    <p v-if='element.id === this.activeHTML'>Your class is - {{element.class}}</p>
-                </div>
-                <div class="formBox">
-                <q-form autofocus v-on:submit.prevent="submitClass">
-                    <p class="title">Add Class Name:</p><q-input
-                      label="Add your note here"
-                      filled
-                      dark
-                      autofocus true
-                      hide-bottom-space
-                      v-model="classText"
-                      @keyup.enter="submitClass"
-                    ></q-input>
-                    <q-btn 
-                    id="comp-btn"
-                    class="sidebar-btn"
-                    color="secondary"
-                    label="Submit Attribute"
-                    :disable="classText.length > 0 ? false : true"
-                    @click="submitClass(classText, this.activeHTML)"
-                    />
-                    <q-btn
-                    label="Close"
-                    @click="this.openAttributeModal"
-                    />
-                </q-form>
-              </div>
+      <q-dialog v-model="attributeModal" > 
+      <!-- @update:model-value="setActiveElement" -->
+        <div class="AttributeBox" >
+          <p class="title">Added attributes to <span class="element">{{ this.activeComponent }} </span> </p>
+          <p>{{this.componentMap[this.activeComponent].htmlList}}</p>
+            <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList" :key="element.id + Date.now()"  >
+              <h5 v-if='element.id === this.activeHTML'>HTML Element: <span class="element"> {{element.text}} </span> <br> Class: <span class="element"> {{element.class}} </span> </h5>
             </div>
-        </q-dialog>
+            <div class="formBox">
+              <q-form autofocus v-on:submit.prevent="submitClass">
+                <p>Add/Change Class Name:</p>
+                <q-input
+                  label="add your class here"
+                  filled
+                  dark
+                  autofocus true
+                  hide-bottom-space
+                  v-model="classText"
+                  @keyup.enter="submitClass"
+                ></q-input>
+                <q-btn 
+                id="comp-btn"
+                class="sidebar-btn"
+                color="secondary"
+                label="Submit Attribute"
+                :disable="classText.length > 0 ? false : true"
+                @click="submitClass(classText, this.activeHTML)"
+                />
+                <q-btn
+                label="Close"
+                @click="this.openAttributeModal"
+                />
+              </q-form>
+            </div>
+        </div>
+      </q-dialog>
   </section>
 </template>
 
@@ -89,7 +88,7 @@ export default {
     return {
       exceptions: ['input', 'img', 'link'],
       attributeModal: false,
-      classText: ''
+      classText: '',
     }
   },
   computed: {
@@ -121,7 +120,6 @@ export default {
       })
       return newTitle;
     }
-
   },
   methods: {
     ...mapActions(['setActiveHTML', 'setActiveLayer', 'upOneLayer', 'openAttributeModal','addActiveComponentClass']),
@@ -130,7 +128,7 @@ export default {
       else this.$store.dispatch(deleteFromComponentHtmlList, id[1])
     },
     setActiveElement (element) {
-      if (this.activeComponent !== '' && !this.exceptions.includes(element[0])) {
+      if (this.activeComponent !== '') {
         this.setActiveHTML(element);
         this.openAttributeModal(element);
       }
@@ -143,7 +141,7 @@ export default {
         this.upOneLayer(this.activeLayer.id)
       }
     },
-     submitClass(element, idNum){
+    submitClass(element, idNum){
       if (element === ''){
         return;
       }
@@ -165,7 +163,7 @@ export default {
       } else {
         this.component = false
       }
-    }
+    },
   }
 }
 </script>

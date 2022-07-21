@@ -43,6 +43,14 @@ const actions = {
   [types.deleteActiveComponentClass]: ({ commit }, payload) => {
     commit(types.DELETE_ACTIVE_COMPONENT_CLASS, payload)
   },
+
+  [types.updateHTMLElementPosition]: ({ commit }, payload) => {
+    commit(types.UPDATE_HTMLELEMENT_POSITION, payload);
+  },
+
+  [types.updateHTMLElementSize]: ({ commit }, payload) => {
+    commit(types.UPDATE_HTMLELEMENT_SIZE, payload);
+  },
   //
   [types.registerComponent]: ({ state, commit }, payload) => {
     /* this action has a lot of mutations deployed

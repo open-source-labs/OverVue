@@ -71,6 +71,9 @@ export const OPEN_NOTE_MODAL = 'OPEN_NOTE_MODAL'
 export const OPEN_ATTRIBUTE_MODAL = 'OPEN_ATTRIBUTE_MODAL'
 export const ADD_ACTIVE_COMPONENT_CLASS = 'ADD_ACTIVE_COMPONENT_CLASS'
 export const DELETE_ACTIVE_COMPONENT_CLASS = 'DELETE_ACTIVE_COMPONENT_CLASS'
+export const UPDATE_HTMLELEMENT_SIZE = 'UPDATE_HTMLELEMENT_SIZE'
+export const UPDATE_HTMLELEMENT_POSITION = 'UPDATE_HTMLELEMENT_POSITION'
+
 //
 export const REMOVE_ALL_STATE_PROPS_ACTIONS = 'REMOVE_ALL_STATE_PROPS_ACTIONS'
 export const UPDATE_PASTE_TIMER = 'UPDATE_PASTE_TIMER'
@@ -81,6 +84,8 @@ export const openNoteModal = 'openNoteModal'
 export const openAttributeModal = 'openAttributeModal'
 export const addActiveComponentClass = 'addActiveComponentClass'
 export const deleteActiveComponentClass = 'deleteActiveComponentClass'
+export const updateHTMLElementPosition = 'updateHTMLElementPosition'
+export const updateHTMLElementSize = 'updateHTMLElementSize'
 //
 export const deleteActiveComponentNote = 'deleteActiveComponentNote'
 export const addActiveComponentNote = 'addActiveComponentNote'

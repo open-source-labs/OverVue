@@ -48,6 +48,26 @@
         name="edit_note" 
         class="compNoteLogoEmpty" 
         @click="handleAddNotes" />
+      <div v-for="element in this.componentMap[componentData.componentName].htmlList" :key="element.id+ new Date()">
+        <div v-if="element.text === 'div'" class="htmlDiv"></div>
+        <div v-if="element.text === 'footer'" class="htmlFooter"></div>
+        <div v-if="element.text === 'navbar'" class="htmlNavbar"></div>
+        <div v-if="element.text === 'h1'" class="htmlH1">Lorem Ipsum </div>
+        <div v-if="element.text === 'form'" class="htmlForm"></div> 
+        <div v-if="element.text === 'h2'" class="htmlH2">dolor sit amet</div>
+        <div v-if="element.text === 'h3'" class="htmlH3">consectetur adipiscing elit</div>
+        <div v-if="element.text === 'h4'" class="htmlH4">sed do eiusmod tempor incididunt</div>
+        <div v-if="element.text === 'h5'" class="htmlH5">ut labore et dolore magna aliqua</div>
+        <div v-if="element.text === 'h6'" class="htmlH6">Ut enim ad minim veniam</div>
+        <div v-if="element.text === 'header'" class="htmlHeader"></div>
+        <div v-if="element.text === 'img'" class="htmlImg"></div>
+        <input v-if="element.text === 'input'" class="htmlInput"/>
+        <div v-if="element.text === 'list'" class="htmlList"></div>
+        <div v-if="element.text === 'list-ol'" class="htmlList-Ol"></div>
+        <div v-if="element.text === 'list-ul'" class="htmlList-Ul"></div>
+        <p v-if="element.text === 'paragraph'" class="htmlP">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+          {{this.routes[activeRoute][0].htmlList}}
+      </div>
       <q-menu context-menu>
         <q-list color="black" class="menu">
           <q-item clickable v-ripple v-close-popup id="layer-item">
@@ -228,7 +248,9 @@ export default {
       "activeComponentObj",
       "exportAsTypescript",
       "noteModalOpen",
-      "activeRouteDisplay"
+      "activeRouteDisplay",
+      'selectedElementList',
+      'activeLayer',
     ]),
     // used in VueDraggableResizeable component
     activeRouteArray() {
@@ -254,7 +276,6 @@ export default {
       );
       const relatives = [...val]
         //also need to filter out any parents
-
       let parentalLineage = [];
       findLineage(relatives)
       function findLineage(children){
@@ -333,7 +354,8 @@ export default {
       if (this.activeComponent !== e.target.id) {
         if (e.target.parentElement?.classList.contains('draggable')){
           this.setActiveComponent(e.target.parentElement.id)
-        } else {
+        } 
+        else if (typeof `${e.target.id}` !== 'number') {
           this.setActiveComponent(e.target.id);
         }
       }
@@ -716,6 +738,114 @@ li:hover{
   width: 100%;
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+.htmlButton {
+  position: absolute;
+  top: 50%;
+  left: 30%;
+  height: 30px;
+  width: 10%;
+  margin: .5em;
+  background-color: $secondary;
+}
+
+.htmlDiv {
+  position: absolute;
+  top: 50%;
+  left: 5%;
+  height: 30%;
+  width: 70%;
+  margin: .5em;
+  background-color: $secondary;
+  border-radius: 1.5%;
+}
+
+.htmlFooter{
+  position: absolute;
+  width: 100%;
+  background-color: $primary;
+  height: 10%;
+  top: 90%;
+  z-index: -1;
+  border-radius: 1.5%;
+}
+
+.htmlForm {
+  background-color: rgba($secondary, .42);
+}
+
+.htmlH1{
+  position: absolute;
+  background-color: $primary;
+  color: $menutext;
+  font-weight: bolder !important;
+  font-size: 2.5em;
+  width: 30%;
+  height: 10%;
+  top: 45%;
+  margin-left: 10%;
+}
+
+.htmlH2{
+  background-color: rgba($secondary, .42);
+}
+
+.htmlH3{
+  background-color: rgba($secondary, .42);
+}
+
+.htmlH4{
+  background-color: rgba($secondary, .42);
+}
+
+.htmlH5{
+  background-color: rgba($secondary, .42);
+}
+
+.htmlH6{
+  background-color: rgba($secondary, .42);
+}
+
+// .htmlHeader{
+//   background-color: rgba($secondary, .42); 
+// }
+
+.htmlImg{
+  background-color: rgba($secondary, .42);
+}
+
+.htmlInput{
+  background-color: rgba($secondary, .42); 
+}
+
+.htmlLink{
+  background-color: rgba($secondary, .42);
+}
+
+.htmlList{
+  background-color: rgba($secondary, .42);
+}
+
+.htmlList-ol {
+  background-color: rgba($secondary, .42); 
+}
+
+.htmlList-ul{
+  background-color: rgba($secondary, .42); 
+}
+
+.htmlParagraph{
+  background-color: rgba($secondary, .42);  
+}
+
+.htmlNavbar{
+  position: absolute;
+  width: 100%;
+  background-color: $primary;
+  height: 10%;
+  top: 0%;
+  z-index: -1;
 }
 
 </style>
