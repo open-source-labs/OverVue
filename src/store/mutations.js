@@ -209,8 +209,27 @@ const mutations = {
   // //add binding 
   [types.addBindingText]: (state, payload) => {
     //access the htmlList, add payload to the empty bind obj
-    //state.component
-    console.log(state.componentMap[state.activeComponent])
+    //const active = state.componentMap[state.activeComponent].htmlList;
+    if (payload === "") {
+      state.componentMap = {
+        ...state.componentMap
+      }
+    } else {
+      const id = payload.id
+      state.componentMap[state.activeComponentObj].htmlList.forEach((el) => {
+
+        if (el.children.length !== 0) {
+          el.children.forEach((element) => {
+            if (payload.id === element.id) {
+              element.binding = payload.binding
+            }
+          })
+        }
+        if (payload.id === el.id) {
+          el.binding = payload.binding
+        }
+      })
+    }
   },
   [types.DELETE_ACTION_FROM_COMPONENT]: (state, payload) => {
     state.componentMap[state.activeComponent].actions = state.componentMap[state.activeComponent].actions.filter(
@@ -807,12 +826,23 @@ const mutations = {
   },
 
   [types.ADD_ACTIVE_COMPONENT_CLASS]: (state, payload) => {
-    state.componentMap[state.activeComponent].htmlList.forEach((el) => {
-      if (payload.id === el.id) {
-        el.class = payload.class
-      }
-    })
+    if (state.activeComponentObj.htmlList)
+      state.componentMap[state.activeComponent].htmlList.forEach((el) => {
+        //adding class into it's child 1st layer
+        if (el.children.length !== 0) {
+          el.children.forEach((element) => {
+            if (payload.id === element.id) {
+              element.class = payload.class
+            }
+          })
+        }
+        if (payload.id === el.id) {
+          el.class = payload.class
+        }
+      })
   },
+
+
   [types.DELETE_ACTIVE_COMPONENT_CLASS]: (state, payload) => {
     state.componentMap[state.activeComponent].classList.forEach((el, ind) => {
       if (payload === el) {
