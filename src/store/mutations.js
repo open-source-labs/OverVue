@@ -431,6 +431,7 @@ const mutations = {
 
   [types.SET_ACTIVE_LAYER]: (state, payload) => {
     const newLayer = cloneDeep(state.activeLayer);
+
     newLayer.lineage.push(payload.text);
     newLayer.id = payload.id;
     state.activeLayer = newLayer;
@@ -803,6 +804,7 @@ const mutations = {
 
   [types.ADD_ACTIVE_COMPONENT_CLASS]: (state, payload) => {
     if (state.activeComponentObj.htmlList)
+
       state.componentMap[state.activeComponent].htmlList.forEach((el) => {
         //adding class into it's child 1st layer
         if (el.children.length !== 0) {
@@ -816,6 +818,7 @@ const mutations = {
           el.class = payload.class
         }
       })
+
   },
 
   // //add binding 
