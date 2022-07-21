@@ -331,8 +331,6 @@ hr {
 }
 
 
-
-
 .AttributeBox {
   background-color: $subsecondary;
   color: $menutext;

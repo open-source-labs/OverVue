@@ -169,11 +169,12 @@ li {
   height: 35px;
   padding-top: 6px;
   text-align: center;
+  cursor: move;
 }
 
 .list-group-item-selected {
   display: inline-block;
-  margin: 2px 1.5%;
+  margin: 4px 1.5%;
   min-width: 175px;
   width: 30%;
   border-radius: 0.5cm;
@@ -182,6 +183,7 @@ li {
   height: 35px;
   padding-top: 6px;
   text-align: center;
+  cursor: move;
 }
 
 .fa-trash:hover {
@@ -223,5 +225,13 @@ li {
 
 hr {
   border: 1px solid grey
+}
+
+.currentlyDragging {
+  opacity: .5;
+}
+
+.ignoreByDragover {
+  pointer-events: none;
 }
 </style>
