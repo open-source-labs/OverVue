@@ -23,7 +23,7 @@ const mutations = {
     payload.store.replaceState(cloneDeep(payload.initialState));
   },
 
-  [types.REMOVE_ALL_STATE_PROPS_ACTIONS]: (state) =>{
+  [types.REMOVE_ALL_STATE_PROPS_ACTIONS]: (state) => {
     const emptyObj = {
       userProps: [],
       userState: [],
@@ -31,13 +31,13 @@ const mutations = {
     }
     Object.assign(state, emptyObj)
   },
-  
+
   [types.TOGGLE_TUTORIAL]: (state) => {
-    if (state.tutorialFirstOpen === true){
+    if (state.tutorialFirstOpen === true) {
       state.tutorialFirstOpen = false;
     }
     state.showTutorial = !state.showTutorial;
-  },  
+  },
 
   // *** ROUTES *** //////////////////////////////////////////////
   [types.ADD_ROUTE]: (state, payload) => {
@@ -108,7 +108,7 @@ const mutations = {
 
 
   [types.EXPORT_AS_TYPESCRIPT]: (state, payload) => {
-    state.exportAsTypescript = payload; 
+    state.exportAsTypescript = payload;
   },
 
   [types.CREATE_ACTION]: (state, payload) => {
@@ -271,7 +271,7 @@ const mutations = {
       pastedComponent.x = 20;
       pastedComponent.y = 20;
       pastedComponent.componentName += ` (${state.copyNumber})`
-      while(state.componentMap.hasOwnProperty(pastedComponent.componentName)){
+      while (state.componentMap.hasOwnProperty(pastedComponent.componentName)) {
         pastedComponent.componentName += ` copy`
       }
       state.componentMap[pastedComponent.componentName] = pastedComponent;
@@ -510,6 +510,81 @@ const mutations = {
     state.activeHTML = "";
   },
 
+  [types.SET_ID_DRAG]: (state, payload) => {
+    const componentName = state.activeComponent;
+    state.componentMap[componentName].idDrag = payload;
+  },
+
+  [types.SET_ID_DROP]: (state, payload) => {
+    const componentName = state.activeComponent;
+    state.componentMap[componentName].idDrop = payload;
+  },
+
+  [types.SET_SELECTED_ID_DRAG]: (state, payload) => {
+    state.selectedIdDrag = payload;
+  },
+
+  [types.SET_SELECTED_ID_DROP]: (state, payload) => {
+    state.selectedIdDrop = payload;
+  },
+
+  [types.DRAG_DROP_SORT_HTML_ELEMENTS]: (state) => {
+    const componentName = state.activeComponent;
+    const idDrag = state.componentMap[componentName].idDrag;
+    const idDrop = state.componentMap[componentName].idDrop;
+
+    if(idDrag !== idDrop && idDrag !== '' && idDrop !== '') {
+      let indexDrag;
+      let indexDrop;
+      const htmlList = state.componentMap[componentName].htmlList.slice(0)
+
+      if (state.activeLayer.id === "") {
+        htmlList.forEach((el, i) => {
+          if(el.id === idDrag){
+            indexDrag = i;
+          } else if (el.id === idDrop){
+            indexDrop = i;
+          }
+        })
+        const draggedEl = htmlList.splice(indexDrag, 1)[0]
+        htmlList.splice(indexDrop,0,draggedEl)
+      } else {
+        const nestedDrag = breadthFirstSearchParent(htmlList, idDrag);
+        const nestedDrop = breadthFirstSearchParent(htmlList, idDrop);
+        let nestedEl =nestedDrag.evaluated.children.splice(nestedDrag.index, 1)[0]
+        nestedDrop.evaluated.children.splice(nestedDrop.index, 0, nestedEl)
+      }
+      state.componentMap[componentName].htmlList = htmlList;
+    }
+    state.componentMap[componentName].idDrag = '';
+    state.componentMap[componentName].idDrop = '';
+  },
+
+  [types.DRAG_DROP_SORT_SELECTED_HTML_ELEMENTS]: (state) => {
+    const selectedIdDrag = state.selectedIdDrag;
+    const selectedIdDrop = state.selectedIdDrop;
+
+    if(selectedIdDrag !== selectedIdDrop && selectedIdDrag !== '' && selectedIdDrop !== ''){
+      const htmlList = state.selectedElementList.slice(0)
+
+      let indexDrag;
+      let indexDrop;
+
+      htmlList.forEach((el, i) => {
+        if(el.id === selectedIdDrag){
+          indexDrag = i;
+        } else if (el.id === selectedIdDrop){
+          indexDrop = i;
+        }
+      })
+
+      const draggedEl = htmlList.splice(indexDrag, 1)[0]
+      htmlList.splice(indexDrop,0,draggedEl)
+      state.selectedElementList = htmlList;
+    }
+    state.selectedIdDrag = '';
+    state.selectedIdDrop = '';
+  },
   // *** COMPONENTS *** //////////////////////////////////////////////
   // adds the component to the selected route (ex: HomeView)
   [types.ADD_COMPONENT_TO_ACTIVE_ROUTE_CHILDREN]: (state, payload) => {
@@ -535,6 +610,8 @@ const mutations = {
       isActive,
       actions,
       props,
+      idDrag,
+      idDrop,
       htmlAttributes,
     } = payload;
     const s = payload.state;
@@ -554,6 +631,8 @@ const mutations = {
         actions,
         props,
         state: s,
+        idDrag,
+        idDrop,
         htmlAttributes,
       },
     };
@@ -611,21 +690,21 @@ const mutations = {
   },
 
   [types.SET_ACTIVE_COMPONENT]: (state, payload) => {
-    if (!payload){
+    if (!payload) {
       payload = '';
     }
-    if (payload === ''){
+    if (payload === '') {
       state.activeComponent = '';
-      state.activeComponentObj = {componentName: '', isActive: false};
+      state.activeComponentObj = { componentName: '', isActive: false };
       state.activeHTML = "";
       state.activeLayer = {
         id: "",
         lineage: [],
       };
     } else {
-    state.activeComponent = payload;
-    state.activeComponentObj = state.routes[state.activeRoute].filter(
-      (comp) => comp.componentName === state.activeComponent
+      state.activeComponent = payload;
+      state.activeComponentObj = state.routes[state.activeRoute].filter(
+        (comp) => comp.componentName === state.activeComponent
       )[0];
     }
     state.activeHTML = "";
@@ -674,6 +753,21 @@ const mutations = {
     updatedComponent.x = payload.x;
     updatedComponent.y = payload.y;
   },
+  //color updater
+  [types.UPDATE_COLOR]: (state, payload) => {
+    const updatedComponent = state.routes[state.activeRoute].filter(
+      (element) => element.componentName === payload.activeComponent
+    )[0];
+    
+    updatedComponent.color = payload.color
+  },
+//Attribute updater for parent
+  [types.EDIT_ATTRIBUTE]: (state, payload) => {
+    const updatedComponent = state.routes[state.activeRoute].filter(
+      (element) => element.componentName === payload.activeComponent
+    )[0];
+    updatedComponent.htmlAttributes[payload.attribute] = payload.value
+  },
 
   [types.UPDATE_COMPONENT_LAYER]: (state, payload) => {
     const updatedComponent = state.routes[state.activeRoute].filter(
@@ -685,10 +779,10 @@ const mutations = {
 
   [types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE]: (state, payload) => {
     //temp is the activeComponent's children array
-    if (state.activeComponent === payload){return}
+    if (state.activeComponent === payload) { return }
     const temp = state.componentMap[state.activeComponent].children;
     // delete block
-    if ((temp.filter((el) => payload === el)).length > 0) { 
+    if ((temp.filter((el) => payload === el)).length > 0) {
       //commented stuff below does not seem necessary for the functionality of this if block.
       //children will be current children EXCLUDING payload
       // const child = temp.filter((el) => payload.includes(el));
@@ -697,7 +791,7 @@ const mutations = {
       for (const comp of components) {
         if (comp.children.includes(payload)) childCount++; //if the component has 2 parents, do not assign the component to the route
       }
-        state.componentMap[state.activeComponent].children = (temp.filter((el) => payload !== el));
+      state.componentMap[state.activeComponent].children = (temp.filter((el) => payload !== el));
       if (childCount <= 1) {
         state.componentMap[state.activeRoute].children.push(...temp.filter((el) => payload === el));
       }
@@ -716,7 +810,7 @@ const mutations = {
       state.componentMap[state.activeRoute].children = state.componentMap[
         state.activeRoute
       ].children.filter((el) => payload !== el);
-      state.componentMap[child[child.length-1]].parent[state.activeComponent] =
+      state.componentMap[child[child.length - 1]].parent[state.activeComponent] =
         state.componentMap[state.activeComponent];
     }
   },
@@ -726,18 +820,18 @@ const mutations = {
   },
 
   [types.ADD_ACTIVE_COMPONENT_NOTE]: (state, payload) => {
-    if (!state.componentMap[state.activeComponent].hasOwnProperty('noteList')){
+    if (!state.componentMap[state.activeComponent].hasOwnProperty('noteList')) {
       state.componentMap[state.activeComponent].noteList = [];
     }
-    while(state.componentMap[state.activeComponent].noteList.includes(payload)){
+    while (state.componentMap[state.activeComponent].noteList.includes(payload)) {
       payload = 'DUPLICATE: ' + payload
     }
     state.componentMap[state.activeComponent].noteList.push(payload)
   },
 
   [types.DELETE_ACTIVE_COMPONENT_NOTE]: (state, payload) => {
-    state.componentMap[state.activeComponent].noteList.forEach((el, ind) =>{
-      if (payload === el){
+    state.componentMap[state.activeComponent].noteList.forEach((el, ind) => {
+      if (payload === el) {
         state.componentMap[state.activeComponent].noteList.splice(ind, 1)
         return;
       }
@@ -746,6 +840,10 @@ const mutations = {
 
   [types.OPEN_NOTE_MODAL]: (state) => {
     state.noteModalOpen = !state.noteModalOpen;
+  }, 
+  
+  [types.OPEN_COLOR_MODAL]: (state) => {
+    state.colorModalOpen = !state.colorModalOpen;
   },
   //Jace practice for future, not place classList directly in activeComponent
   [types.OPEN_ATTRIBUTE_MODAL]: (state) => {
@@ -754,14 +852,14 @@ const mutations = {
 
   [types.ADD_ACTIVE_COMPONENT_CLASS]: (state, payload) => {
     state.componentMap[state.activeComponent].htmlList.forEach((el) => {
-      if (payload.id  === el.id) {
+      if (payload.id === el.id) {
         el.class = payload.class
       }
     })
   },
   [types.DELETE_ACTIVE_COMPONENT_CLASS]: (state, payload) => {
-    state.componentMap[state.activeComponent].classList.forEach((el, ind) =>{
-      if (payload === el){
+    state.componentMap[state.activeComponent].classList.forEach((el, ind) => {
+      if (payload === el) {
         state.componentMap[state.activeComponent].classList.splice(ind, 1)
         return;
       }

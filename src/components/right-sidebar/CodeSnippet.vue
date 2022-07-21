@@ -12,14 +12,8 @@ Description:
       Select a component
     </div>
     <div v-else>{{ `${this.activeComponent}.vue` }}</div>
-    <prism-editor
-      v-model="code"
-      :highlight="highlighter"
-      line-numbers
-      class="my-editor"
-      readonly
-    />
-    </div>
+    <prism-editor v-model="code" :highlight="highlighter" line-numbers class="my-editor" readonly />
+  </div>
 </template>
 
 <script>
@@ -28,6 +22,7 @@ import { mapState } from "vuex";
 import { PrismEditor } from "vue-prism-editor";
 import "vue-prism-editor/dist/prismeditor.min.css";
 import { highlight, languages } from "prismjs/components/prism-core";
+import styleClassMap from '../../store/state/styleClassMap'
 import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism-tomorrow.css"; // import syntax highlighting styles
@@ -44,18 +39,19 @@ export default {
     PrismEditor,
   },
   computed: {
+    //add 
     // needs access to current component aka activeComponent
     ...mapState(["componentMap", "activeComponent", "activeComponentObj", "exportAsTypescript"]),
   },
   methods: {
-    snippetInvoke(){
-      if (this.activeComponent !== ''){
+    snippetInvoke() {
+      if (this.activeComponent !== '') {
         this.code = this.createCodeSnippet(
           this.componentMap[this.activeComponent].componentName,
           this.componentMap[this.activeComponent].children
         )
-        } else {
-          this.code = 'Your component boilerplate will be displayed here.'
+      } else {
+        this.code = 'Your component boilerplate will be displayed here.'
       }
     },
     //highlighter does not work: OverVue 6.0;
@@ -78,32 +74,41 @@ export default {
     // Creates beginner boilerplate
     createTemplate(componentName) {
       let templateTagStr = this.writeTemplateTag(componentName);
-      return `<template>\n  <div>\n${templateTagStr}  </div>\n</template>`;
+
+      //if/else statement to determine if there are class and id attributes present in the html element
+      if (this.activeComponentObj.htmlAttributes.class !== "" && this.activeComponentObj.htmlAttributes.id !== "") {
+        return `<template>\n  <div id = "${this.activeComponentObj.htmlAttributes.id}" class = "${this.activeComponentObj.htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
+      } else if (this.activeComponentObj.htmlAttributes.class !== "" && this.activeComponentObj.htmlAttributes.id === "") {
+          return `<template>\n  <div class = "${this.activeComponentObj.htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
+      } else if (this.activeComponentObj.htmlAttributes.class === "" && this.activeComponentObj.htmlAttributes.id !== "")
+      return `<template>\n  <div id = "${this.activeComponentObj.htmlAttributes.id}">\n${templateTagStr}  </div>\n</template>`;
+        else return `<template>\n  <div>\n${templateTagStr}  </div>\n</template>`;
     },
     // Creates <template> boilerplate
     writeTemplateTag(componentName) {
+      // console.log(this.activeComponentObj)
       // create reference object
       const htmlElementMap = {
-        div: ["<div>", "</div>"],
-        button: ["<button>", "</button>"],
-        form: ["<form>", "</form>"],
-        img: ["<img>", ""],
-        link: ['<a href="#"/>', ""],
-        list: ["<li>", "</li>"],
-        paragraph: ["<p>", "</p>"],
-        "list-ol": ["<ol>", "</ol>"],
-        "list-ul": ["<ul>", "</ul>"],
-        input: ["<input />", ""],
-        navbar: ["<nav>", "</nav>"],
-        header:["<header>","</header>"],
-        footer:["<footer>", "</footer>"],
-        meta: ["<meta>", "</meta>"],
-        h1:["<h1>", "</h1>"],
-        h2:["<h2>", "</h2>"],
-        h3:["<h3>", "</h3>"],
-        h4:["<h4>", "</h4>"],
-        h5:["<h5>", "</h5>"],
-        h6:["<h6>", "</h6>"],
+        div: ["<div", "</div>"],
+        button: ["<button", "</button>"],
+        form: ["<form", "</form>"],
+        img: ["<img", ""], //single
+        link: ['<a href="#"', ""], //single
+        list: ["<li", "</li>"],
+        paragraph: ["<p", "</p>"],
+        "list-ol": ["<ol", "</ol>"],
+        "list-ul": ["<ul", "</ul>"],
+        input: ["<input", ""], //single
+        navbar: ["<nav", "</nav>"],
+        header: ["<header", "</header>"],
+        footer: ["<footer", "</footer>"],
+        meta: ["<meta", "</meta>"],
+        h1: ["<h1", "</h1>"],
+        h2: ["<h2", "</h2>"],
+        h3: ["<h3", "</h3>"],
+        h4: ["<h4", "</h4>"],
+        h5: ["<h5", "</h5>"],
+        h6: ["<h6", "</h6>"],
       };
 
       // Helper function that recursively iterates through the given html element's children and their children's children.
@@ -120,17 +125,21 @@ export default {
           if (!child.text) {
             nestedString += `<${child}/>\n`;
           } else {
+            nestedString += htmlElementMap[child.text][0];
+            if (child.class !== "") {
+              nestedString += " " + "class = " + `"${el.class}"`;
+            }
+            if (child.text === "img" || child.text === "input" || child.text === "link") {
+              nestedString += "/>";
+            } else { nestedString += ">"; }
+
             if (child.children.length) {
-              nestedString += htmlElementMap[child.text][0];
               nestedString += "\n";
               nestedString += writeNested(child.children, indented);
               nestedString += indented + htmlElementMap[child.text][1];
               nestedString += "\n";
             } else {
-              nestedString +=
-                htmlElementMap[child.text][0] +
-                htmlElementMap[child.text][1] +
-                "\n";
+              nestedString += htmlElementMap[child.text][1] + "\n";
             }
           }
         });
@@ -141,21 +150,25 @@ export default {
       let htmlArr = this.componentMap[componentName].htmlList;
       let outputStr = ``;
       // eslint-disable-next-line no-unused-vars
-      for (let el of htmlArr) {
+      for (const el of htmlArr) {
         if (!el.text) {
           outputStr += `    <${el}/>\n`;
         } else {
           outputStr += `    `;
+          outputStr += htmlElementMap[el.text][0]
+          //if conditional to check class
+          if (el.class !== "") {
+            outputStr += " " + "class = " + `"${el.class}"`;
+          }
+          outputStr += ">";
           if (el.children.length) {
-            outputStr += htmlElementMap[el.text][0];
             outputStr += "\n";
             outputStr += writeNested(el.children, `    `);
             outputStr += `    `;
             outputStr += htmlElementMap[el.text][1];
             outputStr += `  \n`;
           } else {
-            outputStr +=
-              htmlElementMap[el.text][0] +  htmlElementMap[el.text][1] + "\n";
+            outputStr += htmlElementMap[el.text][1] + "\n";
           }
         }
       }
@@ -180,7 +193,7 @@ export default {
         imports += ' } from "vuex";\n';
       }
 
-       // if Typescript toggle is on, import defineComponent
+      // if Typescript toggle is on, import defineComponent
       if (this.exportAsTypescript === "on") {
         imports += 'import { defineComponent } from "vue";\n';
       }
@@ -232,6 +245,25 @@ export default {
         methods += "  },\n";
       }
 
+      let htmlArray = this.componentMap[componentName].htmlList;
+      let styleString = "";
+
+      if(this.activeComponentObj.htmlAttributes.class !== "") {
+        styleString += `.${this.activeComponentObj.htmlAttributes.class} {\nbackground-color: ${this.activeComponentObj.color};
+width: ${this.activeComponentObj.w}px;
+height: ${this.activeComponentObj.h}px;
+z-index: ${this.activeComponentObj.z};
+}\n`
+      }
+
+      for (const html of htmlArray) {
+        if (html.class === ' ') styleString = "";
+        if (html.class) {
+          styleString += `.${html.class} {\n
+}\n`
+        }
+      }
+
       // concat all code within script tags
       // if exportAsTypescript is on, out should be <script lang="ts">
       let output;
@@ -252,28 +284,28 @@ export default {
         output += "});\n<\/script>\n\n<style scoped>\n</style>"
 
       } else {
-        output += "};\n<\/script>\n\n<style scoped>\n</style>"
+        output += `}; \n <\/script>\n\n<style scoped>\n${styleString}</style > `
       }
-      return output;
+      return output
     },
   },
   watch: {
     // watches activeComponentObj for changes to make it reactive upon mutation
     // // // watches componentMap for changes to make it reactive upon mutation
     activeComponent: {
-      handler () {
+      handler() {
         this.snippetInvoke();
       },
       deep: true
     },
     componentMap: {
-      handler () {
+      handler() {
         this.snippetInvoke();
       },
       deep: true
     },
     exportAsTypescript: {
-      handler () {
+      handler() {
         this.snippetInvoke();
       },
     }
@@ -320,5 +352,17 @@ export default {
 .prism-editor__textarea:focus {
   outline: none;
 }
+
+.refreshCode {
+  position:absolute;
+  background-color:black;
+  color: $secondary;
+  bottom:96%;
+  right:5%;
+}
+.refreshCode:hover {
+  cursor:pointer;
+}
+
 </style>
 
