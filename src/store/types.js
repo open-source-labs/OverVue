@@ -79,7 +79,7 @@ export const REMOVE_ALL_STATE_PROPS_ACTIONS = 'REMOVE_ALL_STATE_PROPS_ACTIONS'
 export const UPDATE_PASTE_TIMER = 'UPDATE_PASTE_TIMER'
 
 export const SET_ID_DRAG = 'SET_ID_DRAG'
-export const SET_ID_DROP = 'SET_ID_DROP'
+export const SET_ID_DROP = 'SET_ID_DROP' 
 export const SET_SELECTED_ID_DRAG = 'SET_SELECTED_ID_DRAG'
 export const SET_SELECTED_ID_DROP = 'SET_SELECTED_ID_DROP'
 export const DRAG_DROP_SORT_HTML_ELEMENTS = 'DRAG_DROP_SORT_HTML_ELEMENTS'
@@ -93,8 +93,6 @@ export const openAttributeModal = 'openAttributeModal'
 export const addActiveComponentClass = 'addActiveComponentClass'
 export const deleteActiveComponentClass = 'deleteActiveComponentClass'
 
-//adding vmodel info
-export const addBindingText = 'addBindingText'
 //
 export const deleteActiveComponentNote = 'deleteActiveComponentNote'
 export const addActiveComponentNote = 'addActiveComponentNote'
