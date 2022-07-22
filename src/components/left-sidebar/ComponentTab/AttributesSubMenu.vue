@@ -96,6 +96,7 @@ export default {
         routeArray: this.routes[this.activeRoute],
         activeComponentData: this.activeComponentData,
       })
+      this.attributeText = "";
     },
 
     changeAttribute(attribute) {
