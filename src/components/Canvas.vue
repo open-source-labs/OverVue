@@ -151,6 +151,7 @@
                 </div>
                 <div class="formBox">
                 <q-form autofocus v-on:submit.prevent="submitNote">
+<<<<<<< Updated upstream
                     <q-input
                       v-model="noteText"
                       label="Add your note here"
@@ -175,6 +176,14 @@
                     label="Close"
                     @click="this.openNoteModal"
                     />
+=======
+                  <q-input v-model="noteText" label="Add your note here" filled dark autofocus true hide-bottom-space
+                    :hint="hint" @keyup.enter="submitNote"></q-input>
+                  <q-btn id="comp-btn" class="sidebar-btn" color="secondary" label="Submit Note"
+                    :disable="noteText.length > 0 ? false : true" @keyup.enter="submitNote" @click="submitNote" />
+                  <q-btn id="note-btn-close" class="sidebar-btn closeAction" label="Close"
+                    @click="this.openNoteModal" />
+>>>>>>> Stashed changes
                 </q-form>
                 
                 </div>
