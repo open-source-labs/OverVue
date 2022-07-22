@@ -59,15 +59,6 @@ Description:
           </ul>
         </div>
 
-        <!--attribute child's child-->
-        <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList"
-          :key="element.id + Date.now()">
-          <ul v-for="element1 in element.children"
-          :key="element1.id + Date.now()">
-            <li v-if="element1.id === this.activeHTML">Your class is - {{ element1.class }}</li>
-          </ul>
-        </div>
-
         <div class="formBox">
           <q-form autofocus v-on:submit.prevent="submitClass">
             <p class="title">Add Class Name:</p>
