@@ -289,20 +289,20 @@ export default {
   },
   mounted() {
     // when component is mounted, add ability to delete
-    window.addEventListener("keyup", (event) => {
-      if (event.key === "Backspace") {
-        if (this.activeComponent !== '' && this.noteModalOpen === false) {
-          this.$store.dispatch("deleteActiveComponent");
-        }
-      }
-    });
-    window.addEventListener("keyup", (event) => {
-      if (event.key === "Delete") {
-        if (this.activeComponent !== '' && this.noteModalOpen === false) {
-          this.$store.dispatch("deleteActiveComponent");
-        }
-      }
-    });
+    // window.addEventListener("keyup", (event) => {
+    //   if (event.key === "Backspace") {
+    //     if (this.activeComponent !== '' && this.noteModalOpen === false) {
+    //       this.$store.dispatch("deleteActiveComponent");
+    //     }
+    //   }
+    // });
+    // window.addEventListener("keyup", (event) => {
+    //   if (event.key === "Delete") {
+    //     if (this.activeComponent !== '' && this.noteModalOpen === false) {
+    //       this.$store.dispatch("deleteActiveComponent");
+    //     }
+    //   }
+    // });
     // listener for the copy
     window.addEventListener("copy", () => {
       // if there is an activeComponent, copy info to state using dispatch
