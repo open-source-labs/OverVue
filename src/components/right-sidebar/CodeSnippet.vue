@@ -124,7 +124,7 @@ export default {
           } else {
             nestedString += htmlElementMap[child.text][0];
             if (child.class !== "") {
-              nestedString += " " + "class = " + `"${el.class}"`;
+              nestedString += " " + "class = " + `"${child.class}"`;
             }
             if (child.text === "img" || child.text === "input" || child.text === "link") {
               nestedString += "/>";
