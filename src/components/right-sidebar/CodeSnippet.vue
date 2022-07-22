@@ -126,6 +126,12 @@ export default {
             if (child.class !== "") {
               nestedString += " " + "class = " + `"${child.class}"`;
             }
+            if (child.binding !== "") {
+              if (child.text !== 'img' || child.text !== 'link') {
+                nestedString += ` v-model = "${child.binding}"`
+
+              }
+            }
             if (child.text === "img" || child.text === "input" || child.text === "link") {
               nestedString += "/>";
             } else { nestedString += ">"; }
@@ -156,6 +162,9 @@ export default {
           //if conditional to check class
           if (el.class !== "") {
             outputStr += " " + "class = " + `"${el.class}"`;
+          }
+          if (el.binding !== "") {
+            outputStr += ` v-model = "${el.binding}"`
           }
           outputStr += ">";
           if (el.children.length) {
@@ -217,6 +226,22 @@ export default {
         data += "    }\n";
         data += "  },\n";
       }
+      const htmlBinding = this.componentMap[this.activeComponent].htmlList
+      console.log('htmlbinding', htmlBinding.binding)
+      console.log('2', htmlBinding)
+      // if (htmlBinding.forEach) {
+
+      // }
+
+      data += "  data () {\n return {\n"
+      htmlBinding.forEach(el => {
+        if (el.binding !== '') {
+          data += `    "${el.binding}": "PLACEHOLDER FOR VALUE", `
+          data += '\n'
+        }
+      })
+      data += ` \n  }  \n `
+
 
       // if true add computed section and populate with state
       let computed = "";
@@ -224,7 +249,7 @@ export default {
         computed += "  computed: {";
         computed += "\n    ...mapState([";
         this.componentMap[this.activeComponent].state.forEach((state) => {
-          computed += `\n      "${state}",`;
+          computed += `\n      "${state}", `;
         });
         computed += "\n    ]),\n";
         computed += "  },\n";
@@ -236,7 +261,7 @@ export default {
         methods += "  methods: {";
         methods += "\n    ...mapActions([";
         this.componentMap[this.activeComponent].actions.forEach((action) => {
-          methods += `\n      "${action}",`;
+          methods += `\n      "${action}", `;
         });
         methods += "\n    ]),\n";
         methods += "  },\n";
@@ -246,18 +271,19 @@ export default {
       let styleString = "";
 
       if (this.activeComponentObj.htmlAttributes.class !== "") {
-        styleString += `.${this.activeComponentObj.htmlAttributes.class} {\nbackground-color: ${this.activeComponentObj.color};
-width: ${this.activeComponentObj.w}px;
-height: ${this.activeComponentObj.h}px;
-z-index: ${this.activeComponentObj.z};
-}\n`
+        styleString += `.${this.activeComponentObj.htmlAttributes.class} { \nbackground- color: ${this.activeComponentObj.color};
+      width: ${this.activeComponentObj.w} px;
+      height: ${this.activeComponentObj.h} px;
+      z - index: ${this.activeComponentObj.z};
+    } \n`
       }
 
       for (const html of htmlArray) {
         if (html.class === ' ') styleString = "";
         if (html.class) {
-          styleString += `.${html.class} {\n
-}\n`
+          styleString += `.${html.class} {
+\n
+} \n`
         }
       }
 

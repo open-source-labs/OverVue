@@ -366,7 +366,8 @@ const mutations = {
       text: payload.elementName,
       id: payload.date,
       children: [],
-      class: ''
+      class: '',
+      binding: ''
     });
   },
 
