@@ -430,7 +430,6 @@ const mutations = {
 
   [types.SET_ACTIVE_LAYER]: (state, payload) => {
     const newLayer = cloneDeep(state.activeLayer);
-
     newLayer.lineage.push(payload.text);
     newLayer.id = payload.id;
     state.activeLayer = newLayer;
@@ -820,7 +819,6 @@ const mutations = {
         el.class = payload.class
       }
     })
-
   },
 
 
