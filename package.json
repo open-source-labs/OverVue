@@ -28,6 +28,7 @@
     "@ssthouse/vue3-tree-chart": "^0.2.3",
     "core-js": "^3.21.1",
     "dotenv": "^16.0.0",
+    "electron-deeplink": "^1.0.10",
     "fs-extra": "^10.0.0",
     "http": "^0.0.1-security",
     "https": "^1.0.0",
