@@ -79,10 +79,10 @@ export default {
       if (this.activeComponentObj.htmlAttributes.class !== "" && this.activeComponentObj.htmlAttributes.id !== "") {
         return `<template>\n  <div id = "${this.activeComponentObj.htmlAttributes.id}" class = "${this.activeComponentObj.htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
       } else if (this.activeComponentObj.htmlAttributes.class !== "" && this.activeComponentObj.htmlAttributes.id === "") {
-          return `<template>\n  <div class = "${this.activeComponentObj.htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
+        return `<template>\n  <div class = "${this.activeComponentObj.htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
       } else if (this.activeComponentObj.htmlAttributes.class === "" && this.activeComponentObj.htmlAttributes.id !== "")
-      return `<template>\n  <div id = "${this.activeComponentObj.htmlAttributes.id}">\n${templateTagStr}  </div>\n</template>`;
-        else return `<template>\n  <div>\n${templateTagStr}  </div>\n</template>`;
+        return `<template>\n  <div id = "${this.activeComponentObj.htmlAttributes.id}">\n${templateTagStr}  </div>\n</template>`;
+      else return `<template>\n  <div>\n${templateTagStr}  </div>\n</template>`;
     },
     // Creates <template> boilerplate
     writeTemplateTag(componentName) {
@@ -145,7 +145,7 @@ export default {
 
       // Iterates through active component's HTML elements list and adds to code snippet
       let htmlArr = this.componentMap[componentName].htmlList;
-      let outputStr = ``;
+      let outputStr = ``
       // eslint-disable-next-line no-unused-vars
       for (const el of htmlArr) {
         if (!el.text) {
@@ -245,7 +245,7 @@ export default {
       let htmlArray = this.componentMap[componentName].htmlList;
       let styleString = "";
 
-      if(this.activeComponentObj.htmlAttributes.class !== "") {
+      if (this.activeComponentObj.htmlAttributes.class !== "") {
         styleString += `.${this.activeComponentObj.htmlAttributes.class} {\nbackground-color: ${this.activeComponentObj.color};
 width: ${this.activeComponentObj.w}px;
 height: ${this.activeComponentObj.h}px;
@@ -351,15 +351,15 @@ z-index: ${this.activeComponentObj.z};
 }
 
 .refreshCode {
-  position:absolute;
-  background-color:black;
+  position: absolute;
+  background-color: black;
   color: $secondary;
-  bottom:96%;
-  right:5%;
-}
-.refreshCode:hover {
-  cursor:pointer;
+  bottom: 96%;
+  right: 5%;
 }
 
+.refreshCode:hover {
+  cursor: pointer;
+}
 </style>
 
