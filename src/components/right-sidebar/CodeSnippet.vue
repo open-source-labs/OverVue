@@ -140,7 +140,7 @@ export default {
               nestedString += "\n";
               nestedString += writeNested(child.children, indented);
               nestedString += indented + htmlElementMap[child.text][1];
-              nestedString += "\n";
+              nestedString += "\n"
             } else {
               nestedString += htmlElementMap[child.text][1] + "\n";
             }
