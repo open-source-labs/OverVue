@@ -147,7 +147,7 @@ export default {
       let htmlArr = this.componentMap[componentName].htmlList;
       let outputStr = ``;
       // eslint-disable-next-line no-unused-vars
-      for (const el of htmlArr) {
+      for (let el of htmlArr) {
         if (!el.text) {
           outputStr += `    <${el}/>\n`;
         } else {
