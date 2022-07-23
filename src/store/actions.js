@@ -50,7 +50,7 @@ const actions = {
   //
   [types.registerComponent]: ({ state, commit }, payload) => {
     /* this action has a lot of mutations deployed
-    Because we have to initialize a whole bunch of properties
+    Because we have to initialize a whole bunch of propertiess
     which are determined by the choices made on the left hand panel
      */
     const { componentName } = payload;
