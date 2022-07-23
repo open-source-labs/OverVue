@@ -112,7 +112,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['activeComponentObj', 'selectedElementList', 'componentMap', 'activeComponent', 'activeHTML', 'activeLayer', 'attributeModalOpen']),
+    ...mapState(['selectedElementList', 'componentMap', 'activeComponent', 'activeHTML', 'activeLayer', 'attributeModalOpen']),
     renderList: {
       get() {
         if (this.activeComponent === '') return this.selectedElementList.map((el, index) => [el.text, index, el.id])
