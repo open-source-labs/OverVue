@@ -40,27 +40,6 @@ Description:
         </div>
     </div>
 
-<!--START OF CHANGES-->
-      <!-- &nbsp; &nbsp; Viewing Elements in {{ this.activeComponent }} '{{ depth }}'
-      <hr>
-    </span>
-    <span class='list-title' v-else-if='!this.activeComponent'></span>
-    <div group="people" class="list-group">
-      <p v-if='!this.componentMap[this.activeComponent]?.htmlList.length'>No HTML elements in component</p>
-
-      <div id="tooltipCon" :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'"
-        v-for="(element) in renderList" :key="element[1] + Date.now()">
-
-        <button class="attributeButton" @click="setActiveElement(element)">
-          <div class="tooltip"> Edit {{ element[0] }} attributes </div>
-        </button>
-        <i v-if='activeComponent === "" || exceptions.includes(element[0])'></i>
-        <i v-else class="fas fa fa-angle-double-down fa-md" @click="setLayer({ text: element[0], id: element[2] })"></i>
-        {{ element[0] }}
-        <i class="fas fa fa-trash fa-md" @click.self="deleteElement([element[1], element[2]])"></i>
-      </div>
-    </div> -->
-
     <!-- attribute pop-up -->
     <q-dialog v-model="attributeModal">
       <!-- @update:model-value="setActiveElement" -->
@@ -70,6 +49,15 @@ Description:
         <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList"
           :key="element.id + Date.now()">
           <p v-if="element.id === this.activeHTML">Your class is - {{ element.class }}</p>
+        </div>
+
+<!--attribute child's child-->
+        <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList"
+          :key="element.id + Date.now()">
+          <ul v-for="element1 in element.children"
+          :key="element1.id + Date.now()">
+            <li v-if="element1.id === this.activeHTML">Your class is - {{ element1.class }}</li>
+          </ul>
         </div>
 
         <div class="formBox">
