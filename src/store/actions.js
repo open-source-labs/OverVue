@@ -48,12 +48,20 @@ const actions = {
     commit(types.DELETE_ACTIVE_COMPONENT_CLASS, payload)
   },
 
-  [types.updateHTMLElementPosition]: ({ commit }, payload) => {
-    commit(types.UPDATE_HTMLELEMENT_POSITION, payload);
+  [types.addActiveComponentHeight]: ({ commit }, payload) => {
+    commit(types.ADD_ACTIVE_COMPONENT_HEIGHT, payload);
   },
 
-  [types.updateHTMLElementSize]: ({ commit }, payload) => {
-    commit(types.UPDATE_HTMLELEMENT_SIZE, payload);
+  [types.addActiveComponentWidth]: ({ commit }, payload) => {
+    commit(types.ADD_ACTIVE_COMPONENT_WIDTH, payload);
+  },
+
+  [types.addActiveComponentTop]: ({ commit }, payload) => {
+    commit(types.ADD_ACTIVE_COMPONENT_TOP, payload);
+  },
+
+  [types.addActiveComponentLeft]: ({ commit }, payload) => {
+    commit(types.ADD_ACTIVE_COMPONENT_LEFT, payload);
   },
   //
   [types.registerComponent]: ({ state, commit }, payload) => {

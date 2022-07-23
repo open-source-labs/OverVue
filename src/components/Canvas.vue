@@ -55,14 +55,15 @@
         class="compNoteLogo" 
         @click="handleAddNotes" />
 
-      <!-- <q-icon "
-        size="30px" 
-        z-layer="0" 
-        name="edit_note" 
-        class="compNoteLogoEmpty" 
-        @click="handleAddNotes" />
-      <div v-for="element in this.componentMap[componentData.componentName].htmlList" :key="element.id+ new Date()">
-        <div v-if="element.text === 'div'" class="htmlDiv"></div>
+      <div v-for="element in this.componentMap[componentData.componentName].htmlList" :key="element.id+ new Date()" :style="[{'background-color': componentData.color}, {'border': '5px'}]">
+        <div v-if="element.text === 'div'"
+              class="htmlDiv"
+              :style="[element.x !== 0 ? {'top': element.x} : {'top': '50%'}, 
+                       element.y !== 0 ? {'width': element.y} : {'left': '10%'},
+                       element.w !== 0 ? {'width': element.w} : {'width': '80%'},
+                       element.h !== 0 ? {'height' : element.h} : {'height' : '40%'}
+                       ]"
+>{{this.activeComponent}}</div>
         <div v-if="element.text === 'footer'" class="htmlFooter"></div>
         <div v-if="element.text === 'navbar'" class="htmlNavbar"></div>
         <div v-if="element.text === 'h1'" class="htmlH1">Lorem Ipsum </div>
@@ -79,9 +80,8 @@
         <div v-if="element.text === 'list-ol'" class="htmlList-Ol"></div>
         <div v-if="element.text === 'list-ul'" class="htmlList-Ul"></div>
         <p v-if="element.text === 'paragraph'" class="htmlP">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-          {{this.routes[activeRoute][0].htmlList}}
+          <!-- {{this.routes[activeRoute][0].htmlList}} -->
       </div>
-        @click="handleAddNotes" /> -->
 
       <q-icon v-if="componentData.componentName === this.activeComponent"
         size="25px" 
@@ -310,20 +310,20 @@ export default {
   },
   mounted() {
     // when component is mounted, add ability to delete
-    window.addEventListener("keyup", (event) => {
-      if (event.key === "Backspace") {
-        if (this.activeComponent !== '' && this.noteModalOpen === false) {
-          this.$store.dispatch("deleteActiveComponent");
-        }
-      }
-    });
-    window.addEventListener("keyup", (event) => {
-      if (event.key === "Delete") {
-        if (this.activeComponent !== '' && this.noteModalOpen === false) {
-          this.$store.dispatch("deleteActiveComponent");
-        }
-      }
-    });
+    // window.addEventListener("keyup", (event) => {
+    //   if (event.key === "Backspace") {
+    //     if (this.activeComponent !== '' && this.noteModalOpen === false) {
+    //       this.$store.dispatch("deleteActiveComponent");
+    //     }
+    //   }
+    // });
+    // window.addEventListener("keyup", (event) => {
+    //   if (event.key === "Delete") {
+    //     if (this.activeComponent !== '' && this.noteModalOpen === false) {
+    //       this.$store.dispatch("deleteActiveComponent");
+    //     }
+    //   }
+    // });
     // listener for the copy
     window.addEventListener("copy", () => {
       // if there is an activeComponent, copy info to state using dispatch
@@ -938,10 +938,10 @@ color:black;
 
 .htmlDiv {
   position: absolute;
-  top: 50%;
-  left: 5%;
+  top: 30%;
+  left: 6%;
   height: 30%;
-  width: 70%;
+  width: 80%;
   margin: .5em;
   background-color: $secondary;
   border-radius: 1.5%;

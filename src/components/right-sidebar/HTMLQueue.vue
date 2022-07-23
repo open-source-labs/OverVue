@@ -60,13 +60,10 @@ Description:
         <i class="fas fa fa-trash fa-md" @click.self="deleteElement([element[1], element[2]])"></i>
       </div>
     </div> -->
-
     <!-- attribute pop-up -->
-    <q-dialog v-model="attributeModal">
-      <!-- @update:model-value="setActiveElement" -->
+    <!-- <q-dialog v-model="attributeModal">
       <div class="AttributeBox">
         <p class="title">Add attributes to: {{ this.activeComponent }}</p>
-        <!--attribute child-->
         <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList"
           :key="element.id + Date.now()">
           <p v-if="element.id === this.activeHTML">Your class is - {{ element.class }}</p>
@@ -83,7 +80,7 @@ Description:
           </q-form>
         </div>
       </div>
-    </q-dialog>
+    </q-dialog> -->
   </section>
 </template>
 

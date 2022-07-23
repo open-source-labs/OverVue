@@ -69,7 +69,7 @@ export default {
     VueMultiselect,
   },
   computed: {
-    ...mapState(["selectedActions", "userActions", "componentMap", "activeComponent"]),
+    ...mapState(["selectedActions", "userActions", "componentMap", "activeComponent",]),
     actionOptions() {
       return this.userActions;
     },

@@ -74,8 +74,10 @@ export const OPEN_COLOR_MODAL = 'OPEN_COLOR_MODAL'
 export const OPEN_ATTRIBUTE_MODAL = 'OPEN_ATTRIBUTE_MODAL'
 export const ADD_ACTIVE_COMPONENT_CLASS = 'ADD_ACTIVE_COMPONENT_CLASS'
 export const DELETE_ACTIVE_COMPONENT_CLASS = 'DELETE_ACTIVE_COMPONENT_CLASS'
-export const UPDATE_HTMLELEMENT_SIZE = 'UPDATE_HTMLELEMENT_SIZE'
-export const UPDATE_HTMLELEMENT_POSITION = 'UPDATE_HTMLELEMENT_POSITION'
+export const ADD_ACTIVE_COMPONENT_HEIGHT = 'ADD_ACTIVE_COMPONENT_HEIGHT'
+export const ADD_ACTIVE_COMPONENT_WIDTH = 'ADD_ACTIVE_COMPONENT_WIDTH'
+export const ADD_ACTIVE_COMPONENT_TOP = 'ADD_ACTIVE_COMPONENT_TOP'
+export const ADD_ACTIVE_COMPONENT_LEFT = 'ADD_ACTIVE_COMPONENT_LEFT'
 
 //
 export const REMOVE_ALL_STATE_PROPS_ACTIONS = 'REMOVE_ALL_STATE_PROPS_ACTIONS'
@@ -95,8 +97,12 @@ export const openColorModal = 'openColorModal'
 export const openAttributeModal = 'openAttributeModal'
 export const addActiveComponentClass = 'addActiveComponentClass'
 export const deleteActiveComponentClass = 'deleteActiveComponentClass'
-export const updateHTMLElementPosition = 'updateHTMLElementPosition'
-export const updateHTMLElementSize = 'updateHTMLElementSize'
+export const addActiveComponentHeight = 'addActiveComponentHeight'
+export const addActiveComponentWidth = 'addActiveComponentWidth'
+export const addActiveComponentTop = 'addActiveComponentTop'
+export const addActiveComponentLeft = 'addActiveComponentLeft'
+
+
 //
 export const deleteActiveComponentNote = 'deleteActiveComponentNote'
 export const addActiveComponentNote = 'addActiveComponentNote'

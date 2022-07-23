@@ -352,8 +352,9 @@ const mutations = {
       x:0,
       y:0,
       z:0,
-      w:200,
-      h:100,
+      w:0,
+      h:0,
+      note: '',
     });
   },
 
@@ -375,8 +376,8 @@ const mutations = {
       x:0,
       y:0,
       z:0,
-      w:200,
-      h:100,
+      w:0,
+      h:0,
     });
   },
 
@@ -393,8 +394,8 @@ const mutations = {
       x:0,
       y:0,
       z:0,
-      w:200,
-      h:100,
+      w:0,
+      h:0,
     });
   },
 
@@ -407,35 +408,35 @@ const mutations = {
       x:0,
       y:0,
       z:0,
-      w:200,
-      h:100,
+      w:0,
+      h:0,
       
     });
   },
 
-  [types.UPDATE_HTMLELEMENT_POSITION]: (state, payload) => {
+  // [types.UPDATE_HTMLELEMENT_POSITION]: (state, payload) => {
    
-    const htmlList = state.componentMap[0].htmlList;
-    // .filter(
-    //   (element) => element.id === payload.activeHTML)
-    console.log('this update position const');
-    console.log(htmlList)
+  //   const htmlList = state.componentMap[0].htmlList;
+  //   // .filter(
+  //   //   (element) => element.id === payload.activeHTML)
+  //   console.log('this update position const');
+  //   console.log(htmlList)
 
 
-    // updatedHTMLElement.x = payload.x;
-    // updatedHTMLElement.y = payload.y;
-  },
+  //   // updatedHTMLElement.x = payload.x;
+  //   // updatedHTMLElement.y = payload.y;
+  // },
 
-  [types.UPDATE_HTMLELEMENT_SIZE]: (state, payload) => {
-    const updatedHTMLElement = state.routes[state.activeRoute].filter(
-      (element) => element.componentName === payload.activeComponent)[0];
-      console.log('this update size const' + updatedHTMLElement.x);
-      console.log('this update size pay' + payload.x)
-    updatedHTMLElement.h = payload.h;
-    updatedHTMLElement.w = payload.w;
-    updatedHTMLElement.x = payload.x;
-    updatedHTMLElement.y = payload.y;
-  },
+  // [types.UPDATE_HTMLELEMENT_SIZE]: (state, payload) => {
+  //   const updatedHTMLElement = state.routes[state.activeRoute].filter(
+  //     (element) => element.componentName === payload.activeComponent)[0];
+  //     console.log('this update size const' + updatedHTMLElement.x);
+  //     console.log('this update size pay' + payload.x)
+  //   updatedHTMLElement.h = payload.h;
+  //   updatedHTMLElement.w = payload.w;
+  //   updatedHTMLElement.x = payload.x;
+  //   updatedHTMLElement.y = payload.y;
+  // },
 
 
   [types.DELETE_FROM_COMPONENT_HTML_LIST]: (state, id) => {
@@ -862,6 +863,35 @@ const mutations = {
       if (payload === el) {
         state.componentMap[state.activeComponent].classList.splice(ind, 1)
         return;
+      }
+    })
+  },
+  //htmlElements changes of css
+  [types.ADD_ACTIVE_COMPONENT_HEIGHT]: (state, payload) => {
+    state.componentMap[state.activeComponent].htmlList.forEach((el) => {
+      if (payload.id === el.id) {
+        el.h = payload.height + '%'
+      }
+    })
+  },
+  [types.ADD_ACTIVE_COMPONENT_WIDTH]: (state, payload) => {
+    state.componentMap[state.activeComponent].htmlList.forEach((el) => {
+      if (payload.id === el.id) {
+        el.w = payload.width + '%'
+      }
+    })
+  },
+  [types.ADD_ACTIVE_COMPONENT_TOP]: (state, payload) => {
+    state.componentMap[state.activeComponent].htmlList.forEach((el) => {
+      if (payload.id === el.id) {
+        el.x = payload.top + '%'
+      }
+    })
+  },
+  [types.ADD_ACTIVE_COMPONENT_LEFT]: (state, payload) => {
+    state.componentMap[state.activeComponent].htmlList.forEach((el) => {
+      if (payload.id === el.id) {
+        el.y = payload.left + '%'
       }
     })
   },

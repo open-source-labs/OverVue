@@ -8,6 +8,7 @@ Description:
 <template>
   <div class="edit-component-div">
     <div>
+      <InputHTMLMenu v-model="attributeModal" v-if="attributeModal === true"/>
       <button class="menu-link" @click="resetActiveComponent"><i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp; &nbsp; Create Component Menu</button>
       <q-card class="no-shadow" dark flat>
       <q-expansion-item default-opened label="Update Component">
@@ -134,6 +135,8 @@ import PropsSubMenu from "./PropsSubMenu.vue";
 import StateSubMenu from "./StateSubMenu.vue";
 import ActionsSubMenu from "./ActionsSubMenu.vue";
 import AttributesSubMenu from "./AttributesSubMenu.vue";
+import InputHTMLMenu from './InputHTMLMenu.vue'
+
 
 const cloneDeep = require("lodash.clonedeep");
 const { fs, ipcRenderer } = window;
@@ -144,6 +147,7 @@ export default {
       value: "",
       newName: "",
       childrenSelected: [],
+      attributeModal: false,
     };
   },
   components: {
@@ -153,7 +157,8 @@ export default {
     PropsSubMenu,
     StateSubMenu,
     ActionsSubMenu,
-    AttributesSubMenu
+    AttributesSubMenu,
+    InputHTMLMenu,
   },
   computed: {
     ...mapState([
@@ -163,6 +168,7 @@ export default {
       "activeComponentObj",
       "componentMap",
       "exportAsTypescript",
+      'attributeModalOpen',
     ]),
     
     activeRouteDisplay() {
@@ -224,7 +230,8 @@ export default {
       "addToSelectedElementList",
       "addToComponentElementList",
       "addNestedHTML",
-      "addNestedNoActive"
+      "addNestedNoActive",
+      "openAttributeModal",
     ]),
     useExportComponentBound(){
       useExportComponent.bind(this)();
@@ -294,6 +301,11 @@ export default {
       this.setActiveComponent(this.activeComponent);
     },
   },
+  watch: {
+    attributeModalOpen() {
+      this.attributeModal = this.attributeModalOpen;
+    },
+  }
 };
 </script>
 
