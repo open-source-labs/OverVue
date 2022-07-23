@@ -227,11 +227,6 @@ export default {
         data += "  },\n";
       }
       const htmlBinding = this.componentMap[this.activeComponent].htmlList
-      console.log('htmlbinding', htmlBinding.binding)
-      console.log('2', htmlBinding)
-      // if (htmlBinding.forEach) {
-
-      // }
 
       data += "  data () {\n return {\n"
       htmlBinding.forEach(el => {
