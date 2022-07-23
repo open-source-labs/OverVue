@@ -206,7 +206,12 @@ const mutations = {
       [state.activeComponent]: state.activeComponentObj,
     };
   },
-
+  // //add binding 
+  [types.addBindingText]: (state, payload) => {
+    //access the htmlList, add payload to the empty bind obj
+    //state.component
+    console.log(state.componentMap[state.activeComponent])
+  },
   [types.DELETE_ACTION_FROM_COMPONENT]: (state, payload) => {
     state.componentMap[state.activeComponent].actions = state.componentMap[state.activeComponent].actions.filter(
       (action) => action !== payload);
