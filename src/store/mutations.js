@@ -799,7 +799,9 @@ const mutations = {
       }
     })
   },
-
+  [types.OPEN_COLOR_MODAL]: (state) => {
+    state.colorModalOpen = !state.colorModalOpen;
+  },
   [types.OPEN_NOTE_MODAL]: (state) => {
     state.noteModalOpen = !state.noteModalOpen;
   },
