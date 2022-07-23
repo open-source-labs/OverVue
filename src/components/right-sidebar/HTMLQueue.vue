@@ -53,12 +53,12 @@ Description:
           </ul>
         </div>
 
-        <!-- <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList"
+        <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList"
           :key="element.id + Date.now()">
           <ul v-for="element1 in element.children" :key="element1.id + Date.now()">
             <li v-if="element1.id === this.activeHTML">You've binded to - {{ element1.binding }}</li>
           </ul>
-        </div> -->
+        </div>
 
         <div class="formBox">
           <q-form autofocus v-on:submit.prevent="submitClass">
@@ -68,7 +68,7 @@ Description:
             <q-btn id="comp-btn" class="sidebar-btn" color="secondary" label="Submit Attribute"
               :disable="classText.length > 0 ? false : true" @click="submitClass(classText, this.activeHTML)" />
           </q-form>
-          <!-- <q-form autofocus v-on:submit.prevent="addBinding">
+          <q-form autofocus v-on:submit.prevent="addBinding">
             <p class="title">Add Binding:</p>
 
             <q-input label="Add two way binding here" filled dark autofocus true hide-bottom-space v-model="bindingText"
@@ -76,7 +76,7 @@ Description:
             <q-btn id="comp-btn" class="sidebar-btn" color="secondary" label="Add Binding"
               :disable="bindingText.length > 0 ? false : true" @click="addBinding(bindingText, this.activeHTML)">
             </q-btn>
-          </q-form> -->
+          </q-form>
           <q-btn label="Close" @click="this.openAttributeModal" />
         </div>
       </div>
@@ -201,17 +201,17 @@ export default {
       this.addActiveComponentClass(payload);
       this.classText = '';
     },
-    // addBinding(input, idNum) {
-    //   if (input === '') {
-    //     return;
-    //   }
-    //   const payload = {
-    //     binding: input,
-    //     id: idNum
-    //   }
-    //   this.addBindingText(payload);
-    //   this.bindingText = '';
-    // },
+    addBinding(input, idNum) {
+      if (input === '') {
+        return;
+      }
+      const payload = {
+        binding: input,
+        id: idNum
+      }
+      this.addBindingText(payload);
+      this.bindingText = '';
+    },
   },
   watch: {
     attributeModalOpen() {
