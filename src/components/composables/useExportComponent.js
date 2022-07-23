@@ -247,7 +247,6 @@ export function useExportComponent() {
         let htmlArray = this.componentMap[componentName].htmlList;
         let styleString = "";
 
-        console.log(this.componentMap[componentName])
         if(this.componentMap[componentName].htmlAttributes.class !== "") {
           styleString += `.${this.componentMap[componentName].htmlAttributes.class} {\nbackground-color: ${this.componentMap[componentName].color};
   width: ${this.componentMap[componentName].w}px;
@@ -264,7 +263,7 @@ export function useExportComponent() {
           }
         }
 
-        return `\n <\/script>\n\n<style scoped>\n${styleString}</style >`;
+        return `\n\n<style scoped>\n${styleString}</style >`;
       }
 
       const exportComponentFile = (data) => {
