@@ -79,10 +79,10 @@ export default {
       if (this.activeComponentObj.htmlAttributes.class !== "" && this.activeComponentObj.htmlAttributes.id !== "") {
         return `<template>\n  <div id = "${this.activeComponentObj.htmlAttributes.id}" class = "${this.activeComponentObj.htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
       } else if (this.activeComponentObj.htmlAttributes.class !== "" && this.activeComponentObj.htmlAttributes.id === "") {
-          return `<template>\n  <div class = "${this.activeComponentObj.htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
+        return `<template>\n  <div class = "${this.activeComponentObj.htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
       } else if (this.activeComponentObj.htmlAttributes.class === "" && this.activeComponentObj.htmlAttributes.id !== "")
-      return `<template>\n  <div id = "${this.activeComponentObj.htmlAttributes.id}">\n${templateTagStr}  </div>\n</template>`;
-        else return `<template>\n  <div>\n${templateTagStr}  </div>\n</template>`;
+        return `<template>\n  <div id = "${this.activeComponentObj.htmlAttributes.id}">\n${templateTagStr}  </div>\n</template>`;
+      else return `<template>\n  <div>\n${templateTagStr}  </div>\n</template>`;
     },
     // Creates <template> boilerplate
     writeTemplateTag(componentName) {
@@ -126,6 +126,12 @@ export default {
             if (child.class !== "") {
               nestedString += " " + "class = " + `"${child.class}"`;
             }
+            if (child.binding !== "") {
+              if (child.text !== 'img' || child.text !== 'link') {
+                nestedString += ` v-model = "${child.binding}"`
+
+              }
+            }
             if (child.text === "img" || child.text === "input" || child.text === "link") {
               nestedString += "/>";
             } else { nestedString += ">"; }
@@ -134,7 +140,7 @@ export default {
               nestedString += "\n";
               nestedString += writeNested(child.children, indented);
               nestedString += indented + htmlElementMap[child.text][1];
-              nestedString += "\n";
+              nestedString += "\n"
             } else {
               nestedString += htmlElementMap[child.text][1] + "\n";
             }
@@ -145,7 +151,7 @@ export default {
 
       // Iterates through active component's HTML elements list and adds to code snippet
       let htmlArr = this.componentMap[componentName].htmlList;
-      let outputStr = ``;
+      let outputStr = ``
       // eslint-disable-next-line no-unused-vars
       for (const el of htmlArr) {
         if (!el.text) {
@@ -156,6 +162,9 @@ export default {
           //if conditional to check class
           if (el.class !== "") {
             outputStr += " " + "class = " + `"${el.class}"`;
+          }
+          if (el.binding !== "") {
+            outputStr += ` v-model = "${el.binding}"`
           }
           outputStr += ">";
           if (el.children.length) {
@@ -205,7 +214,7 @@ export default {
       children.forEach((name) => {
         childrenComponentNames += `    ${name},\n`;
       });
-
+      console.log("lets look at data", this.componentMap[this.activeComponent])
       // if true add data section and populate with props
       let data = "";
       if (this.componentMap[this.activeComponent].props.length) {
@@ -217,6 +226,17 @@ export default {
         data += "    }\n";
         data += "  },\n";
       }
+      const htmlBinding = this.componentMap[this.activeComponent].htmlList
+
+      data += "  data () {\n return {\n"
+      htmlBinding.forEach(el => {
+        if (el.binding !== '') {
+          data += `    "${el.binding}": "PLACEHOLDER FOR VALUE", `
+          data += '\n'
+        }
+      })
+      data += ` \n  }  \n `
+
 
       // if true add computed section and populate with state
       let computed = "";
@@ -224,7 +244,7 @@ export default {
         computed += "  computed: {";
         computed += "\n    ...mapState([";
         this.componentMap[this.activeComponent].state.forEach((state) => {
-          computed += `\n      "${state}",`;
+          computed += `\n      "${state}", `;
         });
         computed += "\n    ]),\n";
         computed += "  },\n";
@@ -236,7 +256,7 @@ export default {
         methods += "  methods: {";
         methods += "\n    ...mapActions([";
         this.componentMap[this.activeComponent].actions.forEach((action) => {
-          methods += `\n      "${action}",`;
+          methods += `\n      "${action}", `;
         });
         methods += "\n    ]),\n";
         methods += "  },\n";
@@ -245,19 +265,20 @@ export default {
       let htmlArray = this.componentMap[componentName].htmlList;
       let styleString = "";
 
-      if(this.activeComponentObj.htmlAttributes.class !== "") {
-        styleString += `.${this.activeComponentObj.htmlAttributes.class} {\nbackground-color: ${this.activeComponentObj.color};
-width: ${this.activeComponentObj.w}px;
-height: ${this.activeComponentObj.h}px;
-z-index: ${this.activeComponentObj.z};
-}\n`
+      if (this.activeComponentObj.htmlAttributes.class !== "") {
+        styleString += `.${this.activeComponentObj.htmlAttributes.class} { \nbackground- color: ${this.activeComponentObj.color};
+      width: ${this.activeComponentObj.w} px;
+      height: ${this.activeComponentObj.h} px;
+      z - index: ${this.activeComponentObj.z};
+    } \n`
       }
 
       for (const html of htmlArray) {
         if (html.class === ' ') styleString = "";
         if (html.class) {
-          styleString += `.${html.class} {\n
-}\n`
+          styleString += `.${html.class} {
+\n
+} \n`
         }
       }
 
@@ -349,17 +370,5 @@ z-index: ${this.activeComponentObj.z};
 .prism-editor__textarea:focus {
   outline: none;
 }
-
-.refreshCode {
-  position:absolute;
-  background-color:black;
-  color: $secondary;
-  bottom:96%;
-  right:5%;
-}
-.refreshCode:hover {
-  cursor:pointer;
-}
-
 </style>
 

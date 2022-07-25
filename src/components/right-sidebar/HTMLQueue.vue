@@ -8,8 +8,8 @@ Description:
   <section class="html-queue" @dragover="dragOver($event), false">
     <span class='list-title' v-if='this.activeLayer.id !== ""'>
       <i class="fas fa fa-chevron-up fa-md" @click="setParentLayer"></i>
-      
-      &nbsp; &nbsp; Viewing Elements in {{this.activeComponent}} '{{ depth }}'
+
+      &nbsp; &nbsp; Viewing Elements in {{ this.activeComponent }} '{{ depth }}'
       <hr>
     </span>
     <span class='list-title' v-else-if='!this.activeComponent'></span>
@@ -17,49 +17,21 @@ Description:
     <div group="people" class="list-group">
 
       <p v-if='!this.componentMap[this.activeComponent]?.htmlList.length'>No HTML elements in component</p>
-        <div 
-        v-for="(element) in renderList" :key="element[1] + Date.now()" 
-        @dragenter="dragEnter($event, element[2])"
-        >
-          <div
-          id="tooltipCon"
-          :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'"
-          @dragstart="startDrag($event, element[2])" 
-          @dragend="endDrag($event)"
-          draggable="true"
-          >
+      <div v-for="(element) in renderList" :key="element[1] + Date.now()" @dragenter="dragEnter($event, element[2])">
+        <div id="tooltipCon" :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'"
+          @dragstart="startDrag($event, element[2])" @dragend="endDrag($event)" draggable="true">
           <!--invisible button for tooltip-->
-            <button class="attributeButton" @click="setActiveElement(element)">
-              <div class="tooltip"> Edit {{ element[0] }} attributes </div>
-            </button>
-            <i v-if='activeComponent === "" || exceptions.includes(element[0]) '></i>
-            <i v-else class="fas fa fa-angle-double-down fa-md" @click="setLayer({text: element[0], id: element[2]})"></i>
-            {{ element[0] }}
-            <i class="fas fa fa-trash fa-md" @click.self="deleteElement([element[1],element[2]])"></i>
-          </div>
+          <button class="attributeButton" @click="setActiveElement(element)">
+            <div class="tooltip"> Edit {{ element[0] }} attributes </div>
+          </button>
+          <i v-if='activeComponent === "" || exceptions.includes(element[0])'></i>
+          <i v-else class="fas fa fa-angle-double-down fa-md"
+            @click="setLayer({ text: element[0], id: element[2] })"></i>
+          {{ element[0] }}
+          <i class="fas fa fa-trash fa-md" @click.self="deleteElement([element[1], element[2]])"></i>
         </div>
-    </div>
-
-<!--START OF CHANGES-->
-      <!-- &nbsp; &nbsp; Viewing Elements in {{ this.activeComponent }} '{{ depth }}'
-      <hr>
-    </span>
-    <span class='list-title' v-else-if='!this.activeComponent'></span>
-    <div group="people" class="list-group">
-      <p v-if='!this.componentMap[this.activeComponent]?.htmlList.length'>No HTML elements in component</p>
-
-      <div id="tooltipCon" :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'"
-        v-for="(element) in renderList" :key="element[1] + Date.now()">
-
-        <button class="attributeButton" @click="setActiveElement(element)">
-          <div class="tooltip"> Edit {{ element[0] }} attributes </div>
-        </button>
-        <i v-if='activeComponent === "" || exceptions.includes(element[0])'></i>
-        <i v-else class="fas fa fa-angle-double-down fa-md" @click="setLayer({ text: element[0], id: element[2] })"></i>
-        {{ element[0] }}
-        <i class="fas fa fa-trash fa-md" @click.self="deleteElement([element[1], element[2]])"></i>
       </div>
-    </div> -->
+    </div>
 
     <!-- attribute pop-up -->
     <q-dialog v-model="attributeModal">
@@ -70,6 +42,22 @@ Description:
         <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList"
           :key="element.id + Date.now()">
           <p v-if="element.id === this.activeHTML">Your class is - {{ element.class }}</p>
+          <p v-if="element.id === this.activeHTML"> You've binded to - {{ element.binding }}</p>
+        </div>
+
+        <!--attribute child's child-->
+        <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList"
+          :key="element.id + Date.now()">
+          <ul v-for="element1 in element.children" :key="element1.id + Date.now()">
+            <li v-if="element1.id === this.activeHTML">Your class is - {{ element1.class }}</li>
+          </ul>
+        </div>
+
+        <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList"
+          :key="element.id + Date.now()">
+          <ul v-for="element1 in element.children" :key="element1.id + Date.now()">
+            <li v-if="element1.id === this.activeHTML">You've binded to - {{ element1.binding }}</li>
+          </ul>
         </div>
 
         <div class="formBox">
@@ -79,8 +67,17 @@ Description:
               @keyup.enter="submitClass"></q-input>
             <q-btn id="comp-btn" class="sidebar-btn" color="secondary" label="Submit Attribute"
               :disable="classText.length > 0 ? false : true" @click="submitClass(classText, this.activeHTML)" />
-            <q-btn label="Close" @click="this.openAttributeModal" />
           </q-form>
+          <q-form autofocus v-on:submit.prevent="addBinding">
+            <p class="title">Add Binding:</p>
+
+            <q-input label="Add two way binding here" filled dark autofocus true hide-bottom-space v-model="bindingText"
+              @keyup.enter="addBinding"></q-input>
+            <q-btn id="comp-btn" class="sidebar-btn" color="secondary" label="Add Binding"
+              :disable="bindingText.length > 0 ? false : true" @click="addBinding(bindingText, this.activeHTML)">
+            </q-btn>
+          </q-form>
+          <q-btn label="Close" @click="this.openAttributeModal" />
         </div>
       </div>
     </q-dialog>
@@ -100,7 +97,7 @@ export default {
     name: {
       type: String
     },
-    listToRender:{
+    listToRender: {
       type: Array
     }
   },
@@ -109,6 +106,7 @@ export default {
       exceptions: ['input', 'img', 'link'],
       attributeModal: false,
       classText: '',
+      bindingText: '',
     }
   },
   computed: {
@@ -143,17 +141,18 @@ export default {
 
   },
   methods: {
-    ...mapActions(['setActiveHTML', 'setActiveLayer', 'upOneLayer', 'setSelectedIdDrag', 'setIdDrag', 'setSelectedIdDrop', 'setIdDrop', 'dragDropSortHtmlElements', 'dragDropSortSelectedHtmlElements', 'openAttributeModal', 'addActiveComponentClass']),
-    deleteElement (id) {
+    ...mapActions(['setActiveHTML', 'setActiveLayer', 'upOneLayer', 'setSelectedIdDrag', 'setIdDrag', 'setSelectedIdDrop', 'setIdDrop', 'dragDropSortHtmlElements', 'dragDropSortSelectedHtmlElements', 'openAttributeModal', 'addActiveComponentClass', 'addBindingText']),
+    deleteElement(id) {
       if (this.activeComponent === '') this.$store.dispatch(deleteSelectedElement, id[0])
-      else this.$store.dispatch(deleteFromComponentHtmlList, id[1])
+      this.setActiveHTML(element);
+      this.openAttributeModal(element);
+
     },
     setActiveElement(element) {
       if (this.activeComponent !== '') {
         this.setActiveHTML(element);
         this.openAttributeModal(element);
-        }
-      
+      }
     },
     setLayer(element) {
       this.setActiveLayer(element)
@@ -165,24 +164,24 @@ export default {
       }
     },
     //METHODS FOR DRAG-AND-DROP
-    startDrag (event, id) {
+    startDrag(event, id) {
       //add a class of 'currentlyDragging' to the HTML element that you are currently dragging
       event.target.classList.add('currentlyDragging')
       const dragId = id;
       if (this.activeComponent === '') this.setSelectedIdDrag(dragId)
       else this.setIdDrag(dragId)
     },
-    dragEnter (event, id) {
+    dragEnter(event, id) {
       event.preventDefault();
       const dropId = id;
       if (this.activeComponent === '') this.setSelectedIdDrop(dropId)
       else this.setIdDrop(dropId)
     },
-    dragOver (event) {
+    dragOver(event) {
       //needed stop the dragend animation so endDrag is invoked automatically
       event.preventDefault();
     },
-    endDrag (event) {
+    endDrag(event) {
       //remove the 'currentlyDragging' class after the HTML is dropped
       event.preventDefault();
       event.target.classList.remove('currentlyDragging')
@@ -194,12 +193,24 @@ export default {
       if (element === '') {
         return;
       }
+
       let payload = {
         class: element,
         id: idNum
       }
       this.addActiveComponentClass(payload);
       this.classText = '';
+    },
+    addBinding(input, idNum) {
+      if (input === '') {
+        return;
+      }
+      const payload = {
+        binding: input,
+        id: idNum
+      }
+      this.addBindingText(payload);
+      this.bindingText = '';
     },
   },
   watch: {
@@ -303,6 +314,7 @@ hr {
 .ignoreByDragover {
   pointer-events: none;
 }
+
 #tooltipCon {
   position: relative;
   cursor: pointer;
