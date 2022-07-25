@@ -32,7 +32,7 @@ Description:
             <button class="attributeButton" @click="setActiveElement(element)">
               <div class="tooltip"> Edit {{ element[0] }} attributes </div>
             </button>
-            <i v-if='activeComponent === "" || exceptions.includes(element[0]) '></i>
+            <i v-if='activeComponent === "" || exceptions.includes(element[0]) || moreExceptions.includes(element[0])'></i>
             <i v-else class="fas fa fa-angle-double-down fa-md" @click="setLayer({text: element[0], id: element[2]})"></i>
             {{ element[0] }}
             <i class="fas fa fa-trash fa-md" @click.self="deleteElement([element[1],element[2]])"></i>
@@ -139,8 +139,14 @@ export default {
         newTitle += ` > ${el}`
       })
       return newTitle;
+    },
+    moreExceptions: function () {
+      let childComponent = [];
+      if(this.activeComponent) {
+        childComponent = this.componentMap[this.activeComponent].child;
+      }
+      return childComponent;
     }
-
   },
   methods: {
     ...mapActions(['setActiveHTML', 'setActiveLayer', 'upOneLayer', 'setSelectedIdDrag', 'setIdDrag', 'setSelectedIdDrop', 'setIdDrop', 'dragDropSortHtmlElements', 'dragDropSortSelectedHtmlElements', 'openAttributeModal', 'addActiveComponentClass']),
