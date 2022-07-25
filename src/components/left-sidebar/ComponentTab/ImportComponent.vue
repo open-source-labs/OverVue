@@ -104,6 +104,7 @@ export default {
       const htmlList = []; //array populated with substrings '<div>' '</div>' '<p>' etc.
       let compName = data[0].slice(data[0].lastIndexOf('/') + 1).replace(/[^a-z0-9-_.]/gi, '').replace(/.vue/, '');
       const vueFile = fs.readFileSync(data[0], "utf8");
+      
 
       for (const key in this.$store.state.componentMap) {
         if (this.$store.state.componentMap[key].componentName === compName) {
@@ -138,14 +139,14 @@ export default {
 
       let htmlString = vueFile.substring(vueFile.indexOf('<template >') + 10, vueFile.indexOf('</template>'));
       let scriptString = vueFile.substring(vueFile.indexOf(`<script>`) + 8, vueFile.indexOf(`/script>`) - 1)
-
+      
       htmlParser(htmlString);
       importObj.props = this.parsingStringToProps(scriptString);
       importObj.actions = this.parsingStringToAction(scriptString);
       importObj.state = this.parsingStringToState(scriptString);
 
       htmlList.pop(); htmlList.shift(); //OverVue adds a <div></div> wrapper to all components. remove this before importing.
-
+console.log(htmlList)
       let groupings = findGroupings(htmlList);
       let groupingObj = objectGenerator(groupings);
       let groupingArray = [];
@@ -153,6 +154,8 @@ export default {
         groupingArray.push(groupingObj[key])
       }
       importObj.htmlList = groupingArray;
+      console.log('importObj:')
+      console.log(importObj)
       this.createImport(importObj) //send the importObj to CreateComponent.
 
       /**
@@ -214,6 +217,8 @@ export default {
        */
 
       function findGroupings(array) {
+        console.log("grouping:")
+        console.log(array)
         let count = 0; //tracks where the parent ends
         let stopIndexes = []; //an array that will be used to slice out the parent/child relationships
         for (let i = 0; i < array.length; i++) {
@@ -251,6 +256,8 @@ export default {
        */
 
       function objectGenerator(array) {
+        console.log("obj gen:")
+        console.log(array)
         let groupingObj = {};
         for (let i = 0; i < array.length; i++) {
           for (const key in htmlElementMap) {
@@ -261,6 +268,7 @@ export default {
           }
           array[i].pop();
           array[i].shift();
+
           if (array[i].length > 0) {
             const childGroupings = findGroupings(array[i]);
             const childrenObj = objectGenerator(childGroupings);
@@ -268,9 +276,10 @@ export default {
             for (const key in childrenObj) {
               childrenArray.push(childrenObj[key])
             }
+            console.log(groupingObj[i])
             groupingObj[i].children = childrenArray;
           } else {
-            groupingObj[i].children = [];
+            // groupingObj[i].children = [];
           }
         }
         return groupingObj;
