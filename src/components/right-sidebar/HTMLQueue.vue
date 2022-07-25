@@ -143,7 +143,7 @@ export default {
     moreExceptions: function () {
       let childComponent = [];
       if(this.activeComponent) {
-        childComponent = this.componentMap[this.activeComponent].child;
+        childComponent = this.componentMap[this.activeComponent].children;
       }
       return childComponent;
     }
