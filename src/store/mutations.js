@@ -755,7 +755,10 @@ const mutations = {
       // state.componentMap[state.activeComponent].htmlList = newHTMLList;
       // const newMap = { ...state.componentMap };
       // state.componentMap = { ...newMap };
+
+      //delete the parent because the payload is no longer a child to the acitive component
       delete state.componentMap[payload].parent[state.activeComponent];
+
       // add block
     } else {
       const child = temp;
@@ -768,6 +771,14 @@ const mutations = {
         state.componentMap[state.activeComponent];
     }
   },
+  // update Parent's icon Grid with Child Component
+  [types.UPGRADE_ICON_GRID_WITH_CHILD_COMPONENT]: (state, payload) => {
+      //Update available Child Components options to be place along side the HTML Elements every time the Child Components are updated
+        //mutation function with the same payload and using the activeComponent
+          //if the payload is not and html option added, if it is then delete it
+
+  },
+
   // invoked when element is double clicked, changing the boolean value
   [types.UPDATE_OPEN_MODAL]: (state, payload) => {
     state.modalOpen = payload;

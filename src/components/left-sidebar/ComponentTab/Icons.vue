@@ -17,6 +17,20 @@ Description:
       <br />
       <span>{{ elementName }}</span>
     </button>
+
+    <button
+      @click.prevent="changeState(elementName)"
+      v-for="(elementName, idx) in childrenComp"
+      :key="idx + Date.now()"
+    >
+      <span class="badge"> {{ elementStorage[elementName] }}</span>
+      <br />
+      <i :class="childIcon"></i>
+      <br />
+      <span>{{ elementName }}</span>
+    </button>
+    
+
   </section>
 </template>
 
@@ -25,7 +39,10 @@ import { mapState } from "vuex";
 
 export default {
   data() {
-    return {};
+    return {
+      //to give the child componenets of the active components icons
+      childIcon: ["fa-solid fa-code"]
+    };
   },
   name: "Icons",
   computed: {
@@ -60,6 +77,14 @@ export default {
         });
       }
       return computedElementalStorage;
+    },
+    childrenComp: function () {
+      let childrenAvailable = [];
+
+      if(this.activeComponent) {
+        childrenAvailable = this.componentMap[this.activeComponent].children
+      }
+      return childrenAvailable;
     },
   },
   methods: {

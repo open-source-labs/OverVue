@@ -77,13 +77,15 @@ export const DELETE_ACTIVE_COMPONENT_CLASS = 'DELETE_ACTIVE_COMPONENT_CLASS'
 //
 export const REMOVE_ALL_STATE_PROPS_ACTIONS = 'REMOVE_ALL_STATE_PROPS_ACTIONS'
 export const UPDATE_PASTE_TIMER = 'UPDATE_PASTE_TIMER'
-
+//Drag and Drop
 export const SET_ID_DRAG = 'SET_ID_DRAG'
 export const SET_ID_DROP = 'SET_ID_DROP' 
 export const SET_SELECTED_ID_DRAG = 'SET_SELECTED_ID_DRAG'
 export const SET_SELECTED_ID_DROP = 'SET_SELECTED_ID_DROP'
 export const DRAG_DROP_SORT_HTML_ELEMENTS = 'DRAG_DROP_SORT_HTML_ELEMENTS'
 export const DRAG_DROP_SORT_SELECTED_HTML_ELEMENTS = 'DRAG_DROP_SORT_SELECTED_HTML_ELEMENTS'
+//
+export const UPGRADE_ICON_GRID_WITH_CHILD_COMPONENT = 'UPGRADE_ICON_GRID_WITH_CHILD_COMPONENT'
 
 // Actions
 export const openNoteModal = 'openNoteModal'
@@ -158,13 +160,17 @@ export const updateStartingSize = 'updateStartingSize'
 export const deleteUserActions = 'deleteUserActions'
 export const deleteUserState = 'deleteUserState'
 export const toggleTutorial = 'toggleTutorial'
-
+//Drag and Drop 
 export const setIdDrag = 'setIdDrag'
 export const setIdDrop = 'setIdDrop'
 export const setSelectedIdDrag = 'setSelectedIdDrag'
 export const setSelectedIdDrop = 'setSelectedIdDrop'
 export const dragDropSortHtmlElements = 'dragDropSortHtmlElements'
 export const dragDropSortSelectedHtmlElements = 'dragDropSortSelectedHtmlElements'
+//
+export const upgradeIconGridWithChildComponent = 'upgradeIconGridWithChildComponent'
+
+
 
 // inactive mutations
 // export const SET_STATE = 'SET_STATE'
