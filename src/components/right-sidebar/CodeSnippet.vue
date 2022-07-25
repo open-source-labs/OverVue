@@ -85,9 +85,8 @@ export default {
         else return `<template>\n  <div>\n${templateTagStr}  </div>\n</template>`;
     },
     // Creates <template> boilerplate
-    writeTemplateTag(componentName) {
+    writeTemplateTag(componentName, activeComponent) {
       // console.log(this.activeComponentObj)
-      // create reference object
       const htmlElementMap = {
         div: ["<div", "</div>"],
         button: ["<button", "</button>"],
@@ -110,6 +109,9 @@ export default {
         h5: ["<h5", "</h5>"],
         h6: ["<h6", "</h6>"],
       };
+      this.componentMap[this.activeComponent].children.forEach(child => {
+        htmlElementMap[child]=[`<${child}`, ""] //single
+      })
       function writeNested(childrenArray, indent) {
         if (!childrenArray.length) {
           return "";
@@ -157,6 +159,11 @@ export default {
           if (el.class !== "") {
             outputStr += " " + "class = " + `"${el.class}"`;
           }
+          // add an extra slash at the end for child Components
+          if(this.componentMap[this.activeComponent].children.includes(el.text)){
+            outputStr += "/"
+          }
+
           outputStr += ">";
           if (el.children.length) {
             outputStr += "\n";
