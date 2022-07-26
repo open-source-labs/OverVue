@@ -378,6 +378,7 @@ const mutations = {
       z:0,
       w:0,
       h:0,
+      note: '',
     });
   },
 
@@ -396,6 +397,7 @@ const mutations = {
       z:0,
       w:0,
       h:0,
+      note: '',
     });
   },
 
@@ -410,7 +412,7 @@ const mutations = {
       z:0,
       w:0,
       h:0,
-      
+      note: '',
     });
   },
 
