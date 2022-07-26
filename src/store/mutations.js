@@ -330,6 +330,54 @@ const mutations = {
         }
       }
     }
+    //
+    for (const item of Object.values(state.componentMap)) {
+      if (item.htmlList) {
+        const newArray = [...item.htmlList];
+
+        const changeAllChildComponents = (array, name) => {
+          const queue = [...array.filter(el => typeof el === 'object')];
+          while(queue.length) {
+            const evaluate = queue.shift();
+            if(evaluate.text === name) {
+              evaluate.text = payload; 
+            }
+            for(let i = 0; i < evaluate.children.length; i++) {
+              if (evaluate.children[i].text === name) {
+                evaluate.children[i].text = payload;
+              } 
+              if (evaluate.children.length) {
+                queue.push(...evaluate.children)
+              }
+            }
+          }
+        }
+
+        changeAllChildComponents(newArray, temp)
+        item.htmlList = newArray
+      }
+    }
+      /*
+      const breadthFirstSearchParent = (array, id) => {
+        const queue = [...array.filter(el => typeof el === 'object')]
+        while (queue.length) {
+          const evaluated = queue.shift()
+          for (let i = 0; i < evaluated.children.length; i++) {
+            if (evaluated.children[i].id === id) {
+              return {
+                evaluated,
+                index: i
+              }
+            }
+            if (evaluated.children.length) {
+              queue.push(...evaluated.children)
+            }
+          }
+        }
+      }
+      */
+
+
   },
 
   // *** HTML ELEMENTS *** //////////////////////////////////////////////
