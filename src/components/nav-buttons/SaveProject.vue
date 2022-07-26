@@ -78,15 +78,13 @@ export default {
     // saves where JSON object is stored in state
     saveJSONLocation(data) {
       // delete original key from local forage
-
-      // UNFINISHED, need to save key with a project before you can delete it?
       let deleteKey =
         this.$store.state.projects[this.$store.state.activeTab].filename;
       localforage
         .removeItem(deleteKey)
         .then(function () {})
         .catch(function (err) {});
-      
+
       let fileName = this.parseFileName(data);
       // if valid fileName
       if (fileName) {
@@ -101,7 +99,6 @@ export default {
 
         // for each route call parseAndDelete on htmlList
         // eslint-disable-next-line no-unused-vars
-        /*
         for (let view in routes) {
           routes[view].forEach((component) => {
             let htmlList = component.htmlList;
@@ -116,7 +113,7 @@ export default {
             this.parseAndDelete(comphtml);
           }
         }
-        */
+
         fs.writeFileSync(data, JSON.stringify(state));
         localforage.setItem(
           fileName,
