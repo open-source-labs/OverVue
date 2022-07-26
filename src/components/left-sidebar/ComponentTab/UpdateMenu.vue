@@ -8,7 +8,6 @@ Description:
 <template>
   <div class="edit-component-div">
     <div>
-      <InputHTMLMenu v-model="attributeModal" v-if="attributeModal === true"/>
       <button class="menu-link" @click="resetActiveComponent"><i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp; &nbsp; Create Component Menu</button>
       <q-card class="no-shadow" dark flat>
       <q-expansion-item default-opened label="Update Component">
@@ -63,6 +62,7 @@ Description:
           </div>
           <br />
         </q-expansion-item>
+        <InputHTMLMenu v-model="attributeModal" v-if="attributeModal === true" class="htmlElement-selected"/>
         <q-expansion-item group="accordion" label="HTML Attributes">
           <AttributesSubMenu />
         </q-expansion-item>
@@ -435,5 +435,10 @@ p {
   flex-direction: column;
   height: 94%;
   margin: 10px;
+}
+
+.htmlElement-selected {
+  height:100%;
+
 }
 </style>

@@ -1,50 +1,97 @@
 <!-- Menu for inputting information into first layer HTML Elements, giving them class, binding, size, location, color -->
 
 <template >
-  <div id="html_element_card" class="no-shadow">
-    <h1>Here is a card</h1>
-      <div class="AttributeBox">
-        <p class="title">Add attributes to: {{ this.activeComponent }}</p>
-        <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList"
-          :key="element.id + Date.now()">
-          <p v-if="element.id === this.activeHTML">Your class is - {{ element.class }}</p>
-        </div>
-        <div class="formBox">
-          <q-form autofocus v-on:submit.prevent="submitClass">
-            <p class="title">Add Class Name:</p>
-            <q-input label="Add your class here" filled dark autofocus true hide-bottom-space v-model="classText"
-              @keyup.enter="submitClass"></q-input>
-            <q-btn id="comp-btn" class="sidebar-btn" color="secondary" label="Submit Attribute"
-              :disable="classText.length > 0 ? false : true" @click="submitClass(classText, this.activeHTML)" />
-
-            <p class="title">Change Height:</p>
-            <q-input label="Adjust height (0-100)" filled dark autofocus true hide-bottom-space v-model="heightText"
-              @keyup.enter="submitHeight"></q-input>
-            <q-btn id="comp-btn" class="sidebar-btn" color="secondary" label="Submit Height"
-              :disable="heightText.length > 0 ? false : true" @click="submitHeight(heightText, this.activeHTML)" />
-
-            <p class="title">Change Width:</p>
-            <q-input label="Adjust width (0-100)" filled dark autofocus true hide-bottom-space v-model="widthText"
-              @keyup.enter="submitWidth"></q-input>
-            <q-btn id="comp-btn" class="sidebar-btn" color="secondary" label="Submit Width"
-              :disable="widthText.length > 0 ? false : true" @click="submitWidth(widthText, this.activeHTML)" />
-            
-            <p class="title">Change Elevation:</p>
-            <q-input label="Adjust Elevation (0-100)" filled dark autofocus true hide-bottom-space v-model="topText"
-              @keyup.enter="submitTop"></q-input>
-            <q-btn id="comp-btn" class="sidebar-btn" color="secondary" label="Submit Height"
-              :disable="topText.length > 0 ? false : true" @click="submitTop(topText, this.activeHTML)" /> 
-            
-            <p class="title">Change Left Distance:</p>
-            <q-input label="Adjust Distance (0-100)" filled dark autofocus true hide-bottom-space v-model="leftText"
-              @keyup.enter="submitLeft"></q-input>
-            <q-btn id="comp-btn" class="sidebar-btn" color="secondary" label="Submit Left"
-              :disable="leftText.length > 0 ? false : true" @click="submitLeft(leftText, this.activeHTML)" />
-            <q-btn label="Close" @click="this.openAttributeModal" />
-          </q-form>
-        </div>
+    <div class="AttributeBox">
+      <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList"
+        :key="element.id + Date.now()">
+        <p v-if="element.id === this.activeHTML" class="title">Your class {{ element.class.length !== 0 ? 'is ' + element.class : 'has not been stated yet' }}</p>
       </div>
-  </div>
+      <div class="formBox">
+        <q-form autofocus v-on:submit.prevent="submitClass">
+          <q-input label="Add/Change your class name" filled dark autofocus true hide-bottom-space v-model="classText"
+            @keyup.enter="submitClass">
+          <i id="comp-btn" class="fa-solid fa-right-to-bracket"
+            :disable="classText.length > 0 ? false : true" @click.self="submitClass(classText, this.activeHTML)"></i>
+          </q-input>
+          <p class="title">Adjust Height and Elevation:</p> 
+          <q-slider
+            v-model="heightText"
+            :min="0"
+            :max="100"
+            vertical
+            label
+            label-always
+            :label-value="'Height:' + heightText"
+            inner-track-color="primary"
+            color="secondary"
+            @change="submitHeight(heightText, this.activeHTML)"
+            @update:model-value="submitHeight(heightText, this.activeHTML)"
+            style="float: left; margin-left: 5% "
+          />
+          <q-slider
+            v-model="topText"
+            :min="0"
+            :max="100"
+            vertical
+            label
+            label-always
+            :label-value="'Elevation:' + topText"
+            inner-track-color="primary"
+            color="secondary"
+            @change="submitTop(topText, this.activeHTML)"
+            @update:model-value="submitTop(topText, this.activeHTML)"
+            style="float: left; margin-left: 35%"
+          />
+          <q-slider
+            v-model="widthText"
+            :min="0"
+            :max="100"
+            label
+            label-always
+            :label-value="'Width:' + widthText"
+            inner-track-color="primary"
+            color="secondary"
+            @change="submitWidth(widthText, this.activeHTML)"
+            @update:model-value="submitWidth(widthText, this.activeHTML)"
+            style="margin-top: 20%"
+          />
+          <q-slider
+            v-model="leftText"
+            :min="0"
+            :max="100"
+            label
+            label-always
+            :label-value="'Position:' + leftText"
+            inner-track-color="primary"
+            color="secondary"
+            @change="submitLeft(leftText, this.activeHTML)"
+            @update:model-value="submitLeft(leftText, this.activeHTML)"
+            style="margin-top: 20%"
+          />
+          <q-input label="Adjust height (0-100)" filled dark autofocus true hide-bottom-space v-model="heightText" @keyup.enter="submitHeight">
+            <i class="fa-solid fa-right-to-bracket" color="secondary" label="Submit Height"
+              @click.self="submitHeight(heightText, this.activeHTML)">
+            </i>
+          </q-input>
+          <q-input label="Adjust width (0-100)" filled dark autofocus true hide-bottom-space v-model="widthText" @keyup.enter="submitWidth">
+            <i class="fa-solid fa-right-to-bracket" color="secondary" label="Submit Width"
+              @click.self="submitWidth(widthText, this.activeHTML)">
+            </i>
+          </q-input>
+          <q-input label="Adjust Elevation (0-100)" filled dark autofocus true hide-bottom-space v-model="topText" @keyup.enter="submitTop">
+            <i class="fa-solid fa-right-to-bracket" color="secondary" label="Submit Height"
+              @click.self="submitTop(topText, this.activeHTML)">
+            </i>
+          </q-input>
+          <q-input label="Adjust Distance (0-100)" filled dark autofocus true hide-bottom-space v-model="leftText"  @keyup.enter="submitLeft">
+            <i class="fa-solid fa-right-to-bracket" color="secondary" label="Submit Position"
+              @click="submitLeft(leftText, this.activeHTML)">
+            </i>
+          </q-input>
+          <q-btn label="Close" @click="this.openAttributeModal" />
+        </q-form>
+      </div>
+    </div>
 </template>
 
 <script>
@@ -54,13 +101,10 @@ export default {
     return {
       attributeModal : "false",
       classText: '',
-      heightText: '30',
-      widthText: '30',
-      topText: '30',
-      leftText: '30',
-
-
-      // tab: 'details',
+      heightText: '0',
+      widthText: '0',
+      topText: '0',
+      leftText: '0',
     }
   },
   computed: {
@@ -153,33 +197,19 @@ export default {
 </script>
 
 <style lang="scss">
-// give html background color of grey
-.html-bg {
-    background-color: $subprimary;
-}
-#store-cards {
-  height: 100%;
-  border-radius: 0px !important;
-  background-color: $subprimary;
-  
-}
-.q-tab-panel {
-  height: calc(100% - 30px);
-  // matches the code editor bg
-  background: $subprimary;
-  padding: 0px;
-  border-radius: 0px !important;
-  // changes the length of the tab panels
-}
-.q-tab-panels {
-  height: 100%;
-  border-radius: 0px !important;
-}
-.q-tabs {
-  background: $subprimary;
+.fa-solid {
+  position: relative;
+  top: 25%;
+  font-size: 200%;
+  float: left;
 }
 
-.q-tab__content{
-  padding: 10px 0;
+.fa-solid:hover {
+  cursor: pointer;
+  color: $secondary;
+}
+
+.title {
+  font-size: 1.3em
 }
 </style>

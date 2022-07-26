@@ -21,8 +21,6 @@
     class="cssContainerText"
     >
     CSS Container</p>
-
-
     <vue-draggable-resizable
       class-name="component-box"
       v-for="componentData in activeRouteArray"
@@ -53,26 +51,92 @@
         z-layer="0" 
         name="edit_note" 
         class="compNoteLogo" 
-        @click="handleAddNotes" />
+        @click="handleAddNotes" 
+      />
 
-      <div v-for="element in this.componentMap[componentData.componentName].htmlList" :key="element.id+ new Date()" :style="[{'background-color': componentData.color}, {'border': '5px'}]">
+      <div v-for="element in this.componentMap[componentData.componentName].htmlList" :key="element.id+ new Date()">
+        <div v-if="element.text === 'button'" 
+          class="htmlButton"
+          :style="[element.x !== 0 ? {'top': element.x} : {'top': '70%'}, 
+            element.y !== 0 ? {'left': element.y} : {'left': '60%'},
+            element.w !== 0 ? {'width': element.w} : {'width': '25%'},
+            element.h !== 0 ? {'height' : element.h} : {'height' : '10%'},
+            {'background-color': componentData.color}]">
+        <p class="innerHtmlText">{{element.text}}</p> 
+        </div>
         <div v-if="element.text === 'div'"
-              class="htmlDiv"
-              :style="[element.x !== 0 ? {'top': element.x} : {'top': '50%'}, 
-                       element.y !== 0 ? {'width': element.y} : {'left': '10%'},
-                       element.w !== 0 ? {'width': element.w} : {'width': '80%'},
-                       element.h !== 0 ? {'height' : element.h} : {'height' : '40%'}
-                       ]"
->{{this.activeComponent}}</div>
+          class="htmlDiv"
+          :style="[element.x !== 0 ? {'top': element.x} : {'top': '50%'}, 
+            element.y !== 0 ? {'left': element.y} : {'left': '10%'},
+            element.w !== 0 ? {'width': element.w} : {'width': '80%'},
+            element.h !== 0 ? {'height' : element.h} : {'height' : '40%'},
+            {'background-color': componentData.color}]"
+        >
+          <p class="innerHtmlText" style="font-size: 3em">{{element.text}}</p> 
+        </div>
         <div v-if="element.text === 'footer'" class="htmlFooter"></div>
+        <div v-if="element.text === 'h1'" 
+          class="htmlH1"
+          :style="[element.x !== 0 ? {'top': element.x} : {'top': '10%'}, 
+            element.y !== 0 ? {'left': element.y} : {'left': '10%'},
+            element.w !== 0 ? {'width': element.w} : {'width': '80%'},
+            element.h !== 0 ? {'height' : element.h} : {'height' : '20%'},
+            {'background-color': componentData.color}]"
+        > 
+          <p class="innerHtmlText" style="font-size: 3em">Lorem Ipsum</p>
+        </div>
+        <div v-if="element.text === 'h2'" 
+          class="htmlH2"
+          :style="[element.x !== 0 ? {'top': element.x} : {'top': '15%'}, 
+            element.y !== 0 ? {'left': element.y} : {'left': '15%'},
+            element.w !== 0 ? {'width': element.w} : {'width': '70%'},
+            element.h !== 0 ? {'height' : element.h} : {'height' : '15%'},
+            {'background-color': componentData.color}]"
+        >
+          <p class="innerHtmlText" style="font-size: 2.5em">dolor sit amet</p>
+        </div>
+        <div v-if="element.text === 'h3'" 
+          class="htmlH3"
+          :style="[element.x !== 0 ? {'top': element.x} : {'top': '18%'}, 
+            element.y !== 0 ? {'left': element.y} : {'left': '18%'},
+            element.w !== 0 ? {'width': element.w} : {'width': '60%'},
+            element.h !== 0 ? {'height' : element.h} : {'height' : '12%'},
+            {'background-color': componentData.color}]"
+        >
+          <p class="innerHtmlText" style="font-size: 2.2em">consectetur adipiscing elit</p>
+        </div>
+        <div v-if="element.text === 'h4'" 
+          class="htmlH4"
+          :style="[element.x !== 0 ? {'top': element.x} : {'top': '20%'}, 
+            element.y !== 0 ? {'left': element.y} : {'left': '20%'},
+            element.w !== 0 ? {'width': element.w} : {'width': '60%'},
+            element.h !== 0 ? {'height' : element.h} : {'height' : '10%'},
+            {'background-color': componentData.color}]"
+        >
+          <p class="innerHtmlText" style="font-size: 2em">sed do eiusmod tempor incididunt</p>
+        </div>
+        <div v-if="element.text === 'h5'" 
+          class="htmlH5"
+          :style="[element.x !== 0 ? {'top': element.x} : {'top': '20%'}, 
+            element.y !== 0 ? {'left': element.y} : {'left': '20%'},
+            element.w !== 0 ? {'width': element.w} : {'width': '60%'},
+            element.h !== 0 ? {'height' : element.h} : {'height' : '10%'},
+            {'background-color': componentData.color}]"
+          >
+          <p class="innerHtmlText" style="font-size: 2em">ut labore et dolore magna aliqua</p>
+        </div>
+        <div v-if="element.text === 'h6'" 
+          class="htmlH6"
+          :style="[element.x !== 0 ? {'top': element.x} : {'top': '20%'}, 
+            element.y !== 0 ? {'left': element.y} : {'left': '20%'},
+            element.w !== 0 ? {'width': element.w} : {'width': '60%'},
+            element.h !== 0 ? {'height' : element.h} : {'height' : '10%'},
+            {'background-color': componentData.color}]"
+        >
+          <p class="innerHtmlText" style="font-size: 2em">Ut enim ad minim veniam</p>
+        </div>
         <div v-if="element.text === 'navbar'" class="htmlNavbar"></div>
-        <div v-if="element.text === 'h1'" class="htmlH1">Lorem Ipsum </div>
         <div v-if="element.text === 'form'" class="htmlForm"></div> 
-        <div v-if="element.text === 'h2'" class="htmlH2">dolor sit amet</div>
-        <div v-if="element.text === 'h3'" class="htmlH3">consectetur adipiscing elit</div>
-        <div v-if="element.text === 'h4'" class="htmlH4">sed do eiusmod tempor incididunt</div>
-        <div v-if="element.text === 'h5'" class="htmlH5">ut labore et dolore magna aliqua</div>
-        <div v-if="element.text === 'h6'" class="htmlH6">Ut enim ad minim veniam</div>
         <div v-if="element.text === 'header'" class="htmlHeader"></div>
         <div v-if="element.text === 'img'" class="htmlImg"></div>
         <input v-if="element.text === 'input'" class="htmlInput"/>
@@ -80,9 +144,7 @@
         <div v-if="element.text === 'list-ol'" class="htmlList-Ol"></div>
         <div v-if="element.text === 'list-ul'" class="htmlList-Ul"></div>
         <p v-if="element.text === 'paragraph'" class="htmlP">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-          <!-- {{this.routes[activeRoute][0].htmlList}} -->
       </div>
-
       <q-icon v-if="componentData.componentName === this.activeComponent"
         size="25px" 
         z-layer="0" 
@@ -928,33 +990,26 @@ color:black;
 
 .htmlButton {
   position: absolute;
-  top: 50%;
-  left: 30%;
-  height: 30px;
-  width: 10%;
   margin: .5em;
-  background-color: $secondary;
+  border-style: solid;
+  border: 2em;
 }
 
 .htmlDiv {
   position: absolute;
-  top: 30%;
-  left: 6%;
-  height: 30%;
-  width: 80%;
   margin: .5em;
-  background-color: $secondary;
   border-radius: 1.5%;
+  border-style: solid;
 }
 
 .htmlFooter{
   position: absolute;
   width: 100%;
-  background-color: $primary;
   height: 10%;
   top: 90%;
   z-index: -1;
   border-radius: 1.5%;
+  background-color: $primary;
 }
 
 .htmlForm {
@@ -963,34 +1018,38 @@ color:black;
 
 .htmlH1{
   position: absolute;
-  background-color: $primary;
   color: $menutext;
   font-weight: bolder !important;
-  font-size: 2.5em;
-  width: 30%;
-  height: 10%;
-  top: 45%;
-  margin-left: 10%;
 }
 
 .htmlH2{
-  background-color: rgba($secondary, .42);
+  position: absolute;
+  color: $menutext;
+  font-weight: bolder !important;
 }
 
 .htmlH3{
-  background-color: rgba($secondary, .42);
+  position: absolute;
+  color: $menutext;
+  font-weight: bolder !important;
 }
 
 .htmlH4{
-  background-color: rgba($secondary, .42);
+  position: absolute;
+  color: $menutext;
+  font-weight: bolder !important;
 }
 
 .htmlH5{
-  background-color: rgba($secondary, .42);
+  position: absolute;
+  color: $menutext;
+  font-weight: bolder !important;
 }
 
 .htmlH6{
-  background-color: rgba($secondary, .42);
+  position: absolute;
+  color: $menutext;
+  font-weight: bolder !important;
 }
 
 // .htmlHeader{
@@ -1025,6 +1084,12 @@ color:black;
   background-color: rgba($secondary, .42);  
 }
 
+.innerHtmlText {
+  position: absolute;
+  text-align: center;
+  opacity: 0.5;
+}
+
 .htmlNavbar{
   position: absolute;
   width: 100%;
@@ -1044,7 +1109,6 @@ color:black;
   border: 0;
   white-space: nowrap;
 }
-
 
 .colorPicker {
   color: black;
