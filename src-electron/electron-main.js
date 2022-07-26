@@ -1,5 +1,5 @@
 import { app, BrowserWindow, nativeTheme, dialog, ipcMain } from "electron";
-import { Deeplink } from "electron-deeplink";
+// import { Deeplink } from "electron-deeplink";
 import isDev from "electron-is-dev";
 import path from "path";
 import os from "os";
