@@ -109,7 +109,9 @@ export default {
         h5: ["<h5", "</h5>"],
         h6: ["<h6", "</h6>"],
       };
-      this.componentMap[this.activeComponent].children.forEach(child => {
+      //add childComponents of the activeCompnent to the htmlElementMap
+      const childComponents = this.componentMap[this.activeComponent].children;
+      childComponents.forEach(child => {
         htmlElementMap[child]=[`<${child}`, ""] //single
       })
       function writeNested(childrenArray, indent) {
@@ -128,7 +130,7 @@ export default {
             if (child.class !== "") {
               nestedString += " " + "class = " + `"${child.class}"`;
             }
-            if (child.text === "img" || child.text === "input" || child.text === "link") {
+            if (child.text === "img" || child.text === "input" || child.text === "link" || childComponents.includes(child.text)) {
               nestedString += "/>";
             } else { nestedString += ">"; }
 
@@ -159,8 +161,8 @@ export default {
           if (el.class !== "") {
             outputStr += " " + "class = " + `"${el.class}"`;
           }
-          // add an extra slash at the end for child Components
-          if(this.componentMap[this.activeComponent].children.includes(el.text)){
+          // add an extra slash at the end for child Components and single tags
+          if(childComponents.includes(el.text) || el.text === "img" || el.text === "input" || el.text === "link"){
             outputStr += "/"
           }
 
