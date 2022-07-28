@@ -84,8 +84,7 @@ export const SET_SELECTED_ID_DRAG = 'SET_SELECTED_ID_DRAG'
 export const SET_SELECTED_ID_DROP = 'SET_SELECTED_ID_DROP'
 export const DRAG_DROP_SORT_HTML_ELEMENTS = 'DRAG_DROP_SORT_HTML_ELEMENTS'
 export const DRAG_DROP_SORT_SELECTED_HTML_ELEMENTS = 'DRAG_DROP_SORT_SELECTED_HTML_ELEMENTS'
-//
-export const UPGRADE_ICON_GRID_WITH_CHILD_COMPONENT = 'UPGRADE_ICON_GRID_WITH_CHILD_COMPONENT'
+
 
 // Actions
 export const openNoteModal = 'openNoteModal'
@@ -167,9 +166,6 @@ export const setSelectedIdDrag = 'setSelectedIdDrag'
 export const setSelectedIdDrop = 'setSelectedIdDrop'
 export const dragDropSortHtmlElements = 'dragDropSortHtmlElements'
 export const dragDropSortSelectedHtmlElements = 'dragDropSortSelectedHtmlElements'
-//
-export const upgradeIconGridWithChildComponent = 'upgradeIconGridWithChildComponent'
-
 
 
 // inactive mutations

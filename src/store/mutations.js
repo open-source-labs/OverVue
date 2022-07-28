@@ -330,7 +330,7 @@ const mutations = {
         }
       }
     }
-    //
+    //update the component name in the htmlList of all components if it is a child component
     for (const item of Object.values(state.componentMap)) {
       if (item.htmlList) {
         const newArray = [...item.htmlList];
@@ -357,26 +357,6 @@ const mutations = {
         item.htmlList = newArray
       }
     }
-      /*
-      const breadthFirstSearchParent = (array, id) => {
-        const queue = [...array.filter(el => typeof el === 'object')]
-        while (queue.length) {
-          const evaluated = queue.shift()
-          for (let i = 0; i < evaluated.children.length; i++) {
-            if (evaluated.children[i].id === id) {
-              return {
-                evaluated,
-                index: i
-              }
-            }
-            if (evaluated.children.length) {
-              queue.push(...evaluated.children)
-            }
-          }
-        }
-      }
-      */
-
 
   },
 
@@ -804,6 +784,28 @@ const mutations = {
       // const newMap = { ...state.componentMap };
       // state.componentMap = { ...newMap };
 
+      //delete the instances of the Child Component in the activeComponent's htmlList
+      const componentName = state.activeComponent;
+      const htmlList = state.componentMap[componentName].htmlList.slice(0);
+
+      // splice out child componenets even if nested
+      function deleteChildFromHtmlList(array, payload) {
+        for(let i = array.length; i--;) {
+
+					if(array[i].children.length) {
+            deleteChildFromHtmlList(array[i].children, payload)
+          }
+          if(array[i].text === payload) {
+            array.splice(i, 1)
+          } 
+          
+        }
+      }
+      deleteChildFromHtmlList(htmlList, payload);
+
+      //updates the htmlList with the child components deleted
+      state.componentMap[componentName].htmlList = htmlList;
+      
       //delete the parent because the payload is no longer a child to the acitive component
       delete state.componentMap[payload].parent[state.activeComponent];
 
@@ -819,14 +821,6 @@ const mutations = {
         state.componentMap[state.activeComponent];
     }
   },
-  // update Parent's icon Grid with Child Component
-  [types.UPGRADE_ICON_GRID_WITH_CHILD_COMPONENT]: (state, payload) => {
-      //Update available Child Components options to be place along side the HTML Elements every time the Child Components are updated
-        //mutation function with the same payload and using the activeComponent
-          //if the payload is not and html option added, if it is then delete it
-
-  },
-
   // invoked when element is double clicked, changing the boolean value
   [types.UPDATE_OPEN_MODAL]: (state, payload) => {
     state.modalOpen = payload;

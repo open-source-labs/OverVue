@@ -344,13 +344,6 @@ const actions = {
 
   // end of Drag-and-drop /////////////////////////////////
 
-  // Place Child Components among the Html Elements //////////////
-  [types.upgradeIconGridWithChildComponent]: ({ commit }, payload) => {
-    commit(types.UPGRADE_ICON_GRID_WITH_CHILD_COMPONENT, payload)
-  },
-
-  // end of Place Child Components among the Html Elements ////////
-
   // Loading ///////////////////////////////////////////////////////
   [types.openProject]: ({ commit }, payload) => {
     commit(types.REMOVE_ALL_STATE_PROPS_ACTIONS)
