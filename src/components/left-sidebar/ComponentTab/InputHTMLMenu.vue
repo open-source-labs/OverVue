@@ -88,6 +88,28 @@
               @click="submitLeft(leftText, this.activeHTML)">
             </i>
           </q-input>
+
+          <q-item id="layer-item" filled dark autofocus true hide-bottom-space color="secondary">
+            <q-item-section v-model="z" class="layer">Component Layer = {{z}}</q-item-section>
+            <q-btn
+              class="minorAction"
+              color="transparent"
+              text-color="primary"
+              label="&ndash;"
+              @click="(e) => handleLayer(e)"
+            />
+            <p id="counter">{{ z }}</p>
+            <q-btn
+              class="minorAction"
+              color="transparent"
+              text-color="primary"
+              label="+"
+              @click="(e) => handleLayer(e)"
+            />
+          </q-item>
+          
+
+
           <q-btn label="Close" @click="this.openAttributeModal" />
         </q-form>
       </div>
@@ -105,6 +127,7 @@ export default {
       widthText: '0',
       topText: '0',
       leftText: '0',
+      z: '0',
     }
   },
   computed: {
@@ -115,7 +138,11 @@ export default {
       'activeComponent', 
       'activeHTML', 
       'activeLayer', 
-      'attributeModalOpen'
+      'attributeModalOpen',
+      'activeRoute',
+      'routes',
+      'activeComponentData',
+      'activeComponentObj',
     ])
   },
   components: {
@@ -130,6 +157,7 @@ export default {
       'addActiveComponentWidth',
       'addActiveComponentTop',
       'addActiveComponentLeft',
+      'updateHTMLLayer',
       ]),
     submitClass(element, idNum) {
       if (element === '') {
@@ -187,12 +215,42 @@ export default {
       this.leftText = '';
     },
 
+    handleLayer(e) {
+      e.preventDefault();
+
+    let htmlZ;
+
+    this.activeComponentObj.htmlList.forEach( element => {
+      if (element.id === this.activeHTML) {
+        htmlZ = element.z;
+      }
+    })
+
+      const payload = {
+        activeHTML: this.activeHTML,
+        z: htmlZ,
+      };
+      
+      if (e.target.innerText === "+")  {
+        payload.z++;
+        this.z++;
+      }
+      if (e.target.innerText === "–" && payload.z > 0)  {
+        payload.z--;
+        this.z--;
+      }
+      this.updateHTMLLayer(payload);
+      console.log('here')
+      console.log(this.activeHTML)
   },
+
   watch: {
     attributeModalOpen() {
       this.attributeModal = this.attributeModalOpen;
     },
   }
+}
+
 }
 </script>
 
@@ -211,5 +269,15 @@ export default {
 
 .title {
   font-size: 1.3em
+}
+
+.minorAction {
+  margin-right:5px;
+  margin-left: 5px;
+  width:2em;
+  height: 1.5em;
+}
+#counter {
+padding-top:5px;
 }
 </style>

@@ -256,7 +256,6 @@ z-index: ${this.activeComponentObj.z};
 }\n`
       }
 
-    console.log(htmlArray)
       for (const html of htmlArray) {
         if (html.class === ' ') styleString = "";
         if (html.class) {

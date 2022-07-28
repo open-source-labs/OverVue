@@ -473,6 +473,7 @@ const mutations = {
     if (payload[0] === "") {
       state.activeHTML = "";
     } else {
+      console.log(payload)
       state.activeHTML = payload[2];
     }
   },
@@ -778,6 +779,16 @@ const mutations = {
     )[0];
     updatedComponent.z = payload.z;
     state.componentMap[payload.activeComponent].z = payload.z;
+  },
+
+  [types.UPDATE_HTML_LAYER]: (state, payload) => {
+
+    state.componentMap[state.activeComponent].htmlList.forEach((el) => {
+      if (payload.id === el.id) {
+        el.z = payload.z
+      }
+    })
+
   },
 
   [types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE]: (state, payload) => {

@@ -70,6 +70,7 @@
             element.y !== 0 ? {'left': element.y} : {'left': '10%'},
             element.w !== 0 ? {'width': element.w} : {'width': '80%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '40%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
             {'background-color': componentData.color}]"
         >
           <p class="innerHtmlText" style="font-size: 3em">{{element.text}}</p> 
