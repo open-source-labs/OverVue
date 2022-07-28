@@ -64,7 +64,7 @@ Description:
           <q-form autofocus v-on:submit.prevent="submitClass">
             <p class="title">Add Class Name:</p>
             <q-input label="Add your class here" filled dark autofocus true hide-bottom-space v-model="classText"
-              @keyup.enter="submitClass"></q-input>
+              @keydown.enter="submitClass(classText, this.activeHTML)" />
             <q-btn id="comp-btn" class="sidebar-btn" color="secondary" label="Submit Attribute"
               :disable="classText.length > 0 ? false : true" @click="submitClass(classText, this.activeHTML)" />
           </q-form>
@@ -72,7 +72,7 @@ Description:
             <p class="title">Add Binding:</p>
 
             <q-input label="Add two way binding here" filled dark autofocus true hide-bottom-space v-model="bindingText"
-              @keyup.enter="addBinding"></q-input>
+              @keydown.enter="addBinding(bindingText, this.activeHTML)"></q-input>
             <q-btn id="comp-btn" class="sidebar-btn" color="secondary" label="Add Binding"
               :disable="bindingText.length > 0 ? false : true" @click="addBinding(bindingText, this.activeHTML)">
             </q-btn>
