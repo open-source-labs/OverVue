@@ -6,11 +6,8 @@ Description:
 
 <template>
   <section class="icon-grid">
-    <button
-      @click.prevent="changeState(elementName)"
-      v-for="([elementName, iconString], idx) in Object.entries(icons)"
-      :key="idx + Date.now()"
-    >
+    <button @click.prevent="changeState(elementName)" v-for="([elementName, iconString], idx) in Object.entries(icons)"
+      :key="idx + Date.now()">
       <span class="badge"> {{ elementStorage[elementName] }}</span>
       <br />
       <i :class="iconString"></i>
@@ -41,13 +38,33 @@ export default {
     elementStorage: function () {
       let computedElementalStorage = {};
       if (this.activeComponent) {
+
         this.componentMap[this.activeComponent].htmlList.forEach((el) => {
           if (!computedElementalStorage[el.text]) {
             computedElementalStorage[el.text] = 1;
-          } else {
+          }
+          else if (computedElementalStorage[el.text]) {
             computedElementalStorage[el.text] += 1;
           }
         });
+        //show the badge for all nested children arrays
+        const checkChild = array => {
+          for (let html of array) {
+            console.log(html)
+            if (html.children.length) {
+              checkChild(html.children)
+            } else {
+              if (!computedElementalStorage[html.text]) {
+                computedElementalStorage[html.text] = 1
+              } else {
+                ++computedElementalStorage[html.text]
+              }
+            }
+          }
+        }
+        //invoke the recursive function 
+        checkChild(this.componentMap[this.activeComponent].htmlList)
+
       } else if (this.activeComponent === "") {
         // if component was switched from existing component to '', reset cache and update items
         if (computedElementalStorage !== {}) computedElementalStorage = {};
@@ -104,23 +121,28 @@ export default {
     width: 100%;
   }
 }
+
 button {
   background: none;
   color: $menutext;
   border: none;
 }
+
 button:hover {
   cursor: pointer;
   color: $secondary;
 }
+
 button:focus {
   outline: none;
   color: $secondary;
 }
+
 button:active {
   box-shadow: 0 5px inherit;
   transform: translateY(4px);
 }
+
 .badge {
   width: 15px;
   line-height: 15px;
