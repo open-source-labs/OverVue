@@ -50,6 +50,8 @@ Description:
         <q-expansion-item group="accordion" label="HTML Elements">
           <div class="icon-container">
             <Icons
+              v-model="attributeModal" 
+              v-if="attributeModal === false"
               class="icons"
               @getClickedIcon="addToSelectedElementList"
               @activeElement="addToComponentElementList"

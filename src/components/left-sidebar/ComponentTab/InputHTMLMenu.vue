@@ -13,6 +13,11 @@
           <i id="comp-btn" class="fa-solid fa-right-to-bracket"
             :disable="classText.length > 0 ? false : true" @click.self="submitClass(classText, this.activeHTML)"></i>
           </q-input>
+          <q-input label="Add Inner Text" filled dark autofocus true hide-bottom-space v-model="noteText"  @keyup.enter="submitNote">
+            <i class="fa-solid fa-right-to-bracket" color="secondary" label="Submit Note"
+              :disable="noteText.length > 0 ? false : true" @click.self="submitNote(noteText, this.activeHTML)">
+            </i>
+          </q-input>
           <p class="title">Adjust Height and Elevation:</p> 
           <q-slider
             v-model="heightText"
@@ -105,6 +110,7 @@ export default {
       widthText: '0',
       topText: '0',
       leftText: '0',
+      noteText: '',
     }
   },
   computed: {
@@ -126,6 +132,7 @@ export default {
       'setActiveLayer',
       'openAttributeModal', 
       'addActiveComponentClass',
+      'addActiveComponentElementNote',
       'addActiveComponentHeight',
       'addActiveComponentWidth',
       'addActiveComponentTop',
@@ -141,6 +148,17 @@ export default {
       }
       this.addActiveComponentClass(payload);
       this.classText = '';
+    },
+    submitNote(element, idNum) {
+      if (element === '') {
+        return;
+      }
+      let payload = {
+        note: element,
+        id: idNum
+      }
+      this.addActiveComponentElementNote(payload);
+      this.note = '';
     },
     submitHeight(element, idNum) {
       if (element === '') {

@@ -63,6 +63,10 @@ const actions = {
   [types.addActiveComponentLeft]: ({ commit }, payload) => {
     commit(types.ADD_ACTIVE_COMPONENT_LEFT, payload);
   },
+
+  [types.addActiveComponentElementNote]: ({ commit }, payload) => {
+    commit(types.ADD_ACTIVE_COMPONENT_ELEMENT_NOTE, payload)
+  },
   //
   [types.registerComponent]: ({ state, commit }, payload) => {
     /* this action has a lot of mutations deployed

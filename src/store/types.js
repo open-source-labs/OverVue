@@ -78,6 +78,8 @@ export const ADD_ACTIVE_COMPONENT_HEIGHT = 'ADD_ACTIVE_COMPONENT_HEIGHT'
 export const ADD_ACTIVE_COMPONENT_WIDTH = 'ADD_ACTIVE_COMPONENT_WIDTH'
 export const ADD_ACTIVE_COMPONENT_TOP = 'ADD_ACTIVE_COMPONENT_TOP'
 export const ADD_ACTIVE_COMPONENT_LEFT = 'ADD_ACTIVE_COMPONENT_LEFT'
+export const ADD_ACTIVE_COMPONENT_ELEMENT_NOTE = 'ADD_ACTIVE_COMPONENT_ELEMENT_NOTE'
+
 
 //
 export const REMOVE_ALL_STATE_PROPS_ACTIONS = 'REMOVE_ALL_STATE_PROPS_ACTIONS'
@@ -101,6 +103,8 @@ export const addActiveComponentHeight = 'addActiveComponentHeight'
 export const addActiveComponentWidth = 'addActiveComponentWidth'
 export const addActiveComponentTop = 'addActiveComponentTop'
 export const addActiveComponentLeft = 'addActiveComponentLeft'
+export const addActiveComponentElementNote = 'addActiveComponentElementNote'
+
 
 
 //

@@ -860,6 +860,7 @@ const mutations = {
       }
     })
   },
+
   [types.DELETE_ACTIVE_COMPONENT_CLASS]: (state, payload) => {
     state.componentMap[state.activeComponent].classList.forEach((el, ind) => {
       if (payload === el) {
@@ -894,6 +895,14 @@ const mutations = {
     state.componentMap[state.activeComponent].htmlList.forEach((el) => {
       if (payload.id === el.id) {
         el.y = payload.left + '%'
+      }
+    })
+  },
+
+  [types.ADD_ACTIVE_COMPONENT_ELEMENT_NOTE]: (state, payload) => {
+    state.componentMap[state.activeComponent].htmlList.forEach((el) => {
+      if (payload.id === el.id) {
+        el.note = payload.note
       }
     })
   },

@@ -62,7 +62,7 @@
             element.w !== 0 ? {'width': element.w} : {'width': '25%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '10%'},
             {'background-color': componentData.color}]">
-        <p class="innerHtmlText">{{element.text}}</p> 
+        <p class="innerHtmlText">{{element.note !== '' ? element.note : element.text}}</p> 
         </div>
         <div v-if="element.text === 'div'"
           class="htmlDiv"
@@ -72,7 +72,7 @@
             element.h !== 0 ? {'height' : element.h} : {'height' : '40%'},
             {'background-color': componentData.color}]"
         >
-          <p class="innerHtmlText" style="font-size: 3em">{{element.text}}</p> 
+          <p class="innerHtmlText" style="font-size: 3em">{{element.note !== '' ? element.note : element.text}}</p> 
         </div>
         <div v-if="element.text === 'footer'" class="htmlFooter"></div>
         <div v-if="element.text === 'h1'" 
@@ -83,7 +83,7 @@
             element.h !== 0 ? {'height' : element.h} : {'height' : '20%'},
             {'background-color': componentData.color}]"
         > 
-          <p class="innerHtmlText" style="font-size: 3em">Lorem Ipsum</p>
+          <p class="innerHtmlText" style="font-size: 4em">{{element.note !== '' ? element.note :'Lorem Ipsum'}}</p>
         </div>
         <div v-if="element.text === 'h2'" 
           class="htmlHead"
@@ -93,7 +93,7 @@
             element.h !== 0 ? {'height' : element.h} : {'height' : '15%'},
             {'background-color': componentData.color}]"
         >
-          <p class="innerHtmlText" style="font-size: 2.5em">dolor sit amet</p>
+          <p class="innerHtmlText" style="font-size: 2.5em">{{element.note !== '' ? element.note : 'dolor sit amet'}}</p>
         </div>
         <div v-if="element.text === 'h3'" 
           class="htmlHead"
@@ -103,7 +103,7 @@
             element.h !== 0 ? {'height' : element.h} : {'height' : '12%'},
             {'background-color': componentData.color}]"
         >
-          <p class="innerHtmlText" style="font-size: 2.2em">consectetur adipiscing elit</p>
+          <p class="innerHtmlText" style="font-size: 2.2em">{{element.note !== '' ? element.note : 'consectetur adipiscing elit'}}</p>
         </div>
         <div v-if="element.text === 'h4'" 
           class="htmlHead"
@@ -113,7 +113,7 @@
             element.h !== 0 ? {'height' : element.h} : {'height' : '10%'},
             {'background-color': componentData.color}]"
         >
-          <p class="innerHtmlText" style="font-size: 2em">sed do eiusmod tempor incididunt</p>
+          <p class="innerHtmlText" style="font-size: 2em">{{element.note !== '' ? element.note : 'sed do eiusmod tempor incididunt'}}</p>
         </div>
         <div v-if="element.text === 'h5'" 
           class="htmlHead"
@@ -123,7 +123,7 @@
             element.h !== 0 ? {'height' : element.h} : {'height' : '10%'},
             {'background-color': componentData.color}]"
           >
-          <p class="innerHtmlText" style="font-size: 2em">ut labore et dolore magna aliqua</p>
+          <p class="innerHtmlText" style="font-size: 2em">{{element.note !== '' ? element.note : 'ut labore et dolore magna aliqua'}}</p>
         </div>
         <div v-if="element.text === 'h6'" 
           class="htmlHead"
@@ -133,7 +133,7 @@
             element.h !== 0 ? {'height' : element.h} : {'height' : '10%'},
             {'background-color': componentData.color}]"
         >
-          <p class="innerHtmlText" style="font-size: 2em">Ut enim ad minim veniam</p>
+          <p class="innerHtmlText" style="font-size: 2em">{{element.note !== '' ? element.note : 'Ut enim ad minim veniam'}}</p>
         </div>
         <div v-if="element.text === 'navbar'" class="htmlNavbar"></div>
         <div v-if="element.text === 'form'"
@@ -144,7 +144,7 @@
             element.h !== 0 ? {'height' : element.h} : {'height' : '40%'},
             {'background-color': componentData.color}]"
         >
-          <p class="innerHtmlText" style="font-size: 3em">{{element.text}}</p> 
+          <p class="innerHtmlText" style="font-size: 3em">{{element.note !== '' ? element.note : element.text}}</p> 
         </div>
         <div v-if="element.text === 'header'" class="htmlHeader"></div>
         <div v-if="element.text === 'img'"
@@ -155,7 +155,7 @@
             element.h !== 0 ? {'height' : element.h} : {'height' : '40%'},
             {'background-color': componentData.color}]"
         >
-          <p class="innerHtmlText" style="font-size: 3em">{{element.text}}</p> 
+          <p class="innerHtmlText" style="font-size: 3em">{{element.note !== '' ? element.note : element.text}}</p> 
         </div>
         <input v-if="element.text === 'input'" class="htmlInput"/>
         <div v-if="element.text === 'list'" class="htmlList"></div>
@@ -185,7 +185,7 @@
             element.h !== 0 ? {'height' : element.h} : {'height' : '40%'},
             {'background-color': componentData.color}]"
         >
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p> 
+        <p>{{element.note !== '' ? element.note : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'}}</p> 
         </div>
       </div>
       <q-icon v-if="componentData.componentName === this.activeComponent"
@@ -1063,13 +1063,9 @@ color:black;
   position: absolute;
   color: $menutext;
   font-weight: bolder !important;
+  text-overflow: clip;
 }
 
-.htmlH6{
-  position: absolute;
-  color: $menutext;
-  font-weight: bolder !important;
-}
 
 .htmlImg{
   position: absolute;
@@ -1109,6 +1105,8 @@ color:black;
   position: absolute;
   text-align: center;
   opacity: 0.5;
+  overflow: hidden;
+  text-overflow: clip;
 }
 
 .htmlNavbar{
