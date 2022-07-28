@@ -211,5 +211,6 @@ export default {
 
 .title {
   font-size: 1.3em
+  test: 'hello'
 }
 </style>
