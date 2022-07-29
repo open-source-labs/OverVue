@@ -108,10 +108,10 @@ export default {
     return {
       attributeModal : "false",
       classText: '',
-      heightText: '0',
-      widthText: '0',
-      topText: '0',
-      leftText: '0',
+      heightText: '',
+      widthText: '',
+      topText: '',
+      leftText: '',
       noteText: '',
     }
   },
@@ -172,7 +172,6 @@ export default {
         id: idNum
       }
       this.addActiveComponentHeight(payload);
-      this.classText = '';
     },
     submitWidth(element, idNum) {
       if (element === '') {
@@ -183,7 +182,6 @@ export default {
         id: idNum
       }
       this.addActiveComponentWidth(payload);
-      this.widthText = '';
     },
     submitTop(element, idNum) {
       if (element === '') {
@@ -194,7 +192,6 @@ export default {
         id: idNum
       }
       this.addActiveComponentTop(payload);
-      this.topText = '';
     },
     submitLeft(element, idNum) {
       if (element === '') {
@@ -205,7 +202,7 @@ export default {
         id: idNum
       }
       this.addActiveComponentLeft(payload);
-      this.leftText = '';
+
     },
     closeMenu(element) {
       if (this.activeComponent !== '') {
