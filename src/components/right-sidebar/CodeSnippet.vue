@@ -86,7 +86,6 @@ export default {
     },
     // Creates <template> boilerplate
     writeTemplateTag(componentName, activeComponent) {
-      // console.log(this.activeComponentObj)
       const htmlElementMap = {
         div: ["<div", "</div>"],
         button: ["<button", "</button>"],
@@ -167,13 +166,13 @@ export default {
           if (el.class !== "") {
             outputStr += " " + "class = " + `"${el.class}"`;
           }
+          
+          if (el.binding !== "") {
+            outputStr += ` v-model = "${el.binding}"`
+          }
           // add an extra slash at the end for child Components and single tags
           if(childComponents.includes(el.text) || el.text === "img" || el.text === "input" || el.text === "link"){
             outputStr += "/"
-          }
-
-          if (el.binding !== "") {
-            outputStr += ` v-model = "${el.binding}"`
           }
           outputStr += ">";
           if (el.children.length) {
