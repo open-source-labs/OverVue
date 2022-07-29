@@ -44,7 +44,7 @@
     >
     
       <div class="component-title">
-        <p>{{ componentData.componentName }}</p>
+        <p>{{ componentData.componentName }}{{this.activeLayer.id}}</p>
       </div>
       <q-icon v-if="componentData.componentName === this.activeComponent" 
         size="25px" 

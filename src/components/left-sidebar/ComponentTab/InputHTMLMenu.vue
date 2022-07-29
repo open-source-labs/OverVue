@@ -23,6 +23,7 @@
             v-model="heightText"
             :min="0"
             :max="100"
+            tabindex="element.h"
             vertical
             label
             label-always
@@ -93,7 +94,8 @@
               @click="submitLeft(leftText, this.activeHTML)">
             </i>
           </q-input>
-          <q-btn label="Close" @click="this.openAttributeModal" />
+          <q-btn label="Close HTML Element"  class="closeBtn" @click="closeMenu({text: 'reset', id: 'reset' })" />
+          <!-- setParentLayer -->
         </q-form>
       </div>
     </div>
@@ -137,6 +139,7 @@ export default {
       'addActiveComponentWidth',
       'addActiveComponentTop',
       'addActiveComponentLeft',
+      'clearActiveHTML'
       ]),
     submitClass(element, idNum) {
       if (element === '') {
@@ -204,7 +207,12 @@ export default {
       this.addActiveComponentLeft(payload);
       this.leftText = '';
     },
-
+    closeMenu(element) {
+      if (this.activeComponent !== '') {
+        this.clearActiveHTML()
+        this.openAttributeModal(element);
+      }
+    },
   },
   watch: {
     attributeModalOpen() {
@@ -230,4 +238,10 @@ export default {
 .title {
   font-size: 1.3em
 }
+
+.closeBtn {
+  background-color: $primary;
+  margin-bottom: 2em;
+  width: 100%;
+} 
 </style>

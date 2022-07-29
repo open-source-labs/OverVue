@@ -319,6 +319,10 @@ const actions = {
     commit(types.SET_ACTIVE_HTML_ELEMENT, payload);
   },
 
+  [types.clearActiveHTML]: ({ commit }, payload) => {
+    commit(types.CLEAR_ACTIVE_HTML, payload);
+  },
+
   [types.setActiveLayer]: ({ commit }, payload) => {
     commit(types.SET_ACTIVE_LAYER, payload);
   },

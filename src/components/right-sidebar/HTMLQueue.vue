@@ -8,8 +8,7 @@ Description:
   <section class="html-queue" @dragover="dragOver($event), false">
     <span class='list-title' v-if='this.activeLayer.id !== ""'>
       <i class="fas fa fa-chevron-up fa-md" @click="setParentLayer"></i>
-      
-      &nbsp; &nbsp; Viewing Elements in {{this.activeComponent}} '{{ depth }}'
+        &nbsp; &nbsp; Viewing Elements in {{this.activeComponent}} '{{ depth }}'
       <hr>
     </span>
     <span class='list-title' v-else-if='!this.activeComponent'></span>
@@ -109,7 +108,14 @@ export default {
     }
   },
   computed: {
-    ...mapState(['selectedElementList', 'componentMap', 'activeComponent', 'activeHTML', 'activeLayer', 'attributeModalOpen']),
+    ...mapState([
+      'selectedElementList', 
+      'componentMap', 
+      'activeComponent', 
+      'activeHTML', 
+      'activeLayer', 
+      'attributeModalOpen'
+      ]),
     renderList: {
       get() {
         if (this.activeComponent === '') return this.selectedElementList.map((el, index) => [el.text, index, el.id])
@@ -139,7 +145,18 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setActiveHTML', 'setActiveLayer', 'upOneLayer', 'setSelectedIdDrag', 'setIdDrag', 'setSelectedIdDrop', 'setIdDrop', 'dragDropSortHtmlElements', 'dragDropSortSelectedHtmlElements', 'openAttributeModal', 'addActiveComponentClass']),
+    ...mapActions([
+      'setActiveHTML', 
+      'setActiveLayer', 
+      'upOneLayer', 
+      'setSelectedIdDrag', 
+      'setIdDrag', 
+      'setSelectedIdDrop', 
+      'setIdDrop', 
+      'dragDropSortHtmlElements', 
+      'dragDropSortSelectedHtmlElements', 
+      'openAttributeModal', 
+      'addActiveComponentClass']),
     deleteElement (id) {
       if (this.activeComponent === '') this.$store.dispatch(deleteSelectedElement, id[0])
       else this.$store.dispatch(deleteFromComponentHtmlList, id[1])
@@ -147,9 +164,10 @@ export default {
     setActiveElement(element) {
       if (this.activeComponent !== '') {
         this.setActiveHTML(element);
-        this.openAttributeModal(element);
+        if (this.attributeModal === false) {
+          this.openAttributeModal(element);
         }
-      
+      }
     },
     setLayer(element) {
       this.setActiveLayer(element)

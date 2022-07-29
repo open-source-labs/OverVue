@@ -358,6 +358,10 @@ const mutations = {
     });
   },
 
+  [types.CLEAR_ACTIVE_HTML]: (state) => {
+    state.activeHTML = '';
+  },
+
   [types.ADD_NESTED_NO_ACTIVE]: (state, payload) => {
     const componentName = state.activeComponent;
     const { activeLayer } = state;

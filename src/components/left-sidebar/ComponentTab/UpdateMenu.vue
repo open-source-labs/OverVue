@@ -167,6 +167,7 @@ export default {
       "routes",
       "activeRoute",
       "activeComponent",
+      "activeHTML",
       "activeComponentObj",
       "componentMap",
       "exportAsTypescript",
