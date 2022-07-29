@@ -236,20 +236,21 @@ export default {
       }
       const htmlBinding = this.componentMap[this.activeComponent].htmlList
 
-      data += "  data () {\n return {\n"
+      data += "  data() {\n    return {\n"
       htmlBinding.forEach(el => {
         if (el.binding !== '') {
-          data += `    "${el.binding}": "PLACEHOLDER FOR VALUE", `
+          data += `      "${el.binding}": "PLACEHOLDER FOR VALUE", `
           data += '\n'
         }
       })
-      data += ` \n  }  \n `
+      data += `    }`
+      data += ` \n  },  \n `
 
 
       // if true add computed section and populate with state
       let computed = "";
       if (this.componentMap[this.activeComponent].state.length) {
-        computed += "  computed: {";
+        computed += " computed: {";
         computed += "\n    ...mapState([";
         this.componentMap[this.activeComponent].state.forEach((state) => {
           computed += `\n      "${state}", `;
@@ -298,7 +299,7 @@ export default {
         output += imports + "\nexport default defineComponent ({\n  name: '" + componentName + "';";
       } else {
         output = "\n\n<script>\n";
-        output += imports + "\nexport default {\n  name: '" + componentName + "';";
+        output += imports + "\nexport default {\n  name: '" + componentName + "'";
       }
       output += ",\n  components: {\n";
       output += childrenComponentNames + "  },\n";
