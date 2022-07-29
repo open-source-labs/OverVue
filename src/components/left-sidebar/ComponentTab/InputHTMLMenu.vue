@@ -88,14 +88,13 @@
               @click="submitLeft(leftText, this.activeHTML)">
             </i>
           </q-input>
-
           <q-item id="layer-item" filled dark autofocus true hide-bottom-space color="secondary">
-            <q-item-section v-model="z" class="layer">Component Layer = {{z}}</q-item-section>
+            <q-item-section class="layer">Component Layer = </q-item-section>
             <q-btn
               class="minorAction"
               color="transparent"
               text-color="primary"
-              label="&ndash;"
+              label="-"
               @click="(e) => handleLayer(e)"
             />
             <p id="counter">{{ z }}</p>
@@ -107,9 +106,6 @@
               @click="(e) => handleLayer(e)"
             />
           </q-item>
-          
-
-
           <q-btn label="Close" @click="this.openAttributeModal" />
         </q-form>
       </div>
@@ -143,13 +139,14 @@ export default {
       'routes',
       'activeComponentData',
       'activeComponentObj',
+      'componentData'
     ])
   },
   components: {
   },
   methods: {
     ...mapActions([
-      'setActiveHTML', 
+      'setActiveHTML',
       'setActiveLayer',
       'openAttributeModal', 
       'addActiveComponentClass',
@@ -215,34 +212,56 @@ export default {
       this.leftText = '';
     },
 
-    handleLayer(e) {
-      e.preventDefault();
+//     addLayer(z, idNum) {
+//       const payload = {
+//         activeHTML: idNum,
+//         z: z,
+//       };
+//       payload.z++;
+//       this.z++;
+// console.log(this.activeComponentObj.htmlList[0].z)
+//       this.updateHTMLLayer(payload);
+//       console.log('+ clicked!')
+//       console.log(this.activeComponentObj.htmlList[0].z)
+//     },
 
-    let htmlZ;
+//     subtractLayer(z, idNum) {
+//       const payload = {
+//         activeHTML: idNum,
+//         z: z,
+//       };
 
-    this.activeComponentObj.htmlList.forEach( element => {
-      if (element.id === this.activeHTML) {
-        htmlZ = element.z;
-      }
-    })
-
-      const payload = {
-        activeHTML: this.activeHTML,
-        z: htmlZ,
-      };
       
-      if (e.target.innerText === "+")  {
+//       payload.z--;
+//       this.z--;
+//       this.updateHTMLLayer(payload);
+      
+//       console.log('- clicked!')
+//     },
+
+  handleLayer(e) {
+      e.preventDefault();
+      const payload = {
+        activeComponent: this.activeComponent,
+        routeArray: this.routes[this.activeRoute],
+        activeComponentData: this.activeComponentData,
+        z: this.activeComponentData.z,
+      };
+    
+      if (e.target.innerText === "+") {
         payload.z++;
-        this.z++;
+        console.log('+ clicked!')
       }
       if (e.target.innerText === "–" && payload.z > 0)  {
         payload.z--;
-        this.z--;
+        console.log('- clicked!')
       }
-      this.updateHTMLLayer(payload);
-      console.log('here')
-      console.log(this.activeHTML)
-  },
+      this.updateComponentLayer(payload);
+    },
+
+activeRouteArray() {
+      return this.routes[this.activeRoute];
+    },
 
   watch: {
     attributeModalOpen() {
