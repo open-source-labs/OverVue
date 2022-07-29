@@ -142,6 +142,7 @@ export default {
       'clearActiveHTML'
       ]),
     submitClass(element, idNum) {
+      console.log(this.activeLayer)
       if (element === '') {
         return;
       }

@@ -256,11 +256,10 @@ z-index: ${this.activeComponentObj.z};
 }\n`
       }
 
-    console.log(htmlArray)
       for (const html of htmlArray) {
         if (html.class === ' ') styleString = "";
         if (html.class) {
-          styleString += `.${html.class} {\n height: ${html.h} \n width: ${html.w} \n  top: ${html.x} \n left: ${html.y} \n z-index: ${html.z}
+          styleString += `.${html.class} {\n height: ${html.h}%, \n width: ${html.w}%, \n  top: ${html.x}%, \n left: ${html.y}%, \n z-index: ${html.z}
 }\n`
         }
       }

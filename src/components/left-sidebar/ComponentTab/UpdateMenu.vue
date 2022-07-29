@@ -64,7 +64,7 @@ Description:
           </div>
           <br />
         </q-expansion-item>
-        <InputHTMLMenu v-model="attributeModal" v-if="attributeModal === true" class="htmlElement-selected"/>
+        <InputHTMLMenu v-model="attributeModal" v-if="attributeModal === true && this.activeLayer.lineage.length === 0" class="htmlElement-selected"/>
         <q-expansion-item group="accordion" label="HTML Attributes">
           <AttributesSubMenu />
         </q-expansion-item>
@@ -168,6 +168,7 @@ export default {
       "activeRoute",
       "activeComponent",
       "activeHTML",
+      "activeLayer",
       "activeComponentObj",
       "componentMap",
       "exportAsTypescript",
