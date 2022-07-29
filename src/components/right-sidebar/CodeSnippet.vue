@@ -226,12 +226,12 @@ export default {
       // if true add data section and populate with props
       let data = "";
       if (this.componentMap[this.activeComponent].props.length) {
-        data += "  data () {\n    return {";
+        data += "  props: {";
         this.componentMap[this.activeComponent].props.forEach((prop) => {
-          data += `\n      ${prop}: "PLACEHOLDER FOR VALUE",`;
+          data += `\n    ${prop}: "PLACEHOLDER FOR VALUE",`;
         });
         data += "\n";
-        data += "    }\n";
+        //data += "    }\n";
         data += "  },\n";
       }
       const htmlBinding = this.componentMap[this.activeComponent].htmlList
