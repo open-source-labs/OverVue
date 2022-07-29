@@ -127,11 +127,11 @@ export default {
           } else {
             nestedString += htmlElementMap[child.text][0];
             if (child.class !== "") {
-              nestedString += " " + "class = " + `"${child.class}"`;
+              nestedString += " " + "class=" + `"${child.class}"`;
             }
             if (child.binding !== "") {
               if (child.text !== 'img' || child.text !== 'link') {
-                nestedString += ` v-model = "${child.binding}"`
+                nestedString += ` v-model="${child.binding}"`
 
               }
             }
@@ -164,11 +164,11 @@ export default {
           outputStr += htmlElementMap[el.text][0]
           //if conditional to check class
           if (el.class !== "") {
-            outputStr += " " + "class = " + `"${el.class}"`;
+            outputStr += " " + "class=" + `"${el.class}"`;
           }
           
           if (el.binding !== "") {
-            outputStr += ` v-model = "${el.binding}"`
+            outputStr += ` v-model="${el.binding}"`
           }
           // add an extra slash at the end for child Components and single tags
           if(childComponents.includes(el.text) || el.text === "img" || el.text === "input" || el.text === "link"){
