@@ -85,9 +85,8 @@ export default {
       else return `<template>\n  <div>\n${templateTagStr}  </div>\n</template>`;
     },
     // Creates <template> boilerplate
-    writeTemplateTag(componentName) {
+    writeTemplateTag(componentName, activeComponent) {
       // console.log(this.activeComponentObj)
-      // create reference object
       const htmlElementMap = {
         div: ["<div", "</div>"],
         button: ["<button", "</button>"],
@@ -110,6 +109,11 @@ export default {
         h5: ["<h5", "</h5>"],
         h6: ["<h6", "</h6>"],
       };
+      //add childComponents of the activeCompnent to the htmlElementMap
+      const childComponents = this.componentMap[this.activeComponent].children;
+      childComponents.forEach(child => {
+        htmlElementMap[child]=[`<${child}`, ""] //single
+      })
       function writeNested(childrenArray, indent) {
         if (!childrenArray.length) {
           return "";
@@ -132,7 +136,7 @@ export default {
 
               }
             }
-            if (child.text === "img" || child.text === "input" || child.text === "link") {
+            if (child.text === "img" || child.text === "input" || child.text === "link" || childComponents.includes(child.text)) {
               nestedString += "/>";
             } else { nestedString += ">"; }
 
@@ -163,6 +167,11 @@ export default {
           if (el.class !== "") {
             outputStr += " " + "class = " + `"${el.class}"`;
           }
+          // add an extra slash at the end for child Components and single tags
+          if(childComponents.includes(el.text) || el.text === "img" || el.text === "input" || el.text === "link"){
+            outputStr += "/"
+          }
+
           if (el.binding !== "") {
             outputStr += ` v-model = "${el.binding}"`
           }

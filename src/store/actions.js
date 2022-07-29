@@ -269,7 +269,6 @@ const actions = {
   },
 
   // Actions dispatched from left hand panel////////////////////////////////////////
-
   [types.addToComponentElementList]: ({ commit }, payload) => {
     // adds element to the HTMLQueue
     commit(types.ADD_TO_COMPONENT_HTML_LIST, payload);
@@ -286,7 +285,6 @@ const actions = {
   // end of left hand panel/////////////////////////
 
   // HTML Element related actions ////////////////////
-
   [types.addNestedHTML]: ({ commit }, payload) => {
     commit(types.ADD_NESTED_HTML, payload);
   },
@@ -324,7 +322,10 @@ const actions = {
   [types.upOneLayer]: ({ commit }, payload) => {
     commit(types.UP_ONE_LAYER, payload);
   },
-  //FOR MUTATING HTML WITH DRAG AND DROP
+
+  // end of HTML segment ////////////////////////////////////////////////
+
+  // Drag-and-drop ///////////////////////////////////////
   [types.setIdDrag]: ({ commit }, payload) => {
     commit(types.SET_ID_DRAG, payload)
   },
@@ -349,10 +350,9 @@ const actions = {
     commit(types.DRAG_DROP_SORT_SELECTED_HTML_ELEMENTS)
   },
 
-  // end of HTML segment ////////////////////////////////////////////////
+  // end of Drag-and-drop /////////////////////////////////
 
   // Loading ///////////////////////////////////////////////////////
-
   [types.openProject]: ({ commit }, payload) => {
     commit(types.REMOVE_ALL_STATE_PROPS_ACTIONS)
     commit(types.SET_ACTIVE_ROUTE, "HomeView");

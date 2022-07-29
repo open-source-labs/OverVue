@@ -77,7 +77,7 @@ export const DELETE_ACTIVE_COMPONENT_CLASS = 'DELETE_ACTIVE_COMPONENT_CLASS'
 //
 export const REMOVE_ALL_STATE_PROPS_ACTIONS = 'REMOVE_ALL_STATE_PROPS_ACTIONS'
 export const UPDATE_PASTE_TIMER = 'UPDATE_PASTE_TIMER'
-
+//Drag and Drop
 export const SET_ID_DRAG = 'SET_ID_DRAG'
 export const SET_ID_DROP = 'SET_ID_DROP'
 export const SET_SELECTED_ID_DRAG = 'SET_SELECTED_ID_DRAG'
@@ -163,13 +163,14 @@ export const updateStartingSize = 'updateStartingSize'
 export const deleteUserActions = 'deleteUserActions'
 export const deleteUserState = 'deleteUserState'
 export const toggleTutorial = 'toggleTutorial'
-
+//Drag and Drop 
 export const setIdDrag = 'setIdDrag'
 export const setIdDrop = 'setIdDrop'
 export const setSelectedIdDrag = 'setSelectedIdDrag'
 export const setSelectedIdDrop = 'setSelectedIdDrop'
 export const dragDropSortHtmlElements = 'dragDropSortHtmlElements'
 export const dragDropSortSelectedHtmlElements = 'dragDropSortSelectedHtmlElements'
+
 
 // inactive mutations
 // export const SET_STATE = 'SET_STATE'

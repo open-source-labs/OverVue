@@ -137,8 +137,14 @@ export default {
         newTitle += ` > ${el}`
       })
       return newTitle;
+    },
+    moreExceptions: function () {
+      let childComponent = [];
+      if(this.activeComponent) {
+        childComponent = this.componentMap[this.activeComponent].children;
+      }
+      return childComponent;
     }
-
   },
   methods: {
     ...mapActions(['setActiveHTML', 'setActiveLayer', 'upOneLayer', 'setSelectedIdDrag', 'setIdDrag', 'setSelectedIdDrop', 'setIdDrop', 'dragDropSortHtmlElements', 'dragDropSortSelectedHtmlElements', 'openAttributeModal', 'addActiveComponentClass', 'addBindingText']),
