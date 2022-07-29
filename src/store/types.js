@@ -85,6 +85,9 @@ export const SET_SELECTED_ID_DROP = 'SET_SELECTED_ID_DROP'
 export const DRAG_DROP_SORT_HTML_ELEMENTS = 'DRAG_DROP_SORT_HTML_ELEMENTS'
 export const DRAG_DROP_SORT_SELECTED_HTML_ELEMENTS = 'DRAG_DROP_SORT_SELECTED_HTML_ELEMENTS'
 
+//adding vmodel info
+export const ADD_BINDING_TEXT = 'ADD_BINDING_TEXT'
+
 // Actions
 export const openNoteModal = 'openNoteModal'
 export const openColorModal = 'openColorModal'

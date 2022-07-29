@@ -246,6 +246,11 @@ const actions = {
   [types.deleteStateFromComponent]: ({ commit }, payload) => {
     commit(types.DELETE_STATE_FROM_COMPONENT, payload);
   },
+  //
+  [types.addBindingText]: ({ commit }, payload) => {
+    commit(types.ADD_BINDING_TEXT, payload)
+  },
+
   // Delete user actions from vuex store
   [types.deleteUserActions]: ({ state, commit }, payload) => {
     commit(types.DELETE_USER_ACTIONS, payload);
