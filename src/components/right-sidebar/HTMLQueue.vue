@@ -144,8 +144,7 @@ export default {
     ...mapActions(['setActiveHTML', 'setActiveLayer', 'upOneLayer', 'setSelectedIdDrag', 'setIdDrag', 'setSelectedIdDrop', 'setIdDrop', 'dragDropSortHtmlElements', 'dragDropSortSelectedHtmlElements', 'openAttributeModal', 'addActiveComponentClass', 'addBindingText']),
     deleteElement(id) {
       if (this.activeComponent === '') this.$store.dispatch(deleteSelectedElement, id[0])
-      this.setActiveHTML(element);
-      this.openAttributeModal(element);
+      else this.$store.dispatch(deleteFromComponentHtmlList, id[1])
 
     },
     setActiveElement(element) {
