@@ -237,7 +237,7 @@ export default {
       data += "  data() {\n    return {\n"
       htmlBinding.forEach(el => {
         if (el.binding !== '') {
-          data += `      "${el.binding}": "PLACEHOLDER FOR VALUE", `
+          data += `      ${el.binding}: "PLACEHOLDER FOR VALUE", `
           data += '\n'
         }
         //checks if there is binding in it's html child's child and will add to code snippet
