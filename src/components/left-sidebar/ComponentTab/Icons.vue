@@ -67,7 +67,6 @@ export default {
         //show the badge for all nested children arrays
         const checkChild = array => {
           for (let html of array) {
-            console.log(html)
             if (html.children.length) {
               checkChild(html.children)
             } else {

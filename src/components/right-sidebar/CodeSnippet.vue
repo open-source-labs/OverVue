@@ -222,7 +222,6 @@ export default {
       children.forEach((name) => {
         childrenComponentNames += `    ${name},\n`;
       });
-      console.log("lets look at data", this.componentMap[this.activeComponent])
       // if true add data section and populate with props
       let data = "";
       if (this.componentMap[this.activeComponent].props.length) {
@@ -235,12 +234,20 @@ export default {
         data += "  },\n";
       }
       const htmlBinding = this.componentMap[this.activeComponent].htmlList
-
       data += "  data() {\n    return {\n"
       htmlBinding.forEach(el => {
         if (el.binding !== '') {
           data += `      "${el.binding}": "PLACEHOLDER FOR VALUE", `
           data += '\n'
+        }
+        //checks if there is binding in it's html child's child and will add to code snippet
+        if (el.children.length !== 0) {
+          el.children.forEach( el1 => {
+            if(el1.binding !== '') {
+              data += `      "${el1.binding}": "PLACEHOLDER FOR VALUE", `
+              data += '\n'
+            }
+          })
         }
       })
       data += `    }`
