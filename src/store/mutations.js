@@ -333,7 +333,6 @@ const mutations = {
   },
 
   // *** HTML ELEMENTS *** //////////////////////////////////////////////
-//jacetice
   [types.ADD_NESTED_HTML]: (state, payload) => {
     const componentName = state.activeComponent;
     const { activeHTML } = state;
@@ -419,31 +418,6 @@ const mutations = {
       note: '',
     });
   },
-
-  // [types.UPDATE_HTMLELEMENT_POSITION]: (state, payload) => {
-   
-  //   const htmlList = state.componentMap[0].htmlList;
-  //   // .filter(
-  //   //   (element) => element.id === payload.activeHTML)
-  //   console.log('this update position const');
-  //   console.log(htmlList)
-
-
-  //   // updatedHTMLElement.x = payload.x;
-  //   // updatedHTMLElement.y = payload.y;
-  // },
-
-  // [types.UPDATE_HTMLELEMENT_SIZE]: (state, payload) => {
-  //   const updatedHTMLElement = state.routes[state.activeRoute].filter(
-  //     (element) => element.componentName === payload.activeComponent)[0];
-  //     console.log('this update size const' + updatedHTMLElement.x);
-  //     console.log('this update size pay' + payload.x)
-  //   updatedHTMLElement.h = payload.h;
-  //   updatedHTMLElement.w = payload.w;
-  //   updatedHTMLElement.x = payload.x;
-  //   updatedHTMLElement.y = payload.y;
-  // },
-
 
   [types.DELETE_FROM_COMPONENT_HTML_LIST]: (state, id) => {
     const componentName = state.activeComponent;
