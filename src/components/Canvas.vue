@@ -58,19 +58,20 @@
         <div v-if="element.text === 'button'" 
           class="htmlButton"
           :style="[element.x !== 0 ? {'top': element.x} : {'top': '70%'}, 
-            element.y !== 0 ? {'left': element.y} : {'left': '60%'},
-            element.w !== 0 ? {'width': element.w} : {'width': '25%'},
-            element.h !== 0 ? {'height' : element.h} : {'height' : '10%'},
+            element.y !== 0 ? {'left': element.y + '%'} : {'left': '60%'},
+            element.w !== 0 ? {'width': element.w + '%'} : {'width': '25%'},
+            element.h !== 0 ? {'height' : element.h + '%'} : {'height' : '10%'},
+            element.z !== 0 ? {'z-index' : element.z + '%'} : {'z-index' : '0'},
             {'background-color': componentData.color}]">
         <p class="innerHtmlText">{{element.text}}</p> 
         </div>
         <div v-if="element.text === 'div'"
           class="htmlDiv"
-          :style="[element.x !== 0 ? {'top': element.x} : {'top': '50%'}, 
-            element.y !== 0 ? {'left': element.y} : {'left': '10%'},
-            element.w !== 0 ? {'width': element.w} : {'width': '80%'},
-            element.h !== 0 ? {'height' : element.h} : {'height' : '40%'},
-            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
+          :style="[element.x !== 0 ? {'top': element.x + '%'} : {'top': '50%'}, 
+            element.y !== 0 ? {'left': element.y + '%'} : {'left': '10%'},
+            element.w !== 0 ? {'width': element.w + '%'} : {'width': '80%'},
+            element.h !== 0 ? {'height' : element.h + '%'} : {'height' : '40%'},
+            element.z !== 0 ? {'z-index' : element.z + '%'} : {'z-index' : '0'},
             {'background-color': componentData.color}]"
         >
           <p class="innerHtmlText" style="font-size: 3em">{{element.text}}</p> 
@@ -82,6 +83,7 @@
             element.y !== 0 ? {'left': element.y} : {'left': '10%'},
             element.w !== 0 ? {'width': element.w} : {'width': '80%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '20%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
             {'background-color': componentData.color}]"
         > 
           <p class="innerHtmlText" style="font-size: 3em">Lorem Ipsum</p>
@@ -92,6 +94,7 @@
             element.y !== 0 ? {'left': element.y} : {'left': '15%'},
             element.w !== 0 ? {'width': element.w} : {'width': '70%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '15%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
             {'background-color': componentData.color}]"
         >
           <p class="innerHtmlText" style="font-size: 2.5em">dolor sit amet</p>
@@ -102,6 +105,7 @@
             element.y !== 0 ? {'left': element.y} : {'left': '18%'},
             element.w !== 0 ? {'width': element.w} : {'width': '60%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '12%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
             {'background-color': componentData.color}]"
         >
           <p class="innerHtmlText" style="font-size: 2.2em">consectetur adipiscing elit</p>
@@ -112,6 +116,7 @@
             element.y !== 0 ? {'left': element.y} : {'left': '20%'},
             element.w !== 0 ? {'width': element.w} : {'width': '60%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '10%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
             {'background-color': componentData.color}]"
         >
           <p class="innerHtmlText" style="font-size: 2em">sed do eiusmod tempor incididunt</p>
@@ -122,6 +127,7 @@
             element.y !== 0 ? {'left': element.y} : {'left': '20%'},
             element.w !== 0 ? {'width': element.w} : {'width': '60%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '10%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
             {'background-color': componentData.color}]"
           >
           <p class="innerHtmlText" style="font-size: 2em">ut labore et dolore magna aliqua</p>
@@ -131,7 +137,8 @@
           :style="[element.x !== 0 ? {'top': element.x} : {'top': '20%'}, 
             element.y !== 0 ? {'left': element.y} : {'left': '20%'},
             element.w !== 0 ? {'width': element.w} : {'width': '60%'},
-            element.h !== 0 ? {'height' : element.h} : {'height' : '10%'},
+            element.h !== 0 ? {'height' : element.h} : {'height' : '10%'},element.z !== 0 ? 
+            {'z-index' : element.z} : {'z-index' : '0'},
             {'background-color': componentData.color}]"
         >
           <p class="innerHtmlText" style="font-size: 2em">Ut enim ad minim veniam</p>
@@ -143,6 +150,7 @@
             element.y !== 0 ? {'left': element.y} : {'left': '10%'},
             element.w !== 0 ? {'width': element.w} : {'width': '80%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '40%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
             {'background-color': componentData.color}]"
         >
           <p class="innerHtmlText" style="font-size: 3em">{{element.text}}</p> 
@@ -154,6 +162,7 @@
             element.y !== 0 ? {'left': element.y} : {'left': '10%'},
             element.w !== 0 ? {'width': element.w} : {'width': '80%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '40%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
             {'background-color': componentData.color}]"
         >
           <p class="innerHtmlText" style="font-size: 3em">{{element.text}}</p> 
@@ -166,6 +175,7 @@
             element.y !== 0 ? {'left': element.y} : {'left': '10%'},
             element.w !== 0 ? {'width': element.w} : {'width': '80%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '40%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
             {'background-color': componentData.color}]"
         >
         </div>
@@ -175,6 +185,7 @@
             element.y !== 0 ? {'left': element.y} : {'left': '10%'},
             element.w !== 0 ? {'width': element.w} : {'width': '80%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '40%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
             {'background-color': componentData.color}]"
         >
         </div>
@@ -184,6 +195,7 @@
             element.y !== 0 ? {'left': element.y} : {'left': '10%'},
             element.w !== 0 ? {'width': element.w} : {'width': '80%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '40%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
             {'background-color': componentData.color}]"
         >
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p> 

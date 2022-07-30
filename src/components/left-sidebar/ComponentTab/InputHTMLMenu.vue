@@ -16,7 +16,6 @@
           <p class="title">Adjust Height and Elevation:</p> 
           <q-slider
             v-model="heightText"
-            :min="0"
             :max="100"
             vertical
             label
@@ -97,7 +96,12 @@
               label="-"
               @click="(e) => handleLayer(e)"
             />
-            <p id="counter">{{ z }}</p>
+            <!--nested for loop to iterate to display current z-index for selected htmlElement-->
+            <template v-for="element in this.routes[this.activeRoute]">
+              <template v-for="element1 in element.htmlList">
+                <p v-if="element1.id === this.activeHTML" id="counter" :key="element1.id">{{ element1.z }} </p>
+              </template>
+            </template>
             <q-btn
               class="minorAction"
               color="transparent"
@@ -126,6 +130,23 @@ export default {
       z: '0',
     }
   },
+
+  mounted () {
+    //for loop to access nested HTML elements of components - sets height/width/top/left sliders to current value of selected HTML element
+    for (let i = 0; i <this.routes[this.activeRoute].length; i++) {
+        for (let j = 0; j < this.routes[this.activeRoute][i].htmlList.length; j++) {
+          if(this.activeHTML === this.routes[this.activeRoute][i].htmlList[j].id) {
+            this.heightText = this.routes[this.activeRoute][i].htmlList[j].h;
+            this.widthText = this.routes[this.activeRoute][i].htmlList[j].w;
+            this.topText = this.routes[this.activeRoute][i].htmlList[j].x;
+            this.leftText = this.routes[this.activeRoute][i].htmlList[j].y;
+        }
+        }
+      }
+
+
+  },
+
   computed: {
     ...mapState([
       'activeComponent',
@@ -154,6 +175,7 @@ export default {
       'addActiveComponentWidth',
       'addActiveComponentTop',
       'addActiveComponentLeft',
+      'updateComponentLayer',
       'updateHTMLLayer',
       ]),
     submitClass(element, idNum) {
@@ -212,51 +234,35 @@ export default {
       this.leftText = '';
     },
 
-//     addLayer(z, idNum) {
-//       const payload = {
-//         activeHTML: idNum,
-//         z: z,
-//       };
-//       payload.z++;
-//       this.z++;
-// console.log(this.activeComponentObj.htmlList[0].z)
-//       this.updateHTMLLayer(payload);
-//       console.log('+ clicked!')
-//       console.log(this.activeComponentObj.htmlList[0].z)
-//     },
-
-//     subtractLayer(z, idNum) {
-//       const payload = {
-//         activeHTML: idNum,
-//         z: z,
-//       };
-
-      
-//       payload.z--;
-//       this.z--;
-//       this.updateHTMLLayer(payload);
-      
-//       console.log('- clicked!')
-//     },
-
+//function that adds/subtracts z-index on html Elements
   handleLayer(e) {
       e.preventDefault();
+
+      let HTMLZ;
+
+      for (let i = 0; i <this.routes[this.activeRoute].length; i++) {
+        for (let j = 0; j < this.routes[this.activeRoute][i].htmlList.length; j++) {
+          if(this.activeHTML === this.routes[this.activeRoute][i].htmlList[j].id) {
+            HTMLZ = this.routes[this.activeRoute][i].htmlList[j].z
+        }
+        }
+      }
+
       const payload = {
         activeComponent: this.activeComponent,
+        activeHTML: this.activeHTML,
         routeArray: this.routes[this.activeRoute],
-        activeComponentData: this.activeComponentData,
-        z: this.activeComponentData.z,
+        z: HTMLZ,
       };
-    
+
       if (e.target.innerText === "+") {
         payload.z++;
-        console.log('+ clicked!')
+        
       }
-      if (e.target.innerText === "–" && payload.z > 0)  {
+      if (e.target.innerText === "-" && payload.z > 0)  {
         payload.z--;
-        console.log('- clicked!')
       }
-      this.updateComponentLayer(payload);
+      this.updateHTMLLayer(payload);
     },
 
 activeRouteArray() {
