@@ -313,7 +313,7 @@ hr {
 }
 
 .currentlyDragging {
-  opacity: 1;
+  opacity: .5;
 }
 
 .ignoreByDragover {
