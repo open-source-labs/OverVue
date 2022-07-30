@@ -85,9 +85,7 @@ export default {
       else return `<template>\n  <div>\n${templateTagStr}  </div>\n</template>`;
     },
     // Creates <template> boilerplate
-    writeTemplateTag(componentName) {
-      // console.log(this.activeComponentObj)
-      // create reference object
+    writeTemplateTag(componentName, activeComponent) {
       const htmlElementMap = {
         div: ["<div", "</div>"],
         button: ["<button", "</button>"],
@@ -110,6 +108,11 @@ export default {
         h5: ["<h5", "</h5>"],
         h6: ["<h6", "</h6>"],
       };
+      //add childComponents of the activeCompnent to the htmlElementMap
+      const childComponents = this.componentMap[this.activeComponent].children;
+      childComponents.forEach(child => {
+        htmlElementMap[child]=[`<${child}`, ""] //single
+      })
       function writeNested(childrenArray, indent) {
         if (!childrenArray.length) {
           return "";
@@ -124,15 +127,15 @@ export default {
           } else {
             nestedString += htmlElementMap[child.text][0];
             if (child.class !== "") {
-              nestedString += " " + "class = " + `"${child.class}"`;
+              nestedString += " " + "class=" + `"${child.class}"`;
             }
             if (child.binding !== "") {
               if (child.text !== 'img' || child.text !== 'link') {
-                nestedString += ` v-model = "${child.binding}"`
+                nestedString += ` v-model="${child.binding}"`
 
               }
             }
-            if (child.text === "img" || child.text === "input" || child.text === "link") {
+            if (child.text === "img" || child.text === "input" || child.text === "link" || childComponents.includes(child.text)) {
               nestedString += "/>";
             } else { nestedString += ">"; }
 
@@ -161,10 +164,15 @@ export default {
           outputStr += htmlElementMap[el.text][0]
           //if conditional to check class
           if (el.class !== "") {
-            outputStr += " " + "class = " + `"${el.class}"`;
+            outputStr += " " + "class=" + `"${el.class}"`;
           }
+          
           if (el.binding !== "") {
-            outputStr += ` v-model = "${el.binding}"`
+            outputStr += ` v-model="${el.binding}"`
+          }
+          // add an extra slash at the end for child Components and single tags
+          if(childComponents.includes(el.text) || el.text === "img" || el.text === "input" || el.text === "link"){
+            outputStr += "/"
           }
           outputStr += ">";
           if (el.children.length) {
@@ -218,30 +226,31 @@ export default {
       // if true add data section and populate with props
       let data = "";
       if (this.componentMap[this.activeComponent].props.length) {
-        data += "  data () {\n    return {";
+        data += "  props: {";
         this.componentMap[this.activeComponent].props.forEach((prop) => {
-          data += `\n      ${prop}: "PLACEHOLDER FOR VALUE",`;
+          data += `\n    ${prop}: "PLACEHOLDER FOR VALUE",`;
         });
         data += "\n";
-        data += "    }\n";
+        //data += "    }\n";
         data += "  },\n";
       }
       const htmlBinding = this.componentMap[this.activeComponent].htmlList
 
-      data += "  data () {\n return {\n"
+      data += "  data() {\n    return {\n"
       htmlBinding.forEach(el => {
         if (el.binding !== '') {
-          data += `    "${el.binding}": "PLACEHOLDER FOR VALUE", `
+          data += `      "${el.binding}": "PLACEHOLDER FOR VALUE", `
           data += '\n'
         }
       })
-      data += ` \n  }  \n `
+      data += `    }`
+      data += ` \n  },  \n `
 
 
       // if true add computed section and populate with state
       let computed = "";
       if (this.componentMap[this.activeComponent].state.length) {
-        computed += "  computed: {";
+        computed += " computed: {";
         computed += "\n    ...mapState([";
         this.componentMap[this.activeComponent].state.forEach((state) => {
           computed += `\n      "${state}", `;
@@ -290,7 +299,7 @@ export default {
         output += imports + "\nexport default defineComponent ({\n  name: '" + componentName + "';";
       } else {
         output = "\n\n<script>\n";
-        output += imports + "\nexport default {\n  name: '" + componentName + "';";
+        output += imports + "\nexport default {\n  name: '" + componentName + "'";
       }
       output += ",\n  components: {\n";
       output += childrenComponentNames + "  },\n";

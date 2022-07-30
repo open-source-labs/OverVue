@@ -24,7 +24,7 @@ Description:
           <button class="attributeButton" @click="setActiveElement(element)">
             <div class="tooltip"> Edit {{ element[0] }} attributes </div>
           </button>
-          <i v-if='activeComponent === "" || exceptions.includes(element[0])'></i>
+          <i v-if='activeComponent === "" || exceptions.includes(element[0]) || moreExceptions.includes(element[0])'></i>
           <i v-else class="fas fa fa-angle-double-down fa-md"
             @click="setLayer({ text: element[0], id: element[2] })"></i>
           {{ element[0] }}
@@ -73,7 +73,7 @@ Description:
           <q-form autofocus v-on:submit.prevent="submitClass">
             <p class="title">Add Class Name:</p>
             <q-input label="Add your class here" filled dark autofocus true hide-bottom-space v-model="classText"
-              @keyup.enter="submitClass"></q-input>
+              @keydown.enter="submitClass(classText, this.activeHTML)" />
             <q-btn id="comp-btn" class="sidebar-btn" color="secondary" label="Submit Attribute"
               :disable="classText.length > 0 ? false : true" @click="submitClass(classText, this.activeHTML)" />
           </q-form>
@@ -81,7 +81,7 @@ Description:
             <p class="title">Add Binding:</p>
 
             <q-input label="Add two way binding here" filled dark autofocus true hide-bottom-space v-model="bindingText"
-              @keyup.enter="addBinding"></q-input>
+              @keydown.enter="addBinding(bindingText, this.activeHTML)"></q-input>
             <q-btn id="comp-btn" class="sidebar-btn" color="secondary" label="Add Binding"
               :disable="bindingText.length > 0 ? false : true" @click="addBinding(bindingText, this.activeHTML)">
             </q-btn>
@@ -146,15 +146,20 @@ export default {
         newTitle += ` > ${el}`
       })
       return newTitle;
+    },
+    moreExceptions: function () {
+      let childComponent = [];
+      if(this.activeComponent) {
+        childComponent = this.componentMap[this.activeComponent].children;
+      }
+      return childComponent;
     }
-
   },
   methods: {
     ...mapActions(['setActiveHTML', 'setActiveLayer', 'upOneLayer', 'setSelectedIdDrag', 'setIdDrag', 'setSelectedIdDrop', 'setIdDrop', 'dragDropSortHtmlElements', 'dragDropSortSelectedHtmlElements', 'openAttributeModal', 'addActiveComponentClass', 'addBindingText']),
     deleteElement(id) {
       if (this.activeComponent === '') this.$store.dispatch(deleteSelectedElement, id[0])
-      this.setActiveHTML(element);
-      this.openAttributeModal(element);
+      else this.$store.dispatch(deleteFromComponentHtmlList, id[1])
 
     },
     setActiveElement(element) {

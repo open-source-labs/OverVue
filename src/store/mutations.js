@@ -206,12 +206,7 @@ const mutations = {
       [state.activeComponent]: state.activeComponentObj,
     };
   },
-  // //add binding 
-  [types.addBindingText]: (state, payload) => {
-    //access the htmlList, add payload to the empty bind obj
-    //state.component
-    console.log(state.componentMap[state.activeComponent])
-  },
+  
   [types.DELETE_ACTION_FROM_COMPONENT]: (state, payload) => {
     state.componentMap[state.activeComponent].actions = state.componentMap[state.activeComponent].actions.filter(
       (action) => action !== payload);
@@ -335,6 +330,34 @@ const mutations = {
         }
       }
     }
+    //update the component name in the htmlList of all components if it is a child component
+    for (const item of Object.values(state.componentMap)) {
+      if (item.htmlList) {
+        const newArray = [...item.htmlList];
+
+        const changeAllChildComponents = (array, name) => {
+          const queue = [...array.filter(el => typeof el === 'object')];
+          while(queue.length) {
+            const evaluate = queue.shift();
+            if(evaluate.text === name) {
+              evaluate.text = payload; 
+            }
+            for(let i = 0; i < evaluate.children.length; i++) {
+              if (evaluate.children[i].text === name) {
+                evaluate.children[i].text = payload;
+              } 
+              if (evaluate.children.length) {
+                queue.push(...evaluate.children)
+              }
+            }
+          }
+        }
+
+        changeAllChildComponents(newArray, temp)
+        item.htmlList = newArray
+      }
+    }
+
   },
 
   // *** HTML ELEMENTS *** //////////////////////////////////////////////
@@ -385,7 +408,8 @@ const mutations = {
       text: payload.elementName,
       id: payload.date,
       children: [],
-      class: ''
+      class: '',
+      binding: ''
     });
   },
 
@@ -765,7 +789,32 @@ const mutations = {
       // state.componentMap[state.activeComponent].htmlList = newHTMLList;
       // const newMap = { ...state.componentMap };
       // state.componentMap = { ...newMap };
+
+      //delete the instances of the Child Component in the activeComponent's htmlList
+      const componentName = state.activeComponent;
+      const htmlList = state.componentMap[componentName].htmlList.slice(0);
+
+      // splice out child componenets even if nested
+      function deleteChildFromHtmlList(array, payload) {
+        for(let i = array.length; i--;) {
+
+					if(array[i].children.length) {
+            deleteChildFromHtmlList(array[i].children, payload)
+          }
+          if(array[i].text === payload) {
+            array.splice(i, 1)
+          } 
+          
+        }
+      }
+      deleteChildFromHtmlList(htmlList, payload);
+
+      //updates the htmlList with the child components deleted
+      state.componentMap[componentName].htmlList = htmlList;
+      
+      //delete the parent because the payload is no longer a child to the acitive component
       delete state.componentMap[payload].parent[state.activeComponent];
+
       // add block
     } else {
       const child = temp;
@@ -832,7 +881,7 @@ const mutations = {
   },
 
   // //add binding 
-  [types.addBindingText]: (state, payload) => {
+  [types.ADD_BINDING_TEXT]: (state, payload) => {
     //access the htmlList, add payload to the empty bind obj
     //const active = state.componentMap[state.activeComponent].htmlList;
     if (payload.binding === "") {
