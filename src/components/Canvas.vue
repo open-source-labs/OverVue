@@ -61,11 +61,23 @@
             element.y !== 0 ? {'left': element.y} : {'left': '60%'},
             element.w !== 0 ? {'width': element.w} : {'width': '25%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '10%'},
-            {'background-color': componentData.color}]">
+            {'background-color': componentData.color}]"
+        >
         <p class="innerHtmlText">{{element.note !== '' ? element.note : element.text}}</p> 
         </div>
         <div v-if="element.text === 'div'"
           class="htmlDiv"
+          :style="[element.x !== 0 ? {'top': element.x} : {'top': '10%'}, 
+            element.y !== 0 ? {'left': element.y} : {'left': '10%'},
+            element.w !== 0 ? {'width': element.w} : {'width': '80%'},
+            element.h !== 0 ? {'height' : element.h} : {'height' : '75%'},
+            {'background-color': componentData.color}]"
+        >
+          <p class="innerHtmlText" style="font-size: 3em">{{element.note !== '' ? element.note : element.text}}</p> 
+        </div>
+        <div v-if="element.text === 'footer'" class="htmlFooter"></div>
+                <div v-if="element.text === 'form'"
+          class="htmlGeneral"
           :style="[element.x !== 0 ? {'top': element.x} : {'top': '50%'}, 
             element.y !== 0 ? {'left': element.y} : {'left': '10%'},
             element.w !== 0 ? {'width': element.w} : {'width': '80%'},
@@ -74,36 +86,35 @@
         >
           <p class="innerHtmlText" style="font-size: 3em">{{element.note !== '' ? element.note : element.text}}</p> 
         </div>
-        <div v-if="element.text === 'footer'" class="htmlFooter"></div>
         <div v-if="element.text === 'h1'" 
           class="htmlHead"
           :style="[element.x !== 0 ? {'top': element.x} : {'top': '10%'}, 
-            element.y !== 0 ? {'left': element.y} : {'left': '10%'},
-            element.w !== 0 ? {'width': element.w} : {'width': '80%'},
+            element.y !== 0 ? {'left': element.y} : {'left': '5%'},
+            element.w !== 0 ? {'width': element.w} : {'width': '90%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '20%'},
             {'background-color': componentData.color}]"
         > 
-          <p class="innerHtmlText" style="font-size: 4em">{{element.note !== '' ? element.note :'Lorem Ipsum'}}</p>
+          <p class="innerHtmlText" style="font-size: 4em">{{element.note !== '' ? element.note :element.text}}</p>
         </div>
         <div v-if="element.text === 'h2'" 
           class="htmlHead"
           :style="[element.x !== 0 ? {'top': element.x} : {'top': '15%'}, 
-            element.y !== 0 ? {'left': element.y} : {'left': '15%'},
-            element.w !== 0 ? {'width': element.w} : {'width': '70%'},
+            element.y !== 0 ? {'left': element.y} : {'left': '10%'},
+            element.w !== 0 ? {'width': element.w} : {'width': '80%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '15%'},
             {'background-color': componentData.color}]"
         >
-          <p class="innerHtmlText" style="font-size: 2.5em">{{element.note !== '' ? element.note : 'dolor sit amet'}}</p>
+          <p class="innerHtmlText" style="font-size: 3em">{{element.note !== '' ? element.note : element.text}}</p>
         </div>
         <div v-if="element.text === 'h3'" 
           class="htmlHead"
           :style="[element.x !== 0 ? {'top': element.x} : {'top': '18%'}, 
-            element.y !== 0 ? {'left': element.y} : {'left': '18%'},
-            element.w !== 0 ? {'width': element.w} : {'width': '60%'},
+            element.y !== 0 ? {'left': element.y} : {'left': '15%'},
+            element.w !== 0 ? {'width': element.w} : {'width': '70%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '12%'},
             {'background-color': componentData.color}]"
         >
-          <p class="innerHtmlText" style="font-size: 2.2em">{{element.note !== '' ? element.note : 'consectetur adipiscing elit'}}</p>
+          <p class="innerHtmlText" style="font-size: 2.5em">{{element.note !== '' ? element.note : element.text }}</p>
         </div>
         <div v-if="element.text === 'h4'" 
           class="htmlHead"
@@ -113,80 +124,93 @@
             element.h !== 0 ? {'height' : element.h} : {'height' : '10%'},
             {'background-color': componentData.color}]"
         >
-          <p class="innerHtmlText" style="font-size: 2em">{{element.note !== '' ? element.note : 'sed do eiusmod tempor incididunt'}}</p>
+          <p class="innerHtmlText" style="font-size: 2em">{{element.note !== '' ? element.note : element.text}}</p>
         </div>
         <div v-if="element.text === 'h5'" 
           class="htmlHead"
           :style="[element.x !== 0 ? {'top': element.x} : {'top': '20%'}, 
-            element.y !== 0 ? {'left': element.y} : {'left': '20%'},
-            element.w !== 0 ? {'width': element.w} : {'width': '60%'},
-            element.h !== 0 ? {'height' : element.h} : {'height' : '10%'},
+            element.y !== 0 ? {'left': element.y} : {'left': '25%'},
+            element.w !== 0 ? {'width': element.w} : {'width': '50%'},
+            element.h !== 0 ? {'height' : element.h} : {'height' : '8%'},
             {'background-color': componentData.color}]"
           >
-          <p class="innerHtmlText" style="font-size: 2em">{{element.note !== '' ? element.note : 'ut labore et dolore magna aliqua'}}</p>
+          <p class="innerHtmlText" style="font-size: 1.5em">{{element.note !== '' ? element.note : element.text}}</p>
         </div>
         <div v-if="element.text === 'h6'" 
           class="htmlHead"
           :style="[element.x !== 0 ? {'top': element.x} : {'top': '20%'}, 
-            element.y !== 0 ? {'left': element.y} : {'left': '20%'},
-            element.w !== 0 ? {'width': element.w} : {'width': '60%'},
-            element.h !== 0 ? {'height' : element.h} : {'height' : '10%'},
+            element.y !== 0 ? {'left': element.y} : {'left': '30%'},
+            element.w !== 0 ? {'width': element.w} : {'width': '40%'},
+            element.h !== 0 ? {'height' : element.h} : {'height' : '5%'},
             {'background-color': componentData.color}]"
         >
-          <p class="innerHtmlText" style="font-size: 2em">{{element.note !== '' ? element.note : 'Ut enim ad minim veniam'}}</p>
-        </div>
-        <div v-if="element.text === 'navbar'" class="htmlNavbar"></div>
-        <div v-if="element.text === 'form'"
-          class="htmlForm"
-          :style="[element.x !== 0 ? {'top': element.x} : {'top': '50%'}, 
-            element.y !== 0 ? {'left': element.y} : {'left': '10%'},
-            element.w !== 0 ? {'width': element.w} : {'width': '80%'},
-            element.h !== 0 ? {'height' : element.h} : {'height' : '40%'},
-            {'background-color': componentData.color}]"
-        >
-          <p class="innerHtmlText" style="font-size: 3em">{{element.note !== '' ? element.note : element.text}}</p> 
+          <p class="innerHtmlText" style="font-size: 1em">{{element.note !== '' ? element.note : element.text}}</p>
         </div>
         <div v-if="element.text === 'header'" class="htmlHeader"></div>
         <div v-if="element.text === 'img'"
-          class="htmlImg"
-          :style="[element.x !== 0 ? {'top': element.x} : {'top': '50%'}, 
-            element.y !== 0 ? {'left': element.y} : {'left': '10%'},
-            element.w !== 0 ? {'width': element.w} : {'width': '80%'},
+          class="htmlGeneral"
+          :style="[element.x !== 0 ? {'top': element.x} : {'top': '20%'}, 
+            element.y !== 0 ? {'left': element.y} : {'left': '20%'},
+            element.w !== 0 ? {'width': element.w} : {'width': '40%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '40%'},
             {'background-color': componentData.color}]"
         >
           <p class="innerHtmlText" style="font-size: 3em">{{element.note !== '' ? element.note : element.text}}</p> 
         </div>
         <input v-if="element.text === 'input'" class="htmlInput"/>
-        <div v-if="element.text === 'list'" class="htmlList"></div>
+        <div v-if="element.text === 'list'" 
+          class="htmlList"
+          :style="[element.x !== 0 ? {'top': element.x} : {'top': '30%'}, 
+            element.y !== 0 ? {'left': element.y} : {'left': '30%'},
+            element.w !== 0 ? {'width': element.w} : {'width': '60%'},
+            element.h !== 0 ? {'height' : element.h} : {'height' : '10%'},
+            {'background-color': componentData.color}]"
+        >
+          <p class="innerHtmlText" style="font-size: 2em">{{element.note !== '' ? element.note : element.text}}</p>         
+        </div>
         <div v-if="element.text === 'list-ol'" 
-          class="htmlList-Ol"
-          :style="[element.x !== 0 ? {'top': element.x} : {'top': '50%'}, 
+          class="htmlGeneral"
+          :style="[element.x !== 0 ? {'top': element.x} : {'top': '20%'}, 
             element.y !== 0 ? {'left': element.y} : {'left': '10%'},
             element.w !== 0 ? {'width': element.w} : {'width': '80%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '40%'},
             {'background-color': componentData.color}]"
         >
+          <p class="innerHtmlText" style="font-size: 1.5em">{{element.note !== '' ? element.note : element.text}}
+            <ol>
+              <li>1</li>
+              <li>2</li>
+              <li>3</li>
+            </ol>
+          </p>
         </div>
         <div v-if="element.text === 'list-ul'"
-          class="htmlList-Ul"
-          :style="[element.x !== 0 ? {'top': element.x} : {'top': '50%'}, 
+          class="htmlGeneral"
+          :style="[element.x !== 0 ? {'top': element.x} : {'top': '20%'}, 
             element.y !== 0 ? {'left': element.y} : {'left': '10%'},
             element.w !== 0 ? {'width': element.w} : {'width': '80%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '40%'},
             {'background-color': componentData.color}]"
         >
+          <p class="innerHtmlText" style="font-size: 1.5em">{{element.note !== '' ? element.note : element.text}}
+            <ol>
+              <li>-</li>
+              <li>-</li>
+              <li>-</li>
+            </ol>
+          </p>
         </div>
         <div v-if="element.text === 'paragraph'" 
-          class="htmlParagraph"
+          class="htmlGeneral"
           :style="[element.x !== 0 ? {'top': element.x} : {'top': '50%'}, 
             element.y !== 0 ? {'left': element.y} : {'left': '10%'},
             element.w !== 0 ? {'width': element.w} : {'width': '80%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '40%'},
             {'background-color': componentData.color}]"
         >
-        <p>{{element.note !== '' ? element.note : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'}}</p> 
+        <p>{{element.note !== '' ? element.note :  element.text }}</p> 
         </div>
+        <div v-if="element.text === 'navbar'" class="htmlNavbar"></div>
       </div>
       <q-icon v-if="componentData.componentName === this.activeComponent"
         size="25px" 
@@ -1036,6 +1060,7 @@ color:black;
   margin: .5em;
   border-style: solid;
   border: 2em;
+  border-radius: 1.5%;
 }
 
 .htmlDiv {
@@ -1055,8 +1080,11 @@ color:black;
   background-color: $primary;
 }
 
-.htmlForm {
-  background-color: rgba($secondary, .42);
+.htmlGeneral{
+  position: absolute;
+  color: $menutext;
+  border-radius: 1.5%;
+  border-style: solid;
 }
 
 .htmlHead{
@@ -1073,12 +1101,8 @@ color:black;
 }
 
 .htmlInput{
-  background-color: rgba($secondary, .42); 
-}
-
-.htmlLink{
   position: absolute;
-  color: blue;
+  color: $menutext;
 }
 
 .htmlList{
