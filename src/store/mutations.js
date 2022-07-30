@@ -206,7 +206,7 @@ const mutations = {
       [state.activeComponent]: state.activeComponentObj,
     };
   },
-
+  
   [types.DELETE_ACTION_FROM_COMPONENT]: (state, payload) => {
     state.componentMap[state.activeComponent].actions = state.componentMap[state.activeComponent].actions.filter(
       (action) => action !== payload);
@@ -330,6 +330,34 @@ const mutations = {
         }
       }
     }
+    //update the component name in the htmlList of all components if it is a child component
+    for (const item of Object.values(state.componentMap)) {
+      if (item.htmlList) {
+        const newArray = [...item.htmlList];
+
+        const changeAllChildComponents = (array, name) => {
+          const queue = [...array.filter(el => typeof el === 'object')];
+          while(queue.length) {
+            const evaluate = queue.shift();
+            if(evaluate.text === name) {
+              evaluate.text = payload; 
+            }
+            for(let i = 0; i < evaluate.children.length; i++) {
+              if (evaluate.children[i].text === name) {
+                evaluate.children[i].text = payload;
+              } 
+              if (evaluate.children.length) {
+                queue.push(...evaluate.children)
+              }
+            }
+          }
+        }
+
+        changeAllChildComponents(newArray, temp)
+        item.htmlList = newArray
+      }
+    }
+
   },
 
   // *** HTML ELEMENTS *** //////////////////////////////////////////////
@@ -366,7 +394,8 @@ const mutations = {
       text: payload.elementName,
       id: payload.date,
       children: [],
-      class: ''
+      class: '',
+      binding: ''
     });
   },
 
@@ -379,7 +408,8 @@ const mutations = {
       text: payload.elementName,
       id: payload.date,
       children: [],
-      class: ''
+      class: '',
+      binding: ''
     });
   },
 
@@ -388,7 +418,8 @@ const mutations = {
       text: payload.elementName,
       id: payload.date,
       children: [],
-      class: ''
+      class: '',
+      binding: ""
     });
   },
 
@@ -430,6 +461,7 @@ const mutations = {
 
   [types.SET_ACTIVE_LAYER]: (state, payload) => {
     const newLayer = cloneDeep(state.activeLayer);
+
     newLayer.lineage.push(payload.text);
     newLayer.id = payload.id;
     state.activeLayer = newLayer;
@@ -487,25 +519,25 @@ const mutations = {
     const idDrag = state.componentMap[componentName].idDrag;
     const idDrop = state.componentMap[componentName].idDrop;
 
-    if(idDrag !== idDrop && idDrag !== '' && idDrop !== '') {
+    if (idDrag !== idDrop && idDrag !== '' && idDrop !== '') {
       let indexDrag;
       let indexDrop;
       const htmlList = state.componentMap[componentName].htmlList.slice(0)
 
       if (state.activeLayer.id === "") {
         htmlList.forEach((el, i) => {
-          if(el.id === idDrag){
+          if (el.id === idDrag) {
             indexDrag = i;
-          } else if (el.id === idDrop){
+          } else if (el.id === idDrop) {
             indexDrop = i;
           }
         })
         const draggedEl = htmlList.splice(indexDrag, 1)[0]
-        htmlList.splice(indexDrop,0,draggedEl)
+        htmlList.splice(indexDrop, 0, draggedEl)
       } else {
         const nestedDrag = breadthFirstSearchParent(htmlList, idDrag);
         const nestedDrop = breadthFirstSearchParent(htmlList, idDrop);
-        let nestedEl =nestedDrag.evaluated.children.splice(nestedDrag.index, 1)[0]
+        let nestedEl = nestedDrag.evaluated.children.splice(nestedDrag.index, 1)[0]
         nestedDrop.evaluated.children.splice(nestedDrop.index, 0, nestedEl)
       }
       state.componentMap[componentName].htmlList = htmlList;
@@ -518,22 +550,22 @@ const mutations = {
     const selectedIdDrag = state.selectedIdDrag;
     const selectedIdDrop = state.selectedIdDrop;
 
-    if(selectedIdDrag !== selectedIdDrop && selectedIdDrag !== '' && selectedIdDrop !== ''){
+    if (selectedIdDrag !== selectedIdDrop && selectedIdDrag !== '' && selectedIdDrop !== '') {
       const htmlList = state.selectedElementList.slice(0)
 
       let indexDrag;
       let indexDrop;
 
       htmlList.forEach((el, i) => {
-        if(el.id === selectedIdDrag){
+        if (el.id === selectedIdDrag) {
           indexDrag = i;
-        } else if (el.id === selectedIdDrop){
+        } else if (el.id === selectedIdDrop) {
           indexDrop = i;
         }
       })
 
       const draggedEl = htmlList.splice(indexDrag, 1)[0]
-      htmlList.splice(indexDrop,0,draggedEl)
+      htmlList.splice(indexDrop, 0, draggedEl)
       state.selectedElementList = htmlList;
     }
     state.selectedIdDrag = '';
@@ -714,10 +746,10 @@ const mutations = {
     const updatedComponent = state.routes[state.activeRoute].filter(
       (element) => element.componentName === payload.activeComponent
     )[0];
-    
+
     updatedComponent.color = payload.color
   },
-//Attribute updater for parent
+  //Attribute updater for parent
   [types.EDIT_ATTRIBUTE]: (state, payload) => {
     const updatedComponent = state.routes[state.activeRoute].filter(
       (element) => element.componentName === payload.activeComponent
@@ -757,7 +789,32 @@ const mutations = {
       // state.componentMap[state.activeComponent].htmlList = newHTMLList;
       // const newMap = { ...state.componentMap };
       // state.componentMap = { ...newMap };
+
+      //delete the instances of the Child Component in the activeComponent's htmlList
+      const componentName = state.activeComponent;
+      const htmlList = state.componentMap[componentName].htmlList.slice(0);
+
+      // splice out child componenets even if nested
+      function deleteChildFromHtmlList(array, payload) {
+        for(let i = array.length; i--;) {
+
+					if(array[i].children.length) {
+            deleteChildFromHtmlList(array[i].children, payload)
+          }
+          if(array[i].text === payload) {
+            array.splice(i, 1)
+          } 
+          
+        }
+      }
+      deleteChildFromHtmlList(htmlList, payload);
+
+      //updates the htmlList with the child components deleted
+      state.componentMap[componentName].htmlList = htmlList;
+      
+      //delete the parent because the payload is no longer a child to the acitive component
       delete state.componentMap[payload].parent[state.activeComponent];
+
       // add block
     } else {
       const child = temp;
@@ -793,13 +850,11 @@ const mutations = {
       }
     })
   },
-
-  [types.OPEN_NOTE_MODAL]: (state) => {
-    state.noteModalOpen = !state.noteModalOpen;
-  }, 
-  
   [types.OPEN_COLOR_MODAL]: (state) => {
     state.colorModalOpen = !state.colorModalOpen;
+  },
+  [types.OPEN_NOTE_MODAL]: (state) => {
+    state.noteModalOpen = !state.noteModalOpen;
   },
   //Jace practice for future, not place classList directly in activeComponent
   [types.OPEN_ATTRIBUTE_MODAL]: (state) => {
@@ -807,22 +862,51 @@ const mutations = {
   },
 
   [types.ADD_ACTIVE_COMPONENT_CLASS]: (state, payload) => {
-    if(state.activeComponentObj.htmlList)
-    state.componentMap[state.activeComponent].htmlList.forEach((el) => {
-      //adding class into it's child 1st layer
-      if(el.children.length !== 0) {
-        el.children.forEach((element) => {
-          if(payload.id === element.id) {
-            element.class = payload.class
-          }
-        })
-      }
-      if (payload.id === el.id) {
-        el.class = payload.class
-      }
-    })
+    if (state.activeComponentObj.htmlList)
+
+      state.componentMap[state.activeComponent].htmlList.forEach((el) => {
+        //adding class into it's child 1st layer
+        if (el.children.length !== 0) {
+          el.children.forEach((element) => {
+            if (payload.id === element.id) {
+              element.class = payload.class
+            }
+          })
+        }
+        if (payload.id === el.id) {
+          el.class = payload.class
+        }
+      })
+
   },
 
+  // //add binding 
+  [types.ADD_BINDING_TEXT]: (state, payload) => {
+    //access the htmlList, add payload to the empty bind obj
+    //const active = state.componentMap[state.activeComponent].htmlList;
+    if (payload.binding === "") {
+      state.componentMap = {
+        ...state.componentMap
+      }
+    } else {
+      const id = payload.id
+
+      if (state.activeComponentObj.htmlList)
+        state.componentMap[state.activeComponent].htmlList.forEach((el) => {
+
+          if (el.children.length !== 0) {
+            el.children.forEach((element) => {
+              if (payload.id === element.id) {
+                element.binding = payload.binding
+              }
+            })
+          }
+          if (payload.id === el.id) {
+            el.binding = payload.binding
+          }
+        })
+    }
+  },
 
   [types.DELETE_ACTIVE_COMPONENT_CLASS]: (state, payload) => {
     state.componentMap[state.activeComponent].classList.forEach((el, ind) => {

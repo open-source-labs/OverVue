@@ -50,7 +50,7 @@ const actions = {
   //
   [types.registerComponent]: ({ state, commit }, payload) => {
     /* this action has a lot of mutations deployed
-    Because we have to initialize a whole bunch of properties
+    Because we have to initialize a whole bunch of propertiess
     which are determined by the choices made on the left hand panel
      */
     const { componentName } = payload;
@@ -108,6 +108,9 @@ const actions = {
 
   [types.updateComponentPosition]: ({ commit }, payload) => {
     commit(types.UPDATE_COMPONENT_POSITION, payload);
+  },
+  [types.addBindingText]: ({ commit }, payload) => {
+    commit(types.addBindingText, payload);
   },
 
   [types.updateComponentSize]: ({ commit }, payload) => {
@@ -243,6 +246,11 @@ const actions = {
   [types.deleteStateFromComponent]: ({ commit }, payload) => {
     commit(types.DELETE_STATE_FROM_COMPONENT, payload);
   },
+  //
+  [types.addBindingText]: ({ commit }, payload) => {
+    commit(types.ADD_BINDING_TEXT, payload)
+  },
+
   // Delete user actions from vuex store
   [types.deleteUserActions]: ({ state, commit }, payload) => {
     commit(types.DELETE_USER_ACTIONS, payload);
@@ -261,7 +269,6 @@ const actions = {
   },
 
   // Actions dispatched from left hand panel////////////////////////////////////////
-
   [types.addToComponentElementList]: ({ commit }, payload) => {
     // adds element to the HTMLQueue
     commit(types.ADD_TO_COMPONENT_HTML_LIST, payload);
@@ -278,7 +285,6 @@ const actions = {
   // end of left hand panel/////////////////////////
 
   // HTML Element related actions ////////////////////
-
   [types.addNestedHTML]: ({ commit }, payload) => {
     commit(types.ADD_NESTED_HTML, payload);
   },
@@ -316,7 +322,10 @@ const actions = {
   [types.upOneLayer]: ({ commit }, payload) => {
     commit(types.UP_ONE_LAYER, payload);
   },
-  //FOR MUTATING HTML WITH DRAG AND DROP
+
+  // end of HTML segment ////////////////////////////////////////////////
+
+  // Drag-and-drop ///////////////////////////////////////
   [types.setIdDrag]: ({ commit }, payload) => {
     commit(types.SET_ID_DRAG, payload)
   },
@@ -341,10 +350,9 @@ const actions = {
     commit(types.DRAG_DROP_SORT_SELECTED_HTML_ELEMENTS)
   },
 
-  // end of HTML segment ////////////////////////////////////////////////
+  // end of Drag-and-drop /////////////////////////////////
 
   // Loading ///////////////////////////////////////////////////////
-
   [types.openProject]: ({ commit }, payload) => {
     commit(types.REMOVE_ALL_STATE_PROPS_ACTIONS)
     commit(types.SET_ACTIVE_ROUTE, "HomeView");
