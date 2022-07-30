@@ -126,6 +126,10 @@ const actions = {
     commit(types.UPDATE_COMPONENT_LAYER, payload);
   },
 
+  [types.updateHTMLLayer]: ({ commit }, payload) => {
+    commit(types.UPDATE_HTML_LAYER, payload);
+  },
+
   [types.updateComponentPosition]: ({ commit }, payload) => {
     commit(types.UPDATE_COMPONENT_POSITION, payload);
   },

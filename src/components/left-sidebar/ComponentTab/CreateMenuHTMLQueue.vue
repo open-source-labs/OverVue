@@ -58,16 +58,16 @@ export default {
     ...mapState(['selectedElementList', 'componentMap', 'activeComponent', 'activeHTML', 'activeLayer']),
     renderList: {
       get () {
-        if (this.activeComponent === '') return this.selectedElementList.map((el, index) => [el.text, index, el.id])
+        if (this.activeComponent === '') return this.selectedElementList.map((el, index) => [el.text, index, el.id, el.z])
         // change activeComponent's htmlList into an array of arrays ([element/component name, index in state])
         if (this.activeComponent !== '' && this.activeLayer.id === '') {
-          let sortedHTML = this.componentMap[this.activeComponent].htmlList.map((el, index) => [el.text, index, el.id]).filter(el => {
+          let sortedHTML = this.componentMap[this.activeComponent].htmlList.map((el, index) => [el.text, index, el.id, el.z]).filter(el => {
             return el[0] !== undefined
           })
           return sortedHTML
         }
         let activeElement = breadthFirstSearch(this.componentMap[this.activeComponent].htmlList, this.activeLayer.id)
-        let sortedHTML = activeElement.children.map((el, index) => [el.text, index, el.id]).filter(el => {
+        let sortedHTML = activeElement.children.map((el, index) => [el.text, index, el.id, el.z]).filter(el => {
           return el[0] !== undefined
         })
         return sortedHTML

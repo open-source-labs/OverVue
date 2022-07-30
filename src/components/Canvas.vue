@@ -61,6 +61,7 @@
             element.y !== 0 ? {'left': element.y} : {'left': '60%'},
             element.w !== 0 ? {'width': element.w} : {'width': '25%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '10%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
             {'background-color': componentData.color}]"
         >
         <p class="innerHtmlText">{{element.note !== '' ? element.note : element.text}}</p> 
@@ -71,6 +72,7 @@
             element.y !== 0 ? {'left': element.y} : {'left': '10%'},
             element.w !== 0 ? {'width': element.w} : {'width': '80%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '75%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
             {'background-color': componentData.color}]"
         >
           <p class="innerHtmlText" style="font-size: 3em">{{element.note !== '' ? element.note : element.text}}</p> 
@@ -82,6 +84,7 @@
             element.y !== 0 ? {'left': element.y} : {'left': '10%'},
             element.w !== 0 ? {'width': element.w} : {'width': '80%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '40%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
             {'background-color': componentData.color}]"
         >
           <p class="innerHtmlText" style="font-size: 3em">{{element.note !== '' ? element.note : element.text}}</p> 
@@ -92,6 +95,7 @@
             element.y !== 0 ? {'left': element.y} : {'left': '5%'},
             element.w !== 0 ? {'width': element.w} : {'width': '90%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '20%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
             {'background-color': componentData.color}]"
         > 
           <p class="innerHtmlText" style="font-size: 4em">{{element.note !== '' ? element.note :element.text}}</p>
@@ -102,6 +106,7 @@
             element.y !== 0 ? {'left': element.y} : {'left': '10%'},
             element.w !== 0 ? {'width': element.w} : {'width': '80%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '15%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
             {'background-color': componentData.color}]"
         >
           <p class="innerHtmlText" style="font-size: 3em">{{element.note !== '' ? element.note : element.text}}</p>
@@ -112,6 +117,7 @@
             element.y !== 0 ? {'left': element.y} : {'left': '15%'},
             element.w !== 0 ? {'width': element.w} : {'width': '70%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '12%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
             {'background-color': componentData.color}]"
         >
           <p class="innerHtmlText" style="font-size: 2.5em">{{element.note !== '' ? element.note : element.text }}</p>
@@ -122,6 +128,7 @@
             element.y !== 0 ? {'left': element.y} : {'left': '20%'},
             element.w !== 0 ? {'width': element.w} : {'width': '60%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '10%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
             {'background-color': componentData.color}]"
         >
           <p class="innerHtmlText" style="font-size: 2em">{{element.note !== '' ? element.note : element.text}}</p>
@@ -132,6 +139,7 @@
             element.y !== 0 ? {'left': element.y} : {'left': '25%'},
             element.w !== 0 ? {'width': element.w} : {'width': '50%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '8%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
             {'background-color': componentData.color}]"
           >
           <p class="innerHtmlText" style="font-size: 1.5em">{{element.note !== '' ? element.note : element.text}}</p>
@@ -142,6 +150,7 @@
             element.y !== 0 ? {'left': element.y} : {'left': '30%'},
             element.w !== 0 ? {'width': element.w} : {'width': '40%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '5%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
             {'background-color': componentData.color}]"
         >
           <p class="innerHtmlText" style="font-size: 1em">{{element.note !== '' ? element.note : element.text}}</p>
@@ -153,6 +162,7 @@
             element.y !== 0 ? {'left': element.y} : {'left': '20%'},
             element.w !== 0 ? {'width': element.w} : {'width': '40%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '40%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
             {'background-color': componentData.color}]"
         >
           <p class="innerHtmlText" style="font-size: 3em">{{element.note !== '' ? element.note : element.text}}</p> 
@@ -164,6 +174,7 @@
             element.y !== 0 ? {'left': element.y} : {'left': '30%'},
             element.w !== 0 ? {'width': element.w} : {'width': '60%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '10%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
             {'background-color': componentData.color}]"
         >
           <p class="innerHtmlText" style="font-size: 2em">{{element.note !== '' ? element.note : element.text}}</p>         
@@ -174,6 +185,7 @@
             element.y !== 0 ? {'left': element.y} : {'left': '10%'},
             element.w !== 0 ? {'width': element.w} : {'width': '80%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '40%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
             {'background-color': componentData.color}]"
         >
           <p class="innerHtmlText" style="font-size: 1.5em">{{element.note !== '' ? element.note : element.text}}
@@ -190,6 +202,7 @@
             element.y !== 0 ? {'left': element.y} : {'left': '10%'},
             element.w !== 0 ? {'width': element.w} : {'width': '80%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '40%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
             {'background-color': componentData.color}]"
         >
           <p class="innerHtmlText" style="font-size: 1.5em">{{element.note !== '' ? element.note : element.text}}
@@ -206,6 +219,7 @@
             element.y !== 0 ? {'left': element.y} : {'left': '10%'},
             element.w !== 0 ? {'width': element.w} : {'width': '80%'},
             element.h !== 0 ? {'height' : element.h} : {'height' : '40%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
             {'background-color': componentData.color}]"
         >
         <p>{{element.note !== '' ? element.note :  element.text }}</p> 

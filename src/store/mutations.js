@@ -758,6 +758,18 @@ const mutations = {
     state.componentMap[payload.activeComponent].z = payload.z;
   },
 
+  [types.UPDATE_HTML_LAYER]: (state, payload) => {
+    const updatedComponent = state.routes[state.activeRoute].filter(
+      (element) => element.componentName === payload.activeComponent
+    )[0];
+
+    const updatedHTML = updatedComponent.htmlList.filter((element) => element.id === payload.activeHTML)[0]
+
+    updatedHTML.z = payload.z;
+    // state.componentMap[payload.activeComponent].htmlList.z = payload.z;
+
+  },
+
   [types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE]: (state, payload) => {
     //temp is the activeComponent's children array
     if (state.activeComponent === payload) { return }
@@ -851,28 +863,28 @@ const mutations = {
   [types.ADD_ACTIVE_COMPONENT_HEIGHT]: (state, payload) => {
     state.componentMap[state.activeComponent].htmlList.forEach((el) => {
       if (payload.id === el.id) {
-        el.h = payload.height + '%'
+        el.h = payload.height
       }
     })
   },
   [types.ADD_ACTIVE_COMPONENT_WIDTH]: (state, payload) => {
     state.componentMap[state.activeComponent].htmlList.forEach((el) => {
       if (payload.id === el.id) {
-        el.w = payload.width + '%'
+        el.w = payload.width
       }
     })
   },
   [types.ADD_ACTIVE_COMPONENT_TOP]: (state, payload) => {
     state.componentMap[state.activeComponent].htmlList.forEach((el) => {
       if (payload.id === el.id) {
-        el.x = payload.top + '%'
+        el.x = payload.top
       }
     })
   },
   [types.ADD_ACTIVE_COMPONENT_LEFT]: (state, payload) => {
     state.componentMap[state.activeComponent].htmlList.forEach((el) => {
       if (payload.id === el.id) {
-        el.y = payload.left + '%'
+        el.y = payload.left
       }
     })
   },
