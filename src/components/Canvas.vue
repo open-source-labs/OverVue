@@ -7,37 +7,222 @@
 <template>
   <!-- the background Canvas grid -->
   <div class="component-display grid-bg" :style="mockBg" v-on:click="handleClick" v-on:click.right="handleRight">
-
-    <div class="cssContainer">
-      <!-- This is the actual component box -->
-      <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
-      <p class="cssContainerText">
-        CSS Container</p>
-
-
-      <vue-draggable-resizable class-name="component-box" v-for="componentData in activeRouteArray" ref="boxes"
-        :key="componentData.componentName" :id="componentData.componentName" :x="componentData.x" :y="componentData.y"
-        :z="componentData.z" :w="componentData.w" :h="componentData.h" :preventDeactivation="true"
-        @activated="onActivated(componentData)" @deactivated="onDeactivated(componentData)" @dragstop="finishedDrag"
-        @resizestop="finishedResize" :onDragStart="recordInitialPosition" :onResizeStart="recordInitialSize"
-        :style="{ 'background-color': componentData.color }" :parent="true">
-
-        <div class="component-title">
-          <p>{{ componentData.componentName }}</p>
-        </div>
-        <q-icon v-if="componentData.componentName === this.activeComponent" size="25px" z-layer="0" name="edit_note"
-          class="compNoteLogo" @click="handleAddNotes" />
-
-        <!-- <q-icon "
-        size="30px" 
+  <div class="cssContainer">
+    <!-- This is the actual component box -->
+    <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
+    <p class="cssContainerText">
+    CSS Container</p>
+    <vue-draggable-resizable
+      class-name="component-box"
+      v-for="componentData in activeRouteArray"
+      ref="boxes"
+      :key="componentData.componentName"
+      :id="componentData.componentName"
+      :x="componentData.x"
+      :y="componentData.y"
+      :z="componentData.z"
+      :w="componentData.w"
+      :h="componentData.h"
+      :preventDeactivation="true"
+      @activated="onActivated(componentData)"
+      @deactivated="onDeactivated(componentData)"
+      @dragstop="finishedDrag"
+      @resizestop="finishedResize"
+      :onDragStart="recordInitialPosition"
+      :onResizeStart="recordInitialSize"
+      :style="{'background-color': componentData.color}"
+      :parent="true"
+    >
+    
+      <div class="component-title">
+        <p>{{ componentData.componentName }}</p>
+      </div>
+      <q-icon v-if="componentData.componentName === this.activeComponent" 
+        size="25px" 
         z-layer="0" 
         name="edit_note" 
-        class="compNoteLogoEmpty" 
-        @click="handleAddNotes" /> -->
-
-        <q-icon v-if="componentData.componentName === this.activeComponent" size="25px" z-layer="0" name="palette"
-          class="colorLogo" @click="handleEditColor" />
-
+        class="compNoteLogo" 
+        @click="handleAddNotes" 
+      />
+  <!-- Rendering HTML Elements for each Component -->
+      <div v-for="element in this.componentMap[componentData.componentName].htmlList" :key="element.id+ new Date()">
+        <div v-if="element.text === 'button'" 
+          class="htmlButton"
+          :style="[element.x !== 0 ? {'top': element.x + '%'} : {'top': '70%'}, 
+            element.y !== 0 ? {'left': element.y + '%'} : {'left': '60%'},
+            element.w !== 0 ? {'width': element.w + '%'} : {'width': '25%'},
+            element.h !== 0 ? {'height' : element.h + '%'} : {'height' : '10%'},
+            element.z !== 0 ? {'z-index' : element.z + '%'} : {'z-index' : '0'},
+            {'background-color': componentData.color}]"
+        >
+        <p class="innerHtmlText">{{element.note !== '' ? element.note : element.text}}</p> 
+        </div>
+        <div v-if="element.text === 'div'"
+          class="htmlDiv"
+          :style="[element.x !== 0 ? {'top': element.x + '%'} : {'top': '10%'}, 
+            element.y !== 0 ? {'left': element.y + '%'} : {'left': '10%'},
+            element.w !== 0 ? {'width': element.w + '%'} : {'width': '80%'},
+            element.h !== 0 ? {'height' : element.h + '%'} : {'height' : '75%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
+            {'background-color': componentData.color}]"
+        >
+          <p class="innerHtmlText" style="font-size: 3em">{{element.note !== '' ? element.note : element.text}}</p> 
+        </div>
+        <div v-if="element.text === 'footer'" class="htmlFooter"></div>
+                <div v-if="element.text === 'form'"
+          class="htmlGeneral"
+          :style="[element.x !== 0 ? {'top': element.x + '%'} : {'top': '50%'}, 
+            element.y !== 0 ? {'left': element.y + '%'} : {'left': '10%'},
+            element.w !== 0 ? {'width': element.w + '%'} : {'width': '80%'},
+            element.h !== 0 ? {'height' : element.h + '%'} : {'height' : '40%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
+            {'background-color': componentData.color}]"
+        >
+          <p class="innerHtmlText" style="font-size: 3em">{{element.note !== '' ? element.note : element.text}}</p> 
+        </div>
+        <div v-if="element.text === 'h1'" 
+          class="htmlHead"
+          :style="[element.x !== 0 ? {'top': element.x + '%'} : {'top': '10%'}, 
+            element.y !== 0 ? {'left': element.y + '%'} : {'left': '5%'},
+            element.w !== 0 ? {'width': element.w + '%'} : {'width': '90%'},
+            element.h !== 0 ? {'height' : element.h + '%'} : {'height' : '20%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
+            {'background-color': componentData.color}]"
+        > 
+          <p class="innerHtmlText" style="font-size: 4em">{{element.note !== '' ? element.note :element.text}}</p>
+        </div>
+        <div v-if="element.text === 'h2'" 
+          class="htmlHead"
+          :style="[element.x !== 0 ? {'top': element.x + '%'} : {'top': '15%'}, 
+            element.y !== 0 ? {'left': element.y + '%'} : {'left': '10%'},
+            element.w !== 0 ? {'width': element.w + '%'} : {'width': '80%'},
+            element.h !== 0 ? {'height' : element.h + '%'} : {'height' : '15%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
+            {'background-color': componentData.color}]"
+        >
+          <p class="innerHtmlText" style="font-size: 3em">{{element.note !== '' ? element.note : element.text}}</p>
+        </div>
+        <div v-if="element.text === 'h3'" 
+          class="htmlHead"
+          :style="[element.x !== 0 ? {'top': element.x + '%'} : {'top': '18%'}, 
+            element.y !== 0 ? {'left': element.y + '%'} : {'left': '15%'},
+            element.w !== 0 ? {'width': element.w} + '%' : {'width': '70%'},
+            element.h !== 0 ? {'height' : element.h + '%'} : {'height' : '12%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
+            {'background-color': componentData.color}]"
+        >
+          <p class="innerHtmlText" style="font-size: 2.5em">{{element.note !== '' ? element.note : element.text }}</p>
+        </div>
+        <div v-if="element.text === 'h4'" 
+          class="htmlHead"
+          :style="[element.x !== 0 ? {'top': element.x + '%'} : {'top': '20%'}, 
+            element.y !== 0 ? {'left': element.y + '%'} : {'left': '20%'},
+            element.w !== 0 ? {'width': element.w + '%'} : {'width': '60%'},
+            element.h !== 0 ? {'height' : element.h + '%'} : {'height' : '10%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
+            {'background-color': componentData.color}]"
+        >
+          <p class="innerHtmlText" style="font-size: 2em">{{element.note !== '' ? element.note : element.text}}</p>
+        </div>
+        <div v-if="element.text === 'h5'" 
+          class="htmlHead"
+          :style="[element.x !== 0 ? {'top': element.x + '%'} : {'top': '20%'}, 
+            element.y !== 0 ? {'left': element.y + '%'} : {'left': '25%'},
+            element.w !== 0 ? {'width': element.w + '%'} : {'width': '50%'},
+            element.h !== 0 ? {'height' : element.h + '%'} : {'height' : '8%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
+            {'background-color': componentData.color}]"
+          >
+          <p class="innerHtmlText" style="font-size: 1.5em">{{element.note !== '' ? element.note : element.text}}</p>
+        </div>
+        <div v-if="element.text === 'h6'" 
+          class="htmlHead"
+          :style="[element.x !== 0 ? {'top': element.x + '%'} : {'top': '20%'}, 
+            element.y !== 0 ? {'left': element.y + '%'} : {'left': '30%'},
+            element.w !== 0 ? {'width': element.w + '%'} : {'width': '40%'},
+            element.h !== 0 ? {'height' : element.h + '%'} : {'height' : '5%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
+            {'background-color': componentData.color}]"
+        >
+          <p class="innerHtmlText" style="font-size: 1em">{{element.note !== '' ? element.note : element.text}}</p>
+        </div>
+        <div v-if="element.text === 'header'" class="htmlHeader"></div>
+        <div v-if="element.text === 'img'"
+          class="htmlGeneral"
+          :style="[element.x !== 0 ? {'top': element.x + '%'} : {'top': '20%'}, 
+            element.y !== 0 ? {'left': element.y + '%'} : {'left': '20%'},
+            element.w !== 0 ? {'width': element.w + '%'} : {'width': '40%'},
+            element.h !== 0 ? {'height' : element.h + '%'} : {'height' : '40%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
+            {'background-color': componentData.color}]"
+        >
+          <p class="innerHtmlText" style="font-size: 3em">{{element.note !== '' ? element.note : element.text}}</p> 
+        </div>
+        <input v-if="element.text === 'input'" class="htmlInput"/>
+        <div v-if="element.text === 'list'" 
+          class="htmlList"
+          :style="[element.x !== 0 ? {'top': element.x + '%'} : {'top': '30%'}, 
+            element.y !== 0 ? {'left': element.y + '%'} : {'left': '30%'},
+            element.w !== 0 ? {'width': element.w + '%'} : {'width': '60%'},
+            element.h !== 0 ? {'height' : element.h + '%'} : {'height' : '10%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
+            {'background-color': componentData.color}]"
+        >
+          <p class="innerHtmlText" style="font-size: 2em">{{element.note !== '' ? element.note : element.text}}</p>         
+        </div>
+        <div v-if="element.text === 'list-ol'" 
+          class="htmlGeneral"
+          :style="[element.x !== 0 ? {'top': element.x + '%'} : {'top': '20%'}, 
+            element.y !== 0 ? {'left': element.y + '%'} : {'left': '10%'},
+            element.w !== 0 ? {'width': element.w + '%'} : {'width': '80%'},
+            element.h !== 0 ? {'height' : element.h + '%'} : {'height' : '40%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
+            {'background-color': componentData.color}]"
+        >
+          <p class="innerHtmlText" style="font-size: 1.2em">{{element.note !== '' ? element.note : element.text}}
+            <ol>
+              <li>1</li>
+              <li>2</li>
+              <li>3</li>
+            </ol>
+          </p>
+        </div>
+        <div v-if="element.text === 'list-ul'"
+          class="htmlGeneral"
+          :style="[element.x !== 0 ? {'top': element.x + '%'} : {'top': '20%'}, 
+            element.y !== 0 ? {'left': element.y + '%'} : {'left': '10%'},
+            element.w !== 0 ? {'width': element.w + '%'} : {'width': '80%'},
+            element.h !== 0 ? {'height' : element.h + '%'} : {'height' : '40%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
+            {'background-color': componentData.color}]"
+        >
+          <p class="innerHtmlText" style="font-size: 1.5em">{{element.note !== '' ? element.note : element.text}}
+            <ol>
+              <li>-</li>
+              <li>-</li>
+              <li>-</li>
+            </ol>
+          </p>
+        </div>
+        <div v-if="element.text === 'paragraph'" 
+          class="htmlGeneral"
+          :style="[element.x !== 0 ? {'top': element.x + '%'} : {'top': '50%'}, 
+            element.y !== 0 ? {'left': element.y + '%'} : {'left': '10%'},
+            element.w !== 0 ? {'width': element.w + '%'} : {'width': '80%'},
+            element.h !== 0 ? {'height' : element.h + '%'} : {'height' : '40%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
+            {'background-color': componentData.color}]"
+        >
+        <p>{{element.note !== '' ? element.note :  element.text }}</p> 
+        </div>
+        <div v-if="element.text === 'navbar'" class="htmlNavbar"></div>
+      </div>
+      <q-icon v-if="componentData.componentName === this.activeComponent"
+        size="25px" 
+        z-layer="0" 
+        name="palette" 
+        class="colorLogo" 
+        @click="handleEditColor" />
         <!-- start of right click function-->
         <q-menu context-menu>
           <q-list color="black" class="menu">
@@ -112,7 +297,6 @@
             </div>
           </div>
         </q-dialog>
-
 
         <!--color selector-->
         <q-dialog v-model="colorModal" @update:model-value="handleEditColor">
@@ -231,6 +415,9 @@ export default {
       "activeComponentObj",
       "exportAsTypescript",
       "noteModalOpen",
+      "activeRouteDisplay",
+      'selectedElementList',
+      'activeLayer',
       "colorModalOpen",
       "activeRouteDisplay"
     ]),
@@ -258,7 +445,6 @@ export default {
       );
       const relatives = [...val]
       //also need to filter out any parents
-
       let parentalLineage = [];
       findLineage(relatives)
       function findLineage(children) {
@@ -339,7 +525,8 @@ export default {
       if (this.activeComponent !== e.target.id) {
         if (e.target.parentElement?.classList.contains('draggable')) {
           this.setActiveComponent(e.target.parentElement.id)
-        } else {
+        } 
+        else if (typeof `${e.target.id}` !== 'number') {
           this.setActiveComponent(e.target.id);
         }
       }
@@ -818,6 +1005,62 @@ li:hover {
   margin-bottom: 10px;
 }
 
+.htmlButton {
+  position: absolute;
+  margin: .5em;
+  border-style: solid;
+  border: 2em;
+  border-radius: 1.5%;
+}
+
+.htmlDiv {
+  position: absolute;
+  margin: .5em;
+  border-radius: 1.5%;
+  border-style: solid;
+}
+
+.htmlFooter{
+  position: absolute;
+  width: 100%;
+  height: 10%;
+  top: 90%;
+  z-index: -1;
+  border-radius: 1.5%;
+  background-color: $primary;
+}
+
+.htmlGeneral{
+  position: absolute;
+  color: $menutext;
+  border-radius: 1.5%;
+  border-style: solid;
+}
+
+.htmlHead{
+  position: absolute;
+  color: $menutext;
+  font-weight: bolder !important;
+  text-overflow: clip;
+}
+
+.innerHtmlText {
+  position: absolute;
+  text-align: center;
+  opacity: 0.5;
+  overflow: hidden;
+  text-overflow: clip;
+}
+
+.htmlNavbar{
+  position: absolute;
+  width: 100%;
+  background-color: $primary;
+  height: 10%;
+  top: 0%;
+  z-index: -1;
+}
+
 .sr-only {
   position: absolute;
   overflow: hidden;
@@ -829,7 +1072,6 @@ li:hover {
   border: 0;
   white-space: nowrap;
 }
-
 
 .colorPicker {
   color: black;

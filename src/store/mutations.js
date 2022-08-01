@@ -361,7 +361,6 @@ const mutations = {
   },
 
   // *** HTML ELEMENTS *** //////////////////////////////////////////////
-
   [types.ADD_NESTED_HTML]: (state, payload) => {
     const componentName = state.activeComponent;
     const { activeHTML } = state;
@@ -376,8 +375,18 @@ const mutations = {
       text: payload.elementName,
       id: payload.date,
       children: [],
-      class: ''
+      class: '',
+      x:0,
+      y:0,
+      z:0,
+      w:0,
+      h:0,
+      note: '',
     });
+  },
+
+  [types.CLEAR_ACTIVE_HTML]: (state) => {
+    state.activeHTML = '';
   },
 
   [types.ADD_NESTED_NO_ACTIVE]: (state, payload) => {
@@ -395,6 +404,12 @@ const mutations = {
       id: payload.date,
       children: [],
       class: '',
+      x:0,
+      y:0,
+      z:0,
+      w:0,
+      h:0,
+      note: '',
       binding: ''
     });
   },
@@ -409,6 +424,12 @@ const mutations = {
       id: payload.date,
       children: [],
       class: '',
+      x:0,
+      y:0,
+      z:0,
+      w:0,
+      h:0,
+      note: '',
       binding: ''
     });
   },
@@ -419,7 +440,13 @@ const mutations = {
       id: payload.date,
       children: [],
       class: '',
-      binding: ""
+      x:0,
+      y:0,
+      z:0,
+      w:0,
+      h:0,
+      note: '',
+      binding: ''
     });
   },
 
@@ -772,6 +799,18 @@ const mutations = {
     state.componentMap[payload.activeComponent].z = payload.z;
   },
 
+  [types.UPDATE_HTML_LAYER]: (state, payload) => {
+    const updatedComponent = state.routes[state.activeRoute].filter(
+      (element) => element.componentName === payload.activeComponent
+    )[0];
+
+    const updatedHTML = updatedComponent.htmlList.filter((element) => element.id === payload.activeHTML)[0]
+
+    updatedHTML.z = payload.z;
+    // state.componentMap[payload.activeComponent].htmlList.z = payload.z;
+
+  },
+
   [types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE]: (state, payload) => {
     //temp is the activeComponent's children array
     if (state.activeComponent === payload) { return }
@@ -887,7 +926,7 @@ const mutations = {
 
   },
 
-  // //add binding 
+//add binding 
   [types.ADD_BINDING_TEXT]: (state, payload) => {
     //access the htmlList, add payload to the empty bind obj
     //const active = state.componentMap[state.activeComponent].htmlList;
@@ -920,6 +959,43 @@ const mutations = {
       if (payload === el) {
         state.componentMap[state.activeComponent].classList.splice(ind, 1)
         return;
+      }
+    })
+  },
+  //htmlElements changes of css
+  [types.ADD_ACTIVE_COMPONENT_HEIGHT]: (state, payload) => {
+    state.componentMap[state.activeComponent].htmlList.forEach((el) => {
+      if (payload.id === el.id) {
+        el.h = payload.height
+      }
+    })
+  },
+  [types.ADD_ACTIVE_COMPONENT_WIDTH]: (state, payload) => {
+    state.componentMap[state.activeComponent].htmlList.forEach((el) => {
+      if (payload.id === el.id) {
+        el.w = payload.width
+      }
+    })
+  },
+  [types.ADD_ACTIVE_COMPONENT_TOP]: (state, payload) => {
+    state.componentMap[state.activeComponent].htmlList.forEach((el) => {
+      if (payload.id === el.id) {
+        el.x = payload.top
+      }
+    })
+  },
+  [types.ADD_ACTIVE_COMPONENT_LEFT]: (state, payload) => {
+    state.componentMap[state.activeComponent].htmlList.forEach((el) => {
+      if (payload.id === el.id) {
+        el.y = payload.left
+      }
+    })
+  },
+
+  [types.ADD_ACTIVE_COMPONENT_ELEMENT_NOTE]: (state, payload) => {
+    state.componentMap[state.activeComponent].htmlList.forEach((el) => {
+      if (payload.id === el.id) {
+        el.note = payload.note
       }
     })
   },

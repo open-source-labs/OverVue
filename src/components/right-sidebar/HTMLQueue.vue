@@ -8,14 +8,11 @@ Description:
   <section class="html-queue" @dragover="dragOver($event), false">
     <span class='list-title' v-if='this.activeLayer.id !== ""'>
       <i class="fas fa fa-chevron-up fa-md" @click="setParentLayer"></i>
-
-      &nbsp; &nbsp; Viewing Elements in {{ this.activeComponent }} '{{ depth }}'
+        &nbsp; &nbsp; Viewing Elements in {{this.activeComponent}} '{{ depth }}'
       <hr>
     </span>
     <span class='list-title' v-else-if='!this.activeComponent'></span>
-
     <div group="people" class="list-group">
-
       <p v-if='!this.componentMap[this.activeComponent]?.htmlList.length'>No HTML elements in component</p>
       <div v-for="(element) in renderList" :key="element[1] + Date.now()" @dragenter="dragEnter($event, element[2])">
         <div id="tooltipCon" :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'"
@@ -32,6 +29,7 @@ Description:
         </div>
       </div>
     </div>
+<<<<<<< HEAD
 
     <!-- attribute pop-up -->
     <q-dialog v-model="attributeModal">
@@ -90,6 +88,8 @@ Description:
         </div>
       </div>
     </q-dialog>
+=======
+>>>>>>> eae7805d5a6005e8d504792a9fb5196d53127830
   </section>
 </template>
 
@@ -119,13 +119,21 @@ export default {
     }
   },
   computed: {
-    ...mapState(['activeComponentObj', 'selectedElementList', 'componentMap', 'activeComponent', 'activeHTML', 'activeLayer', 'attributeModalOpen']),
+    ...mapState([
+      'activeComponentObj',
+      'selectedElementList', 
+      'componentMap', 
+      'activeComponent', 
+      'activeHTML', 
+      'activeLayer', 
+      'attributeModalOpen'
+      ]),
     renderList: {
       get() {
         if (this.activeComponent === '') return this.selectedElementList.map((el, index) => [el.text, index, el.id])
         // change activeComponent's htmlList into an array of arrays ([element/component name, index in state])
         if (this.activeComponent !== '' && this.activeLayer.id === '') {
-          let sortedHTML = this.componentMap[this.activeComponent].htmlList.map((el, index) => [el.text, index, el.id]).filter(el => {
+          let sortedHTML = this.componentMap[this.activeComponent].htmlList.map((el, index) => [el.text, index, el.id, el.z]).filter(el => {
             return el[0] !== undefined
           })
           return sortedHTML
@@ -157,8 +165,21 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setActiveHTML', 'setActiveLayer', 'upOneLayer', 'setSelectedIdDrag', 'setIdDrag', 'setSelectedIdDrop', 'setIdDrop', 'dragDropSortHtmlElements', 'dragDropSortSelectedHtmlElements', 'openAttributeModal', 'addActiveComponentClass', 'addBindingText']),
-    deleteElement(id) {
+    ...mapActions([
+      'setActiveHTML', 
+      'setActiveLayer', 
+      'upOneLayer', 
+      'setSelectedIdDrag', 
+      'setIdDrag', 
+      'setSelectedIdDrop', 
+      'setIdDrop', 
+      'dragDropSortHtmlElements', 
+      'dragDropSortSelectedHtmlElements', 
+      'openAttributeModal', 
+      'addActiveComponentClass',
+      'addBindingText'
+      ]),
+    deleteElement (id) {
       if (this.activeComponent === '') this.$store.dispatch(deleteSelectedElement, id[0])
       else this.$store.dispatch(deleteFromComponentHtmlList, id[1])
 
@@ -166,7 +187,9 @@ export default {
     setActiveElement(element) {
       if (this.activeComponent !== '') {
         this.setActiveHTML(element);
-        this.openAttributeModal(element);
+        if (this.attributeModal === false) {
+          this.openAttributeModal(element);
+        }
       }
     },
     setLayer(element) {
@@ -240,7 +263,7 @@ export default {
       } else {
         this.component = false
       }
-    }
+    },
   }
 }
 </script>
