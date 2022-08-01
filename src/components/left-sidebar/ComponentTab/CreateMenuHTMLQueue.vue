@@ -169,12 +169,13 @@ li {
   height: 35px;
   padding-top: 6px;
   text-align: center;
+  color: white;
   cursor: move;
 }
 
 .list-group-item-selected {
   display: inline-block;
-  margin: 4px 1.5%;
+  margin: 2px 1.5%;
   min-width: 175px;
   width: 30%;
   border-radius: 0.5cm;

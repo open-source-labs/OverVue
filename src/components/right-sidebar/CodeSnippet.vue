@@ -79,15 +79,13 @@ export default {
       if (this.activeComponentObj.htmlAttributes.class !== "" && this.activeComponentObj.htmlAttributes.id !== "") {
         return `<template>\n  <div id = "${this.activeComponentObj.htmlAttributes.id}" class = "${this.activeComponentObj.htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
       } else if (this.activeComponentObj.htmlAttributes.class !== "" && this.activeComponentObj.htmlAttributes.id === "") {
-          return `<template>\n  <div class = "${this.activeComponentObj.htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
+        return `<template>\n  <div class = "${this.activeComponentObj.htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
       } else if (this.activeComponentObj.htmlAttributes.class === "" && this.activeComponentObj.htmlAttributes.id !== "")
-      return `<template>\n  <div id = "${this.activeComponentObj.htmlAttributes.id}">\n${templateTagStr}  </div>\n</template>`;
-        else return `<template>\n  <div>\n${templateTagStr}  </div>\n</template>`;
+        return `<template>\n  <div id = "${this.activeComponentObj.htmlAttributes.id}">\n${templateTagStr}  </div>\n</template>`;
+      else return `<template>\n  <div>\n${templateTagStr}  </div>\n</template>`;
     },
     // Creates <template> boilerplate
-    writeTemplateTag(componentName) {
-      // console.log(this.activeComponentObj)
-      // create reference object
+    writeTemplateTag(componentName, activeComponent) {
       const htmlElementMap = {
         div: ["<div", "</div>"],
         button: ["<button", "</button>"],
@@ -113,6 +111,11 @@ export default {
 
       // Helper function that recursively iterates through the given html element's children and their children's children.
       // also adds proper indentation to code snippet
+      //add childComponents of the activeCompnent to the htmlElementMap
+      const childComponents = this.componentMap[this.activeComponent].children;
+      childComponents.forEach(child => {
+        htmlElementMap[child]=[`<${child}`, ""] //single
+      })
       function writeNested(childrenArray, indent) {
         if (!childrenArray.length) {
           return "";
@@ -127,9 +130,15 @@ export default {
           } else {
             nestedString += htmlElementMap[child.text][0];
             if (child.class !== "") {
-              nestedString += " " + "class = " + `"${el.class}"`;
+              nestedString += " " + "class=" + `"${child.class}"`;
             }
-            if (child.text === "img" || child.text === "input" || child.text === "link") {
+            if (child.binding !== "") {
+              if (child.text !== 'img' || child.text !== 'link') {
+                nestedString += ` v-model="${child.binding}"`
+
+              }
+            }
+            if (child.text === "img" || child.text === "input" || child.text === "link" || childComponents.includes(child.text)) {
               nestedString += "/>";
             } else { nestedString += ">"; }
 
@@ -137,7 +146,7 @@ export default {
               nestedString += "\n";
               nestedString += writeNested(child.children, indented);
               nestedString += indented + htmlElementMap[child.text][1];
-              nestedString += "\n";
+              nestedString += "\n"
             } else {
               nestedString += htmlElementMap[child.text][1] + "\n";
             }
@@ -148,7 +157,7 @@ export default {
 
       // Iterates through active component's HTML elements list and adds to code snippet
       let htmlArr = this.componentMap[componentName].htmlList;
-      let outputStr = ``;
+      let outputStr = ``
       // eslint-disable-next-line no-unused-vars
       for (const el of htmlArr) {
         if (!el.text) {
@@ -158,7 +167,15 @@ export default {
           outputStr += htmlElementMap[el.text][0]
           //if conditional to check class
           if (el.class !== "") {
-            outputStr += " " + "class = " + `"${el.class}"`;
+            outputStr += " " + "class=" + `"${el.class}"`;
+          }
+          
+          if (el.binding !== "") {
+            outputStr += ` v-model="${el.binding}"`
+          }
+          // add an extra slash at the end for child Components and single tags
+          if(childComponents.includes(el.text) || el.text === "img" || el.text === "input" || el.text === "link"){
+            outputStr += "/"
           }
           outputStr += ">";
           if (el.children.length) {
@@ -208,26 +225,37 @@ export default {
       children.forEach((name) => {
         childrenComponentNames += `    ${name},\n`;
       });
-
       // if true add data section and populate with props
       let data = "";
       if (this.componentMap[this.activeComponent].props.length) {
-        data += "  data () {\n    return {";
+        data += "  props: {";
         this.componentMap[this.activeComponent].props.forEach((prop) => {
-          data += `\n      ${prop}: "PLACEHOLDER FOR VALUE",`;
+          data += `\n    ${prop}: "PLACEHOLDER FOR VALUE",`;
         });
         data += "\n";
-        data += "    }\n";
+        //data += "    }\n";
         data += "  },\n";
       }
+      const htmlBinding = this.componentMap[this.activeComponent].htmlList
+
+      data += "  data() {\n    return {\n"
+      htmlBinding.forEach(el => {
+        if (el.binding !== '') {
+          data += `      ${el.binding}: "PLACEHOLDER FOR VALUE", `
+          data += '\n'
+        }
+      })
+      data += `    }`
+      data += ` \n  },  \n `
+
 
       // if true add computed section and populate with state
       let computed = "";
       if (this.componentMap[this.activeComponent].state.length) {
-        computed += "  computed: {";
+        computed += " computed: {";
         computed += "\n    ...mapState([";
         this.componentMap[this.activeComponent].state.forEach((state) => {
-          computed += `\n      "${state}",`;
+          computed += `\n      "${state}", `;
         });
         computed += "\n    ]),\n";
         computed += "  },\n";
@@ -239,7 +267,7 @@ export default {
         methods += "  methods: {";
         methods += "\n    ...mapActions([";
         this.componentMap[this.activeComponent].actions.forEach((action) => {
-          methods += `\n      "${action}",`;
+          methods += `\n      "${action}", `;
         });
         methods += "\n    ]),\n";
         methods += "  },\n";
@@ -248,12 +276,12 @@ export default {
       let htmlArray = this.componentMap[componentName].htmlList;
       let styleString = "";
 
-      if(this.activeComponentObj.htmlAttributes.class !== "") {
-        styleString += `.${this.activeComponentObj.htmlAttributes.class} {\nbackground-color: ${this.activeComponentObj.color};
-width: ${this.activeComponentObj.w}px;
-height: ${this.activeComponentObj.h}px;
-z-index: ${this.activeComponentObj.z};
-}\n`
+      if (this.activeComponentObj.htmlAttributes.class !== "") {
+        styleString += `.${this.activeComponentObj.htmlAttributes.class} { \nbackground- color: ${this.activeComponentObj.color};
+      width: ${this.activeComponentObj.w} px;
+      height: ${this.activeComponentObj.h} px;
+      z - index: ${this.activeComponentObj.z};
+    } \n`
       }
 
       for (const html of htmlArray) {
@@ -272,7 +300,7 @@ z-index: ${this.activeComponentObj.z};
         output += imports + "\nexport default defineComponent ({\n  name: '" + componentName + "';";
       } else {
         output = "\n\n<script>\n";
-        output += imports + "\nexport default {\n  name: '" + componentName + "';";
+        output += imports + "\nexport default {\n  name: '" + componentName + "'";
       }
       output += ",\n  components: {\n";
       output += childrenComponentNames + "  },\n";
@@ -352,17 +380,5 @@ z-index: ${this.activeComponentObj.z};
 .prism-editor__textarea:focus {
   outline: none;
 }
-
-.refreshCode {
-  position:absolute;
-  background-color:black;
-  color: $secondary;
-  bottom:96%;
-  right:5%;
-}
-.refreshCode:hover {
-  cursor:pointer;
-}
-
 </style>
 

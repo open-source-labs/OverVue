@@ -6,20 +6,11 @@
 
 <template>
   <!-- the background Canvas grid -->
-  <div
-    class="component-display grid-bg"
-    :style="mockBg"
-    v-on:click="handleClick"
-    v-on:click.right="handleRight"
-  >
-
-  <div
-  class="cssContainer">
+  <div class="component-display grid-bg" :style="mockBg" v-on:click="handleClick" v-on:click.right="handleRight">
+  <div class="cssContainer">
     <!-- This is the actual component box -->
     <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
-    <p
-    class="cssContainerText"
-    >
+    <p class="cssContainerText">
     CSS Container</p>
     <vue-draggable-resizable
       class-name="component-box"
@@ -188,7 +179,7 @@
             element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
             {'background-color': componentData.color}]"
         >
-          <p class="innerHtmlText" style="font-size: 1.5em">{{element.note !== '' ? element.note : element.text}}
+          <p class="innerHtmlText" style="font-size: 1.2em">{{element.note !== '' ? element.note : element.text}}
             <ol>
               <li>1</li>
               <li>2</li>
@@ -232,184 +223,117 @@
         name="palette" 
         class="colorLogo" 
         @click="handleEditColor" />
-
         <!-- start of right click function-->
-      <q-menu context-menu>
-        <q-list color="black" class="menu">
-          <q-item clickable v-ripple v-close-popup id="layer-item">
-            <q-item-section class="layer">Component Layer</q-item-section>
-            <q-btn
-              class="minorAction"
-              color="transparent"
-              text-color="primary"
-              label="&ndash;"
-              @click="(e) => handleLayer(e)"
-            />
-            <p id="counter">{{ componentData.z }}</p>
-            <q-btn
-              class="minorAction"
-              color="transparent"
-              text-color="primary"
-              label="+"
-              @click="(e) => handleLayer(e)"
-            />
-          </q-item>
-          <q-item clickable v-ripple v-close-popup @click="handleAddChild">
-            <q-item-section>Update Children</q-item-section>
-            <q-item-section avatar>
-              <q-icon color="primary" name="add" />
-            </q-item-section>
-          </q-item>
-          <q-item clickable v-ripple v-close-popup @click="handleAddNotes">
-            <q-item-section>Component Notes</q-item-section>
-            <q-item-section avatar>
-              <q-icon color="primary" name="edit_note" />
-            </q-item-section>
-          </q-item>
-          <q-item clickable v-ripple v-close-popup @click="useExportComponentBound">
-            <q-item-section>Export Component</q-item-section>
-            <q-item-section avatar>
-              <q-icon color="primary" name="upload" />
-            </q-item-section>
-          </q-item>
-          <q-item clickable v-ripple v-close-popup @click="handleEditColor">
-            <q-item-section>Edit Color</q-item-section>
-            <q-item-section avatar>
-              <q-icon color="primary" name="edit" />
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </q-menu>
+        <q-menu context-menu>
+          <q-list color="black" class="menu">
+            <q-item clickable v-ripple v-close-popup id="layer-item">
+              <q-item-section class="layer">Component Layer</q-item-section>
+              <q-btn class="minorAction" color="transparent" text-color="primary" label="&ndash;"
+                @click="(e) => handleLayer(e)" />
+              <p id="counter">{{ componentData.z }}</p>
+              <q-btn class="minorAction" color="transparent" text-color="primary" label="+"
+                @click="(e) => handleLayer(e)" />
+            </q-item>
+            <q-item clickable v-ripple v-close-popup @click="handleAddChild">
+              <q-item-section>Update Children</q-item-section>
+              <q-item-section avatar>
+                <q-icon color="primary" name="add" />
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-ripple v-close-popup @click="handleAddNotes">
+              <q-item-section>Component Notes</q-item-section>
+              <q-item-section avatar>
+                <q-icon color="primary" name="edit_note" />
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-ripple v-close-popup @click="useExportComponentBound">
+              <q-item-section>Export Component</q-item-section>
+              <q-item-section avatar>
+                <q-icon color="primary" name="upload" />
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-ripple v-close-popup @click="handleEditColor">
+              <q-item-section>Edit Color</q-item-section>
+              <q-item-section avatar>
+                <q-icon color="primary" name="edit" />
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-menu>
 
-    </vue-draggable-resizable>
-<div>
-      <q-dialog v-model="modalOpen">
-      <div class="addChild">
-      <p>Add/Remove Children</p>
-      <VueMultiselect
-        v-model="childrenSelected"
-        placeholder="Add/remove children"
-        :multiple="true"
-        :close-on-select="false"
-        :options="options"
-        :show-labels="false"
-        @remove="handleSelect"
-        @select="handleSelect"
-        :height="300"
-        :option-height="40"
-        :searchable="false"
-      />
-      </div>
-      </q-dialog>
-
-      <!-- some irregularity (delete event listener firing on bkspc/del) with the modal when stored locally, so modal open stored in state, and triggers to local reflect only stateful change.-->
-          <q-dialog v-model="noteModal" @update:model-value="handleAddNotes"> 
-            <div class="noteBox">
-              <div class="noteHolder">
-                <p class="title">Adding notes to {{ this.activeComponent }}</p>
-                <div class="noteContainer">
-                  <li v-for="(note, index) in this.componentMap[this.activeComponent].noteList" :key="note">
-                    <span class="noteNum">Note {{index}}: </span>
-                    <div class="noteblock">{{ note }}</div><span id="noteDelete" @click="deleteNote">X</span>
-                  </li>
-                </div>
-                <div class="formBox">
-                <q-form autofocus v-on:submit.prevent="submitNote">
-                    <q-input
-                      v-model="noteText"
-                      label="Add your note here"
-                      filled
-                      dark
-                      autofocus true
-                      hide-bottom-space
-                      :hint="hint"
-                      @keyup.enter="submitNote"
-                    ></q-input>
-                    <q-btn 
-                    id="comp-btn"
-                    class="sidebar-btn"
-                    color="secondary"
-                    label="Submit Note"
-                    :disable="noteText.length > 0 ? false : true"
-                    @click="submitNote"
-                    />
-                    <q-btn
-                    id="note-btn-close"
-                    class="sidebar-btn closeAction"
-                    label="Close"
-                    @click="this.openNoteModal"
-                    />
-                </q-form>
-                
-                </div>
-              </div>
-            </div>
+      </vue-draggable-resizable>
+      <div>
+        <q-dialog v-model="modalOpen">
+          <div class="addChild">
+            <p>Add/Remove Children</p>
+            <VueMultiselect v-model="childrenSelected" placeholder="Add/remove children" :multiple="true"
+              :close-on-select="false" :options="options" :show-labels="false" @remove="handleSelect"
+              @select="handleSelect" :height="300" :option-height="40" :searchable="false" />
+          </div>
         </q-dialog>
 
+        <!-- some irregularity (delete event listener firing on bkspc/del) with the modal when stored locally, so modal open stored in state, and triggers to local reflect only stateful change.-->
+        <q-dialog v-model="noteModal" @update:model-value="handleAddNotes">
+          <div class="noteBox">
+            <div class="noteHolder">
+              <p class="title">Adding notes to {{ this.activeComponent }}</p>
+              <div class="noteContainer">
+                <li v-for="(note, index) in this.componentMap[this.activeComponent].noteList" :key="note">
+                  <span class="noteNum">Note {{ index }}: </span>
+                  <div class="noteblock">{{ note }}</div><span id="noteDelete" @click="deleteNote">X</span>
+                </li>
+              </div>
+              <div class="formBox">
+                <q-form autofocus v-on:submit.prevent="submitNote">
+                  <q-input v-model="noteText" label="Add your note here" filled dark autofocus true hide-bottom-space
+                    :hint="hint" @keyup.enter="submitNote"></q-input>
+                  <q-btn id="comp-btn" class="sidebar-btn" color="secondary" label="Submit Note"
+                    :disable="noteText.length > 0 ? false : true" @click="submitNote" />
+                  <q-btn id="note-btn-close" class="sidebar-btn closeAction" label="Close"
+                    @click="this.openNoteModal" />
+                </q-form>
 
-<!--color selector-->
-<q-dialog v-model="colorModal" @update:model-value="handleEditColor">
-<!--may need to change starting to be current state?-->
-<ColorPicker 
-  class="colorPicker"
-  default-format="hex"
-  id="color-picker-1"
-  :visible-formats="['hex']"
-  :color="this.activeComponentData.color"
-  @color-change="updateColors"
->
-  <template #hue-range-input-label>
-    <span class="sr-only">Hue</span>
-  </template>
+              </div>
+            </div>
+          </div>
+        </q-dialog>
 
-  <template #alpha-range-input-label>
-    <span class="sr-only">Alpha</span>
-  </template>
+        <!--color selector-->
+        <q-dialog v-model="colorModal" @update:model-value="handleEditColor">
+          <!--may need to change starting to be current state?-->
+          <ColorPicker class="colorPicker" default-format="hex" id="color-picker-1" :visible-formats="['hex']"
+            :color="this.activeComponentData.color" @color-change="updateColors">
+            <template #hue-range-input-label>
+              <span class="sr-only">Hue</span>
+            </template>
 
-  <template #copy-button>
-    <span class="sr-only">Copy color</span>
+            <template #alpha-range-input-label>
+              <span class="sr-only">Alpha</span>
+            </template>
 
-    <svg 
-      aria-hidden="true"
-      xmlns="http://www.w3.org/2000/svg"
-      width="15"
-      height="15"
-      viewBox="0 0 15 15"
-    >
-      <path 
-        d="M5 0v2H1v13h12v-3h-1v2H2V5h10v3h1V2H9V0zm1 1h2v2h3v1H3V3h3z"
-        fill="currentColor"
-      />
+            <template #copy-button>
+              <span class="sr-only">Copy color</span>
 
-      <path 
-        d="M10 7v2h5v2h-5v2l-3-3zM3 6h5v1H3zm0 2h3v1H3zm0 2h3v1H3zm0 2h5v1H3z"
-        fill="currentColor"
-      />
-    </svg>
-  </template>
+              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15">
+                <path d="M5 0v2H1v13h12v-3h-1v2H2V5h10v3h1V2H9V0zm1 1h2v2h3v1H3V3h3z" fill="currentColor" />
 
-  <template #format-switch-button>
-    <span class="sr-only">Switch format</span>
+                <path d="M10 7v2h5v2h-5v2l-3-3zM3 6h5v1H3zm0 2h3v1H3zm0 2h3v1H3zm0 2h5v1H3z" fill="currentColor" />
+              </svg>
+            </template>
 
-    <svg 
-      aria-hidden="true"
-      xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="15"
-      viewBox="0 0 16 15"
-    >
-      <path 
-        d="M8 15l5-5-1-1-4 2-4-2-1 1zm4-9l1-1-5-5-5 5 1 1 4-2z"
-        fill="currentColor"
-      />
-    </svg>
-  </template>
-</ColorPicker>
-</q-dialog>
-    </div>
+            <template #format-switch-button>
+              <span class="sr-only">Switch format</span>
+
+              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="15" viewBox="0 0 16 15">
+                <path d="M8 15l5-5-1-1-4 2-4-2-1 1zm4-9l1-1-5-5-5 5 1 1 4-2z" fill="currentColor" />
+              </svg>
+            </template>
+          </ColorPicker>
+        </q-dialog>
+      </div>
     </div>
   </div>
-  
+
 </template>
 
 
@@ -475,8 +399,8 @@ export default {
       }
     });
     window.addEventListener("paste", () => {
-      if (this.noteModalOpen === false){
-          this.$store.dispatch("pasteActiveComponent");
+      if (this.noteModalOpen === false) {
+        this.$store.dispatch("pasteActiveComponent");
       }
     });
   },
@@ -508,9 +432,9 @@ export default {
       return cloneDeep(this.activeComponentObj);
     },
     options() {
-      if (this.activeComponent !== ''){
-          this.childrenSelected = [];
-          this.childrenSelected = this.componentMap[this.activeComponent].children;
+      if (this.activeComponent !== '') {
+        this.childrenSelected = [];
+        this.childrenSelected = this.componentMap[this.activeComponent].children;
       } else {
         this.childrenSelected = [];
       }
@@ -520,23 +444,23 @@ export default {
         (component) => component.componentName
       );
       const relatives = [...val]
-        //also need to filter out any parents
+      //also need to filter out any parents
       let parentalLineage = [];
       findLineage(relatives)
-      function findLineage(children){
-        children.forEach((el)=>{
+      function findLineage(children) {
+        children.forEach((el) => {
           parentalLineage.push(el);
-          if (compMap[el].children.length > 0){
+          if (compMap[el].children.length > 0) {
             findLineage(compMap[el].children);
           }
-          if (el !== activeComp){
+          if (el !== activeComp) {
             parentalLineage.pop();
           } else {
             return;
           }
         })
       }
-      const optionOutput = val.filter(el => !parentalLineage.includes(el)).filter(el => el !== this.activeComponent); 
+      const optionOutput = val.filter(el => !parentalLineage.includes(el)).filter(el => el !== this.activeComponent);
       return optionOutput;
     },
     userImage() {
@@ -547,9 +471,9 @@ export default {
     mockBg() {
       return this.imagePath[this.activeRoute]
         ? {
-            background: `url("${this.userImage}") no-repeat rgba(223, 218, 218, 0.886) top left`,
-            "background-size": "contain"
-          }
+          background: `url("${this.userImage}") no-repeat rgba(223, 218, 218, 0.886) top left`,
+          "background-size": "contain"
+        }
         : {};
     },
   },
@@ -561,7 +485,7 @@ export default {
           element.enabled = false;
           element.$emit("deactivated");
           element.$emit("update:active", false);
-        }); 
+        });
       }
     } else {
       // if a component is set to active, highlight it
@@ -593,13 +517,13 @@ export default {
       "openColorModal",
       "updateColor",
     ]),
-    useExportComponentBound(){
+    useExportComponentBound() {
       useExportComponent.bind(this)();
     },
     // records component's initial position in case of drag
     recordInitialPosition: function (e) {
       if (this.activeComponent !== e.target.id) {
-        if (e.target.parentElement?.classList.contains('draggable')){
+        if (e.target.parentElement?.classList.contains('draggable')) {
           this.setActiveComponent(e.target.parentElement.id)
         } 
         else if (typeof `${e.target.id}` !== 'number') {
@@ -609,17 +533,17 @@ export default {
       this.initialPosition.x = this.activeComponentData.x;
       this.initialPosition.y = this.activeComponentData.y;
     },
-  //color change function
-    updateColors (data) {
+    //color change function
+    updateColors(data) {
       let payload = {
         color: data.cssColor,
         activeComponent: this.activeComponent,
         routeArray: this.routes[this.activeRoute],
         activeComponentData: this.activeComponentData,
       }
-        this.updateColor(payload)
-        this.refresh();
-  },
+      this.updateColor(payload)
+      this.refresh();
+    },
 
     // records component's initial size/position in case of resize
     recordInitialSize: function (e) {
@@ -646,12 +570,12 @@ export default {
         payload.h !== this.initialSize.h
       ) {
         this.updateComponentSize(payload);
-        
+
       }
       this.refresh();
     },
 
-  //refresh function - super ghetto refresh function
+    //refresh function - super ghetto refresh function
     refresh() {
       const payload = {
         activeComponent: this.activeComponent,
@@ -680,11 +604,11 @@ export default {
         this.updateComponentPosition(payload);
       }
       this.wasDragged = true;
-      setTimeout(()=>this.wasDragged = false, 100)
+      setTimeout(() => this.wasDragged = false, 100)
       this.refresh();
     },
     onActivated(componentData) {
-      if (!componentData){
+      if (!componentData) {
         return;
       }
       if (this.$refs.boxes) {
@@ -695,19 +619,19 @@ export default {
             element.$emit("update:active", false);
           }
           if (
-          this.activeComponent === element.$attrs.id &&
-          element.enabled === false
+            this.activeComponent === element.$attrs.id &&
+            element.enabled === false
           ) {
-          element.enabled = true;
-          element.$emit("activated");
-          element.$emit("update:active", true);
+            element.enabled = true;
+            element.$emit("activated");
+            element.$emit("update:active", true);
           }
         });
       }
       if (!(componentData.componentName === this.activeComponent)) {
         this.setActiveComponent(componentData.componentName);
       }
-      if (componentData && componentData.hasOwnProperty('componentName')){
+      if (componentData && componentData.hasOwnProperty('componentName')) {
         this.activeComponentData.isActive = true;
       }
     },
@@ -718,30 +642,30 @@ export default {
       }
     },
     // renders modal with Update Children and Layer in it
-    handleAddNotes(){
-      if (this.wasDragged === false && this.activeComponent !== ''){
-       this.openNoteModal();
+    handleAddNotes() {
+      if (this.wasDragged === false && this.activeComponent !== '') {
+        this.openNoteModal();
       }
     },
-    
-    handleEditColor(){
-      if (this.wasDragged === false && this.activeComponent !== ''){
-       this.openColorModal();
+
+    handleEditColor() {
+      if (this.wasDragged === false && this.activeComponent !== '') {
+        this.openColorModal();
       }
     },
 
     handleAddChild() {
       this.modalOpen = true;
     },
-    submitNote(e){
+    submitNote(e) {
       e.preventDefault()
-      if (this.noteText === ''){
+      if (this.noteText === '') {
         return;
       }
       this.addActiveComponentNote(this.noteText);
       this.noteText = '';
     },
-    deleteNote(e){
+    deleteNote(e) {
       this.deleteActiveComponentNote(e.target.previousElementSibling.innerText);
     },
     // used when user selects to add child from dropdown
@@ -775,22 +699,22 @@ export default {
     },
   },
   watch: {
-    noteModalOpen (){
+    noteModalOpen() {
       this.noteModal = this.noteModalOpen;
     },
-    colorModalOpen (){
+    colorModalOpen() {
       this.colorModal = this.colorModalOpen;
     },
     activeComponent: {
-    handler(){
-      if (this.activeComponent !== '' && 
-        this.$store.state.showTutorial === true && 
-        this.$store.state.tutorialFirstOpen === true){
-        this.$store.commit("TOGGLE_TUTORIAL");
-      }
-      this.onActivated(this.activeComponentObj);
-    },
-    deep: true,
+      handler() {
+        if (this.activeComponent !== '' &&
+          this.$store.state.showTutorial === true &&
+          this.$store.state.tutorialFirstOpen === true) {
+          this.$store.commit("TOGGLE_TUTORIAL");
+        }
+        this.onActivated(this.activeComponentObj);
+      },
+      deep: true,
     },
   },
 };
@@ -798,8 +722,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
-.addChild{
+.addChild {
   width: 25vh;
   height: 50vh;
   display: flex;
@@ -809,24 +732,25 @@ export default {
   padding: 10px;
 }
 
-li{
+li {
   display: flex;
   font-weight: bold;
   padding: 3px;
 }
 
-li:hover{
+li:hover {
   background-color: $subprimary;
 }
 
-.noteblock{
+.noteblock {
   white-space: pre-wrap;
   font-weight: normal;
   width: 80%;
   margin-left: 10px;
   margin-right: 10px;
 }
-.noteBox{
+
+.noteBox {
   background-color: $subsecondary;
   color: $menutext;
   width: 65%;
@@ -834,7 +758,8 @@ li:hover{
   height: 65vh;
   max-height: 80vh;
 }
-.colorBox{
+
+.colorBox {
   background-color: $subsecondary;
   color: $menutext;
   width: 65%;
@@ -844,10 +769,11 @@ li:hover{
 }
 
 
-.noteNum{
+.noteNum {
   width: 10%;
 }
-#noteDelete{
+
+#noteDelete {
   background-color: $secondary;
   width: 20px;
   height: 20px;
@@ -859,10 +785,12 @@ li:hover{
   user-select: none;
   align-self: center;
 }
-#noteDelete:hover{
+
+#noteDelete:hover {
   background-color: $negative;
 }
-.noteHolder{
+
+.noteHolder {
   background-color: $subsecondary;
   width: 100%;
   padding: 10px;
@@ -874,7 +802,7 @@ li:hover{
   height: 100%;
 }
 
-.noteContainer{
+.noteContainer {
   height: 280px;
   max-height: 280px;
   border: 1px solid $primary;
@@ -882,12 +810,12 @@ li:hover{
   overflow-y: auto;
   word-break: break-all;
   max-width: 100%;
-  display:flex;
+  display: flex;
   flex-direction: column;
   justify-content: flex-start;
 }
 
-.formBox{
+.formBox {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -904,12 +832,14 @@ li:hover{
   line-height: 1.2;
   z-index: -1;
 }
+
 .component-html-info {
   display: flex;
   font-size: 14px;
   flex-direction: column;
   font-weight: 800;
 }
+
 .component-children {
   position: relative;
   top: 0rem;
@@ -917,6 +847,7 @@ li:hover{
   color: black;
   list-style: none;
 }
+
 .component-display {
   top: 0px;
   left: 0px;
@@ -926,6 +857,7 @@ li:hover{
   min-height: 900px;
   position: absolute;
 }
+
 .grid-bg {
   background-color: rgba(223, 218, 218, 0.886);
   background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
@@ -944,33 +876,32 @@ li:hover{
     linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
   -pie-background: linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px) -2px -2px / 100px,
     linear-gradient(90deg, rgba(255, 255, 255, 0.8) 1px, transparent 1px) -2px -2px / 100px,
-    linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px) -1px -1px /
-      20px,
-    linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px) -1px -1px /
-      20px,
+    linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px) -1px -1px / 20px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px) -1px -1px / 20px,
     $secondary;
   behavior: url(/pie/PIE.htc);
 }
 
 .cssContainer {
-  margin:6.1%;
+  margin: 6.1%;
   border: 1px solid black;
   width: 1000px;
-  height:900px;
+  height: 900px;
 }
+
 .cssContainerText {
-position:absolute;
-font-size: 3em;
-margin-top: -4%;
-margin-left: 23%;
-color:black;
+  position: absolute;
+  font-size: 3em;
+  margin-top: -4%;
+  margin-left: 23%;
+  color: black;
 }
 
 .menu {
   margin-bottom: 0px !important;
 }
 
-.compNoteLogo{
+.compNoteLogo {
   background: rgba($subprimary, .9);
   color: $secondary;
   border-radius: 4px;
@@ -988,12 +919,12 @@ color:black;
   left: 32px;
 }
 
-.colorLogo:hover{
+.colorLogo:hover {
   background: rgba($subprimary, .6);
   color: rgba($secondary, .8);
 }
 
-.compNoteLogoEmpty{
+.compNoteLogoEmpty {
   background: rgba($subprimary, .9);
   color: rgba($primary, 1);
   border-radius: 4px;
@@ -1001,13 +932,14 @@ color:black;
   top: 4px;
   left: 4px;
 }
-.compNoteLogo:hover{
+
+.compNoteLogo:hover {
   background: rgba($subprimary, .6);
   color: rgba($secondary, .8);
 }
 
 
-.compNoteLogoEmpty:hover{
+.compNoteLogoEmpty:hover {
   background: rgba($subprimary, .6);
   color: rgba($menutext, .4);
 }
@@ -1021,16 +953,19 @@ color:black;
   transition: background-color 200ms linear;
   position: absolute;
 }
+
 .active {
   // background-color: rgba($secondary, .42);
   border: 3px solid $primary;
 }
+
 .minorAction {
   font-weight: bolder !important;
   width: 10px;
   height: 30px !important;
   transition: none;
 }
+
 .btn:hover,
 .btn:focus,
 .btn:active {
@@ -1052,15 +987,16 @@ color:black;
   background: $subprimary;
   color: $menutext;
 }
+
 .title {
   font-size: 20px;
   font-weight: bold;
   color: white;
 }
 
-#comp-btn{
+#comp-btn {
   width: 100%;
-  box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
+  box-shadow: inset 0 -0.6em 0 -0.35em rgba(0, 0, 0, 0.17);
 }
 
 #note-btn-close {
@@ -1173,8 +1109,7 @@ color:black;
 }
 
 .colorContainer {
-  position:relative;
+  position: relative;
   background: black
 }
-
 </style>

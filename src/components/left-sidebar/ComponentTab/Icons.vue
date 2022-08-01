@@ -6,17 +6,28 @@ Description:
 
 <template>
   <section class="icon-grid">
-    <button
-      @click.prevent="changeState(elementName)"
-      v-for="([elementName, iconString], idx) in Object.entries(icons)"
-      :key="idx + Date.now()"
-    >
+    <button @click.prevent="changeState(elementName)" v-for="([elementName, iconString], idx) in Object.entries(icons)"
+      :key="idx + Date.now()">
       <span class="badge"> {{ elementStorage[elementName] }}</span>
       <br />
       <i :class="iconString"></i>
       <br />
       <span>{{ elementName }}</span>
     </button>
+<!-- Child Component Icons-->
+    <button
+      @click.prevent="changeState(elementName)"
+      v-for="(elementName, idx) in childrenComp"
+      :key="idx + Date.now()"
+    >
+      <span class="badge"> {{ elementStorage[elementName] }}</span>
+      <br />
+      <i :class="childIcon"></i>
+      <br />
+      <span>{{ elementName }}</span>
+    </button>
+    
+
   </section>
 </template>
 
@@ -25,7 +36,10 @@ import { mapState } from "vuex";
 
 export default {
   data() {
-    return {};
+    return {
+      //to give the child componenets of the active components icons
+      childIcon: ["fa-solid fa-code"]
+    };
   },
   name: "Icons",
   computed: {
@@ -41,13 +55,23 @@ export default {
     elementStorage: function () {
       let computedElementalStorage = {};
       if (this.activeComponent) {
-        this.componentMap[this.activeComponent].htmlList.forEach((el) => {
-          if (!computedElementalStorage[el.text]) {
-            computedElementalStorage[el.text] = 1;
-          } else {
-            computedElementalStorage[el.text] += 1;
+        computedElementalStorage = {};
+
+        //function searches through HtmlList and is invoke recursively to search its children(Html Elements that are nested)
+        const checkHtmlElements = array => {
+          for (let html of array) {
+            if (html.children.length) {
+              checkHtmlElements(html.children)
+            } 
+            if (!computedElementalStorage[html.text]) {
+              computedElementalStorage[html.text] = 1
+            } else {
+              ++computedElementalStorage[html.text]
+            }
           }
-        });
+        }
+        //invoke the recursive function
+        checkHtmlElements(this.componentMap[this.activeComponent].htmlList)
       } else if (this.activeComponent === "") {
         // if component was switched from existing component to '', reset cache and update items
         if (computedElementalStorage !== {}) computedElementalStorage = {};
@@ -60,6 +84,14 @@ export default {
         });
       }
       return computedElementalStorage;
+    },
+    //Compute Child Components of the activeComponent to include them as icons
+    childrenComp: function () {
+      let childrenAvailable = [];
+      if(this.activeComponent) {
+        childrenAvailable = this.componentMap[this.activeComponent].children
+      }
+      return childrenAvailable;
     },
   },
   methods: {
@@ -104,23 +136,28 @@ export default {
     width: 100%;
   }
 }
+
 button {
   background: none;
   color: $menutext;
   border: none;
 }
+
 button:hover {
   cursor: pointer;
   color: $secondary;
 }
+
 button:focus {
   outline: none;
   color: $secondary;
 }
+
 button:active {
   box-shadow: 0 5px inherit;
   transform: translateY(4px);
 }
+
 .badge {
   width: 15px;
   line-height: 15px;

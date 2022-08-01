@@ -85,13 +85,16 @@ export const CLEAR_ACTIVE_HTML = 'CLEAR_ACTIVE_HTML'
 //
 export const REMOVE_ALL_STATE_PROPS_ACTIONS = 'REMOVE_ALL_STATE_PROPS_ACTIONS'
 export const UPDATE_PASTE_TIMER = 'UPDATE_PASTE_TIMER'
-
+//Drag and Drop
 export const SET_ID_DRAG = 'SET_ID_DRAG'
-export const SET_ID_DROP = 'SET_ID_DROP' 
+export const SET_ID_DROP = 'SET_ID_DROP'
 export const SET_SELECTED_ID_DRAG = 'SET_SELECTED_ID_DRAG'
 export const SET_SELECTED_ID_DROP = 'SET_SELECTED_ID_DROP'
 export const DRAG_DROP_SORT_HTML_ELEMENTS = 'DRAG_DROP_SORT_HTML_ELEMENTS'
 export const DRAG_DROP_SORT_SELECTED_HTML_ELEMENTS = 'DRAG_DROP_SORT_SELECTED_HTML_ELEMENTS'
+
+//adding vmodel info
+export const ADD_BINDING_TEXT = 'ADD_BINDING_TEXT'
 
 // Actions
 export const openNoteModal = 'openNoteModal'
@@ -108,6 +111,8 @@ export const addActiveComponentElementNote = 'addActiveComponentElementNote'
 export const clearActiveHTML = 'clearActiveHTML'
 
 
+//adding vmodel info
+export const addBindingText = 'addBindingText'
 //
 export const deleteActiveComponentNote = 'deleteActiveComponentNote'
 export const addActiveComponentNote = 'addActiveComponentNote'
@@ -174,13 +179,14 @@ export const updateStartingSize = 'updateStartingSize'
 export const deleteUserActions = 'deleteUserActions'
 export const deleteUserState = 'deleteUserState'
 export const toggleTutorial = 'toggleTutorial'
-
+//Drag and Drop 
 export const setIdDrag = 'setIdDrag'
 export const setIdDrop = 'setIdDrop'
 export const setSelectedIdDrag = 'setSelectedIdDrag'
 export const setSelectedIdDrop = 'setSelectedIdDrop'
 export const dragDropSortHtmlElements = 'dragDropSortHtmlElements'
 export const dragDropSortSelectedHtmlElements = 'dragDropSortSelectedHtmlElements'
+
 
 // inactive mutations
 // export const SET_STATE = 'SET_STATE'
