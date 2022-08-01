@@ -14,7 +14,7 @@ Description:
       <br />
       <span>{{ elementName }}</span>
     </button>
-<!-- Child Component Icons-->
+<!-- Icons for activeComponent's Child Components-->
     <button
       @click.prevent="changeState(elementName)"
       v-for="(elementName, idx) in childrenComp"
@@ -27,7 +27,6 @@ Description:
       <span>{{ elementName }}</span>
     </button>
     
-
   </section>
 </template>
 

@@ -94,6 +94,7 @@ export default {
       })
       return newTitle;
     },
+    //make child components in htmlList exceptions
     moreExceptions: function () {
       let childComponent = [];
       if(this.activeComponent) {
@@ -141,15 +142,17 @@ export default {
     },
     //METHODS FOR DRAG-AND-DROP
     startDrag(event, id) {
-      //add a class of 'currentlyDragging' to the HTML element that you are currently dragging
+      //add a class to make the html element currently being drag transparent
       event.target.classList.add('currentlyDragging')
       const dragId = id;
+      //store the id of dragged element
       if (this.activeComponent === '') this.setSelectedIdDrag(dragId)
       else this.setIdDrag(dragId)
     },
     dragEnter(event, id) {
       event.preventDefault();
       const dropId = id;
+      //store the id of the html element whose location the dragged html element could be dropped upon
       if (this.activeComponent === '') this.setSelectedIdDrop(dropId)
       else this.setIdDrop(dropId)
     },
@@ -158,7 +161,7 @@ export default {
       event.preventDefault();
     },
     endDrag(event) {
-      //remove the 'currentlyDragging' class after the HTML is dropped
+      //remove the 'currentlyDragging' class after the HTML is dropped to remove transparency
       event.preventDefault();
       event.target.classList.remove('currentlyDragging')
       //invoke the action that will use the idDrag and idDrop to sort the HtmlList
