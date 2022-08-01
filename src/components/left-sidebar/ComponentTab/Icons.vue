@@ -14,7 +14,7 @@ Description:
       <br />
       <span>{{ elementName }}</span>
     </button>
-
+<!-- Child Component Icons-->
     <button
       @click.prevent="changeState(elementName)"
       v-for="(elementName, idx) in childrenComp"
@@ -55,32 +55,23 @@ export default {
     elementStorage: function () {
       let computedElementalStorage = {};
       if (this.activeComponent) {
+        computedElementalStorage = {};
 
-        this.componentMap[this.activeComponent].htmlList.forEach((el) => {
-          if (!computedElementalStorage[el.text]) {
-            computedElementalStorage[el.text] = 1;
-          }
-          else if (computedElementalStorage[el.text]) {
-            computedElementalStorage[el.text] += 1;
-          }
-        });
-        //show the badge for all nested children arrays
-        const checkChild = array => {
+        //function searches through HtmlList and is invoke recursively to search its children(Html Elements that are nested)
+        const checkHtmlElements = array => {
           for (let html of array) {
             if (html.children.length) {
-              checkChild(html.children)
+              checkHtmlElements(html.children)
+            } 
+            if (!computedElementalStorage[html.text]) {
+              computedElementalStorage[html.text] = 1
             } else {
-              if (!computedElementalStorage[html.text]) {
-                computedElementalStorage[html.text] = 1
-              } else {
-                ++computedElementalStorage[html.text]
-              }
+              ++computedElementalStorage[html.text]
             }
           }
         }
-        //invoke the recursive function 
-        checkChild(this.componentMap[this.activeComponent].htmlList)
-
+        //invoke the recursive function
+        checkHtmlElements(this.componentMap[this.activeComponent].htmlList)
       } else if (this.activeComponent === "") {
         // if component was switched from existing component to '', reset cache and update items
         if (computedElementalStorage !== {}) computedElementalStorage = {};
@@ -94,9 +85,9 @@ export default {
       }
       return computedElementalStorage;
     },
+    //Compute Child Components of the activeComponent to include them as icons
     childrenComp: function () {
       let childrenAvailable = [];
-
       if(this.activeComponent) {
         childrenAvailable = this.componentMap[this.activeComponent].children
       }
