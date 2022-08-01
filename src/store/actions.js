@@ -47,6 +47,26 @@ const actions = {
   [types.deleteActiveComponentClass]: ({ commit }, payload) => {
     commit(types.DELETE_ACTIVE_COMPONENT_CLASS, payload)
   },
+
+  [types.addActiveComponentHeight]: ({ commit }, payload) => {
+    commit(types.ADD_ACTIVE_COMPONENT_HEIGHT, payload);
+  },
+
+  [types.addActiveComponentWidth]: ({ commit }, payload) => {
+    commit(types.ADD_ACTIVE_COMPONENT_WIDTH, payload);
+  },
+
+  [types.addActiveComponentTop]: ({ commit }, payload) => {
+    commit(types.ADD_ACTIVE_COMPONENT_TOP, payload);
+  },
+
+  [types.addActiveComponentLeft]: ({ commit }, payload) => {
+    commit(types.ADD_ACTIVE_COMPONENT_LEFT, payload);
+  },
+
+  [types.addActiveComponentElementNote]: ({ commit }, payload) => {
+    commit(types.ADD_ACTIVE_COMPONENT_ELEMENT_NOTE, payload)
+  },
   //
   [types.registerComponent]: ({ state, commit }, payload) => {
     /* this action has a lot of mutations deployed
@@ -104,6 +124,10 @@ const actions = {
 
   [types.updateComponentLayer]: ({ commit }, payload) => {
     commit(types.UPDATE_COMPONENT_LAYER, payload);
+  },
+
+  [types.updateHTMLLayer]: ({ commit }, payload) => {
+    commit(types.UPDATE_HTML_LAYER, payload);
   },
 
   [types.updateComponentPosition]: ({ commit }, payload) => {
@@ -303,6 +327,10 @@ const actions = {
 
   [types.setActiveHTML]: ({ commit }, payload) => {
     commit(types.SET_ACTIVE_HTML_ELEMENT, payload);
+  },
+
+  [types.clearActiveHTML]: ({ commit }, payload) => {
+    commit(types.CLEAR_ACTIVE_HTML, payload);
   },
 
   [types.setActiveLayer]: ({ commit }, payload) => {

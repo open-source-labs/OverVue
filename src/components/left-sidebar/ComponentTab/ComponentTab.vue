@@ -25,7 +25,7 @@ export default {
   components: {
     CreateMenu,
     UpdateMenu,
-  }
+  },
 }
 </script>
 

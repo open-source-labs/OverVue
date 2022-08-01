@@ -108,6 +108,9 @@ export default {
         h5: ["<h5", "</h5>"],
         h6: ["<h6", "</h6>"],
       };
+
+      // Helper function that recursively iterates through the given html element's children and their children's children.
+      // also adds proper indentation to code snippet
       //add childComponents of the activeCompnent to the htmlElementMap
       const childComponents = this.componentMap[this.activeComponent].children;
       childComponents.forEach(child => {
@@ -222,7 +225,6 @@ export default {
       children.forEach((name) => {
         childrenComponentNames += `    ${name},\n`;
       });
-      console.log("lets look at data", this.componentMap[this.activeComponent])
       // if true add data section and populate with props
       let data = "";
       if (this.componentMap[this.activeComponent].props.length) {
@@ -285,9 +287,8 @@ export default {
       for (const html of htmlArray) {
         if (html.class === ' ') styleString = "";
         if (html.class) {
-          styleString += `.${html.class} {
-\n
-} \n`
+          styleString += `.${html.class} {\n height: ${html.h}%, \n width: ${html.w}%, \n  top: ${html.x}%, \n left: ${html.y}%, \n z-index: ${html.z}
+}\n`
         }
       }
 
@@ -348,7 +349,7 @@ export default {
     });
   },
 
-  beforeDestroy() {
+  beforeUnmount() {
     window.removeEventListener("resize", this.getWindowHeight);
   },
 };
