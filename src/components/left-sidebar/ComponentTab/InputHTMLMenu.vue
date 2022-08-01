@@ -175,7 +175,6 @@ export default {
     for (let i = 0; i <this.routes[this.activeRoute].length; i++) {
       for (let j = 0; j < this.routes[this.activeRoute][i].htmlList.length; j++) {
         if(this.activeHTML === this.routes[this.activeRoute][i].htmlList[j].id) {
-          console.log(this.routes[this.activeRoute][i])
           this.heightText = this.routes[this.activeRoute][i].htmlList[j].h;
           this.widthText = this.routes[this.activeRoute][i].htmlList[j].w;
           this.topText = this.routes[this.activeRoute][i].htmlList[j].x;
