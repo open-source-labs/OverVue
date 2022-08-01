@@ -44,7 +44,7 @@
         class="compNoteLogo" 
         @click="handleAddNotes" 
       />
-            <!-- Rendering HTML Elements for each Component -->
+  <!-- Rendering HTML Elements for each Component -->
       <div v-for="element in this.componentMap[componentData.componentName].htmlList" :key="element.id+ new Date()">
         <div v-if="element.text === 'button'" 
           class="htmlButton"
