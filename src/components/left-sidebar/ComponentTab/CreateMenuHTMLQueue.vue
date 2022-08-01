@@ -58,16 +58,16 @@ export default {
     ...mapState(['selectedElementList', 'componentMap', 'activeComponent', 'activeHTML', 'activeLayer']),
     renderList: {
       get () {
-        if (this.activeComponent === '') return this.selectedElementList.map((el, index) => [el.text, index, el.id])
+        if (this.activeComponent === '') return this.selectedElementList.map((el, index) => [el.text, index, el.id, el.z])
         // change activeComponent's htmlList into an array of arrays ([element/component name, index in state])
         if (this.activeComponent !== '' && this.activeLayer.id === '') {
-          let sortedHTML = this.componentMap[this.activeComponent].htmlList.map((el, index) => [el.text, index, el.id]).filter(el => {
+          let sortedHTML = this.componentMap[this.activeComponent].htmlList.map((el, index) => [el.text, index, el.id, el.z]).filter(el => {
             return el[0] !== undefined
           })
           return sortedHTML
         }
         let activeElement = breadthFirstSearch(this.componentMap[this.activeComponent].htmlList, this.activeLayer.id)
-        let sortedHTML = activeElement.children.map((el, index) => [el.text, index, el.id]).filter(el => {
+        let sortedHTML = activeElement.children.map((el, index) => [el.text, index, el.id, el.z]).filter(el => {
           return el[0] !== undefined
         })
         return sortedHTML
@@ -106,15 +106,17 @@ export default {
     },
     //METHODS FOR DRAG-AND-DROP
     startDrag (event, id) {
-      //add a class of 'currentlyDragging' to the HTML element that you are currently dragging
+      //add a class to make the html element currently being drag transparent
       event.target.classList.add('currentlyDragging')
       const dragId = id;
+      //store the id of dragged element
       if (this.activeComponent === '') this.setSelectedIdDrag(dragId)
       else this.setIdDrag(dragId)
     },
     dragEnter (event, id) {
       event.preventDefault();
       const dropId = id;
+      //store the id of the html element whose location the dragged html element could be dropped upon
       if (this.activeComponent === '') this.setSelectedIdDrop(dropId)
       else this.setIdDrop(dropId)
     },
@@ -123,7 +125,7 @@ export default {
       event.preventDefault();
     },
     endDrag (event) {
-      //remove the 'currentlyDragging' class after the HTML is dropped
+      //remove the 'currentlyDragging' class after the HTML is dropped to remove transparency
       event.preventDefault();
       event.target.classList.remove('currentlyDragging')
       //invoke the action that will use the idDrag and idDrop to sort the HtmlList
