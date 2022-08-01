@@ -29,67 +29,6 @@ Description:
         </div>
       </div>
     </div>
-<<<<<<< HEAD
-
-    <!-- attribute pop-up -->
-    <q-dialog v-model="attributeModal">
-      <!-- @update:model-value="setActiveElement" -->
-      <div class="AttributeBox">
-        <p class="title">Add attributes to: {{ this.activeComponent }}</p>
-        <!--attribute child-->
-        <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList"
-          :key="element.id + Date.now()">
-          <p v-if="element.id === this.activeHTML">Your class is - {{ element.class }}</p>
-          <p v-if="element.id === this.activeHTML"> You've binded to - {{ element.binding }}</p>
-        </div>
-
-        <!--attribute child's child-->
-        <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList"
-          :key="element.id + Date.now()">
-          <ul v-for="element1 in element.children" :key="element1.id + Date.now()">
-            <li v-if="element1.id === this.activeHTML">Your class is - {{ element1.class }}</li>
-          </ul>
-        </div>
-
-        <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList"
-          :key="element.id + Date.now()">
-          <ul v-for="element1 in element.children" :key="element1.id + Date.now()">
-            <li v-if="element1.id === this.activeHTML">You've binded to - {{ element1.binding }}</li>
-          </ul>
-        </div>
-
-<!--attribute child's child-->
-        <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList"
-          :key="element.id + Date.now()">
-          <ul v-for="element1 in element.children"
-          :key="element1.id + Date.now()">
-            <li v-if="element1.id === this.activeHTML">Your class is - {{ element1.class }}</li>
-          </ul>
-        </div>
-
-        <div class="formBox">
-          <q-form autofocus v-on:submit.prevent="submitClass">
-            <p class="title">Add Class Name:</p>
-            <q-input label="Add your class here" filled dark autofocus true hide-bottom-space v-model="classText"
-              @keydown.enter="submitClass(classText, this.activeHTML)" />
-            <q-btn id="comp-btn" class="sidebar-btn" color="secondary" label="Submit Attribute"
-              :disable="classText.length > 0 ? false : true" @click="submitClass(classText, this.activeHTML)" />
-          </q-form>
-          <q-form autofocus v-on:submit.prevent="addBinding">
-            <p class="title">Add Binding:</p>
-
-            <q-input label="Add two way binding here" filled dark autofocus true hide-bottom-space v-model="bindingText"
-              @keydown.enter="addBinding(bindingText, this.activeHTML)"></q-input>
-            <q-btn id="comp-btn" class="sidebar-btn" color="secondary" label="Add Binding"
-              :disable="bindingText.length > 0 ? false : true" @click="addBinding(bindingText, this.activeHTML)">
-            </q-btn>
-          </q-form>
-          <q-btn label="Close" @click="this.openAttributeModal" />
-        </div>
-      </div>
-    </q-dialog>
-=======
->>>>>>> eae7805d5a6005e8d504792a9fb5196d53127830
   </section>
 </template>
 
