@@ -3,7 +3,6 @@
   <section id="welcomeTab">
     <h6 class="tutorialHeading">Welcome to</h6>
     <img alt="OverVue" src="../../../assets/overvue_layeredlogo.png" id="logo">
-    <q-btn class="tut-btn" color="secondary" label="What's New in 7.0" @click="newTab" />
     <q-btn class="tut-btn" color="secondary" label="View the Readme"
       @click="openUrl('https://github.com/open-source-labs/OverVue#readme')" />
     <p id="new-text">New to OverVue?</p>
@@ -22,9 +21,6 @@ export default {
     ...mapActions(["toggleTutorial"]),
     nextTab() {
       this.$emit('nextTab')
-    },
-    versionTab() {
-      this.$emit('versionTab')
     },
     openUrl(url) {
       shell.openExternal(url, { activate: true });

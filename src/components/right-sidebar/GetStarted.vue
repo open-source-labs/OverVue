@@ -19,11 +19,11 @@
       </q-tab-panel>
 
       <q-tab-panel name="basics">
-        <BasicFunctions @nextTab="tutorialPage = 'advanced'" />
+        <BasicFunctions @nextTab="tutorialPage = 'version'" />
       </q-tab-panel>
 
       <q-tab-panel name="version">
-        <NewVersionInfo @nextTab="tutorialPage = 'version'" />
+        <NewVersionInfo @nextTab="tutorialPage = 'advanced'" />
       </q-tab-panel>
 
       <q-tab-panel name="advanced">

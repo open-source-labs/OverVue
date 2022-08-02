@@ -73,8 +73,7 @@
       Component menu or press the delete key.
     </p>
     <img alt="Delete Component button" src="../../../assets/delete-component.png" class="tut-screenshot">
-    <q-btn class="tut-btn" color="secondary" id="advanced-btn" label="Advanced Functionality" @click="nextTab" />
-    <q-btn class="tut-btn" color="secondary" id="version-btn" label="Explore Features" @click="nextTab" />
+    <q-btn class="tut-btn" color="secondary" id="version-btn" label="New Features" @click="nextTab" />
   </section>
 </template>
 
@@ -82,14 +81,11 @@
 import { mapActions } from 'vuex';
 
 export default {
-  emits: ['nextTab', 'versionTab'],
+  emits: ['nextTab'],
   methods: {
     ...mapActions(["toggleTutorial"]),
     nextTab() {
       this.$emit('nextTab')
-    },
-    versionTab() {
-      this.$emit('versionTab')
     }
   }
 }

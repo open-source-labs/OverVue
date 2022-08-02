@@ -19,7 +19,8 @@
 
     <p class="info-sub-heading">Ability to Nest Components</p>
     <p class="infoContent"></p>
-
+    <q-btn class="tut-btn" color="secondary" id="advanced-btn" label="Advanced Functionality" @click="nextTab" />
+    <q-btn></q-btn>
   </section>
 </template>
 
