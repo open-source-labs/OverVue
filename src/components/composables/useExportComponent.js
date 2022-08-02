@@ -248,6 +248,7 @@ export function useExportComponent() {
         let styleString = "";
 
         if(this.componentMap[componentName].htmlAttributes.class !== "") {
+          console.log(this)
           styleString += `.${this.componentMap[componentName].htmlAttributes.class} {\nbackground-color: ${this.componentMap[componentName].color};
   width: ${this.componentMap[componentName].w}px;
   height: ${this.componentMap[componentName].h}px;

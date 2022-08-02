@@ -285,17 +285,17 @@ export default {
       let styleString = "";
 
       if (this.activeComponentObj.htmlAttributes.class !== "") {
-        styleString += `.${this.activeComponentObj.htmlAttributes.class} { \nbackground- color: ${this.activeComponentObj.color};
-      width: ${this.activeComponentObj.w} px;
-      height: ${this.activeComponentObj.h} px;
-      z - index: ${this.activeComponentObj.z};
-    } \n`
+        styleString += `.${this.activeComponentObj.htmlAttributes.class} { \n background-color: ${this.activeComponentObj.color};
+ width: ${this.activeComponentObj.w} px;
+ height: ${this.activeComponentObj.h} px;
+ z-index: ${this.activeComponentObj.z};
+} \n`
       }
 
       for (const html of htmlArray) {
         if (html.class === ' ') styleString = "";
         if (html.class) {
-          styleString += `.${html.class} {\n height: ${html.h}%, \n width: ${html.w}%, \n  top: ${html.x}%, \n left: ${html.y}%, \n z-index: ${html.z}
+          styleString += `.${html.class} {\n height: ${html.h}%; \n width: ${html.w}%; \n top: ${html.x}%; \n left: ${html.y}%; \n z-index: ${html.z};
 }\n`
         }
       }

@@ -44,8 +44,11 @@ export default {
             },
           ],
         })
-        .then((res) => this.saveJSONLocation(res.filePath))
-        .catch((err) => console.log(err));
+        .then((res) => {
+          this.saveJSONLocation(res.filePath)
+          })
+        .catch((err) => {
+          console.log(err)});
     },
     // returns location of where file is stored
     parseFileName(file) {
@@ -83,7 +86,10 @@ export default {
       localforage
         .removeItem(deleteKey)
         .then(function () {})
-        .catch(function (err) {});
+        .catch(function (err) {
+          console.log('error')
+          console.log(err)
+        });
 
       let fileName = this.parseFileName(data);
       // if valid fileName
