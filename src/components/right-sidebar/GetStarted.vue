@@ -21,6 +21,7 @@
       <q-tab-panel name="basics">
         <BasicFunctions @nextTab="tutorialPage = 'advanced'" />
       </q-tab-panel>
+
       <q-tab-panel name="version">
         <NewVersionInfo @nextTab="tutorialPage = 'version'" />
       </q-tab-panel>
