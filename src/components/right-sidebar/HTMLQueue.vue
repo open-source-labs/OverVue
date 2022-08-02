@@ -8,14 +8,11 @@ Description:
   <section class="html-queue" @dragover="dragOver($event), false">
     <span class='list-title' v-if='this.activeLayer.id !== ""'>
       <i class="fas fa fa-chevron-up fa-md" @click="setParentLayer"></i>
-
-      &nbsp; &nbsp; Viewing Elements in {{ this.activeComponent }} '{{ depth }}'
+        &nbsp; &nbsp; Viewing Elements in {{this.activeComponent}} '{{ depth }}'
       <hr>
     </span>
     <span class='list-title' v-else-if='!this.activeComponent'></span>
-
     <div group="people" class="list-group">
-
       <p v-if='!this.componentMap[this.activeComponent]?.htmlList.length'>No HTML elements in component</p>
       <div v-for="(element) in renderList" :key="element[1] + Date.now()" @dragenter="dragEnter($event, element[2])">
         <div id="tooltipCon" :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'"
@@ -32,55 +29,6 @@ Description:
         </div>
       </div>
     </div>
-
-    <!-- attribute pop-up -->
-    <q-dialog v-model="attributeModal">
-      <!-- @update:model-value="setActiveElement" -->
-      <div class="AttributeBox">
-        <p class="title">Add attributes to: {{ this.activeComponent }}</p>
-        <!--attribute child-->
-        <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList"
-          :key="element.id + Date.now()">
-          <p v-if="element.id === this.activeHTML">Your class is - {{ element.class }}</p>
-          <p v-if="element.id === this.activeHTML"> You've binded to - {{ element.binding }}</p>
-        </div>
-
-        <!--attribute child's child-->
-        <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList"
-          :key="element.id + Date.now()">
-          <ul v-for="element1 in element.children" :key="element1.id + Date.now()">
-            <li v-if="element1.id === this.activeHTML">Your class is - {{ element1.class }}</li>
-          </ul>
-        </div>
-
-        <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList"
-          :key="element.id + Date.now()">
-          <ul v-for="element1 in element.children" :key="element1.id + Date.now()">
-            <li v-if="element1.id === this.activeHTML">You've binded to - {{ element1.binding }}</li>
-          </ul>
-        </div>
-
-        <div class="formBox">
-          <q-form autofocus v-on:submit.prevent="submitClass">
-            <p class="title">Add Class Name:</p>
-            <q-input label="Add your class here" filled dark autofocus true hide-bottom-space v-model="classText"
-              @keydown.enter="submitClass(classText, this.activeHTML)" />
-            <q-btn id="comp-btn" class="sidebar-btn" color="secondary" label="Submit Attribute"
-              :disable="classText.length > 0 ? false : true" @click="submitClass(classText, this.activeHTML)" />
-          </q-form>
-          <q-form autofocus v-on:submit.prevent="addBinding">
-            <p class="title">Add Binding:</p>
-
-            <q-input label="Add two way binding here" filled dark autofocus true hide-bottom-space v-model="bindingText"
-              @keydown.enter="addBinding(bindingText, this.activeHTML)"></q-input>
-            <q-btn id="comp-btn" class="sidebar-btn" color="secondary" label="Add Binding"
-              :disable="bindingText.length > 0 ? false : true" @click="addBinding(bindingText, this.activeHTML)">
-            </q-btn>
-          </q-form>
-          <q-btn label="Close" @click="this.openAttributeModal" />
-        </div>
-      </div>
-    </q-dialog>
   </section>
 </template>
 
@@ -110,13 +58,21 @@ export default {
     }
   },
   computed: {
-    ...mapState(['activeComponentObj', 'selectedElementList', 'componentMap', 'activeComponent', 'activeHTML', 'activeLayer', 'attributeModalOpen']),
+    ...mapState([
+      'activeComponentObj',
+      'selectedElementList', 
+      'componentMap', 
+      'activeComponent', 
+      'activeHTML', 
+      'activeLayer', 
+      'attributeModalOpen'
+      ]),
     renderList: {
       get() {
         if (this.activeComponent === '') return this.selectedElementList.map((el, index) => [el.text, index, el.id])
         // change activeComponent's htmlList into an array of arrays ([element/component name, index in state])
         if (this.activeComponent !== '' && this.activeLayer.id === '') {
-          let sortedHTML = this.componentMap[this.activeComponent].htmlList.map((el, index) => [el.text, index, el.id]).filter(el => {
+          let sortedHTML = this.componentMap[this.activeComponent].htmlList.map((el, index) => [el.text, index, el.id, el.z]).filter(el => {
             return el[0] !== undefined
           })
           return sortedHTML
@@ -138,6 +94,7 @@ export default {
       })
       return newTitle;
     },
+    //make child components in htmlList exceptions
     moreExceptions: function () {
       let childComponent = [];
       if(this.activeComponent) {
@@ -147,8 +104,21 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setActiveHTML', 'setActiveLayer', 'upOneLayer', 'setSelectedIdDrag', 'setIdDrag', 'setSelectedIdDrop', 'setIdDrop', 'dragDropSortHtmlElements', 'dragDropSortSelectedHtmlElements', 'openAttributeModal', 'addActiveComponentClass', 'addBindingText']),
-    deleteElement(id) {
+    ...mapActions([
+      'setActiveHTML', 
+      'setActiveLayer', 
+      'upOneLayer', 
+      'setSelectedIdDrag', 
+      'setIdDrag', 
+      'setSelectedIdDrop', 
+      'setIdDrop', 
+      'dragDropSortHtmlElements', 
+      'dragDropSortSelectedHtmlElements', 
+      'openAttributeModal', 
+      'addActiveComponentClass',
+      'addBindingText'
+      ]),
+    deleteElement (id) {
       if (this.activeComponent === '') this.$store.dispatch(deleteSelectedElement, id[0])
       else this.$store.dispatch(deleteFromComponentHtmlList, id[1])
 
@@ -156,7 +126,9 @@ export default {
     setActiveElement(element) {
       if (this.activeComponent !== '') {
         this.setActiveHTML(element);
-        this.openAttributeModal(element);
+        if (this.attributeModal === false) {
+          this.openAttributeModal(element);
+        }
       }
     },
     setLayer(element) {
@@ -170,15 +142,17 @@ export default {
     },
     //METHODS FOR DRAG-AND-DROP
     startDrag(event, id) {
-      //add a class of 'currentlyDragging' to the HTML element that you are currently dragging
+      //add a class to make the html element currently being drag transparent
       event.target.classList.add('currentlyDragging')
       const dragId = id;
+      //store the id of dragged element
       if (this.activeComponent === '') this.setSelectedIdDrag(dragId)
       else this.setIdDrag(dragId)
     },
     dragEnter(event, id) {
       event.preventDefault();
       const dropId = id;
+      //store the id of the html element whose location the dragged html element could be dropped upon
       if (this.activeComponent === '') this.setSelectedIdDrop(dropId)
       else this.setIdDrop(dropId)
     },
@@ -187,7 +161,7 @@ export default {
       event.preventDefault();
     },
     endDrag(event) {
-      //remove the 'currentlyDragging' class after the HTML is dropped
+      //remove the 'currentlyDragging' class after the HTML is dropped to remove transparency
       event.preventDefault();
       event.target.classList.remove('currentlyDragging')
       //invoke the action that will use the idDrag and idDrop to sort the HtmlList
@@ -228,7 +202,7 @@ export default {
       } else {
         this.component = false
       }
-    }
+    },
   }
 }
 </script>

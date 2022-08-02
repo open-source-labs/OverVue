@@ -81,6 +81,7 @@ export default {
       "selectedElementList",
       "activeComponent",
       "activeHTML",
+      "attributeModalOpen",
       "userActions",
       "userState",
       "userProps",
@@ -114,6 +115,11 @@ export default {
       useCreateComponent.bind(this)({}) //invokes composable
     },
   },
+    watch: {
+    attributeModalOpen() {
+      this.attributeModal = this.attributeModalOpen;
+    },
+  }
 };
 </script>
 

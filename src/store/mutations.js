@@ -330,7 +330,7 @@ const mutations = {
         }
       }
     }
-    //update the component name in the htmlList of all components if it is a child component
+    //update the the htmlList, find child components within the htmlLists with the old value, update it to the new value
     for (const item of Object.values(state.componentMap)) {
       if (item.htmlList) {
         const newArray = [...item.htmlList];
@@ -361,7 +361,6 @@ const mutations = {
   },
 
   // *** HTML ELEMENTS *** //////////////////////////////////////////////
-
   [types.ADD_NESTED_HTML]: (state, payload) => {
     const componentName = state.activeComponent;
     const { activeHTML } = state;
@@ -376,8 +375,18 @@ const mutations = {
       text: payload.elementName,
       id: payload.date,
       children: [],
-      class: ''
+      class: '',
+      x:0,
+      y:0,
+      z:0,
+      w:0,
+      h:0,
+      note: '',
     });
+  },
+
+  [types.CLEAR_ACTIVE_HTML]: (state) => {
+    state.activeHTML = '';
   },
 
   [types.ADD_NESTED_NO_ACTIVE]: (state, payload) => {
@@ -395,6 +404,12 @@ const mutations = {
       id: payload.date,
       children: [],
       class: '',
+      x:0,
+      y:0,
+      z:0,
+      w:0,
+      h:0,
+      note: '',
       binding: ''
     });
   },
@@ -409,6 +424,12 @@ const mutations = {
       id: payload.date,
       children: [],
       class: '',
+      x:0,
+      y:0,
+      z:0,
+      w:0,
+      h:0,
+      note: '',
       binding: ''
     });
   },
@@ -419,7 +440,13 @@ const mutations = {
       id: payload.date,
       children: [],
       class: '',
-      binding: ""
+      x:0,
+      y:0,
+      z:0,
+      w:0,
+      h:0,
+      note: '',
+      binding: ''
     });
   },
 
@@ -495,25 +522,26 @@ const mutations = {
     }
     state.activeHTML = "";
   },
-
+  //Drag-andDrop
+  //store id of dragged html element in activeComponent
   [types.SET_ID_DRAG]: (state, payload) => {
     const componentName = state.activeComponent;
     state.componentMap[componentName].idDrag = payload;
   },
-
+  //store id of html element whose place the dragged html element is dropped on in activeComponent
   [types.SET_ID_DROP]: (state, payload) => {
     const componentName = state.activeComponent;
     state.componentMap[componentName].idDrop = payload;
   },
-
+  //store id of dragged selected html element when creating a component
   [types.SET_SELECTED_ID_DRAG]: (state, payload) => {
     state.selectedIdDrag = payload;
   },
-
+  //store id of html element whose place the dragged selected html element will be dropped when creating a component
   [types.SET_SELECTED_ID_DROP]: (state, payload) => {
     state.selectedIdDrop = payload;
   },
-
+  // use idDrag and idDrop to rearrange the htmlList of the activeComponent to perform drag-and-drop functionality
   [types.DRAG_DROP_SORT_HTML_ELEMENTS]: (state) => {
     const componentName = state.activeComponent;
     const idDrag = state.componentMap[componentName].idDrag;
@@ -525,6 +553,7 @@ const mutations = {
       const htmlList = state.componentMap[componentName].htmlList.slice(0)
 
       if (state.activeLayer.id === "") {
+        //find the indexes belonging to the html elements with idDrag and idDrop
         htmlList.forEach((el, i) => {
           if (el.id === idDrag) {
             indexDrag = i;
@@ -532,20 +561,24 @@ const mutations = {
             indexDrop = i;
           }
         })
+        //use the indexes to rearrange htmlList
         const draggedEl = htmlList.splice(indexDrag, 1)[0]
         htmlList.splice(indexDrop, 0, draggedEl)
       } else {
+        //Use breadFirstSearchParent to find the parent and indexes of nested html elements with idDrag and idDrop
         const nestedDrag = breadthFirstSearchParent(htmlList, idDrag);
         const nestedDrop = breadthFirstSearchParent(htmlList, idDrop);
+        //use the indexes and parents to rearrange htmlList
         let nestedEl = nestedDrag.evaluated.children.splice(nestedDrag.index, 1)[0]
         nestedDrop.evaluated.children.splice(nestedDrop.index, 0, nestedEl)
       }
       state.componentMap[componentName].htmlList = htmlList;
     }
+    //reset the ids
     state.componentMap[componentName].idDrag = '';
     state.componentMap[componentName].idDrop = '';
   },
-
+// use selectedIdDrag and selectedIdDrop to rearrange the selectedElementList to perform drag-and-drop functionality
   [types.DRAG_DROP_SORT_SELECTED_HTML_ELEMENTS]: (state) => {
     const selectedIdDrag = state.selectedIdDrag;
     const selectedIdDrop = state.selectedIdDrop;
@@ -555,7 +588,7 @@ const mutations = {
 
       let indexDrag;
       let indexDrop;
-
+      //find the indexes belonging to the html elements with the selectedIdDrag and selectedIdDrop
       htmlList.forEach((el, i) => {
         if (el.id === selectedIdDrag) {
           indexDrag = i;
@@ -563,11 +596,12 @@ const mutations = {
           indexDrop = i;
         }
       })
-
+      //use the indexes to delete the dragged element and place them into the new location
       const draggedEl = htmlList.splice(indexDrag, 1)[0]
       htmlList.splice(indexDrop, 0, draggedEl)
       state.selectedElementList = htmlList;
     }
+    //reset the ids
     state.selectedIdDrag = '';
     state.selectedIdDrop = '';
   },
@@ -763,6 +797,18 @@ const mutations = {
     state.componentMap[payload.activeComponent].z = payload.z;
   },
 
+  [types.UPDATE_HTML_LAYER]: (state, payload) => {
+    const updatedComponent = state.routes[state.activeRoute].filter(
+      (element) => element.componentName === payload.activeComponent
+    )[0];
+
+    const updatedHTML = updatedComponent.htmlList.filter((element) => element.id === payload.activeHTML)[0]
+
+    updatedHTML.z = payload.z;
+    // state.componentMap[payload.activeComponent].htmlList.z = payload.z;
+
+  },
+
   [types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE]: (state, payload) => {
     //temp is the activeComponent's children array
     if (state.activeComponent === payload) { return }
@@ -878,7 +924,7 @@ const mutations = {
 
   },
 
-  // //add binding 
+//add binding 
   [types.ADD_BINDING_TEXT]: (state, payload) => {
     //access the htmlList, add payload to the empty bind obj
     //const active = state.componentMap[state.activeComponent].htmlList;
@@ -911,6 +957,43 @@ const mutations = {
       if (payload === el) {
         state.componentMap[state.activeComponent].classList.splice(ind, 1)
         return;
+      }
+    })
+  },
+  //htmlElements changes of css
+  [types.ADD_ACTIVE_COMPONENT_HEIGHT]: (state, payload) => {
+    state.componentMap[state.activeComponent].htmlList.forEach((el) => {
+      if (payload.id === el.id) {
+        el.h = payload.height
+      }
+    })
+  },
+  [types.ADD_ACTIVE_COMPONENT_WIDTH]: (state, payload) => {
+    state.componentMap[state.activeComponent].htmlList.forEach((el) => {
+      if (payload.id === el.id) {
+        el.w = payload.width
+      }
+    })
+  },
+  [types.ADD_ACTIVE_COMPONENT_TOP]: (state, payload) => {
+    state.componentMap[state.activeComponent].htmlList.forEach((el) => {
+      if (payload.id === el.id) {
+        el.x = payload.top
+      }
+    })
+  },
+  [types.ADD_ACTIVE_COMPONENT_LEFT]: (state, payload) => {
+    state.componentMap[state.activeComponent].htmlList.forEach((el) => {
+      if (payload.id === el.id) {
+        el.y = payload.left
+      }
+    })
+  },
+
+  [types.ADD_ACTIVE_COMPONENT_ELEMENT_NOTE]: (state, payload) => {
+    state.componentMap[state.activeComponent].htmlList.forEach((el) => {
+      if (payload.id === el.id) {
+        el.note = payload.note
       }
     })
   },
