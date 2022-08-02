@@ -116,21 +116,33 @@ export default {
       'dragDropSortSelectedHtmlElements', 
       'openAttributeModal', 
       'addActiveComponentClass',
-      'addBindingText'
+      'addBindingText',
+      'clearActiveHTML',
       ]),
     deleteElement (id) {
       if (this.activeComponent === '') this.$store.dispatch(deleteSelectedElement, id[0])
       else this.$store.dispatch(deleteFromComponentHtmlList, id[1])
 
     },
+
+    closeMenu(element) {
+      if (this.activeComponent !== '') {
+        this.clearActiveHTML()
+        this.openAttributeModal(element);
+      }
+    },
+
     setActiveElement(element) {
       if (this.activeComponent !== '') {
         this.setActiveHTML(element);
         if (this.attributeModal === false) {
           this.openAttributeModal(element);
+        } else {
+          this.closeMenu(element);
         }
       }
     },
+  
     setLayer(element) {
       this.setActiveLayer(element)
       element.id = this.activeHTML
