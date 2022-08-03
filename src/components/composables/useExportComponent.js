@@ -75,6 +75,9 @@ export function useExportComponent() {
               if (child.class !== "") {
                 nestedString += " " + "class = " + `"${child.class}"`;
               }
+              if(child.binding !== "") {
+                nestedString += " " + "v-model = " + `"${child.binding}"`;
+              }
               if (child.text === "img" || child.text === "input" || child.text === "link") {
                 nestedString += "/>";
               } else { nestedString += ">"; }
@@ -104,6 +107,9 @@ export function useExportComponent() {
           //if conditional to check class
           if (el.class !== "") {
             outputStr += " " + "class = " + `"${el.class}"`;
+          }
+          if (el.binding !== "") {
+            outputStr += " " + "v-model = " + `"${el.binding}"`;
           }
           outputStr += ">";
           if (el.children.length) {
@@ -183,15 +189,23 @@ export function useExportComponent() {
         });
         // if true add data section and populate with props
         let data = "";
+        data += "  data () {\n    return {";
         if (currentComponent.props.length) {
-          data += "  data () {\n    return {";
           currentComponent.props.forEach((prop) => {
             data += `\n      ${prop}: "PLACEHOLDER FOR VALUE",`;
           });
+        }
+          this.routes.HomeView.forEach((element) => {
+            element.htmlList.forEach((html) => {
+              if(html.binding !== '') {
+                data += `\n      ${html.binding}: "PLACEHOLDER FOR VALUE",`;
+              }
+            })
+          })
           data += "\n";
           data += "    }\n";
           data += "  },\n";
-        }
+        
         // if true add computed section and populate with state
         let computed = "";
         if (currentComponent.state.length) {
@@ -247,22 +261,30 @@ export function useExportComponent() {
         let htmlArray = this.componentMap[componentName].htmlList;
         let styleString = "";
 
-        if(this.componentMap[componentName].htmlAttributes.class !== "") {
-          console.log(this)
-          styleString += `.${this.componentMap[componentName].htmlAttributes.class} {\nbackground-color: ${this.componentMap[componentName].color};
-  width: ${this.componentMap[componentName].w}px;
-  height: ${this.componentMap[componentName].h}px;
-  z-index: ${this.componentMap[componentName].z};
-  }\n`
-        }
-  
-        for (const html of htmlArray) {
-          if (html.class === ' ') styleString = "";
-          if (html.class) {
-            styleString += `.${html.class} {\n
-  }\n`
+        this.routes.HomeView.forEach((element) => {
+          if(element.htmlAttributes.class !== "") {
+            styleString += `.${element.htmlAttributes.class} {\nbackground-color: ${element.color};
+width: ${element.w}px;
+height: ${element.h}px;
+z-index: ${element.z};
+}\n`
           }
-        }
+        }) 
+          
+        
+  
+
+
+        for (const html of htmlArray) {
+          if (html.class !== '') {
+            styleString += `.${html.class} {\nheight: ${html.h}%;
+width: ${html.w}%;
+top: ${html.x}%;
+left: ${html.y}%;
+z-index: ${html.z};
+}\n`
+          }
+    }
 
         return `\n\n<style scoped>\n${styleString}</style >`;
       }

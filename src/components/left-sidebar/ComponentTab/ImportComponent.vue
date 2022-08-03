@@ -271,7 +271,7 @@ export default {
             }
             groupingObj[i].children = childrenArray;
           } else {
-            groupingObj[i].children = [];
+            // groupingObj[i].children = [];
           }
         }
         return groupingObj;

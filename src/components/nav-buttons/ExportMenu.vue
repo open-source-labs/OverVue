@@ -9,7 +9,7 @@ Description:
     <q-menu class="dropdown" :offset="[0, 15]">
       <div class="column items-center">
         <p class="center">Export:</p>
-        <q-btn class="menu-btn" no-caps color="secondary" label="Project" @click="exportProject" />
+        <q-btn class="menu-btn" no-caps color="secondary" label="Vue Project" @click="exportProject" />
         <q-btn class="menu-btn" id="export-component-nav-btn" no-caps color="secondary" label="Active Component"
           @click="useExportComponentBound" :disabled="!activeComponent.trim()" />
       </div>
@@ -152,28 +152,31 @@ export default {
         let nestedString = "";
 
         childrenArray.forEach((child) => {
-          nestedString += indented;
-          if (!child.text) {
-            nestedString += `<${child}/>\n`;
-          } else {
-            nestedString += htmlElementMap[child.text][0];
-            if (child.class !== "") {
-              nestedString += " " + "class = " + `"${child.class}"`;
-            }
-            if (child.text === "img" || child.text === "input" || child.text === "link") {
-              nestedString += "/>";
-            } else { nestedString += ">"; }
-
-            if (child.children.length) {
-              nestedString += "\n";
-              nestedString += writeNested(child.children, indented);
-              nestedString += indented + htmlElementMap[child.text][1];
-              nestedString += "\n";
+            nestedString += indented;
+            if (!child.text) {
+              nestedString += `<${child}/>\n`;
             } else {
-              nestedString += htmlElementMap[child.text][1] + "\n";
+              nestedString += htmlElementMap[child.text][0];
+              if (child.class !== "") {
+                nestedString += " " + "class = " + `"${child.class}"`;
+              }
+              if(child.binding !== "") {
+                nestedString += " " + "v-model = " + `"${child.binding}"`;
+              }
+              if (child.text === "img" || child.text === "input" || child.text === "link") {
+                nestedString += "/>";
+              } else { nestedString += ">"; }
+  
+              if (child.children.length) {
+                nestedString += "\n";
+                nestedString += writeNested(child.children, indented);
+                nestedString += indented + htmlElementMap[child.text][1];
+                nestedString += "\n";
+              } else {
+                nestedString += htmlElementMap[child.text][1] + "\n";
+              }
             }
-          }
-        });
+          });
         return nestedString;
       }
       // iterate through component's htmllist
@@ -189,6 +192,9 @@ export default {
           //if conditional to check class
           if (el.class !== "") {
             outputStr += " " + "class = " + `"${el.class}"`;
+          }
+          if (el.binding !== "") {
+            outputStr += " " + "v-model = " + `"${el.binding}"`;
           }
           outputStr += ">";
           if (el.children.length) {
@@ -223,6 +229,7 @@ export default {
      */
     writeTemplate(componentName, children) {
       let str = "";
+      
       if (componentName === "App") {
         str += `<div id="app">\n\t\t<div id="nav">\n`;
         children.forEach((name) => {
@@ -233,12 +240,19 @@ export default {
           }
         });
         str += "\t\t\t<router-view></router-view>\n\t\t</div>\n";
-      } else {
-        str += `<div>\n`;
       }
       // writes the HTML tag boilerplate
       let templateTagStr = this.writeTemplateTag(componentName);
-      return `<template>\n\t${str}${templateTagStr}\t</div>\n</template>`;
+
+    if(this.componentMap[componentName].htmlAttributes) {
+      if (this.componentMap[componentName].htmlAttributes.class !== "" && this.componentMap[componentName].htmlAttributes.id !== "") {
+        return `<template>\n  <div id = "${this.componentMap[componentName].htmlAttributes.id}" class = "${this.componentMap[componentName].htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
+      } else if (this.componentMap[componentName].htmlAttributes.class !== "" && this.componentMap[componentName].htmlAttributes.id === "") {
+          return `<template>\n  <div class = "${this.componentMap[componentName].htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
+      } else if (this.componentMap[componentName].htmlAttributes.class === "" && this.componentMap[componentName].htmlAttributes.id !== "")
+      return `<template>\n  <div id = "${this.componentMap[componentName].htmlAttributes.id}">\n${templateTagStr}  </div>\n</template>`;
+        else return `<template>\n  <div>\n\t${str}${templateTagStr}  </div>\n</template>`;
+    } else return `<template>\n  <div>\n\t${str}${templateTagStr}  </div>\n</template>`
     },
     /**
      * @description imports child components into <script>
@@ -277,15 +291,23 @@ export default {
         });
         // if true add data section and populate with props
         let data = "";
+        data += "  data () {\n    return {";
         if (currentComponent.props.length) {
-          data += "  data () {\n    return {";
           currentComponent.props.forEach((prop) => {
             data += `\n      ${prop}: "PLACEHOLDER FOR VALUE",`;
           });
+        }
+          this.routes.HomeView.forEach((element) => {
+            element.htmlList.forEach((html) => {
+              if(html.binding !== '') {
+                data += `\n      ${html.binding}: "PLACEHOLDER FOR VALUE",`;
+              }
+            })
+          })
           data += "\n";
           data += "    }\n";
           data += "  },\n";
-        }
+
         // if true add computed section and populate with state
         let computed = "";
         if (currentComponent.state.length) {
@@ -331,6 +353,7 @@ export default {
         return output;
       } else {
         let str = "";
+
         children.forEach((name) => {
           str += `import ${name} from '@/components/${name}.vue';\n`;
         });
@@ -350,12 +373,37 @@ export default {
      * if component is 'App', writes css, else returns <style scoped>
      */
     writeStyle(componentName) {
-      let style =
-        componentName !== "App"
-          ? ""
-          : `#app {\n\tfont-family: 'Avenir', Helvetica, Arial, sans-serif;\n\t-webkit-font-smoothing: antialiased;\n\t-moz-osx-font-smoothing: grayscale;\n\ttext-align: center;\n\tcolor: #2C3E50;\n\tmargin-top: 60px;\n}\n`;
-      return `\n\n<style scoped>\n${style}</style>`;
+  let htmlArray = this.componentMap[componentName].htmlList;
+        let styleString = "";
+
+        this.routes.HomeView.forEach((element) => {
+          if(element.htmlAttributes.class !== "") {
+            styleString += `.${element.htmlAttributes.class} {\nbackground-color: ${element.color};
+width: ${element.w}px;
+height: ${element.h}px;
+z-index: ${element.z};
+}\n`
+          }
+        }) 
+          
+        
+  
+
+
+        for (const html of htmlArray) {
+          if (html.class !== '') {
+            styleString += `.${html.class} {\nheight: ${html.h}%;
+width: ${html.w}%;
+top: ${html.x}%;
+left: ${html.y}%;
+z-index: ${html.z};
+}\n`
+          }
+    }
+
+        return `\n\n<style scoped>\n${styleString}</style >`;
     },
+
     // creates index html
     createIndexFile(location) {
       let str = `<!DOCTYPE html>\n<html lang="en">\n\n<head>`;
@@ -616,5 +664,11 @@ export default {
 <style scoped>
 #export-component-nav-btn {
   margin-bottom: 20px;
+}
+
+.menu-btn{
+  width: 60%;
+  margin: 10px 0px;
+  max-height: 55px !important;
 }
 </style>
