@@ -19,6 +19,7 @@
   - [Changelog 4.0](#changelog-40)
   - [Changelog 5.0](#changelog-50)
   - [Changelog 6.0](#changelog-60)
+  - [Changelog 7.0](#changelog-70)
 - [How to use](#how-to-use)
 - [Installation](#installation)
   - [WSL Installation](#wsl-installation)
@@ -28,7 +29,7 @@
 - [Contributing](#contributing)
 - [Authors](#authors)
 
-### Features
+### Feature Log
 
 - Upload a frontend mockup image
 - Visualize draggable and resizable components
@@ -58,7 +59,12 @@
 - Introduced TypeScript Mode <sub><sup>(v6.0)</sup></sub>
 - Adding notes functionality  <sub><sup>(v6.0)</sup></sub>
 - Enhanced component tree hierarchy display <sub><sup>(v6.0)</sup></sub>
-
+- Added drag and drop of HTML elements  <sub><sup>(v7.0)</sup></sub>
+- Added color customization of compoents <sub><sup>(v7.0)</sup></sub>
+- More attribute options, class and v-model <sub><sup>(v7.0)</sup></sub>
+- Added scoped style tags for components <sub><sup>(v7.0)</sup></sub>
+- Size and position specification of HTML elements <sub><sup>(v7.0)</sup></sub>
+<br>
 [↥Back to top](#table-of-contents)
 
 ### Changelog 2.0
@@ -164,25 +170,42 @@
     <li>Fixed project tree visulization</li> 
   </ul>
 </details>
+
+### Changelog 7.0
+
+<details><summary>OverVue 7.0</summary>
+<ul>
+<li>Color customizability of components </li>
+<li>Code snippet reflects CSS styling of components </li>
+<li>Added more semantic HTML tags</li>
+<li>Options to add class, ID, and v-model attributes</li>
+<li>Added drag and drop feature when adding/altering HTML tags</li>
+<li>Ability to add child components to the code snippet of parent components </li>
+<li>Added scoped style tags - On class creation will create styling entry with positioning of component/html element</li>
+<li>Consolidated state/actions/props into one tab</li>
+<li>UI overhaul</li>
+<br>
+<h4><strong>Bug Fixes</strong></h4>
+<li>Fixed undo and redo capabilities </li>
+<li>Fixed badge number not rendering for nested HTML tags</li>
+<li></li>
+
+</ul>
+</details>
 <br/>
 
 [↥Back to top](#table-of-contents)
 
 ## How to use
 
-- Upon opening the application a Connect to Slack button will appear. To skip this step click 'Skip'
-- Click the button to open a browser window, log in to your Slack workspace and select a channel to send save notifications.
-- If you have logged in to Slack, upon saving your project file you will receive a prompt with the option to notify your team.
-  ![](./src/assets/readme/v4Slack_Oauth.gif)
-
 - OverVue will assign a default root App component and a default route called "HomeView"
-- Upload a mockup from your filesystem if you'd like. Remove the mockup and choose a new one if needed.
-  ![](./src/assets/readme/v4Upload_image.gif)
 
 - To add a new component, type its name in the component name box and select any HTML elements that should be rendered by that component.
 - HTML elements can also be added after creation by selecting the component in the display, then selecting HTML elements.
+- You may nest HTML elements by clicking the chevron and selecting the nested HTML elements. Return to the parent HTML element by clicking clicking the carrot above the HTML element.
+
 - Select a parent component for the new component if needed.
-- After adding, you can move and resize the component in the display.
+- After creating the component, you can move, resize, and recolor the component in the display. For advanced styling options, double click on the desired HTML element to modify. Here, you may add attributes such as class, ID, and v-model. 
   ![](./src/assets/readme/v4Creating_Component.gif)
 
 - You can also duplicate components with Ctrl/Cmd C & V and see the component tree updated in real time.
@@ -192,16 +215,16 @@
 - Child components will inherit the same parents, but parent components will not inherit duplicate children.
   ![](./src/assets/readme/v4Copy_Parent_Component.gif)
 
-- The right-side drawer displays live code snippets for the selected element.  
+- The right-side, Component Details > Code Snippet Tab displays live code snippets for the selected component.  
   ![](./src/assets/readme/v4Code_Snippet.gif)
 
-- You can view and add new routes and associated components in the left-hand drawer.
+- You can view and add new routes and associated components in the right-side, Routes Gab. The newly created routes will be visible in the Project Tree Tab. 
   ![](./src/assets/readme/v4Copying_Route.gif)
 
 - State and actions can be created, edited, and assigned to components.
   ![](./src/assets/readme/v4State_and_actions.gif)
 
-- When finished creating, you can export to a file location of your choice. Below is the exported file structure:
+- When finished creating, view your code snippet under the code snippet tab and you can export to a file location of your choice. Below is the exported file structure:
 
 ```
 public/
@@ -445,6 +468,10 @@ Bryan Bart @MrBeeAreWhy
 Julia Bakerink @jbbake
 Kerolos Nesem @Kerolos-Nesem
 Megan Nadkarni @megatera
+Johnny Chan @jchan444
+Jace Crowe @JaceCrowe
+Keyla Koizumi Nishimura @keylakoizumin
+Katherine Kim @katherinek123
 ```
 
 Inspired by [PreVue](https://github.com/open-source-labs/PreVue)
