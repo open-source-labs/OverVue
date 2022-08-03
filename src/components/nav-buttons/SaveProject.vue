@@ -102,25 +102,7 @@ export default {
 
         let state = this.$store.state;
         let routes = state.routes;
-
-        // for each route call parseAndDelete on htmlList
-        // eslint-disable-next-line no-unused-vars
-        /* Cannot mutatue outside of Vuex
-        for (let view in routes ) {
-          routes[view].forEach((component) => {
-            let htmlList = component.htmlList;
-            this.parseAndDelete(htmlList);
-          });
-        }
-        let componentMap = this.$store.state.componentMap;
-        // eslint-disable-next-line no-unused-vars
-        for (let component in componentMap) {
-          if (component.htmlList) {
-            let comphtml = component.htmlList;
-            this.parseAndDelete(comphtml);
-          }
-        }
-      */
+        
         fs.writeFileSync(data, JSON.stringify(state));
         localforage.setItem(
           fileName,

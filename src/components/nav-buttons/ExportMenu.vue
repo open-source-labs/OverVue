@@ -250,7 +250,7 @@ export default {
 
       // writes the HTML tag boilerplate
       let templateTagStr = this.writeTemplateTag(componentName);
-
+//adds class/id into code snippet with exporting
     if(this.componentMap[componentName].htmlAttributes) {
       if (this.componentMap[componentName].htmlAttributes.class !== "" && this.componentMap[componentName].htmlAttributes.id !== "") {
         return `<template>\n  <div id = "${this.componentMap[componentName].htmlAttributes.id}" class = "${this.componentMap[componentName].htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
@@ -285,22 +285,9 @@ export default {
         if (this.exportAsTypescript === "on") {
           imports += 'import { defineComponent } from "vue";\n';
         }
-        // add imports for children
-        // for (let child in children) {
-        //   imports += `import ${children[child].componentName} from '@/components/${children[child].componentName}.vue';\n`;
-        // }
-        // children.forEach((name) => {
-        // });
-        // add components section
 
-        // if true add data section and populate with props
         let childrenComponentNames = "";
-        // for (let child in children) {
-        //   childrenComponentNames += `    ${children[child].componentName},\n`;
-        // }
-        // children.forEach((name) => {
-        // });
-        // if true add data section and populate with props
+
         let data = "";
         data += "  data () {\n    return {";
         if (currentComponent.props.length) {
@@ -365,14 +352,8 @@ export default {
       } else {
         let str = "";
 
-      // for (let child in children) {
-      //   str += `import ${children[child].componentName} from '@/components/${children[child].componentName}.vue';\n`;
-      // }
-
         let childrenComponentNames = "";
-        // for (let child in children) {
-        //   childrenComponentNames += `    ${children[child].componentName},\n`;
-        // }
+
         // eslint-disable-next-line no-useless-escape
         if (this.exportAsTypescript === "on") {
           return `\n\n<script lang="ts">\nimport { defineComponent } from "vue";\n ${str}\nexport default defineComponent ({\n  name: '${componentName}',\n  components: {\n${childrenComponentNames}  }\n});\n<\/script>`;

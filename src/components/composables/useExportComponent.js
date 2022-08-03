@@ -148,6 +148,7 @@ export function useExportComponent() {
         // writes the HTML tag boilerplate
         let templateTagStr = writeTemplateTag(componentName);
 
+        //used to loop through - and apply class/id in code snippet
         if (this.componentMap[componentName].htmlAttributes.class !== "" && this.componentMap[componentName].htmlAttributes.id !== "") {
         return `<template>\n  <div id = "${this.componentMap[componentName].htmlAttributes.id}" class = "${this.componentMap[componentName].htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
       } else if (this.componentMap[componentName].htmlAttributes.class !== "" && this.componentMap[componentName].htmlAttributes.id === "") {
