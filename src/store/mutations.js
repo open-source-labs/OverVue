@@ -633,6 +633,7 @@ const mutations = {
       idDrag,
       idDrop,
       htmlAttributes,
+      color,
     } = payload;
     const s = payload.state;
     state.componentMap = {
@@ -654,6 +655,7 @@ const mutations = {
         idDrag,
         idDrop,
         htmlAttributes,
+        color,
       },
     };
   },
