@@ -12,6 +12,8 @@
     <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
     <p class="cssContainerText">
     CSS Container</p>
+  
+    <!--each component box in canvas will have these properties-->
     <vue-draggable-resizable
       class-name="component-box"
       v-for="componentData in activeRouteArray"
@@ -217,13 +219,14 @@
         </div>
         <div v-if="element.text === 'navbar'" class="htmlNavbar"></div>
       </div>
+      <!--change color icon-->
       <q-icon v-if="componentData.componentName === this.activeComponent"
         size="25px" 
         z-layer="0" 
         name="palette" 
         class="colorLogo" 
         @click="handleEditColor" />
-        <!-- start of right click function-->
+        <!-- start of right click on component box function-->
         <q-menu context-menu>
           <q-list color="black" class="menu">
             <q-item clickable v-ripple v-close-popup id="layer-item">
@@ -298,9 +301,8 @@
           </div>
         </q-dialog>
 
-        <!--color selector-->
+        <!--color selector logic - color changer will start at current state of the color-->
         <q-dialog v-model="colorModal" @update:model-value="handleEditColor">
-          <!--may need to change starting to be current state?-->
           <ColorPicker class="colorPicker" default-format="hex" id="color-picker-1" :visible-formats="['hex']"
             :color="this.activeComponentData.color" @color-change="updateColors">
             <template #hue-range-input-label>
@@ -376,21 +378,6 @@ export default {
     };
   },
   mounted() {
-    // when component is mounted, add ability to delete
-    // window.addEventListener("keyup", (event) => {
-    //   if (event.key === "Backspace") {
-    //     if (this.activeComponent !== '' && this.noteModalOpen === false) {
-    //       this.$store.dispatch("deleteActiveComponent");
-    //     }
-    //   }
-    // });
-    // window.addEventListener("keyup", (event) => {
-    //   if (event.key === "Delete") {
-    //     if (this.activeComponent !== '' && this.noteModalOpen === false) {
-    //       this.$store.dispatch("deleteActiveComponent");
-    //     }
-    //   }
-    // });
     // listener for the copy
     window.addEventListener("copy", () => {
       // if there is an activeComponent, copy info to state using dispatch
@@ -588,7 +575,7 @@ export default {
       payload.z--;
       this.updateComponentLayer(payload);
     },
-
+//drag and drop function
     finishedDrag: function (x, y) {
       let payload = {
         x: x,
@@ -647,7 +634,7 @@ export default {
         this.openNoteModal();
       }
     },
-
+//color editor - opens the pop up
     handleEditColor() {
       if (this.wasDragged === false && this.activeComponent !== '') {
         this.openColorModal();
