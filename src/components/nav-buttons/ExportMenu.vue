@@ -240,10 +240,10 @@ export default {
         for(let child in children) {
           if(children[child].componentName === "HomeView") {
             str += `\t\t\t<router-link to="/" class = "componentLinks">${children[child].componentName}</router-link>\n`;
-          } else {
+          } else if (children[child].componentName !== "App") {
             str += `\t\t\t<router-link to="/${children[child].componentName}" class = "componentLinks">${children[child].componentName}</router-link>\n`;
           }}
-          str += "\t\t\t<router-view></router-view>\n\t\t</div>\n\t";
+          str += `\t\t</div>\n\t\t<router-view class = "router-view"></router-view>\n`;
         } else {
           str += `<div>\n`;
         }
@@ -413,7 +413,7 @@ z-index: ${html.z};
           }
     }
     if (componentName === "App") {
-      return `\n\n<style scoped>\n.componentLinks {
+      return `\n\n<style scoped>\n#nav {
     margin: auto;
     text-align: center;
     display: flex;
@@ -421,9 +421,13 @@ z-index: ${html.z};
     padding: 1rem 2rem;
     background: #cfd8dc;
     border: 1px solid black;
+	  width:50%;
 }
 
-\n</style >`
+.router-view {
+  margin:auto;
+}
+</style >`
     } else return `\n\n<style scoped>\n${styleString}</style >`;
     },
 
