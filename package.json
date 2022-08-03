@@ -1,6 +1,6 @@
 {
   "name": "overvue",
-  "version": "6.0.0",
+  "version": "7.0.0",
   "description": "Vue Prototype DevTool",
   "productName": "OverVue",
   "cordovaId": "org.cordova.quasar.app",
@@ -14,6 +14,7 @@
     "lint": "eslint --ext .js,.vue ./",
     "test": "echo \"See package.json => scripts for available tests.\" && exit 0",
     "start": "electron .",
+    "build": "quasar build -m electron",
     "dev": "quasar dev -m electron",
     "test:unit": "jest --updateSnapshot",
     "test:unit:ci": "jest --ci",
@@ -24,6 +25,7 @@
     "concurrently:dev:jest": "concurrently \"quasar dev\" \"jest --watch\""
   },
   "dependencies": {
+    "@quasar/cli": "^1.3.2",
     "@quasar/extras": "^1.12.5",
     "@ssthouse/vue3-tree-chart": "^0.2.3",
     "core-js": "^3.21.1",
@@ -63,7 +65,7 @@
     "@vue/test-utils": "^2.0.0-rc.18",
     "@vue/vue3-jest": "^27.0.0-alpha.4",
     "electron": "^17.4.10",
-    "electron-builder": "^22.14.13",
+    "electron-builder": "^23.0.2",
     "electron-is-dev": "^2.0.0",
     "electron-packager": "^15.4.0",
     "eslint": "^8.9.0",
