@@ -168,8 +168,8 @@ module.exports = configure(function (ctx) {
       },
 
       manifest: {
-        name: `OverVue6.0`,
-        short_name: `OverVue6.0`,
+        name: `OverVue7.0`,
+        short_name: `OverVue7.0`,
         description: `A Quasar Framework app`,
         display: "standalone",
         orientation: "portrait",

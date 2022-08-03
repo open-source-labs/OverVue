@@ -1,6 +1,6 @@
 {
   "name": "overvue",
-  "version": "6.0.0",
+  "version": "7.0.0",
   "description": "Vue Prototype DevTool",
   "productName": "OverVue",
   "cordovaId": "org.cordova.quasar.app",
