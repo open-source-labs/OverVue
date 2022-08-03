@@ -24,7 +24,7 @@
 
     <p class="info-sub-heading">Add class, id, and v-model Attributes </p>
     <p class="infoContent">There are multiple ways to add attributes.
-      One method is to click on the HTML Attributes drop down button. Specify the attribute by selecting either id or
+      One method is to click on the Component Attributes drop down button. Specify the attribute by selecting either id or
       class. Click the <img style="vertical-align:middle" alt="save" src="../../../assets/plussign.png"
         class="tut-image"> or enter to apply the attribute. <br>
       Another method is to double click the purple HTML tag.<img style="vertical-align:middle" alt="save"
