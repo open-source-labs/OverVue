@@ -55,14 +55,14 @@ export default {
       if (this.exportAsTypescript === "on") {
         fs.writeFileSync(
           path.join(location, "src", "router", "index.ts"),
-          this.createRouterImports(this.componentMap["App"].children) +
-          this.createExport(this.componentMap["App"].children)
+          this.createRouterImports(this.componentMap) +
+          this.createExport(this.componentMap)
         );
       } else {
         fs.writeFileSync(
           path.join(location, "src", "router", "index.js"),
-          this.createRouterImports(this.componentMap["App"].children) +
-          this.createExport(this.componentMap["App"].children)
+          this.createRouterImports(this.componentMap) +
+          this.createExport(this.componentMap)
         );
       }
     },
@@ -72,9 +72,14 @@ export default {
      */
     createRouterImports(appChildren) {
       let str = "import { createRouter, createWebHistory } from 'vue-router';\n";
-      appChildren.forEach((child) => {
-        str += `import ${child} from '../views/${child}.vue';\n`;
-      });
+      for(let child in appChildren) {
+        if(appChildren[child].componentName === "HomeView") {
+          str += `import ${appChildren[child].componentName} from '../views/${appChildren[child].componentName}.vue';\n`;
+      } 
+      if(appChildren[child].componentName !== "App" && appChildren[child].componentName !== "HomeView") {
+          str += `import ${appChildren[child].componentName} from '../components/${appChildren[child].componentName}.vue';\n`;
+      }
+      }
       return str;
     },
     /**
@@ -82,14 +87,14 @@ export default {
      */
     createExport(appChildren) {
       let str = "export default createRouter({\n\thistory: createWebHistory(import.meta.env.BASE_URL),\n\troutes: [\n";
-      appChildren.forEach((child) => {
-        if (child === "HomeView") {
-          str += `\t\t{\n\t\t\tpath: '/',\n\t\t\tname:'${child}',\n\t\t\tcomponent:${child}\n\t\t},\n`;
-        } else {
-          str += `\t\t{\n\t\t\tpath: '/${child}',\n\t\t\tname:'${child}',\n\t\t\tcomponent: () => import('../views/${child}.vue')\n\t\t},\n`;
+      for(let child in appChildren) {
+        if (appChildren[child].componentName === "HomeView") {
+          str += `\n\t\t{\n\t\t\tpath: '/',\n\t\t\tname:'${appChildren[child].componentName}',\n\t\t\tcomponent:${appChildren[child].componentName}\n\t\t},\n`;
+        } else if (appChildren[child].componentName !== "App") {
+          str += `\n\t\t{\n\t\t\tpath: '/${appChildren[child].componentName}',\n\t\t\tname:'${appChildren[child].componentName}',\n\t\t\tcomponent:${appChildren[child].componentName}\n\t\t},\n`;
         }
-      });
-      str += `\t]\n})\n`;
+      }
+      str += `\n\t\t]\n})`
       return str;
     },
     /**
@@ -232,15 +237,17 @@ export default {
       
       if (componentName === "App") {
         str += `<div id="app">\n\t\t<div id="nav">\n`;
-        children.forEach((name) => {
-          if (name === "HomeView") {
-            str += `\t\t\t<router-link to="/">${name}</router-link>\n`;
+        for(let child in children) {
+          if(children[child].componentName === "HomeView") {
+            str += `\t\t\t<router-link to="/" class = "componentLinks">${children[child].componentName}</router-link>\n`;
           } else {
-            str += `\t\t\t<router-link to="/${name}">${name}</router-link>\n`;
-          }
-        });
-        str += "\t\t\t<router-view></router-view>\n\t\t</div>\n";
-      }
+            str += `\t\t\t<router-link to="/${children[child].componentName}" class = "componentLinks">${children[child].componentName}</router-link>\n`;
+          }}
+          str += "\t\t\t<router-view></router-view>\n\t\t</div>\n\t";
+        } else {
+          str += `<div>\n`;
+        }
+
       // writes the HTML tag boilerplate
       let templateTagStr = this.writeTemplateTag(componentName);
 
@@ -252,7 +259,7 @@ export default {
       } else if (this.componentMap[componentName].htmlAttributes.class === "" && this.componentMap[componentName].htmlAttributes.id !== "")
       return `<template>\n  <div id = "${this.componentMap[componentName].htmlAttributes.id}">\n${templateTagStr}  </div>\n</template>`;
         else return `<template>\n  <div>\n\t${str}${templateTagStr}  </div>\n</template>`;
-    } else return `<template>\n  <div>\n\t${str}${templateTagStr}  </div>\n</template>`
+    } else return `<template>\n\t${str}${templateTagStr}</div>\n</template>`
     },
     /**
      * @description imports child components into <script>
@@ -279,16 +286,20 @@ export default {
           imports += 'import { defineComponent } from "vue";\n';
         }
         // add imports for children
-        children.forEach((name) => {
-          imports += `import ${name} from '@/components/${name}.vue';\n`;
-        });
+        // for (let child in children) {
+        //   imports += `import ${children[child].componentName} from '@/components/${children[child].componentName}.vue';\n`;
+        // }
+        // children.forEach((name) => {
+        // });
         // add components section
 
         // if true add data section and populate with props
         let childrenComponentNames = "";
-        children.forEach((name) => {
-          childrenComponentNames += `    ${name},\n`;
-        });
+        // for (let child in children) {
+        //   childrenComponentNames += `    ${children[child].componentName},\n`;
+        // }
+        // children.forEach((name) => {
+        // });
         // if true add data section and populate with props
         let data = "";
         data += "  data () {\n    return {";
@@ -354,18 +365,19 @@ export default {
       } else {
         let str = "";
 
-        children.forEach((name) => {
-          str += `import ${name} from '@/components/${name}.vue';\n`;
-        });
+      // for (let child in children) {
+      //   str += `import ${children[child].componentName} from '@/components/${children[child].componentName}.vue';\n`;
+      // }
+
         let childrenComponentNames = "";
-        children.forEach((name) => {
-          childrenComponentNames += `    ${name},\n`;
-        });
+        // for (let child in children) {
+        //   childrenComponentNames += `    ${children[child].componentName},\n`;
+        // }
         // eslint-disable-next-line no-useless-escape
         if (this.exportAsTypescript === "on") {
           return `\n\n<script lang="ts">\nimport { defineComponent } from "vue";\n ${str}\nexport default defineComponent ({\n  name: '${componentName}',\n  components: {\n${childrenComponentNames}  }\n});\n<\/script>`;
         }
-        return `\n\n<script>\n${str}\nexport default {\n  name: '${componentName}',\n  components: {\n${childrenComponentNames}  }\n};\n<\/script>`;
+        return `\n\n<script>\n${str}\nexport default {\n  name: '${componentName}',\n  components: {\n  }\n};\n<\/script>`;
       }
     },
     /**
@@ -400,8 +412,19 @@ z-index: ${html.z};
 }\n`
           }
     }
+    if (componentName === "App") {
+      return `\n\n<style scoped>\n.componentLinks {
+    margin: auto;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    background: #cfd8dc;
+    border: 1px solid black;
+}
 
-        return `\n\n<style scoped>\n${styleString}</style >`;
+\n</style >`
+    } else return `\n\n<style scoped>\n${styleString}</style >`;
     },
 
     // creates index html
@@ -634,14 +657,14 @@ z-index: ${html.z};
             this.createComponentCode(
               path.join(data, "src", "views", componentName),
               componentName,
-              this.componentMap[componentName].children
+              this.componentMap
             );
             // if componentName is a just a component
           } else {
             this.createComponentCode(
               path.join(data, "src", "components", componentName),
               componentName,
-              this.componentMap[componentName].children
+              this.componentMap
             );
           }
           // if componentName is App
@@ -649,7 +672,7 @@ z-index: ${html.z};
           this.createComponentCode(
             path.join(data, "src", componentName),
             componentName,
-            this.componentMap[componentName].children
+            this.componentMap
           );
         }
       }
