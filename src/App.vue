@@ -1,12 +1,8 @@
 <template>
   <!-- Get passed down to MyLayout.vue 
   & listen for custom events emitted from MyLayout.vue -->
-  <router-view
-    v-on:undo="undoTrigger"
-    v-on:redo="redoTrigger"
-    v-bind:done-action="doneAction"
-    v-bind:undone-action="undoneAction"
-  />
+  <router-view v-on:undo="undoTrigger" v-on:redo="redoTrigger" v-bind:done-action="doneAction"
+    v-bind:undone-action="undoneAction" />
 </template>
 
 <script>
@@ -44,7 +40,7 @@ let redoMixin = {
         if (this.undoneAction[this.undoneAction.length - 1]) {
           if (
             action.type ===
-              this.undoneAction[this.undoneAction.length - 1].type &&
+            this.undoneAction[this.undoneAction.length - 1].type &&
             deepEqual(
               action.payload,
               this.undoneAction[this.undoneAction.length - 1].payload
