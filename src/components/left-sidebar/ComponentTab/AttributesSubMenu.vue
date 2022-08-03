@@ -16,30 +16,19 @@
         </q-item>
       </q-list>
     </q-btn-dropdown>
-
+<!--Attribute (id/class so far) change function for main component parent-->
     <q-input @keyup.enter="createAttribute(attributeText)" color="white" dark outlined bottom-slots
       v-model="attributeText" label="Enter Label" dense class="input-add" v-on:keyup.delete.stop>
       <template v-slot:append>
         <q-btn flat icon="add" @click="createAttribute(attributeText)" />
       </template>
     </q-input>
-
+<!--delete buttons to remove class/id-->
     <button v-if="this.activeComponentObj.htmlAttributes.class !== ''" class="deleteButton"
       @click="deleteAttribute('class')" color="primary">Remove class</button>
 
     <button v-if="this.activeComponentObj.htmlAttributes.id !== ''" class="deleteButton" @click="deleteAttribute('id')"
       color="primary">Remove id</button>
-
-    <!-- <div>
-      <q-btn
-        v-if="selectProps.length"
-        id="add-props-btn"
-        class="add-btn"
-        color="secondary"
-        label="Add Prop(s)"
-        @click="addPropsToComp"
-      />
-    </div> -->
   </div>
 </template>
 
@@ -79,7 +68,7 @@ export default {
     stopDelete(e) {
       if (e.code === "Backspace") e.stopPropogation();
     },
-
+//attribute change function to create attribute
     createAttribute(attributeText) {
       this.editAttribute({
         attribute: this.attributeSelection,
@@ -88,12 +77,14 @@ export default {
         routeArray: this.routes[this.activeRoute],
         activeComponentData: this.activeComponentData,
       })
+      this.attributeText = "";
     },
-
+//function to change the state of the attribute selection dropdown menu
     changeAttribute(attribute) {
       this.attributeSelection = attribute;
     },
 
+//delete attribute after the delete bvutton has been clicked
     deleteAttribute(attribute) {
       this.editAttribute({
         attribute: attribute,
@@ -115,9 +106,6 @@ export default {
 }
 
 .input-add {
-  // position:absolute;
-  // margin-left: 7em;
-  // bottom:-100%;
   margin-top: 1em;
   margin-bottom: -1em;
 }

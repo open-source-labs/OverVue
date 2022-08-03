@@ -9,7 +9,7 @@ Description:
     <q-menu class="dropdown" :offset="[0, 15]">
       <div class="column items-center">
         <p class="center">Export:</p>
-        <q-btn class="menu-btn" no-caps color="secondary" label="Project" @click="exportProject" />
+        <q-btn class="menu-btn" no-caps color="secondary" label="Vue Project" @click="exportProject" />
         <q-btn class="menu-btn" id="export-component-nav-btn" no-caps color="secondary" label="Active Component"
           @click="useExportComponentBound" :disabled="!activeComponent.trim()" />
       </div>
@@ -55,14 +55,14 @@ export default {
       if (this.exportAsTypescript === "on") {
         fs.writeFileSync(
           path.join(location, "src", "router", "index.ts"),
-          this.createRouterImports(this.componentMap["App"].children) +
-          this.createExport(this.componentMap["App"].children)
+          this.createRouterImports(this.componentMap) +
+          this.createExport(this.componentMap)
         );
       } else {
         fs.writeFileSync(
           path.join(location, "src", "router", "index.js"),
-          this.createRouterImports(this.componentMap["App"].children) +
-          this.createExport(this.componentMap["App"].children)
+          this.createRouterImports(this.componentMap) +
+          this.createExport(this.componentMap)
         );
       }
     },
@@ -72,9 +72,14 @@ export default {
      */
     createRouterImports(appChildren) {
       let str = "import { createRouter, createWebHistory } from 'vue-router';\n";
-      appChildren.forEach((child) => {
-        str += `import ${child} from '../views/${child}.vue';\n`;
-      });
+      for(let child in appChildren) {
+        if(appChildren[child].componentName === "HomeView") {
+          str += `import ${appChildren[child].componentName} from '../views/${appChildren[child].componentName}.vue';\n`;
+      } 
+      if(appChildren[child].componentName !== "App" && appChildren[child].componentName !== "HomeView") {
+          str += `import ${appChildren[child].componentName} from '../components/${appChildren[child].componentName}.vue';\n`;
+      }
+      }
       return str;
     },
     /**
@@ -82,14 +87,14 @@ export default {
      */
     createExport(appChildren) {
       let str = "export default createRouter({\n\thistory: createWebHistory(import.meta.env.BASE_URL),\n\troutes: [\n";
-      appChildren.forEach((child) => {
-        if (child === "HomeView") {
-          str += `\t\t{\n\t\t\tpath: '/',\n\t\t\tname:'${child}',\n\t\t\tcomponent:${child}\n\t\t},\n`;
-        } else {
-          str += `\t\t{\n\t\t\tpath: '/${child}',\n\t\t\tname:'${child}',\n\t\t\tcomponent: () => import('../views/${child}.vue')\n\t\t},\n`;
+      for(let child in appChildren) {
+        if (appChildren[child].componentName === "HomeView") {
+          str += `\n\t\t{\n\t\t\tpath: '/',\n\t\t\tname:'${appChildren[child].componentName}',\n\t\t\tcomponent:${appChildren[child].componentName}\n\t\t},\n`;
+        } else if (appChildren[child].componentName !== "App") {
+          str += `\n\t\t{\n\t\t\tpath: '/${appChildren[child].componentName}',\n\t\t\tname:'${appChildren[child].componentName}',\n\t\t\tcomponent:${appChildren[child].componentName}\n\t\t},\n`;
         }
-      });
-      str += `\t]\n})\n`;
+      }
+      str += `\n\t\t]\n})`
       return str;
     },
     /**
@@ -122,26 +127,26 @@ export default {
     writeTemplateTag(componentName) {
       // create reference object
       const htmlElementMap = {
-        div: ["<div>", "</div>"],
-        button: ["<button>", "</button>"],
-        form: ["<form>", "</form>"],
-        img: ["<img>", ""],
-        link: ['<a href="#"/>', ""],
-        list: ["<li>", "</li>"],
-        paragraph: ["<p>", "</p>"],
-        "list-ol": ["<ol>", "</ol>"],
-        "list-ul": ["<ul>", "</ul>"],
-        input: ["<input />", ""],
-        navbar: ["<nav>", "</nav>"],
-        header:["<header>", "</header>"],
-        footer:["<footer>", "</footer>"],
-        meta: ["<meta>", "</meta>"],
-        h1:["<h1>", "</h1>"],
-        h2:["<h2>", "</h2>"],
-        h3:["<h3>", "</h3>"],
-        h4:["<h4>", "</h4>"],
-        h5:["<h5>", "</h5>"],
-        h6:["<h6>", "</h6>"],
+        div: ["<div", "</div>"],
+        button: ["<button", "</button>"],
+        form: ["<form", "</form>"],
+        img: ["<img", ""], //single
+        link: ['<a href="#"', ""], //single
+        list: ["<li", "</li>"],
+        paragraph: ["<p", "</p>"],
+        "list-ol": ["<ol", "</ol>"],
+        "list-ul": ["<ul", "</ul>"],
+        input: ["<input", ""], //single
+        navbar: ["<nav", "</nav>"],
+        header: ["<header", "</header>"],
+        footer: ["<footer", "</footer>"],
+        meta: ["<meta", "</meta>"],
+        h1: ["<h1", "</h1>"],
+        h2: ["<h2", "</h2>"],
+        h3: ["<h3", "</h3>"],
+        h4: ["<h4", "</h4>"],
+        h5: ["<h5", "</h5>"],
+        h6: ["<h6", "</h6>"],
       };
       // function to loop through nested elements
       function writeNested(childrenArray, indent) {
@@ -150,25 +155,33 @@ export default {
         }
         let indented = indent + "  ";
         let nestedString = "";
+
         childrenArray.forEach((child) => {
-          nestedString += indented;
-          if (!child.text) {
-            nestedString += `<${child}/>\n`;
-          } else {
-            if (child.children.length) {
-              nestedString += htmlElementMap[child.text][0];
-              nestedString += "\n";
-              nestedString += writeNested(child.children, indented);
-              nestedString += indented + htmlElementMap[child.text][1];
-              nestedString += "\n";
+            nestedString += indented;
+            if (!child.text) {
+              nestedString += `<${child}/>\n`;
             } else {
-              nestedString +=
-                htmlElementMap[child.text][0] +
-                htmlElementMap[child.text][1] +
-                "\n";
+              nestedString += htmlElementMap[child.text][0];
+              if (child.class !== "") {
+                nestedString += " " + "class = " + `"${child.class}"`;
+              }
+              if(child.binding !== "") {
+                nestedString += " " + "v-model = " + `"${child.binding}"`;
+              }
+              if (child.text === "img" || child.text === "input" || child.text === "link") {
+                nestedString += "/>";
+              } else { nestedString += ">"; }
+  
+              if (child.children.length) {
+                nestedString += "\n";
+                nestedString += writeNested(child.children, indented);
+                nestedString += indented + htmlElementMap[child.text][1];
+                nestedString += "\n";
+              } else {
+                nestedString += htmlElementMap[child.text][1] + "\n";
+              }
             }
-          }
-        });
+          });
         return nestedString;
       }
       // iterate through component's htmllist
@@ -180,16 +193,23 @@ export default {
           outputStr += `    <${el}/>\n`;
         } else {
           outputStr += `    `;
+          outputStr += htmlElementMap[el.text][0]
+          //if conditional to check class
+          if (el.class !== "") {
+            outputStr += " " + "class = " + `"${el.class}"`;
+          }
+          if (el.binding !== "") {
+            outputStr += " " + "v-model = " + `"${el.binding}"`;
+          }
+          outputStr += ">";
           if (el.children.length) {
-            outputStr += htmlElementMap[el.text][0];
             outputStr += "\n";
             outputStr += writeNested(el.children, `    `);
             outputStr += `    `;
             outputStr += htmlElementMap[el.text][1];
             outputStr += `  \n`;
           } else {
-            outputStr +=
-              htmlElementMap[el.text][0] + htmlElementMap[el.text][1] + "\n";
+            outputStr += htmlElementMap[el.text][1] + "\n";
           }
         }
       }
@@ -214,22 +234,32 @@ export default {
      */
     writeTemplate(componentName, children) {
       let str = "";
+      
       if (componentName === "App") {
         str += `<div id="app">\n\t\t<div id="nav">\n`;
-        children.forEach((name) => {
-          if (name === "HomeView") {
-            str += `\t\t\t<router-link to="/">${name}</router-link>\n`;
-          } else {
-            str += `\t\t\t<router-link to="/${name}">${name}</router-link>\n`;
-          }
-        });
-        str += "\t\t\t<router-view></router-view>\n\t\t</div>\n";
-      } else {
-        str += `<div>\n`;
-      }
+        for(let child in children) {
+          if(children[child].componentName === "HomeView") {
+            str += `\t\t\t<router-link to="/" class = "componentLinks">${children[child].componentName}</router-link>\n`;
+          } else if (children[child].componentName !== "App") {
+            str += `\t\t\t<router-link to="/${children[child].componentName}" class = "componentLinks">${children[child].componentName}</router-link>\n`;
+          }}
+          str += `\t\t</div>\n\t\t<router-view class = "router-view"></router-view>\n`;
+        } else {
+          str += `<div>\n`;
+        }
+
       // writes the HTML tag boilerplate
       let templateTagStr = this.writeTemplateTag(componentName);
-      return `<template>\n\t${str}${templateTagStr}\t</div>\n</template>`;
+//adds class/id into code snippet with exporting
+    if(this.componentMap[componentName].htmlAttributes) {
+      if (this.componentMap[componentName].htmlAttributes.class !== "" && this.componentMap[componentName].htmlAttributes.id !== "") {
+        return `<template>\n  <div id = "${this.componentMap[componentName].htmlAttributes.id}" class = "${this.componentMap[componentName].htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
+      } else if (this.componentMap[componentName].htmlAttributes.class !== "" && this.componentMap[componentName].htmlAttributes.id === "") {
+          return `<template>\n  <div class = "${this.componentMap[componentName].htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
+      } else if (this.componentMap[componentName].htmlAttributes.class === "" && this.componentMap[componentName].htmlAttributes.id !== "")
+      return `<template>\n  <div id = "${this.componentMap[componentName].htmlAttributes.id}">\n${templateTagStr}  </div>\n</template>`;
+        else return `<template>\n  <div>\n\t${str}${templateTagStr}  </div>\n</template>`;
+    } else return `<template>\n\t${str}${templateTagStr}</div>\n</template>`
     },
     /**
      * @description imports child components into <script>
@@ -255,28 +285,27 @@ export default {
         if (this.exportAsTypescript === "on") {
           imports += 'import { defineComponent } from "vue";\n';
         }
-        // add imports for children
-        children.forEach((name) => {
-          imports += `import ${name} from '@/components/${name}.vue';\n`;
-        });
-        // add components section
 
-        // if true add data section and populate with props
         let childrenComponentNames = "";
-        children.forEach((name) => {
-          childrenComponentNames += `    ${name},\n`;
-        });
-        // if true add data section and populate with props
+
         let data = "";
+        data += "  data () {\n    return {";
         if (currentComponent.props.length) {
-          data += "  data () {\n    return {";
           currentComponent.props.forEach((prop) => {
             data += `\n      ${prop}: "PLACEHOLDER FOR VALUE",`;
           });
+        }
+          this.routes.HomeView.forEach((element) => {
+            element.htmlList.forEach((html) => {
+              if(html.binding !== '') {
+                data += `\n      ${html.binding}: "PLACEHOLDER FOR VALUE",`;
+              }
+            })
+          })
           data += "\n";
           data += "    }\n";
           data += "  },\n";
-        }
+
         // if true add computed section and populate with state
         let computed = "";
         if (currentComponent.state.length) {
@@ -322,18 +351,14 @@ export default {
         return output;
       } else {
         let str = "";
-        children.forEach((name) => {
-          str += `import ${name} from '@/components/${name}.vue';\n`;
-        });
+
         let childrenComponentNames = "";
-        children.forEach((name) => {
-          childrenComponentNames += `    ${name},\n`;
-        });
+
         // eslint-disable-next-line no-useless-escape
         if (this.exportAsTypescript === "on") {
           return `\n\n<script lang="ts">\nimport { defineComponent } from "vue";\n ${str}\nexport default defineComponent ({\n  name: '${componentName}',\n  components: {\n${childrenComponentNames}  }\n});\n<\/script>`;
         }
-        return `\n\n<script>\n${str}\nexport default {\n  name: '${componentName}',\n  components: {\n${childrenComponentNames}  }\n};\n<\/script>`;
+        return `\n\n<script>\n${str}\nexport default {\n  name: '${componentName}',\n  components: {\n  }\n};\n<\/script>`;
       }
     },
     /**
@@ -341,12 +366,52 @@ export default {
      * if component is 'App', writes css, else returns <style scoped>
      */
     writeStyle(componentName) {
-      let style =
-        componentName !== "App"
-          ? ""
-          : `#app {\n\tfont-family: 'Avenir', Helvetica, Arial, sans-serif;\n\t-webkit-font-smoothing: antialiased;\n\t-moz-osx-font-smoothing: grayscale;\n\ttext-align: center;\n\tcolor: #2C3E50;\n\tmargin-top: 60px;\n}\n`;
-      return `\n\n<style scoped>\n${style}</style>`;
+  let htmlArray = this.componentMap[componentName].htmlList;
+        let styleString = "";
+
+        this.routes.HomeView.forEach((element) => {
+          if(element.htmlAttributes.class !== "") {
+            styleString += `.${element.htmlAttributes.class} {\nbackground-color: ${element.color};
+width: ${element.w}px;
+height: ${element.h}px;
+z-index: ${element.z};
+}\n`
+          }
+        }) 
+          
+        
+  
+
+
+        for (const html of htmlArray) {
+          if (html.class !== '') {
+            styleString += `.${html.class} {\nheight: ${html.h}%;
+width: ${html.w}%;
+top: ${html.x}%;
+left: ${html.y}%;
+z-index: ${html.z};
+}\n`
+          }
+    }
+    if (componentName === "App") {
+      return `\n\n<style scoped>\n#nav {
+    margin: auto;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    background: #cfd8dc;
+    border: 1px solid black;
+	  width:50%;
+}
+
+.router-view {
+  margin:auto;
+}
+</style >`
+    } else return `\n\n<style scoped>\n${styleString}</style >`;
     },
+
     // creates index html
     createIndexFile(location) {
       let str = `<!DOCTYPE html>\n<html lang="en">\n\n<head>`;
@@ -577,14 +642,14 @@ export default {
             this.createComponentCode(
               path.join(data, "src", "views", componentName),
               componentName,
-              this.componentMap[componentName].children
+              this.componentMap
             );
             // if componentName is a just a component
           } else {
             this.createComponentCode(
               path.join(data, "src", "components", componentName),
               componentName,
-              this.componentMap[componentName].children
+              this.componentMap
             );
           }
           // if componentName is App
@@ -592,7 +657,7 @@ export default {
           this.createComponentCode(
             path.join(data, "src", componentName),
             componentName,
-            this.componentMap[componentName].children
+            this.componentMap
           );
         }
       }
@@ -607,5 +672,11 @@ export default {
 <style scoped>
 #export-component-nav-btn {
   margin-bottom: 20px;
+}
+
+.menu-btn{
+  width: 60%;
+  margin: 10px 0px;
+  max-height: 55px !important;
 }
 </style>

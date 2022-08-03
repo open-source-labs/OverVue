@@ -311,6 +311,8 @@ Then open a new terminal instance, set the DISPLAY value again (re-enter above c
 ```
 quasar dev -m electron
 ```
+**NOTE** Electron-deeplink currently does not work on our WSL2 computers and output an error during installing the dependency which prevented the application to open in dev mode. Go to /src-electron/electron-main.js and comment out line 3/import line to bypass error. The developers did not find any impacts on application so far.
+
 ## Running the Docker Image
 
 To run the built version, pull down the docker image from [Docker repo]

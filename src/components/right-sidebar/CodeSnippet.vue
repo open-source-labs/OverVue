@@ -159,7 +159,7 @@ export default {
       let htmlArr = this.componentMap[componentName].htmlList;
       let outputStr = ``
       // eslint-disable-next-line no-unused-vars
-      for (const el of htmlArr) {
+      for (let el of htmlArr) {
         if (!el.text) {
           outputStr += `    <${el}/>\n`;
         } else {
@@ -237,12 +237,20 @@ export default {
         data += "  },\n";
       }
       const htmlBinding = this.componentMap[this.activeComponent].htmlList
-
       data += "  data() {\n    return {\n"
       htmlBinding.forEach(el => {
         if (el.binding !== '') {
           data += `      ${el.binding}: "PLACEHOLDER FOR VALUE", `
           data += '\n'
+        }
+        //checks if there is binding in it's html child's child and will add to code snippet
+        if (el.children.length !== 0) {
+          el.children.forEach( el1 => {
+            if(el1.binding !== '') {
+              data += `      "${el1.binding}": "PLACEHOLDER FOR VALUE", `
+              data += '\n'
+            }
+          })
         }
       })
       data += `    }`
@@ -277,17 +285,17 @@ export default {
       let styleString = "";
 
       if (this.activeComponentObj.htmlAttributes.class !== "") {
-        styleString += `.${this.activeComponentObj.htmlAttributes.class} { \nbackground- color: ${this.activeComponentObj.color};
-      width: ${this.activeComponentObj.w} px;
-      height: ${this.activeComponentObj.h} px;
-      z - index: ${this.activeComponentObj.z};
-    } \n`
+        styleString += `.${this.activeComponentObj.htmlAttributes.class} { \n background-color: ${this.activeComponentObj.color};
+ width: ${this.activeComponentObj.w} px;
+ height: ${this.activeComponentObj.h} px;
+ z-index: ${this.activeComponentObj.z};
+} \n`
       }
 
       for (const html of htmlArray) {
         if (html.class === ' ') styleString = "";
         if (html.class) {
-          styleString += `.${html.class} {\n height: ${html.h}%, \n width: ${html.w}%, \n  top: ${html.x}%, \n left: ${html.y}%, \n z-index: ${html.z}
+          styleString += `.${html.class} {\n height: ${html.h}%; \n width: ${html.w}%; \n top: ${html.x}%; \n left: ${html.y}%; \n z-index: ${html.z};
 }\n`
         }
       }
