@@ -37,7 +37,7 @@ export default {
   data() {
     return {
       //to give the child componenets of the active components icons
-      childIcon: ["fa-solid fa-code"]
+      childIcon: ["fas fa-code fa-lg"]
     };
   },
   name: "Icons",
