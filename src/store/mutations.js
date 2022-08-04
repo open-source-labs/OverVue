@@ -23,7 +23,7 @@ const mutations = {
     payload.store.replaceState(cloneDeep(payload.initialState));
   },
 
-  [types.REMOVE_ALL_STATE_PROPS_ACTIONS]: (state) =>{
+  [types.REMOVE_ALL_STATE_PROPS_ACTIONS]: (state) => {
     const emptyObj = {
       userProps: [],
       userState: [],
@@ -31,13 +31,13 @@ const mutations = {
     }
     Object.assign(state, emptyObj)
   },
-  
+
   [types.TOGGLE_TUTORIAL]: (state) => {
-    if (state.tutorialFirstOpen === true){
+    if (state.tutorialFirstOpen === true) {
       state.tutorialFirstOpen = false;
     }
     state.showTutorial = !state.showTutorial;
-  },  
+  },
 
   // *** ROUTES *** //////////////////////////////////////////////
   [types.ADD_ROUTE]: (state, payload) => {
@@ -108,7 +108,7 @@ const mutations = {
 
 
   [types.EXPORT_AS_TYPESCRIPT]: (state, payload) => {
-    state.exportAsTypescript = payload; 
+    state.exportAsTypescript = payload;
   },
 
   [types.CREATE_ACTION]: (state, payload) => {
@@ -206,7 +206,7 @@ const mutations = {
       [state.activeComponent]: state.activeComponentObj,
     };
   },
-
+  
   [types.DELETE_ACTION_FROM_COMPONENT]: (state, payload) => {
     state.componentMap[state.activeComponent].actions = state.componentMap[state.activeComponent].actions.filter(
       (action) => action !== payload);
@@ -271,7 +271,7 @@ const mutations = {
       pastedComponent.x = 20;
       pastedComponent.y = 20;
       pastedComponent.componentName += ` (${state.copyNumber})`
-      while(state.componentMap.hasOwnProperty(pastedComponent.componentName)){
+      while (state.componentMap.hasOwnProperty(pastedComponent.componentName)) {
         pastedComponent.componentName += ` copy`
       }
       state.componentMap[pastedComponent.componentName] = pastedComponent;
@@ -330,10 +330,37 @@ const mutations = {
         }
       }
     }
+    //update the the htmlList, find child components within the htmlLists with the old value, update it to the new value
+    for (const item of Object.values(state.componentMap)) {
+      if (item.htmlList) {
+        const newArray = [...item.htmlList];
+
+        const changeAllChildComponents = (array, name) => {
+          const queue = [...array.filter(el => typeof el === 'object')];
+          while(queue.length) {
+            const evaluate = queue.shift();
+            if(evaluate.text === name) {
+              evaluate.text = payload; 
+            }
+            for(let i = 0; i < evaluate.children.length; i++) {
+              if (evaluate.children[i].text === name) {
+                evaluate.children[i].text = payload;
+              } 
+              if (evaluate.children.length) {
+                queue.push(...evaluate.children)
+              }
+            }
+          }
+        }
+
+        changeAllChildComponents(newArray, temp)
+        item.htmlList = newArray
+      }
+    }
+
   },
 
   // *** HTML ELEMENTS *** //////////////////////////////////////////////
-
   [types.ADD_NESTED_HTML]: (state, payload) => {
     const componentName = state.activeComponent;
     const { activeHTML } = state;
@@ -348,7 +375,18 @@ const mutations = {
       text: payload.elementName,
       id: payload.date,
       children: [],
+      class: '',
+      x:0,
+      y:0,
+      z:0,
+      w:0,
+      h:0,
+      note: '',
     });
+  },
+
+  [types.CLEAR_ACTIVE_HTML]: (state) => {
+    state.activeHTML = '';
   },
 
   [types.ADD_NESTED_NO_ACTIVE]: (state, payload) => {
@@ -365,6 +403,14 @@ const mutations = {
       text: payload.elementName,
       id: payload.date,
       children: [],
+      class: '',
+      x:0,
+      y:0,
+      z:0,
+      w:0,
+      h:0,
+      note: '',
+      binding: ''
     });
   },
 
@@ -377,6 +423,14 @@ const mutations = {
       text: payload.elementName,
       id: payload.date,
       children: [],
+      class: '',
+      x:0,
+      y:0,
+      z:0,
+      w:0,
+      h:0,
+      note: '',
+      binding: ''
     });
   },
 
@@ -385,6 +439,14 @@ const mutations = {
       text: payload.elementName,
       id: payload.date,
       children: [],
+      class: '',
+      x:0,
+      y:0,
+      z:0,
+      w:0,
+      h:0,
+      note: '',
+      binding: ''
     });
   },
 
@@ -426,6 +488,7 @@ const mutations = {
 
   [types.SET_ACTIVE_LAYER]: (state, payload) => {
     const newLayer = cloneDeep(state.activeLayer);
+
     newLayer.lineage.push(payload.text);
     newLayer.id = payload.id;
     state.activeLayer = newLayer;
@@ -459,7 +522,89 @@ const mutations = {
     }
     state.activeHTML = "";
   },
+  //Drag-andDrop
+  //store id of dragged html element in activeComponent
+  [types.SET_ID_DRAG]: (state, payload) => {
+    const componentName = state.activeComponent;
+    state.componentMap[componentName].idDrag = payload;
+  },
+  //store id of html element whose place the dragged html element is dropped on in activeComponent
+  [types.SET_ID_DROP]: (state, payload) => {
+    const componentName = state.activeComponent;
+    state.componentMap[componentName].idDrop = payload;
+  },
+  //store id of dragged selected html element when creating a component
+  [types.SET_SELECTED_ID_DRAG]: (state, payload) => {
+    state.selectedIdDrag = payload;
+  },
+  //store id of html element whose place the dragged selected html element will be dropped when creating a component
+  [types.SET_SELECTED_ID_DROP]: (state, payload) => {
+    state.selectedIdDrop = payload;
+  },
+  // use idDrag and idDrop to rearrange the htmlList of the activeComponent to perform drag-and-drop functionality
+  [types.DRAG_DROP_SORT_HTML_ELEMENTS]: (state) => {
+    const componentName = state.activeComponent;
+    const idDrag = state.componentMap[componentName].idDrag;
+    const idDrop = state.componentMap[componentName].idDrop;
 
+    if (idDrag !== idDrop && idDrag !== '' && idDrop !== '') {
+      let indexDrag;
+      let indexDrop;
+      const htmlList = state.componentMap[componentName].htmlList.slice(0)
+
+      if (state.activeLayer.id === "") {
+        //find the indexes belonging to the html elements with idDrag and idDrop
+        htmlList.forEach((el, i) => {
+          if (el.id === idDrag) {
+            indexDrag = i;
+          } else if (el.id === idDrop) {
+            indexDrop = i;
+          }
+        })
+        //use the indexes to rearrange htmlList
+        const draggedEl = htmlList.splice(indexDrag, 1)[0]
+        htmlList.splice(indexDrop, 0, draggedEl)
+      } else {
+        //Use breadFirstSearchParent to find the parent and indexes of nested html elements with idDrag and idDrop
+        const nestedDrag = breadthFirstSearchParent(htmlList, idDrag);
+        const nestedDrop = breadthFirstSearchParent(htmlList, idDrop);
+        //use the indexes and parents to rearrange htmlList
+        let nestedEl = nestedDrag.evaluated.children.splice(nestedDrag.index, 1)[0]
+        nestedDrop.evaluated.children.splice(nestedDrop.index, 0, nestedEl)
+      }
+      state.componentMap[componentName].htmlList = htmlList;
+    }
+    //reset the ids
+    state.componentMap[componentName].idDrag = '';
+    state.componentMap[componentName].idDrop = '';
+  },
+// use selectedIdDrag and selectedIdDrop to rearrange the selectedElementList to perform drag-and-drop functionality
+  [types.DRAG_DROP_SORT_SELECTED_HTML_ELEMENTS]: (state) => {
+    const selectedIdDrag = state.selectedIdDrag;
+    const selectedIdDrop = state.selectedIdDrop;
+
+    if (selectedIdDrag !== selectedIdDrop && selectedIdDrag !== '' && selectedIdDrop !== '') {
+      const htmlList = state.selectedElementList.slice(0)
+
+      let indexDrag;
+      let indexDrop;
+      //find the indexes belonging to the html elements with the selectedIdDrag and selectedIdDrop
+      htmlList.forEach((el, i) => {
+        if (el.id === selectedIdDrag) {
+          indexDrag = i;
+        } else if (el.id === selectedIdDrop) {
+          indexDrop = i;
+        }
+      })
+      //use the indexes to delete the dragged element and place them into the new location
+      const draggedEl = htmlList.splice(indexDrag, 1)[0]
+      htmlList.splice(indexDrop, 0, draggedEl)
+      state.selectedElementList = htmlList;
+    }
+    //reset the ids
+    state.selectedIdDrag = '';
+    state.selectedIdDrop = '';
+  },
   // *** COMPONENTS *** //////////////////////////////////////////////
   // adds the component to the selected route (ex: HomeView)
   [types.ADD_COMPONENT_TO_ACTIVE_ROUTE_CHILDREN]: (state, payload) => {
@@ -485,6 +630,10 @@ const mutations = {
       isActive,
       actions,
       props,
+      idDrag,
+      idDrop,
+      htmlAttributes,
+      color,
     } = payload;
     const s = payload.state;
     state.componentMap = {
@@ -503,6 +652,10 @@ const mutations = {
         actions,
         props,
         state: s,
+        idDrag,
+        idDrop,
+        htmlAttributes,
+        color,
       },
     };
   },
@@ -559,21 +712,21 @@ const mutations = {
   },
 
   [types.SET_ACTIVE_COMPONENT]: (state, payload) => {
-    if (!payload){
+    if (!payload) {
       payload = '';
     }
-    if (payload === ''){
+    if (payload === '') {
       state.activeComponent = '';
-      state.activeComponentObj = {componentName: '', isActive: false};
+      state.activeComponentObj = { componentName: '', isActive: false };
       state.activeHTML = "";
       state.activeLayer = {
         id: "",
         lineage: [],
       };
     } else {
-    state.activeComponent = payload;
-    state.activeComponentObj = state.routes[state.activeRoute].filter(
-      (comp) => comp.componentName === state.activeComponent
+      state.activeComponent = payload;
+      state.activeComponentObj = state.routes[state.activeRoute].filter(
+        (comp) => comp.componentName === state.activeComponent
       )[0];
     }
     state.activeHTML = "";
@@ -622,6 +775,21 @@ const mutations = {
     updatedComponent.x = payload.x;
     updatedComponent.y = payload.y;
   },
+  //color updater
+  [types.UPDATE_COLOR]: (state, payload) => {
+    const updatedComponent = state.routes[state.activeRoute].filter(
+      (element) => element.componentName === payload.activeComponent
+    )[0];
+
+    updatedComponent.color = payload.color
+  },
+  //Attribute updater for parent
+  [types.EDIT_ATTRIBUTE]: (state, payload) => {
+    const updatedComponent = state.routes[state.activeRoute].filter(
+      (element) => element.componentName === payload.activeComponent
+    )[0];
+    updatedComponent.htmlAttributes[payload.attribute] = payload.value
+  },
 
   [types.UPDATE_COMPONENT_LAYER]: (state, payload) => {
     const updatedComponent = state.routes[state.activeRoute].filter(
@@ -631,12 +799,24 @@ const mutations = {
     state.componentMap[payload.activeComponent].z = payload.z;
   },
 
+  [types.UPDATE_HTML_LAYER]: (state, payload) => {
+    const updatedComponent = state.routes[state.activeRoute].filter(
+      (element) => element.componentName === payload.activeComponent
+    )[0];
+
+    const updatedHTML = updatedComponent.htmlList.filter((element) => element.id === payload.activeHTML)[0]
+
+    updatedHTML.z = payload.z;
+    // state.componentMap[payload.activeComponent].htmlList.z = payload.z;
+
+  },
+
   [types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE]: (state, payload) => {
     //temp is the activeComponent's children array
-    if (state.activeComponent === payload){return}
+    if (state.activeComponent === payload) { return }
     const temp = state.componentMap[state.activeComponent].children;
     // delete block
-    if ((temp.filter((el) => payload === el)).length > 0) { 
+    if ((temp.filter((el) => payload === el)).length > 0) {
       //commented stuff below does not seem necessary for the functionality of this if block.
       //children will be current children EXCLUDING payload
       // const child = temp.filter((el) => payload.includes(el));
@@ -645,7 +825,7 @@ const mutations = {
       for (const comp of components) {
         if (comp.children.includes(payload)) childCount++; //if the component has 2 parents, do not assign the component to the route
       }
-        state.componentMap[state.activeComponent].children = (temp.filter((el) => payload !== el));
+      state.componentMap[state.activeComponent].children = (temp.filter((el) => payload !== el));
       if (childCount <= 1) {
         state.componentMap[state.activeRoute].children.push(...temp.filter((el) => payload === el));
       }
@@ -655,7 +835,32 @@ const mutations = {
       // state.componentMap[state.activeComponent].htmlList = newHTMLList;
       // const newMap = { ...state.componentMap };
       // state.componentMap = { ...newMap };
+
+      //delete the instances of the Child Component in the activeComponent's htmlList
+      const componentName = state.activeComponent;
+      const htmlList = state.componentMap[componentName].htmlList.slice(0);
+
+      // splice out child componenets even if nested
+      function deleteChildFromHtmlList(array, payload) {
+        for(let i = array.length; i--;) {
+
+					if(array[i].children.length) {
+            deleteChildFromHtmlList(array[i].children, payload)
+          }
+          if(array[i].text === payload) {
+            array.splice(i, 1)
+          } 
+          
+        }
+      }
+      deleteChildFromHtmlList(htmlList, payload);
+
+      //updates the htmlList with the child components deleted
+      state.componentMap[componentName].htmlList = htmlList;
+      
+      //delete the parent because the payload is no longer a child to the acitive component
       delete state.componentMap[payload].parent[state.activeComponent];
+
       // add block
     } else {
       const child = temp;
@@ -664,7 +869,7 @@ const mutations = {
       state.componentMap[state.activeRoute].children = state.componentMap[
         state.activeRoute
       ].children.filter((el) => payload !== el);
-      state.componentMap[child[child.length-1]].parent[state.activeComponent] =
+      state.componentMap[child[child.length - 1]].parent[state.activeComponent] =
         state.componentMap[state.activeComponent];
     }
   },
@@ -674,26 +879,125 @@ const mutations = {
   },
 
   [types.ADD_ACTIVE_COMPONENT_NOTE]: (state, payload) => {
-    if (!state.componentMap[state.activeComponent].hasOwnProperty('noteList')){
+    if (!state.componentMap[state.activeComponent].hasOwnProperty('noteList')) {
       state.componentMap[state.activeComponent].noteList = [];
     }
-    while(state.componentMap[state.activeComponent].noteList.includes(payload)){
+    while (state.componentMap[state.activeComponent].noteList.includes(payload)) {
       payload = 'DUPLICATE: ' + payload
     }
     state.componentMap[state.activeComponent].noteList.push(payload)
   },
 
   [types.DELETE_ACTIVE_COMPONENT_NOTE]: (state, payload) => {
-    state.componentMap[state.activeComponent].noteList.forEach((el, ind) =>{
-      if (payload === el){
+    state.componentMap[state.activeComponent].noteList.forEach((el, ind) => {
+      if (payload === el) {
         state.componentMap[state.activeComponent].noteList.splice(ind, 1)
         return;
       }
     })
   },
-
+  [types.OPEN_COLOR_MODAL]: (state) => {
+    state.colorModalOpen = !state.colorModalOpen;
+  },
   [types.OPEN_NOTE_MODAL]: (state) => {
     state.noteModalOpen = !state.noteModalOpen;
+  },
+  //Jace practice for future, not place classList directly in activeComponent
+  [types.OPEN_ATTRIBUTE_MODAL]: (state) => {
+    state.attributeModalOpen = !state.attributeModalOpen;
+  },
+
+  [types.ADD_ACTIVE_COMPONENT_CLASS]: (state, payload) => {
+    if (state.activeComponentObj.htmlList)
+
+      state.componentMap[state.activeComponent].htmlList.forEach((el) => {
+        //adding class into it's child 1st layer
+        if (el.children.length !== 0) {
+          el.children.forEach((element) => {
+            if (payload.id === element.id) {
+              element.class = payload.class
+            }
+          })
+        }
+        if (payload.id === el.id) {
+          el.class = payload.class
+        }
+      })
+
+  },
+
+//add binding 
+  [types.ADD_BINDING_TEXT]: (state, payload) => {
+    //access the htmlList, add payload to the empty bind obj
+    //const active = state.componentMap[state.activeComponent].htmlList;
+    if (payload.binding === "") {
+      state.componentMap = {
+        ...state.componentMap
+      }
+    } else {
+      const id = payload.id
+
+      if (state.activeComponentObj.htmlList)
+        state.componentMap[state.activeComponent].htmlList.forEach((el) => {
+
+          if (el.children.length !== 0) {
+            el.children.forEach((element) => {
+              if (payload.id === element.id) {
+                element.binding = payload.binding
+              }
+            })
+          }
+          if (payload.id === el.id) {
+            el.binding = payload.binding
+          }
+        })
+    }
+  },
+
+  [types.DELETE_ACTIVE_COMPONENT_CLASS]: (state, payload) => {
+    state.componentMap[state.activeComponent].classList.forEach((el, ind) => {
+      if (payload === el) {
+        state.componentMap[state.activeComponent].classList.splice(ind, 1)
+        return;
+      }
+    })
+  },
+  //htmlElements changes of css
+  [types.ADD_ACTIVE_COMPONENT_HEIGHT]: (state, payload) => {
+    state.componentMap[state.activeComponent].htmlList.forEach((el) => {
+      if (payload.id === el.id) {
+        el.h = payload.height
+      }
+    })
+  },
+  [types.ADD_ACTIVE_COMPONENT_WIDTH]: (state, payload) => {
+    state.componentMap[state.activeComponent].htmlList.forEach((el) => {
+      if (payload.id === el.id) {
+        el.w = payload.width
+      }
+    })
+  },
+  [types.ADD_ACTIVE_COMPONENT_TOP]: (state, payload) => {
+    state.componentMap[state.activeComponent].htmlList.forEach((el) => {
+      if (payload.id === el.id) {
+        el.x = payload.top
+      }
+    })
+  },
+  [types.ADD_ACTIVE_COMPONENT_LEFT]: (state, payload) => {
+    state.componentMap[state.activeComponent].htmlList.forEach((el) => {
+      if (payload.id === el.id) {
+        el.y = payload.left
+      }
+    })
+  },
+
+  [types.ADD_ACTIVE_COMPONENT_ELEMENT_NOTE]: (state, payload) => {
+    state.componentMap[state.activeComponent].htmlList.forEach((el) => {
+      if (payload.id === el.id) {
+        el.note = payload.note
+      }
+    })
   },
   // *** PROJECTS *** //////////////////////////////////////////////
 

@@ -8,7 +8,7 @@ Description:
 <template>
   <div class="create-component-div drawer-menu">
     <q-expansion-item group="accordion" label="Import Component">
-      <ImportComponent v-if="activeComponent === ''" @imported="createComponent" title="Import Component" class="sidebar-btn"/>
+      <ImportComponent v-if="activeComponent === ''" @imported="createComponent" title="Import Component (coming soon)" class="sidebar-btn" :disable = "true"/>
     </q-expansion-item>
     <q-expansion-item group="accordion" label="Create Component">
       <form class="create-component-form" v-on:submit.prevent="createComponent">
@@ -42,9 +42,9 @@ Description:
           @activeLayer="addNestedNoActive"
         />
       </div>
-      <div class="componentHTML">
+      <button class="componentHTML">
         <CreateMenuHTMLQueue></CreateMenuHTMLQueue>
-      </div>
+      </button>
       <br />
 
       <q-btn
@@ -81,6 +81,7 @@ export default {
       "selectedElementList",
       "activeComponent",
       "activeHTML",
+      "attributeModalOpen",
       "userActions",
       "userState",
       "userProps",
@@ -114,6 +115,11 @@ export default {
       useCreateComponent.bind(this)({}) //invokes composable
     },
   },
+    watch: {
+    attributeModalOpen() {
+      this.attributeModal = this.attributeModalOpen;
+    },
+  }
 };
 </script>
 

@@ -12,7 +12,7 @@ Description:
     <q-card id="code-window" class="no-shadow" v-if="this.activeComponentObj">
       <q-tabs
         v-model="tab"
-        dense
+        dense=""
         class="bg-subaccent text-white"
         active-color="secondary"
         indicator-color="secondary"
@@ -20,9 +20,7 @@ Description:
       >
         <q-tab name="code" label="Code Snippet" class="label-text" />
         <q-tab name="html" label="HTML Elements" class="label-text" />
-        <q-tab name="state" label="Component State" class="label-text" />
-        <q-tab name="actions" label="Component Actions" class="label-text" />
-        <q-tab name="props" label="Component Props" class="label-text" />
+        <q-tab name="state" label="Component Properties" class="label-text" />
       </q-tabs>
       <q-tab-panels v-model="tab" animated class="html-bg text-white">
         <q-tab-panel name="code">
@@ -32,6 +30,8 @@ Description:
           <HTMLQueue />
         </q-tab-panel>
         <q-tab-panel name="state">
+        <div class ="componentProperties">
+          <q-expansion-item default-closed label="Component State">
           <p v-if="!this?.activeComponentObj?.state?.length">
              {{this.activeComponent ? `No state in ${this.activeComponent}` : 'Select a component.' }}
           </p>
@@ -43,9 +43,11 @@ Description:
               {{ comp }}
             </li>
           </ul>
-        </q-tab-panel>
-        <q-tab-panel name="actions">
-          <p v-if="!this?.activeComponentObj?.actions?.length">
+          </q-expansion-item>
+        </div>
+        <div class ="componentProperties">
+        <q-expansion-item default-closed label="Component Actions">
+                <p v-if="!this?.activeComponentObj?.actions?.length">
             {{this.activeComponent ? `No actions in ${this.activeComponent}` : 'Select a component.' }}
           </p>
           <p v-else>
@@ -56,9 +58,11 @@ Description:
               {{ comp }}
             </li>
           </ul>
-        </q-tab-panel>
-        <q-tab-panel name="props">
-          <p v-if="!this?.activeComponentObj?.props?.length">
+          </q-expansion-item>
+          </div>
+          <div class ="componentProperties">
+          <q-expansion-item default-closed label="Component Props">
+              <p v-if="!this?.activeComponentObj?.props?.length">
             {{this.activeComponent ? `No props in ${this.activeComponent}` : 'Select a component.' }}
           </p>
           <p v-else>
@@ -69,6 +73,8 @@ Description:
               {{ comp }}
             </li>
           </ul>
+          </q-expansion-item>
+          </div>
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
@@ -195,4 +201,10 @@ i {
   align-content: stretch;
   max-height: 95%;
 }
+
+.componentProperties {
+  margin-bottom:2em;
+
+}
+
 </style>

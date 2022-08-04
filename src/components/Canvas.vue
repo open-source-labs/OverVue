@@ -6,14 +6,14 @@
 
 <template>
   <!-- the background Canvas grid -->
-  <div
-    class="component-display grid-bg"
-    :style="mockBg"
-    v-on:click="handleClick"
-    v-on:click.right="handleRight"
-  >
+  <div class="component-display grid-bg" :style="mockBg" v-on:click="handleClick" v-on:click.right="handleRight">
+  <div class="cssContainer">
     <!-- This is the actual component box -->
     <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
+    <p class="cssContainerText">
+    CSS Container</p>
+  
+    <!--each component box in canvas will have these properties-->
     <vue-draggable-resizable
       class-name="component-box"
       v-for="componentData in activeRouteArray"
@@ -32,137 +32,323 @@
       @resizestop="finishedResize"
       :onDragStart="recordInitialPosition"
       :onResizeStart="recordInitialSize"
+      :style="{'background-color': componentData.color}"
+      :parent="true"
     >
+    
       <div class="component-title">
         <p>{{ componentData.componentName }}</p>
       </div>
-      <q-icon v-if="this.componentMap[componentData.componentName]?.noteList?.length > 0" 
-        size="30px" 
+      <q-icon v-if="componentData.componentName === this.activeComponent" 
+        size="25px" 
         z-layer="0" 
         name="edit_note" 
         class="compNoteLogo" 
-        @click="handleAddNotes" />
-      <q-icon v-else
-        size="30px" 
-        z-layer="0" 
-        name="edit_note" 
-        class="compNoteLogoEmpty" 
-        @click="handleAddNotes" />
-      <q-menu context-menu>
-        <q-list color="black" class="menu">
-          <q-item clickable v-ripple v-close-popup id="layer-item">
-            <q-item-section class="layer">Component Layer</q-item-section>
-            <q-btn
-              class="minorAction"
-              color="transparent"
-              text-color="primary"
-              label="&ndash;"
-              @click="(e) => handleLayer(e)"
-            />
-            <p id="counter">{{ componentData.z }}</p>
-            <q-btn
-              class="minorAction"
-              color="transparent"
-              text-color="primary"
-              label="+"
-              @click="(e) => handleLayer(e)"
-            />
-          </q-item>
-          <q-item clickable v-ripple v-close-popup @click="handleAddChild">
-            <q-item-section>Update Children</q-item-section>
-            <q-item-section avatar>
-              <q-icon color="primary" name="add" />
-            </q-item-section>
-          </q-item>
-          <q-item clickable v-ripple v-close-popup @click="handleAddNotes">
-            <q-item-section>Component Notes</q-item-section>
-            <q-item-section avatar>
-              <q-icon color="primary" name="edit_note" />
-            </q-item-section>
-          </q-item>
-          <q-item clickable v-ripple v-close-popup @click="useExportComponentBound">
-            <q-item-section>Export Component</q-item-section>
-            <q-item-section avatar>
-              <q-icon color="primary" name="upload" />
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </q-menu>
-
-    </vue-draggable-resizable>
-    <div>
-      <q-dialog v-model="modalOpen">
-      <div class="addChild">
-      <p>Add/Remove Children</p>
-      <VueMultiselect
-        v-model="childrenSelected"
-        placeholder="Add/remove children"
-        :multiple="true"
-        :close-on-select="false"
-        :options="options"
-        :show-labels="false"
-        @remove="handleSelect"
-        @select="handleSelect"
-        :height="300"
-        :option-height="40"
-        :searchable="false"
+        @click="handleAddNotes" 
       />
+  <!-- Rendering HTML Elements for each Component -->
+      <div v-for="element in this.componentMap[componentData.componentName].htmlList" :key="element.id+ new Date()">
+        <div v-if="element.text === 'button'" 
+          class="htmlButton"
+          :style="[element.x !== 0 ? {'top': element.x + '%'} : {'top': '70%'}, 
+            element.y !== 0 ? {'left': element.y + '%'} : {'left': '60%'},
+            element.w !== 0 ? {'width': element.w + '%'} : {'width': '25%'},
+            element.h !== 0 ? {'height' : element.h + '%'} : {'height' : '10%'},
+            element.z !== 0 ? {'z-index' : element.z + '%'} : {'z-index' : '0'},
+            {'background-color': componentData.color}]"
+        >
+        <p class="innerHtmlText">{{element.note !== '' ? element.note : element.text}}</p> 
+        </div>
+        <div v-if="element.text === 'div'"
+          class="htmlDiv"
+          :style="[element.x !== 0 ? {'top': element.x + '%'} : {'top': '10%'}, 
+            element.y !== 0 ? {'left': element.y + '%'} : {'left': '10%'},
+            element.w !== 0 ? {'width': element.w + '%'} : {'width': '80%'},
+            element.h !== 0 ? {'height' : element.h + '%'} : {'height' : '75%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
+            {'background-color': componentData.color}]"
+        >
+          <p class="innerHtmlText" style="font-size: 3em">{{element.note !== '' ? element.note : element.text}}</p> 
+        </div>
+        <div v-if="element.text === 'footer'" class="htmlFooter"></div>
+                <div v-if="element.text === 'form'"
+          class="htmlGeneral"
+          :style="[element.x !== 0 ? {'top': element.x + '%'} : {'top': '50%'}, 
+            element.y !== 0 ? {'left': element.y + '%'} : {'left': '10%'},
+            element.w !== 0 ? {'width': element.w + '%'} : {'width': '80%'},
+            element.h !== 0 ? {'height' : element.h + '%'} : {'height' : '40%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
+            {'background-color': componentData.color}]"
+        >
+          <p class="innerHtmlText" style="font-size: 3em">{{element.note !== '' ? element.note : element.text}}</p> 
+        </div>
+        <div v-if="element.text === 'h1'" 
+          class="htmlHead"
+          :style="[element.x !== 0 ? {'top': element.x + '%'} : {'top': '10%'}, 
+            element.y !== 0 ? {'left': element.y + '%'} : {'left': '5%'},
+            element.w !== 0 ? {'width': element.w + '%'} : {'width': '90%'},
+            element.h !== 0 ? {'height' : element.h + '%'} : {'height' : '20%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
+            {'background-color': componentData.color}]"
+        > 
+          <p class="innerHtmlText" style="font-size: 4em">{{element.note !== '' ? element.note :element.text}}</p>
+        </div>
+        <div v-if="element.text === 'h2'" 
+          class="htmlHead"
+          :style="[element.x !== 0 ? {'top': element.x + '%'} : {'top': '15%'}, 
+            element.y !== 0 ? {'left': element.y + '%'} : {'left': '10%'},
+            element.w !== 0 ? {'width': element.w + '%'} : {'width': '80%'},
+            element.h !== 0 ? {'height' : element.h + '%'} : {'height' : '15%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
+            {'background-color': componentData.color}]"
+        >
+          <p class="innerHtmlText" style="font-size: 3em">{{element.note !== '' ? element.note : element.text}}</p>
+        </div>
+        <div v-if="element.text === 'h3'" 
+          class="htmlHead"
+          :style="[element.x !== 0 ? {'top': element.x + '%'} : {'top': '18%'}, 
+            element.y !== 0 ? {'left': element.y + '%'} : {'left': '15%'},
+            element.w !== 0 ? {'width': element.w} + '%' : {'width': '70%'},
+            element.h !== 0 ? {'height' : element.h + '%'} : {'height' : '12%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
+            {'background-color': componentData.color}]"
+        >
+          <p class="innerHtmlText" style="font-size: 2.5em">{{element.note !== '' ? element.note : element.text }}</p>
+        </div>
+        <div v-if="element.text === 'h4'" 
+          class="htmlHead"
+          :style="[element.x !== 0 ? {'top': element.x + '%'} : {'top': '20%'}, 
+            element.y !== 0 ? {'left': element.y + '%'} : {'left': '20%'},
+            element.w !== 0 ? {'width': element.w + '%'} : {'width': '60%'},
+            element.h !== 0 ? {'height' : element.h + '%'} : {'height' : '10%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
+            {'background-color': componentData.color}]"
+        >
+          <p class="innerHtmlText" style="font-size: 2em">{{element.note !== '' ? element.note : element.text}}</p>
+        </div>
+        <div v-if="element.text === 'h5'" 
+          class="htmlHead"
+          :style="[element.x !== 0 ? {'top': element.x + '%'} : {'top': '20%'}, 
+            element.y !== 0 ? {'left': element.y + '%'} : {'left': '25%'},
+            element.w !== 0 ? {'width': element.w + '%'} : {'width': '50%'},
+            element.h !== 0 ? {'height' : element.h + '%'} : {'height' : '8%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
+            {'background-color': componentData.color}]"
+          >
+          <p class="innerHtmlText" style="font-size: 1.5em">{{element.note !== '' ? element.note : element.text}}</p>
+        </div>
+        <div v-if="element.text === 'h6'" 
+          class="htmlHead"
+          :style="[element.x !== 0 ? {'top': element.x + '%'} : {'top': '20%'}, 
+            element.y !== 0 ? {'left': element.y + '%'} : {'left': '30%'},
+            element.w !== 0 ? {'width': element.w + '%'} : {'width': '40%'},
+            element.h !== 0 ? {'height' : element.h + '%'} : {'height' : '5%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
+            {'background-color': componentData.color}]"
+        >
+          <p class="innerHtmlText" style="font-size: 1em">{{element.note !== '' ? element.note : element.text}}</p>
+        </div>
+        <div v-if="element.text === 'header'" class="htmlHeader"></div>
+        <div v-if="element.text === 'img'"
+          class="htmlGeneral"
+          :style="[element.x !== 0 ? {'top': element.x + '%'} : {'top': '20%'}, 
+            element.y !== 0 ? {'left': element.y + '%'} : {'left': '20%'},
+            element.w !== 0 ? {'width': element.w + '%'} : {'width': '40%'},
+            element.h !== 0 ? {'height' : element.h + '%'} : {'height' : '40%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
+            {'background-color': componentData.color}]"
+        >
+          <p class="innerHtmlText" style="font-size: 3em">{{element.note !== '' ? element.note : element.text}}</p> 
+        </div>
+        <input v-if="element.text === 'input'" class="htmlInput"/>
+        <div v-if="element.text === 'list'" 
+          class="htmlList"
+          :style="[element.x !== 0 ? {'top': element.x + '%'} : {'top': '30%'}, 
+            element.y !== 0 ? {'left': element.y + '%'} : {'left': '30%'},
+            element.w !== 0 ? {'width': element.w + '%'} : {'width': '60%'},
+            element.h !== 0 ? {'height' : element.h + '%'} : {'height' : '10%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
+            {'background-color': componentData.color}]"
+        >
+          <p class="innerHtmlText" style="font-size: 2em">{{element.note !== '' ? element.note : element.text}}</p>         
+        </div>
+        <div v-if="element.text === 'list-ol'" 
+          class="htmlGeneral"
+          :style="[element.x !== 0 ? {'top': element.x + '%'} : {'top': '20%'}, 
+            element.y !== 0 ? {'left': element.y + '%'} : {'left': '10%'},
+            element.w !== 0 ? {'width': element.w + '%'} : {'width': '80%'},
+            element.h !== 0 ? {'height' : element.h + '%'} : {'height' : '40%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
+            {'background-color': componentData.color}]"
+        >
+          <p class="innerHtmlText" style="font-size: 1.2em">{{element.note !== '' ? element.note : element.text}}
+            <ol>
+              <li>1</li>
+              <li>2</li>
+              <li>3</li>
+            </ol>
+          </p>
+        </div>
+        <div v-if="element.text === 'list-ul'"
+          class="htmlGeneral"
+          :style="[element.x !== 0 ? {'top': element.x + '%'} : {'top': '20%'}, 
+            element.y !== 0 ? {'left': element.y + '%'} : {'left': '10%'},
+            element.w !== 0 ? {'width': element.w + '%'} : {'width': '80%'},
+            element.h !== 0 ? {'height' : element.h + '%'} : {'height' : '40%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
+            {'background-color': componentData.color}]"
+        >
+          <p class="innerHtmlText" style="font-size: 1.5em">{{element.note !== '' ? element.note : element.text}}
+            <ol>
+              <li>-</li>
+              <li>-</li>
+              <li>-</li>
+            </ol>
+          </p>
+        </div>
+        <div v-if="element.text === 'paragraph'" 
+          class="htmlGeneral"
+          :style="[element.x !== 0 ? {'top': element.x + '%'} : {'top': '50%'}, 
+            element.y !== 0 ? {'left': element.y + '%'} : {'left': '10%'},
+            element.w !== 0 ? {'width': element.w + '%'} : {'width': '80%'},
+            element.h !== 0 ? {'height' : element.h + '%'} : {'height' : '40%'},
+            element.z !== 0 ? {'z-index' : element.z} : {'z-index' : '0'},
+            {'background-color': componentData.color}]"
+        >
+        <p>{{element.note !== '' ? element.note :  element.text }}</p> 
+        </div>
+        <div v-if="element.text === 'navbar'" class="htmlNavbar"></div>
       </div>
-      </q-dialog>
+      <!--change color icon-->
+      <q-icon v-if="componentData.componentName === this.activeComponent"
+        size="25px" 
+        z-layer="0" 
+        name="palette" 
+        class="colorLogo" 
+        @click="handleEditColor" />
+        <!-- start of right click on component box function-->
+        <q-menu context-menu>
+          <q-list color="black" class="menu">
+            <q-item clickable v-ripple v-close-popup id="layer-item">
+              <q-item-section class="layer">Component Layer</q-item-section>
+              <q-btn class="minorAction" color="transparent" text-color="primary" label="&ndash;"
+                @click="(e) => handleLayer(e)" />
+              <p id="counter">{{ componentData.z }}</p>
+              <q-btn class="minorAction" color="transparent" text-color="primary" label="+"
+                @click="(e) => handleLayer(e)" />
+            </q-item>
+            <q-item clickable v-ripple v-close-popup @click="handleAddChild">
+              <q-item-section>Update Children</q-item-section>
+              <q-item-section avatar>
+                <q-icon color="primary" name="add" />
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-ripple v-close-popup @click="handleAddNotes">
+              <q-item-section>Component Notes</q-item-section>
+              <q-item-section avatar>
+                <q-icon color="primary" name="edit_note" />
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-ripple v-close-popup @click="useExportComponentBound">
+              <q-item-section>Export Component</q-item-section>
+              <q-item-section avatar>
+                <q-icon color="primary" name="upload" />
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-ripple v-close-popup @click="handleEditColor">
+              <q-item-section>Edit Color</q-item-section>
+              <q-item-section avatar>
+                <q-icon color="primary" name="edit" />
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-menu>
 
-      <!-- some irregularity (delete event listener firing on bkspc/del) with the modal when stored locally, so modal open stored in state, and triggers to local reflect only stateful change.-->
-          <q-dialog v-model="noteModal" @update:model-value="handleAddNotes"> 
-            <div class="noteBox">
-              <div class="noteHolder">
-                <p class="title">Adding notes to {{ this.activeComponent }}</p>
-                <div class="noteContainer">
-                  <li v-for="(note, index) in this.componentMap[this.activeComponent].noteList" :key="note">
-                    <span class="noteNum">Note {{index}}: </span>
-                    <div class="noteblock">{{ note }}</div><span id="noteDelete" @click="deleteNote">X</span>
-                  </li>
-                </div>
-                <div class="formBox">
+      </vue-draggable-resizable>
+      <div>
+        <q-dialog v-model="modalOpen">
+          <div class="addChild">
+            <p>Add/Remove Children</p>
+            <VueMultiselect v-model="childrenSelected" placeholder="Add/remove children" :multiple="true"
+              :close-on-select="false" :options="options" :show-labels="false" @remove="handleSelect"
+              @select="handleSelect" :height="300" :option-height="40" :searchable="false" />
+          </div>
+        </q-dialog>
+
+        <!-- some irregularity (delete event listener firing on bkspc/del) with the modal when stored locally, so modal open stored in state, and triggers to local reflect only stateful change.-->
+        <q-dialog v-model="noteModal" @update:model-value="handleAddNotes">
+          <div class="noteBox">
+            <div class="noteHolder">
+              <p class="title">Adding notes to {{ this.activeComponent }}</p>
+              <div class="noteContainer">
+                <li v-for="(note, index) in this.componentMap[this.activeComponent].noteList" :key="note">
+                  <span class="noteNum">Note {{ index }}: </span>
+                  <div class="noteblock">{{ note }}</div><span id="noteDelete" @click="deleteNote">X</span>
+                </li>
+              </div>
+              <div class="formBox">
                 <q-form autofocus v-on:submit.prevent="submitNote">
-                    <q-input
-                      v-model="noteText"
-                      label="Add your note here"
-                      filled
-                      dark
-                      autofocus true
-                      hide-bottom-space
-                      :hint="hint"
-                      @keyup.enter="submitNote"
-                    ></q-input>
-                    <q-btn 
-                    id="comp-btn"
-                    class="sidebar-btn"
-                    color="secondary"
-                    label="Submit Note"
-                    :disable="noteText.length > 0 ? false : true"
-                    @click="submitNote"
-                    />
-                    <q-btn
-                    id="note-btn-close"
-                    class="sidebar-btn closeAction"
-                    label="Close"
-                    @click="this.openNoteModal"
-                    />
+                  <q-input v-model="noteText" label="Add your note here" filled dark autofocus true hide-bottom-space
+                    :hint="hint" @keyup.enter="submitNote"></q-input>
+                  <q-btn id="comp-btn" class="sidebar-btn" color="secondary" label="Submit Note"
+                    :disable="noteText.length > 0 ? false : true" @click="submitNote" />
+                  <q-btn id="note-btn-close" class="sidebar-btn closeAction" label="Close"
+                    @click="this.openNoteModal" />
                 </q-form>
-                </div>
+
               </div>
             </div>
+          </div>
         </q-dialog>
+
+        <!--color selector logic - color changer will start at current state of the color-->
+        <q-dialog v-model="colorModal" @update:model-value="handleEditColor">
+          <ColorPicker class="colorPicker" default-format="hex" id="color-picker-1" :visible-formats="['hex']"
+            :color="this.activeComponentData.color" @color-change="updateColors">
+            <template #hue-range-input-label>
+              <span class="sr-only">Hue</span>
+            </template>
+
+            <template #alpha-range-input-label>
+              <span class="sr-only">Alpha</span>
+            </template>
+
+            <template #copy-button>
+              <span class="sr-only">Copy color</span>
+
+              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15">
+                <path d="M5 0v2H1v13h12v-3h-1v2H2V5h10v3h1V2H9V0zm1 1h2v2h3v1H3V3h3z" fill="currentColor" />
+
+                <path d="M10 7v2h5v2h-5v2l-3-3zM3 6h5v1H3zm0 2h3v1H3zm0 2h3v1H3zm0 2h5v1H3z" fill="currentColor" />
+              </svg>
+            </template>
+
+            <template #format-switch-button>
+              <span class="sr-only">Switch format</span>
+
+              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="15" viewBox="0 0 16 15">
+                <path d="M8 15l5-5-1-1-4 2-4-2-1 1zm4-9l1-1-5-5-5 5 1 1 4-2z" fill="currentColor" />
+              </svg>
+            </template>
+          </ColorPicker>
+        </q-dialog>
+      </div>
     </div>
   </div>
+
 </template>
+
 
 
 <script>
 import { useExportComponent } from "./composables/useExportComponent.js";
 import { mapState, mapActions } from "vuex";
 import VueDraggableResizable from "vue-draggable-resizable/src/components/vue-draggable-resizable.vue";
+import Vue3DraggableResizable from 'vue3-draggable-resizable'
 import VueMultiselect from "vue-multiselect";
 import "vue-draggable-resizable/src/components/vue-draggable-resizable.css";
+import 'vue3-draggable-resizable/dist/Vue3DraggableResizable.css'
+import { ColorPicker } from 'vue-accessible-color-picker'
 
 const { fs, ipcRenderer } = window;
 
@@ -171,8 +357,10 @@ const cloneDeep = require("lodash.clonedeep");
 export default {
   name: "Canvas",
   components: {
+    Vue3DraggableResizable,
     VueDraggableResizable,
     VueMultiselect,
+    ColorPicker,
   },
   data() {
     return {
@@ -181,6 +369,7 @@ export default {
       wasDragged: false,
       testModel: [],
       noteModal: false,
+      colorModal: false,
       mockImg: false,
       initialPosition: { x: 0, y: 0 },
       initialSize: { w: 0, h: 0 },
@@ -189,21 +378,6 @@ export default {
     };
   },
   mounted() {
-    // when component is mounted, add ability to delete
-    window.addEventListener("keyup", (event) => {
-      if (event.key === "Backspace") {
-        if (this.activeComponent !== '' && this.noteModalOpen === false) {
-          this.$store.dispatch("deleteActiveComponent");
-        }
-      }
-    });
-    window.addEventListener("keyup", (event) => {
-      if (event.key === "Delete") {
-        if (this.activeComponent !== '' && this.noteModalOpen === false) {
-          this.$store.dispatch("deleteActiveComponent");
-        }
-      }
-    });
     // listener for the copy
     window.addEventListener("copy", () => {
       // if there is an activeComponent, copy info to state using dispatch
@@ -212,8 +386,8 @@ export default {
       }
     });
     window.addEventListener("paste", () => {
-      if (this.noteModalOpen === false){
-          this.$store.dispatch("pasteActiveComponent");
+      if (this.noteModalOpen === false) {
+        this.$store.dispatch("pasteActiveComponent");
       }
     });
   },
@@ -228,6 +402,10 @@ export default {
       "activeComponentObj",
       "exportAsTypescript",
       "noteModalOpen",
+      "activeRouteDisplay",
+      'selectedElementList',
+      'activeLayer',
+      "colorModalOpen",
       "activeRouteDisplay"
     ]),
     // used in VueDraggableResizeable component
@@ -241,9 +419,9 @@ export default {
       return cloneDeep(this.activeComponentObj);
     },
     options() {
-      if (this.activeComponent !== ''){
-          this.childrenSelected = [];
-          this.childrenSelected = this.componentMap[this.activeComponent].children;
+      if (this.activeComponent !== '') {
+        this.childrenSelected = [];
+        this.childrenSelected = this.componentMap[this.activeComponent].children;
       } else {
         this.childrenSelected = [];
       }
@@ -253,24 +431,23 @@ export default {
         (component) => component.componentName
       );
       const relatives = [...val]
-        //also need to filter out any parents
-
+      //also need to filter out any parents
       let parentalLineage = [];
       findLineage(relatives)
-      function findLineage(children){
-        children.forEach((el)=>{
+      function findLineage(children) {
+        children.forEach((el) => {
           parentalLineage.push(el);
-          if (compMap[el].children.length > 0){
+          if (compMap[el].children.length > 0) {
             findLineage(compMap[el].children);
           }
-          if (el !== activeComp){
+          if (el !== activeComp) {
             parentalLineage.pop();
           } else {
             return;
           }
         })
       }
-      const optionOutput = val.filter(el => !parentalLineage.includes(el)).filter(el => el !== this.activeComponent); 
+      const optionOutput = val.filter(el => !parentalLineage.includes(el)).filter(el => el !== this.activeComponent);
       return optionOutput;
     },
     userImage() {
@@ -281,9 +458,9 @@ export default {
     mockBg() {
       return this.imagePath[this.activeRoute]
         ? {
-            background: `url("${this.userImage}") no-repeat rgba(223, 218, 218, 0.886) top left`,
-            "background-size": "contain"
-          }
+          background: `url("${this.userImage}") no-repeat rgba(223, 218, 218, 0.886) top left`,
+          "background-size": "contain"
+        }
         : {};
     },
   },
@@ -295,7 +472,7 @@ export default {
           element.enabled = false;
           element.$emit("deactivated");
           element.$emit("update:active", false);
-        }); 
+        });
       }
     } else {
       // if a component is set to active, highlight it
@@ -324,22 +501,37 @@ export default {
       "addActiveComponentNote",
       "deleteActiveComponentNote",
       "openNoteModal",
+      "openColorModal",
+      "updateColor",
     ]),
-    useExportComponentBound(){
+    useExportComponentBound() {
       useExportComponent.bind(this)();
     },
     // records component's initial position in case of drag
     recordInitialPosition: function (e) {
       if (this.activeComponent !== e.target.id) {
-        if (e.target.parentElement?.classList.contains('draggable')){
+        if (e.target.parentElement?.classList.contains('draggable')) {
           this.setActiveComponent(e.target.parentElement.id)
-        } else {
+        } 
+        else if (typeof `${e.target.id}` !== 'number') {
           this.setActiveComponent(e.target.id);
         }
       }
       this.initialPosition.x = this.activeComponentData.x;
       this.initialPosition.y = this.activeComponentData.y;
     },
+    //color change function
+    updateColors(data) {
+      let payload = {
+        color: data.cssColor,
+        activeComponent: this.activeComponent,
+        routeArray: this.routes[this.activeRoute],
+        activeComponentData: this.activeComponentData,
+      }
+      this.updateColor(payload)
+      this.refresh();
+    },
+
     // records component's initial size/position in case of resize
     recordInitialSize: function (e) {
       this.initialSize.h = this.activeComponentData.h;
@@ -365,8 +557,25 @@ export default {
         payload.h !== this.initialSize.h
       ) {
         this.updateComponentSize(payload);
+
       }
+      this.refresh();
     },
+
+    //refresh function - super ghetto refresh function
+    refresh() {
+      const payload = {
+        activeComponent: this.activeComponent,
+        routeArray: this.routes[this.activeRoute],
+        activeComponentData: this.activeComponentData,
+        z: this.activeComponentData.z,
+      };
+      payload.z++;
+      this.updateComponentLayer(payload);
+      payload.z--;
+      this.updateComponentLayer(payload);
+    },
+//drag and drop function
     finishedDrag: function (x, y) {
       let payload = {
         x: x,
@@ -382,10 +591,11 @@ export default {
         this.updateComponentPosition(payload);
       }
       this.wasDragged = true;
-      setTimeout(()=>this.wasDragged = false, 100)
+      setTimeout(() => this.wasDragged = false, 100)
+      this.refresh();
     },
     onActivated(componentData) {
-      if (!componentData){
+      if (!componentData) {
         return;
       }
       if (this.$refs.boxes) {
@@ -396,19 +606,19 @@ export default {
             element.$emit("update:active", false);
           }
           if (
-          this.activeComponent === element.$attrs.id &&
-          element.enabled === false
+            this.activeComponent === element.$attrs.id &&
+            element.enabled === false
           ) {
-          element.enabled = true;
-          element.$emit("activated");
-          element.$emit("update:active", true);
+            element.enabled = true;
+            element.$emit("activated");
+            element.$emit("update:active", true);
           }
         });
       }
       if (!(componentData.componentName === this.activeComponent)) {
         this.setActiveComponent(componentData.componentName);
       }
-      if (componentData && componentData.hasOwnProperty('componentName')){
+      if (componentData && componentData.hasOwnProperty('componentName')) {
         this.activeComponentData.isActive = true;
       }
     },
@@ -419,23 +629,30 @@ export default {
       }
     },
     // renders modal with Update Children and Layer in it
-    handleAddNotes(){
-      if (this.wasDragged === false && this.activeComponent !== ''){
-       this.openNoteModal();
+    handleAddNotes() {
+      if (this.wasDragged === false && this.activeComponent !== '') {
+        this.openNoteModal();
       }
     },
+//color editor - opens the pop up
+    handleEditColor() {
+      if (this.wasDragged === false && this.activeComponent !== '') {
+        this.openColorModal();
+      }
+    },
+
     handleAddChild() {
       this.modalOpen = true;
     },
-    submitNote(e){
+    submitNote(e) {
       e.preventDefault()
-      if (this.noteText === ''){
+      if (this.noteText === '') {
         return;
       }
       this.addActiveComponentNote(this.noteText);
       this.noteText = '';
     },
-    deleteNote(e){
+    deleteNote(e) {
       this.deleteActiveComponentNote(e.target.previousElementSibling.innerText);
     },
     // used when user selects to add child from dropdown
@@ -451,6 +668,7 @@ export default {
         activeComponentData: this.activeComponentData,
         z: this.activeComponentData.z,
       };
+
       if (e.target.innerText === "+") payload.z++;
       if (e.target.innerText === "–" && payload.z > 0) payload.z--;
       this.updateComponentLayer(payload);
@@ -468,27 +686,30 @@ export default {
     },
   },
   watch: {
-    noteModalOpen (){
+    noteModalOpen() {
       this.noteModal = this.noteModalOpen;
     },
-    activeComponent: {
-    handler(){
-      if (this.activeComponent !== '' && 
-        this.$store.state.showTutorial === true && 
-        this.$store.state.tutorialFirstOpen === true){
-        this.$store.commit("TOGGLE_TUTORIAL");
-      }
-      this.onActivated(this.activeComponentObj);
+    colorModalOpen() {
+      this.colorModal = this.colorModalOpen;
     },
-    deep: true,
+    activeComponent: {
+      handler() {
+        if (this.activeComponent !== '' &&
+          this.$store.state.showTutorial === true &&
+          this.$store.state.tutorialFirstOpen === true) {
+          this.$store.commit("TOGGLE_TUTORIAL");
+        }
+        this.onActivated(this.activeComponentObj);
+      },
+      deep: true,
     },
   },
 };
+
 </script>
 
 <style scoped lang="scss">
-
-.addChild{
+.addChild {
   width: 25vh;
   height: 50vh;
   display: flex;
@@ -498,24 +719,25 @@ export default {
   padding: 10px;
 }
 
-li{
+li {
   display: flex;
   font-weight: bold;
   padding: 3px;
 }
 
-li:hover{
+li:hover {
   background-color: $subprimary;
 }
 
-.noteblock{
+.noteblock {
   white-space: pre-wrap;
   font-weight: normal;
   width: 80%;
   margin-left: 10px;
   margin-right: 10px;
 }
-.noteBox{
+
+.noteBox {
   background-color: $subsecondary;
   color: $menutext;
   width: 65%;
@@ -523,10 +745,22 @@ li:hover{
   height: 65vh;
   max-height: 80vh;
 }
-.noteNum{
+
+.colorBox {
+  background-color: $subsecondary;
+  color: $menutext;
+  width: 65%;
+  padding: 15px;
+  height: 65vh;
+  max-height: 80vh;
+}
+
+
+.noteNum {
   width: 10%;
 }
-#noteDelete{
+
+#noteDelete {
   background-color: $secondary;
   width: 20px;
   height: 20px;
@@ -538,10 +772,12 @@ li:hover{
   user-select: none;
   align-self: center;
 }
-#noteDelete:hover{
+
+#noteDelete:hover {
   background-color: $negative;
 }
-.noteHolder{
+
+.noteHolder {
   background-color: $subsecondary;
   width: 100%;
   padding: 10px;
@@ -553,7 +789,7 @@ li:hover{
   height: 100%;
 }
 
-.noteContainer{
+.noteContainer {
   height: 280px;
   max-height: 280px;
   border: 1px solid $primary;
@@ -561,12 +797,12 @@ li:hover{
   overflow-y: auto;
   word-break: break-all;
   max-width: 100%;
-  display:flex;
+  display: flex;
   flex-direction: column;
   justify-content: flex-start;
 }
 
-.formBox{
+.formBox {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -583,12 +819,14 @@ li:hover{
   line-height: 1.2;
   z-index: -1;
 }
+
 .component-html-info {
   display: flex;
   font-size: 14px;
   flex-direction: column;
   font-weight: 800;
 }
+
 .component-children {
   position: relative;
   top: 0rem;
@@ -596,6 +834,7 @@ li:hover{
   color: black;
   list-style: none;
 }
+
 .component-display {
   top: 0px;
   left: 0px;
@@ -605,6 +844,7 @@ li:hover{
   min-height: 900px;
   position: absolute;
 }
+
 .grid-bg {
   background-color: rgba(223, 218, 218, 0.886);
   background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
@@ -623,18 +863,32 @@ li:hover{
     linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
   -pie-background: linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px) -2px -2px / 100px,
     linear-gradient(90deg, rgba(255, 255, 255, 0.8) 1px, transparent 1px) -2px -2px / 100px,
-    linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px) -1px -1px /
-      20px,
-    linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px) -1px -1px /
-      20px,
+    linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px) -1px -1px / 20px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px) -1px -1px / 20px,
     $secondary;
   behavior: url(/pie/PIE.htc);
 }
+
+.cssContainer {
+  margin: 6.1%;
+  border: 1px solid black;
+  width: 1000px;
+  height: 900px;
+}
+
+.cssContainerText {
+  position: absolute;
+  font-size: 3em;
+  margin-top: -4%;
+  margin-left: 23%;
+  color: black;
+}
+
 .menu {
   margin-bottom: 0px !important;
 }
 
-.compNoteLogo{
+.compNoteLogo {
   background: rgba($subprimary, .9);
   color: $secondary;
   border-radius: 4px;
@@ -643,7 +897,21 @@ li:hover{
   left: 4px;
 }
 
-.compNoteLogoEmpty{
+.colorLogo {
+  background: rgba($subprimary, .9);
+  color: $secondary;
+  border-radius: 4px;
+  position: absolute;
+  top: 4px;
+  left: 32px;
+}
+
+.colorLogo:hover {
+  background: rgba($subprimary, .6);
+  color: rgba($secondary, .8);
+}
+
+.compNoteLogoEmpty {
   background: rgba($subprimary, .9);
   color: rgba($primary, 1);
   border-radius: 4px;
@@ -651,12 +919,14 @@ li:hover{
   top: 4px;
   left: 4px;
 }
-.compNoteLogo:hover{
+
+.compNoteLogo:hover {
   background: rgba($subprimary, .6);
   color: rgba($secondary, .8);
 }
 
-.compNoteLogoEmpty:hover{
+
+.compNoteLogoEmpty:hover {
   background: rgba($subprimary, .6);
   color: rgba($menutext, .4);
 }
@@ -664,22 +934,25 @@ li:hover{
 .component-box {
   color: $menutext;
   border: 1.2px dashed $darktext;
-  background-color: rgba($darktext, .42);
+  // background-color: rgba($darktext, .42);
   -webkit-transition: background-color 200ms linear;
   -ms-transition: background-color 200ms linear;
   transition: background-color 200ms linear;
   position: absolute;
 }
+
 .active {
-  background-color: rgba($secondary, .42);
-  border: 1px dashed $accent;
+  // background-color: rgba($secondary, .42);
+  border: 3px solid $primary;
 }
+
 .minorAction {
   font-weight: bolder !important;
   width: 10px;
   height: 30px !important;
   transition: none;
 }
+
 .btn:hover,
 .btn:focus,
 .btn:active {
@@ -701,15 +974,16 @@ li:hover{
   background: $subprimary;
   color: $menutext;
 }
+
 .title {
   font-size: 20px;
   font-weight: bold;
   color: white;
 }
 
-#comp-btn{
+#comp-btn {
   width: 100%;
-  box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
+  box-shadow: inset 0 -0.6em 0 -0.35em rgba(0, 0, 0, 0.17);
 }
 
 #note-btn-close {
@@ -718,4 +992,81 @@ li:hover{
   margin-bottom: 10px;
 }
 
+.htmlButton {
+  position: absolute;
+  margin: .5em;
+  border-style: solid;
+  border: 2em;
+  border-radius: 1.5%;
+}
+
+.htmlDiv {
+  position: absolute;
+  margin: .5em;
+  border-radius: 1.5%;
+  border-style: solid;
+}
+
+.htmlFooter{
+  position: absolute;
+  width: 100%;
+  height: 10%;
+  top: 90%;
+  z-index: -1;
+  border-radius: 1.5%;
+  background-color: $primary;
+}
+
+.htmlGeneral{
+  position: absolute;
+  color: $menutext;
+  border-radius: 1.5%;
+  border-style: solid;
+}
+
+.htmlHead{
+  position: absolute;
+  color: $menutext;
+  font-weight: bolder !important;
+  text-overflow: clip;
+}
+
+.innerHtmlText {
+  position: absolute;
+  text-align: center;
+  opacity: 0.5;
+  overflow: hidden;
+  text-overflow: clip;
+}
+
+.htmlNavbar{
+  position: absolute;
+  width: 100%;
+  background-color: $primary;
+  height: 10%;
+  top: 0%;
+  z-index: -1;
+}
+
+.sr-only {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  white-space: nowrap;
+}
+
+.colorPicker {
+  color: black;
+  background: rgba(177, 171, 171, 0.562);
+}
+
+.colorContainer {
+  position: relative;
+  background: black
+}
 </style>

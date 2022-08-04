@@ -4,7 +4,7 @@ import * as types from "./types";
 const actions = {
   // Actions that primarily affect Canvas.vue //////
   [types.deleteActiveComponent]: ({ state, commit }) => {
-    if (state.noteModalOpen === true){
+    if (state.noteModalOpen === true) {
       return;
     }
     commit(types.DELETE_ACTIVE_COMPONENT);
@@ -19,7 +19,7 @@ const actions = {
   [types.parentSelected]: ({ commit }, payload) => {
     commit(types.PARENT_SELECTED, payload);
   },
-  
+
   [types.addActiveComponentNote]: ({ commit }, payload) => {
     commit(types.ADD_ACTIVE_COMPONENT_NOTE, payload)
   },
@@ -32,9 +32,45 @@ const actions = {
     commit(types.OPEN_NOTE_MODAL)
   },
 
+  [types.openColorModal]: ({ commit }) => {
+    commit(types.OPEN_COLOR_MODAL)
+  },
+  //test
+  [types.openAttributeModal]: ({ commit }, payload) => {
+    commit(types.OPEN_ATTRIBUTE_MODAL, payload)
+  },
+
+  [types.addActiveComponentClass]: ({ commit }, payload) => {
+    commit(types.ADD_ACTIVE_COMPONENT_CLASS, payload)
+  },
+
+  [types.deleteActiveComponentClass]: ({ commit }, payload) => {
+    commit(types.DELETE_ACTIVE_COMPONENT_CLASS, payload)
+  },
+
+  [types.addActiveComponentHeight]: ({ commit }, payload) => {
+    commit(types.ADD_ACTIVE_COMPONENT_HEIGHT, payload);
+  },
+
+  [types.addActiveComponentWidth]: ({ commit }, payload) => {
+    commit(types.ADD_ACTIVE_COMPONENT_WIDTH, payload);
+  },
+
+  [types.addActiveComponentTop]: ({ commit }, payload) => {
+    commit(types.ADD_ACTIVE_COMPONENT_TOP, payload);
+  },
+
+  [types.addActiveComponentLeft]: ({ commit }, payload) => {
+    commit(types.ADD_ACTIVE_COMPONENT_LEFT, payload);
+  },
+
+  [types.addActiveComponentElementNote]: ({ commit }, payload) => {
+    commit(types.ADD_ACTIVE_COMPONENT_ELEMENT_NOTE, payload)
+  },
+  //
   [types.registerComponent]: ({ state, commit }, payload) => {
     /* this action has a lot of mutations deployed
-    Because we have to initialize a whole bunch of properties
+    Because we have to initialize a whole bunch of propertiess
     which are determined by the choices made on the left hand panel
      */
     const { componentName } = payload;
@@ -73,7 +109,7 @@ const actions = {
   [types.toggleTutorial]: ({ commit }) => {
     commit(types.TOGGLE_TUTORIAL)
   },
-  
+
   [types.setActiveComponent]: ({ commit }, payload) => {
     commit(types.SET_ACTIVE_COMPONENT, payload);
   },
@@ -90,14 +126,24 @@ const actions = {
     commit(types.UPDATE_COMPONENT_LAYER, payload);
   },
 
+  [types.updateHTMLLayer]: ({ commit }, payload) => {
+    commit(types.UPDATE_HTML_LAYER, payload);
+  },
+
   [types.updateComponentPosition]: ({ commit }, payload) => {
     commit(types.UPDATE_COMPONENT_POSITION, payload);
+  },
+  [types.addBindingText]: ({ commit }, payload) => {
+    commit(types.addBindingText, payload);
   },
 
   [types.updateComponentSize]: ({ commit }, payload) => {
     commit(types.UPDATE_COMPONENT_SIZE, payload);
   },
-
+  //color updater
+  [types.updateColor]: ({ commit }, payload) => {
+    commit(types.UPDATE_COLOR, payload);
+  },
   // copy the active component
   [types.copyActiveComponent]: ({ commit }, payload) => {
     commit(types.COPY_ACTIVE_COMPONENT);
@@ -105,10 +151,10 @@ const actions = {
   // paste the active component copy
   [types.pasteActiveComponent]: ({ commit, state }) => {
     //if nothing is copied, don't commit anything
-    if (!state.copiedComponent.componentName){
+    if (!state.copiedComponent.componentName) {
       return
     }
-    if (Date.now() < state.pasteTimer){
+    if (Date.now() < state.pasteTimer) {
       return;
     } else {
       commit(types.UPDATE_PASTE_TIMER) //throttles pasting
@@ -162,9 +208,9 @@ const actions = {
   },
 
   [types.setActiveRoute]: ({ state, commit }, payload) => {
-    if (state.routes[payload].length === 0){
+    if (state.routes[payload].length === 0) {
       commit(types.SET_ACTIVE_COMPONENT, '');
-    } 
+    }
     commit(types.SET_ACTIVE_ROUTE, payload);
   },
 
@@ -196,6 +242,11 @@ const actions = {
     commit(types.ADD_PROPS_TO_COMPONENT, payload);
   },
 
+  //edit parent attribute
+  [types.editAttribute]: ({ commit }, payload) => {
+    commit(types.EDIT_ATTRIBUTE, payload);
+  },
+
   [types.createState]: ({ commit }, payload) => {
     commit(types.CREATE_STATE, payload);
   },
@@ -219,6 +270,11 @@ const actions = {
   [types.deleteStateFromComponent]: ({ commit }, payload) => {
     commit(types.DELETE_STATE_FROM_COMPONENT, payload);
   },
+  //
+  [types.addBindingText]: ({ commit }, payload) => {
+    commit(types.ADD_BINDING_TEXT, payload)
+  },
+
   // Delete user actions from vuex store
   [types.deleteUserActions]: ({ state, commit }, payload) => {
     commit(types.DELETE_USER_ACTIONS, payload);
@@ -237,7 +293,6 @@ const actions = {
   },
 
   // Actions dispatched from left hand panel////////////////////////////////////////
-
   [types.addToComponentElementList]: ({ commit }, payload) => {
     // adds element to the HTMLQueue
     commit(types.ADD_TO_COMPONENT_HTML_LIST, payload);
@@ -254,7 +309,6 @@ const actions = {
   // end of left hand panel/////////////////////////
 
   // HTML Element related actions ////////////////////
-
   [types.addNestedHTML]: ({ commit }, payload) => {
     commit(types.ADD_NESTED_HTML, payload);
   },
@@ -273,6 +327,10 @@ const actions = {
 
   [types.setActiveHTML]: ({ commit }, payload) => {
     commit(types.SET_ACTIVE_HTML_ELEMENT, payload);
+  },
+
+  [types.clearActiveHTML]: ({ commit }, payload) => {
+    commit(types.CLEAR_ACTIVE_HTML, payload);
   },
 
   [types.setActiveLayer]: ({ commit }, payload) => {
@@ -295,14 +353,40 @@ const actions = {
 
   // end of HTML segment ////////////////////////////////////////////////
 
-  // Loading ///////////////////////////////////////////////////////
+  // Drag-and-drop ///////////////////////////////////////
+  [types.setIdDrag]: ({ commit }, payload) => {
+    commit(types.SET_ID_DRAG, payload)
+  },
 
+  [types.setIdDrop]: ({ commit }, payload) => {
+    commit(types.SET_ID_DROP, payload)
+  },
+
+  [types.setSelectedIdDrag]: ({ commit }, payload) => {
+    commit(types.SET_SELECTED_ID_DRAG, payload)
+  },
+
+  [types.setSelectedIdDrop]: ({ commit }, payload) => {
+    commit(types.SET_SELECTED_ID_DROP, payload)
+  },
+
+  [types.dragDropSortHtmlElements]: ({ commit }, payload) => {
+    commit(types.DRAG_DROP_SORT_HTML_ELEMENTS)
+  },
+
+  [types.dragDropSortSelectedHtmlElements]: ({ commit }, payload) => {
+    commit(types.DRAG_DROP_SORT_SELECTED_HTML_ELEMENTS)
+  },
+
+  // end of Drag-and-drop /////////////////////////////////
+
+  // Loading ///////////////////////////////////////////////////////
   [types.openProject]: ({ commit }, payload) => {
     commit(types.REMOVE_ALL_STATE_PROPS_ACTIONS)
     commit(types.SET_ACTIVE_ROUTE, "HomeView");
-    payload.userProps.forEach((prop)=>{commit(types.CREATE_PROP, prop)})
-    payload.userActions.forEach((action)=>{commit(types.CREATE_ACTION, action)})
-    payload.userState.forEach((state)=>{commit(types.CREATE_STATE, state)})
+    payload.userProps.forEach((prop) => { commit(types.CREATE_PROP, prop) })
+    payload.userActions.forEach((action) => { commit(types.CREATE_ACTION, action) })
+    payload.userState.forEach((state) => { commit(types.CREATE_STATE, state) })
     commit(types.SET_IMAGE_PATH, payload.imagePath);
     commit(types.SET_COMPONENT_MAP, payload.componentMap);
     commit(types.SET_ROUTES, payload.routes);

@@ -50,6 +50,8 @@ Description:
         <q-expansion-item group="accordion" label="HTML Elements">
           <div class="icon-container">
             <Icons
+              v-model="attributeModal" 
+              v-if="attributeModal === false"
               class="icons"
               @getClickedIcon="addToSelectedElementList"
               @activeElement="addToComponentElementList"
@@ -61,6 +63,10 @@ Description:
             <HTMLQueue></HTMLQueue>
           </div>
           <br />
+        </q-expansion-item>
+        <InputHTMLMenu v-model="attributeModal" v-if="attributeModal === true && this.activeLayer.lineage.length === 0 " class="htmlElement-selected"/>
+        <q-expansion-item group="accordion" label="Component Attributes">
+          <AttributesSubMenu />
         </q-expansion-item>
         <!-- Props item that has AddProps component in it -->
         <q-expansion-item group="accordion" label="Props">
@@ -100,6 +106,7 @@ Description:
         <q-expansion-item group="accordion" label="Actions">
           <ActionsSubMenu />
         </q-expansion-item>
+        
       </q-list>
       <q-btn
         id="exportButton"
@@ -129,6 +136,9 @@ import Icons from "./Icons.vue";
 import PropsSubMenu from "./PropsSubMenu.vue";
 import StateSubMenu from "./StateSubMenu.vue";
 import ActionsSubMenu from "./ActionsSubMenu.vue";
+import AttributesSubMenu from "./AttributesSubMenu.vue";
+import InputHTMLMenu from './InputHTMLMenu.vue'
+
 
 const cloneDeep = require("lodash.clonedeep");
 const { fs, ipcRenderer } = window;
@@ -139,6 +149,7 @@ export default {
       value: "",
       newName: "",
       childrenSelected: [],
+      attributeModal: false,
     };
   },
   components: {
@@ -148,15 +159,20 @@ export default {
     PropsSubMenu,
     StateSubMenu,
     ActionsSubMenu,
+    AttributesSubMenu,
+    InputHTMLMenu,
   },
   computed: {
     ...mapState([
       "routes",
       "activeRoute",
       "activeComponent",
+      "activeHTML",
+      "activeLayer",
       "activeComponentObj",
       "componentMap",
       "exportAsTypescript",
+      'attributeModalOpen',
     ]),
     
     activeRouteDisplay() {
@@ -218,7 +234,8 @@ export default {
       "addToSelectedElementList",
       "addToComponentElementList",
       "addNestedHTML",
-      "addNestedNoActive"
+      "addNestedNoActive",
+      "openAttributeModal",
     ]),
     useExportComponentBound(){
       useExportComponent.bind(this)();
@@ -288,6 +305,11 @@ export default {
       this.setActiveComponent(this.activeComponent);
     },
   },
+  watch: {
+    attributeModalOpen() {
+      this.attributeModal = this.attributeModalOpen;
+    },
+  }
 };
 </script>
 
@@ -417,5 +439,10 @@ p {
   flex-direction: column;
   height: 94%;
   margin: 10px;
+}
+
+.htmlElement-selected {
+  height:100%;
+
 }
 </style>

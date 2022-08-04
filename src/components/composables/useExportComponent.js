@@ -27,7 +27,7 @@ export function useExportComponent() {
       const createComponentCode = (componentLocation, componentName, children) => {
         fs.writeFileSync(
           componentLocation + ".vue",
-            writeComments(componentName) +
+            // writeComments(componentName) +
             writeTemplate(componentName, children) +
             writeScript(componentName, children) +
             writeStyle(componentName)
@@ -37,17 +37,26 @@ export function useExportComponent() {
       const writeTemplateTag = (componentName) => {
         // create reference object
         const htmlElementMap = {
-          div: ["<div>", "</div>"],
-          button: ["<button>", "</button>"],
-          form: ["<form>", "</form>"],
-          img: ["<img>", ""],
-          link: ['<a href="#"/>', ""],
-          list: ["<li>", "</li>"],
-          paragraph: ["<p>", "</p>"],
-          "list-ol": ["<ol>", "</ol>"],
-          "list-ul": ["<ul>", "</ul>"],
-          input: ["<input />", ""],
-          navbar: ["<nav>", "</nav>"],
+          div: ["<div", "</div>"],
+          button: ["<button", "</button>"],
+          form: ["<form", "</form>"],
+          img: ["<img", ""], //single
+          link: ['<a href="#"', ""], //single
+          list: ["<li", "</li>"],
+          paragraph: ["<p", "</p>"],
+          "list-ol": ["<ol", "</ol>"],
+          "list-ul": ["<ul", "</ul>"],
+          input: ["<input", ""], //single
+          navbar: ["<nav", "</nav>"],
+          header: ["<header", "</header>"],
+          footer: ["<footer", "</footer>"],
+          meta: ["<meta", "</meta>"],
+          h1: ["<h1", "</h1>"],
+          h2: ["<h2", "</h2>"],
+          h3: ["<h3", "</h3>"],
+          h4: ["<h4", "</h4>"],
+          h5: ["<h5", "</h5>"],
+          h6: ["<h6", "</h6>"],
         };
         // function to loop through nested elements
         const writeNested = (childrenArray, indent) => {
@@ -56,22 +65,30 @@ export function useExportComponent() {
           }
           let indented = indent + "  ";
           let nestedString = "";
+  
           childrenArray.forEach((child) => {
             nestedString += indented;
             if (!child.text) {
               nestedString += `<${child}/>\n`;
             } else {
+              nestedString += htmlElementMap[child.text][0];
+              if (child.class !== "") {
+                nestedString += " " + "class = " + `"${child.class}"`;
+              }
+              if(child.binding !== "") {
+                nestedString += " " + "v-model = " + `"${child.binding}"`;
+              }
+              if (child.text === "img" || child.text === "input" || child.text === "link") {
+                nestedString += "/>";
+              } else { nestedString += ">"; }
+  
               if (child.children.length) {
-                nestedString += htmlElementMap[child.text][0];
                 nestedString += "\n";
                 nestedString += writeNested(child.children, indented);
                 nestedString += indented + htmlElementMap[child.text][1];
                 nestedString += "\n";
               } else {
-                nestedString +=
-                  htmlElementMap[child.text][0] +
-                  htmlElementMap[child.text][1] +
-                  "\n";
+                nestedString += htmlElementMap[child.text][1] + "\n";
               }
             }
           });
@@ -79,28 +96,35 @@ export function useExportComponent() {
         }
         // iterate through component's htmllist
         let htmlArr = this.componentMap[componentName].htmlList;
-        let outputStr = ``;
-        // eslint-disable-next-line no-unused-vars
-        for (let el of htmlArr) {
-          if (!el.text) {
-            outputStr += `    <${el}/>\n`;
-          } else {
+      let outputStr = ``;
+      // eslint-disable-next-line no-unused-vars
+      for (let el of htmlArr) {
+        if (!el.text) {
+          outputStr += `    <${el}/>\n`;
+        } else {
+          outputStr += `    `;
+          outputStr += htmlElementMap[el.text][0]
+          //if conditional to check class
+          if (el.class !== "") {
+            outputStr += " " + "class = " + `"${el.class}"`;
+          }
+          if (el.binding !== "") {
+            outputStr += " " + "v-model = " + `"${el.binding}"`;
+          }
+          outputStr += ">";
+          if (el.children.length) {
+            outputStr += "\n";
+            outputStr += writeNested(el.children, `    `);
             outputStr += `    `;
-            if (el.children.length) {
-              outputStr += htmlElementMap[el.text][0];
-              outputStr += "\n";
-              outputStr += writeNested(el.children, `    `);
-              outputStr += `    `;
-              outputStr += htmlElementMap[el.text][1];
-              outputStr += `  \n`;
-            } else {
-              outputStr +=
-                htmlElementMap[el.text][0] + htmlElementMap[el.text][1] + "\n";
-            }
+            outputStr += htmlElementMap[el.text][1];
+            outputStr += `  \n`;
+          } else {
+            outputStr += htmlElementMap[el.text][1] + "\n";
           }
         }
-        return outputStr;
       }
+      return outputStr;
+    }
 
       const writeComments = (componentName) => {
         if (this.componentMap[componentName]?.noteList?.length > 0){
@@ -119,11 +143,19 @@ export function useExportComponent() {
        * also creates the <template></template> tag for each component
        */
       const writeTemplate = (componentName, children) => {
-        let str = "";
-        str += `<div>\n`;
+        // let str = "";
+        // str += `<div>\n`;
         // writes the HTML tag boilerplate
         let templateTagStr = writeTemplateTag(componentName);
-        return `<template>\n\t${str}${templateTagStr}\t</div>\n</template>`;
+
+        //used to loop through - and apply class/id in code snippet
+        if (this.componentMap[componentName].htmlAttributes.class !== "" && this.componentMap[componentName].htmlAttributes.id !== "") {
+        return `<template>\n  <div id = "${this.componentMap[componentName].htmlAttributes.id}" class = "${this.componentMap[componentName].htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
+      } else if (this.componentMap[componentName].htmlAttributes.class !== "" && this.componentMap[componentName].htmlAttributes.id === "") {
+          return `<template>\n  <div class = "${this.componentMap[componentName].htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
+      } else if (this.componentMap[componentName].htmlAttributes.class === "" && this.componentMap[componentName].htmlAttributes.id !== "")
+      return `<template>\n  <div id = "${this.componentMap[componentName].htmlAttributes.id}">\n${templateTagStr}  </div>\n</template>`;
+        else return `<template>\n  <div>\n${templateTagStr}  </div>\n</template>`;
       }
 
       /**
@@ -158,15 +190,23 @@ export function useExportComponent() {
         });
         // if true add data section and populate with props
         let data = "";
+        data += "  data () {\n    return {";
         if (currentComponent.props.length) {
-          data += "  data () {\n    return {";
           currentComponent.props.forEach((prop) => {
             data += `\n      ${prop}: "PLACEHOLDER FOR VALUE",`;
           });
+        }
+          this.routes.HomeView.forEach((element) => {
+            element.htmlList.forEach((html) => {
+              if(html.binding !== '') {
+                data += `\n      ${html.binding}: "PLACEHOLDER FOR VALUE",`;
+              }
+            })
+          })
           data += "\n";
           data += "    }\n";
           data += "  },\n";
-        }
+        
         // if true add computed section and populate with state
         let computed = "";
         if (currentComponent.state.length) {
@@ -219,7 +259,35 @@ export function useExportComponent() {
        * if component is 'App', writes css, else returns <style scoped>
        */
       const writeStyle = (componentName) => {
-        return `\n\n<style scoped>\n</style>`;
+        let htmlArray = this.componentMap[componentName].htmlList;
+        let styleString = "";
+
+        this.routes.HomeView.forEach((element) => {
+          if(element.htmlAttributes.class !== "") {
+            styleString += `.${element.htmlAttributes.class} {\nbackground-color: ${element.color};
+width: ${element.w}px;
+height: ${element.h}px;
+z-index: ${element.z};
+}\n`
+          }
+        }) 
+          
+        
+  
+
+
+        for (const html of htmlArray) {
+          if (html.class !== '') {
+            styleString += `.${html.class} {\nheight: ${html.h}%;
+width: ${html.w}%;
+top: ${html.x}%;
+left: ${html.y}%;
+z-index: ${html.z};
+}\n`
+          }
+    }
+
+        return `\n\n<style scoped>\n${styleString}</style >`;
       }
 
       const exportComponentFile = (data) => {
