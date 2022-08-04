@@ -253,13 +253,7 @@ package.json
 
 ## Installation
 
-To download the development version for windows or mac, please visit https://www.Overvue.io
-
-This app was developed using the Quasar framework, so first you will need to install the Quasar cli
-
-```
-npm i -g @quasar/cli
-```
+To download the production version for windows or mac, please visit https://www.Overvue.io
 
 Install dependencies
 
@@ -270,13 +264,13 @@ npm i
 To run electron app in dev mode (note: Vue Devtools will launch automatically)
 
 ```
-quasar dev -m electron
+npm run dev
 ```
 
 To build a new .dmg / windows .exe
 
 ```
-quasar build -m electron
+npm run build
 ```
 
 ### WSL Installation
