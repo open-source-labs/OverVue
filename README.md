@@ -253,9 +253,7 @@ package.json
 
 ## Installation
 
-To download the development version for windows or mac, please visit https://www.Overvue.io
-
-This app was developed using the Quasar framework, so first you will need to install the Quasar cli
+To download the production version for windows or mac, please visit https://www.Overvue.io
 
 Install dependencies
 
