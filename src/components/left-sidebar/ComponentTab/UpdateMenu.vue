@@ -65,7 +65,7 @@ Description:
           <br />
         </q-expansion-item>
         <InputHTMLMenu v-model="attributeModal" v-if="attributeModal === true && this.activeLayer.lineage.length === 0 " class="htmlElement-selected"/>
-        <q-expansion-item group="accordion" label="HTML Attributes">
+        <q-expansion-item group="accordion" label="Component Attributes">
           <AttributesSubMenu />
         </q-expansion-item>
         <!-- Props item that has AddProps component in it -->
