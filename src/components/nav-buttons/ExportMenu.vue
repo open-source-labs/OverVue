@@ -44,7 +44,7 @@ export default {
     },
     exportProject: function () {
       // console.log('this.activeComponentObj: ', this.activeComponentObj); /* *********************** */ //Not sure, it's undefined
-      // console.log('this.componentMap: ', this.componentMap); /* *********************** */
+      console.log('this.componentMap: ', this.componentMap); /* *********************** */
       // console.log('this.routes: ', this.routes); /* *********************** */ //array of objects on the cssGrid
 
 
@@ -371,37 +371,29 @@ export default {
      * @description writes the <style> in vue component
      * if component is 'App', writes css, else returns <style scoped>
      */
-    writeStyle(componentName) {
-      let htmlArray = this.componentMap[componentName].htmlList;
-      let styleString = "";
-
+     writeStyle(componentName) {
+  let htmlArray = this.componentMap[componentName].htmlList;
+        let styleString = "";
         this.routes.HomeView.forEach((element) => {
           if(element.htmlAttributes.class !== "") {
             styleString += `.${element.htmlAttributes.class} {\nbackground-color: ${element.color};
-              width: ${element.w}px;
-              height: ${element.h}px;
-              z-index: ${element.z};
-
-              // added by A.Law 8/31
-              right: ${element.x}px;
-              top: ${element.y}px;
-              }\n`
+width: ${element.w}px;
+height: ${element.h}px;
+z-index: ${element.z};
+}\n`
           }
         }) 
-
+          
+        
+  
         for (const html of htmlArray) {
           if (html.class !== '') {
             styleString += `.${html.class} {\nheight: ${html.h}%;
-              width: ${html.w}%;
-              top: ${html.x}%;
-              left: ${html.y}%;
-              z-index: ${html.z};
-
-              // added by A.Law 8/31
-              // added by A.Law 8/31
-              right: ${element.x}px;
-              top: ${element.y}px;
-              }\n`
+width: ${html.w}%;
+top: ${html.x}%;
+left: ${html.y}%;
+z-index: ${html.z};
+}\n`
           }
     }
     if (componentName === "App") {
@@ -415,7 +407,6 @@ export default {
     border: 1px solid black;
 	  width:50%;
 }
-
 .router-view {
   margin:auto;
 }

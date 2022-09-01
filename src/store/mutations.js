@@ -757,14 +757,6 @@ const mutations = {
     state.componentNameInputValue = payload;
   },
 
-  [types.UPDATE_COMPONENT_POSITION]: (state, payload) => {
-    const updatedComponent = state.routes[state.activeRoute].filter(
-      (element) => element.componentName === payload.activeComponent
-    )[0];
-    updatedComponent.x = payload.x;
-    updatedComponent.y = payload.y;
-  },
-
   // updates state to code snippet component position
   [types.UPDATE_COMPONENT_POSITION]: (state, payload) => {
     //! this thing is returning undefined for some reason
