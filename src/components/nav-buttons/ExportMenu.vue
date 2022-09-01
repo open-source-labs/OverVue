@@ -43,6 +43,12 @@ export default {
         .catch((err) => console.log(err));
     },
     exportProject: function () {
+      // console.log('this.activeComponentObj: ', this.activeComponentObj); /* *********************** */ //Not sure, it's undefined
+      // console.log('this.componentMap: ', this.componentMap); /* *********************** */
+      // console.log('this.routes: ', this.routes); /* *********************** */ //array of objects on the cssGrid
+
+
+      // console.log('hi');
       this.showExportProjectDialog();
     },
     /**
@@ -250,16 +256,16 @@ export default {
 
       // writes the HTML tag boilerplate
       let templateTagStr = this.writeTemplateTag(componentName);
-//adds class/id into code snippet with exporting
-    if(this.componentMap[componentName].htmlAttributes) {
-      if (this.componentMap[componentName].htmlAttributes.class !== "" && this.componentMap[componentName].htmlAttributes.id !== "") {
-        return `<template>\n  <div id = "${this.componentMap[componentName].htmlAttributes.id}" class = "${this.componentMap[componentName].htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
-      } else if (this.componentMap[componentName].htmlAttributes.class !== "" && this.componentMap[componentName].htmlAttributes.id === "") {
-          return `<template>\n  <div class = "${this.componentMap[componentName].htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
-      } else if (this.componentMap[componentName].htmlAttributes.class === "" && this.componentMap[componentName].htmlAttributes.id !== "")
-      return `<template>\n  <div id = "${this.componentMap[componentName].htmlAttributes.id}">\n${templateTagStr}  </div>\n</template>`;
-        else return `<template>\n  <div>\n\t${str}${templateTagStr}  </div>\n</template>`;
-    } else return `<template>\n\t${str}${templateTagStr}</div>\n</template>`
+      //adds class/id into code snippet with exporting
+      if(this.componentMap[componentName].htmlAttributes) {
+        if (this.componentMap[componentName].htmlAttributes.class !== "" && this.componentMap[componentName].htmlAttributes.id !== "") {
+          return `<template>\n  <div id = "${this.componentMap[componentName].htmlAttributes.id}" class = "${this.componentMap[componentName].htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
+        } else if (this.componentMap[componentName].htmlAttributes.class !== "" && this.componentMap[componentName].htmlAttributes.id === "") {
+            return `<template>\n  <div class = "${this.componentMap[componentName].htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
+        } else if (this.componentMap[componentName].htmlAttributes.class === "" && this.componentMap[componentName].htmlAttributes.id !== "")
+        return `<template>\n  <div id = "${this.componentMap[componentName].htmlAttributes.id}">\n${templateTagStr}  </div>\n</template>`;
+          else return `<template>\n  <div>\n\t${str}${templateTagStr}  </div>\n</template>`;
+      } else return `<template>\n\t${str}${templateTagStr}</div>\n</template>`
     },
     /**
      * @description imports child components into <script>
@@ -366,31 +372,36 @@ export default {
      * if component is 'App', writes css, else returns <style scoped>
      */
     writeStyle(componentName) {
-  let htmlArray = this.componentMap[componentName].htmlList;
-        let styleString = "";
+      let htmlArray = this.componentMap[componentName].htmlList;
+      let styleString = "";
 
         this.routes.HomeView.forEach((element) => {
           if(element.htmlAttributes.class !== "") {
             styleString += `.${element.htmlAttributes.class} {\nbackground-color: ${element.color};
-width: ${element.w}px;
-height: ${element.h}px;
-z-index: ${element.z};
-}\n`
+              width: ${element.w}px;
+              height: ${element.h}px;
+              z-index: ${element.z};
+
+              // added by A.Law 8/31
+              right: ${element.x}px;
+              top: ${element.y}px;
+              }\n`
           }
         }) 
-          
-        
-  
-
 
         for (const html of htmlArray) {
           if (html.class !== '') {
             styleString += `.${html.class} {\nheight: ${html.h}%;
-width: ${html.w}%;
-top: ${html.x}%;
-left: ${html.y}%;
-z-index: ${html.z};
-}\n`
+              width: ${html.w}%;
+              top: ${html.x}%;
+              left: ${html.y}%;
+              z-index: ${html.z};
+
+              // added by A.Law 8/31
+              // added by A.Law 8/31
+              right: ${element.x}px;
+              top: ${element.y}px;
+              }\n`
           }
     }
     if (componentName === "App") {
