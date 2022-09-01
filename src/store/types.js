@@ -85,7 +85,7 @@ export const CLEAR_ACTIVE_HTML = 'CLEAR_ACTIVE_HTML'
 //
 export const REMOVE_ALL_STATE_PROPS_ACTIONS = 'REMOVE_ALL_STATE_PROPS_ACTIONS'
 export const UPDATE_PASTE_TIMER = 'UPDATE_PASTE_TIMER'
-//Drag and Drop
+//!Drag and Drop
 export const SET_ID_DRAG = 'SET_ID_DRAG'
 export const SET_ID_DROP = 'SET_ID_DROP'
 export const SET_SELECTED_ID_DRAG = 'SET_SELECTED_ID_DRAG'

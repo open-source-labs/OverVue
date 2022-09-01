@@ -7,13 +7,12 @@
 <template>
   <!-- the background Canvas grid -->
   <div class="component-display grid-bg" :style="mockBg" v-on:click="handleClick" v-on:click.right="handleRight">
-  <div class="cssContainer">
+  <div class="cssContainer" :style="{ 'background-size': `${this.gridLayout[0]}px ${this.gridLayout[1]}px, ${this.gridLayout[0]}px ${this.gridLayout[1]}px` }">
     <!-- This is the actual component box -->
     <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
-    <p class="cssContainerText">
-    CSS Container</p>
-  
+    <p class="cssContainerText"> CSS Container {{ this.activeComponentObj }}</p>
     <!--each component box in canvas will have these properties-->
+    <!-- !For property :Grid - look into setting it as a store variable/ input variable - no dynamic :grid changing for props- need to implement -->
     <vue-draggable-resizable
       class-name="component-box"
       v-for="componentData in activeRouteArray"
@@ -23,8 +22,9 @@
       :x="componentData.x"
       :y="componentData.y"
       :z="componentData.z"
-      :w="componentData.w"
-      :h="componentData.h"
+      :w="2 * this.gridLayout[0]"
+      :h="2 * this.gridLayout[1]"
+      :grid="this.gridLayout"
       :preventDeactivation="true"
       @activated="onActivated(componentData)"
       @deactivated="onDeactivated(componentData)"
@@ -69,7 +69,7 @@
             {'background-color': componentData.color}]"
         >
           <p class="innerHtmlText" style="font-size: 3em">{{element.note !== '' ? element.note : element.text}}</p> 
-        </div>
+        </div>sss
         <div v-if="element.text === 'footer'" class="htmlFooter"></div>
                 <div v-if="element.text === 'form'"
           class="htmlGeneral"
@@ -344,7 +344,7 @@
 import { useExportComponent } from "./composables/useExportComponent.js";
 import { mapState, mapActions } from "vuex";
 import VueDraggableResizable from "vue-draggable-resizable/src/components/vue-draggable-resizable.vue";
-import Vue3DraggableResizable from 'vue3-draggable-resizable'
+// import Vue3DraggableResizable from 'vue3-draggable-resizable'
 import VueMultiselect from "vue-multiselect";
 import "vue-draggable-resizable/src/components/vue-draggable-resizable.css";
 import 'vue3-draggable-resizable/dist/Vue3DraggableResizable.css'
@@ -357,7 +357,7 @@ const cloneDeep = require("lodash.clonedeep");
 export default {
   name: "Canvas",
   components: {
-    Vue3DraggableResizable,
+    // Vue3DraggableResizable,
     VueDraggableResizable,
     VueMultiselect,
     ColorPicker,
@@ -406,7 +406,8 @@ export default {
       'selectedElementList',
       'activeLayer',
       "colorModalOpen",
-      "activeRouteDisplay"
+      "activeRouteDisplay",
+      "gridLayout",
     ]),
     // used in VueDraggableResizeable component
     activeRouteArray() {
@@ -503,6 +504,7 @@ export default {
       "openNoteModal",
       "openColorModal",
       "updateColor",
+      "updateStateComponentPosition"
     ]),
     useExportComponentBound() {
       useExportComponent.bind(this)();
@@ -557,7 +559,6 @@ export default {
         payload.h !== this.initialSize.h
       ) {
         this.updateComponentSize(payload);
-
       }
       this.refresh();
     },
@@ -575,7 +576,7 @@ export default {
       payload.z--;
       this.updateComponentLayer(payload);
     },
-//drag and drop function
+    //!drag and drop function
     finishedDrag: function (x, y) {
       let payload = {
         x: x,
@@ -588,6 +589,7 @@ export default {
         payload.x !== this.initialPosition.x ||
         payload.y !== this.initialPosition.y
       ) {
+        // console.log(payload);
         this.updateComponentPosition(payload);
       }
       this.wasDragged = true;
@@ -874,6 +876,27 @@ li:hover {
   border: 1px solid black;
   width: 1000px;
   height: 900px;
+  background-color: rgba(223, 218, 218, 0.886);
+  background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+  // background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
+  background-image: -webkit-linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px),
+    -webkit-linear-gradient(0, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
+    -webkit-linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+    -webkit-linear-gradient(0, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
+  background-image: -moz-linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px),
+    -moz-linear-gradient(0, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
+    -moz-linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+    -moz-linear-gradient(0, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
+  background-image: linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
+  -pie-background: linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px) -2px -2px / 100px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.8) 1px, transparent 1px) -2px -2px / 100px,
+    linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px) -1px -1px / 20px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px) -1px -1px / 20px,
+    $secondary;
+  behavior: url(/pie/PIE.htc);
 }
 
 .cssContainerText {

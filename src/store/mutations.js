@@ -522,7 +522,7 @@ const mutations = {
     }
     state.activeHTML = "";
   },
-  //Drag-andDrop
+  //!Drag-andDrop
   //store id of dragged html element in activeComponent
   [types.SET_ID_DRAG]: (state, payload) => {
     const componentName = state.activeComponent;
@@ -765,11 +765,22 @@ const mutations = {
     updatedComponent.y = payload.y;
   },
 
+  // updates state to code snippet component position
+  [types.UPDATE_COMPONENT_POSITION]: (state, payload) => {
+    //! this thing is returning undefined for some reason
+    const updatedComponent = state.routes[state.activeRoute].filter(
+      (element) => element.componentName === payload.activeComponent
+    )[0];
+    console.log(updatedComponent, 'this is payload', payload);
+    updatedComponent.x = payload.x;
+    updatedComponent.y = payload.y;
+  },
+
   [types.UPDATE_COMPONENT_SIZE]: (state, payload) => {
     const updatedComponent = state.routes[state.activeRoute].filter(
       (element) => element.componentName === payload.activeComponent
     )[0];
-
+    console.log(updatedComponent, 'this is payload', payload);
     updatedComponent.h = payload.h;
     updatedComponent.w = payload.w;
     updatedComponent.x = payload.x;

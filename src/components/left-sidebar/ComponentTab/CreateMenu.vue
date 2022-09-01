@@ -8,6 +8,7 @@ Description:
 <template>
   <div class="create-component-div drawer-menu">
     <q-expansion-item group="accordion" label="Import Component">
+      <!-- !THIS IS THE IMPORT COMPONENT TAB WE NEED TO WORK ON -->
       <ImportComponent v-if="activeComponent === ''" @imported="createComponent" title="Import Component (coming soon)" class="sidebar-btn" :disable = "true"/>
     </q-expansion-item>
     <q-expansion-item group="accordion" label="Create Component">

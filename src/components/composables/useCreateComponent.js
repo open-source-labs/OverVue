@@ -29,10 +29,11 @@ export function useCreateComponent(importObj) {
     // boilerplate properties for each component upon creation
     const component = {
       x: 0,
-      y: 20,
+      y: 0,
       z: 0,
-      w: 200,
-      h: 200,
+      // !Chris: disabling this temporarily to see if we can have create component dynamically fit into grid- less snapping bugs
+      // w: 200,
+      // h: 200,
       htmlList: this.selectedElementList,
       noteList: [],
       children: [],
@@ -47,7 +48,7 @@ export function useCreateComponent(importObj) {
       htmlAttributes: {
         class: "",
         id: ""
-      }
+      },
     };
 
     if (imported === true) {
