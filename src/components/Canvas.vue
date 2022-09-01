@@ -10,9 +10,9 @@
   <div class="cssContainer" :style="{ 'background-size': `${this.gridLayout[0]}px ${this.gridLayout[1]}px, ${this.gridLayout[0]}px ${this.gridLayout[1]}px` }">
     <!-- This is the actual component box -->
     <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
-    <p class="cssContainerText"> CSS Container {{ this.activeComponentObj }}</p>
+    <p class="cssContainerText"> CSS Container </p>
     <!--each component box in canvas will have these properties-->
-    <!-- !For property :Grid - look into setting it as a store variable/ input variable - no dynamic :grid changing for props- need to implement -->
+    <!-- :onDragStart="recordInitialPosition" :onResizeStart="recordInitialSize" :preventDeactivation="true" graveyard attribute -->
     <vue-draggable-resizable
       class-name="component-box"
       v-for="componentData in activeRouteArray"
@@ -25,13 +25,10 @@
       :w="2 * this.gridLayout[0]"
       :h="2 * this.gridLayout[1]"
       :grid="this.gridLayout"
-      :preventDeactivation="true"
       @activated="onActivated(componentData)"
       @deactivated="onDeactivated(componentData)"
       @dragstop="finishedDrag"
       @resizestop="finishedResize"
-      :onDragStart="recordInitialPosition"
-      :onResizeStart="recordInitialSize"
       :style="{'background-color': componentData.color}"
       :parent="true"
     >
@@ -371,8 +368,8 @@ export default {
       noteModal: false,
       colorModal: false,
       mockImg: false,
-      initialPosition: { x: 0, y: 0 },
-      initialSize: { w: 0, h: 0 },
+      // initialPosition: { x: 0, y: 0 },
+      // initialSize: { w: 0, h: 0 },
       htmlElements: [],
       childrenSelected: [],
     };
@@ -509,19 +506,19 @@ export default {
     useExportComponentBound() {
       useExportComponent.bind(this)();
     },
-    // records component's initial position in case of drag
-    recordInitialPosition: function (e) {
-      if (this.activeComponent !== e.target.id) {
-        if (e.target.parentElement?.classList.contains('draggable')) {
-          this.setActiveComponent(e.target.parentElement.id)
-        } 
-        else if (typeof `${e.target.id}` !== 'number') {
-          this.setActiveComponent(e.target.id);
-        }
-      }
-      this.initialPosition.x = this.activeComponentData.x;
-      this.initialPosition.y = this.activeComponentData.y;
-    },
+    // !records component's initial position in case of drag - CHRIS: probably don't need this function?
+    // recordInitialPosition: function (e) {
+    //   if (this.activeComponent !== e.target.id) {
+    //     if (e.target.parentElement?.classList.contains('draggable')) {
+    //       // this.setActiveComponent(e.target.parentElement.id)
+    //     } 
+    //     else if (typeof `${e.target.id}` !== 'number') {
+    //       // this.setActiveComponent(e.target.id);
+    //     }
+    //   }
+    //   this.initialPosition.x = this.activeComponentData.x;
+    //   this.initialPosition.y = this.activeComponentData.y;
+    // },
     //color change function
     updateColors(data) {
       let payload = {
@@ -534,13 +531,13 @@ export default {
       this.refresh();
     },
 
-    // records component's initial size/position in case of resize
-    recordInitialSize: function (e) {
-      this.initialSize.h = this.activeComponentData.h;
-      this.initialSize.w = this.activeComponentData.w;
-      this.initialPosition.x = this.activeComponentData.x;
-      this.initialPosition.y = this.activeComponentData.y;
-    },
+    // records component's initial size/position in case of resize (also graveyard - dont need initial size?)
+    // recordInitialSize: function (e) {
+    //   this.initialSize.h = this.activeComponentData.h;
+    //   this.initialSize.w = this.activeComponentData.w;
+    //   this.initialPosition.x = this.activeComponentData.x;
+    //   this.initialPosition.y = this.activeComponentData.y;
+    // },
     // sets component's ending size/position
     finishedResize: function (x, y, w, h) {
       let payload = {
@@ -552,14 +549,14 @@ export default {
         routeArray: this.routes[this.activeRoute],
         activeComponentData: this.activeComponentData,
       };
-      if (
-        payload.x !== this.initialPosition.x ||
-        payload.y !== this.initialPosition.y ||
-        payload.w !== this.initialSize.w ||
-        payload.h !== this.initialSize.h
-      ) {
-        this.updateComponentSize(payload);
-      }
+      // if (
+      //   payload.x !== this.initialPosition.x ||
+      //   payload.y !== this.initialPosition.y ||
+      //   payload.w !== this.initialSize.w ||
+      //   payload.h !== this.initialSize.h
+      // ) {
+      this.updateComponentSize(payload);
+      // }
       this.refresh();
     },
 
@@ -585,13 +582,14 @@ export default {
         routeArray: this.routes[this.activeRoute],
         activeComponentData: this.activeComponentData,
       };
-      if (
-        payload.x !== this.initialPosition.x ||
-        payload.y !== this.initialPosition.y
-      ) {
+      // graveyard if statement- only used in canvas.vue
+      // if ( 
+      //   payload.x !== this.initialPosition.x ||
+      //   payload.y !== this.initialPosition.y
+      // ) {
         // console.log(payload);
-        this.updateComponentPosition(payload);
-      }
+      this.updateComponentPosition(payload);
+      // }
       this.wasDragged = true;
       setTimeout(() => this.wasDragged = false, 100)
       this.refresh();

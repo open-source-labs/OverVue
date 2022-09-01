@@ -69,8 +69,6 @@ const newState = {
   tutorialFirstOpen: true,
   pasteTimer: 0,
   gridLayout: [70, 70],
-  x: 0,
-  y: 0,
 }
 
 // closured method to ensure we only ever write the default state ONCE
