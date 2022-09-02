@@ -7,7 +7,11 @@
 <template>
   <!-- the background Canvas grid -->
   <div class="component-display grid-bg" :style="mockBg" v-on:click="handleClick" v-on:click.right="handleRight">
-  <div class="cssContainer" :style="{ 'background-size': `${this.gridLayout[0]}px ${this.gridLayout[1]}px, ${this.gridLayout[0]}px ${this.gridLayout[1]}px` }">
+  <div class="cssContainer" :style="{ 
+    'background-size': `${gridWidth}px ${gridHeight}px, 
+    ${gridWidth}px ${gridHeight}px`, 
+    'height': `${this.containerH}px`, 'width': `${this.containerW}px` 
+    }">
     <!-- This is the actual component box -->
     <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
     <p class="cssContainerText"> CSS Container </p>
@@ -22,9 +26,9 @@
       :x="componentData.x"
       :y="componentData.y"
       :z="componentData.z"
-      :w="2 * this.gridLayout[0]"
-      :h="2 * this.gridLayout[1]"
-      :grid="this.gridLayout"
+      :w="2 * gridWidth"
+      :h="2 * gridHeight"
+      :grid="[Math.floor(100 * gridWidth) / 100, Math.floor(100 * gridHeight) / 100 ]"
       @activated="onActivated(componentData)"
       @deactivated="onDeactivated(componentData)"
       @dragstop="finishedDrag"
@@ -405,6 +409,8 @@ export default {
       "colorModalOpen",
       "activeRouteDisplay",
       "gridLayout",
+      "containerH",
+      "containerW",
     ]),
     // used in VueDraggableResizeable component
     activeRouteArray() {
@@ -461,6 +467,14 @@ export default {
         }
         : {};
     },
+    // find the amount of grid lines for width
+    gridWidth() {
+      return this.containerW / this.gridLayout[0];
+    }, 
+    // find the amount of grid lines for height
+    gridHeight() {
+      return this.containerH / this.gridLayout[1];
+    },
   },
   updated() {
     // if there are no active components, all boxes are unhighlighted
@@ -486,6 +500,7 @@ export default {
       });
     }
   },
+
   methods: {
     ...mapActions([
       "setActiveComponent",
@@ -872,8 +887,8 @@ li:hover {
 .cssContainer {
   margin: 6.1%;
   border: 1px solid black;
-  width: 1000px;
-  height: 900px;
+  width: 1280px;
+  height: 720px;
   background-color: rgba(223, 218, 218, 0.886);
   background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
   // background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;

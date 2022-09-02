@@ -68,7 +68,9 @@ const newState = {
   showTutorial: true,
   tutorialFirstOpen: true,
   pasteTimer: 0,
-  gridLayout: [70, 70],
+  gridLayout: [17, 17], // [Width Ratio, Height Ratio] this will be used to have containerH / gridLayout[0] and have fr
+  containerH: 720, // in px
+  containerW: 1280, // in px
 }
 
 // closured method to ensure we only ever write the default state ONCE
