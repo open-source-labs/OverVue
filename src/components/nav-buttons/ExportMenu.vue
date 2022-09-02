@@ -384,8 +384,7 @@ z-index: ${element.z};
 }\n`
           }
         }) 
-          
-        
+
   
         for (const html of htmlArray) {
           if (html.class !== '') {
@@ -419,12 +418,6 @@ z-index: ${html.z};
         let styleString = "";
         this.routes.HomeView.forEach((element) => {
           if(element.componentName === componentName) {
-            // console.log('element.componentName: ', element.componentName);
-            // console.log('htmlAttributes.class: ', element.htmlAttributes.class)
-            // console.log('htmlAttributes.class: ', typeof(element.htmlAttributes.class))
-            // console.log(element.htmlAttributes.class === "")
-            // console.log('element.htmlList.text: ', element.htmlList.text);
-            // H
             let styleSelector = (element.htmlAttributes.class === "") ? element.htmlList[0].text : '.' + element.htmlAttributes.class;
             styleString += `${styleSelector} {\nbackground-color: ${element.color};
 width: ${element.w}px;
@@ -433,19 +426,7 @@ z-index: ${element.z};
 }\n`
           }
         }) 
-          
-        
   
-//         for (const html of htmlArray) {
-//           if (html.class !== '') {
-//             styleString += `.${html.class} {\nheight: ${html.h}%;
-// width: ${html.w}%;
-// top: ${html.x}%;
-// left: ${html.y}%;
-// z-index: ${html.z};
-// }\n`
-//           }
-//     }
     if (componentName === "App") {
       return `\n\n<style scoped>\n#nav {
     margin: auto;
