@@ -44,8 +44,8 @@ export default {
     },
     exportProject: function () {
       // console.log('this.activeComponentObj: ', this.activeComponentObj); /* *********************** */ //Not sure, it's undefined
-      console.log('this.componentMap: ', this.componentMap); /* *********************** */
-      // console.log('this.routes: ', this.routes); /* *********************** */ //array of objects on the cssGrid
+      // console.log('this.componentMap: ', this.componentMap); /* *********************** */
+      console.log('this.routes: ', this.routes); /* *********************** */ //array of objects on the cssGrid
 
 
       // console.log('hi');
@@ -371,6 +371,7 @@ export default {
      * @description writes the <style> in vue component
      * if component is 'App', writes css, else returns <style scoped>
      */
+    /* COMMENT OUT ALAW
      writeStyle(componentName) {
   let htmlArray = this.componentMap[componentName].htmlList;
         let styleString = "";
@@ -396,6 +397,55 @@ z-index: ${html.z};
 }\n`
           }
     }
+    if (componentName === "App") {
+      return `\n\n<style scoped>\n#nav {
+    margin: auto;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    background: #cfd8dc;
+    border: 1px solid black;
+	  width:50%;
+}
+.router-view {
+  margin:auto;
+}
+</style >`
+    } else return `\n\n<style scoped>\n${styleString}</style >`;
+    }, */
+
+    writeStyle(componentName) {
+        let styleString = "";
+        this.routes.HomeView.forEach((element) => {
+          if(element.componentName === componentName) {
+            // console.log('element.componentName: ', element.componentName);
+            // console.log('htmlAttributes.class: ', element.htmlAttributes.class)
+            // console.log('htmlAttributes.class: ', typeof(element.htmlAttributes.class))
+            // console.log(element.htmlAttributes.class === "")
+            // console.log('element.htmlList.text: ', element.htmlList.text);
+            // H
+            let styleSelector = (element.htmlAttributes.class === "") ? element.htmlList[0].text : '.' + element.htmlAttributes.class;
+            styleString += `${styleSelector} {\nbackground-color: ${element.color};
+width: ${element.w}px;
+height: ${element.h}px;
+z-index: ${element.z};
+}\n`
+          }
+        }) 
+          
+        
+  
+//         for (const html of htmlArray) {
+//           if (html.class !== '') {
+//             styleString += `.${html.class} {\nheight: ${html.h}%;
+// width: ${html.w}%;
+// top: ${html.x}%;
+// left: ${html.y}%;
+// z-index: ${html.z};
+// }\n`
+//           }
+//     }
     if (componentName === "App") {
       return `\n\n<style scoped>\n#nav {
     margin: auto;
