@@ -368,54 +368,12 @@ export default {
       }
     },
     /**
-     * @description writes the <style> in vue component
-     * if component is 'App', writes css, else returns <style scoped>
+     * @description writes the <style> in vue component for all components in Canvas
+     * Do not update code styling. Lack of styling is intentional to properly export the styling string.
      */
-    /* COMMENT OUT ALAW
-     writeStyle(componentName) {
-  let htmlArray = this.componentMap[componentName].htmlList;
-        let styleString = "";
-        this.routes.HomeView.forEach((element) => {
-          if(element.htmlAttributes.class !== "") {
-            styleString += `.${element.htmlAttributes.class} {\nbackground-color: ${element.color};
-width: ${element.w}px;
-height: ${element.h}px;
-z-index: ${element.z};
-}\n`
-          }
-        }) 
-
-  
-        for (const html of htmlArray) {
-          if (html.class !== '') {
-            styleString += `.${html.class} {\nheight: ${html.h}%;
-width: ${html.w}%;
-top: ${html.x}%;
-left: ${html.y}%;
-z-index: ${html.z};
-}\n`
-          }
-    }
-    if (componentName === "App") {
-      return `\n\n<style scoped>\n#nav {
-    margin: auto;
-    text-align: center;
-    display: flex;
-    justify-content: space-between;
-    padding: 1rem 2rem;
-    background: #cfd8dc;
-    border: 1px solid black;
-	  width:50%;
-}
-.router-view {
-  margin:auto;
-}
-</style >`
-    } else return `\n\n<style scoped>\n${styleString}</style >`;
-    }, */
-
     writeStyle(componentName) {
         let styleString = "";
+        // Add CSS styling for each component in the Canvas.
         this.routes.HomeView.forEach((element) => {
           if(element.componentName === componentName) {
             let styleSelector = (element.htmlAttributes.class === "") ? element.htmlList[0].text : '.' + element.htmlAttributes.class;
@@ -427,6 +385,7 @@ z-index: ${element.z};
           }
         }) 
   
+    // Add default styling to App
     if (componentName === "App") {
       return `\n\n<style scoped>\n#nav {
     margin: auto;
