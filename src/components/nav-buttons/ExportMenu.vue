@@ -60,13 +60,13 @@ export default {
         fs.writeFileSync(
           path.join(location, "src", "router", "index.ts"),
           this.createRouterImports(this.routes) +
-          this.createExport(this.componentMap)
+          this.createExport(this.routes)
         );
       } else {
         fs.writeFileSync(
           path.join(location, "src", "router", "index.js"),
           this.createRouterImports(this.routes) +
-          this.createExport(this.componentMap)
+          this.createExport(this.routes)
         );
       }
     },
@@ -74,24 +74,28 @@ export default {
      * @description import routed components from the /views/ dir
      * @argument: this.componentMap['App'].children
      */
-    createRouterImports(views) {
+    createRouterImports(routes) {
       let str = "import { createRouter, createWebHistory } from 'vue-router';\n";
-      for(let route in views) {
-          str += `import ${route} from '../views/${route}.vue';\n`;
+      for(let view in routes) {
+          str += `import ${view} from '../views/${view}.vue';\n`;
       }
       return str;
     },
     /**
      * @description creates the `export default` code in <script>
      */
-    createExport(appChildren) {
+    createExport(routes) {
       let str = "export default createRouter({\n\thistory: createWebHistory(import.meta.env.BASE_URL),\n\troutes: [\n";
-      for(let child in appChildren) {
-        if (appChildren[child].componentName === "HomeView") {
-          str += `\n\t\t{\n\t\t\tpath: '/',\n\t\t\tname:'${appChildren[child].componentName}',\n\t\t\tcomponent:${appChildren[child].componentName}\n\t\t},\n`;
-        } else if (appChildren[child].componentName !== "App") {
-          str += `\n\t\t{\n\t\t\tpath: '/${appChildren[child].componentName}',\n\t\t\tname:'${appChildren[child].componentName}',\n\t\t\tcomponent:${appChildren[child].componentName}\n\t\t},\n`;
-        }
+      for(let view in routes) {
+          // HomeView route is initialized to "localhost:3000/" url
+          if (view === "HomeView") {
+            str += `\n\t\t{\n\t\t\tpath: '/',\n\t\t\tname:'${view}',\n\t\t\tcomponent:${view}\n\t\t},\n`;
+          } 
+          // All other routes are initialized to "localhost:3000/<view Name>"
+          else {
+            str += `\n\t\t{\n\t\t\tpath: '/${view}',\n\t\t\tname:'${view}',\n\t\t\tcomponent:${view}\n\t\t},\n`;
+          }
+        //   str += `\n\t\t{\n\t\t\tpath: '/${appChildren[child].componentName}',\n\t\t\tname:'${appChildren[child].componentName}',\n\t\t\tcomponent:${appChildren[child].componentName}\n\t\t},\n`;
       }
       str += `\n\t\t]\n})`
       return str;
