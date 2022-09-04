@@ -104,18 +104,18 @@ export default {
      * @description: creates component code <template>, <script>, <style>
      * invokes writeTemplate, writeScript, writeStyle
      */
-    createComponentCode(componentLocation, componentName, children) {
+    createComponentCode(componentLocation, componentName, children, routes) {
       if (componentName === "App") {
         fs.writeFileSync(
           componentLocation + ".vue",
-          this.writeTemplate(componentName, children) +
+          this.writeTemplate(componentName, children, this.routes) +
           this.writeStyle(componentName)
         );
       } else {
         fs.writeFileSync(
           componentLocation + ".vue",
           this.writeComments(componentName) +
-          this.writeTemplate(componentName, children) +
+          this.writeTemplate(componentName, children, this.routes) +
           this.writeScript(componentName, children) +
           this.writeStyle(componentName)
         );
@@ -235,16 +235,16 @@ export default {
      * @description creates the <router-link> boilerplate for /views/components
      * also creates the <template></template> tag for each component
      */
-    writeTemplate(componentName, children) {
+    writeTemplate(componentName, children, routes) {
       let str = "";
       
       if (componentName === "App") {
         str += `<div id="app">\n\t\t<div id="nav">\n`;
-        for(let child in children) {
-          if(children[child].componentName === "HomeView") {
-            str += `\t\t\t<router-link to="/" class = "componentLinks">${children[child].componentName}</router-link>\n`;
-          } else if (children[child].componentName !== "App") {
-            str += `\t\t\t<router-link to="/${children[child].componentName}" class = "componentLinks">${children[child].componentName}</router-link>\n`;
+        for(let route in routes) {
+          if (route === "HomeView") {
+            str += `\t\t\t<router-link to="/" class = "componentLinks">${route}</router-link>\n`;
+          } else {
+            str += `\t\t\t<router-link to="/${route}" class = "componentLinks">${route}</router-link>\n`;
           }}
           str += `\t\t</div>\n\t\t<router-view class = "router-view"></router-view>\n`;
         } else {
