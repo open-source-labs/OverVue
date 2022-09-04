@@ -27,7 +27,9 @@
       :y="componentData.y"
       :z="componentData.z"
       :w="2 * gridWidth"
+      :min-width="gridWidth / 2"
       :h="2 * gridHeight"
+      :min-height="gridHeight / 2"
       :grid="[Math.floor(100 * gridWidth) / 100, Math.floor(100 * gridHeight) / 100 ]"
       @activated="onActivated(componentData)"
       @deactivated="onDeactivated(componentData)"
@@ -516,7 +518,7 @@ export default {
       "openNoteModal",
       "openColorModal",
       "updateColor",
-      "updateStateComponentPosition"
+      "updateComponentGridPosition"
     ]),
     useExportComponentBound() {
       useExportComponent.bind(this)();
@@ -571,6 +573,7 @@ export default {
       //   payload.h !== this.initialSize.h
       // ) {
       this.updateComponentSize(payload);
+      this.updateComponentGridPosition(payload);
       // }
       this.refresh();
     },
@@ -602,8 +605,8 @@ export default {
       //   payload.x !== this.initialPosition.x ||
       //   payload.y !== this.initialPosition.y
       // ) {
-        // console.log(payload);
       this.updateComponentPosition(payload);
+      this.updateComponentGridPosition(payload);
       // }
       this.wasDragged = true;
       setTimeout(() => this.wasDragged = false, 100)
@@ -623,14 +626,14 @@ export default {
           if (
             this.activeComponent === element.$attrs.id &&
             element.enabled === false
-          ) {
-            element.enabled = true;
-            element.$emit("activated");
-            element.$emit("update:active", true);
-          }
-        });
-      }
-      if (!(componentData.componentName === this.activeComponent)) {
+            ) {
+              element.enabled = true;
+              element.$emit("activated");
+              element.$emit("update:active", true);
+            }
+          });
+        }
+        if (!(componentData.componentName === this.activeComponent)) {
         this.setActiveComponent(componentData.componentName);
       }
       if (componentData && componentData.hasOwnProperty('componentName')) {

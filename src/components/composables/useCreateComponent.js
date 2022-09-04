@@ -1,3 +1,4 @@
+//! could not find a better way to calculate initial component creation H and W
 export function useCreateComponent(importObj) {
   const createComponent = (importObj) => {
     let imported = false;
@@ -25,15 +26,14 @@ export function useCreateComponent(importObj) {
       event.preventDefault();
       return false;
     }
-
     // boilerplate properties for each component upon creation
     const component = {
       x: 0,
       y: 0,
       z: 0,
       // !Chris: disabling this temporarily to see if we can have create component dynamically fit into grid- less snapping bugs
-      // w: 200,
-      // h: 200,
+      // w: newState.containerW / newState.gridLayout[0] ,
+      // h: newState.containerH / newState.gridLayout[1] ,
       htmlList: this.selectedElementList,
       noteList: [],
       children: [],
@@ -47,7 +47,8 @@ export function useCreateComponent(importObj) {
       color: "#ffffff85",
       htmlAttributes: {
         class: "",
-        id: ""
+        id: "",
+        gridArea: [0, 2, 0, 2],
       },
     };
 

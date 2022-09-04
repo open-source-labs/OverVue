@@ -757,23 +757,32 @@ const mutations = {
     state.componentNameInputValue = payload;
   },
 
+  // updates state to code snippet component position
   [types.UPDATE_COMPONENT_POSITION]: (state, payload) => {
+    // filter to find component in the state routes array
     const updatedComponent = state.routes[state.activeRoute].filter(
       (element) => element.componentName === payload.activeComponent
     )[0];
+    // update component x and y to reflect vue draggable resizeable position on canvas
     updatedComponent.x = payload.x;
     updatedComponent.y = payload.y;
   },
 
-  // updates state to code snippet component position
-  [types.UPDATE_COMPONENT_POSITION]: (state, payload) => {
-    //! this thing is returning undefined for some reason
+  // updates state to code snippet component grid area
+  [types.UPDATE_COMPONENT_GRID_POSITION]: (state, payload) => {
+    // filter to find component in the state routes array
     const updatedComponent = state.routes[state.activeRoute].filter(
       (element) => element.componentName === payload.activeComponent
     )[0];
-    console.log(updatedComponent, 'this is payload', payload);
-    updatedComponent.x = payload.x;
-    updatedComponent.y = payload.y;
+    // update CSS grid grid area fr [Y beginning, Y end + 1, x beginning, x end + 1]
+    if (updatedComponent.w === undefined) { updatedComponent.w = (2 * state.containerW / state.gridLayout[0]); }
+    if (updatedComponent.h === undefined) { updatedComponent.h = (2 * state.containerH / state.gridLayout[1]); }
+    const rowStart = Math.round(state.gridLayout[0] * updatedComponent.x / state.containerW) ;
+    const rowEnd = Math.round(state.gridLayout[0] * (updatedComponent.x + updatedComponent.w) / state.containerW);
+    const colStart = Math.round(state.gridLayout[1] * updatedComponent.y / state.containerH);
+    const colEnd = Math.round(state.gridLayout[1] * (updatedComponent.y + updatedComponent.h) / state.containerH);
+    updatedComponent.htmlAttributes.gridArea = [rowStart, rowEnd, colStart, colEnd];
+    console.log('this is the grid area', updatedComponent.htmlAttributes.gridArea);
   },
 
   [types.UPDATE_COMPONENT_SIZE]: (state, payload) => {
