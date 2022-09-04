@@ -763,7 +763,7 @@ const mutations = {
     const updatedComponent = state.routes[state.activeRoute].filter(
       (element) => element.componentName === payload.activeComponent
     )[0];
-    console.log(updatedComponent, 'this is payload', payload);
+    // console.log(updatedComponent, 'this is payload', payload);
     updatedComponent.x = payload.x;
     updatedComponent.y = payload.y;
   },
@@ -772,7 +772,7 @@ const mutations = {
     const updatedComponent = state.routes[state.activeRoute].filter(
       (element) => element.componentName === payload.activeComponent
     )[0];
-    console.log(updatedComponent, 'this is payload', payload);
+    // console.log(updatedComponent, 'this is payload', payload);
     updatedComponent.h = payload.h;
     updatedComponent.w = payload.w;
     updatedComponent.x = payload.x;

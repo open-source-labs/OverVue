@@ -44,11 +44,9 @@ export default {
     },
     exportProject: function () {
       // console.log('this.activeComponentObj: ', this.activeComponentObj); /* *********************** */ //Not sure, it's undefined
-      // console.log('this.componentMap: ', this.componentMap); /* *********************** */
+      console.log('this.componentMap: ', this.componentMap); /* *********************** */
       console.log('this.routes: ', this.routes); /* *********************** */ //array of objects on the cssGrid
 
-
-      // console.log('hi');
       this.showExportProjectDialog();
     },
     /**
@@ -61,13 +59,13 @@ export default {
       if (this.exportAsTypescript === "on") {
         fs.writeFileSync(
           path.join(location, "src", "router", "index.ts"),
-          this.createRouterImports(this.componentMap) +
+          this.createRouterImports(this.routes) +
           this.createExport(this.componentMap)
         );
       } else {
         fs.writeFileSync(
           path.join(location, "src", "router", "index.js"),
-          this.createRouterImports(this.componentMap) +
+          this.createRouterImports(this.routes) +
           this.createExport(this.componentMap)
         );
       }
@@ -76,15 +74,10 @@ export default {
      * @description import routed components from the /views/ dir
      * @argument: this.componentMap['App'].children
      */
-    createRouterImports(appChildren) {
+    createRouterImports(views) {
       let str = "import { createRouter, createWebHistory } from 'vue-router';\n";
-      for(let child in appChildren) {
-        if(appChildren[child].componentName === "HomeView") {
-          str += `import ${appChildren[child].componentName} from '../views/${appChildren[child].componentName}.vue';\n`;
-      } 
-      if(appChildren[child].componentName !== "App" && appChildren[child].componentName !== "HomeView") {
-          str += `import ${appChildren[child].componentName} from '../components/${appChildren[child].componentName}.vue';\n`;
-      }
+      for(let route in views) {
+          str += `import ${route} from '../views/${route}.vue';\n`;
       }
       return str;
     },
@@ -152,7 +145,7 @@ export default {
         h3: ["<h3", "</h3>"],
         h4: ["<h4", "</h4>"],
         h5: ["<h5", "</h5>"],
-        h6: ["<h6", "</h6>"],
+        h6: ["<h6", "</h6>"]
       };
       // function to loop through nested elements
       function writeNested(childrenArray, indent) {
@@ -371,6 +364,8 @@ export default {
      * @description writes the <style> in vue component for all components in Canvas
      * Do not update code styling. Lack of styling is intentional to properly export the styling string.
      */
+    /* UPDATE THIS TO GRAB INFORMATION FROM this.componentMap NOT this.routes*/
+    /* this.componentMap does not have x-y positioning stored */
     writeStyle(componentName) {
         let styleString = "";
         // Add CSS styling for each component in the Canvas.
