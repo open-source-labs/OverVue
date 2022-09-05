@@ -286,8 +286,7 @@ export default {
       const currentComponent = this.componentMap[componentName];
       const routes = Object.keys(this.routes);
 
-      // Runs all non-View components
-      // Imports mapState/Actions
+      // Writes script boilerplate for non-route components
       if (!routes.includes(componentName)) { 
         let imports = "";
         if (currentComponent.actions.length || currentComponent.state.length) {
@@ -372,21 +371,25 @@ export default {
         }
         return output;
       } 
-      // Runs for user-defined route components.
+      // Write script for route components.
       else {
         let str = "";
         let childrenComponentNames = "";
+        let childComponentImportNames = "";
         const arrOfChildComp = this.componentMap[componentName].children;
 
-        // Group all child components into export string format. 
         if (componentName !== "App"){
-          arrOfChildComp.forEach(child => {
-            if (child !== arrOfChildComp[arrOfChildComp.length - 1]){
-              childrenComponentNames += "  " + child + ",\n";
+          arrOfChildComp.forEach(childName => {
+            // Build child component text string
+            if (childName !== arrOfChildComp[arrOfChildComp.length - 1]){
+              childrenComponentNames += "  " + childName + ",\n";
             }
             else {
-              childrenComponentNames += "  " + child + "\n";
+              childrenComponentNames += "  " + childName + "\n";
             }
+
+            // Build child component import text string
+            childComponentImportNames += `import ${childName} from '../components/${childName}.vue';\n`
           })
         }
 
@@ -394,7 +397,12 @@ export default {
         if (this.exportAsTypescript === "on") {
           return `\n\n<script lang="ts">\nimport { defineComponent } from "vue";\n ${str}\nexport default defineComponent ({\n  name: '${componentName}',\n  components: {\n${childrenComponentNames}  }\n});\n<\/script>`;
         }
-        return `\n\n<script>\n${str}\nexport default {\n  name: '${componentName}',\n  components: {\n${childrenComponentNames}  }\n};\n<\/script>`;
+        str += "\n\n<script>";
+        str += `\n${childComponentImportNames}`;
+        str += `\n\nexport default {`
+        str += `\n${childrenComponentNames}};`;
+        str += `\n<\/script>`;
+        return str
       }
     },
     /**
