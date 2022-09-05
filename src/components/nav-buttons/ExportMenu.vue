@@ -251,18 +251,32 @@ export default {
           str += `<div>\n`;
         }
 
+      // let componentID = this.componentMap[componentName].htmlAttributes.id;
+      // console.log('componentID: ', componentID);
+
       // writes the HTML tag boilerplate
       let templateTagStr = this.writeTemplateTag(componentName);
       //adds class/id into code snippet with exporting
-      if(this.componentMap[componentName].htmlAttributes) {
-        if (this.componentMap[componentName].htmlAttributes.class !== "" && this.componentMap[componentName].htmlAttributes.id !== "") {
-          return `<template>\n  <div id = "${this.componentMap[componentName].htmlAttributes.id}" class = "${this.componentMap[componentName].htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
-        } else if (this.componentMap[componentName].htmlAttributes.class !== "" && this.componentMap[componentName].htmlAttributes.id === "") {
-            return `<template>\n  <div class = "${this.componentMap[componentName].htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
-        } else if (this.componentMap[componentName].htmlAttributes.class === "" && this.componentMap[componentName].htmlAttributes.id !== "")
-        return `<template>\n  <div id = "${this.componentMap[componentName].htmlAttributes.id}">\n${templateTagStr}  </div>\n</template>`;
-          else return `<template>\n  <div>\n\t${str}${templateTagStr}  </div>\n</template>`;
-      } else return `<template>\n\t${str}${templateTagStr}</div>\n</template>`
+      if (this.componentMap[componentName].htmlAttributes) {
+        let compID = this.componentMap[componentName].htmlAttributes.id;
+        let compClass = this.componentMap[componentName].htmlAttributes.class;
+
+        if (compClass !== "" && compID !== "") {
+          return `<template>\n  <div id = "${compID}" class = "${compClass}">\n${templateTagStr}  </div>\n</template>`;
+        } 
+        else if (compClass !== "" && compID === "") {
+          return `<template>\n  <div class = "${compClass}">\n${templateTagStr}  </div>\n</template>`;
+        } 
+        else if (compClass === "" && compID !== "") {
+          return `<template>\n  <div id = "${this.componentMap[componentName].htmlAttributes.id}">\n${templateTagStr}  </div>\n</template>`;
+        }
+        else {
+          return `<template>\n  <div>\n\t${str}${templateTagStr}  </div>\n</template>`;
+        }
+      } 
+      else {
+        return `<template>\n\t${str}${templateTagStr}</div>\n</template>`
+      }
     },
     /**
      * @description imports child components into <script>
@@ -271,17 +285,22 @@ export default {
       // add import mapstate and mapactions if they exist
       const currentComponent = this.componentMap[componentName];
       const routes = Object.keys(this.routes);
-      if (!routes.includes(componentName)) {
+
+      // Runs all non-View components
+      // Imports mapState/Actions
+      if (!routes.includes(componentName)) { 
         let imports = "";
         if (currentComponent.actions.length || currentComponent.state.length) {
           imports += "import { ";
-          if (
-            currentComponent.actions.length &&
-            currentComponent.state.length
-          ) {
+          if (currentComponent.actions.length && currentComponent.state.length) {
             imports += "mapState, mapActions";
-          } else if (currentComponent.state.length) imports += "mapState";
-          else imports += "mapActions";
+          } 
+          else if (currentComponent.state.length) {
+            imports += "mapState";
+          }
+          else {
+            imports += "mapActions";
+          }
           imports += ' } from "vuex";\n';
         }
         // if in Typescript mode, import defineComponent
@@ -352,16 +371,30 @@ export default {
           output += "};\n<\/script>";
         }
         return output;
-      } else {
+      } 
+      // Runs for user-defined route components.
+      else {
         let str = "";
-
         let childrenComponentNames = "";
+        const arrOfChildComp = this.componentMap[componentName].children;
+
+        // Group all child components into export string format. 
+        if (componentName !== "App"){
+          arrOfChildComp.forEach(child => {
+            if (child !== arrOfChildComp[arrOfChildComp.length - 1]){
+              childrenComponentNames += "  " + child + ",\n";
+            }
+            else {
+              childrenComponentNames += "  " + child + "\n";
+            }
+          })
+        }
 
         // eslint-disable-next-line no-useless-escape
         if (this.exportAsTypescript === "on") {
           return `\n\n<script lang="ts">\nimport { defineComponent } from "vue";\n ${str}\nexport default defineComponent ({\n  name: '${componentName}',\n  components: {\n${childrenComponentNames}  }\n});\n<\/script>`;
         }
-        return `\n\n<script>\n${str}\nexport default {\n  name: '${componentName}',\n  components: {\n  }\n};\n<\/script>`;
+        return `\n\n<script>\n${str}\nexport default {\n  name: '${componentName}',\n  components: {\n${childrenComponentNames}  }\n};\n<\/script>`;
       }
     },
     /**
@@ -383,6 +416,7 @@ z-index: ${element.z};
 }\n`
           }
         }) 
+
   
     // Add default styling to App
     if (componentName === "App") {
