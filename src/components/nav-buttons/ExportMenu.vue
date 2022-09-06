@@ -237,11 +237,11 @@ export default {
       
       if (componentName === "App") {
         str += `<div id="app">\n\t\t<div id="nav">\n`;
-        for(let child in children) {
-          if(children[child].componentName === "HomeView") {
-            str += `\t\t\t<router-link to="/" class = "componentLinks">${children[child].componentName}</router-link>\n`;
-          } else if (children[child].componentName !== "App") {
-            str += `\t\t\t<router-link to="/${children[child].componentName}" class = "componentLinks">${children[child].componentName}</router-link>\n`;
+        for(let route in this.routes) {
+          if(route === "HomeView") {
+            str += `\t\t\t<router-link to="/" class = "componentLinks">${route}</router-link>\n`;
+          } else if (route !== "HomeView") {
+            str += `\t\t\t<router-link to="/${route}" class = "componentLinks">${route}</router-link>\n`;
           }}
           str += `\t\t</div>\n\t\t<router-view class = "router-view"></router-view>\n`;
         } else {
@@ -366,18 +366,20 @@ export default {
      * if component is 'App', writes css, else returns <style scoped>
      */
     writeStyle(componentName) {
-  let htmlArray = this.componentMap[componentName].htmlList;
-        let styleString = "";
-
-        this.routes.HomeView.forEach((element) => {
+      let htmlArray = this.componentMap[componentName].htmlList;
+      let styleString = "";
+      console.log(componentName);
+      //! this should be a foreach loop for each route child component
+      if (this.routes.hasOwnProperty(componentName)) {
+        this.routes[componentName].forEach((element) => {
           if(element.htmlAttributes.class !== "") {
-            styleString += `.${element.htmlAttributes.class} {\nbackground-color: ${element.color};
-width: ${element.w}px;
-height: ${element.h}px;
-z-index: ${element.z};
+            styleString += `.${element.htmlAttributes.class} {\n\tbackground-color: ${element.color};
+\tgrid-area: ${element.htmlAttributes.gridArea[0]} / ${element.htmlAttributes.gridArea[1]} / ${element.htmlAttributes.gridArea[2]} / ${element.htmlAttributes.gridArea[3]};
+\tz-index: ${element.z};
 }\n`
           }
         }) 
+      }
           
         
   
@@ -407,6 +409,12 @@ z-index: ${html.z};
 
 .router-view {
   margin:auto;
+  display: grid;
+  background-color: gray;
+  grid-template-columns: repeat(${this.gridLayout[0]}, 1fr);
+  grid-template-rows: repeat(${this.gridLayout[1]}, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
 }
 </style >`
     } else return `\n\n<style scoped>\n${styleString}</style >`;
@@ -664,7 +672,17 @@ z-index: ${html.z};
     },
   },
   computed: {
-    ...mapState(["componentMap", "imagePath", "routes", "exportAsTypescript", "activeComponent", "userState", "userActions"]),
+    ...mapState(["componentMap", 
+    "imagePath", 
+    "routes", 
+    "exportAsTypescript", 
+    "activeComponent", 
+    "userState", 
+    "userActions", 
+    "gridLayout", 
+    "containerW", 
+    "containerH"
+    ]),
   },
 };
 </script>

@@ -286,8 +286,7 @@ export default {
 
       if (this.activeComponentObj.htmlAttributes.class !== "") {
         styleString += `.${this.activeComponentObj.htmlAttributes.class} { \n background-color: ${this.activeComponentObj.color};
- width: ${this.activeComponentObj.w} px;
- height: ${this.activeComponentObj.h} px;
+ grid-area: ${this.activeComponentObj.htmlAttributes.gridArea[0]} / ${this.activeComponentObj.htmlAttributes.gridArea[1]} / ${this.activeComponentObj.htmlAttributes.gridArea[2]} / ${this.activeComponentObj.htmlAttributes.gridArea[3]};
  z-index: ${this.activeComponentObj.z};
 } \n`
       }
