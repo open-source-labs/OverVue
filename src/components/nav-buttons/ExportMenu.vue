@@ -407,7 +407,8 @@ export default {
         str += "\n\n<script>";
         str += `\n${childComponentImportNames}`;
         str += `\n\nexport default {`
-        str += `\n${childrenComponentNames}};`;
+        str += `\n  components: {`
+        str += `\n    ${childrenComponentNames}  }\n};`;
         str += `\n<\/script>`;
         return str
       }
