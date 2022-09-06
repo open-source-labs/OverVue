@@ -39,7 +39,7 @@ export default {
     PrismEditor,
   },
   computed: {
-    //add 
+    //add
     // needs access to current component aka activeComponent
     ...mapState(["componentMap", "activeComponent", "activeComponentObj", "exportAsTypescript"]),
   },
@@ -107,6 +107,7 @@ export default {
         h4: ["<h4", "</h4>"],
         h5: ["<h5", "</h5>"],
         h6: ["<h6", "</h6>"],
+        element:["<el-button", "</el-button>"]
       };
 
       // Helper function that recursively iterates through the given html element's children and their children's children.
@@ -169,7 +170,7 @@ export default {
           if (el.class !== "") {
             outputStr += " " + "class=" + `"${el.class}"`;
           }
-          
+
           if (el.binding !== "") {
             outputStr += ` v-model="${el.binding}"`
           }

@@ -19,6 +19,7 @@ const htmlElementMap = {
   h4:['<h4>', '</h4>'],
   h5:['<h5>', '</h5>'],
   h6:['<h6>', '</h6>'],
+  element:["<el-button", "</el-button>"]
 }
 
 export default htmlElementMap

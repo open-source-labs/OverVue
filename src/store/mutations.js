@@ -206,7 +206,7 @@ const mutations = {
       [state.activeComponent]: state.activeComponentObj,
     };
   },
-  
+
   [types.DELETE_ACTION_FROM_COMPONENT]: (state, payload) => {
     state.componentMap[state.activeComponent].actions = state.componentMap[state.activeComponent].actions.filter(
       (action) => action !== payload);
@@ -340,12 +340,12 @@ const mutations = {
           while(queue.length) {
             const evaluate = queue.shift();
             if(evaluate.text === name) {
-              evaluate.text = payload; 
+              evaluate.text = payload;
             }
             for(let i = 0; i < evaluate.children.length; i++) {
               if (evaluate.children[i].text === name) {
                 evaluate.children[i].text = payload;
-              } 
+              }
               if (evaluate.children.length) {
                 queue.push(...evaluate.children)
               }
@@ -761,8 +761,10 @@ const mutations = {
     const updatedComponent = state.routes[state.activeRoute].filter(
       (element) => element.componentName === payload.activeComponent
     )[0];
+    console.log(payload);
     updatedComponent.x = payload.x;
     updatedComponent.y = payload.y;
+
   },
 
   // updates state to code snippet component position
@@ -771,7 +773,7 @@ const mutations = {
     const updatedComponent = state.routes[state.activeRoute].filter(
       (element) => element.componentName === payload.activeComponent
     )[0];
-    console.log(updatedComponent, 'this is payload', payload);
+
     updatedComponent.x = payload.x;
     updatedComponent.y = payload.y;
   },
@@ -780,7 +782,7 @@ const mutations = {
     const updatedComponent = state.routes[state.activeRoute].filter(
       (element) => element.componentName === payload.activeComponent
     )[0];
-    console.log(updatedComponent, 'this is payload', payload);
+
     updatedComponent.h = payload.h;
     updatedComponent.w = payload.w;
     updatedComponent.x = payload.x;
@@ -860,15 +862,15 @@ const mutations = {
           }
           if(array[i].text === payload) {
             array.splice(i, 1)
-          } 
-          
+          }
+
         }
       }
       deleteChildFromHtmlList(htmlList, payload);
 
       //updates the htmlList with the child components deleted
       state.componentMap[componentName].htmlList = htmlList;
-      
+
       //delete the parent because the payload is no longer a child to the acitive component
       delete state.componentMap[payload].parent[state.activeComponent];
 
@@ -937,7 +939,7 @@ const mutations = {
 
   },
 
-//add binding 
+//add binding
   [types.ADD_BINDING_TEXT]: (state, payload) => {
     //access the htmlList, add payload to the empty bind obj
     //const active = state.componentMap[state.activeComponent].htmlList;
@@ -1042,7 +1044,20 @@ const mutations = {
   [types.SET_IMAGE_PATH]: (state, payload) => {
     state.imagePath = { ...state.imagePath, ...payload };
   },
+  //change library array
+  [types.CHANGE_LIB]: (state, payload) => {
+   state.importLibraries.push(payload.libName);
 
+  },
+  [types.CHANGE_LIB_COMPONENT_DISPLAY]: (state, payload) => {
+    state.displaylibComponent = payload.displaylibComponent;
+   },
+
+   [types.ADD_LIB_COMPONENTS]: (state, payload) => {
+    for(let key in payload){
+      state.icons[key] = payload[key];
+    }
+   },
   // *** INACTIVE MUTATIONS - kept for reference *** //////////////////////////////////////////////
 
   // [types.SET_STATE]: (state, payload) => {

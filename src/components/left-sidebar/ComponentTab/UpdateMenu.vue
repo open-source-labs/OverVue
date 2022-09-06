@@ -50,7 +50,7 @@ Description:
         <q-expansion-item group="accordion" label="HTML Elements">
           <div class="icon-container">
             <Icons
-              v-model="attributeModal" 
+              v-model="attributeModal"
               v-if="attributeModal === false"
               class="icons"
               @getClickedIcon="addToSelectedElementList"
@@ -59,7 +59,9 @@ Description:
               @activeLayer="addNestedNoActive"
             />
           </div>
+          
           <div class="componentHTML">
+
             <HTMLQueue></HTMLQueue>
           </div>
           <br />
@@ -106,7 +108,7 @@ Description:
         <q-expansion-item group="accordion" label="Actions">
           <ActionsSubMenu />
         </q-expansion-item>
-        
+
       </q-list>
       <q-btn
         id="exportButton"
@@ -121,7 +123,7 @@ Description:
         label="Delete currently selected"
       />
      </q-expansion-item>
-     </q-card>  
+     </q-card>
     </div>
   </div>
 </template>
@@ -174,7 +176,7 @@ export default {
       "exportAsTypescript",
       'attributeModalOpen',
     ]),
-    
+
     activeRouteDisplay() {
       let component = this.routes[this.activeRoute];
       return component;
@@ -217,7 +219,7 @@ export default {
           }
         })
       }
-      const optionOutput = val.filter(el => !parentalLineage.includes(el)).filter(el => el !== this.activeComponent); 
+      const optionOutput = val.filter(el => !parentalLineage.includes(el)).filter(el => el !== this.activeComponent);
       return optionOutput;
     },
 
@@ -327,7 +329,7 @@ export default {
   background-color: $subprimary;
   color: $menutext;
   border: 1px solid $subprimary;
-  margin-bottom: 20px; 
+  margin-bottom: 20px;
   padding: 0;
 }
 
