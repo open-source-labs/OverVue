@@ -2,7 +2,6 @@
 
 // parsing implementation in progress 
 
-// this would need to exist in the root directory of a project (or whatever level the node modules are on)
 
 // importing parseComponent from npm package
 const { parseComponent } = require("vue-sfc-parser");
@@ -96,6 +95,31 @@ function generateImportObjs(pathList) { // or something
   // iterate through paths
   // parse each file
   // extract necessary html / js stuff for importObj
+    //necessary info:
+      // component name
+      // boilerplate properties for each component upon creation
+    // const component = {
+    //   x: 0,
+    //   y: 20,
+    //   z: 0,
+    //   w: 200,
+    //   h: 200,
+    //   htmlList: this.selectedElementList, //htmlList ask Alex
+    //   noteList: [],
+    //   children: [],
+    //   actions: [],
+    //   props: [],
+    //   state: [],
+    //   parent: {},
+    //   isActive: false,
+    //   idDrag: '',
+    //   idDrop: '',
+    //   color: "#ffffff85",
+    //   htmlAttributes: {
+    //     class: "",
+    //     id: ""
+    //   }
+    // };
   // return an array of importObjs with default settings, names, etc
 }
 
