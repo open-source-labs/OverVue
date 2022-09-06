@@ -237,6 +237,7 @@ export default {
      */
     writeTemplate(componentName, children, routes) {
       let str = "";
+      let routeStr = "";
       
       if (componentName === "App") {
         str += `<div id="app">\n\t\t<div id="nav">\n`;
@@ -247,12 +248,18 @@ export default {
             str += `\t\t\t<router-link to="/${route}" class = "componentLinks">${route}</router-link>\n`;
           }}
           str += `\t\t</div>\n\t\t<router-view class = "router-view"></router-view>\n`;
-        } else {
+        } 
+        else {
           str += `<div>\n`;
         }
 
-      // let componentID = this.componentMap[componentName].htmlAttributes.id;
-      // console.log('componentID: ', componentID);
+      // Add import component string to routes template
+      if (this.routes.hasOwnProperty(componentName)){
+        const arrOfChildComp = this.componentMap[componentName].children;
+        arrOfChildComp.forEach(childName => {
+          routeStr += `<${childName}></${childName}>\n`
+        })
+      }
 
       // writes the HTML tag boilerplate
       let templateTagStr = this.writeTemplateTag(componentName);
@@ -262,20 +269,20 @@ export default {
         let compClass = this.componentMap[componentName].htmlAttributes.class;
 
         if (compClass !== "" && compID !== "") {
-          return `<template>\n  <div id = "${compID}" class = "${compClass}">\n${templateTagStr}  </div>\n</template>`;
+          return `<template>\n  <div id = "${compID}" class = "${compClass}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
         } 
         else if (compClass !== "" && compID === "") {
-          return `<template>\n  <div class = "${compClass}">\n${templateTagStr}  </div>\n</template>`;
+          return `<template>\n  <div class = "${compClass}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
         } 
         else if (compClass === "" && compID !== "") {
-          return `<template>\n  <div id = "${this.componentMap[componentName].htmlAttributes.id}">\n${templateTagStr}  </div>\n</template>`;
+          return `<template>\n  <div id = "${this.componentMap[componentName].htmlAttributes.id}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
         }
         else {
-          return `<template>\n  <div>\n\t${str}${templateTagStr}  </div>\n</template>`;
+          return `<template>\n  <div>\n\t${str}${templateTagStr}${routeStr}  </div>\n</template>`;
         }
       } 
       else {
-        return `<template>\n\t${str}${templateTagStr}</div>\n</template>`
+        return `<template>\n\t${str}${templateTagStr}${routeStr}</div>\n</template>`
       }
     },
     /**
