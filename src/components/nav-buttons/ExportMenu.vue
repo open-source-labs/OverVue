@@ -239,6 +239,7 @@ export default {
       let str = "";
       let routeStr = "";
       
+      // Creates router-link boilerplate for App
       if (componentName === "App") {
         str += `<div id="app">\n\t\t<div id="nav">\n`;
         for(let route in routes) {
@@ -257,9 +258,9 @@ export default {
       if (this.routes.hasOwnProperty(componentName)){
         const arrOfChildComp = this.componentMap[componentName].children;
         arrOfChildComp.forEach(childName => {
-          routeStr += `<${childName}></${childName}>\n`
-        })
-      }
+          routeStr += `\t\t<${childName}></${childName}>\n`
+        });
+      };
 
       // writes the HTML tag boilerplate
       let templateTagStr = this.writeTemplateTag(componentName);
@@ -423,8 +424,11 @@ export default {
       let htmlArray = this.componentMap[componentName].htmlList;
       let styleString = "";
       console.log(componentName);
-      //! this should be a foreach loop for each route child component
+      // Add grid css property to view component div
+      if (this.routes)
+      // this should be a foreach loop for each route child component
       if (this.routes.hasOwnProperty(componentName)) {
+        styleString += `.${componentName} {\n\tdisplay: grid; \n\tgrid-template-columns: repeat(${this.gridLayout[0]}, 1fr);\n\tgrid-template-rows: repeat(${this.gridLayout[1]}, 1fr);\n\tgrid-column-gap: 0px;\n\tgrid-row-gap: 0px;\n}\n`;
         this.routes[componentName].forEach((element) => {
           let styleSelector = (element.htmlAttributes.class === "") ? element.htmlList[0].text : '.' + element.htmlAttributes.class;
           styleString += `${styleSelector} {\n\tbackground-color: ${element.color};
@@ -448,12 +452,7 @@ export default {
 }
 .router-view {
   margin:auto;
-  display: grid;
   background-color: gray;
-  grid-template-columns: repeat(${this.gridLayout[0]}, 1fr);
-  grid-template-rows: repeat(${this.gridLayout[1]}, 1fr);
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
 }
 </style >`
     } else return `\n\n<style scoped>\n${styleString}</style >`;
