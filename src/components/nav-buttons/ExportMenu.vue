@@ -245,14 +245,18 @@ export default {
         for(let route in routes) {
           if (route === "HomeView") {
             str += `\t\t\t<router-link to="/" class = "componentLinks">${route}</router-link>\n`;
-          } else {
+          } 
+          else {
             str += `\t\t\t<router-link to="/${route}" class = "componentLinks">${route}</router-link>\n`;
-          }}
-          str += `\t\t</div>\n\t\t<router-view class = "router-view"></router-view>\n`;
-        } 
-        else {
-          str += `<div>\n`;
+          }
         }
+        str += `\t\t</div>\n\t\t<router-view class = "router-view"></router-view>\n`;
+      } 
+      else {
+          str += `<div>\n`;
+      }
+      // writes the HTML tag boilerplate
+      let templateTagStr = this.writeTemplateTag(componentName);
 
       // Add import component string to routes template
       if (this.routes.hasOwnProperty(componentName)){
@@ -260,10 +264,9 @@ export default {
         arrOfChildComp.forEach(childName => {
           routeStr += `\t\t<${childName}></${childName}>\n`
         });
+        return `<template>\n  <div id = "${componentName}">\n${templateTagStr}${routeStr}\t</div>\n</template>`;
       };
 
-      // writes the HTML tag boilerplate
-      let templateTagStr = this.writeTemplateTag(componentName);
       //adds class/id into code snippet with exporting
       if (this.componentMap[componentName].htmlAttributes) {
         let compID = this.componentMap[componentName].htmlAttributes.id;
@@ -426,9 +429,9 @@ export default {
       console.log(componentName);
       // Add grid css property to view component div
       if (this.routes)
-      // this should be a foreach loop for each route child component
+      // adds view component id grid style and adds child component css styling
       if (this.routes.hasOwnProperty(componentName)) {
-        styleString += `.${componentName} {\n\tdisplay: grid; \n\tgrid-template-columns: repeat(${this.gridLayout[0]}, 1fr);\n\tgrid-template-rows: repeat(${this.gridLayout[1]}, 1fr);\n\tgrid-column-gap: 0px;\n\tgrid-row-gap: 0px;\n}\n`;
+        styleString += `#${componentName} {\n\tdisplay: grid; \n\tgrid-template-columns: repeat(${this.gridLayout[0]}, 1fr);\n\tgrid-template-rows: repeat(${this.gridLayout[1]}, 1fr);\n\tgrid-column-gap: 0px;\n\tgrid-row-gap: 0px;\n}\n`;
         this.routes[componentName].forEach((element) => {
           let styleSelector = (element.htmlAttributes.class === "") ? element.htmlList[0].text : '.' + element.htmlAttributes.class;
           styleString += `${styleSelector} {\n\tbackground-color: ${element.color};
