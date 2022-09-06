@@ -250,7 +250,8 @@ export default {
           str += `\t\t</div>\n\t\t<router-view class = "router-view"></router-view>\n`;
         } 
         else {
-          str += `<div>\n`;
+          // Adds component name as class for all routes
+          str += `<div class = '${componentName}'>\n`;
         }
 
       // Add import component string to routes template
@@ -265,8 +266,9 @@ export default {
       let templateTagStr = this.writeTemplateTag(componentName);
       //adds class/id into code snippet with exporting
       if (this.componentMap[componentName].htmlAttributes) {
+
         let compID = this.componentMap[componentName].htmlAttributes.id;
-        let compClass = this.componentMap[componentName].htmlAttributes.class;
+        let compClass = (this.routes.hasOwnProperty(componentName)) ? componentName : this.componentMap[componentName].htmlAttributes.class;
 
         if (compClass !== "" && compID !== "") {
           return `<template>\n  <div id = "${compID}" class = "${compClass}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
@@ -275,7 +277,7 @@ export default {
           return `<template>\n  <div class = "${compClass}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
         } 
         else if (compClass === "" && compID !== "") {
-          return `<template>\n  <div id = "${this.componentMap[componentName].htmlAttributes.id}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
+          return `<template>\n  <div id = "${compID}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
         }
         else {
           return `<template>\n  <div>\n\t${str}${templateTagStr}${routeStr}  </div>\n</template>`;
