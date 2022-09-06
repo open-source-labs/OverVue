@@ -258,7 +258,9 @@ export default {
       if (this.routes.hasOwnProperty(componentName)){
         const arrOfChildComp = this.componentMap[componentName].children;
         arrOfChildComp.forEach(childName => {
-          routeStr += `<${childName}></${childName}>\n`
+          let childNameClass = this.componentMap[childName].htmlAttributes.class;
+          let childNameClassFullStr = (childNameClass === "") ? "" : ` class = '${childNameClass}'`;
+          routeStr += `<${childName}${childNameClassFullStr}></${childName}>\n`
         })
       }
 
@@ -391,10 +393,10 @@ export default {
           arrOfChildComp.forEach(childName => {
             // Build child component text string
             if (childName !== arrOfChildComp[arrOfChildComp.length - 1]){
-              childrenComponentNames += "  " + childName + ",\n";
+              childrenComponentNames += "    " + childName + ",\n";
             }
             else {
-              childrenComponentNames += "  " + childName + "\n";
+              childrenComponentNames += "    " + childName + "\n";
             }
 
             // Build child component import text string
@@ -407,10 +409,10 @@ export default {
           return `\n\n<script lang="ts">\nimport { defineComponent } from "vue";\n ${str}\nexport default defineComponent ({\n  name: '${componentName}',\n  components: {\n${childrenComponentNames}  }\n});\n<\/script>`;
         }
         str += "\n\n<script>";
-        str += `\n${childComponentImportNames}`;
+        str += `${childComponentImportNames}`;
         str += `\n\nexport default {`
         str += `\n  components: {`
-        str += `\n    ${childrenComponentNames}  }\n};`;
+        str += `\n${childrenComponentNames}  }\n};`;
         str += `\n<\/script>`;
         return str
       }
