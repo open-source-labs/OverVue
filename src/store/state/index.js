@@ -6,6 +6,7 @@ import styleClassmap from './styleClassMap'
 const cloneDeep = require('lodash.clonedeep')
 
 const newState = {
+  clicked:false,
   icons,
   htmlElementMap,
   // state below is what is used when exporting a project
@@ -68,6 +69,13 @@ const newState = {
   showTutorial: true,
   tutorialFirstOpen: true,
   pasteTimer: 0,
+  gridLayout: [70, 70],
+  x: 0,
+  y: 0,
+  importLibraries:[],
+  displaylibComponent:false
+  //push libraries string to the array
+
 }
 
 // closured method to ensure we only ever write the default state ONCE

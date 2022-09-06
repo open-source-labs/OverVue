@@ -75,7 +75,7 @@ export default {
       for(let child in appChildren) {
         if(appChildren[child].componentName === "HomeView") {
           str += `import ${appChildren[child].componentName} from '../views/${appChildren[child].componentName}.vue';\n`;
-      } 
+      }
       if(appChildren[child].componentName !== "App" && appChildren[child].componentName !== "HomeView") {
           str += `import ${appChildren[child].componentName} from '../components/${appChildren[child].componentName}.vue';\n`;
       }
@@ -147,6 +147,7 @@ export default {
         h4: ["<h4", "</h4>"],
         h5: ["<h5", "</h5>"],
         h6: ["<h6", "</h6>"],
+        element:["<el-button", "</el-button>"]
       };
       // function to loop through nested elements
       function writeNested(childrenArray, indent) {
@@ -171,7 +172,7 @@ export default {
               if (child.text === "img" || child.text === "input" || child.text === "link") {
                 nestedString += "/>";
               } else { nestedString += ">"; }
-  
+
               if (child.children.length) {
                 nestedString += "\n";
                 nestedString += writeNested(child.children, indented);
@@ -234,7 +235,7 @@ export default {
      */
     writeTemplate(componentName, children) {
       let str = "";
-      
+
       if (componentName === "App") {
         str += `<div id="app">\n\t\t<div id="nav">\n`;
         for(let child in children) {
@@ -377,10 +378,10 @@ height: ${element.h}px;
 z-index: ${element.z};
 }\n`
           }
-        }) 
-          
-        
-  
+        })
+
+
+
 
 
         for (const html of htmlArray) {
@@ -442,10 +443,20 @@ z-index: ${html.z};
       str += `\nimport store from './store'`
       str += `\nimport App from './App.vue';`;
       str += `\nimport router from './router';\n`;
+      if(this.$store.state.importLibraries.includes('element')){
+        str+= `\nimport ElementPlus from 'element-plus';`
+        str+=`\nimport 'element-plus/dist/index.css';`
+      };
       str += `\nconst app = createApp(App);`;
       str += `\napp.use(router);`;
       str += `\napp.use(store)`;
+      if(this.$store.state.importLibraries.includes('element')){
+        str+=`\napp.use(ElementPlus);`;
+      };
       str += `\napp.mount('#app');`;
+
+
+
 
       // if using typescript, export with .ts extension
       if (this.exportAsTypescript === "on") {
@@ -583,6 +594,9 @@ z-index: ${html.z};
       str += `\n\t\t"vue": "^3.2.31",`;
       str += `\n\t\t"vue-router": "^4.0.12",`;
       str += `\n\t\t"vuex": "^4.0.2"`;
+      if(this.$store.state.importLibraries.includes('element')){
+        str += `,\n\t\t"element-plus": "^2.2.16"`;
+      };
       str += `\n\t},`;
       str += `\n\t"devDependencies": {`;
       str += `\n\t\t"@vitejs/plugin-vue": "^2.2.2",`;

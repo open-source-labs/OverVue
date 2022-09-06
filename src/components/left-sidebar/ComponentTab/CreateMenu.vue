@@ -7,10 +7,17 @@ Description:
 
 <template>
   <div class="create-component-div drawer-menu">
+
+
+
     <q-expansion-item group="accordion" label="Import Component">
+      <!-- !THIS IS THE IMPORT COMPONENT TAB WE NEED TO WORK ON -->
       <ImportComponent v-if="activeComponent === ''" @imported="createComponent" title="Import Component (coming soon)" class="sidebar-btn" :disable = "true"/>
     </q-expansion-item>
-    <q-expansion-item group="accordion" label="Create Component">
+    <q-expansion-item group="accordion" label="Create Component" >
+      <ImportLibraryButton></ImportLibraryButton>
+      <LibComponents></LibComponents>
+
       <form class="create-component-form" v-on:submit.prevent="createComponent">
         <!-- will render if creating new component -->
         <q-input
@@ -32,7 +39,8 @@ Description:
       </form>
 
       <ParentMultiselect v-if="activeComponent === ''"></ParentMultiselect>
-      <div class="subsection">HTML Elements</div>
+
+      <div class="subsection">Elements/Components</div>
       <div class="icon-container">
         <Icons
           class="icons"
@@ -41,10 +49,12 @@ Description:
           @activeHTML="addNestedHTML"
           @activeLayer="addNestedNoActive"
         />
+
       </div>
       <button class="componentHTML">
         <CreateMenuHTMLQueue></CreateMenuHTMLQueue>
       </button>
+
       <br />
 
       <q-btn
@@ -56,6 +66,7 @@ Description:
         @click="createComponent"
         :disabled="!componentNameInputValue.trim() || Object.keys(this.componentMap).includes(componentNameInputValue.trim())"
       />
+
     </q-expansion-item>
   </div>
 </template>
@@ -67,13 +78,21 @@ import ParentMultiselect from "./ParentMultiselect.vue";
 import ImportComponent from "./ImportComponent.vue"
 import CreateMenuHTMLQueue from "./CreateMenuHTMLQueue.vue";
 import { mapState, mapActions } from "vuex";
+import ImportLibraryButton from "./ImportLibraryButton.vue";
+import LibComponents from "./LibComponents.vue";
+
+
 export default {
   name: "CreateMenu",
   components: {
     Icons,
     ParentMultiselect,
     ImportComponent,
-    CreateMenuHTMLQueue
+    CreateMenuHTMLQueue,
+    ImportLibraryButton,
+    ImportLibraryButton,
+    LibComponents,
+
 },
   computed: {
     ...mapState([

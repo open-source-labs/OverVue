@@ -71,6 +71,9 @@ export const ADD_ACTIVE_COMPONENT_NOTE = 'ADD_ACTIVE_COMPONENT_NOTE'
 export const DELETE_ACTIVE_COMPONENT_NOTE = 'DELETE_ACTIVE_COMPONENT_NOTE'
 export const OPEN_NOTE_MODAL = 'OPEN_NOTE_MODAL'
 export const OPEN_COLOR_MODAL = 'OPEN_COLOR_MODAL'
+export const CHANGE_LIB = 'CHANGE_LIB'
+export const CHANGE_LIB_COMPONENT_DISPLAY = 'CHANGE_LIB_COMPONENT_DISPLAY'
+export const ADD_LIB_COMPONENTS ='ADD_LIB_COMPONENTS'
 //Jace practest
 export const OPEN_ATTRIBUTE_MODAL = 'OPEN_ATTRIBUTE_MODAL'
 export const ADD_ACTIVE_COMPONENT_CLASS = 'ADD_ACTIVE_COMPONENT_CLASS'
@@ -85,7 +88,7 @@ export const CLEAR_ACTIVE_HTML = 'CLEAR_ACTIVE_HTML'
 //
 export const REMOVE_ALL_STATE_PROPS_ACTIONS = 'REMOVE_ALL_STATE_PROPS_ACTIONS'
 export const UPDATE_PASTE_TIMER = 'UPDATE_PASTE_TIMER'
-//Drag and Drop
+//!Drag and Drop
 export const SET_ID_DRAG = 'SET_ID_DRAG'
 export const SET_ID_DROP = 'SET_ID_DROP'
 export const SET_SELECTED_ID_DRAG = 'SET_SELECTED_ID_DRAG'
@@ -179,15 +182,19 @@ export const updateStartingSize = 'updateStartingSize'
 export const deleteUserActions = 'deleteUserActions'
 export const deleteUserState = 'deleteUserState'
 export const toggleTutorial = 'toggleTutorial'
-//Drag and Drop 
+//Drag and Drop
 export const setIdDrag = 'setIdDrag'
 export const setIdDrop = 'setIdDrop'
 export const setSelectedIdDrag = 'setSelectedIdDrag'
 export const setSelectedIdDrop = 'setSelectedIdDrop'
 export const dragDropSortHtmlElements = 'dragDropSortHtmlElements'
 export const dragDropSortSelectedHtmlElements = 'dragDropSortSelectedHtmlElements'
+//change library array
+export const changeLib= 'changeLib'
 
+export const changeLibComponentDisplay ='changeLibComponentDisplay'
 
+export const addLibComponents ='addLibComponents'
 // inactive mutations
 // export const SET_STATE = 'SET_STATE'
 // export const DELETE_COMPONENT = 'DELETE_COMPONENT'

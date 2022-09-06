@@ -134,6 +134,7 @@ export default {
         h4:["<h4>", "</h4>"],
         h5:["<h5>", "</h5>"],
         h6:["<h6>", "</h6>"],
+        element:["<el-button ", "</el-button>"]
       };
 
 
@@ -181,9 +182,9 @@ export default {
 
       /**
        * @name: buildList
-       * @desc: takes incoming substrings and pushes the appropriate 
+       * @desc: takes incoming substrings and pushes the appropriate
        *        elements fromt he htmlElementMap defined by Overvue
-       * 
+       *
        * @param: substrings from htmlParser function
        * @return: nothing -- pushes into htmlList array which is defined outside scope of buildList
        */
