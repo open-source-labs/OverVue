@@ -37,7 +37,6 @@
     "fs-extra": "^10.0.0",
     "http": "^0.0.1-security",
     "https": "^1.0.0",
-    "iview": "^3.5.4",
     "jest-cli": "^27.5.1",
     "localforage": "^1.10.0",
     "lodash.clonedeep": "^4.5.0",
