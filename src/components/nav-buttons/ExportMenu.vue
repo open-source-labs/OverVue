@@ -251,7 +251,7 @@ export default {
         } 
         else {
           // Adds component name as class for all routes
-          str += `<div class = '${componentName}'>\n`;
+          str += `<div id = '${componentName}'>\n`;
         }
 
       // Add import component string to routes template
@@ -409,7 +409,7 @@ export default {
           return `\n\n<script lang="ts">\nimport { defineComponent } from "vue";\n ${str}\nexport default defineComponent ({\n  name: '${componentName}',\n  components: {\n${childrenComponentNames}  }\n});\n<\/script>`;
         }
         str += "\n\n<script>";
-        str += `${childComponentImportNames}`;
+        str += `\n${childComponentImportNames}`;
         str += `\n\nexport default {`
         str += `\n  components: {`
         str += `\n${childrenComponentNames}  }\n};`;
