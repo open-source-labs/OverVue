@@ -43,6 +43,10 @@ export default {
         .catch((err) => console.log(err));
     },
     exportProject: function () {
+      // console.log('this.activeComponentObj: ', this.activeComponentObj); /* *********************** */ //Not sure, it's undefined
+      console.log('this.componentMap: ', this.componentMap); /* *********************** */
+      console.log('this.routes: ', this.routes); /* *********************** */ //array of objects on the cssGrid
+
       this.showExportProjectDialog();
     },
     /**
@@ -55,14 +59,14 @@ export default {
       if (this.exportAsTypescript === "on") {
         fs.writeFileSync(
           path.join(location, "src", "router", "index.ts"),
-          this.createRouterImports(this.componentMap) +
-          this.createExport(this.componentMap)
+          this.createRouterImports(this.routes) +
+          this.createExport(this.routes)
         );
       } else {
         fs.writeFileSync(
           path.join(location, "src", "router", "index.js"),
-          this.createRouterImports(this.componentMap) +
-          this.createExport(this.componentMap)
+          this.createRouterImports(this.routes) +
+          this.createExport(this.routes)
         );
       }
     },
@@ -70,29 +74,28 @@ export default {
      * @description import routed components from the /views/ dir
      * @argument: this.componentMap['App'].children
      */
-    createRouterImports(appChildren) {
+    createRouterImports(routes) {
       let str = "import { createRouter, createWebHistory } from 'vue-router';\n";
-      for(let child in appChildren) {
-        if(appChildren[child].componentName === "HomeView") {
-          str += `import ${appChildren[child].componentName} from '../views/${appChildren[child].componentName}.vue';\n`;
-      } 
-      if(appChildren[child].componentName !== "App" && appChildren[child].componentName !== "HomeView") {
-          str += `import ${appChildren[child].componentName} from '../components/${appChildren[child].componentName}.vue';\n`;
-      }
+      for(let view in routes) {
+          str += `import ${view} from '../views/${view}.vue';\n`;
       }
       return str;
     },
     /**
      * @description creates the `export default` code in <script>
      */
-    createExport(appChildren) {
+    createExport(routes) {
       let str = "export default createRouter({\n\thistory: createWebHistory(import.meta.env.BASE_URL),\n\troutes: [\n";
-      for(let child in appChildren) {
-        if (appChildren[child].componentName === "HomeView") {
-          str += `\n\t\t{\n\t\t\tpath: '/',\n\t\t\tname:'${appChildren[child].componentName}',\n\t\t\tcomponent:${appChildren[child].componentName}\n\t\t},\n`;
-        } else if (appChildren[child].componentName !== "App") {
-          str += `\n\t\t{\n\t\t\tpath: '/${appChildren[child].componentName}',\n\t\t\tname:'${appChildren[child].componentName}',\n\t\t\tcomponent:${appChildren[child].componentName}\n\t\t},\n`;
-        }
+      for(let view in routes) {
+          // HomeView route is initialized to "localhost:3000/" url
+          if (view === "HomeView") {
+            str += `\n\t\t{\n\t\t\tpath: '/',\n\t\t\tname:'${view}',\n\t\t\tcomponent:${view}\n\t\t},\n`;
+          } 
+          // All other routes are initialized to "localhost:3000/<view Name>"
+          else {
+            str += `\n\t\t{\n\t\t\tpath: '/${view}',\n\t\t\tname:'${view}',\n\t\t\tcomponent:${view}\n\t\t},\n`;
+          }
+        //   str += `\n\t\t{\n\t\t\tpath: '/${appChildren[child].componentName}',\n\t\t\tname:'${appChildren[child].componentName}',\n\t\t\tcomponent:${appChildren[child].componentName}\n\t\t},\n`;
       }
       str += `\n\t\t]\n})`
       return str;
@@ -101,18 +104,18 @@ export default {
      * @description: creates component code <template>, <script>, <style>
      * invokes writeTemplate, writeScript, writeStyle
      */
-    createComponentCode(componentLocation, componentName, children) {
+    createComponentCode(componentLocation, componentName, children, routes) {
       if (componentName === "App") {
         fs.writeFileSync(
           componentLocation + ".vue",
-          this.writeTemplate(componentName, children) +
+          this.writeTemplate(componentName, children, this.routes) +
           this.writeStyle(componentName)
         );
       } else {
         fs.writeFileSync(
           componentLocation + ".vue",
           this.writeComments(componentName) +
-          this.writeTemplate(componentName, children) +
+          this.writeTemplate(componentName, children, this.routes) +
           this.writeScript(componentName, children) +
           this.writeStyle(componentName)
         );
@@ -147,6 +150,15 @@ export default {
         h4: ["<h4", "</h4>"],
         h5: ["<h5", "</h5>"],
         h6: ["<h6", "</h6>"],
+        'e-button':["<el-button", "</el-button>"],
+        'e-input':["<el-input", "</el-input>"],
+        'e-link':["<el-link", "</el-link>"],
+        'e-form': ["<el-form", "</el-form>"],
+        'e-checkbox': ["<el-checkbox", "</el-checkbox>"],
+        'e-checkbox-button': ["<el-checkbox-button", "</el-checkbox-button>"],
+        'e-date-picker': ["<el-date-picker", "</el-date-picker>"],
+        'e-slider':["<el-slider", "</el-slider>"],
+        'e-card': ["<el-card", "</el-card>"],
       };
       // function to loop through nested elements
       function writeNested(childrenArray, indent) {
@@ -171,7 +183,7 @@ export default {
               if (child.text === "img" || child.text === "input" || child.text === "link") {
                 nestedString += "/>";
               } else { nestedString += ">"; }
-  
+
               if (child.children.length) {
                 nestedString += "\n";
                 nestedString += writeNested(child.children, indented);
@@ -232,34 +244,61 @@ export default {
      * @description creates the <router-link> boilerplate for /views/components
      * also creates the <template></template> tag for each component
      */
-    writeTemplate(componentName, children) {
+    writeTemplate(componentName, children, routes) {
       let str = "";
+      let routeStr = "";
       
       if (componentName === "App") {
         str += `<div id="app">\n\t\t<div id="nav">\n`;
-        for(let child in children) {
-          if(children[child].componentName === "HomeView") {
-            str += `\t\t\t<router-link to="/" class = "componentLinks">${children[child].componentName}</router-link>\n`;
-          } else if (children[child].componentName !== "App") {
-            str += `\t\t\t<router-link to="/${children[child].componentName}" class = "componentLinks">${children[child].componentName}</router-link>\n`;
+        for(let route in routes) {
+          if (route === "HomeView") {
+            str += `\t\t\t<router-link to="/" class = "componentLinks">${route}</router-link>\n`;
+          } else {
+            str += `\t\t\t<router-link to="/${route}" class = "componentLinks">${route}</router-link>\n`;
           }}
           str += `\t\t</div>\n\t\t<router-view class = "router-view"></router-view>\n`;
-        } else {
-          str += `<div>\n`;
+        } 
+        else {
+          // Adds component name as class for all routes
+          str += `<div id = '${componentName}'>\n`;
         }
-
       // writes the HTML tag boilerplate
       let templateTagStr = this.writeTemplateTag(componentName);
-//adds class/id into code snippet with exporting
-    if(this.componentMap[componentName].htmlAttributes) {
-      if (this.componentMap[componentName].htmlAttributes.class !== "" && this.componentMap[componentName].htmlAttributes.id !== "") {
-        return `<template>\n  <div id = "${this.componentMap[componentName].htmlAttributes.id}" class = "${this.componentMap[componentName].htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
-      } else if (this.componentMap[componentName].htmlAttributes.class !== "" && this.componentMap[componentName].htmlAttributes.id === "") {
-          return `<template>\n  <div class = "${this.componentMap[componentName].htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
-      } else if (this.componentMap[componentName].htmlAttributes.class === "" && this.componentMap[componentName].htmlAttributes.id !== "")
-      return `<template>\n  <div id = "${this.componentMap[componentName].htmlAttributes.id}">\n${templateTagStr}  </div>\n</template>`;
-        else return `<template>\n  <div>\n\t${str}${templateTagStr}  </div>\n</template>`;
-    } else return `<template>\n\t${str}${templateTagStr}</div>\n</template>`
+
+      // Add import component string to routes template
+      if (this.routes.hasOwnProperty(componentName)){
+        const arrOfChildComp = this.componentMap[componentName].children;
+        arrOfChildComp.forEach(childName => {
+          let childNameClass = this.componentMap[childName].htmlAttributes.class;
+          let childNameClassFullStr = (childNameClass === "") ? "" : ` class = '${childNameClass}'`;
+          routeStr += `<${childName}${childNameClassFullStr}></${childName}>\n`
+        });
+        return `<template>\n  <div id = "${componentName}">\n${templateTagStr}${routeStr}\t</div>\n</template>`;
+      }
+
+      //adds class/id into code snippet with exporting
+      if (this.componentMap[componentName].htmlAttributes) {
+
+        let compID = this.componentMap[componentName].htmlAttributes.id;
+        let compClass = (this.routes.hasOwnProperty(componentName)) ? componentName : this.componentMap[componentName].htmlAttributes.class;
+
+        if (compClass !== "" && compID !== "") {
+          return `<template>\n  <div id = "${compID}" class = "${compClass}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
+        } 
+        else if (compClass !== "" && compID === "") {
+          return `<template>\n  <div class = "${compClass}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
+        } 
+        else if (compClass === "" && compID !== "") {
+          return `<template>\n  <div id = "${compID}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
+        }
+        else {
+          return `<template>\n  <div>\n\t${str}${templateTagStr}${routeStr}  </div>\n</template>`;
+        }
+      } 
+      else {
+        console.log('Test log if route')
+        return `<template>\n\t${str}${templateTagStr}${routeStr}</div>\n</template>`
+      }
     },
     /**
      * @description imports child components into <script>
@@ -268,17 +307,21 @@ export default {
       // add import mapstate and mapactions if they exist
       const currentComponent = this.componentMap[componentName];
       const routes = Object.keys(this.routes);
-      if (!routes.includes(componentName)) {
+
+      // Writes script boilerplate for non-route components
+      if (!routes.includes(componentName)) { 
         let imports = "";
         if (currentComponent.actions.length || currentComponent.state.length) {
           imports += "import { ";
-          if (
-            currentComponent.actions.length &&
-            currentComponent.state.length
-          ) {
+          if (currentComponent.actions.length && currentComponent.state.length) {
             imports += "mapState, mapActions";
-          } else if (currentComponent.state.length) imports += "mapState";
-          else imports += "mapActions";
+          } 
+          else if (currentComponent.state.length) {
+            imports += "mapState";
+          }
+          else {
+            imports += "mapActions";
+          }
           imports += ' } from "vuex";\n';
         }
         // if in Typescript mode, import defineComponent
@@ -349,50 +392,66 @@ export default {
           output += "};\n<\/script>";
         }
         return output;
-      } else {
+      } 
+      // Write script for route components.
+      else {
         let str = "";
-
         let childrenComponentNames = "";
+        let childComponentImportNames = "";
+        const arrOfChildComp = this.componentMap[componentName].children;
+
+        if (componentName !== "App"){
+          arrOfChildComp.forEach(childName => {
+            // Build child component text string
+            if (childName !== arrOfChildComp[arrOfChildComp.length - 1]){
+              childrenComponentNames += "    " + childName + ",\n";
+            }
+            else {
+              childrenComponentNames += "    " + childName + "\n";
+            }
+
+            // Build child component import text string
+            childComponentImportNames += `import ${childName} from '../components/${childName}.vue';\n`
+          })
+        }
 
         // eslint-disable-next-line no-useless-escape
         if (this.exportAsTypescript === "on") {
           return `\n\n<script lang="ts">\nimport { defineComponent } from "vue";\n ${str}\nexport default defineComponent ({\n  name: '${componentName}',\n  components: {\n${childrenComponentNames}  }\n});\n<\/script>`;
         }
-        return `\n\n<script>\n${str}\nexport default {\n  name: '${componentName}',\n  components: {\n  }\n};\n<\/script>`;
+        str += "\n\n<script>";
+        str += `\n${childComponentImportNames}`;
+        str += `\n\nexport default {`
+        str += `\n  components: {`
+        str += `\n${childrenComponentNames}  }\n};`;
+        str += `\n<\/script>`;
+        return str
       }
     },
     /**
-     * @description writes the <style> in vue component
-     * if component is 'App', writes css, else returns <style scoped>
+     * @description writes the <style> in vue component for all components in Canvas
+     * Do not update code styling. Lack of styling is intentional to properly export the styling string.
      */
+    /* UPDATE THIS TO GRAB INFORMATION FROM this.componentMap NOT this.routes*/
+    /* this.componentMap does not have x-y positioning stored */
     writeStyle(componentName) {
-  let htmlArray = this.componentMap[componentName].htmlList;
-        let styleString = "";
-
-        this.routes.HomeView.forEach((element) => {
-          if(element.htmlAttributes.class !== "") {
-            styleString += `.${element.htmlAttributes.class} {\nbackground-color: ${element.color};
-width: ${element.w}px;
-height: ${element.h}px;
-z-index: ${element.z};
+      let htmlArray = this.componentMap[componentName].htmlList;
+      let styleString = "";
+      console.log(componentName);
+      // Add grid css property to view component div
+      // adds view component id grid style and adds child component css styling
+      if (this.routes.hasOwnProperty(componentName)) {
+        styleString += `#${componentName} {\n\tdisplay: grid; \n\tgrid-template-columns: repeat(${this.gridLayout[0]}, 1fr);\n\tgrid-template-rows: repeat(${this.gridLayout[1]}, 1fr);\n\tgrid-column-gap: 0px;\n\tgrid-row-gap: 0px;\n}\n`;
+        this.routes[componentName].forEach((element) => {
+          let styleSelector = (element.htmlAttributes.class === "") ? element.htmlList[0].text : '.' + element.htmlAttributes.class;
+          styleString += `${styleSelector} {\n\tbackground-color: ${element.color};
+\tgrid-area: ${element.htmlAttributes.gridArea[0]} / ${element.htmlAttributes.gridArea[1]} / ${element.htmlAttributes.gridArea[2]} / ${element.htmlAttributes.gridArea[3]};
+\tz-index: ${element.z};
 }\n`
-          }
-        }) 
-          
-        
+        });
+      };
   
-
-
-        for (const html of htmlArray) {
-          if (html.class !== '') {
-            styleString += `.${html.class} {\nheight: ${html.h}%;
-width: ${html.w}%;
-top: ${html.x}%;
-left: ${html.y}%;
-z-index: ${html.z};
-}\n`
-          }
-    }
+    // Add default styling to App
     if (componentName === "App") {
       return `\n\n<style scoped>\n#nav {
     margin: auto;
@@ -404,10 +463,9 @@ z-index: ${html.z};
     border: 1px solid black;
 	  width:50%;
 }
-
 .router-view {
   margin:auto;
-}
+  background-color: gray;
 </style >`
     } else return `\n\n<style scoped>\n${styleString}</style >`;
     },
@@ -442,10 +500,20 @@ z-index: ${html.z};
       str += `\nimport store from './store'`
       str += `\nimport App from './App.vue';`;
       str += `\nimport router from './router';\n`;
+      if(this.$store.state.importLibraries.includes('element')){
+        str+= `\nimport ElementPlus from 'element-plus';`
+        str+=`\nimport 'element-plus/dist/index.css';`
+      };
       str += `\nconst app = createApp(App);`;
       str += `\napp.use(router);`;
       str += `\napp.use(store)`;
+      if(this.$store.state.importLibraries.includes('element')){
+        str+=`\napp.use(ElementPlus);`;
+      };
       str += `\napp.mount('#app');`;
+
+
+
 
       // if using typescript, export with .ts extension
       if (this.exportAsTypescript === "on") {
@@ -583,6 +651,9 @@ z-index: ${html.z};
       str += `\n\t\t"vue": "^3.2.31",`;
       str += `\n\t\t"vue-router": "^4.0.12",`;
       str += `\n\t\t"vuex": "^4.0.2"`;
+      if(this.$store.state.importLibraries.includes('element')){
+        str += `,\n\t\t"element-plus": "^2.2.16"`;
+      };
       str += `\n\t},`;
       str += `\n\t"devDependencies": {`;
       str += `\n\t\t"@vitejs/plugin-vue": "^2.2.2",`;
@@ -664,7 +735,17 @@ z-index: ${html.z};
     },
   },
   computed: {
-    ...mapState(["componentMap", "imagePath", "routes", "exportAsTypescript", "activeComponent", "userState", "userActions"]),
+    ...mapState(["componentMap", 
+    "imagePath", 
+    "routes", 
+    "exportAsTypescript", 
+    "activeComponent", 
+    "userState", 
+    "userActions", 
+    "gridLayout", 
+    "containerW", 
+    "containerH"
+    ]),
   },
 };
 </script>

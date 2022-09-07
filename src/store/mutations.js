@@ -206,7 +206,7 @@ const mutations = {
       [state.activeComponent]: state.activeComponentObj,
     };
   },
-  
+
   [types.DELETE_ACTION_FROM_COMPONENT]: (state, payload) => {
     state.componentMap[state.activeComponent].actions = state.componentMap[state.activeComponent].actions.filter(
       (action) => action !== payload);
@@ -340,12 +340,12 @@ const mutations = {
           while(queue.length) {
             const evaluate = queue.shift();
             if(evaluate.text === name) {
-              evaluate.text = payload; 
+              evaluate.text = payload;
             }
             for(let i = 0; i < evaluate.children.length; i++) {
               if (evaluate.children[i].text === name) {
                 evaluate.children[i].text = payload;
-              } 
+              }
               if (evaluate.children.length) {
                 queue.push(...evaluate.children)
               }
@@ -522,7 +522,7 @@ const mutations = {
     }
     state.activeHTML = "";
   },
-  //Drag-andDrop
+  //!Drag-andDrop
   //store id of dragged html element in activeComponent
   [types.SET_ID_DRAG]: (state, payload) => {
     const componentName = state.activeComponent;
@@ -757,19 +757,40 @@ const mutations = {
     state.componentNameInputValue = payload;
   },
 
+  // updates state to code snippet component position
   [types.UPDATE_COMPONENT_POSITION]: (state, payload) => {
+    // filter to find component in the state routes array
     const updatedComponent = state.routes[state.activeRoute].filter(
       (element) => element.componentName === payload.activeComponent
     )[0];
+    // update component x and y to reflect vue draggable resizeable position on canvas
     updatedComponent.x = payload.x;
     updatedComponent.y = payload.y;
+
+  },
+
+  // updates state to code snippet component grid area
+  [types.UPDATE_COMPONENT_GRID_POSITION]: (state, payload) => {
+    // filter to find component in the state routes array
+    const updatedComponent = state.routes[state.activeRoute].filter(
+      (element) => element.componentName === payload.activeComponent
+    )[0];
+    // update CSS grid grid area fr [Y beginning, Y end + 1, x beginning, x end + 1]
+    if (updatedComponent.w === undefined) { updatedComponent.w = (2 * state.containerW / state.gridLayout[0]); }
+    if (updatedComponent.h === undefined) { updatedComponent.h = (2 * state.containerH / state.gridLayout[1]); }
+    const rowStart = Math.round(state.gridLayout[0] * updatedComponent.x / state.containerW) ;
+    const rowEnd = Math.round(state.gridLayout[0] * (updatedComponent.x + updatedComponent.w) / state.containerW);
+    const colStart = Math.round(state.gridLayout[1] * updatedComponent.y / state.containerH);
+    const colEnd = Math.round(state.gridLayout[1] * (updatedComponent.y + updatedComponent.h) / state.containerH);
+    updatedComponent.htmlAttributes.gridArea = [rowStart, rowEnd, colStart, colEnd];
+    console.log('this is the grid area', updatedComponent.htmlAttributes.gridArea);
   },
 
   [types.UPDATE_COMPONENT_SIZE]: (state, payload) => {
     const updatedComponent = state.routes[state.activeRoute].filter(
       (element) => element.componentName === payload.activeComponent
     )[0];
-
+    // console.log(updatedComponent, 'this is payload', payload);
     updatedComponent.h = payload.h;
     updatedComponent.w = payload.w;
     updatedComponent.x = payload.x;
@@ -849,15 +870,15 @@ const mutations = {
           }
           if(array[i].text === payload) {
             array.splice(i, 1)
-          } 
-          
+          }
+
         }
       }
       deleteChildFromHtmlList(htmlList, payload);
 
       //updates the htmlList with the child components deleted
       state.componentMap[componentName].htmlList = htmlList;
-      
+
       //delete the parent because the payload is no longer a child to the acitive component
       delete state.componentMap[payload].parent[state.activeComponent];
 
@@ -926,7 +947,7 @@ const mutations = {
 
   },
 
-//add binding 
+//add binding
   [types.ADD_BINDING_TEXT]: (state, payload) => {
     //access the htmlList, add payload to the empty bind obj
     //const active = state.componentMap[state.activeComponent].htmlList;
@@ -1031,7 +1052,20 @@ const mutations = {
   [types.SET_IMAGE_PATH]: (state, payload) => {
     state.imagePath = { ...state.imagePath, ...payload };
   },
+  //change library array
+  [types.CHANGE_LIB]: (state, payload) => {
+   state.importLibraries.push(payload.libName);
 
+  },
+  [types.CHANGE_LIB_COMPONENT_DISPLAY]: (state, payload) => {
+    state.displaylibComponent = payload.displaylibComponent;
+   },
+
+   [types.ADD_LIB_COMPONENTS]: (state, payload) => {
+    for(let key in payload){
+      state.icons[key] = payload[key];
+    }
+   },
   // *** INACTIVE MUTATIONS - kept for reference *** //////////////////////////////////////////////
 
   // [types.SET_STATE]: (state, payload) => {

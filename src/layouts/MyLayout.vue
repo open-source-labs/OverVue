@@ -38,15 +38,15 @@ Description:
         </q-btn>
       </div></q-toolbar-title>
         <div></div>
-        
+
         <SaveProject />
         <ImportMenu />
         <ExportMenu />
-        
+
         <q-btn class="nav-btn" icon="fas fa-cog" unelevated size="sm">
-        
+
           <q-menu :offset="[0, 15]" class="dropdown">
-            
+
           <div class="column items-center">
             <q-btn
               class="tut-btn"
@@ -55,15 +55,15 @@ Description:
               no-caps
               @click="this.toggleTutorial"
             />
-           
+
         <SlackLoginWindow />
             <div class="typescript">
-              <p class="typescript-text"> <b>TypeScript: </b> </p> 
+              <p class="typescript-text"> <b>TypeScript: </b> </p>
               <label for="typescript"  class="switch" >
               <input v-if="this.exportAsTypescript === 'on'" class="switch-input" type="checkbox" name="typescript" id="typescript" :value="this.exportAsTypescript" @change="syncTypescriptFlag" checked/>
-              <input v-else class="switch-input" type="checkbox" name="typescript" id="typescript" :value="this.exportAsTypescript" @change="syncTypescriptFlag"/>  
-                <span class="switch-label" :value="this.exportAsTypescript" data-on="on" data-off="off"></span> 
-                <span class="switch-handle" :value="this.exportAsTypescript"></span> 
+              <input v-else class="switch-input" type="checkbox" name="typescript" id="typescript" :value="this.exportAsTypescript" @change="syncTypescriptFlag"/>
+                <span class="switch-label" :value="this.exportAsTypescript" data-on="on" data-off="off"></span>
+                <span class="switch-handle" :value="this.exportAsTypescript"></span>
               </label>
              </div>
           </div>
@@ -147,6 +147,7 @@ import SlackLoginWindow from "../components/slack_login/SlackLoginWindow.vue";
 import ComponentTab from "../components/left-sidebar/ComponentTab/ComponentTab.vue";
 import StoreTab from "../components/left-sidebar/StoreTab/StoreTab.vue";
 import { mapState, mapActions } from "vuex";
+
 
 export default {
   // Passed down from App.vue
@@ -526,7 +527,7 @@ q-btn > i {
 	left: 40px;
 	box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
 }
- 
+
 /* Transition
 ========================== */
 .switch-label, .switch-handle {

@@ -7,6 +7,8 @@
 
 <script>
 import { defineComponent } from "vue";
+import ElementPlus from 'element-plus'; // importing element plus component library
+import 'element-plus/dist/index.css'; // importing element plus styling
 const deepEqual = require("lodash.isequal");
 const cloneDeep = require("lodash.clonedeep");
 const throttle = require("lodash.throttle");

@@ -58,6 +58,7 @@ export const UPDATE_COMPONENT_CHILDREN_MULTISELECT_VALUE = 'UPDATE_COMPONENT_CHI
 export const UPDATE_COMPONENT_NAME_INPUT_VALUE = 'UPDATE_COMPONENT_NAME_INPUT_VALUE'
 export const UPDATE_COMPONENT_CHILDREN_VALUE = 'UPDATE_COMPONENT_CHILDREN_VALUE'
 export const UPDATE_COMPONENT_POSITION = 'UPDATE_COMPONENT_POSITION'
+export const UPDATE_COMPONENT_GRID_POSITION = 'UPDATE_COMPONENT_GRID_POSITION'
 export const UPDATE_COLOR = 'UPDATE_COLOR'
 export const UPDATE_COMPONENT_LAYER = 'UPDATE_COMPONENT_LAYER'
 export const UPDATE_HTML_LAYER = 'UPDATE_HTML_LAYER'
@@ -71,6 +72,9 @@ export const ADD_ACTIVE_COMPONENT_NOTE = 'ADD_ACTIVE_COMPONENT_NOTE'
 export const DELETE_ACTIVE_COMPONENT_NOTE = 'DELETE_ACTIVE_COMPONENT_NOTE'
 export const OPEN_NOTE_MODAL = 'OPEN_NOTE_MODAL'
 export const OPEN_COLOR_MODAL = 'OPEN_COLOR_MODAL'
+export const CHANGE_LIB = 'CHANGE_LIB'
+export const CHANGE_LIB_COMPONENT_DISPLAY = 'CHANGE_LIB_COMPONENT_DISPLAY'
+export const ADD_LIB_COMPONENTS ='ADD_LIB_COMPONENTS'
 //Jace practest
 export const OPEN_ATTRIBUTE_MODAL = 'OPEN_ATTRIBUTE_MODAL'
 export const ADD_ACTIVE_COMPONENT_CLASS = 'ADD_ACTIVE_COMPONENT_CLASS'
@@ -85,7 +89,7 @@ export const CLEAR_ACTIVE_HTML = 'CLEAR_ACTIVE_HTML'
 //
 export const REMOVE_ALL_STATE_PROPS_ACTIONS = 'REMOVE_ALL_STATE_PROPS_ACTIONS'
 export const UPDATE_PASTE_TIMER = 'UPDATE_PASTE_TIMER'
-//Drag and Drop
+//!Drag and Drop
 export const SET_ID_DRAG = 'SET_ID_DRAG'
 export const SET_ID_DROP = 'SET_ID_DROP'
 export const SET_SELECTED_ID_DRAG = 'SET_SELECTED_ID_DRAG'
@@ -171,6 +175,7 @@ export const updateComponentLayer = 'updateComponentLayer'
 export const updateHTMLLayer = 'updateHTMLLayer'
 export const updateComponentNameInputValue = 'updateComponentNameInputValue'
 export const updateComponentPosition = 'updateComponentPosition'
+export const updateComponentGridPosition = 'updateComponentGridPosition'
 export const updateComponentSize = 'updateComponentSize'
 export const updateColor = 'updateColor'
 export const updateOpenModal = 'updateOpenModal'
@@ -179,15 +184,19 @@ export const updateStartingSize = 'updateStartingSize'
 export const deleteUserActions = 'deleteUserActions'
 export const deleteUserState = 'deleteUserState'
 export const toggleTutorial = 'toggleTutorial'
-//Drag and Drop 
+//Drag and Drop
 export const setIdDrag = 'setIdDrag'
 export const setIdDrop = 'setIdDrop'
 export const setSelectedIdDrag = 'setSelectedIdDrag'
 export const setSelectedIdDrop = 'setSelectedIdDrop'
 export const dragDropSortHtmlElements = 'dragDropSortHtmlElements'
 export const dragDropSortSelectedHtmlElements = 'dragDropSortSelectedHtmlElements'
+//change library array
+export const changeLib= 'changeLib'
 
+export const changeLibComponentDisplay ='changeLibComponentDisplay'
 
+export const addLibComponents ='addLibComponents'
 // inactive mutations
 // export const SET_STATE = 'SET_STATE'
 // export const DELETE_COMPONENT = 'DELETE_COMPONENT'

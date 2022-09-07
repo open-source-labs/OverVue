@@ -1,6 +1,9 @@
+import * as ElementPlus from '../../../node_modules/element-plus/es/components' // importing all components from Element Plus with install wrappers
+
 export function useCreateComponent(importObj) {
+
   const createComponent = (importObj) => {
-    let imported = false;
+    let imported = false; //alter this logic once ready to import components
     if (importObj.hasOwnProperty('componentName')) {
       imported = true;
       //Check if state and actions on import exist in the store. If not, add them.
@@ -25,14 +28,14 @@ export function useCreateComponent(importObj) {
       event.preventDefault();
       return false;
     }
-
     // boilerplate properties for each component upon creation
     const component = {
       x: 0,
-      y: 20,
+      y: 0,
       z: 0,
-      w: 200,
-      h: 200,
+      // !Chris: disabling this temporarily to see if we can have create component dynamically fit into grid- less snapping bugs
+      // w: newState.containerW / newState.gridLayout[0] ,
+      // h: newState.containerH / newState.gridLayout[1] ,
       htmlList: this.selectedElementList,
       noteList: [],
       children: [],
@@ -46,8 +49,9 @@ export function useCreateComponent(importObj) {
       color: "#ffffff85",
       htmlAttributes: {
         class: "",
-        id: ""
-      }
+        id: "",
+        gridArea: [0, 2, 0, 2],
+      },
     };
 
     if (imported === true) {
@@ -65,4 +69,10 @@ export function useCreateComponent(importObj) {
     }
   }
   createComponent(importObj)
+
+  // console logging all components from Element Plus to determine shape of data and investigate structure of components
+  console.log(ElementPlus)
+    // components all within giant object
 }
+
+//
