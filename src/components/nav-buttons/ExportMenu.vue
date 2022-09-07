@@ -466,6 +466,7 @@ export default {
 .router-view {
   margin:auto;
   background-color: gray;
+}
 </style >`
     } else return `\n\n<style scoped>\n${styleString}</style >`;
     },
