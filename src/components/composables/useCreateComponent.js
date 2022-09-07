@@ -1,7 +1,9 @@
-//! could not find a better way to calculate initial component creation H and W
+import * as ElementPlus from '../../../node_modules/element-plus/es/components' // importing all components from Element Plus with install wrappers
+
 export function useCreateComponent(importObj) {
+
   const createComponent = (importObj) => {
-    let imported = false;
+    let imported = false; //alter this logic once ready to import components
     if (importObj.hasOwnProperty('componentName')) {
       imported = true;
       //Check if state and actions on import exist in the store. If not, add them.
@@ -67,4 +69,10 @@ export function useCreateComponent(importObj) {
     }
   }
   createComponent(importObj)
+
+  // console logging all components from Element Plus to determine shape of data and investigate structure of components
+  console.log(ElementPlus)
+    // components all within giant object
 }
+
+//

@@ -134,10 +134,13 @@ const actions = {
     commit(types.UPDATE_COMPONENT_POSITION, payload);
   },
 
+<<<<<<< HEAD
   [types.updateComponentGridPosition]: ({ commit }, payload) => {
     commit(types.UPDATE_COMPONENT_GRID_POSITION, payload);
   },
   
+=======
+>>>>>>> remotes/origin/Emma/importComponentsFeature
   [types.addBindingText]: ({ commit }, payload) => {
     commit(types.addBindingText, payload);
   },
@@ -402,9 +405,20 @@ const actions = {
   [types.addProject]: ({ commit }, payload) => {
     commit(types.ADD_PROJECT, payload);
   },
-
+//change library array
+[types.changeLib]: ({ commit }, payload) => {
+  commit(types.CHANGE_LIB, payload)
+},
+[types.changeLibComponentDisplay]: ({ commit }, payload) => {
+  commit(types.CHANGE_LIB_COMPONENT_DISPLAY, payload)
+},
+[types.addLibComponents]: ({ commit }, payload) => {
+  // adds element to the HTMLQueue
+  commit(types.ADD_LIB_COMPONENTS, payload);
+},
   // end of loading///////////////////////////////////////////////////
 };
+
 
 // Action Graveyard/////////////////////////////////////////
 // These actions are either not called or have been removed, maybe you have use for them so we kept them here

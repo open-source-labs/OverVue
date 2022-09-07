@@ -134,6 +134,15 @@ export default {
         h4:["<h4>", "</h4>"],
         h5:["<h5>", "</h5>"],
         h6:["<h6>", "</h6>"],
+        'e-button':["<el-button", "</el-button>"],
+        'e-input':["<el-input", "</el-input>"],
+        'e-form': ["<el-form", "</el-form>"],
+        'e-checkbox': ["<el-checkbox", "</el-checkbox>"],
+        'e-link':["<el-link", "</el-link>"],
+        'e-checkbox-button': ["<el-checkbox-button", "</el-checkbox-button>"],
+        'e-date-picker': ["<el-date-picker", "</el-date-picker>"],
+        'e-slider':["<el-slider", "</el-slider>"],
+        'e-card': ["<el-card", "</el-card>"],
       };
 
 
@@ -181,9 +190,9 @@ export default {
 
       /**
        * @name: buildList
-       * @desc: takes incoming substrings and pushes the appropriate 
+       * @desc: takes incoming substrings and pushes the appropriate
        *        elements fromt he htmlElementMap defined by Overvue
-       * 
+       *
        * @param: substrings from htmlParser function
        * @return: nothing -- pushes into htmlList array which is defined outside scope of buildList
        */

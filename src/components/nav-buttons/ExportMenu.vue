@@ -149,7 +149,16 @@ export default {
         h3: ["<h3", "</h3>"],
         h4: ["<h4", "</h4>"],
         h5: ["<h5", "</h5>"],
-        h6: ["<h6", "</h6>"]
+        h6: ["<h6", "</h6>"],
+        'e-button':["<el-button", "</el-button>"],
+        'e-input':["<el-input", "</el-input>"],
+        'e-link':["<el-link", "</el-link>"],
+        'e-form': ["<el-form", "</el-form>"],
+        'e-checkbox': ["<el-checkbox", "</el-checkbox>"],
+        'e-checkbox-button': ["<el-checkbox-button", "</el-checkbox-button>"],
+        'e-date-picker': ["<el-date-picker", "</el-date-picker>"],
+        'e-slider':["<el-slider", "</el-slider>"],
+        'e-card': ["<el-card", "</el-card>"],
       };
       // function to loop through nested elements
       function writeNested(childrenArray, indent) {
@@ -174,7 +183,7 @@ export default {
               if (child.text === "img" || child.text === "input" || child.text === "link") {
                 nestedString += "/>";
               } else { nestedString += ">"; }
-  
+
               if (child.children.length) {
                 nestedString += "\n";
                 nestedString += writeNested(child.children, indented);
@@ -493,10 +502,20 @@ export default {
       str += `\nimport store from './store'`
       str += `\nimport App from './App.vue';`;
       str += `\nimport router from './router';\n`;
+      if(this.$store.state.importLibraries.includes('element')){
+        str+= `\nimport ElementPlus from 'element-plus';`
+        str+=`\nimport 'element-plus/dist/index.css';`
+      };
       str += `\nconst app = createApp(App);`;
       str += `\napp.use(router);`;
       str += `\napp.use(store)`;
+      if(this.$store.state.importLibraries.includes('element')){
+        str+=`\napp.use(ElementPlus);`;
+      };
       str += `\napp.mount('#app');`;
+
+
+
 
       // if using typescript, export with .ts extension
       if (this.exportAsTypescript === "on") {
@@ -634,6 +653,9 @@ export default {
       str += `\n\t\t"vue": "^3.2.31",`;
       str += `\n\t\t"vue-router": "^4.0.12",`;
       str += `\n\t\t"vuex": "^4.0.2"`;
+      if(this.$store.state.importLibraries.includes('element')){
+        str += `,\n\t\t"element-plus": "^2.2.16"`;
+      };
       str += `\n\t},`;
       str += `\n\t"devDependencies": {`;
       str += `\n\t\t"@vitejs/plugin-vue": "^2.2.2",`;
