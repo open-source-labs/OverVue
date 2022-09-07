@@ -468,10 +468,6 @@ export default {
 .router-view {
   margin:auto;
   background-color: gray;
-<<<<<<< HEAD
-}
-=======
->>>>>>> 5a5d0281dab7623595cfb38e86630b5075d8cb4d
 </style >`
     } else return `\n\n<style scoped>\n${styleString}</style >`;
     },
