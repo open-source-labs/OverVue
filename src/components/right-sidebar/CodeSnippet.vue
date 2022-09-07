@@ -115,6 +115,7 @@ export default {
         'e-checkbox-button': ["<el-checkbox-button", "</el-checkbox-button>"],
         'e-date-picker': ["<el-date-picker", "</el-date-picker>"],
         'e-slider':["<el-slider", "</el-slider>"],
+        'e-card': ["<el-card", "</el-card>"],
       };
 
       // Helper function that recursively iterates through the given html element's children and their children's children.
