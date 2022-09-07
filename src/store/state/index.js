@@ -6,6 +6,7 @@ import styleClassmap from './styleClassMap'
 const cloneDeep = require('lodash.clonedeep')
 
 const newState = {
+  clicked:false,
   icons,
   htmlElementMap,
   // state below is what is used when exporting a project
@@ -71,6 +72,10 @@ const newState = {
   gridLayout: [15, 15], // [Width Ratio, Height Ratio] this will be used to have containerH / gridLayout[0] and have fr
   containerH: 720, // in px
   containerW: 1280, // in px
+  importLibraries:[],
+  displaylibComponent:false
+  //push libraries string to the array
+
 }
 
 // closured method to ensure we only ever write the default state ONCE
