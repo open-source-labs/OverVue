@@ -257,15 +257,6 @@ export default {
           } 
           else {
             str += `\t\t\t<router-link to="/${route}" class = "componentLinks">${route}</router-link>\n`;
-<<<<<<< HEAD
-          }
-        }
-        str += `\t\t</div>\n\t\t<router-view class = "router-view"></router-view>\n`;
-      } 
-      else {
-          str += `<div>\n`;
-      }
-=======
           }}
           str += `\t\t</div>\n\t\t<router-view class = "router-view"></router-view>\n`;
         } 
@@ -273,7 +264,6 @@ export default {
           // Adds component name as class for all routes
           str += `<div id = '${componentName}'>\n`;
         }
->>>>>>> 5a5d0281dab7623595cfb38e86630b5075d8cb4d
       // writes the HTML tag boilerplate
       let templateTagStr = this.writeTemplateTag(componentName);
 
@@ -281,19 +271,12 @@ export default {
       if (this.routes.hasOwnProperty(componentName)){
         const arrOfChildComp = this.componentMap[componentName].children;
         arrOfChildComp.forEach(childName => {
-<<<<<<< HEAD
-          routeStr += `\t\t<${childName}></${childName}>\n`
-        });
-        return `<template>\n  <div id = "${componentName}">\n${templateTagStr}${routeStr}\t</div>\n</template>`;
-      };
-=======
           let childNameClass = this.componentMap[childName].htmlAttributes.class;
           let childNameClassFullStr = (childNameClass === "") ? "" : ` class = '${childNameClass}'`;
           routeStr += `<${childName}${childNameClassFullStr}></${childName}>\n`
         });
         return `<template>\n  <div id = "${componentName}">\n${templateTagStr}${routeStr}\t</div>\n</template>`;
       }
->>>>>>> 5a5d0281dab7623595cfb38e86630b5075d8cb4d
 
       //adds class/id into code snippet with exporting
       if (this.componentMap[componentName].htmlAttributes) {
@@ -458,10 +441,6 @@ export default {
       let styleString = "";
       console.log(componentName);
       // Add grid css property to view component div
-<<<<<<< HEAD
-      if (this.routes)
-=======
->>>>>>> 5a5d0281dab7623595cfb38e86630b5075d8cb4d
       // adds view component id grid style and adds child component css styling
       if (this.routes.hasOwnProperty(componentName)) {
         styleString += `#${componentName} {\n\tdisplay: grid; \n\tgrid-template-columns: repeat(${this.gridLayout[0]}, 1fr);\n\tgrid-template-rows: repeat(${this.gridLayout[1]}, 1fr);\n\tgrid-column-gap: 0px;\n\tgrid-row-gap: 0px;\n}\n`;
