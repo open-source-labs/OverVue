@@ -157,7 +157,7 @@ import { mapState, mapActions } from 'vuex'
 export default {
   data () {
     return {
-      exceptions: ['div','button','form','img','list','paragraph','list-ol','list-ul','input','h1','h2','h3','h4','h5','h6','element'],
+      exceptions: ['div','button','form','img','list','paragraph','list-ol','list-ul','input','h1','h2','h3','h4','h5','h6','e-button','e-input','e-link', 'e-form', 'e-checkbox', 'e-checkbox-button', 'e-date-picker', 'e-slider'],
       attributeModal : "false",
       classText: '',
       heightText: '',

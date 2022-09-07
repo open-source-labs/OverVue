@@ -107,7 +107,14 @@ export default {
         h4: ["<h4", "</h4>"],
         h5: ["<h5", "</h5>"],
         h6: ["<h6", "</h6>"],
-        element:["<el-button", "</el-button>"]
+        'e-button':["<el-button", "</el-button>"],
+        'e-input':["<el-input", "</el-input>"],
+        'e-link':["<el-link", "</el-link>"], 
+        'e-form': ["<el-form", "</el-form>"],
+        'e-checkbox': ["<el-checkbox", "</el-checkbox>"],
+        'e-checkbox-button': ["<el-checkbox-button", "</el-checkbox-button>"],
+        'e-date-picker': ["<el-date-picker", "</el-date-picker>"],
+        'e-slider':["<el-slider", "</el-slider>"],
       };
 
       // Helper function that recursively iterates through the given html element's children and their children's children.
