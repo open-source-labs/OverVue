@@ -9,66 +9,91 @@
       <q-list>
         <q-item clickable v-close-popup @click="pickComponent('e-button')">
           <q-item-section>
-            <q-item-label>Button <q-btn  class="demo-button" color="blue" label="Default" /></q-item-label>
-          </q-item-section>
+           button
+          <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
+          <q-btn color="secondary" label="Secondary" />
+          <q-icon name="keyboard_arrow_right"/>
+        </q-tooltip>
+      </q-item-section>
         </q-item>
 
         <q-item clickable v-close-popup @click="pickComponent('e-input')">
           <q-item-section>
-            <q-item-label>InputBox <q-input class="demo-input" outlined  /></q-item-label>
+            InputBox
+            <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
+          <img alt="inputbox" src="../../../assets/inputbox.png" class="input-box">
+          <q-icon name="keyboard_arrow_right"/>
+        </q-tooltip>
           </q-item-section>
         </q-item>
 
         <q-item clickable v-close-popup @click="pickComponent('e-link')">
           <q-item-section>
-            <q-item-label>Link <a href="#">Link</a></q-item-label>
+           Link
+           <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
+          <img alt="inputbox" src="../../../assets/link.png" class="input-box">
+          <q-icon name="keyboard_arrow_right"/>
+        </q-tooltip>
           </q-item-section>
         </q-item>
 
         <q-item clickable v-close-popup @click="pickComponent('e-card')">
           <q-item-section>
-            <q-item-label>Card 
-              <q-card class="my-card">
-      <q-card-section>
-        Card
-      </q-card-section>
-    </q-card>
-
-            </q-item-label>
+           Card
+           <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
+          <img alt="card" src="../../../assets/card.png" class="card">
+          <q-icon name="keyboard_arrow_right"/>
+        </q-tooltip>
           </q-item-section>
         </q-item>
 
         <q-item clickable v-close-popup @click="pickComponent('e-form')">
           <q-item-section>
-            <q-item-label>Form <q-form class="demo-form" outlined  /></q-item-label>
+           Form
+           <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
+          <img alt="form" src="../../../assets/form.png" class="form">
+          <q-icon name="keyboard_arrow_right"/>
+        </q-tooltip>
           </q-item-section>
         </q-item>
 
         <q-item clickable v-close-popup @click="pickComponent('e-checkbox')">
           <q-item-section>
-            <q-item-label>Checkbox <q-checkbox class="demo-checkbox" outlined  /></q-item-label>
+            Checkbox
+            <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
+          <img alt="checkbox" src="../../../assets/checkbox.png" class="checkbox">
+          <q-icon name="keyboard_arrow_right"/>
+        </q-tooltip>
           </q-item-section>
         </q-item>
 
         <q-item clickable v-close-popup @click="pickComponent('e-checkbox-button')">
           <q-item-section>
-            <q-item-label>Checkbox-button <q-checkbox-button class="demo-checkbox-button" color="blue" outlined  /></q-item-label>
+           Checkbox Button
+           <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
+          <img alt="checkboxbutton" src="../../../assets/checkboxbutton.png" class="checkboxbutton">
+          <q-icon name="keyboard_arrow_right"/>
+        </q-tooltip>
           </q-item-section>
         </q-item>
 
         <q-item clickable v-close-popup @click="pickComponent('e-date-picker')">
           <q-item-section>
-            <q-item-label>Date-picker <q-date-picker class="demo-date-picker"   v-model="value1"
-        type="date"
-        placeholder="Pick a day"
-        :size="size" outlined  /></q-item-label>
+            Date Picker
+            <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
+          <img alt="datepicker" src="../../../assets/datepicker.png" class="datepicker">
+          <q-icon name="keyboard_arrow_right"/>
+        </q-tooltip>
           </q-item-section>
         </q-item>
 
         <q-item clickable v-close-popup @click="pickComponent('e-slider')">
           <q-item-section>
-            <q-item-label>Slider <q-slider class="demo-slider"   v-model="value1" color="blue"
-       outlined  /></q-item-label>
+  Slider
+  <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
+          <img alt="slider" src="../../../assets/slider.png" class="slider">
+          <q-icon name="keyboard_arrow_right"/>
+        </q-tooltip>
           </q-item-section>
         </q-item>
 
@@ -127,5 +152,33 @@ import { mapState, mapActions } from "vuex";
 }
 .demo-input{
   border: 1px solid white;
+}
+.input-box{
+  width: 300px;
+}
+
+.card{
+  width: 300px;
+}
+
+.form{
+  width: 300px;
+}
+
+.checkbox{
+  width: 130px;
+}
+
+.checkboxbutton{
+  width: 500px;
+}
+
+.datepicker{
+  width: 300px;
+}
+
+
+.slider{
+  width: 600px;
 }
 </style>
