@@ -60,11 +60,15 @@
 - Adding notes functionality  <sub><sup>(v6.0)</sup></sub>
 - Enhanced component tree hierarchy display <sub><sup>(v6.0)</sup></sub>
 - Added drag and drop of HTML elements  <sub><sup>(v7.0)</sup></sub>
-- Added color customization of compoents <sub><sup>(v7.0)</sup></sub>
+- Added color customization of components <sub><sup>(v7.0)</sup></sub>
 - More attribute options, class and v-model <sub><sup>(v7.0)</sup></sub>
 - Added scoped style tags for components <sub><sup>(v7.0)</sup></sub>
 - Size and position specification of HTML elements <sub><sup>(v7.0)</sup></sub>
-<br>
+- Added component snap to grid functionality <sub><sup>(v8.0)</sup></sub>
+- Ability to import vue component library <sub><sup>(v8.0)</sup></sub>
+- Child component grid area CSS styling <sub><sup>(v8.0)</sup></sub>
+- Export project component hierarchy and enhanced boilerplate code <sub><sup>(v8.0)</sup></sub>
+
 [↥Back to top](#table-of-contents)
 
 ### Changelog 2.0
@@ -188,8 +192,26 @@
 <h4><strong>Bug Fixes</strong></h4>
 <li>Fixed undo and redo capabilities </li>
 <li>Fixed badge number not rendering for nested HTML tags</li>
-<li></li>
+</ul>
+</details>
 
+### Changelog 8.0
+
+<details><summary>OverVue 8.0</summary>
+<ul>
+<li>Added component snap to grid functionality </li>
+<li>Code snippet reflects CSS grid area styling of components </li>
+<li>Ability to import vue component library</li>
+<li>Exported project template code now more accurately reflects component placement in app</li>
+<li>Improved canvas drag and deselect</li>
+<li>Improved WSL developer installation instructions</li>
+<br>
+<h4><strong>Bug Fixes</strong></h4>
+<li>Fixed routing components in project exports </li>
+<li>Fixed component hierarchy in project exports </li>
+<li>Fixed import statements of route child components</li>
+<li>Fixed edge case HTML element bugs in project exports </li>
+<li>Fixed in app component movement bugs which caused position to not update correctly </li>
 </ul>
 </details>
 <br/>
@@ -278,7 +300,18 @@ npm run build
 **The ability to load the application and/or devtools requires a tool/application to run a linux display as WSL does not have any display drivers since it is based off of just a CLI.
 I recommend X410 (https://x410.dev/), althought it does cost \$15, for ease of use. There are free options such as VcXsrv(https://sourceforge.net/projects/vcxsrv/) that you can get, but requires more set up.**
 
+If you choose to use VcXsrv, you will need to select a couple options:
+
+<ul>
+<li>Launch XLaunch</li>
+<li>Select multiple windows and display number=0.</li>
+<li>Select no client.</li>
+<li>Select Clipboard, Primary Selection, Native opengl, and disable access control.</li>
+<li>If Windows firewall pops up - select Public for this server to work.</li>
+</ul>
+
 If you choose to use x410, you will need to set the environment DISPLAY variable on each console:
+
 
 So, to open either the Vue devtools or OverVue in dev mode, first start your X Server then enter into the terminal:
 For WSL 1 :
@@ -293,8 +326,12 @@ For WSL 2 :
 export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
 export LIBGL_ALWAYS_INDIRECT=1
 ```
+Then run 
+```
+npm run dev
+```
 
-followed by the command for the s or devmode. If you want both open, enter commands above followed by starting the devtools:
+followed by the command for the devtools.
 
 ```
 ./node_modules/.bin/vue-devtools
@@ -305,7 +342,18 @@ Then open a new terminal instance, set the DISPLAY value again (re-enter above c
 ```
 quasar dev -m electron
 ```
-**NOTE** Electron-deeplink currently does not work on our WSL2 computers and output an error during installing the dependency which prevented the application to open in dev mode. Go to /src-electron/electron-main.js and comment out line 3/import line to bypass error. The developers did not find any impacts on application so far.
+**NOTE**: 
+<ul>
+<li>Electron-deeplink currently does not work on our WSL2 computers and output an error during installing the dependency which prevented the application to open in dev mode. Go to /src-electron/electron-main.js and comment out line 3/import line to bypass error. The developers did not find any impacts on application so far.</li>
+<li>There might be an npm install error despite all instructions: Try </li>
+</ul>
+
+```
+sudo apt install libgconf-2-4 libatk1.0-0 libatk-bridge2.0-0 libgdk-pixbuf2.0-0 libgtk-3-0 libgbm-dev libnss3-dev libxss-dev
+```
+
+
+
 
 ## Running the Docker Image
 
@@ -423,7 +471,6 @@ Here are some features we're thinking about adding:
 
 
 - Ability to place child components into HTML elements
-- More semantic HTML tag options
 - Ability to export Vuex store boilerplate
 - Ability to add two-way binding to input elements
 - More granular typing options for TypeScript mode
@@ -468,6 +515,10 @@ Johnny Chan @jchan444
 Jace Crowe @JaceCrowe
 Keyla Koizumi Nishimura @keylakoizumin
 Katherine Kim @katherinek123
+Chris Wong @Koregano73
+Honghao(Michael) Sun @sunhonghaoparis
+Alex Law @alexlaw528
+Emma Genesen @EGenesen
 ```
 
 Inspired by [PreVue](https://github.com/open-source-labs/PreVue)
