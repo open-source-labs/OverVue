@@ -65,7 +65,7 @@
 - Added scoped style tags for components <sub><sup>(v7.0)</sup></sub>
 - Size and position specification of HTML elements <sub><sup>(v7.0)</sup></sub>
 - Added component snap to grid functionality <sub><sup>(v8.0)</sup></sub>
-- Ability to import vue component library <sub><sup>(v8.0)</sup></sub>
+- Ability to import vue component from Element Plus component library <sub><sup>(v8.0)</sup></sub>
 - Child component grid area CSS styling <sub><sup>(v8.0)</sup></sub>
 - Export project component hierarchy and enhanced boilerplate code <sub><sup>(v8.0)</sup></sub>
 
@@ -201,7 +201,7 @@
 <ul>
 <li>Added component snap to grid functionality </li>
 <li>Code snippet reflects CSS grid area styling of components </li>
-<li>Ability to import vue component library</li>
+<li>Ability to import components from Element Plus library</li>
 <li>Exported project template code now more accurately reflects component placement in app</li>
 <li>Improved canvas drag and deselect</li>
 <li>Improved WSL developer installation instructions</li>
