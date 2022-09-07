@@ -262,6 +262,8 @@ export default {
           // Adds component name as class for all routes
           str += `<div id = '${componentName}'>\n`;
         }
+      // writes the HTML tag boilerplate
+      let templateTagStr = this.writeTemplateTag(componentName);
 
       // Add import component string to routes template
       if (this.routes.hasOwnProperty(componentName)){
@@ -270,11 +272,10 @@ export default {
           let childNameClass = this.componentMap[childName].htmlAttributes.class;
           let childNameClassFullStr = (childNameClass === "") ? "" : ` class = '${childNameClass}'`;
           routeStr += `<${childName}${childNameClassFullStr}></${childName}>\n`
-        })
+        });
+        return `<template>\n  <div id = "${componentName}">\n${templateTagStr}${routeStr}\t</div>\n</template>`;
       }
 
-      // writes the HTML tag boilerplate
-      let templateTagStr = this.writeTemplateTag(componentName);
       //adds class/id into code snippet with exporting
       if (this.componentMap[componentName].htmlAttributes) {
 
@@ -295,6 +296,7 @@ export default {
         }
       } 
       else {
+        console.log('Test log if route')
         return `<template>\n\t${str}${templateTagStr}${routeStr}</div>\n</template>`
       }
     },
@@ -436,8 +438,10 @@ export default {
       let htmlArray = this.componentMap[componentName].htmlList;
       let styleString = "";
       console.log(componentName);
-      //! this should be a foreach loop for each route child component
+      // Add grid css property to view component div
+      // adds view component id grid style and adds child component css styling
       if (this.routes.hasOwnProperty(componentName)) {
+        styleString += `#${componentName} {\n\tdisplay: grid; \n\tgrid-template-columns: repeat(${this.gridLayout[0]}, 1fr);\n\tgrid-template-rows: repeat(${this.gridLayout[1]}, 1fr);\n\tgrid-column-gap: 0px;\n\tgrid-row-gap: 0px;\n}\n`;
         this.routes[componentName].forEach((element) => {
           let styleSelector = (element.htmlAttributes.class === "") ? element.htmlList[0].text : '.' + element.htmlAttributes.class;
           styleString += `${styleSelector} {\n\tbackground-color: ${element.color};
@@ -461,13 +465,7 @@ export default {
 }
 .router-view {
   margin:auto;
-  display: grid;
   background-color: gray;
-  grid-template-columns: repeat(${this.gridLayout[0]}, 1fr);
-  grid-template-rows: repeat(${this.gridLayout[1]}, 1fr);
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
-}
 </style >`
     } else return `\n\n<style scoped>\n${styleString}</style >`;
     },

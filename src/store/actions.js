@@ -134,13 +134,9 @@ const actions = {
     commit(types.UPDATE_COMPONENT_POSITION, payload);
   },
 
-<<<<<<< HEAD
   [types.updateComponentGridPosition]: ({ commit }, payload) => {
     commit(types.UPDATE_COMPONENT_GRID_POSITION, payload);
   },
-  
-=======
->>>>>>> remotes/origin/Emma/importComponentsFeature
   [types.addBindingText]: ({ commit }, payload) => {
     commit(types.addBindingText, payload);
   },
