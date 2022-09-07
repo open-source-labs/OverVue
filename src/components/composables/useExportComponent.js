@@ -1,13 +1,13 @@
 export function useExportComponent() {
-    // OVERVUE 6.0: export active component 
+    // OVERVUE 6.0: export active component
     /**
      * @description: makes files, directories and boilerplate when exporting a single Vue component
-     * 
+     *
      * @param: none -- uses this.activeComponent from state to create file
      * @return: none -- outputs file to fs
-     * 
+     *
      */
-    
+
       const showExportComponentDialog = () => {
         ipcRenderer
         .invoke("exportComponent", {
@@ -18,12 +18,12 @@ export function useExportComponent() {
         .then((result) => exportComponentFile(result.filePath))
         .catch((err) => console.log(err));
       }
-      
+
       /**
        * @description: creates component code <template>, <script>, <style>
        * invokes writeTemplate, writeScript, writeStyle
        */
-      
+
       const createComponentCode = (componentLocation, componentName, children) => {
         fs.writeFileSync(
           componentLocation + ".vue",
@@ -57,6 +57,16 @@ export function useExportComponent() {
           h4: ["<h4", "</h4>"],
           h5: ["<h5", "</h5>"],
           h6: ["<h6", "</h6>"],
+          'e-button':["<el-button", "</el-button>"],
+          'e-input':["<el-input", "</el-input>"],
+          'e-link':["<el-link", "</el-link>"],
+          'e-form': ["<el-form", "</el-form>"],
+          'e-checkbox': ["<el-checkbox", "</el-checkbox>"],
+          'e-checkbox-button': ["<el-checkbox-button", "</el-checkbox-button>"],
+          'e-date-picker': ["<el-date-picker", "</el-date-picker>"],
+          'e-slider':["<el-slider", "</el-slider>"],
+          'e-card': ["<el-card", "</el-card>"],
+
         };
         // function to loop through nested elements
         const writeNested = (childrenArray, indent) => {
@@ -65,7 +75,7 @@ export function useExportComponent() {
           }
           let indented = indent + "  ";
           let nestedString = "";
-  
+
           childrenArray.forEach((child) => {
             nestedString += indented;
             if (!child.text) {
@@ -81,7 +91,7 @@ export function useExportComponent() {
               if (child.text === "img" || child.text === "input" || child.text === "link") {
                 nestedString += "/>";
               } else { nestedString += ">"; }
-  
+
               if (child.children.length) {
                 nestedString += "\n";
                 nestedString += writeNested(child.children, indented);
@@ -206,7 +216,7 @@ export function useExportComponent() {
           data += "\n";
           data += "    }\n";
           data += "  },\n";
-        
+
         // if true add computed section and populate with state
         let computed = "";
         if (currentComponent.state.length) {
@@ -270,10 +280,10 @@ height: ${element.h}px;
 z-index: ${element.z};
 }\n`
           }
-        }) 
-          
-        
-  
+        })
+
+
+
 
 
         for (const html of htmlArray) {

@@ -149,7 +149,16 @@ export default {
         h3: ["<h3", "</h3>"],
         h4: ["<h4", "</h4>"],
         h5: ["<h5", "</h5>"],
-        h6: ["<h6", "</h6>"]
+        h6: ["<h6", "</h6>"],
+        'e-button':["<el-button", "</el-button>"],
+        'e-input':["<el-input", "</el-input>"],
+        'e-link':["<el-link", "</el-link>"],
+        'e-form': ["<el-form", "</el-form>"],
+        'e-checkbox': ["<el-checkbox", "</el-checkbox>"],
+        'e-checkbox-button': ["<el-checkbox-button", "</el-checkbox-button>"],
+        'e-date-picker': ["<el-date-picker", "</el-date-picker>"],
+        'e-slider':["<el-slider", "</el-slider>"],
+        'e-card': ["<el-card", "</el-card>"],
       };
       // function to loop through nested elements
       function writeNested(childrenArray, indent) {
@@ -174,7 +183,7 @@ export default {
               if (child.text === "img" || child.text === "input" || child.text === "link") {
                 nestedString += "/>";
               } else { nestedString += ">"; }
-  
+
               if (child.children.length) {
                 nestedString += "\n";
                 nestedString += writeNested(child.children, indented);
@@ -248,6 +257,7 @@ export default {
           } 
           else {
             str += `\t\t\t<router-link to="/${route}" class = "componentLinks">${route}</router-link>\n`;
+<<<<<<< HEAD
           }
         }
         str += `\t\t</div>\n\t\t<router-view class = "router-view"></router-view>\n`;
@@ -255,6 +265,15 @@ export default {
       else {
           str += `<div>\n`;
       }
+=======
+          }}
+          str += `\t\t</div>\n\t\t<router-view class = "router-view"></router-view>\n`;
+        } 
+        else {
+          // Adds component name as class for all routes
+          str += `<div id = '${componentName}'>\n`;
+        }
+>>>>>>> 5a5d0281dab7623595cfb38e86630b5075d8cb4d
       // writes the HTML tag boilerplate
       let templateTagStr = this.writeTemplateTag(componentName);
 
@@ -262,15 +281,25 @@ export default {
       if (this.routes.hasOwnProperty(componentName)){
         const arrOfChildComp = this.componentMap[componentName].children;
         arrOfChildComp.forEach(childName => {
+<<<<<<< HEAD
           routeStr += `\t\t<${childName}></${childName}>\n`
         });
         return `<template>\n  <div id = "${componentName}">\n${templateTagStr}${routeStr}\t</div>\n</template>`;
       };
+=======
+          let childNameClass = this.componentMap[childName].htmlAttributes.class;
+          let childNameClassFullStr = (childNameClass === "") ? "" : ` class = '${childNameClass}'`;
+          routeStr += `<${childName}${childNameClassFullStr}></${childName}>\n`
+        });
+        return `<template>\n  <div id = "${componentName}">\n${templateTagStr}${routeStr}\t</div>\n</template>`;
+      }
+>>>>>>> 5a5d0281dab7623595cfb38e86630b5075d8cb4d
 
       //adds class/id into code snippet with exporting
       if (this.componentMap[componentName].htmlAttributes) {
+
         let compID = this.componentMap[componentName].htmlAttributes.id;
-        let compClass = this.componentMap[componentName].htmlAttributes.class;
+        let compClass = (this.routes.hasOwnProperty(componentName)) ? componentName : this.componentMap[componentName].htmlAttributes.class;
 
         if (compClass !== "" && compID !== "") {
           return `<template>\n  <div id = "${compID}" class = "${compClass}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
@@ -279,13 +308,14 @@ export default {
           return `<template>\n  <div class = "${compClass}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
         } 
         else if (compClass === "" && compID !== "") {
-          return `<template>\n  <div id = "${this.componentMap[componentName].htmlAttributes.id}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
+          return `<template>\n  <div id = "${compID}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
         }
         else {
           return `<template>\n  <div>\n\t${str}${templateTagStr}${routeStr}  </div>\n</template>`;
         }
       } 
       else {
+        console.log('Test log if route')
         return `<template>\n\t${str}${templateTagStr}${routeStr}</div>\n</template>`
       }
     },
@@ -393,10 +423,10 @@ export default {
           arrOfChildComp.forEach(childName => {
             // Build child component text string
             if (childName !== arrOfChildComp[arrOfChildComp.length - 1]){
-              childrenComponentNames += "  " + childName + ",\n";
+              childrenComponentNames += "    " + childName + ",\n";
             }
             else {
-              childrenComponentNames += "  " + childName + "\n";
+              childrenComponentNames += "    " + childName + "\n";
             }
 
             // Build child component import text string
@@ -412,7 +442,7 @@ export default {
         str += `\n${childComponentImportNames}`;
         str += `\n\nexport default {`
         str += `\n  components: {`
-        str += `\n    ${childrenComponentNames}  }\n};`;
+        str += `\n${childrenComponentNames}  }\n};`;
         str += `\n<\/script>`;
         return str
       }
@@ -428,7 +458,10 @@ export default {
       let styleString = "";
       console.log(componentName);
       // Add grid css property to view component div
+<<<<<<< HEAD
       if (this.routes)
+=======
+>>>>>>> 5a5d0281dab7623595cfb38e86630b5075d8cb4d
       // adds view component id grid style and adds child component css styling
       if (this.routes.hasOwnProperty(componentName)) {
         styleString += `#${componentName} {\n\tdisplay: grid; \n\tgrid-template-columns: repeat(${this.gridLayout[0]}, 1fr);\n\tgrid-template-rows: repeat(${this.gridLayout[1]}, 1fr);\n\tgrid-column-gap: 0px;\n\tgrid-row-gap: 0px;\n}\n`;
@@ -456,7 +489,10 @@ export default {
 .router-view {
   margin:auto;
   background-color: gray;
+<<<<<<< HEAD
 }
+=======
+>>>>>>> 5a5d0281dab7623595cfb38e86630b5075d8cb4d
 </style >`
     } else return `\n\n<style scoped>\n${styleString}</style >`;
     },
@@ -491,10 +527,20 @@ export default {
       str += `\nimport store from './store'`
       str += `\nimport App from './App.vue';`;
       str += `\nimport router from './router';\n`;
+      if(this.$store.state.importLibraries.includes('element')){
+        str+= `\nimport ElementPlus from 'element-plus';`
+        str+=`\nimport 'element-plus/dist/index.css';`
+      };
       str += `\nconst app = createApp(App);`;
       str += `\napp.use(router);`;
       str += `\napp.use(store)`;
+      if(this.$store.state.importLibraries.includes('element')){
+        str+=`\napp.use(ElementPlus);`;
+      };
       str += `\napp.mount('#app');`;
+
+
+
 
       // if using typescript, export with .ts extension
       if (this.exportAsTypescript === "on") {
@@ -632,6 +678,9 @@ export default {
       str += `\n\t\t"vue": "^3.2.31",`;
       str += `\n\t\t"vue-router": "^4.0.12",`;
       str += `\n\t\t"vuex": "^4.0.2"`;
+      if(this.$store.state.importLibraries.includes('element')){
+        str += `,\n\t\t"element-plus": "^2.2.16"`;
+      };
       str += `\n\t},`;
       str += `\n\t"devDependencies": {`;
       str += `\n\t\t"@vitejs/plugin-vue": "^2.2.2",`;

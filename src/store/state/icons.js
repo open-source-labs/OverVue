@@ -19,6 +19,7 @@ const icons = {
   h4:['fa-regular fa-4'],
   h5:['fa-regular fa-5'],
   h6:['fa-regular fa-6'],
+  // element:['fas fa-toggle-on fa-lg']
 }
 
 
