@@ -50,7 +50,7 @@ export function useCreateComponent(importObj) {
       htmlAttributes: {
         class: "",
         id: "",
-        gridArea: [0, 2, 0, 2],
+        gridArea: [0, 0, 2, 2],
       },
     };
 
