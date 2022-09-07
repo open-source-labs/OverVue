@@ -326,18 +326,18 @@ For WSL 2 :
 export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
 export LIBGL_ALWAYS_INDIRECT=1
 ```
-Then run 
+Then run the following command to run both OverVue and Vue developer tools.
 ```
 npm run dev
 ```
 
-followed by the command for the devtools.
+To launch the Vue devloper tool, use the following command.
 
 ```
 ./node_modules/.bin/vue-devtools
 ```
 
-Then open a new terminal instance, set the DISPLAY value again (re-enter above command for DISPLAY), and start OverVue in dev mode:
+Then to start only OverVue in developer mode, open a new terminal instance and set the DISPLAY value again (re-enter above command for DISPLAY):
 
 ```
 quasar dev -m electron
@@ -345,7 +345,7 @@ quasar dev -m electron
 **NOTE**: 
 <ul>
 <li>Electron-deeplink currently does not work on our WSL2 computers and output an error during installing the dependency which prevented the application to open in dev mode. Go to /src-electron/electron-main.js and comment out line 3/import line to bypass error. The developers did not find any impacts on application so far.</li>
-<li>There might be an npm install error despite all instructions: Try </li>
+<li>There might be an npm install error despite all instructions. Try the following command below:</li>
 </ul>
 
 ```
