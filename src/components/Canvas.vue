@@ -6,7 +6,7 @@
 
 <template>
   <!-- the background Canvas grid -->
-  <div class="component-display grid-bg" :style="mockBg" v-on:click="handleClick" v-on:click.right="handleRight">
+  <div class="component-display grid-bg" :style="{backgroundColor:'#FFFFF' }" v-on:click="handleClick" v-on:click.right="handleRight">
   <div class="cssContainer" :style="{ 
     'background-size': `${gridWidth}px ${gridHeight}px, 
     ${gridWidth}px ${gridHeight}px`, 
@@ -14,7 +14,7 @@
     }">
     <!-- This is the actual component box -->
     <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
-    <p class="cssContainerText"> CSS Container </p>
+    <p class="cssContainerText"> APP PREVIEW </p>
     <!--each component box in canvas will have these properties-->
     <!-- :onDragStart="recordInitialPosition" :onResizeStart="recordInitialSize" :preventDeactivation="true" graveyard attribute -->
     <vue-draggable-resizable
@@ -865,27 +865,27 @@ li:hover {
 }
 
 .grid-bg {
-  background-color: rgba(223, 218, 218, 0.886);
+  background-color: rgba(223, 218, 218, 0.613);
   background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
   background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
-  background-image: -webkit-linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px),
-    -webkit-linear-gradient(0, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
-    -webkit-linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
-    -webkit-linear-gradient(0, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
-  background-image: -moz-linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px),
-    -moz-linear-gradient(0, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
-    -moz-linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
-    -moz-linear-gradient(0, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
-  background-image: linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
-    linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
-  -pie-background: linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px) -2px -2px / 100px,
-    linear-gradient(90deg, rgba(255, 255, 255, 0.8) 1px, transparent 1px) -2px -2px / 100px,
-    linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px) -1px -1px / 20px,
-    linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px) -1px -1px / 20px,
-    $secondary;
-  behavior: url(/pie/PIE.htc);
+//   background-image: -webkit-linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px),
+//     -webkit-linear-gradient(0, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
+//     -webkit-linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+//     -webkit-linear-gradient(0, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
+//   background-image: -moz-linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px),
+//     -moz-linear-gradient(0, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
+//     -moz-linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+//     -moz-linear-gradient(0, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
+//   background-image: linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px),
+//     linear-gradient(90deg, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
+//     linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+//     linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
+//   -pie-background: linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px) -2px -2px / 100px,
+//     linear-gradient(90deg, rgba(255, 255, 255, 0.8) 1px, transparent 1px) -2px -2px / 100px,
+//     linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px) -1px -1px / 20px,
+//     linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px) -1px -1px / 20px,
+//     $secondary;
+behavior: url(/pie/PIE.htc);
 }
 
 .cssContainer {
