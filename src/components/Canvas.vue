@@ -14,7 +14,7 @@
     }">
     <!-- This is the actual component box -->
     <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
-    <p class="cssContainerText"> APP PREVIEW </p>
+    <p class="cssContainerText"> {{this.activeRoute}} Preview </p>
     <!--each component box in canvas will have these properties-->
     <!-- :onDragStart="recordInitialPosition" :onResizeStart="recordInitialSize" :preventDeactivation="true" graveyard attribute -->
     <vue-draggable-resizable
@@ -26,9 +26,9 @@
       :x="componentData.x"
       :y="componentData.y"
       :z="componentData.z"
-      :w="2 * gridWidth"
+      :w="componentData.w ? componentData.w:2 * gridWidth"
       :min-width="gridWidth / 2"
-      :h="2 * gridHeight"
+      :h="componentData.h ? componentData.h:2 * gridHeight"
       :min-height="gridHeight / 2"
       :grid="[Math.floor(100 * gridWidth) / 100, Math.floor(100 * gridHeight) / 100 ]"
       @activated="onActivated(componentData)"
