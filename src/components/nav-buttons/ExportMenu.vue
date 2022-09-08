@@ -251,19 +251,20 @@ export default {
       // Creates router-link boilerplate for App
       if (componentName === "App") {
         str += `<div id="app">\n\t\t<div id="nav">\n`;
-        for(let route in routes) {
+        for (let route in routes) {
           if (route === "HomeView") {
             str += `\t\t\t<router-link to="/" class = "componentLinks">${route}</router-link>\n`;
           } 
           else {
             str += `\t\t\t<router-link to="/${route}" class = "componentLinks">${route}</router-link>\n`;
-          }}
+          }
+        }
           str += `\t\t</div>\n\t\t<router-view class = "router-view"></router-view>\n`;
         } 
-        else {
-          // Adds component name as class for all routes
-          str += `<div id = '${componentName}'>\n`;
-        }
+        // else {
+        // // Adds component name as class for all routes
+        // str += `<div id = '${componentName}'>\n`;
+        // }
       // writes the HTML tag boilerplate
       let templateTagStr = this.writeTemplateTag(componentName);
 
