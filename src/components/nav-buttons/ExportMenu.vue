@@ -261,10 +261,7 @@ export default {
         }
           str += `\t\t</div>\n\t\t<router-view class = "router-view"></router-view>\n`;
         } 
-        // else {
-        // // Adds component name as class for all routes
-        // str += `<div id = '${componentName}'>\n`;
-        // }
+     
       // writes the HTML tag boilerplate
       let templateTagStr = this.writeTemplateTag(componentName);
 
