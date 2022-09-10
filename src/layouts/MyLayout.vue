@@ -36,6 +36,7 @@ Description:
         ></i>
         <i v-else class="fa fa-redo unavailable" aria-hidden="true"></i>
         </q-btn>
+        <GridDensity />
       </div></q-toolbar-title>
         <div></div>
 
@@ -143,6 +144,7 @@ import RightSidebar from "../components/right-sidebar/RightSidebar.vue";
 import ExportMenu from "../components/nav-buttons/ExportMenu.vue";
 import SaveProject from "../components/nav-buttons/SaveProject.vue";
 import ImportMenu from "../components/nav-buttons/ImportMenu.vue";
+import GridDensity from "../components/nav-buttons/GridDensity.vue";
 import SlackLoginWindow from "../components/slack_login/SlackLoginWindow.vue";
 import ComponentTab from "../components/left-sidebar/ComponentTab/ComponentTab.vue";
 import StoreTab from "../components/left-sidebar/StoreTab/StoreTab.vue";
@@ -171,6 +173,7 @@ export default {
     SlackLoginWindow,
     ComponentTab,
     StoreTab,
+    GridDensity
 },
   computed: {
     ...mapState(["exportAsTypescript"]),

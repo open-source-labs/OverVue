@@ -401,20 +401,28 @@ const actions = {
   [types.addProject]: ({ commit }, payload) => {
     commit(types.ADD_PROJECT, payload);
   },
-//change library array
-[types.changeLib]: ({ commit }, payload) => {
-  commit(types.CHANGE_LIB, payload)
-},
-[types.changeLibComponentDisplay]: ({ commit }, payload) => {
-  commit(types.CHANGE_LIB_COMPONENT_DISPLAY, payload)
-},
-[types.addLibComponents]: ({ commit }, payload) => {
-  // adds element to the HTMLQueue
-  commit(types.ADD_LIB_COMPONENTS, payload);
-},
+
+  //change library array
+  [types.changeLib]: ({ commit }, payload) => {
+    commit(types.CHANGE_LIB, payload)
+  },
+
+  [types.changeLibComponentDisplay]: ({ commit }, payload) => {
+    commit(types.CHANGE_LIB_COMPONENT_DISPLAY, payload)
+  },
+
+  [types.addLibComponents]: ({ commit }, payload) => {
+    // adds element to the HTMLQueue
+    commit(types.ADD_LIB_COMPONENTS, payload);
+  },
+
+  //change grid density
+  [types.changeGridDensity]: ({ commit }, payload) => {
+    commit(types.CHANGE_GRID_DENSITY, payload);
+  },
+
   // end of loading///////////////////////////////////////////////////
 };
-
 
 // Action Graveyard/////////////////////////////////////////
 // These actions are either not called or have been removed, maybe you have use for them so we kept them here
