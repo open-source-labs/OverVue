@@ -600,14 +600,8 @@ export default {
         routeArray: this.routes[this.activeRoute],
         activeComponentData: this.activeComponentData,
       };
-      // graveyard if statement- only used in canvas.vue
-      // if ( 
-      //   payload.x !== this.initialPosition.x ||
-      //   payload.y !== this.initialPosition.y
-      // ) {
       this.updateComponentPosition(payload);
       this.updateComponentGridPosition(payload);
-      // }
       this.wasDragged = true;
       setTimeout(() => this.wasDragged = false, 100)
       this.refresh();
