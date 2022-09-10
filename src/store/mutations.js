@@ -784,14 +784,12 @@ const mutations = {
     const rowEnd = 1 + Math.round(state.gridLayout[0] * (updatedComponent.x + updatedComponent.w) / state.containerW);
     const colEnd = 1 + Math.round(state.gridLayout[1] * (updatedComponent.y + updatedComponent.h) / state.containerH);
     updatedComponent.htmlAttributes.gridArea = [rowStart, colStart, rowEnd, colEnd];
-    console.log('this is the grid area', updatedComponent.htmlAttributes.gridArea);
   },
 
   [types.UPDATE_COMPONENT_SIZE]: (state, payload) => {
     const updatedComponent = state.routes[state.activeRoute].filter(
       (element) => element.componentName === payload.activeComponent
     )[0];
-    // console.log(updatedComponent, 'this is payload', payload);
     updatedComponent.h = payload.h;
     updatedComponent.w = payload.w;
     updatedComponent.x = payload.x;
@@ -1075,7 +1073,7 @@ const mutations = {
   // change grid density
   [types.CHANGE_GRID_DENSITY]: (state, payload) => {
     // state.gridLayout = payload.direction === 'height' ? [state.gridLayout[0], payload.densityNum]:[payload.densityNum, state.gridLayout[1]];
-    console.log(payload);
+    // console.log(payload);
     if (payload.direction === 'height'){
       state.gridLayout[1] = payload.densityNum;
 

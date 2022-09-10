@@ -1,15 +1,58 @@
-import icons from './icons'
-import htmlElementMap from './htmlElementMap'
-import styleClassmap from './styleClassMap'
+import icons from './icons';
+import htmlElementMap from './htmlElementMap';
+import styleClassmap from './styleClassMap';
 
+const cloneDeep = require('lodash.clonedeep');
+type State = {
+  clicked: boolean,
+  icons: any,
+  htmlElementMap: any,
+  componentMap: {
+  },
+  routes: {},
+  userActions: [],
+  userProps: [],
+  userState: [],
+  imagePath: {},
+  componentNameInputValue: string,
+  projects: {},
+  activeRoute: string,
+  activeComponent: string,
+  activeComponentObj: null | {},
+  activeHTML: string,
+  activeLayer: {},
+  selectedProps: [],
+  selectedState: [],
+  selectedActions: [],
+  selectedElementList: [],
+  selectedIdDrag: string,
+  selectedIdDrop: string,
+  projectNumber: number,
+  activeTab: number,
+  componentChildrenMultiselectValue: [],
+  modalOpen: boolean,
+  noteModalOpen: boolean,
+  noteAttributeOpen: boolean,
+  colorModalOpen: boolean,
+  parentSelected: boolean,
+  copiedComponent: {},
+  copyNumber: number,
+  pastedComponent: {},
+  exportAsTypescript: 'off' | 'on',
+  showTutorial: true,
+  tutorialFirstOpen: true,
+  pasteTimer: number,
+  gridLayout: [number, number],
+  containerH: number,
+  containerW: number,
+  importLibraries:[],
+  displaylibComponent: boolean,
+};
 
-const cloneDeep = require('lodash.clonedeep')
-
-const newState = {
+const newState :State = {
   clicked:false,
   icons,
   htmlElementMap,
-  // state below is what is used when exporting a project
   componentMap: {
     App: {
       componentName: 'App',
@@ -31,7 +74,6 @@ const newState = {
   imagePath: {
     HomeView: ''
   },
-  // state below is not used when exporting a project
   componentNameInputValue: '',
   projects: [{ filename: 'Untitled-1', lastSavedLocation: '' }],
 
@@ -59,7 +101,6 @@ const newState = {
   //test
   noteAttributeOpen: false,
   colorModalOpen: false,
-  //
   parentSelected: false,
   // for storing copied component
   copiedComponent: {},
@@ -75,24 +116,23 @@ const newState = {
   importLibraries:[],
   displaylibComponent:false
   //push libraries string to the array
-
-}
+};
 
 // closured method to ensure we only ever write the default state ONCE
-const writeTheDefault = () => {
-  let initial = {}
-  let needsToRun = true
-  function onced(payload) {
+const writeTheDefault = ():any => {
+  let initial:object = {};
+  let needsToRun:boolean = true;
+  function onced(payload:any) {
     if (needsToRun) {
-      initial = cloneDeep(payload)
-      needsToRun = false
+      initial = cloneDeep(payload);
+      needsToRun = false;
     }
-    return initial
+    return initial;
   }
-  return onced
+  return onced;
 }
 
-const defaultState = writeTheDefault()
+const defaultState = writeTheDefault();
 
-export default newState
-export { defaultState }
+export default newState;
+export { defaultState };

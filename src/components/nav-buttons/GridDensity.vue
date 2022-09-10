@@ -69,11 +69,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
   import { mapState, mapActions } from "vuex";
+  import { defineComponent } from "vue";
 
-  export default {
-    name: "GridDensity",
+  export default defineComponent({
+    name: "GridDensity" as string,
     computed: {
     ...mapState([
       "gridLayout",
@@ -83,15 +84,15 @@
     ...mapActions([
       "changeGridDensity"
     ]),
-    pickGridDensity(direction, densityNum){
-      let payload = {
+    pickGridDensity(direction: string, densityNum: number):void {
+      let payload: object = {
         direction:direction,
         densityNum:densityNum,
       }
       this.changeGridDensity(payload);
     },
     },
-  }
+  })
 </script>
 
 <style scoped lang="scss">
