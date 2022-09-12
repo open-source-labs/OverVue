@@ -23,8 +23,12 @@ import { useExportComponent } from "../composables/useExportComponent.js";
 import { mapState } from "vuex";
 const { fs, ipcRenderer } = window;
 
+import writeNested from "../../mixins/writeNested";
+
+
 export default {
   name: "ExportProjectComponent",
+  mixins: [writeNested],
   methods: {
     useExportComponentBound() {
       useExportComponent.bind(this)();
@@ -43,9 +47,6 @@ export default {
         .catch((err) => console.log(err));
     },
     exportProject: function () {
-      // console.log('this.activeComponentObj: ', this.activeComponentObj); /* *********************** */ //Not sure, it's undefined
-      console.log('this.componentMap: ', this.componentMap); /* *********************** */
-      console.log('this.routes: ', this.routes); /* *********************** */ //array of objects on the cssGrid
 
       this.showExportProjectDialog();
     },
@@ -160,42 +161,7 @@ export default {
         'e-slider':["<el-slider", "</el-slider>"],
         'e-card': ["<el-card", "</el-card>"],
       };
-      // function to loop through nested elements
-      function writeNested(childrenArray, indent) {
-        if (!childrenArray.length) {
-          return "";
-        }
-        let indented = indent + "  ";
-        let nestedString = "";
 
-        childrenArray.forEach((child) => {
-            nestedString += indented;
-            if (!child.text) {
-              nestedString += `<${child}/>\n`;
-            } else {
-              nestedString += htmlElementMap[child.text][0];
-              if (child.class !== "") {
-                nestedString += " " + "class = " + `"${child.class}"`;
-              }
-              if(child.binding !== "") {
-                nestedString += " " + "v-model = " + `"${child.binding}"`;
-              }
-              if (child.text === "img" || child.text === "input" || child.text === "link") {
-                nestedString += "/>";
-              } else { nestedString += ">"; }
-
-              if (child.children.length) {
-                nestedString += "\n";
-                nestedString += writeNested(child.children, indented);
-                nestedString += indented + htmlElementMap[child.text][1];
-                nestedString += "\n";
-              } else {
-                nestedString += htmlElementMap[child.text][1] + "\n";
-              }
-            }
-          });
-        return nestedString;
-      }
       // iterate through component's htmllist
       let htmlArr = this.componentMap[componentName].htmlList;
       let outputStr = ``;
@@ -296,7 +262,6 @@ export default {
         }
       } 
       else {
-        console.log('Test log if route')
         return `<template>\n\t${str}${templateTagStr}${routeStr}</div>\n</template>`
       }
     },
