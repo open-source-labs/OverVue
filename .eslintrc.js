@@ -9,10 +9,10 @@ module.exports = {
   },
 
   parserOptions: {
-    parser: '@babel/eslint-parser',
     ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
+    parser: '@babel/eslint-parser',
+    requireConfigFile: false,
     sourceType: 'module', // Allows for the use of imports
-    requireConfigFile: false
   },
 
   env: {

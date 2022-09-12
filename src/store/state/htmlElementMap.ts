@@ -1,4 +1,6 @@
-const htmlElementMap = {
+import { HtmlElementMap } from '../../../types';
+
+const htmlElementMap :HtmlElementMap= {
   div: ['<div>', '</div>'],
   button: ['<button>', '</button>'],
   form: ['<form>', '</form>'],
@@ -28,6 +30,6 @@ const htmlElementMap = {
   'e-date-picker': ["<el-date-picker", "</el-date-picker>"],
   'e-slider': ["<el-slider", "</el-slider>"],
   'e-card': ["<el-card", "</el-card>"],
-}
+};
 
-export default htmlElementMap
+export default htmlElementMap;

@@ -1,55 +1,11 @@
 import icons from './icons';
 import htmlElementMap from './htmlElementMap';
 import styleClassmap from './styleClassMap';
+import * as types from '../../../types';
 
 const cloneDeep = require('lodash.clonedeep');
-type State = {
-  clicked: boolean,
-  icons: any,
-  htmlElementMap: any,
-  componentMap: {
-  },
-  routes: {},
-  userActions: [],
-  userProps: [],
-  userState: [],
-  imagePath: {},
-  componentNameInputValue: string,
-  projects: {},
-  activeRoute: string,
-  activeComponent: string,
-  activeComponentObj: null | {},
-  activeHTML: string,
-  activeLayer: {},
-  selectedProps: [],
-  selectedState: [],
-  selectedActions: [],
-  selectedElementList: [],
-  selectedIdDrag: string,
-  selectedIdDrop: string,
-  projectNumber: number,
-  activeTab: number,
-  componentChildrenMultiselectValue: [],
-  modalOpen: boolean,
-  noteModalOpen: boolean,
-  noteAttributeOpen: boolean,
-  colorModalOpen: boolean,
-  parentSelected: boolean,
-  copiedComponent: {},
-  copyNumber: number,
-  pastedComponent: {},
-  exportAsTypescript: 'off' | 'on',
-  showTutorial: true,
-  tutorialFirstOpen: true,
-  pasteTimer: number,
-  gridLayout: [number, number],
-  containerH: number,
-  containerW: number,
-  importLibraries:[],
-  displaylibComponent: boolean,
-};
 
-const newState :State = {
+const newState :types.State = {
   clicked:false,
   icons,
   htmlElementMap,
