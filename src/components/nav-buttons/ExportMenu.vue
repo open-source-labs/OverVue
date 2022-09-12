@@ -18,15 +18,17 @@ Description:
   </q-btn>
 </template>
 
-<script>
+<script lang="ts">
+import * as types from "types";
 import { useExportComponent } from "../composables/useExportComponent.js";
 import { mapState } from "vuex";
+import { defineComponent } from "vue";
 const { fs, ipcRenderer } = window;
 
 import writeNested from "../../mixins/writeNested";
 
 
-export default {
+export default defineComponent({
   name: "ExportProjectComponent",
   mixins: [writeNested],
   methods: {
@@ -40,11 +42,11 @@ export default {
           message: "Choose location to save folder in",
           nameFieldLabel: "Application Name",
         })
-        .then((result) => {
+        .then((result:any) => {
           this.exportFile(result.filePath)
           alert('Successfully Exported')
         })
-        .catch((err) => console.log(err));
+        .catch((err:string) => console.log(err));
     },
     exportProject: function () {
 
@@ -56,7 +58,7 @@ export default {
      * invokes: createRouterImports(this.componentMap['App'].children),
      *          createExport(this.componentMap['App'].children)
      *  */
-    createRouter(location) {
+    createRouter(location:string) {
       if (this.exportAsTypescript === "on") {
         fs.writeFileSync(
           path.join(location, "src", "router", "index.ts"),
@@ -75,8 +77,8 @@ export default {
      * @description import routed components from the /views/ dir
      * @argument: this.componentMap['App'].children
      */
-    createRouterImports(routes) {
-      let str = "import { createRouter, createWebHistory } from 'vue-router';\n";
+    createRouterImports(routes):string {
+      let str:string = "import { createRouter, createWebHistory } from 'vue-router';\n";
       for(let view in routes) {
           str += `import ${view} from '../views/${view}.vue';\n`;
       }
@@ -85,8 +87,8 @@ export default {
     /**
      * @description creates the `export default` code in <script>
      */
-    createExport(routes) {
-      let str = "export default createRouter({\n\thistory: createWebHistory(import.meta.env.BASE_URL),\n\troutes: [\n";
+    createExport(routes):string {
+      let str:string = "export default createRouter({\n\thistory: createWebHistory(import.meta.env.BASE_URL),\n\troutes: [\n";
       for(let view in routes) {
           // HomeView route is initialized to "localhost:3000/" url
           if (view === "HomeView") {
@@ -105,7 +107,7 @@ export default {
      * @description: creates component code <template>, <script>, <style>
      * invokes writeTemplate, writeScript, writeStyle
      */
-    createComponentCode(componentLocation, componentName, children, routes) {
+    createComponentCode(componentLocation, componentName, children, routes):void {
       if (componentName === "App") {
         fs.writeFileSync(
           componentLocation + ".vue",
@@ -123,14 +125,14 @@ export default {
       }
     },
     // creates assets folder
-    createAssetFile(targetLocation, assetLocation) {
+    createAssetFile(targetLocation:string, assetLocation):void {
       let saved = remote.nativeImage.createFromPath(assetLocation);
       let urlData = saved.toPNG();
       fs.writeFileSync(targetLocation + ".png", urlData);
     },
-    writeTemplateTag(componentName) {
-      // create reference object
-      const htmlElementMap = {
+    writeTemplateTag(componentName:string):string {
+      // create reference object - replace later
+      const htmlElementMap:types.HtmlElementMap = {
         div: ["<div", "</div>"],
         button: ["<button", "</button>"],
         form: ["<form", "</form>"],
@@ -268,7 +270,7 @@ export default {
     /**
      * @description imports child components into <script>
      */
-    writeScript(componentName, children) {
+    writeScript(componentName: string, children) {
       // add import mapstate and mapactions if they exist
       const currentComponent = this.componentMap[componentName];
       const routes = Object.keys(this.routes);
@@ -399,7 +401,7 @@ export default {
      */
     /* UPDATE THIS TO GRAB INFORMATION FROM this.componentMap NOT this.routes*/
     /* this.componentMap does not have x-y positioning stored */
-    writeStyle(componentName) {
+    writeStyle(componentName:string) {
       let htmlArray = this.componentMap[componentName].htmlList;
       let styleString = "";
       console.log(componentName);
@@ -510,7 +512,7 @@ export default {
       }
     },
     createESLintRC(location) {
-      let str;
+      let str:string;
       if (this.exportAsTypescript === "on") {
         str += `require("@rushstack/eslint-patch/modern-module-resolution");\n\n`;
       }
@@ -548,14 +550,14 @@ export default {
     },
     createTSDeclaration(location) {
       if (this.exportAsTypescript === "on") {
-        let str = `/// <reference types="vite/client" />`;
+        let str:string = `/// <reference types="vite/client" />`;
         fs.writeFileSync(path.join(location, "env.d.ts"), str);
       } else {
         return;
       }
     },
     createStore(location) {
-      let str = `import { createStore } from 'vuex';\n`;
+      let str:string = `import { createStore } from 'vuex';\n`;
       str += `\nconst store = createStore({`;
       str += `\n\tstate () {`;
       str += `\n\t\treturn {`;
@@ -600,7 +602,7 @@ export default {
     },
     // create package.json file
     createPackage(location) {
-      let str = `{`;
+      let str:string = `{`;
       str += `\n\t"name": "My-OverVue-Project",`;
       str += `\n\t"version": "0.0.0",`;
       str += `\n\t"scripts": {`;
@@ -715,7 +717,7 @@ export default {
     "containerH"
     ]),
   },
-};
+});
 </script>
 
 <style scoped>

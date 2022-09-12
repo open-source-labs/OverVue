@@ -8,9 +8,13 @@ module.exports = {
     'vue/no-deprecated-slot-attribute': 'off',
   },
 
+  "parser": "vue-eslint-parser",
   parserOptions: {
     ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
-    parser: '@babel/eslint-parser',
+    parser: { //attempt to speed up runtime using TS when coding
+      "ts":'@typescript-eslint/parser',
+      "<template>": "espree"
+    },
     requireConfigFile: false,
     sourceType: 'module', // Allows for the use of imports
   },

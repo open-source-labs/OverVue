@@ -138,7 +138,7 @@ Description:
   </q-layout>
 </template>
 
-<script>
+<script lang="ts">
 // HomeSideDropDown contains RouteDisplay, VuexForm and Edit but we'll be separating these components across different tabs
 import RightSidebar from "../components/right-sidebar/RightSidebar.vue";
 import ExportMenu from "../components/nav-buttons/ExportMenu.vue";
@@ -149,19 +149,19 @@ import SlackLoginWindow from "../components/slack_login/SlackLoginWindow.vue";
 import ComponentTab from "../components/left-sidebar/ComponentTab/ComponentTab.vue";
 import StoreTab from "../components/left-sidebar/StoreTab/StoreTab.vue";
 import { mapState, mapActions } from "vuex";
+import { defineComponent } from "vue";
 
-
-export default {
+export default defineComponent({
   // Passed down from App.vue
   props: ["doneAction", "undoneAction", "undoTrigger", "redoTrigger"],
   data() {
     return {
-      tab: "component",
-      left: true,
-      right: true,
-      dashWidth: 950,
-      originalWidth: 400,
-      originalLeft: 400,
+      tab: "component" as string,
+      left: true as boolean,
+      right: true as boolean,
+      dashWidth: 950 as number,
+      originalWidth: 400 as number,
+      originalLeft: 400 as number,
       timer: null,
     };
   },
@@ -174,7 +174,7 @@ export default {
     ComponentTab,
     StoreTab,
     GridDensity
-},
+  },
   computed: {
     ...mapState(["exportAsTypescript"]),
   },
@@ -237,14 +237,8 @@ export default {
       this.$emit('redo')
     }
   },
-};
+});
 
-function check (a){
-  if(a === true){
-    return checked
-  }
-  return
-}
 </script>
 
 <style lang="scss">
@@ -261,10 +255,6 @@ function check (a){
 #nav-logo {
   margin-right: 95px;
 }
-
-// .text-white {
-//   color: $menutext;
-// }
 
 q-btn > i {
   color: $menutext;
@@ -285,7 +275,6 @@ q-btn > i {
   border: 1px solid rgba($primary, .5);
 }
 
-// Must change style lang='scss'
 .fa-undo,
 .fa-redo {
   padding: 0 5px;

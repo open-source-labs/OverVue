@@ -100,3 +100,12 @@ export type Component = {
     gridArea: [number, number, number, number],
   },
 };
+
+export type Icons = {
+  [type: string]: string | string[];
+};
+
+export type StyleClassMap = {
+  // insert here for style class map when implenting more
+
+};

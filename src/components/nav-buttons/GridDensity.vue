@@ -1,3 +1,8 @@
+<!--
+Description:
+  Displays Grid Density Buttons
+  Functionality includes: drop down menu for both height and width to increase or decrease grid lines by a set amount
+-->
 <template>
   <div id="gridDensity">
     <q-btn-dropdown class="q-btn" color="purple" label="Width">
