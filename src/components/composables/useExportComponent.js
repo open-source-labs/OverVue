@@ -1,4 +1,4 @@
-import htmlElementMap from 'src/store/state/htmlElementMap';
+import { openHtmlElementMap } from "src/store/state/htmlElementMap";
 export function useExportComponent() {
     // OVERVUE 6.0: export active component
     /**
@@ -36,6 +36,8 @@ export function useExportComponent() {
       }
 
       const writeTemplateTag = (componentName) => {
+        // create reference object
+
         // function to loop through nested elements
         const writeNested = (childrenArray, indent) => {
           if (!childrenArray.length) {
@@ -49,7 +51,7 @@ export function useExportComponent() {
             if (!child.text) {
               nestedString += `<${child}/>\n`;
             } else {
-              nestedString += htmlElementMap[child.text][0];
+              nestedString += openHtmlElementMap[child.text][0];
               if (child.class !== "") {
                 nestedString += " " + "class = " + `"${child.class}"`;
               }
@@ -63,10 +65,10 @@ export function useExportComponent() {
               if (child.children.length) {
                 nestedString += "\n";
                 nestedString += writeNested(child.children, indented);
-                nestedString += indented + htmlElementMap[child.text][1];
+                nestedString += indented + openHtmlElementMap[child.text][1];
                 nestedString += "\n";
               } else {
-                nestedString += htmlElementMap[child.text][1] + "\n";
+                nestedString += openHtmlElementMap[child.text][1] + "\n";
               }
             }
           });
@@ -81,7 +83,7 @@ export function useExportComponent() {
           outputStr += `    <${el}/>\n`;
         } else {
           outputStr += `    `;
-          outputStr += htmlElementMap[el.text][0]
+          outputStr += openHtmlElementMap[el.text][0]
           //if conditional to check class
           if (el.class !== "") {
             outputStr += " " + "class = " + `"${el.class}"`;
@@ -94,10 +96,10 @@ export function useExportComponent() {
             outputStr += "\n";
             outputStr += writeNested(el.children, `    `);
             outputStr += `    `;
-            outputStr += htmlElementMap[el.text][1];
+            outputStr += openHtmlElementMap[el.text][1];
             outputStr += `  \n`;
           } else {
-            outputStr += htmlElementMap[el.text][1] + "\n";
+            outputStr += openHtmlElementMap[el.text][1] + "\n";
           }
         }
       }

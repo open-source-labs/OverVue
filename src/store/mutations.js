@@ -779,10 +779,10 @@ const mutations = {
     if (updatedComponent.w === undefined) { updatedComponent.w = (2 * state.containerW / state.gridLayout[0]); }
     if (updatedComponent.h === undefined) { updatedComponent.h = (2 * state.containerH / state.gridLayout[1]); }
     // add one - CSS grid-area is one-indexed
-    const rowStart = 1 + Math.round(state.gridLayout[0] * updatedComponent.x / state.containerW) ;
-    const colStart = 1 + Math.round(state.gridLayout[1] * updatedComponent.y / state.containerH);
-    const rowEnd = 1 + Math.round(state.gridLayout[0] * (updatedComponent.x + updatedComponent.w) / state.containerW);
-    const colEnd = 1 + Math.round(state.gridLayout[1] * (updatedComponent.y + updatedComponent.h) / state.containerH);
+    const rowStart = 1 + Math.round(state.gridLayout[1] * updatedComponent.y / state.containerH);
+    const colStart = 1 + Math.round(state.gridLayout[0] * updatedComponent.x / state.containerW);
+    const rowEnd = 1 + Math.round(state.gridLayout[1] * (updatedComponent.y + updatedComponent.h) / state.containerH);
+    const colEnd = 1 + Math.round(state.gridLayout[0] * (updatedComponent.x + updatedComponent.w) / state.containerW);
     updatedComponent.htmlAttributes.gridArea = [rowStart, colStart, rowEnd, colEnd];
   },
 
@@ -1085,15 +1085,15 @@ const mutations = {
         if (updatedComponent.w === undefined) { updatedComponent.w = (2 * state.containerW / state.gridLayout[0]); }
         if (updatedComponent.h === undefined) { updatedComponent.h = (2 * state.containerH / state.gridLayout[1]); }
         // add one - CSS grid-area is one-indexed
-        const rowStart = 1 + Math.round(state.gridLayout[0] * updatedComponent.x / state.containerW) ;
-        const colStart = 1 + Math.round(state.gridLayout[1] * updatedComponent.y / state.containerH);
-        const rowEnd = 1 + Math.round(state.gridLayout[0] * (updatedComponent.x + updatedComponent.w) / state.containerW);
-        const colEnd = 1 + Math.round(state.gridLayout[1] * (updatedComponent.y + updatedComponent.h) / state.containerH);
+        const rowStart = 1 + Math.round(state.gridLayout[1] * updatedComponent.y / state.containerH);
+        const colStart = 1 + Math.round(state.gridLayout[0] * updatedComponent.x / state.containerW);
+        const rowEnd = 1 + Math.round(state.gridLayout[1] * (updatedComponent.y + updatedComponent.h) / state.containerH);
+        const colEnd = 1 + Math.round(state.gridLayout[0] * (updatedComponent.x + updatedComponent.w) / state.containerW);
         updatedComponent.htmlAttributes.gridArea = [rowStart, colStart, rowEnd, colEnd];
-        updatedComponent.x = (rowStart - 1) * state.containerW / state.gridLayout[0];
-        updatedComponent.y = (colStart - 1) * state.containerH / state.gridLayout[1];
-        updatedComponent.w = (rowEnd - 1) * state.containerW / state.gridLayout[0] - updatedComponent.x;
-        updatedComponent.h = (colEnd - 1) * state.containerH / state.gridLayout[1] - updatedComponent.y;
+        updatedComponent.x = (colStart - 1) * state.containerH / state.gridLayout[1];
+        updatedComponent.y = (rowStart - 1) * state.containerW / state.gridLayout[0];
+        updatedComponent.w = (colEnd - 1) * state.containerH / state.gridLayout[1] - updatedComponent.y;
+        updatedComponent.h = (rowEnd - 1) * state.containerW / state.gridLayout[0] - updatedComponent.x;
         // Math.round((rowEnd - 1) * state.containerW / state.gridLayout[0]) - updatedComponent.x
       }
     );
