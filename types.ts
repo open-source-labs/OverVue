@@ -1,5 +1,7 @@
 // file created to store all TS types in one file for project
 
+import { NoParamCallback } from "original-fs";
+
 // TS type for State (index.ts) in state folder
 export type State = {
   clicked: boolean,
@@ -42,8 +44,8 @@ export type State = {
   noteModalOpen: boolean,
   noteAttributeOpen: boolean,
   colorModalOpen: boolean,
-  parentSelected: boolean,
-  copiedComponent: {},
+  parentSelected: any, // need to look deeper into parentSelected - it seems to take many data types
+  copiedComponent: Component | {},
   copyNumber: number,
   pastedComponent: {},
   exportAsTypescript: 'off' | 'on',
@@ -76,6 +78,7 @@ export type RouteComponentMap = {
 
 // Type for generic component used in userCreateComponent.js
 export type Component = {
+  componentName: string;
   x: number,
   y: number,
   z: number,
