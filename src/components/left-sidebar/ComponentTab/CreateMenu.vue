@@ -7,9 +7,6 @@ Description:
 
 <template>
   <div class="create-component-div drawer-menu">
-
-
-
     <q-expansion-item group="accordion" label="Import Component">
       <!-- !THIS IS THE IMPORT COMPONENT TAB WE NEED TO WORK ON -->
       <ImportComponent v-if="activeComponent === ''" @imported="createComponent" title="Import Component (coming soon)" class="sidebar-btn" :disable = "true"/>
@@ -17,6 +14,34 @@ Description:
     <q-expansion-item group="accordion" label="Create Component" >
       <ImportLibraryButton></ImportLibraryButton>
       <LibComponents></LibComponents>
+<div class="searchinput">
+      <q-input v-if ="this.$store.state.displaylibComponent" outlined v-model="input" placeholder="Please input" label="Search Component"
+
+      color="white"
+          dark
+          dense
+          item-aligned
+          padding="5px"
+          class="input-add"
+          no-error-icon
+      />
+    </div>
+
+
+    <q-list bordered separator>
+      <q-item clickable v-ripple class="componentList"  v-for="(element,index) in filter" :key ="`${index}`"  @click="pickComponent(element.libname)">
+        <q-item-section style="font-size: large;">{{element.name}}</q-item-section>
+
+    <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
+          <img alt={{element.libname}}   :src="require(`../../../assets/${element.src}`)" id = {{element.libname}}>
+          <q-icon name="keyboard_arrow_right"/>
+
+        </q-tooltip>
+      </q-item>
+
+
+
+    </q-list>
 
       <form class="create-component-form" v-on:submit.prevent="createComponent">
         <!-- will render if creating new component -->
@@ -83,6 +108,79 @@ import LibComponents from "./LibComponents.vue";
 
 
 export default {
+  data(){
+    return {
+      input:'',
+      libArray:[
+        {
+          name:'alert',
+          libname:'e-alert',
+          src:'alert.png'
+        },
+        {name:'button',
+        libname:'e-button',
+         src:'button.png'
+      },
+      {
+        name:'inputbox',
+        libname:'e-input',
+        src:'inputbox.png'
+      },
+      {
+        name:'card',
+        libname:'e-card',
+        src:'card.png'
+      },
+      {
+          name:'badge',
+          libname:'e-badge',
+          src:'badge.png'
+        },
+        {
+          name:'dropdown',
+          libname:'e-dropdown',
+          src:'dropdown.png'
+        },
+        {
+          name:'link',
+          libname:'e-link',
+          src:'link.png'
+        },
+        {
+          name:'form',
+          libname:'e-form',
+          src:'form.png'
+        },
+        {
+          name:'checkbox',
+          libname:'e-checkbox',
+          src:'checkbox.png'
+        },
+        {
+          name:'checkbox button',
+          libname:'e-checkbox-button',
+          src:'checkboxbutton.png'
+        },
+        {
+          name:'datepicker',
+          libname:'e-date-picker',
+          src:'datepicker.png'
+        },
+        {
+          name:'slider',
+          libname:'e-slider',
+          src:'slider.png'
+        },
+        {
+          name:'tag',
+          libname:'e-tag',
+          src:'tag.png'
+        }
+
+      ]
+    }
+  },
+
   name: "CreateMenu",
   components: {
     Icons,
@@ -95,6 +193,7 @@ export default {
 
 },
   computed: {
+
     ...mapState([
       "componentMap",
       "selectedElementList",
@@ -104,6 +203,7 @@ export default {
       "userActions",
       "userState",
       "userProps",
+
     ]),
     componentNameInputValue: {
       get() {
@@ -113,6 +213,11 @@ export default {
         this.updateComponentNameInputValue(value);
       },
     },
+    filter(){
+  if(this.input =='') return [];
+  if(this.input.length >=2){
+  return this.libArray.filter(e=>e.name.includes(this.input.toLowerCase()))}
+  }
   },
   methods: {
     ...mapActions([
@@ -128,7 +233,23 @@ export default {
       "createAction",
       "createState",
       "createProp",
-    ]),
+'changeLibComponentDisplay',
+'addLibComponents'
+
+]),
+pickComponent(componentName){
+  const payload = {
+
+  };
+  payload[componentName] = ['fa-brands fa-elementor fa-xl']
+
+
+
+  this.addLibComponents(payload);
+
+}
+
+   ,
 
     createComponent() {
       useCreateComponent.bind(this)({}) //invokes composable
@@ -149,6 +270,7 @@ export default {
     justify-content: flex-start;
     align-items: stretch;
     margin: 4px;
+    margin-right: 10px;
   }
   .create-component-form {
     display: flex;
@@ -156,6 +278,7 @@ export default {
     justify-content: flex-start;
     align-items: stretch;
     padding: -20px;
+    margin-right: 10px;
   }
   .subsection {
     border-top: 1px solid rgba(245, 245, 245, 0.3);
@@ -181,5 +304,15 @@ export default {
   .q-expansion-item {
     margin-bottom: 10px;
   }
+
+
+  img{
+    max-height: 500px;
+    max-width: 600px;
+  }
+  .searchinput{
+    margin-right: 10px;
+  }
+
 
 </style>

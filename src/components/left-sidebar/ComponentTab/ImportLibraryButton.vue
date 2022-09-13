@@ -1,27 +1,7 @@
 
 <template>
   <div class="q-pa-md">
-    <q-btn-dropdown color="purple" label="Choose Library">
-      <q-list>
-        <q-item clickable v-close-popup @click="pickLibrary('element')">
-          <q-item-section>
-            <q-item-label>Element+</q-item-label>
-          </q-item-section>
-        </q-item>
-
-        <q-item clickable v-close-popup @click="pickLibrary('bootstrap')">
-          <q-item-section>
-            <q-item-label>Bootstrap</q-item-label>
-          </q-item-section>
-        </q-item>
-
-        <q-item clickable v-close-popup @click="pickLibrary('vuetify')">
-          <q-item-section>
-            <q-item-label>Vuetify</q-item-label>
-          </q-item-section>
-        </q-item>
-      </q-list>
-    </q-btn-dropdown>
+    <q-btn color="purple" label="Import element+" @click="pickLibrary('element')"/>
   </div>
 </template>
 

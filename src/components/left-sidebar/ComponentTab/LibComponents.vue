@@ -5,16 +5,49 @@
   v-if = "this.$store.state.displaylibComponent">
 
 
-    <q-btn-dropdown color="pink" label="Select Library Component" dropdown-icon="change_history">
-      <q-list>
+
+    <q-btn-dropdown  color="pink" label="Select Library Component" dropdown-icon="change_history">
+      <q-list class="dropButton">
+
+        <q-item clickable v-close-popup @click="pickComponent('e-alert')">
+          <q-item-section>
+  Alert
+  <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
+          <img alt="slider" src="../../../assets/alert.png" class="alert">
+          <q-icon name="keyboard_arrow_right"/>
+        </q-tooltip>
+          </q-item-section>
+        </q-item>
+
+
         <q-item clickable v-close-popup @click="pickComponent('e-button')">
           <q-item-section>
            button
           <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
-          <q-btn color="secondary" label="Secondary" />
+            <img alt="button" src="../../../assets/button.png" class="buttongroup">
           <q-icon name="keyboard_arrow_right"/>
         </q-tooltip>
       </q-item-section>
+        </q-item>
+
+        <q-item clickable v-close-popup @click="pickComponent('e-badge')">
+          <q-item-section>
+           Badge
+          <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
+            <img alt="badge" src="../../../assets/badge.png" class="badge">
+          <q-icon name="keyboard_arrow_right"/>
+        </q-tooltip>
+      </q-item-section>
+        </q-item>
+
+        <q-item clickable v-close-popup @click="pickComponent('e-dropdown')">
+          <q-item-section>
+  Dropdown
+  <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
+          <img alt="slider" src="../../../assets/dropdown.png" class="dropdown">
+          <q-icon name="keyboard_arrow_right"/>
+        </q-tooltip>
+          </q-item-section>
         </q-item>
 
         <q-item clickable v-close-popup @click="pickComponent('e-input')">
@@ -96,6 +129,18 @@
         </q-tooltip>
           </q-item-section>
         </q-item>
+        <q-item clickable v-close-popup @click="pickComponent('e-tag')">
+          <q-item-section>
+  Tag
+  <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
+          <img alt="tag" src="../../../assets/tag.png" class="tag">
+          <q-icon name="keyboard_arrow_right"/>
+        </q-tooltip>
+          </q-item-section>
+        </q-item>
+
+
+
 
       </q-list>
     </q-btn-dropdown>
@@ -128,7 +173,9 @@ import { mapState, mapActions } from "vuex";
       const payload = {
 
       };
-      payload[componentName] = ['fas fa-toggle-on fa-lg']
+      payload[componentName] = ['fa-brands fa-elementor fa-xl']
+
+
 
       this.addLibComponents(payload);
 
@@ -177,8 +224,23 @@ import { mapState, mapActions } from "vuex";
   width: 300px;
 }
 
+.badge{
+  width: 500px;
+}
+
+.alert{
+  width: 600px;
+}
 
 .slider{
+  width: 600px;
+}
+.dropButton{
+
+  overflow-y: scroll;
+  height: 300px;
+}
+.buttongroup{
   width: 600px;
 }
 </style>

@@ -90,7 +90,7 @@ export default {
           // HomeView route is initialized to "localhost:3000/" url
           if (view === "HomeView") {
             str += `\n\t\t{\n\t\t\tpath: '/',\n\t\t\tname:'${view}',\n\t\t\tcomponent:${view}\n\t\t},\n`;
-          } 
+          }
           // All other routes are initialized to "localhost:3000/<view Name>"
           else {
             str += `\n\t\t{\n\t\t\tpath: '/${view}',\n\t\t\tname:'${view}',\n\t\t\tcomponent:${view}\n\t\t},\n`;
@@ -150,15 +150,58 @@ export default {
         h4: ["<h4", "</h4>"],
         h5: ["<h5", "</h5>"],
         h6: ["<h6", "</h6>"],
-        'e-button':["<el-button", "</el-button>"],
-        'e-input':["<el-input", "</el-input>"],
-        'e-link':["<el-link", "</el-link>"],
-        'e-form': ["<el-form", "</el-form>"],
-        'e-checkbox': ["<el-checkbox", "</el-checkbox>"],
-        'e-checkbox-button': ["<el-checkbox-button", "</el-checkbox-button>"],
-        'e-date-picker': ["<el-date-picker", "</el-date-picker>"],
-        'e-slider':["<el-slider", "</el-slider>"],
-        'e-card': ["<el-card", "</el-card>"],
+        'e-button':[`<el-button type="info"`,`</el-button>`],
+          'e-input':["<el-input", "</el-input>"],
+          'e-link': [`<el-link type="primary">primary</el-link>
+          <el-link type="success">success</el-link>
+          <el-link type="info">info</el-link>
+          <el-link type="warning">warning</el-link>
+          <el-link type="danger"`, `danger</el-link>`],
+          'e-form': ["<el-form", "</el-form>"],
+          'e-checkbox': ["<el-checkbox", "</el-checkbox>"],
+          'e-checkbox-button': ["<el-checkbox-button", "</el-checkbox-button>"],
+          'e-date-picker': ["<el-date-picker", "</el-date-picker>"],
+          'e-slider':["<el-slider", "</el-slider>"],
+          'e-card': ["<el-card", "</el-card>"],
+          'e-alert': [`<el-alert title="success alert" type="success"></el-alert>
+          <el-alert title="info alert" type="info"></el-alert>
+          <el-alert title="warning alert" type="warning"></el-alert>
+          <el-alert title="danger alert" type="danger"`, `</el-alert>`],
+          'e-dropdown': [ `<el-dropdown split-button type="primary" @click="handleClick">
+          Dropdown List
+          <template #dropdown>
+           <el-dropdown-menu>
+            <el-dropdown-item>
+            Action 1
+          </el-dropdown-item>
+          <el-dropdown-item>
+          Action 2
+        </el-dropdown-item>
+          </el-dropdown-menu>
+          </template`, `
+          </el-dropdown>`],
+          'e-tag': [`<el-tag>Tag 1</el-tag>
+     <el-tag class="ml-2" type="success">Tag 2</el-tag>
+     <el-tag class="ml-2" type="info">Tag 3</el-tag>
+     <el-tag class="ml-2" type="warning">Tag 4</el-tag>
+     <el-tag class="ml-2" type="danger"`, `Tag 5</el-tag>`],
+
+     'e-badge': [`<el-badge :value="12" class="item">
+     <el-button>comments</el-button>
+   </el-badge>
+   <el-badge :value="3" class="item">
+     <el-button>replies</el-button>
+   </el-badge>
+   <el-badge :value="1" class="item" type="primary">
+     <el-button>comments</el-button>
+   </el-badge>
+   <el-badge :value="2" class="item" type="warning">
+     <el-button>replies</el-button`,
+     `
+     </el-badge>`],
+
+
+
       };
       // function to loop through nested elements
       function writeNested(childrenArray, indent) {
@@ -247,7 +290,7 @@ export default {
     writeTemplate(componentName, children, routes) {
       let str = "";
       let routeStr = "";
-      
+
       if (componentName === "App") {
         str += `<div id="app">\n\t\t<div id="nav">\n`;
         for(let route in routes) {
@@ -257,7 +300,7 @@ export default {
             str += `\t\t\t<router-link to="/${route}" class = "componentLinks">${route}</router-link>\n`;
           }}
           str += `\t\t</div>\n\t\t<router-view class = "router-view"></router-view>\n`;
-        } 
+        }
         else {
           // Adds component name as class for all routes
           str += `<div id = '${componentName}'>\n`;
@@ -284,17 +327,17 @@ export default {
 
         if (compClass !== "" && compID !== "") {
           return `<template>\n  <div id = "${compID}" class = "${compClass}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
-        } 
+        }
         else if (compClass !== "" && compID === "") {
           return `<template>\n  <div class = "${compClass}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
-        } 
+        }
         else if (compClass === "" && compID !== "") {
           return `<template>\n  <div id = "${compID}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
         }
         else {
           return `<template>\n  <div>\n\t${str}${templateTagStr}${routeStr}  </div>\n</template>`;
         }
-      } 
+      }
       else {
         console.log('Test log if route')
         return `<template>\n\t${str}${templateTagStr}${routeStr}</div>\n</template>`
@@ -309,13 +352,13 @@ export default {
       const routes = Object.keys(this.routes);
 
       // Writes script boilerplate for non-route components
-      if (!routes.includes(componentName)) { 
+      if (!routes.includes(componentName)) {
         let imports = "";
         if (currentComponent.actions.length || currentComponent.state.length) {
           imports += "import { ";
           if (currentComponent.actions.length && currentComponent.state.length) {
             imports += "mapState, mapActions";
-          } 
+          }
           else if (currentComponent.state.length) {
             imports += "mapState";
           }
@@ -392,7 +435,7 @@ export default {
           output += "};\n<\/script>";
         }
         return output;
-      } 
+      }
       // Write script for route components.
       else {
         let str = "";
@@ -450,7 +493,7 @@ export default {
 }\n`
         });
       };
-  
+
     // Add default styling to App
     if (componentName === "App") {
       return `\n\n<style scoped>\n#nav {
@@ -493,6 +536,22 @@ export default {
       str += `\n</body>\n\n`;
       str += `</html>\n`;
       fs.writeFileSync(path.join(location, "index.html"), str);
+    },
+    createFirebaseConfigFile(location) {
+      let str = `import { initializeApp } from 'firebase/app';`;
+      str += `\n\tconst firebaseConfig = {`;
+      str += `\n\tapiKey: "AIzaSyBR4o9xj4LtDaZ37-mC-FqRQWaz67_9Fq0",`;
+      str += `\n\tauthDomain: "oauth-74279.firebaseapp.com",`;
+      str += `\n\tprojectId: "oauth-74279",`;
+      str += `\n\tstorageBucket: "oauth-74279.appspot.com",`;
+      str += `\n\tmessagingSenderId: "91801023441",`;
+      str += `\n\tappId: "1:91801023441:web:4d923f26f5ce9c7384e6f0",`;
+      str += `\n\tmeasurementId: "G-ZZQMS6RRWR"`;
+      str += `\n};`;
+      str += `\nconst firebaseApp = initializeApp(firebaseConfig);`;
+      str += `\nexport default firebaseApp`;
+
+      fs.writeFileSync(path.join(location, "firebaseConfig.js"), str);
     },
     // creates main.js boilerplate
     createMainFile(location) {
@@ -654,6 +713,9 @@ export default {
       if(this.$store.state.importLibraries.includes('element')){
         str += `,\n\t\t"element-plus": "^2.2.16"`;
       };
+      if(this.$store.state.exportOauth ==='on'){
+        str += `,\n\t\t "firebase": "^9.6.9"`
+      }
       str += `\n\t},`;
       str += `\n\t"devDependencies": {`;
       str += `\n\t\t"@vitejs/plugin-vue": "^2.2.2",`;
@@ -693,6 +755,7 @@ export default {
       this.createTSDeclaration(data);
       this.createPackage(data);
       this.createStore(data);
+      this.createFirebaseConfigFile(data)
       // exports images to the /assets folder
       // eslint-disable-next-line no-unused-vars
       for (let [routeImage, imageLocation] of Object.entries(this.imagePath)) {
@@ -735,15 +798,15 @@ export default {
     },
   },
   computed: {
-    ...mapState(["componentMap", 
-    "imagePath", 
-    "routes", 
-    "exportAsTypescript", 
-    "activeComponent", 
-    "userState", 
-    "userActions", 
-    "gridLayout", 
-    "containerW", 
+    ...mapState(["componentMap",
+    "imagePath",
+    "routes",
+    "exportAsTypescript",
+    "activeComponent",
+    "userState",
+    "userActions",
+    "gridLayout",
+    "containerW",
     "containerH"
     ]),
   },
