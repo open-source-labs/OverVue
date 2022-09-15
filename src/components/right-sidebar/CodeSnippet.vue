@@ -27,6 +27,8 @@ import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism-tomorrow.css"; // import syntax highlighting styles
 
+import writeNested from "../../mixins/writeNested";
+
 export default {
   data() {
     return {
@@ -39,10 +41,11 @@ export default {
     PrismEditor,
   },
   computed: {
-    //add 
+    //add
     // needs access to current component aka activeComponent
     ...mapState(["componentMap", "activeComponent", "activeComponentObj", "exportAsTypescript"]),
   },
+  mixins: [writeNested],
   methods: {
     snippetInvoke() {
       if (this.activeComponent !== '') {
@@ -107,6 +110,58 @@ export default {
         h4: ["<h4", "</h4>"],
         h5: ["<h5", "</h5>"],
         h6: ["<h6", "</h6>"],
+        'e-button':[`<el-button type="info"`,`</el-button>`],
+          'e-input':["<el-input", "</el-input>"],
+          'e-link': [`<el-link type="primary">primary</el-link>
+          <el-link type="success">success</el-link>
+          <el-link type="info">info</el-link>
+          <el-link type="warning">warning</el-link>
+          <el-link type="danger"`, `danger</el-link>`],
+          'e-form': ["<el-form", "</el-form>"],
+          'e-checkbox': ["<el-checkbox", "</el-checkbox>"],
+          'e-checkbox-button': ["<el-checkbox-button", "</el-checkbox-button>"],
+          'e-date-picker': ["<el-date-picker", "</el-date-picker>"],
+          'e-slider':["<el-slider", "</el-slider>"],
+          'e-card': ["<el-card", "</el-card>"],
+          'e-alert': [`<el-alert title="success alert" type="success"></el-alert>
+          <el-alert title="info alert" type="info"></el-alert>
+          <el-alert title="warning alert" type="warning"></el-alert>
+          <el-alert title="danger alert" type="danger"`, `</el-alert>`],
+          'e-dropdown': [ `<el-dropdown split-button type="primary" @click="handleClick">
+          Dropdown List
+          <template #dropdown>
+           <el-dropdown-menu>
+            <el-dropdown-item>
+            Action 1
+          </el-dropdown-item>
+          <el-dropdown-item>
+          Action 2
+        </el-dropdown-item>
+          </el-dropdown-menu>
+          </template`, `
+          </el-dropdown>`],
+          'e-tag': [`<el-tag>Tag 1</el-tag>
+     <el-tag class="ml-2" type="success">Tag 2</el-tag>
+     <el-tag class="ml-2" type="info">Tag 3</el-tag>
+     <el-tag class="ml-2" type="warning">Tag 4</el-tag>
+     <el-tag class="ml-2" type="danger"`, `Tag 5</el-tag>`],
+
+     'e-badge': [`<el-badge :value="12" class="item">
+     <el-button>comments</el-button>
+   </el-badge>
+   <el-badge :value="3" class="item">
+     <el-button>replies</el-button>
+   </el-badge>
+   <el-badge :value="1" class="item" type="primary">
+     <el-button>comments</el-button>
+   </el-badge>
+   <el-badge :value="2" class="item" type="warning">
+     <el-button>replies</el-button`,
+     `
+     </el-badge>`],
+
+
+
       };
 
       // Helper function that recursively iterates through the given html element's children and their children's children.
@@ -116,48 +171,10 @@ export default {
       childComponents.forEach(child => {
         htmlElementMap[child]=[`<${child}`, ""] //single
       })
-      function writeNested(childrenArray, indent) {
-        if (!childrenArray.length) {
-          return "";
-        }
-        let indented = indent + "  ";
-        let nestedString = "";
-
-        childrenArray.forEach((child) => {
-          nestedString += indented;
-          if (!child.text) {
-            nestedString += `<${child}/>\n`;
-          } else {
-            nestedString += htmlElementMap[child.text][0];
-            if (child.class !== "") {
-              nestedString += " " + "class=" + `"${child.class}"`;
-            }
-            if (child.binding !== "") {
-              if (child.text !== 'img' || child.text !== 'link') {
-                nestedString += ` v-model="${child.binding}"`
-
-              }
-            }
-            if (child.text === "img" || child.text === "input" || child.text === "link" || childComponents.includes(child.text)) {
-              nestedString += "/>";
-            } else { nestedString += ">"; }
-
-            if (child.children.length) {
-              nestedString += "\n";
-              nestedString += writeNested(child.children, indented);
-              nestedString += indented + htmlElementMap[child.text][1];
-              nestedString += "\n"
-            } else {
-              nestedString += htmlElementMap[child.text][1] + "\n";
-            }
-          }
-        });
-        return nestedString;
-      }
 
       // Iterates through active component's HTML elements list and adds to code snippet
       let htmlArr = this.componentMap[componentName].htmlList;
-      let outputStr = ``
+      let outputStr = ``;
       // eslint-disable-next-line no-unused-vars
       for (let el of htmlArr) {
         if (!el.text) {
@@ -169,7 +186,7 @@ export default {
           if (el.class !== "") {
             outputStr += " " + "class=" + `"${el.class}"`;
           }
-          
+
           if (el.binding !== "") {
             outputStr += ` v-model="${el.binding}"`
           }
@@ -286,8 +303,7 @@ export default {
 
       if (this.activeComponentObj.htmlAttributes.class !== "") {
         styleString += `.${this.activeComponentObj.htmlAttributes.class} { \n background-color: ${this.activeComponentObj.color};
- width: ${this.activeComponentObj.w} px;
- height: ${this.activeComponentObj.h} px;
+ grid-area: ${this.activeComponentObj.htmlAttributes.gridArea[0]} / ${this.activeComponentObj.htmlAttributes.gridArea[1]} / ${this.activeComponentObj.htmlAttributes.gridArea[2]} / ${this.activeComponentObj.htmlAttributes.gridArea[3]};
  z-index: ${this.activeComponentObj.z};
 } \n`
       }

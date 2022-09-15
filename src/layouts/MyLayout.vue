@@ -36,17 +36,18 @@ Description:
         ></i>
         <i v-else class="fa fa-redo unavailable" aria-hidden="true"></i>
         </q-btn>
+        <GridDensity />
       </div></q-toolbar-title>
         <div></div>
-        
+
         <SaveProject />
         <ImportMenu />
         <ExportMenu />
-        
+
         <q-btn class="nav-btn" icon="fas fa-cog" unelevated size="sm">
-        
+
           <q-menu :offset="[0, 15]" class="dropdown">
-            
+
           <div class="column items-center">
             <q-btn
               class="tut-btn"
@@ -55,15 +56,24 @@ Description:
               no-caps
               @click="this.toggleTutorial"
             />
-           
+
         <SlackLoginWindow />
             <div class="typescript">
-              <p class="typescript-text"> <b>TypeScript: </b> </p> 
+              <p class="typescript-text"> <b>TypeScript: </b> </p>
               <label for="typescript"  class="switch" >
               <input v-if="this.exportAsTypescript === 'on'" class="switch-input" type="checkbox" name="typescript" id="typescript" :value="this.exportAsTypescript" @change="syncTypescriptFlag" checked/>
-              <input v-else class="switch-input" type="checkbox" name="typescript" id="typescript" :value="this.exportAsTypescript" @change="syncTypescriptFlag"/>  
-                <span class="switch-label" :value="this.exportAsTypescript" data-on="on" data-off="off"></span> 
-                <span class="switch-handle" :value="this.exportAsTypescript"></span> 
+              <input v-else class="switch-input" type="checkbox" name="typescript" id="typescript" :value="this.exportAsTypescript" @change="syncTypescriptFlag"/>
+                <span class="switch-label" :value="this.exportAsTypescript" data-on="on" data-off="off"></span>
+                <span class="switch-handle" :value="this.exportAsTypescript"></span>
+              </label>
+             </div>
+             <div class="Oauth">
+             <p class="Oauth-text"> <b>Oauth: </b> </p>
+              <label for="Oauth"  class="switch" >
+              <input v-if="this.exportOauth === 'on'" class="switch-input" type="checkbox" name="Oauth" id="Oauth" :value="this.exportOauth" @change="syncOauthFlag" checked/>
+              <input v-else class="switch-input" type="checkbox" name="Oauth" id="Oauth" :value="this.exportOauth" @change="syncOauthFlag"/>
+                <span class="switch-label" :value="this.exportOauth" data-on="on" data-off="off"></span>
+                <span class="switch-handle" :value="this.exportOauth"></span>
               </label>
              </div>
           </div>
@@ -143,12 +153,21 @@ import RightSidebar from "../components/right-sidebar/RightSidebar.vue";
 import ExportMenu from "../components/nav-buttons/ExportMenu.vue";
 import SaveProject from "../components/nav-buttons/SaveProject.vue";
 import ImportMenu from "../components/nav-buttons/ImportMenu.vue";
+import GridDensity from "../components/nav-buttons/GridDensity.vue";
 import SlackLoginWindow from "../components/slack_login/SlackLoginWindow.vue";
 import ComponentTab from "../components/left-sidebar/ComponentTab/ComponentTab.vue";
 import StoreTab from "../components/left-sidebar/StoreTab/StoreTab.vue";
 import { mapState, mapActions } from "vuex";
 
+import { ref } from 'vue'
+
+
 export default {
+  setup () {
+    return {
+      OauthVal: ref(true)
+    }
+  },
   // Passed down from App.vue
   props: ["doneAction", "undoneAction", "undoTrigger", "redoTrigger"],
   data() {
@@ -170,9 +189,10 @@ export default {
     SlackLoginWindow,
     ComponentTab,
     StoreTab,
-},
+    GridDensity
+  },
   computed: {
-    ...mapState(["exportAsTypescript"]),
+    ...mapState(["exportAsTypescript","exportOauth"]),
   },
   methods: {
     ...mapActions(["toggleTutorial"]),
@@ -218,6 +238,7 @@ export default {
       }
     },
     syncTypescriptFlag(e) {
+
       let checkboxValue;
       if (e.target.value === "off") {
         checkboxValue = "on";
@@ -226,6 +247,17 @@ export default {
       }
       this.$store.commit("EXPORT_AS_TYPESCRIPT", checkboxValue);
     },
+    syncOauthFlag(e) {
+       console.log(this.$store.state.exportOauth);
+      let checkboxValue;
+      if (e.target.value === "off") {
+        checkboxValue = "on";
+      } else {
+        checkboxValue = "off";
+      }
+      this.$store.commit("EXPORT_OAUTH", checkboxValue);
+
+    },
     clickedUndo() {
       this.$emit('undo');
     },
@@ -233,14 +265,10 @@ export default {
       this.$emit('redo')
     }
   },
+
+
 };
 
-function check (a){
-  if(a === true){
-    return checked
-  }
-  return
-}
 </script>
 
 <style lang="scss">
@@ -257,10 +285,6 @@ function check (a){
 #nav-logo {
   margin-right: 95px;
 }
-
-// .text-white {
-//   color: $menutext;
-// }
 
 q-btn > i {
   color: $menutext;
@@ -281,7 +305,6 @@ q-btn > i {
   border: 1px solid rgba($primary, .5);
 }
 
-// Must change style lang='scss'
 .fa-undo,
 .fa-redo {
   padding: 0 5px;
@@ -526,7 +549,7 @@ q-btn > i {
 	left: 40px;
 	box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
 }
- 
+
 /* Transition
 ========================== */
 .switch-label, .switch-handle {
@@ -545,5 +568,13 @@ q-btn > i {
 .typescript-text{
   margin-right: 10px;
 }
-
+.Oauth{
+  display: flex;
+  align-items: flex-end;
+  margin: 10px;
+  flex-direction: row;
+}
+.Oauth-text{
+  margin-right: 10px;
+}
 </style>
