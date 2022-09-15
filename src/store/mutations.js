@@ -110,6 +110,10 @@ const mutations = {
   [types.EXPORT_AS_TYPESCRIPT]: (state, payload) => {
     state.exportAsTypescript = payload;
   },
+  [types.EXPORT_OAUTH]: (state, payload) => {
+    state.exportOauth = payload;
+  },
+
 
   [types.CREATE_ACTION]: (state, payload) => {
     state.userActions.push(payload);
