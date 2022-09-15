@@ -206,7 +206,8 @@
 <li>Exported project template code now more accurately reflects component placement in app</li>
 <li>Improved canvas drag and deselect</li>
 <li>Improved WSL developer installation instructions</li>
-<li>Added TypeScipt to application files</li>
+<li>Added TypeScipt to application</li>
+<li>Implemented component search bar feature</li>
 <br>
 <h4><strong>Bug Fixes</strong></h4>
 <li>Fixed routing components in project exports </li>
@@ -214,6 +215,8 @@
 <li>Fixed import statements of route child components</li>
 <li>Fixed edge case HTML element bugs in project exports </li>
 <li>Fixed in app component movement bugs which caused position to not update correctly </li>
+<li>Fixed drag and drop HTML element on click bug</li>
+<li>Eliminated code redundancy by implementing mixins</li>
 </ul>
 </details>
 <br/>
