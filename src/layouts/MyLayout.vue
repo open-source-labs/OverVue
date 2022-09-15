@@ -245,7 +245,7 @@ export default {
       this.$store.commit("EXPORT_AS_TYPESCRIPT", checkboxValue);
     },
     syncOauthFlag(e) {
-
+       console.log(this.$store.state.exportOauth);
       let checkboxValue;
       if (e.target.value === "off") {
         checkboxValue = "on";
@@ -253,7 +253,7 @@ export default {
         checkboxValue = "off";
       }
       this.$store.commit("EXPORT_OAUTH", checkboxValue);
-      console.log(this.exportOauth);
+
     },
     clickedUndo() {
       this.$emit('undo');

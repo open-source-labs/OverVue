@@ -17,7 +17,6 @@ Description:
 
   </q-btn>
 </template>
-
 <script>
 import { useExportComponent } from "../composables/useExportComponent.js";
 import { mapState } from "vuex";
@@ -199,9 +198,6 @@ export default {
      <el-button>replies</el-button`,
      `
      </el-badge>`],
-
-
-
       };
       // function to loop through nested elements
       function writeNested(childrenArray, indent) {
@@ -299,7 +295,6 @@ export default {
           } else {
             str += `\t\t\t<router-link to="/${route}" class = "componentLinks">${route}</router-link>\n`;
           }}
-          str += `\t\t</div>\n\t\t<router-view class = "router-view"></router-view>\n`;
         }
         else {
           // Adds component name as class for all routes
@@ -755,7 +750,7 @@ export default {
       this.createTSDeclaration(data);
       this.createPackage(data);
       this.createStore(data);
-      this.createFirebaseConfigFile(data)
+      this.createFirebaseConfigFile(data);
       // exports images to the /assets folder
       // eslint-disable-next-line no-unused-vars
       for (let [routeImage, imageLocation] of Object.entries(this.imagePath)) {
