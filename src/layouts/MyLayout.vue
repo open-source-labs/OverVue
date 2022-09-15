@@ -67,6 +67,15 @@ Description:
                 <span class="switch-handle" :value="this.exportAsTypescript"></span>
               </label>
              </div>
+             <div class="Oauth">
+             <p class="Oauth-text"> <b>Oauth: </b> </p>
+              <label for="Oauth"  class="switch" >
+              <input v-if="this.exportOauth === 'on'" class="switch-input" type="checkbox" name="Oauth" id="Oauth" :value="this.exportOauth" @change="syncOauthFlag" checked/>
+              <input v-else class="switch-input" type="checkbox" name="Oauth" id="Oauth" :value="this.exportOauth" @change="syncOauthFlag"/>
+                <span class="switch-label" :value="this.exportOauth" data-on="on" data-off="off"></span>
+                <span class="switch-handle" :value="this.exportOauth"></span>
+              </label>
+             </div>
           </div>
           <i id="btn"></i>
           </q-menu >
@@ -150,7 +159,15 @@ import ComponentTab from "../components/left-sidebar/ComponentTab/ComponentTab.v
 import StoreTab from "../components/left-sidebar/StoreTab/StoreTab.vue";
 import { mapState, mapActions } from "vuex";
 
+import { ref } from 'vue'
+
+
 export default {
+  setup () {
+    return {
+      OauthVal: ref(true)
+    }
+  },
   // Passed down from App.vue
   props: ["doneAction", "undoneAction", "undoTrigger", "redoTrigger"],
   data() {
@@ -175,7 +192,7 @@ export default {
     GridDensity
   },
   computed: {
-    ...mapState(["exportAsTypescript"]),
+    ...mapState(["exportAsTypescript","exportOauth"]),
   },
   methods: {
     ...mapActions(["toggleTutorial"]),
@@ -221,6 +238,7 @@ export default {
       }
     },
     syncTypescriptFlag(e) {
+
       let checkboxValue;
       if (e.target.value === "off") {
         checkboxValue = "on";
@@ -229,6 +247,17 @@ export default {
       }
       this.$store.commit("EXPORT_AS_TYPESCRIPT", checkboxValue);
     },
+    syncOauthFlag(e) {
+       console.log(this.$store.state.exportOauth);
+      let checkboxValue;
+      if (e.target.value === "off") {
+        checkboxValue = "on";
+      } else {
+        checkboxValue = "off";
+      }
+      this.$store.commit("EXPORT_OAUTH", checkboxValue);
+
+    },
     clickedUndo() {
       this.$emit('undo');
     },
@@ -236,6 +265,8 @@ export default {
       this.$emit('redo')
     }
   },
+
+
 };
 
 </script>
@@ -537,5 +568,13 @@ q-btn > i {
 .typescript-text{
   margin-right: 10px;
 }
-
+.Oauth{
+  display: flex;
+  align-items: flex-end;
+  margin: 10px;
+  flex-direction: row;
+}
+.Oauth-text{
+  margin-right: 10px;
+}
 </style>

@@ -63,6 +63,7 @@ const newState :types.State = {
   copyNumber: 0,
   pastedComponent: {},
   exportAsTypescript: 'off',
+  exportOauth: 'off',
   showTutorial: true,
   tutorialFirstOpen: true,
   pasteTimer: 0,

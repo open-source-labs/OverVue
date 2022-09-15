@@ -57,6 +57,7 @@ export type State = {
   containerW: number,
   importLibraries: string[],
   displaylibComponent: boolean,
+  exportOauth: 'off' | 'on',
 };
 
 // Type for HTML Element Map that used in multiple files
