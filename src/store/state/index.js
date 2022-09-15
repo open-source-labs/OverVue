@@ -66,6 +66,7 @@ const newState = {
   copyNumber: 0,
   pastedComponent: {},
   exportAsTypescript: 'off',
+  exportOauth: 'off',
   showTutorial: true,
   tutorialFirstOpen: true,
   pasteTimer: 0,
