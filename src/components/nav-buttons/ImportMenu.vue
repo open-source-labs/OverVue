@@ -17,14 +17,13 @@ Description:
   </q-btn>
 </template>
 
-<script lang="ts">
+<script>
 import { mapActions } from "vuex";
 import ImportComponent from "../left-sidebar/ComponentTab/ImportComponent.vue"
 const Mousetrap = require("mousetrap");
 const { fs, ipcRenderer } = window;
-import { defineComponent } from "vue";
 
-export default defineComponent({
+export default {
   name: "ImportMenu",
   components: {
     ImportComponent
@@ -32,7 +31,7 @@ export default defineComponent({
   methods: {
     ...mapActions(["openProject"]),
     // opens project
-    openJSONFile(data:string) {
+    openJSONFile(data) {
       if (data === undefined) return;
       const jsonFile = JSON.parse(fs.readFileSync(data[0], "utf8"));
       this.openProject(jsonFile);
@@ -48,8 +47,8 @@ export default defineComponent({
             },
           ],
         })
-        .then((res:any) => this.openJSONFile(res.filePaths))
-        .catch((err:string) => console.log(err));
+        .then((res) => this.openJSONFile(res.filePaths))
+        .catch((err) => console.log(err));
     },
 
     openProjectJSON() {
@@ -62,7 +61,7 @@ export default defineComponent({
       this.openProjectJSON();
     });
   },
-});
+};
 </script>
 
 <style scoped>
