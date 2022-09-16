@@ -33,9 +33,6 @@ export function useCreateComponent(importObj) {
       x: 0,
       y: 0,
       z: 0,
-      // !Chris: disabling this temporarily to see if we can have create component dynamically fit into grid- less snapping bugs
-      // w: newState.containerW / newState.gridLayout[0] ,
-      // h: newState.containerH / newState.gridLayout[1] ,
       htmlList: this.selectedElementList,
       noteList: [],
       children: [],

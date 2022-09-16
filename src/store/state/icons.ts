@@ -1,4 +1,5 @@
-const icons = {
+import { Icons } from "types"
+const icons: Icons = {
   div: 'far fa-square fa-lg',
   button: 'fas fa-toggle-off fa-lg',
   form: 'fab fa-wpforms fa-lg',
@@ -20,7 +21,6 @@ const icons = {
   h5:['fa-regular fa-5'],
   h6:['fa-regular fa-6'],
   // element:['fas fa-toggle-on fa-lg']
-}
+};
 
-
-export default icons
+export default icons;

@@ -17,7 +17,7 @@ module.exports = configure(function (ctx) {
 
   return {
     // https://quasar.dev/quasar-cli/supporting-ts
-    supportTS: false,
+    supportTS: true,
 
     // https://quasar.dev/quasar-cli/prefetch-feature
     // preFetch: true,
@@ -168,8 +168,8 @@ module.exports = configure(function (ctx) {
       },
 
       manifest: {
-        name: `OverVue7.0`,
-        short_name: `OverVue7.0`,
+        name: `OverVue8.0`,
+        short_name: `OverVue8.0`,
         description: `A Quasar Framework app`,
         display: "standalone",
         orientation: "portrait",

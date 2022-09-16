@@ -67,8 +67,13 @@ Description:
                 <span class="switch-handle" :value="this.exportAsTypescript"></span>
               </label>
              </div>
+             <div class="drawer">
+             <q-expansion-item group="accordion" label="Create Oauth" >
              <div class="Oauth">
-             <p class="Oauth-text"> <b>Oauth: </b> </p>
+             <p class="Oauth-text"> <b>
+             <img src="../assets/google.svg" alt="" id="google">
+
+             </b> </p>
               <label for="Oauth"  class="switch" >
               <input v-if="this.exportOauth === 'on'" class="switch-input" type="checkbox" name="Oauth" id="Oauth" :value="this.exportOauth" @change="syncOauthFlag" checked/>
               <input v-else class="switch-input" type="checkbox" name="Oauth" id="Oauth" :value="this.exportOauth" @change="syncOauthFlag"/>
@@ -76,6 +81,21 @@ Description:
                 <span class="switch-handle" :value="this.exportOauth"></span>
               </label>
              </div>
+
+             <div class="Oauth">
+             <p class="Oauth-text"> <b>
+             <img src="../assets/github.png" alt="" id="github">
+
+             </b> </p>
+              <label for="OauthGit"  class="switch" >
+              <input v-if="this.exportOauthGithub === 'on'" class="switch-input" type="checkbox" name="OauthGit" id="OauthGit" :value="this.exportOauthGithub" @change="syncOauthGitFlag" checked/>
+              <input v-else class="switch-input" type="checkbox" name="OauthGit" id="OauthGit" :value="this.exportOauthGithub" @change="syncOauthGitFlag"/>
+                <span class="switch-label" :value="this.exportOauthGithub" data-on="on" data-off="off"></span>
+                <span class="switch-handle" :value="this.exportOauthGithub"></span>
+              </label>
+             </div>
+             </q-expansion-item>
+            </div>
           </div>
           <i id="btn"></i>
           </q-menu >
@@ -147,7 +167,7 @@ Description:
   </q-layout>
 </template>
 
-<script>
+<script >
 // HomeSideDropDown contains RouteDisplay, VuexForm and Edit but we'll be separating these components across different tabs
 import RightSidebar from "../components/right-sidebar/RightSidebar.vue";
 import ExportMenu from "../components/nav-buttons/ExportMenu.vue";
@@ -172,12 +192,12 @@ export default {
   props: ["doneAction", "undoneAction", "undoTrigger", "redoTrigger"],
   data() {
     return {
-      tab: "component",
-      left: true,
+      tab: "component" ,
+      left: true ,
       right: true,
-      dashWidth: 950,
-      originalWidth: 400,
-      originalLeft: 400,
+      dashWidth: 950 ,
+      originalWidth: 400 ,
+      originalLeft: 400 ,
       timer: null,
     };
   },
@@ -190,9 +210,9 @@ export default {
     ComponentTab,
     StoreTab,
     GridDensity
-},
+  },
   computed: {
-    ...mapState(["exportAsTypescript","exportOauth"]),
+    ...mapState(["exportAsTypescript","exportOauth","exportOauthGithub"]),
   },
   methods: {
     ...mapActions(["toggleTutorial"]),
@@ -248,7 +268,7 @@ export default {
       this.$store.commit("EXPORT_AS_TYPESCRIPT", checkboxValue);
     },
     syncOauthFlag(e) {
-       console.log(this.$store.state.exportOauth);
+
       let checkboxValue;
       if (e.target.value === "off") {
         checkboxValue = "on";
@@ -258,6 +278,19 @@ export default {
       this.$store.commit("EXPORT_OAUTH", checkboxValue);
 
     },
+    syncOauthGitFlag(e) {
+      console.log(this.$store.state.exportOauthGithub);
+
+       let checkboxValue;
+       if (e.target.value === "off") {
+         checkboxValue = "on";
+       } else {
+         checkboxValue = "off";
+       }
+       this.$store.commit("EXPORT_OAUTH_GIT", checkboxValue);
+       console.log(this.$store.state.exportOauthGithub);
+
+     },
     clickedUndo() {
       this.$emit('undo');
     },
@@ -269,12 +302,6 @@ export default {
 
 };
 
-function check (a){
-  if(a === true){
-    return checked
-  }
-  return
-}
 </script>
 
 <style lang="scss">
@@ -291,10 +318,6 @@ function check (a){
 #nav-logo {
   margin-right: 95px;
 }
-
-// .text-white {
-//   color: $menutext;
-// }
 
 q-btn > i {
   color: $menutext;
@@ -315,7 +338,6 @@ q-btn > i {
   border: 1px solid rgba($primary, .5);
 }
 
-// Must change style lang='scss'
 .fa-undo,
 .fa-redo {
   padding: 0 5px;
@@ -581,11 +603,29 @@ q-btn > i {
 }
 .Oauth{
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: space-between;
   margin: 10px;
   flex-direction: row;
 }
 .Oauth-text{
   margin-right: 10px;
+}
+
+.drawer{
+  font-size: 15px;
+  font-weight: bold;
+}
+#google{
+  width: 100px;
+  margin-top: 10px;
+}
+
+#github{
+  width: 50px;
+  margin-top: 10px;
+
+  margin-left: 25px;
+
 }
 </style>

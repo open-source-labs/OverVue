@@ -1,4 +1,6 @@
-const htmlElementMap = {
+import { HtmlElementMap } from '../../../types';
+
+const htmlElementMap :HtmlElementMap= {
   div: ['<div>', '</div>'],
   button: ['<button>', '</button>'],
   form: ['<form>', '</form>'],
@@ -19,7 +21,7 @@ const htmlElementMap = {
   h4:['<h4>', '</h4>'],
   h5:['<h5>', '</h5>'],
   h6:['<h6>', '</h6>'],
-  'e-button':[`<el-button type="info"`,`</el-button>`],
+  'e-button':["<el-button", "</el-button>"],
   'e-input':["<el-input", "</el-input>"],
   'e-link': [`<el-link type="primary">primary</el-link>
   <el-link type="success">success</el-link>
@@ -30,7 +32,7 @@ const htmlElementMap = {
   'e-checkbox': ["<el-checkbox", "</el-checkbox>"],
   'e-checkbox-button': ["<el-checkbox-button", "</el-checkbox-button>"],
   'e-date-picker': ["<el-date-picker", "</el-date-picker>"],
-  'e-slider':["<el-slider", "</el-slider>"],
+  'e-slider': ["<el-slider", "</el-slider>"],
   'e-card': ["<el-card", "</el-card>"],
   'e-alert': [`<el-alert title="success alert" type="success"></el-alert>
   <el-alert title="info alert" type="info"></el-alert>
@@ -68,12 +70,37 @@ const htmlElementMap = {
 <el-button>replies</el-button`,
 `
 </el-badge>`],
+};
 
-
-
-
-
-}
-
-
-export default htmlElementMap
+const openHtmlElementMap :HtmlElementMap= {
+  div: ['<div', '</div>'],
+  button: ['<button', '</button>'],
+  form: ['<form', '</form>'],
+  img: ['<img', ''],
+  link: ['<a href="#"/>', ''],
+  list: ['<li>', '</li>'],
+  paragraph: ['<p>', '</p>'],
+  'list-ol': ['<ol>', '</ol>'],
+  'list-ul': ['<ul>', '</ul>'],
+  input: ['<input />', ''],
+  navbar: ['<nav>', '</nav>'],
+  header:['<header>', '</header>'],
+  footer:['<footer>', '</footer>'],
+  meta: ['<meta>', '</meta>'],
+  h1:['<h1>', '</h1>'],
+  h2:['<h2>', '</h2>'],
+  h3:['<h3>', '</h3>'],
+  h4:['<h4>', '</h4>'],
+  h5:['<h5>', '</h5>'],
+  h6:['<h6>', '</h6>'],
+  'e-button':["<el-button", "</el-button>"],
+  'e-input':["<el-input", "</el-input>"],
+  'e-link':["<el-link", "</el-link>"],
+  'e-form': ["<el-form", "</el-form>"],
+  'e-checkbox': ["<el-checkbox", "</el-checkbox>"],
+  'e-checkbox-button': ["<el-checkbox-button", "</el-checkbox-button>"],
+  'e-date-picker': ["<el-date-picker", "</el-date-picker>"],
+  'e-slider': ["<el-slider", "</el-slider>"],
+  'e-card': ["<el-card", "</el-card>"],
+};
+export {htmlElementMap as default, openHtmlElementMap};

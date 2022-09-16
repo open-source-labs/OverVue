@@ -1,8 +1,8 @@
 
 <template>
-  <div class="q-pa-md">
-    <q-btn color="purple" label="Import element+" @click="pickLibrary('element')"/>
-  </div>
+
+    <q-btn color="purple" class="importBtn"  label="Import element+" @click="pickLibrary('element')"/>
+
 </template>
 
 
@@ -47,4 +47,10 @@
 }
   }
 </script>
-<style></style>
+<style>
+.importBtn{
+  margin-top: 20px;
+  width: 260px;
+  height: 45px;
+}
+</style>
