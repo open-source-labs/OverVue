@@ -67,6 +67,7 @@ const newState = {
   pastedComponent: {},
   exportAsTypescript: 'off',
   exportOauth: 'off',
+  exportOauthGithub: 'off',
   showTutorial: true,
   tutorialFirstOpen: true,
   pasteTimer: 0,

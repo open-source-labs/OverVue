@@ -255,6 +255,7 @@ export default {
 
       if (componentName === "App") {
         str += `<div id="app">\n\t\t<div id="nav">\n`;
+
         for (let route in routes) {
           if (route === "HomeView") {
             str += `\t\t\t<router-link to="/" class = "componentLinks">${route}</router-link>\n`;
@@ -277,6 +278,7 @@ export default {
           let childNameClassFullStr = (childNameClass === "") ? "" : ` class = '${childNameClass}'`;
           routeStr += `<${childName}${childNameClassFullStr}></${childName}>\n`
         });
+
         return `<template>\n  <div id = "${componentName}">\n${templateTagStr}${routeStr}\t</div>\n</template>`;
       }
 
@@ -287,19 +289,29 @@ export default {
         let compClass = (this.routes.hasOwnProperty(componentName)) ? componentName : this.componentMap[componentName].htmlAttributes.class;
 
         if (compClass !== "" && compID !== "") {
+
+          if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){
+            return `<template>\n  <div id = "${compID}" class = "${compClass}">\n${templateTagStr}${routeStr}  </div>\n<Oauth/>\n</template>`;
+          }
           return `<template>\n  <div id = "${compID}" class = "${compClass}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
         }
         else if (compClass !== "" && compID === "") {
+          if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){
+            return `<template>\n  <div class = "${compClass}">\n${templateTagStr}${routeStr}  </div>\n<Oauth/>\n</template>`;
+          }
           return `<template>\n  <div class = "${compClass}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
         }
         else if (compClass === "" && compID !== "") {
+          if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){return `<template>\n  <div id = "${compID}">\n${templateTagStr}${routeStr}  </div>\n<Oauth/>\n</template>`;}
           return `<template>\n  <div id = "${compID}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
         }
         else {
+          if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){return `<template>\n  <div>\n\t${str}${templateTagStr}${routeStr}  </div>\n<Oauth/>\n</template>`;}
           return `<template>\n  <div>\n\t${str}${templateTagStr}${routeStr}  </div>\n</template>`;
         }
       }
       else {
+        if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){return `<template>\n\t${str}${templateTagStr}${routeStr}</div>\n<Oauth/>\n</template>`}
         return `<template>\n\t${str}${templateTagStr}${routeStr}</div>\n</template>`
       }
     },
@@ -378,12 +390,22 @@ export default {
         let output;
         if (this.exportAsTypescript === "on") {
           output = "\n\n<script lang='ts'>\n";
+            if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){
+            output+=`import Oauth from '../components/oauth.vue';`
+          }
           output += imports + "\nexport default defineComponent ({\n  name: '" + componentName + "'";
         } else {
           output = "\n\n<script>\n";
+            if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){
+            output+=`import Oauth from '../components/oauth.vue';`
+          }
           output += imports + "\nexport default {\n  name: '" + componentName + "'";
+
         }
         output += ",\n  components: {\n";
+        if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){
+            output+=`Oauth,`
+          }
         output += childrenComponentNames + "  },\n";
         output += data;
         output += computed;
@@ -431,17 +453,12 @@ export default {
         return str
       }
     },
-    /**
-     * @description writes the <style> in vue component for all components in Canvas
-     * Do not update code styling. Lack of styling is intentional to properly export the styling string.
-     */
-    /* UPDATE THIS TO GRAB INFORMATION FROM this.componentMap NOT this.routes*/
-    /* this.componentMap does not have x-y positioning stored */
     writeStyle(componentName) {
       let htmlArray = this.componentMap[componentName].htmlList;
       let styleString = "";
       console.log(componentName);
       // Add grid css property to view component div
+      if (this.routes)
       // adds view component id grid style and adds child component css styling
       if (this.routes.hasOwnProperty(componentName)) {
         styleString += `#${componentName} {\n\tdisplay: grid; \n\tgrid-template-columns: repeat(${this.gridLayout[0]}, 1fr);\n\tgrid-template-rows: repeat(${this.gridLayout[1]}, 1fr);\n\tgrid-column-gap: 0px;\n\tgrid-row-gap: 0px;\n}\n`;
@@ -469,14 +486,112 @@ export default {
 .router-view {
   margin:auto;
   background-color: gray;
-  height: 720px;
-  width: 1280px;
 }
 </style >`
     } else return `\n\n<style scoped>\n${styleString}</style >`;
     },
+    createFirebaseConfigFile(location) {
+      if(this.$store.state.exportOauth ==='on'){
+        let str = `import { initializeApp } from 'firebase/app';`;
+      str += `\n\tconst firebaseConfig = {`;
+      str += `\n\tapiKey: "AIzaSyBR4o9xj4LtDaZ37-mC-FqRQWaz67_9Fq0",`;
+      str += `\n\tauthDomain: "oauth-74279.firebaseapp.com",`;
+      str += `\n\tprojectId: "oauth-74279",`;
+      str += `\n\tstorageBucket: "oauth-74279.appspot.com",`;
+      str += `\n\tmessagingSenderId: "91801023441",`;
+      str += `\n\tappId: "1:91801023441:web:4d923f26f5ce9c7384e6f0",`;
+      str += `\n\tmeasurementId: "G-ZZQMS6RRWR"`;
+      str += `\n};`;
+      str += `\nconst firebaseApp = initializeApp(firebaseConfig);`;
+      str += `\nexport default firebaseApp`;
 
-    // creates index html
+      fs.writeFileSync(path.join(location, "firebaseConfig.js"), str);
+      }
+    },
+    createOauthFile(location){
+      if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){
+      let str = `<template>`;
+      str += `\n\t<!-- you can see the username when you log in -->`;
+      str += `\n\t<h1 v-if="user">Username: {{ user }}</h1>`;
+      str += `\n\t<div id="logout" v-if="isSignedIn">`;
+      str += `\n\t\t<button @click="handleSignOut">logout</button>`;
+      str += `\n\t</div>`;
+      if(this.$store.state.exportOauth ==='on'){
+      str += `\n\t<div id="GoogleSignIn" v-if="!isSignedIn">`;
+      str += `\n\t\t<h3>Google Signin</h3>`;
+      str += `\n\t\t<button @click="handleSignInGoogle">login</button>`;
+      str += `\n\t</div>`;
+      }
+
+      if(this.$store.state.exportOauthGithub ==='on'){
+      str += `\n\t<div id="GitHubSignIn" v-if="!isSignedIn">`;
+      str += `\n\t\t<h3>GitHub Signin</h3>`;
+      str += `\n\t\t<button @click="handleSignInGitHub">login</button>`;
+      str += `\n\t</div>`;
+      }
+
+      str += `\n</template>`;
+      str += `\n\n<script>`;
+      str += `\nimport firebaseConfig from '../../firebaseConfig';`;
+      str += `\nimport { getAuth, signInWithPopup, signOut, GoogleAuthProvider, TwitterAuthProvider, GithubAuthProvider } from "firebase/auth";`;
+      str += `\nfirebaseConfig`;
+      if(this.$store.state.exportOauth ==='on'){
+      str += `\nconst provider = new GoogleAuthProvider();`;
+      }
+      if(this.$store.state.exportOauthGithub ==='on'){
+        str += `\nconst providerGithub = new GithubAuthProvider();`;
+      }
+      str += `\nconst auth = getAuth();`;
+      str += `\n\nexport default {`;
+      str += `\n\tname: 'OauthComponent',`;
+      str += `\n\tprops: {`;
+      str += `\n\t},`;
+      str += `\n\tdata() {`;
+      str += `\n\t\treturn {`;
+      str += `\n\t\t\tuser: '',`;
+      str += `\n\t\t\tisSignedIn: false,`;
+      str += `\n\t\t}`;
+      str += `\n\t },`;
+      str += `\n\tmethods: {`;
+        if(this.$store.state.exportOauth ==='on'){
+      str += `\n\t\thandleSignInGoogle() {`;
+      str += `\n\t\t\tsignInWithPopup(auth, provider)`;
+      str += `\n\t\t\t\t.then((result) => { `;
+      str += `\n\t\t\t\t\tthis.user = result.user.displayName;`;
+      str += `\n\t\t\t\t\tthis.isSignedIn = true;`;
+      str += `\n\t\t\t\t}).catch((error) => {`;
+      str += `\n\t\t\t\t\tconsole.log(error);`;
+      str += `\n\t\t\t\t});`;
+      str += `\n\t\t},`;
+        }
+        if(this.$store.state.exportOauthGithub ==='on'){
+      str += `\n\t\thandleSignInGitHub() {`;
+      str += `\n\t\t\tsignInWithPopup(auth, providerGithub)`;
+      str += `\n\t\t\t\t.then((result) => { `;
+      str += `\n\t\t\t\t\tthis.user = result.user.displayName;`;
+      str += `\n\t\t\t\t\tthis.isSignedIn = true;`;
+      str += `\n\t\t\t\t}).catch((error) => {`;
+      str += `\n\t\t\t\t\tconsole.log(error);`;
+      str += `\n\t\t\t\t});`;
+      str += `\n\t\t},`;
+        }
+
+      str += `\n\t\thandleSignOut() {`;
+      str += `\n\t\t\tsignOut(auth).then(() => {`;
+      str += `\n\t\t\t\t\tthis.user = ''; `;
+      str += `\n\t\t\t\t\tthis.isSignedIn = false;`;
+      str += `\n\t\t\t\t}).catch((error) => {`;
+      str += `\n\t\t\t\t\tconsole.log(error);`;
+      str += `\n\t\t\t\t});`;
+      str += `\n\t\t}`;
+      str += `\n\t}`;
+      str += `\n}`;
+      str += `\n<\/script>`;
+      str += `\n<style scoped>`;
+        str += `\n</style>`;
+      fs.writeFileSync(path.join(location,"src","components","oauth.vue"), str);
+      }
+    },
     createIndexFile(location) {
       let str = `<!DOCTYPE html>\n<html lang="en">\n\n<head>`;
       str += `\n\t<meta charset="utf-8">`;
@@ -499,22 +614,6 @@ export default {
       str += `\n</body>\n\n`;
       str += `</html>\n`;
       fs.writeFileSync(path.join(location, "index.html"), str);
-    },
-    createFirebaseConfigFile(location) {
-      let str = `import { initializeApp } from 'firebase/app';`;
-      str += `\n\tconst firebaseConfig = {`;
-      str += `\n\tapiKey: "AIzaSyBR4o9xj4LtDaZ37-mC-FqRQWaz67_9Fq0",`;
-      str += `\n\tauthDomain: "oauth-74279.firebaseapp.com",`;
-      str += `\n\tprojectId: "oauth-74279",`;
-      str += `\n\tstorageBucket: "oauth-74279.appspot.com",`;
-      str += `\n\tmessagingSenderId: "91801023441",`;
-      str += `\n\tappId: "1:91801023441:web:4d923f26f5ce9c7384e6f0",`;
-      str += `\n\tmeasurementId: "G-ZZQMS6RRWR"`;
-      str += `\n};`;
-      str += `\nconst firebaseApp = initializeApp(firebaseConfig);`;
-      str += `\nexport default firebaseApp`;
-
-      fs.writeFileSync(path.join(location, "firebaseConfig.js"), str);
     },
     // creates main.js boilerplate
     createMainFile(location) {
@@ -676,7 +775,7 @@ export default {
       if(this.$store.state.importLibraries.includes('element')){
         str += `,\n\t\t"element-plus": "^2.2.16"`;
       };
-      if(this.$store.state.exportOauth ==='on'){
+      if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){
         str += `,\n\t\t "firebase": "^9.6.9"`
       }
       str += `\n\t},`;
@@ -719,6 +818,7 @@ export default {
       this.createPackage(data);
       this.createStore(data);
       this.createFirebaseConfigFile(data);
+      this.createOauthFile(data);
       // exports images to the /assets folder
       // eslint-disable-next-line no-unused-vars
       for (let [routeImage, imageLocation] of Object.entries(this.imagePath)) {
