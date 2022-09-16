@@ -33,13 +33,14 @@
   </q-card>
 </template>
 
-<script>
+<script lang="ts">
 import BasicFunctions from './tutorial/BasicFunctions.vue'
 import AdvancedFunctions from './tutorial/AdvancedFunctions.vue'
 import Landing from './tutorial/Landing.vue'
 import NewVersionInfo from './tutorial/NewVersionInfo.vue'
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   components: {
     BasicFunctions,
     AdvancedFunctions,
@@ -48,11 +49,10 @@ export default {
   },
   data() {
     return {
-      tutorialPage: 'landing'
+      tutorialPage: 'landing' as string,
     }
   }
-}
-
+});
 </script>
 
 <style lang="scss" scoped>

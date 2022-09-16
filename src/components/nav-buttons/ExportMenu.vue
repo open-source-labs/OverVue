@@ -128,7 +128,7 @@ export default {
       fs.writeFileSync(targetLocation + ".png", urlData);
     },
     writeTemplateTag(componentName) {
-      // create reference object
+      // create reference object - replace later
       const htmlElementMap = {
         div: ["<div", "</div>"],
         button: ["<button", "</button>"],

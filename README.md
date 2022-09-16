@@ -20,6 +20,7 @@
   - [Changelog 5.0](#changelog-50)
   - [Changelog 6.0](#changelog-60)
   - [Changelog 7.0](#changelog-70)
+  - [Changelog 8.0](#changelog-80)
 - [How to use](#how-to-use)
 - [Installation](#installation)
   - [WSL Installation](#wsl-installation)
@@ -199,12 +200,14 @@
 
 <details><summary>OverVue 8.0</summary>
 <ul>
-<li>Added component snap to grid functionality </li>
+<li>Added component snap to grid functionality with additional grid density drop down menu feature</li>
 <li>Code snippet reflects CSS grid area styling of components </li>
 <li>Ability to import components from Element Plus library</li>
 <li>Exported project template code now more accurately reflects component placement in app</li>
 <li>Improved canvas drag and deselect</li>
 <li>Improved WSL developer installation instructions</li>
+<li>Added TypeScipt to application</li>
+<li>Implemented component search bar feature</li>
 <br>
 <h4><strong>Bug Fixes</strong></h4>
 <li>Fixed routing components in project exports </li>
@@ -212,6 +215,8 @@
 <li>Fixed import statements of route child components</li>
 <li>Fixed edge case HTML element bugs in project exports </li>
 <li>Fixed in app component movement bugs which caused position to not update correctly </li>
+<li>Fixed drag and drop HTML element on click bug</li>
+<li>Eliminated code redundancy by implementing mixins</li>
 </ul>
 </details>
 <br/>

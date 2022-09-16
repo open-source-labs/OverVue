@@ -8,11 +8,15 @@ module.exports = {
     'vue/no-deprecated-slot-attribute': 'off',
   },
 
+  "parser": "vue-eslint-parser",
   parserOptions: {
-    parser: '@babel/eslint-parser',
     ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
+    parser: { //attempt to speed up runtime using TS when coding
+      "ts":'@typescript-eslint/parser',
+      "<template>": "espree"
+    },
+    requireConfigFile: false,
     sourceType: 'module', // Allows for the use of imports
-    requireConfigFile: false
   },
 
   env: {
@@ -68,4 +72,4 @@ module.exports = {
     // allow debugger during development only
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
   }
-}
+};
