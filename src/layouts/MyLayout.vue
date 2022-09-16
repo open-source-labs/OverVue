@@ -624,8 +624,8 @@ q-btn > i {
 #github{
   width: 50px;
   margin-top: 10px;
-  margin-right: 10px;
-  margin-left: 10px;
+
+  margin-left: 25px;
 
 }
 </style>
