@@ -1,12 +1,12 @@
 <template>
 
-  <div class="q-pa-md box"
+  <div class=""
 
   v-if = "this.$store.state.displaylibComponent">
 
 
 
-    <q-btn-dropdown  color="pink" label="Select Library Component" dropdown-icon="change_history">
+    <q-btn-dropdown class="selectLib" color="pink" label="Select Library Component" dropdown-icon="change_history">
       <q-list class="dropButton">
 
         <q-item clickable v-close-popup @click="pickComponent('e-alert')">
@@ -242,5 +242,11 @@ import { mapState, mapActions } from "vuex";
 }
 .buttongroup{
   width: 600px;
+}
+
+.selectLib{
+  margin-top: 20px;
+  width: 260px;
+  height: 45px;
 }
 </style>
