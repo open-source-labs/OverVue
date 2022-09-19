@@ -23,6 +23,7 @@ import { mapState } from "vuex";
 const { fs, ipcRenderer } = window;
 
 import writeNested from "../../mixins/writeNested";
+import { result } from "lodash";
 
 
 export default {
@@ -104,7 +105,33 @@ export default {
      * @description: creates component code <template>, <script>, <style>
      * invokes writeTemplate, writeScript, writeStyle
      */
-    createComponentCode(componentLocation, componentName, children, routes) {
+
+    writeRenderUnitTestString(componentName, htmlList) {
+
+      const imports = `import { mount } from '@vue/test-utils'
+        import ${componentName} from '../src/components/${componentName}.vue'`
+        const results = [imports];
+      
+        for (const el of htmlList) {
+        const test = `
+        test('renders ${componentName}', () => {
+        const wrapper = mount(${componentName})
+
+        const ele = wrapper.get('[data-test="${componentName}-${el.text}-${el.id}"]')
+
+        expect(ele.exists()).toBe(true)
+      })`
+        results.push(test);
+      }
+
+      return results.reduce((acc, ele) => acc += ele, '');
+    },
+
+    createComponentTestCode(componentLocation, componentName, componentMap) {
+      fs.writeFileSync(componentLocation, this.writeRenderUnitTestString(componentName, componentMap[componentName].htmlList))
+    },
+
+    createComponentCode(componentLocation, componentName, children) {
       if (componentName === "App") {
         fs.writeFileSync(
           componentLocation + ".vue",
@@ -205,12 +232,13 @@ export default {
       let htmlArr = this.componentMap[componentName].htmlList;
       let outputStr = ``;
       // eslint-disable-next-line no-unused-vars
-      for (let el of htmlArr) {
+      for (let i = 0; i < htmlArr.length; i++) {
+        const el = htmlArr[i];
         if (!el.text) {
-          outputStr += `    <${el}/>\n`;
+          outputStr += `    <${el} [data-test=${componentName}-${el}-${i}] />\n`;
         } else {
           outputStr += `    `;
-          outputStr += htmlElementMap[el.text][0]
+          outputStr += htmlElementMap[el.text][0] + `[data-test=${componentName}-${el.text}-${el.id}]`
           //if conditional to check class
           if (el.class !== "") {
             outputStr += " " + "class = " + `"${el.class}"`;
@@ -806,6 +834,8 @@ export default {
         fs.mkdirSync(path.join(data, "src", "views"));
         fs.mkdirSync(path.join(data, "src", "router"));
         fs.mkdirSync(path.join(data, "src", "store"));
+        fs.mkdirSync(path.join(data, "test"));
+        fs.mkdirSync(path.join(data, "test", "components"));
       }
       // creating basic boilerplate for vue app
       this.createIndexFile(data);
@@ -848,6 +878,9 @@ export default {
               componentName,
               this.componentMap
             );
+            this.createComponentTestCode(path.join(data, "test", "components", componentName + '.test.js'),
+              componentName,
+              this.componentMap)
           }
           // if componentName is App
         } else {
