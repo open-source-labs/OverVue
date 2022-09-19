@@ -1,12 +1,7 @@
 <template>
 
-  <div class=""
-
-  v-if = "this.$store.state.displaylibComponent">
-
-
-
-    <q-btn-dropdown class="selectLib" color="pink" label="Select Library Component" dropdown-icon="change_history">
+  <div class="">
+    <q-btn-dropdown class="selectLib" color="pink" label="Select Element+ Component" dropdown-icon="change_history">
       <q-list class="dropButton">
 
         <q-item clickable v-close-popup @click="pickComponent('e-alert')">
