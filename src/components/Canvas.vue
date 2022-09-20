@@ -72,7 +72,7 @@
             {'background-color': componentData.color}]"
         >
           <p class="innerHtmlText" style="font-size: 3em">{{element.note !== '' ? element.note : element.text}}</p>
-        </div>sss
+        </div>
         <div v-if="element.text === 'footer'" class="htmlFooter"></div>
                 <div v-if="element.text === 'form'"
           class="htmlGeneral"
