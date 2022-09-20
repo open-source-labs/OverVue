@@ -297,16 +297,16 @@ export default {
         }
         else if (compClass !== "" && compID === "") {
           if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){
-            return `<template>\n  <div class = "${compClass}">\n${templateTagStr}${routeStr}  \t\t<Oauth/>\n\t</div>\n</template>`;
+            return `<template>\n  <div class = "${compClass}">\n${templateTagStr}${routeStr}  \t<Oauth/>\n\t</div>\n</template>`;
           }
           return `<template>\n  <div class = "${compClass}">\n${templateTagStr}${routeStr}  \n\t</div>\n</template>`;
         }
         else if (compClass === "" && compID !== "") {
-          if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){return `<template>\n  <div id = "${compID}">\n${templateTagStr}${routeStr}\n\t\t<Oauth/>\n\t</div>\n</template>`;}
+          if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){return `<template>\n  <div id = "${compID}">\n${templateTagStr}${routeStr}\n<Oauth/>\n\t</div>\n</template>`;}
           return `<template>\n  <div id = "${compID}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
         }
         else {
-          if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){return `<template>\n  <div>\n\t${str}${templateTagStr}${routeStr}\t\t<Oauth/> \n\t</div>\n</template>`;}
+          if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){return `<template>\n  <div>\n\t${str}${templateTagStr}${routeStr}\t<Oauth/> \n\t</div>\n</template>`;}
           return `<template>\n  <div>\n\t${str}${templateTagStr}${routeStr}  </div>\n</template>`;
         }
       }
