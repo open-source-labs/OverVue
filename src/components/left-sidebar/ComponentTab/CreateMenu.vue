@@ -35,7 +35,7 @@ Description:
     <!-- <q-expansion-item group="accordion" label="Create Component" > -->
       <LibComponents></LibComponents>
 <div class="searchinput">
-      <q-input v-if ="this.$store.state.displaylibComponent" outlined v-model="input" placeholder="Please input" label="Search Element+ Components"
+      <q-input outlined v-model="input" placeholder="Please input" label="Search Element+ Components"
 
       color="white"
           dark
