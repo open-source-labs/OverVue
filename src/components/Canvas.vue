@@ -919,7 +919,7 @@ behavior: url(/pie/PIE.htc);
   position: absolute;
   font-size: 3em;
   margin-top: -4%;
-  margin-left: 23%;
+  margin-left: 29%;
   color: black;
 }
 

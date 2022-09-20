@@ -114,7 +114,7 @@ Description:
         id="create-component-btn"
         class="sidebar-btn"
         color="secondary"
-        label="Create Component"
+        label="Done"
         @click="resetActiveComponent"
       />
       <q-btn
