@@ -131,7 +131,7 @@ test('renders ${componentName}', () => {
       fs.writeFileSync(componentLocation, this.writeRenderUnitTestString(componentName, componentMap[componentName].htmlList))
     },
 
-    createComponentCode(componentLocation, componentName, children) {
+    createComponentCode(componentLocation, componentName, children, routes) {
       if (componentName === "App") {
         fs.writeFileSync(
           componentLocation + ".vue",
@@ -232,10 +232,9 @@ test('renders ${componentName}', () => {
       let htmlArr = this.componentMap[componentName].htmlList;
       let outputStr = ``;
       // eslint-disable-next-line no-unused-vars
-      for (let i = 0; i < htmlArr.length; i++) {
-        const el = htmlArr[i];
+      for (let el of htmlArr) {
           if (!el.text) {
-            outputStr += `    <${el} />\n`;
+            outputStr += `    <${el}/>\n`;
            } else {
             outputStr += `    `;
             outputStr += htmlElementMap[el.text][0];
@@ -257,8 +256,8 @@ test('renders ${componentName}', () => {
             outputStr += htmlElementMap[el.text][1] + "\n";
           }
         }
-       return outputStr;
       }
+      return outputStr;
     },
     writeComments(componentName) {
       if (this.componentMap[componentName]?.noteList?.length > 0) {
@@ -518,22 +517,6 @@ test('renders ${componentName}', () => {
 </style >`
     } else return `\n\n<style scoped>\n${styleString}</style >`;
     },
-    // create Babel config for testing
-    createBabelConfigFile(location) {
-      let str = `
-module.exports = {
-  presets: [
-    ['@babel/preset-env',
-     {
-       targets: {
-         node: 'current'
-       }
-     }
-    ]
-  ]
-}`
-      fs.writeFileSync(path.join(location, "babel.config.js"), str);
-    },
     // create Firebase config for OAuth
     createFirebaseConfigFile(location) {
       if(this.$store.state.exportOauth ==='on'){
@@ -688,7 +671,6 @@ module.exports = {
         fs.writeFileSync(path.join(location, "src", "main.js"), str);
       }
     },
-    // create babel file
     createViteConfig(location) {
       let str = `import { fileURLToPath, URL } from 'url';\n\n`;
       str += `import { defineConfig } from 'vite';\n`;
