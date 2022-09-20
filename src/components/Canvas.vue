@@ -537,7 +537,6 @@ export default {
     //   this.initialPosition.y = this.activeComponentData.y;
     // },
     isElementPlus(htmlList) {
-      console.log(htmlList);
       return htmlList.find(({ text }) => text[0] === 'e');
     },
     //color change function
@@ -647,7 +646,6 @@ export default {
 
     // renders modal with Update Children and Layer in it
     handleAddNotes() {
-      console.log(this.activeComponentData);
       if (this.wasDragged === false && this.activeComponent !== '') {
         this.openNoteModal();
       }

@@ -1078,8 +1078,6 @@ const mutations = {
 
   // change grid density
   [types.CHANGE_GRID_DENSITY]: (state, payload) => {
-    // state.gridLayout = payload.direction === 'height' ? [state.gridLayout[0], payload.densityNum]:[payload.densityNum, state.gridLayout[1]];
-    // console.log(payload);
     if (payload.direction === 'height'){
       state.gridLayout[1] = payload.densityNum;
 
@@ -1100,7 +1098,6 @@ const mutations = {
         updatedComponent.y = (rowStart - 1) * state.containerW / state.gridLayout[0];
         updatedComponent.w = (colEnd - 1) * state.containerH / state.gridLayout[1] - updatedComponent.y;
         updatedComponent.h = (rowEnd - 1) * state.containerW / state.gridLayout[0] - updatedComponent.x;
-        // Math.round((rowEnd - 1) * state.containerW / state.gridLayout[0]) - updatedComponent.x
       }
     );
   },

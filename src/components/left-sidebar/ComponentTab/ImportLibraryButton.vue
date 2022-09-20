@@ -33,7 +33,6 @@
       }
       this.changeLibComponentDisplay(payload);
       this.changeLib(payload);
-      // console.log(this.$store.state.importLibraries.includes('element'));
     },
 
 

@@ -44,7 +44,6 @@ export default {
       // 'routes'
     ]),
     options() {
-      console.log(this.routes);
       return this.routes[this.activeRoute].map(
         (component) => component.componentName
       );
