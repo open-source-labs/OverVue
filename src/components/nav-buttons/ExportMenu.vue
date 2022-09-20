@@ -109,23 +109,24 @@ export default {
     writeRenderUnitTestString(componentName, htmlList) {
 
       const imports = `import { mount } from '@vue/test-utils'
-        import ${componentName} from '../src/components/${componentName}.vue'`
-        const results = [imports];
-      
-        for (const el of htmlList) {
-        const test = `
-        test('renders ${componentName}', () => {
-        const wrapper = mount(${componentName})
+import ${componentName} from '../../src/components/${componentName}.vue'
 
-        const ele = wrapper.get('[data-test="${componentName}-${el.text}-${el.id}"]')
+`
 
-        expect(ele.exists()).toBe(true)
-      })`
-        results.push(test);
-      }
+  const results = [imports];
 
-      return results.reduce((acc, ele) => acc += ele, '');
-    },
+  for (const el of htmlList) {
+  const test = `
+test('renders ${componentName}', () => {
+const wrapper = mount(${componentName})
+
+// customize your tests here; for more info please visit: https://github.com/vuejs/test-utils/
+})`
+    results.push(test);
+  }
+
+  return results.reduce((acc, ele) => acc += ele, '');
+},
 
     createComponentTestCode(componentLocation, componentName, componentMap) {
       fs.writeFileSync(componentLocation, this.writeRenderUnitTestString(componentName, componentMap[componentName].htmlList))
@@ -234,11 +235,11 @@ export default {
       // eslint-disable-next-line no-unused-vars
       for (let i = 0; i < htmlArr.length; i++) {
         const el = htmlArr[i];
-        if (!el.text) {
-          outputStr += `    <${el} [data-test=${componentName}-${el}-${i}] />\n`;
-        } else {
-          outputStr += `    `;
-          outputStr += htmlElementMap[el.text][0] + `[data-test=${componentName}-${el.text}-${el.id}]`
+        // if (!el.text) {
+        //   outputStr += `    <${el} data-test="${componentName}-${el}-${i}" />\n`;
+        // } else {
+        //   outputStr += `    `;
+        //   outputStr += htmlElementMap[el.text][0] + ` data-test="${componentName}-${el.text}-${el.id}"`
           //if conditional to check class
           if (el.class !== "") {
             outputStr += " " + "class = " + `"${el.class}"`;
@@ -257,8 +258,7 @@ export default {
             outputStr += htmlElementMap[el.text][1] + "\n";
           }
         }
-      }
-      return outputStr;
+       return outputStr;
     },
     writeComments(componentName) {
       if (this.componentMap[componentName]?.noteList?.length > 0) {
@@ -834,8 +834,8 @@ export default {
         fs.mkdirSync(path.join(data, "src", "views"));
         fs.mkdirSync(path.join(data, "src", "router"));
         fs.mkdirSync(path.join(data, "src", "store"));
-        fs.mkdirSync(path.join(data, "test"));
-        fs.mkdirSync(path.join(data, "test", "components"));
+        fs.mkdirSync(path.join(data, "test-templates"));
+        fs.mkdirSync(path.join(data, "test-templates", "components"));
       }
       // creating basic boilerplate for vue app
       this.createIndexFile(data);
@@ -878,7 +878,7 @@ export default {
               componentName,
               this.componentMap
             );
-            this.createComponentTestCode(path.join(data, "test", "components", componentName + '.test.js'),
+            this.createComponentTestCode(path.join(data, "test-templates", "components", componentName + '.spec.js'),
               componentName,
               this.componentMap)
           }
