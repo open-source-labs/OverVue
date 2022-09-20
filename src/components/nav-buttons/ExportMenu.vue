@@ -110,7 +110,6 @@ export default {
 
       const imports = `import { mount } from '@vue/test-utils'
 import ${componentName} from '../../src/components/${componentName}.vue'
-
 `
 
   const results = [imports];
@@ -118,9 +117,9 @@ import ${componentName} from '../../src/components/${componentName}.vue'
   for (const el of htmlList) {
   const test = `
 test('renders ${componentName}', () => {
-const wrapper = mount(${componentName})
+  const wrapper = mount(${componentName})
 
-// customize your tests here; for more info please visit: https://github.com/vuejs/test-utils/
+  // customize your tests here; for more info please visit: https://github.com/vuejs/test-utils/
 })`
     results.push(test);
   }
@@ -235,11 +234,11 @@ const wrapper = mount(${componentName})
       // eslint-disable-next-line no-unused-vars
       for (let i = 0; i < htmlArr.length; i++) {
         const el = htmlArr[i];
-        // if (!el.text) {
-        //   outputStr += `    <${el} data-test="${componentName}-${el}-${i}" />\n`;
-        // } else {
-        //   outputStr += `    `;
-        //   outputStr += htmlElementMap[el.text][0] + ` data-test="${componentName}-${el.text}-${el.id}"`
+          if (!el.text) {
+            outputStr += `    <${el} />\n`;
+           } else {
+            outputStr += `    `;
+            outputStr += htmlElementMap[el.text][0];
           //if conditional to check class
           if (el.class !== "") {
             outputStr += " " + "class = " + `"${el.class}"`;
@@ -259,6 +258,7 @@ const wrapper = mount(${componentName})
           }
         }
        return outputStr;
+      }
     },
     writeComments(componentName) {
       if (this.componentMap[componentName]?.noteList?.length > 0) {
@@ -518,6 +518,23 @@ const wrapper = mount(${componentName})
 </style >`
     } else return `\n\n<style scoped>\n${styleString}</style >`;
     },
+    // create Babel config for testing
+    createBabelConfigFile(location) {
+      let str = `
+module.exports = {
+  presets: [
+    ['@babel/preset-env',
+     {
+       targets: {
+         node: 'current'
+       }
+     }
+    ]
+  ]
+}`
+      fs.writeFileSync(path.join(location, "babel.config.js"), str);
+    },
+    // create Firebase config for OAuth
     createFirebaseConfigFile(location) {
       if(this.$store.state.exportOauth ==='on'){
         let str = `import { initializeApp } from 'firebase/app';`;
