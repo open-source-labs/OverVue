@@ -291,28 +291,27 @@ export default {
         if (compClass !== "" && compID !== "") {
 
           if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){
-            return `<template>\n  <div id = "${compID}" class = "${compClass}">\n${templateTagStr}${routeStr}  </div>\n<Oauth/>\n</template>`;
+            return `<template>\n  <div id = "${compID}" class = "${compClass}">\n${templateTagStr}${routeStr}  \n<Oauth/>\n\t</div>\n</template>`;
           }
-          return `<template>\n  <div id = "${compID}" class = "${compClass}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
+          return `<template>\n  <div id = "${compID}" class = "${compClass}">\n${templateTagStr}${routeStr}  \n\t</div>\n</template>`;
         }
         else if (compClass !== "" && compID === "") {
           if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){
-            return `<template>\n  <div class = "${compClass}">\n${templateTagStr}${routeStr}  </div>\n<Oauth/>\n</template>`;
+            return `<template>\n  <div class = "${compClass}">\n${templateTagStr}${routeStr}  \t\t<Oauth/>\n\t</div>\n</template>`;
           }
-          return `<template>\n  <div class = "${compClass}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
+          return `<template>\n  <div class = "${compClass}">\n${templateTagStr}${routeStr}  \n\t</div>\n</template>`;
         }
         else if (compClass === "" && compID !== "") {
-          if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){return `<template>\n  <div id = "${compID}">\n${templateTagStr}${routeStr}  </div>\n<Oauth/>\n</template>`;}
+          if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){return `<template>\n  <div id = "${compID}">\n${templateTagStr}${routeStr}\n\t\t<Oauth/>\n\t</div>\n</template>`;}
           return `<template>\n  <div id = "${compID}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
         }
         else {
-          if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){return `<template>\n  <div>\n\t${str}${templateTagStr}${routeStr}  </div>\n<Oauth/>\n</template>`;}
+          if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){return `<template>\n  <div>\n\t${str}${templateTagStr}${routeStr}\t\t<Oauth/> \n\t</div>\n</template>`;}
           return `<template>\n  <div>\n\t${str}${templateTagStr}${routeStr}  </div>\n</template>`;
         }
       }
       else {
-        if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){return `<template>\n\t${str}${templateTagStr}${routeStr}</div>\n<Oauth/>\n</template>`}
-        return `<template>\n\t${str}${templateTagStr}${routeStr}</div>\n</template>`
+        return `<template>\n\t${str}${templateTagStr}${routeStr}\t</div>\n</template>`
       }
     },
     /**
@@ -486,6 +485,8 @@ export default {
 .router-view {
   margin:auto;
   background-color: gray;
+  height: 720px;
+  width: 1280px;
 }
 </style >`
     } else return `\n\n<style scoped>\n${styleString}</style >`;
