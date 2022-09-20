@@ -1,7 +1,6 @@
-import * as ElementPlus from '../../../node_modules/element-plus/es/components' // importing all components from Element Plus with install wrappers
+// import * as ElementPlus from '../../../node_modules/element-plus/es/components' // importing all components from Element Plus with install wrappers
 
 export function useCreateComponent(importObj) {
-
   const createComponent = (importObj) => {
     let imported = false; //alter this logic once ready to import components
     if (importObj.hasOwnProperty('componentName')) {
@@ -29,10 +28,12 @@ export function useCreateComponent(importObj) {
       return false;
     }
     // boilerplate properties for each component upon creation
+    console.log(importObj.parent);
+    console.log({ y: importObj?.parent?.y })
     const component = {
-      x: 0,
-      y: 0,
-      z: 0,
+      x: importObj?.parent?.x ?? 0,
+      y: importObj?.parent?.y ?? 0,
+      z: importObj?.parent?.z ?? 0,
       htmlList: this.selectedElementList,
       noteList: [],
       children: [],
@@ -68,7 +69,7 @@ export function useCreateComponent(importObj) {
   createComponent(importObj)
 
   // console logging all components from Element Plus to determine shape of data and investigate structure of components
-  console.log(ElementPlus)
+  // console.log(ElementPlus)
     // components all within giant object
 }
 

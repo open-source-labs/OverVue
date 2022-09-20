@@ -9,9 +9,8 @@ export function useExportComponent() {
      *
      */
 
-      const showExportComponentDialog = () => {
-        ipcRenderer
-        .invoke("exportComponent", {
+      const exportComponent = () => {
+        ipcRenderer.invoke("exportComponent", {
           title: "Choose location to save folder in",
           message: "Choose location to save folder in",
           nameFieldLabel: "Component Name",
@@ -356,5 +355,5 @@ z-index: ${html.z};
           this.componentMap[this.activeComponent].children
         );
       }
-      showExportComponentDialog();
+      exportComponent();
   }

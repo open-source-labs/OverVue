@@ -40,7 +40,7 @@
     >
 
       <div class="component-title">
-        <p>{{ componentData.componentName }}</p>
+        <p>{{ componentData.componentName }}<span v-if="isElementPlus(componentData.htmlList)"> (Element+)</span></p>
       </div>
       <q-icon v-if="componentData.componentName === this.activeComponent"
         size="25px"
@@ -72,7 +72,7 @@
             {'background-color': componentData.color}]"
         >
           <p class="innerHtmlText" style="font-size: 3em">{{element.note !== '' ? element.note : element.text}}</p>
-        </div>sss
+        </div>
         <div v-if="element.text === 'footer'" class="htmlFooter"></div>
                 <div v-if="element.text === 'form'"
           class="htmlGeneral"
@@ -536,6 +536,10 @@ export default {
     //   this.initialPosition.x = this.activeComponentData.x;
     //   this.initialPosition.y = this.activeComponentData.y;
     // },
+    isElementPlus(htmlList) {
+      console.log(htmlList);
+      return htmlList.find(({ text }) => text[0] === 'e');
+    },
     //color change function
     updateColors(data) {
       let payload = {
@@ -643,6 +647,7 @@ export default {
 
     // renders modal with Update Children and Layer in it
     handleAddNotes() {
+      console.log(this.activeComponentData);
       if (this.wasDragged === false && this.activeComponent !== '') {
         this.openNoteModal();
       }
