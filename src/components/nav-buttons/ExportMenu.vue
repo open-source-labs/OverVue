@@ -23,6 +23,7 @@ import { mapState } from "vuex";
 const { fs, ipcRenderer } = window;
 
 import writeNested from "../../mixins/writeNested";
+import { result } from "lodash";
 
 
 export default {
@@ -104,6 +105,32 @@ export default {
      * @description: creates component code <template>, <script>, <style>
      * invokes writeTemplate, writeScript, writeStyle
      */
+
+    writeRenderUnitTestString(componentName, htmlList) {
+
+      const imports = `import { mount } from '@vue/test-utils'
+import ${componentName} from '../../src/components/${componentName}.vue'
+`
+
+  const results = [imports];
+
+  for (const el of htmlList) {
+  const test = `
+test('renders ${componentName}', () => {
+  const wrapper = mount(${componentName})
+
+  // customize your tests here; for more info please visit: https://github.com/vuejs/test-utils/
+})`
+    results.push(test);
+  }
+
+  return results.reduce((acc, ele) => acc += ele, '');
+},
+
+    createComponentTestCode(componentLocation, componentName, componentMap) {
+      fs.writeFileSync(componentLocation, this.writeRenderUnitTestString(componentName, componentMap[componentName].htmlList))
+    },
+
     createComponentCode(componentLocation, componentName, children, routes) {
       if (componentName === "App") {
         fs.writeFileSync(
@@ -206,11 +233,11 @@ export default {
       let outputStr = ``;
       // eslint-disable-next-line no-unused-vars
       for (let el of htmlArr) {
-        if (!el.text) {
-          outputStr += `    <${el}/>\n`;
-        } else {
-          outputStr += `    `;
-          outputStr += htmlElementMap[el.text][0]
+          if (!el.text) {
+            outputStr += `    <${el}/>\n`;
+           } else {
+            outputStr += `    `;
+            outputStr += htmlElementMap[el.text][0];
           //if conditional to check class
           if (el.class !== "") {
             outputStr += " " + "class = " + `"${el.class}"`;
@@ -491,6 +518,7 @@ export default {
 </style >`
     } else return `\n\n<style scoped>\n${styleString}</style >`;
     },
+    // create Firebase config for OAuth
     createFirebaseConfigFile(location) {
       if(this.$store.state.exportOauth ==='on'){
         let str = `import { initializeApp } from 'firebase/app';`;
@@ -644,7 +672,6 @@ export default {
         fs.writeFileSync(path.join(location, "src", "main.js"), str);
       }
     },
-    // create babel file
     createViteConfig(location) {
       let str = `import { fileURLToPath, URL } from 'url';\n\n`;
       str += `import { defineConfig } from 'vite';\n`;
@@ -807,6 +834,8 @@ export default {
         fs.mkdirSync(path.join(data, "src", "views"));
         fs.mkdirSync(path.join(data, "src", "router"));
         fs.mkdirSync(path.join(data, "src", "store"));
+        fs.mkdirSync(path.join(data, "test-templates"));
+        fs.mkdirSync(path.join(data, "test-templates", "components"));
       }
       // creating basic boilerplate for vue app
       this.createIndexFile(data);
@@ -849,6 +878,9 @@ export default {
               componentName,
               this.componentMap
             );
+            this.createComponentTestCode(path.join(data, "test-templates", "components", componentName + '.spec.js'),
+              componentName,
+              this.componentMap)
           }
           // if componentName is App
         } else {

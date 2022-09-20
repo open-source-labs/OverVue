@@ -44,6 +44,7 @@ export default {
       // 'routes'
     ]),
     options() {
+      console.log(this.routes);
       return this.routes[this.activeRoute].map(
         (component) => component.componentName
       );
@@ -53,6 +54,7 @@ export default {
     ...mapActions(["parentSelected", "setActiveComponent"]),
     selectParent(value) {
       this.parentSelected(value);
+      this.$emit("addparent", value);
     },
     // when multiselect is opened activeComponent is deselected to allow for parentSelected action
     resetActiveComponent() {

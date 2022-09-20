@@ -8,11 +8,34 @@ Description:
 <template>
   <div class="create-component-div drawer-menu">
 
-    <q-expansion-item group="accordion" label="Create Component" >
-      <ImportLibraryButton></ImportLibraryButton>
+    <form class="create-component-form" v-on:submit.prevent="createComponent">
+        <!-- will render if creating new component -->
+        <q-input
+          v-if="activeComponent === ''"
+          v-on:keyup.delete.stop
+          v-model="componentNameInputValue"
+          label="Set component name *"
+          color="white"
+          dark
+          dense
+          outlined
+          item-aligned
+          padding="5px"
+          class="input-add"
+          no-error-icon
+          reactive-rules
+          :rules="[ val => val.length != 0 || 'Please set a component name', val => !Object.keys(this.componentMap).includes(val) || 'A component/route with this name already exists' ]"
+        ></q-input>
+      </form>
+
+      <ParentMultiselect 
+      @addparent="parent = $event"
+      v-if="activeComponent === ''"></ParentMultiselect>
+
+    <!-- <q-expansion-item group="accordion" label="Create Component" > -->
       <LibComponents></LibComponents>
 <div class="searchinput">
-      <q-input v-if ="this.$store.state.displaylibComponent" outlined v-model="input" placeholder="Please input" label="Search Component"
+      <q-input v-if ="this.$store.state.displaylibComponent" outlined v-model="input" placeholder="Please input" label="Search Element+ Components"
 
       color="white"
           dark
@@ -35,32 +58,7 @@ Description:
 
         </q-tooltip>
       </q-item>
-
-
-
     </q-list>
-
-      <form class="create-component-form" v-on:submit.prevent="createComponent">
-        <!-- will render if creating new component -->
-        <q-input
-          v-if="activeComponent === ''"
-          v-on:keyup.delete.stop
-          v-model="componentNameInputValue"
-          label="Set component name *"
-          color="white"
-          dark
-          dense
-          outlined
-          item-aligned
-          padding="5px"
-          class="input-add"
-          no-error-icon
-          reactive-rules
-          :rules="[ val => val.length != 0 || 'Please set a component name', val => !Object.keys(this.componentMap).includes(val) || 'A component/route with this name already exists' ]"
-        ></q-input>
-      </form>
-
-      <ParentMultiselect v-if="activeComponent === ''"></ParentMultiselect>
 
       <div class="subsection">Elements/Components</div>
       <div class="icon-container">
@@ -89,7 +87,7 @@ Description:
         :disabled="!componentNameInputValue.trim() || Object.keys(this.componentMap).includes(componentNameInputValue.trim())"
       />
 
-    </q-expansion-item>
+    <!-- </q-expansion-item> -->
   </div>
 </template>
 
@@ -108,6 +106,7 @@ export default {
   data(){
     return {
       input:'',
+      parent: '',
       libArray:[
         {
           name:'alert',
@@ -200,7 +199,7 @@ export default {
       "userActions",
       "userState",
       "userProps",
-
+      "routes",
     ]),
     componentNameInputValue: {
       get() {
@@ -245,11 +244,13 @@ pickComponent(componentName){
   this.addLibComponents(payload);
 
 }
-
    ,
-
     createComponent() {
-      useCreateComponent.bind(this)({}) //invokes composable
+      // need to find a dynamic solution to pull current route, here set to HomeView
+      // Parses array of components off routes, then finds parent element name (id), then passes parent into useCreateComponent, where x, y and z are pulled off the parent object
+      const parent = JSON.parse(
+      JSON.stringify(this.routes.HomeView)).find((ele) => ele.componentName === this.parent);
+      useCreateComponent.bind(this)({ parent }) //invokes composable
     },
   },
     watch: {
@@ -275,7 +276,6 @@ pickComponent(componentName){
     justify-content: flex-start;
     align-items: stretch;
     padding: -20px;
-    margin-right: 10px;
   }
   .subsection {
     border-top: 1px solid rgba(245, 245, 245, 0.3);
