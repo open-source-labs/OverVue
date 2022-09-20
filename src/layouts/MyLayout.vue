@@ -67,6 +67,20 @@ Description:
                 <span class="switch-handle" :value="this.exportAsTypescript"></span>
               </label>
              </div>
+
+             <div class="Test">
+             <p class="Test-text"> <b>
+         Vue Test:
+
+             </b> </p>
+              <label for="Test"  class="switch" >
+              <input v-if="this.importTest === 'on'" class="switch-input" type="checkbox" name="Test" id="Test" :value="this.importTest" @change="syncTestFlag" checked/>
+              <input v-else class="switch-input" type="checkbox" name="Test" id="Test" :value="this.importTest" @change="syncTestFlag"/>
+                <span class="switch-label" :value="this.importTest" data-on="on" data-off="off"></span>
+                <span class="switch-handle" :value="this.importTest"></span>
+              </label>
+             </div>
+
              <div class="drawer">
              <q-expansion-item group="accordion" label="Create Oauth" >
              <div class="Oauth">
@@ -95,6 +109,7 @@ Description:
               </label>
              </div>
              </q-expansion-item>
+
             </div>
           </div>
           <i id="btn"></i>
@@ -212,7 +227,7 @@ export default {
     GridDensity
   },
   computed: {
-    ...mapState(["exportAsTypescript","exportOauth","exportOauthGithub"]),
+    ...mapState(["exportAsTypescript","exportOauth","exportOauthGithub","importTest"]),
   },
   methods: {
     ...mapActions(["toggleTutorial"]),
@@ -267,6 +282,19 @@ export default {
       }
       this.$store.commit("EXPORT_AS_TYPESCRIPT", checkboxValue);
     },
+    syncTestFlag(e) {
+      console.log(this.$store.state.importTest )
+
+let checkboxValue;
+if (e.target.value === "off") {
+  checkboxValue = "on";
+} else {
+  checkboxValue = "off";
+}
+this.$store.commit("EXPORT_TEST", checkboxValue);
+console.log(this.$store.state.importTest )
+
+},
     syncOauthFlag(e) {
 
       let checkboxValue;
@@ -627,5 +655,16 @@ q-btn > i {
 
   margin-left: 25px;
 
+}
+.Test{
+
+  display: flex;
+  align-items: flex-end;
+  margin: 10px;
+  flex-direction: row;
+
+}
+.Test-text{
+  margin-right: 10px;
 }
 </style>

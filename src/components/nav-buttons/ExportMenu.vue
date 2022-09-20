@@ -311,7 +311,7 @@ export default {
         }
       }
       else {
-        if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){return `<template>\n\t${str}${templateTagStr}${routeStr}</div>\n<Oauth/>\n</template>`}
+
         return `<template>\n\t${str}${templateTagStr}${routeStr}</div>\n</template>`
       }
     },
@@ -506,6 +506,25 @@ export default {
       str += `\nexport default firebaseApp`;
 
       fs.writeFileSync(path.join(location, "firebaseConfig.js"), str);
+      }
+    },
+
+    createjestConfigFile(location){
+      if(this.$store.state.importTest ==='on'){
+      let str = `module.exports = {`;
+        str += `\n\tpreset: '@vue/cli-plugin-unit-jest'`;
+        str += `\n}`
+      fs.writeFileSync(path.join(location,"jest.config.js"), str);
+      }
+    },
+    createbabelConfigFile(location){
+      if(this.$store.state.importTest ==='on'){
+      let str = `module.exports = {`;
+        str += `\n\tpresets: [`;
+        str += `\n\t\t'@vue/cli-plugin-babel/preset'`;
+        str += `\n\t]`;
+        str += `\n}`
+      fs.writeFileSync(path.join(location,"babel.config.js"), str);
       }
     },
     createOauthFile(location){
@@ -784,6 +803,18 @@ export default {
       str += `\n\t\t"eslint": "^8.5.0",`;
       str += `\n\t\t"eslint-plugin-vue": "^8.2.0",`;
       str += `\n\t\t"vite": "^2.8.4"`
+      if(this.$store.state.importTest ==='on'){
+      str+=`,\n\t\t"@babel/core": "^7.12.16",`
+      str+=`\n\t\t"@babel/eslint-parser": "^7.12.16",`
+      str+=`\n\t\t"@vue/cli-plugin-babel": "~5.0.0",`
+      str+=`\n\t\t"@vue/cli-plugin-eslint": "~5.0.0",`
+      str+=`\n\t\t"@vue/cli-plugin-unit-jest": "~5.0.0",`
+      str+=`\n\t\t"@vue/cli-service": "~5.0.0",`
+      str+=`\n\t\t"@vue/test-utils": "^2.0.0-0",`
+      str+=`\n\t\t"@vue/vue3-jest": "^27.0.0-alpha.1",`
+      str+=`\n\t\t"babel-jest": "^27.0.6",`
+      str+=`\n\t\t"jest": "^27.0.5"`
+      }
       if (this.exportAsTypescript === "on") {
         str += `,\n\t\t"@rushstack/eslint-patch": "^1.1.0",`
         str += `\n\t\t"@vue/tsconfig": "^0.1.3",`;
@@ -819,6 +850,8 @@ export default {
       this.createStore(data);
       this.createFirebaseConfigFile(data);
       this.createOauthFile(data);
+      this.createjestConfigFile(data);
+      this.createbabelConfigFile(data)
       // exports images to the /assets folder
       // eslint-disable-next-line no-unused-vars
       for (let [routeImage, imageLocation] of Object.entries(this.imagePath)) {

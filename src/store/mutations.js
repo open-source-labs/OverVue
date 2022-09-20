@@ -116,6 +116,9 @@ const mutations = {
   [types.EXPORT_OAUTH_GIT]: (state, payload) => {
     state.exportOauthGithub = payload;
   },
+  [types.EXPORT_TEST]: (state, payload) => {
+    state.importTest = payload;
+  },
 
   [types.CREATE_ACTION]: (state, payload) => {
     state.userActions.push(payload);

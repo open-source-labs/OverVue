@@ -72,7 +72,8 @@ const newState :types.State = {
   containerH: 720, // in px
   containerW: 1280, // in px
   importLibraries:[],
-  displaylibComponent:false
+  displaylibComponent:false,
+  importTest:'off'
   //push libraries string to the array
 };
 
