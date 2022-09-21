@@ -1,16 +1,16 @@
+import { openHtmlElementMap } from "src/store/state/htmlElementMap";
 export function useExportComponent() {
-    // OVERVUE 6.0: export active component 
+    // OVERVUE 8.0: export active component
     /**
      * @description: makes files, directories and boilerplate when exporting a single Vue component
-     * 
+     *
      * @param: none -- uses this.activeComponent from state to create file
      * @return: none -- outputs file to fs
-     * 
+     *
      */
-    
-      const showExportComponentDialog = () => {
-        ipcRenderer
-        .invoke("exportComponent", {
+
+      const exportComponent = () => {
+        ipcRenderer.invoke("exportComponent", {
           title: "Choose location to save folder in",
           message: "Choose location to save folder in",
           nameFieldLabel: "Component Name",
@@ -18,12 +18,12 @@ export function useExportComponent() {
         .then((result) => exportComponentFile(result.filePath))
         .catch((err) => console.log(err));
       }
-      
+
       /**
        * @description: creates component code <template>, <script>, <style>
        * invokes writeTemplate, writeScript, writeStyle
        */
-      
+
       const createComponentCode = (componentLocation, componentName, children) => {
         fs.writeFileSync(
           componentLocation + ".vue",
@@ -57,7 +57,59 @@ export function useExportComponent() {
           h4: ["<h4", "</h4>"],
           h5: ["<h5", "</h5>"],
           h6: ["<h6", "</h6>"],
-        };
+          'e-button':[`<el-button type="info"`,`</el-button>`],
+          'e-input':["<el-input", "</el-input>"],
+          'e-link': [`<el-link type="primary">primary</el-link>
+          <el-link type="success">success</el-link>
+          <el-link type="info">info</el-link>
+          <el-link type="warning">warning</el-link>
+          <el-link type="danger"`, `danger</el-link>`],
+          'e-form': ["<el-form", "</el-form>"],
+          'e-checkbox': ["<el-checkbox", "</el-checkbox>"],
+          'e-checkbox-button': ["<el-checkbox-button", "</el-checkbox-button>"],
+          'e-date-picker': ["<el-date-picker", "</el-date-picker>"],
+          'e-slider':["<el-slider", "</el-slider>"],
+          'e-card': ["<el-card", "</el-card>"],
+          'e-alert': [`<el-alert title="success alert" type="success"></el-alert>
+          <el-alert title="info alert" type="info"></el-alert>
+          <el-alert title="warning alert" type="warning"></el-alert>
+          <el-alert title="danger alert" type="danger"`, `</el-alert>`],
+          'e-dropdown': [ `<el-dropdown split-button type="primary" @click="handleClick">
+          Dropdown List
+          <template #dropdown>
+           <el-dropdown-menu>
+            <el-dropdown-item>
+            Action 1
+          </el-dropdown-item>
+          <el-dropdown-item>
+          Action 2
+        </el-dropdown-item>
+          </el-dropdown-menu>
+          </template`, `
+          </el-dropdown>`],
+          'e-tag': [`<el-tag>Tag 1</el-tag>
+     <el-tag class="ml-2" type="success">Tag 2</el-tag>
+     <el-tag class="ml-2" type="info">Tag 3</el-tag>
+     <el-tag class="ml-2" type="warning">Tag 4</el-tag>
+     <el-tag class="ml-2" type="danger"`, `Tag 5</el-tag>`],
+
+     'e-badge': [`<el-badge :value="12" class="item">
+     <el-button>comments</el-button>
+   </el-badge>
+   <el-badge :value="3" class="item">
+     <el-button>replies</el-button>
+   </el-badge>
+   <el-badge :value="1" class="item" type="primary">
+     <el-button>comments</el-button>
+   </el-badge>
+   <el-badge :value="2" class="item" type="warning">
+     <el-button>replies</el-button`,
+     `
+     </el-badge>`],
+        }
+
+
+
         // function to loop through nested elements
         const writeNested = (childrenArray, indent) => {
           if (!childrenArray.length) {
@@ -65,13 +117,13 @@ export function useExportComponent() {
           }
           let indented = indent + "  ";
           let nestedString = "";
-  
+
           childrenArray.forEach((child) => {
             nestedString += indented;
             if (!child.text) {
               nestedString += `<${child}/>\n`;
             } else {
-              nestedString += htmlElementMap[child.text][0];
+              nestedString += openHtmlElementMap[child.text][0];
               if (child.class !== "") {
                 nestedString += " " + "class = " + `"${child.class}"`;
               }
@@ -81,14 +133,14 @@ export function useExportComponent() {
               if (child.text === "img" || child.text === "input" || child.text === "link") {
                 nestedString += "/>";
               } else { nestedString += ">"; }
-  
+
               if (child.children.length) {
                 nestedString += "\n";
                 nestedString += writeNested(child.children, indented);
-                nestedString += indented + htmlElementMap[child.text][1];
+                nestedString += indented + openHtmlElementMap[child.text][1];
                 nestedString += "\n";
               } else {
-                nestedString += htmlElementMap[child.text][1] + "\n";
+                nestedString += openHtmlElementMap[child.text][1] + "\n";
               }
             }
           });
@@ -103,7 +155,7 @@ export function useExportComponent() {
           outputStr += `    <${el}/>\n`;
         } else {
           outputStr += `    `;
-          outputStr += htmlElementMap[el.text][0]
+          outputStr += openHtmlElementMap[el.text][0]
           //if conditional to check class
           if (el.class !== "") {
             outputStr += " " + "class = " + `"${el.class}"`;
@@ -116,10 +168,10 @@ export function useExportComponent() {
             outputStr += "\n";
             outputStr += writeNested(el.children, `    `);
             outputStr += `    `;
-            outputStr += htmlElementMap[el.text][1];
+            outputStr += openHtmlElementMap[el.text][1];
             outputStr += `  \n`;
           } else {
-            outputStr += htmlElementMap[el.text][1] + "\n";
+            outputStr += openHtmlElementMap[el.text][1] + "\n";
           }
         }
       }
@@ -155,7 +207,7 @@ export function useExportComponent() {
           return `<template>\n  <div class = "${this.componentMap[componentName].htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
       } else if (this.componentMap[componentName].htmlAttributes.class === "" && this.componentMap[componentName].htmlAttributes.id !== "")
       return `<template>\n  <div id = "${this.componentMap[componentName].htmlAttributes.id}">\n${templateTagStr}  </div>\n</template>`;
-        else return `<template>\n  <div>\n${templateTagStr}  </div>\n</template>`;
+        else return `<template>\n <div>\n${templateTagStr}  </div>\n</template>`;
       }
 
       /**
@@ -206,7 +258,7 @@ export function useExportComponent() {
           data += "\n";
           data += "    }\n";
           data += "  },\n";
-        
+
         // if true add computed section and populate with state
         let computed = "";
         if (currentComponent.state.length) {
@@ -270,10 +322,10 @@ height: ${element.h}px;
 z-index: ${element.z};
 }\n`
           }
-        }) 
-          
-        
-  
+        })
+
+
+
 
 
         for (const html of htmlArray) {
@@ -303,5 +355,5 @@ z-index: ${html.z};
           this.componentMap[this.activeComponent].children
         );
       }
-      showExportComponentDialog();
+      exportComponent();
   }

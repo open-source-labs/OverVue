@@ -50,7 +50,7 @@ Description:
         <q-expansion-item group="accordion" label="HTML Elements">
           <div class="icon-container">
             <Icons
-              v-model="attributeModal" 
+              v-model="attributeModal"
               v-if="attributeModal === false"
               class="icons"
               @getClickedIcon="addToSelectedElementList"
@@ -59,7 +59,9 @@ Description:
               @activeLayer="addNestedNoActive"
             />
           </div>
+          
           <div class="componentHTML">
+
             <HTMLQueue></HTMLQueue>
           </div>
           <br />
@@ -106,8 +108,15 @@ Description:
         <q-expansion-item group="accordion" label="Actions">
           <ActionsSubMenu />
         </q-expansion-item>
-        
+
       </q-list>
+      <q-btn
+        id="create-component-btn"
+        class="sidebar-btn"
+        color="secondary"
+        label="Done"
+        @click="resetActiveComponent"
+      />
       <q-btn
         id="exportButton"
         class="sidebar-btn"
@@ -121,7 +130,7 @@ Description:
         label="Delete currently selected"
       />
      </q-expansion-item>
-     </q-card>  
+     </q-card>
     </div>
   </div>
 </template>
@@ -173,8 +182,9 @@ export default {
       "componentMap",
       "exportAsTypescript",
       'attributeModalOpen',
+      
     ]),
-    
+
     activeRouteDisplay() {
       let component = this.routes[this.activeRoute];
       return component;
@@ -217,7 +227,7 @@ export default {
           }
         })
       }
-      const optionOutput = val.filter(el => !parentalLineage.includes(el)).filter(el => el !== this.activeComponent); 
+      const optionOutput = val.filter(el => !parentalLineage.includes(el)).filter(el => el !== this.activeComponent);
       return optionOutput;
     },
 
@@ -327,7 +337,7 @@ export default {
   background-color: $subprimary;
   color: $menutext;
   border: 1px solid $subprimary;
-  margin-bottom: 20px; 
+  margin-bottom: 20px;
   padding: 0;
 }
 
@@ -416,7 +426,7 @@ p {
   margin-bottom: 30px;
 }
 
-#exportButton {
+#exportButton, #create-component-btn {
   background-color: $secondary;
   color: $menutext;
   width: 100%;

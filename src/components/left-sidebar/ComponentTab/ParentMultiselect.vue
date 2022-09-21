@@ -53,6 +53,7 @@ export default {
     ...mapActions(["parentSelected", "setActiveComponent"]),
     selectParent(value) {
       this.parentSelected(value);
+      this.$emit("addparent", value);
     },
     // when multiselect is opened activeComponent is deselected to allow for parentSelected action
     resetActiveComponent() {
@@ -74,6 +75,10 @@ export default {
 
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>
 <style scoped lang="scss">
+
+.parent-select{
+  margin-right: 20px;
+}
   :global(.multiselect__tags) {
     background-color: $subprimary;
     border: 1px solid rgb(180, 180, 180);

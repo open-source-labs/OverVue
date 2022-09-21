@@ -1,6 +1,8 @@
 {
+  "extends": "@quasar/app/tsconfig-preset",
   "compilerOptions": {
     "baseUrl": ".",
+    "jsx": "preserve",
     "paths": {
       "src/*": [
         "src/*"
@@ -28,6 +30,10 @@
       ]
     }
   },
+  "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    // See <https://github.com/vuejs/vue-cli/pull/5688>
+    "skipLibCheck": true,
   "exclude": [
     "dist",
     ".quasar",

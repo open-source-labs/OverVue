@@ -78,7 +78,7 @@ Description:
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
-    <q-card id="blank-card" v-else>Select a component to show details</q-card>
+    <q-card id="blank-card" v-else>Create or Select a Component to See Details</q-card>
   </div>
 </template>
 

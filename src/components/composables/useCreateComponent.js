@@ -1,6 +1,8 @@
+// import * as ElementPlus from '../../../node_modules/element-plus/es/components' // importing all components from Element Plus with install wrappers
+
 export function useCreateComponent(importObj) {
   const createComponent = (importObj) => {
-    let imported = false;
+    let imported = false; //alter this logic once ready to import components
     if (importObj.hasOwnProperty('componentName')) {
       imported = true;
       //Check if state and actions on import exist in the store. If not, add them.
@@ -25,14 +27,11 @@ export function useCreateComponent(importObj) {
       event.preventDefault();
       return false;
     }
-
     // boilerplate properties for each component upon creation
     const component = {
-      x: 0,
-      y: 20,
-      z: 0,
-      w: 200,
-      h: 200,
+      x: importObj?.parent?.x ?? 0,
+      y: importObj?.parent?.y ?? 0,
+      z: importObj?.parent?.z ?? 0,
       htmlList: this.selectedElementList,
       noteList: [],
       children: [],
@@ -46,8 +45,9 @@ export function useCreateComponent(importObj) {
       color: "#ffffff85",
       htmlAttributes: {
         class: "",
-        id: ""
-      }
+        id: "",
+        gridArea: [0, 0, 2, 2],
+      },
     };
 
     if (imported === true) {
@@ -65,4 +65,5 @@ export function useCreateComponent(importObj) {
     }
   }
   createComponent(importObj)
+
 }

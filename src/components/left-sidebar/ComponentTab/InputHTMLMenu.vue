@@ -4,7 +4,7 @@
   <div class="AttributeBox">
     <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList"
       :key="element.id + Date.now()">
-      <p v-if="element.id === this.activeHTML" class="title">Your class {{ element.class.length !== 0 ? 'is ' + element.class : 'has not been stated yet' }}</p>    
+      <p v-if="element.id === this.activeHTML" class="title">Your class {{ element.class.length !== 0 ? 'is ' + element.class : 'has not been stated yet' }}</p>
     </div>
       <q-form autofocus v-on:submit.prevent="submitClass">
         <q-input label="Add/Change your class name" filled dark autofocus true hide-bottom-space v-model="classText"
@@ -21,7 +21,7 @@
             :disable="bindingText.length > 0 ? false : true" @click.self="addBinding(bindingText, this.activeHTML)">
           </i>
         </q-input>
-      </q-form>  
+      </q-form>
     <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList"
       :key="element.id + Date.now()">
       <div v-if="exceptions.includes(element.text) && element.id === this.activeHTML">
@@ -32,7 +32,7 @@
             </i>
           </q-input>
         </q-form>
-        <p class="title">Adjust Height and Elevation:</p> 
+        <p class="title">Adjust Height and Elevation:</p>
         <q-form autofocus v-on:submit.prevent="submitHeight">
           <q-slider
             v-model="heightText"
@@ -46,7 +46,7 @@
             color="secondary"
             @change="submitHeight(heightText, this.activeHTML)"
             @update:model-value="submitHeight(heightText, this.activeHTML)"
-            style="float: left; margin-left: 5% " 
+            style="float: left; margin-left: 5% "
           />
         </q-form>
         <q-form autofocus v-on:submit.prevent="submitTop">
@@ -157,7 +157,7 @@ import { mapState, mapActions } from 'vuex'
 export default {
   data () {
     return {
-      exceptions: ['div','button','form','img','list','paragraph','list-ol','list-ul','input','h1','h2','h3','h4','h5','h6'],
+      exceptions: ['div','button','form','img','list','paragraph','list-ol','list-ul','input','h1','h2','h3','h4','h5','h6','e-button','e-input','e-link', 'e-form', 'e-checkbox', 'e-checkbox-button', 'e-date-picker', 'e-slider', 'e-card','e-alert','e-dropdown'],
       attributeModal : "false",
       classText: '',
       heightText: '',
@@ -187,11 +187,11 @@ export default {
   computed: {
     ...mapState([
       'activeComponent',
-      'selectedElementList', 
-      'componentMap', 
-      'activeComponent', 
-      'activeHTML', 
-      'activeLayer', 
+      'selectedElementList',
+      'componentMap',
+      'activeComponent',
+      'activeHTML',
+      'activeLayer',
       'attributeModalOpen',
       'activeRoute',
       'routes',
@@ -206,7 +206,7 @@ export default {
     ...mapActions([
       'setActiveHTML',
       'setActiveLayer',
-      'openAttributeModal', 
+      'openAttributeModal',
       'addActiveComponentClass',
       'addActiveComponentElementNote',
       'addActiveComponentHeight',
@@ -360,7 +360,7 @@ export default {
   margin-top: 2em;
   margin-bottom: 2em;
   width: 100%;
-} 
+}
 
 .minorAction {
   margin-right:5px;

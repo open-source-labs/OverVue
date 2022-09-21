@@ -7,13 +7,13 @@ Description:
 <template>
     <q-btn class="nav-btn" color="secondary" label="Import">
     <q-menu :offset="[0, 15]" class="dropdown">
-      <div class="column items-center"> 
+      <div class="column items-center">
       <p class="center">Import:</p>
       <q-btn class="menu-btn" no-caps color="secondary" label="Project JSON" @click="openProjectJSON"/>
       <ImportComponent class="import-comp menu-btn" no-caps title="Vue Component (coming soon)" :disable = "true"/>
       </div>
     </q-menu>
-  
+
   </q-btn>
 </template>
 
