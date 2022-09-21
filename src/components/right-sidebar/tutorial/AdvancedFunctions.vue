@@ -3,7 +3,7 @@
     <section id="advancedFunctions">
       <h6 class="tutorialHeading">Advanced Functionality</h6>
       <h class="tutorial-sub-heading">Importing an existing component</h>
-      <p class="tutorialContent">To import an existing Vue component file, open the Import Component sub-menu in the left sidebar and click 'Import Component'.
+      <p class="tutorialContent">To import an existing Vue component file, click the import button in the upper right hand corner. Please note: this feature is specifically intended for import of json files saved in-app. Import of other file formats is not currently supported.
       </p>
       <h class="tutorial-sub-heading">Adding Props</h>
       <img alt="Props sub-menu" src="../../../assets/props.png" class="tut-screenshot">
@@ -26,7 +26,7 @@
         class="tut-btn"
         id="getstarted-btn"
         color="secondary"
-        label="Get Started with OverVue"
+        label="Get Started Now"
         @click="toggleTutorial"
       />
     </section>
