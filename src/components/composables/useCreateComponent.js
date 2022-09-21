@@ -28,8 +28,6 @@ export function useCreateComponent(importObj) {
       return false;
     }
     // boilerplate properties for each component upon creation
-    console.log(importObj.parent);
-    console.log({ y: importObj?.parent?.y })
     const component = {
       x: importObj?.parent?.x ?? 0,
       y: importObj?.parent?.y ?? 0,
@@ -68,9 +66,4 @@ export function useCreateComponent(importObj) {
   }
   createComponent(importObj)
 
-  // console logging all components from Element Plus to determine shape of data and investigate structure of components
-  // console.log(ElementPlus)
-    // components all within giant object
 }
-
-//
