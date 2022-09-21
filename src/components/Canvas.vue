@@ -12,9 +12,9 @@
       ${gridWidth}px ${gridHeight}px`, 
       'height': `${this.containerH}px`, 'width': `${this.containerW}px` 
     }">
-    <p class="cssContainerText"> {{this.activeRoute}} Preview </p>
     <!-- This is the actual component box -->
     <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
+    <p class="cssContainerText"> {{this.activeRoute}} Preview </p>
     <!--each component box in canvas will have these properties-->
     <vue-draggable-resizable
       class-name="component-box"
@@ -467,7 +467,7 @@ export default {
     // find the amount of grid lines for width
     gridWidth() {
       return this.containerW / this.gridLayout[0];
-    }, 
+    },
     // find the amount of grid lines for height
     gridHeight() {
       return this.containerH / this.gridLayout[1];
@@ -880,11 +880,15 @@ behavior: url(/pie/PIE.htc);
 }
 
 .cssContainerText {
-  display: flex;
-  justify-content: center;
-  align-content: center;
+  // display: flex;
+  // justify-content: center;
+  // align-content: center;
+  position: absolute;
+  text-align: center;
   font-size: 3em;
+  margin: 0px;
   margin-top: -4%;
+  width:80%;
   color: black;
 }
 

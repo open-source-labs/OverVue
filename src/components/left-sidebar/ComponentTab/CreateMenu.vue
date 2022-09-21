@@ -28,15 +28,16 @@ Description:
         ></q-input>
       </form>
 
-      <ParentMultiselect 
+      <ParentMultiselect
       @addparent="parent = $event"
       v-if="activeComponent === ''"></ParentMultiselect>
 
     <!-- <q-expansion-item group="accordion" label="Create Component" > -->
       <LibComponents></LibComponents>
 <div class="searchinput">
-      <q-input outlined v-model="input" placeholder="Please input" label="Search Element+ Components"
 
+      <q-input outlined v-model="input" placeholder="Please input" label="Search Element+ Components"
+      id="searchbox"
       color="white"
           dark
           dense
@@ -45,6 +46,7 @@ Description:
           class="input-add"
           no-error-icon
       />
+
     </div>
 
 
@@ -308,8 +310,11 @@ pickComponent(componentName){
     max-width: 600px;
   }
   .searchinput{
-    margin-right: 10px;
+    
+    width: 260px;
+
   }
+
 
 
 </style>
