@@ -111,6 +111,13 @@ Description:
 
       </q-list>
       <q-btn
+        id="create-component-btn"
+        class="sidebar-btn"
+        color="secondary"
+        label="Done"
+        @click="resetActiveComponent"
+      />
+      <q-btn
         id="exportButton"
         class="sidebar-btn"
         @click="useExportComponentBound"
@@ -175,6 +182,7 @@ export default {
       "componentMap",
       "exportAsTypescript",
       'attributeModalOpen',
+      
     ]),
 
     activeRouteDisplay() {
@@ -418,7 +426,7 @@ p {
   margin-bottom: 30px;
 }
 
-#exportButton {
+#exportButton, #create-component-btn {
   background-color: $secondary;
   color: $menutext;
   width: 100%;

@@ -38,7 +38,7 @@
       deleted.)
     </p>
     <img alt="Routes tab" src="../../../assets/routes.png" class="tut-screenshot">
-    <h class="tutorial-sub-heading">Uploading mockups</h>
+    <!-- <h class="tutorial-sub-heading">Uploading mockups</h>
     <p class="tutorialContent">You can upload a design mockup in the Routes tab of the right sidebar menu (one mockup
       per route). Select the route in the Routes tab, open the ‘Upload Mockup’ sub-menu and click ‘Upload Mockup’. To
       clear the image, click the ‘Clear Image’ button.
@@ -48,7 +48,7 @@
     <p class="tutorialContent">You can find a visualization of your app hierarchy in the Project Tree tab of the right
       sidebar. Routes are blue, components are green. You can also navigate to a component or route by clicking on it in
       the project tree.
-    </p>
+    </p> -->
     <img alt="Project Tree" src="../../../assets/project-tree.png" class="tut-screenshot">
     <h class="tutorial-sub-heading">Component Details</h>
     <p class="tutorialContent">Under the component details tab, you can access details about the active/selected

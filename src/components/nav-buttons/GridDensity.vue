@@ -5,7 +5,7 @@ Description:
 -->
 <template>
   <div id="gridDensity">
-    <q-btn-dropdown class="q-btn" color="purple" label="Width">
+    <q-btn-dropdown class="q-btn" color="secondary" label="Width">
       <q-list>
         <q-item clickable v-close-popup @click="pickGridDensity('width', 5)">
           <q-item-section>
@@ -38,7 +38,7 @@ Description:
         </q-item>
       </q-list>
     </q-btn-dropdown>
-    <q-btn-dropdown color="purple" label="Height">
+    <q-btn-dropdown color="secondary" label="Height">
       <q-list>
         <q-item clickable v-close-popup @click="pickGridDensity('height', 5)">
           <q-item-section>
@@ -105,7 +105,7 @@ Description:
   margin-left: 15px;
 }
 .q-btn {
-  padding: 5px 20px;
+  padding: 0px 20px;
   margin-right: 15px;
 }
 .q-expansion-item {

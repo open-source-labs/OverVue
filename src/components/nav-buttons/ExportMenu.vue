@@ -23,6 +23,7 @@ import { mapState } from "vuex";
 const { fs, ipcRenderer } = window;
 
 import writeNested from "../../mixins/writeNested";
+import { result } from "lodash";
 
 
 export default {
@@ -104,6 +105,32 @@ export default {
      * @description: creates component code <template>, <script>, <style>
      * invokes writeTemplate, writeScript, writeStyle
      */
+
+    writeRenderUnitTestString(componentName, htmlList) {
+
+      const imports = `import { mount } from '@vue/test-utils'
+import ${componentName} from '../../src/components/${componentName}.vue'
+`
+
+  const results = [imports];
+
+  for (const el of htmlList) {
+  const test = `
+test('renders ${componentName}', () => {
+  const wrapper = mount(${componentName})
+
+  // customize your tests here; for more info please visit: https://github.com/vuejs/test-utils/
+})`
+    results.push(test);
+  }
+
+  return results.reduce((acc, ele) => acc += ele, '');
+},
+
+    createComponentTestCode(componentLocation, componentName, componentMap) {
+      fs.writeFileSync(componentLocation, this.writeRenderUnitTestString(componentName, componentMap[componentName].htmlList))
+    },
+
     createComponentCode(componentLocation, componentName, children, routes) {
       if (componentName === "App") {
         fs.writeFileSync(
@@ -206,11 +233,11 @@ export default {
       let outputStr = ``;
       // eslint-disable-next-line no-unused-vars
       for (let el of htmlArr) {
-        if (!el.text) {
-          outputStr += `    <${el}/>\n`;
-        } else {
-          outputStr += `    `;
-          outputStr += htmlElementMap[el.text][0]
+          if (!el.text) {
+            outputStr += `    <${el}/>\n`;
+           } else {
+            outputStr += `    `;
+            outputStr += htmlElementMap[el.text][0];
           //if conditional to check class
           if (el.class !== "") {
             outputStr += " " + "class = " + `"${el.class}"`;
@@ -291,28 +318,27 @@ export default {
         if (compClass !== "" && compID !== "") {
 
           if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){
-            return `<template>\n  <div id = "${compID}" class = "${compClass}">\n${templateTagStr}${routeStr}  </div>\n<Oauth/>\n</template>`;
+            return `<template>\n  <div id = "${compID}" class = "${compClass}">\n${templateTagStr}${routeStr}  \n<Oauth/>\n\t</div>\n</template>`;
           }
-          return `<template>\n  <div id = "${compID}" class = "${compClass}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
+          return `<template>\n  <div id = "${compID}" class = "${compClass}">\n${templateTagStr}${routeStr}  \n\t</div>\n</template>`;
         }
         else if (compClass !== "" && compID === "") {
           if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){
-            return `<template>\n  <div class = "${compClass}">\n${templateTagStr}${routeStr}  </div>\n<Oauth/>\n</template>`;
+            return `<template>\n  <div class = "${compClass}">\n${templateTagStr}${routeStr}  \t<Oauth/>\n\t</div>\n</template>`;
           }
-          return `<template>\n  <div class = "${compClass}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
+          return `<template>\n  <div class = "${compClass}">\n${templateTagStr}${routeStr}  \n\t</div>\n</template>`;
         }
         else if (compClass === "" && compID !== "") {
-          if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){return `<template>\n  <div id = "${compID}">\n${templateTagStr}${routeStr}  </div>\n<Oauth/>\n</template>`;}
+          if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){return `<template>\n  <div id = "${compID}">\n${templateTagStr}${routeStr}\n<Oauth/>\n\t</div>\n</template>`;}
           return `<template>\n  <div id = "${compID}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
         }
         else {
-          if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){return `<template>\n  <div>\n\t${str}${templateTagStr}${routeStr}  </div>\n<Oauth/>\n</template>`;}
+          if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){return `<template>\n  <div>\n\t${str}${templateTagStr}${routeStr}\t<Oauth/> \n\t</div>\n</template>`;}
           return `<template>\n  <div>\n\t${str}${templateTagStr}${routeStr}  </div>\n</template>`;
         }
       }
       else {
-
-        return `<template>\n\t${str}${templateTagStr}${routeStr}</div>\n</template>`
+        return `<template>\n\t${str}${templateTagStr}${routeStr}\t</div>\n</template>`
       }
     },
     /**
@@ -486,10 +512,13 @@ export default {
 .router-view {
   margin:auto;
   background-color: gray;
+  height: 720px;
+  width: 1280px;
 }
 </style >`
     } else return `\n\n<style scoped>\n${styleString}</style >`;
     },
+    // create Firebase config for OAuth
     createFirebaseConfigFile(location) {
       if(this.$store.state.exportOauth ==='on'){
         let str = `import { initializeApp } from 'firebase/app';`;
@@ -640,20 +669,13 @@ export default {
       str += `\nimport store from './store'`
       str += `\nimport App from './App.vue';`;
       str += `\nimport router from './router';\n`;
-      if(this.$store.state.importLibraries.includes('element')){
-        str+= `\nimport ElementPlus from 'element-plus';`
-        str+=`\nimport 'element-plus/dist/index.css';`
-      };
+      str+= `\nimport ElementPlus from 'element-plus';`
+      str+=`\nimport 'element-plus/dist/index.css';`
       str += `\nconst app = createApp(App);`;
       str += `\napp.use(router);`;
       str += `\napp.use(store)`;
-      if(this.$store.state.importLibraries.includes('element')){
-        str+=`\napp.use(ElementPlus);`;
-      };
+      str+=`\napp.use(ElementPlus);`;
       str += `\napp.mount('#app');`;
-
-
-
 
       // if using typescript, export with .ts extension
       if (this.exportAsTypescript === "on") {
@@ -662,7 +684,6 @@ export default {
         fs.writeFileSync(path.join(location, "src", "main.js"), str);
       }
     },
-    // create babel file
     createViteConfig(location) {
       let str = `import { fileURLToPath, URL } from 'url';\n\n`;
       str += `import { defineConfig } from 'vite';\n`;
@@ -778,11 +799,19 @@ export default {
       str += `\n\t"scripts": {`;
       str += `\n\t\t"dev": "vite",`;
       if (this.exportAsTypescript === "on") {
+
         str += `\n\t\t"build": "vue-tsc --noEmit && vite build",`;
+        if(this.$store.state.importTest ==='on'){
+          str +=`\n\t\t"test:unit": "vue-cli-service test:unit",`
+        }
+
         str += `\n\t\t"typecheck": "vue-tsc --noEmit",`;
         str += `\n\t\t"lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",`;
       } else {
         str += `\n\t\t"build": "vite build",`;
+        if(this.$store.state.importTest ==='on'){
+          str +=`\n\t\t"test:unit": "vue-cli-service test:unit",`
+        }
         str += `\n\t\t"lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",`;
       }
       str += `\n\t\t"preview": "vite preview --port 5050"`;
@@ -791,9 +820,8 @@ export default {
       str += `\n\t\t"vue": "^3.2.31",`;
       str += `\n\t\t"vue-router": "^4.0.12",`;
       str += `\n\t\t"vuex": "^4.0.2"`;
-      if(this.$store.state.importLibraries.includes('element')){
-        str += `,\n\t\t"element-plus": "^2.2.16"`;
-      };
+      str += `,\n\t\t"element-plus": "^2.2.16"`;
+
       if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){
         str += `,\n\t\t "firebase": "^9.6.9"`
       }
@@ -837,6 +865,8 @@ export default {
         fs.mkdirSync(path.join(data, "src", "views"));
         fs.mkdirSync(path.join(data, "src", "router"));
         fs.mkdirSync(path.join(data, "src", "store"));
+        fs.mkdirSync(path.join(data, "tests"));
+        fs.mkdirSync(path.join(data, "tests", "unit"));
       }
       // creating basic boilerplate for vue app
       this.createIndexFile(data);
@@ -881,6 +911,9 @@ export default {
               componentName,
               this.componentMap
             );
+            this.createComponentTestCode(path.join(data, "tests", "unit", componentName + '.spec.js'),
+              componentName,
+              this.componentMap)
           }
           // if componentName is App
         } else {

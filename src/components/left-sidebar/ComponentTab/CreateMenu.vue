@@ -8,39 +8,7 @@ Description:
 <template>
   <div class="create-component-div drawer-menu">
 
-    <q-expansion-item group="accordion" label="Create Component" >
-      <ImportLibraryButton></ImportLibraryButton>
-      <LibComponents></LibComponents>
-<div class="searchinput">
-      <q-input v-if ="this.$store.state.displaylibComponent" outlined v-model="input" placeholder="Please input" label="Search Component"
-
-      color="white"
-          dark
-          dense
-          item-aligned
-          padding="5px"
-          class="input-add"
-          no-error-icon
-      />
-    </div>
-
-
-    <q-list bordered separator>
-      <q-item clickable v-ripple class="componentList"  v-for="(element,index) in filter" :key ="`${index}`"  @click="pickComponent(element.libname)">
-        <q-item-section style="font-size: large;">{{element.name}}</q-item-section>
-
-    <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
-          <img alt={{element.libname}}   :src="require(`../../../assets/${element.src}`)" id = {{element.libname}}>
-          <q-icon name="keyboard_arrow_right"/>
-
-        </q-tooltip>
-      </q-item>
-
-
-
-    </q-list>
-
-      <form class="create-component-form" v-on:submit.prevent="createComponent">
+    <form class="create-component-form" v-on:submit.prevent="createComponent">
         <!-- will render if creating new component -->
         <q-input
           v-if="activeComponent === ''"
@@ -60,7 +28,39 @@ Description:
         ></q-input>
       </form>
 
-      <ParentMultiselect v-if="activeComponent === ''"></ParentMultiselect>
+      <ParentMultiselect
+      @addparent="parent = $event"
+      v-if="activeComponent === ''"></ParentMultiselect>
+
+    <!-- <q-expansion-item group="accordion" label="Create Component" > -->
+      <LibComponents></LibComponents>
+<div class="searchinput">
+
+      <q-input outlined v-model="input" placeholder="Please input" label="Search Element+ Components"
+      id="searchbox"
+      color="white"
+          dark
+          dense
+          item-aligned
+          padding="5px"
+          class="input-add"
+          no-error-icon
+      />
+
+    </div>
+
+
+    <q-list bordered separator>
+      <q-item clickable v-ripple class="componentList"  v-for="(element,index) in filter" :key ="`${index}`"  @click="pickComponent(element.libname)">
+        <q-item-section style="font-size: large;">{{element.name}}</q-item-section>
+
+    <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
+          <img alt={{element.libname}}   :src="require(`../../../assets/${element.src}`)" id = {{element.libname}}>
+          <q-icon name="keyboard_arrow_right"/>
+
+        </q-tooltip>
+      </q-item>
+    </q-list>
 
       <div class="subsection">Elements/Components</div>
       <div class="icon-container">
@@ -89,7 +89,7 @@ Description:
         :disabled="!componentNameInputValue.trim() || Object.keys(this.componentMap).includes(componentNameInputValue.trim())"
       />
 
-    </q-expansion-item>
+    <!-- </q-expansion-item> -->
   </div>
 </template>
 
@@ -108,6 +108,7 @@ export default {
   data(){
     return {
       input:'',
+      parent: '',
       libArray:[
         {
           name:'alert',
@@ -200,7 +201,7 @@ export default {
       "userActions",
       "userState",
       "userProps",
-
+      "routes",
     ]),
     componentNameInputValue: {
       get() {
@@ -245,11 +246,13 @@ pickComponent(componentName){
   this.addLibComponents(payload);
 
 }
-
    ,
-
     createComponent() {
-      useCreateComponent.bind(this)({}) //invokes composable
+      // need to find a dynamic solution to pull current route, here set to HomeView
+      // Parses array of components off routes, then finds parent element name (id), then passes parent into useCreateComponent, where x, y and z are pulled off the parent object
+      const parent = JSON.parse(
+      JSON.stringify(this.routes.HomeView)).find((ele) => ele.componentName === this.parent);
+      useCreateComponent.bind(this)({ parent }) //invokes composable
     },
   },
     watch: {
@@ -275,7 +278,6 @@ pickComponent(componentName){
     justify-content: flex-start;
     align-items: stretch;
     padding: -20px;
-    margin-right: 10px;
   }
   .subsection {
     border-top: 1px solid rgba(245, 245, 245, 0.3);
@@ -308,8 +310,11 @@ pickComponent(componentName){
     max-width: 600px;
   }
   .searchinput{
-    margin-right: 10px;
+    
+    width: 260px;
+
   }
+
 
 
 </style>

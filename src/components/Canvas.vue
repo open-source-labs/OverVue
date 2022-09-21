@@ -40,7 +40,7 @@
     >
 
       <div class="component-title">
-        <p>{{ componentData.componentName }}</p>
+        <p>{{ componentData.componentName }}<span v-if="isElementPlus(componentData.htmlList)"> (Element+)</span></p>
       </div>
       <q-icon v-if="componentData.componentName === this.activeComponent"
         size="25px"
@@ -536,6 +536,10 @@ export default {
     //   this.initialPosition.x = this.activeComponentData.x;
     //   this.initialPosition.y = this.activeComponentData.y;
     // },
+    isElementPlus(htmlList) {
+      console.log(htmlList);
+      return htmlList.find(({ text }) => text[0] === 'e');
+    },
     //color change function
     updateColors(data) {
       let payload = {
@@ -643,6 +647,7 @@ export default {
 
     // renders modal with Update Children and Layer in it
     handleAddNotes() {
+      console.log(this.activeComponentData);
       if (this.wasDragged === false && this.activeComponent !== '') {
         this.openNoteModal();
       }
@@ -914,7 +919,7 @@ behavior: url(/pie/PIE.htc);
   position: absolute;
   font-size: 3em;
   margin-top: -4%;
-  margin-left: 23%;
+  margin-left: 29%;
   color: black;
 }
 
