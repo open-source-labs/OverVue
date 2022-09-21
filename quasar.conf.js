@@ -17,7 +17,7 @@ module.exports = configure(function (ctx) {
 
   return {
     // https://quasar.dev/quasar-cli/supporting-ts
-    supportTS: false,
+    supportTS: true,
 
     // https://quasar.dev/quasar-cli/prefetch-feature
     // preFetch: true,
@@ -81,6 +81,19 @@ module.exports = configure(function (ctx) {
         chain.plugin('eslint-webpack-plugin')
           .use(ESLintPlugin, [{ extensions: [ 'js', 'vue' ] }]);
 
+          chain.resolve.alias.set('child_process', false);// Added this
+          chain.resolve.alias.set('crypto', false);
+          chain.resolve.alias.set('fs', false);
+          chain.resolve.alias.set('http', false);
+          chain.resolve.alias.set('https', false);
+          chain.resolve.alias.set('os', false);
+          chain.resolve.alias.set('path', false);
+          chain.resolve.alias.set('stream', false);
+          chain.resolve.alias.set('tls', false);
+          chain.resolve.alias.set('tty', false);
+          chain.resolve.alias.set('url', false);
+          chain.resolve.alias.set('util', false);
+          chain.resolve.alias.set('zlib', false);
       },
     },
 
@@ -155,8 +168,8 @@ module.exports = configure(function (ctx) {
       },
 
       manifest: {
-        name: `OverVue6.0`,
-        short_name: `OverVue6.0`,
+        name: `OverVue8.0`,
+        short_name: `OverVue8.0`,
         description: `A Quasar Framework app`,
         display: "standalone",
         orientation: "portrait",
@@ -251,3 +264,4 @@ module.exports = configure(function (ctx) {
     },
   };
 });
+``

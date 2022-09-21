@@ -1,0 +1,45 @@
+"dependencies": {
+    "@quasar/extras": "^1.12.5", //quasar
+    "@ssthouse/vue3-tree-chart": "^0.2.3", //Vue D3 flow charts
+    "core-js": "^3.21.1", //javascript function library?
+    "dotenv": "^16.0.0", // loads environment variables .env
+    "electron-deeplink": "^1.0.9", //Electron
+    "fs-extra": "^10.0.0", //adds promise support in fs
+    "jest-cli": "^27.5.1", //TTD
+    "localforage": "^1.10.0", //promotes offline experience by using async storage (indexedDB or WebSQL)
+    "lodash.clonedeep": "^4.5.0", // library that adds array manipulation and a lot of javascript functions
+    "lodash.isequal": "^4.5.0",
+    "lodash.throttle": "^4.1.1",
+    "mousetrap": "^1.6.5", //keyboard shortcuts! Like ctrl-C
+    "node-gyp": "^8.4.1", //addon compiler for VS code?
+    "prismjs": "^1.27.0", //syntax hightlighting library
+    "quasar": "^2.5.5", //Vue that builds UIs
+    "quasar-dotenv": "^1.0.5", //deprecated?
+    "vue":"3.2.31",
+    "vue-router": "4.0.13",
+    "vue-draggable-resizable": "^2.3.0", //creates elements that are resizable/draggable
+    "vue-multiselect": "^3.0.0-alpha.2", //dropdown library?
+    "vue-prism-editor": "^2.0.0-alpha.2", //code editor that does syntax highlighting
+    "vue3-tree": "^0.11.0", //search filter library
+    "vued3tree": "^5.1.0", //vue components to display graphics based on D3.js
+    "vuex": "^4.0.2" //state management library
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.17.0",
+    "@quasar/app": "^3.3.3",
+    "@quasar/quasar-app-extension-testing-unit-jest": "^3.0.0-alpha.7",
+    "@vue/devtools": "^6.0.12",
+    "@vue/test-utils": "^2.0.0-rc.18",
+    "@vue/vue3-jest": "^27.0.0-alpha.4",
+    "electron": "^17.0.1",
+    "electron-builder": "^22.14.13",
+    "electron-is-dev": "^2.0.0",
+    "electron-packager": "^15.4.0",
+    "eslint": "^8.9.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-jest": "^26.1.1",
+    "eslint-plugin-vue": "^8.4.1",
+    "eslint-webpack-plugin": "^3.1.1"
+
+
+        "electron-deeplink": "^1.0.10",

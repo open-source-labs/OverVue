@@ -7,13 +7,13 @@ Description:
 <template>
     <q-btn class="nav-btn" color="secondary" label="Import">
     <q-menu :offset="[0, 15]" class="dropdown">
-      <div class="column items-center"> 
+      <div class="column items-center">
       <p class="center">Import:</p>
-      <q-btn class="menu-btn" no-caps color="secondary" label="Project JSON" @click="openProjectJSON"/> 
-      <ImportComponent class="import-comp menu-btn" no-caps title="Vue Component"/>
+      <q-btn class="menu-btn" no-caps color="secondary" label="Project JSON" @click="openProjectJSON"/>
+      <ImportComponent class="import-comp menu-btn" no-caps title="Vue Component (coming soon)" :disable = "true"/>
       </div>
     </q-menu>
-  
+
   </q-btn>
 </template>
 
@@ -69,13 +69,14 @@ export default {
   margin-right: 0.2rem;
 }
 .menu-btn{
-  width: 80%;
+  width: 70%;
   margin: 10px 0px;
-  max-height: 36px !important;
+  max-height: 50px !important;
 }
 
 .import-comp{
   width: 80% !important;
   margin: 10px 0 20px 0 !important;
 }
+
 </style>

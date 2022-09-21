@@ -12,14 +12,8 @@ Description:
       Select a component
     </div>
     <div v-else>{{ `${this.activeComponent}.vue` }}</div>
-    <prism-editor
-      v-model="code"
-      :highlight="highlighter"
-      line-numbers
-      class="my-editor"
-      readonly
-    />
-    </div>
+    <prism-editor v-model="code" :highlight="highlighter" line-numbers class="my-editor" readonly />
+  </div>
 </template>
 
 <script>
@@ -28,9 +22,12 @@ import { mapState } from "vuex";
 import { PrismEditor } from "vue-prism-editor";
 import "vue-prism-editor/dist/prismeditor.min.css";
 import { highlight, languages } from "prismjs/components/prism-core";
+import styleClassMap from '../../store/state/styleClassMap'
 import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism-tomorrow.css"; // import syntax highlighting styles
+
+import writeNested from "../../mixins/writeNested";
 
 export default {
   data() {
@@ -44,18 +41,20 @@ export default {
     PrismEditor,
   },
   computed: {
+    //add
     // needs access to current component aka activeComponent
     ...mapState(["componentMap", "activeComponent", "activeComponentObj", "exportAsTypescript"]),
   },
+  mixins: [writeNested],
   methods: {
-    snippetInvoke(){
-      if (this.activeComponent !== ''){
+    snippetInvoke() {
+      if (this.activeComponent !== '') {
         this.code = this.createCodeSnippet(
           this.componentMap[this.activeComponent].componentName,
           this.componentMap[this.activeComponent].children
         )
-        } else {
-          this.code = 'Your component boilerplate will be displayed here.'
+      } else {
+        this.code = 'Your component boilerplate will be displayed here.'
       }
     },
     //highlighter does not work: OverVue 6.0;
@@ -78,55 +77,100 @@ export default {
     // Creates beginner boilerplate
     createTemplate(componentName) {
       let templateTagStr = this.writeTemplateTag(componentName);
-      return `<template>\n  <div>\n${templateTagStr}  </div>\n</template>`;
+
+      //if/else statement to determine if there are class and id attributes present in the html element
+      if (this.activeComponentObj.htmlAttributes.class !== "" && this.activeComponentObj.htmlAttributes.id !== "") {
+        return `<template>\n  <div id = "${this.activeComponentObj.htmlAttributes.id}" class = "${this.activeComponentObj.htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
+      } else if (this.activeComponentObj.htmlAttributes.class !== "" && this.activeComponentObj.htmlAttributes.id === "") {
+        return `<template>\n  <div class = "${this.activeComponentObj.htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
+      } else if (this.activeComponentObj.htmlAttributes.class === "" && this.activeComponentObj.htmlAttributes.id !== "")
+        return `<template>\n  <div id = "${this.activeComponentObj.htmlAttributes.id}">\n${templateTagStr}  </div>\n</template>`;
+      else return `<template>\n  <div>\n${templateTagStr}  </div>\n</template>`;
     },
     // Creates <template> boilerplate
-    writeTemplateTag(componentName) {
-      // create reference object
+    writeTemplateTag(componentName, activeComponent) {
       const htmlElementMap = {
-        div: ["<div>", "</div>"],
-        button: ["<button>", "</button>"],
-        form: ["<form>", "</form>"],
-        img: ["<img>", ""],
-        link: ['<a href="#"/>', ""],
-        list: ["<li>", "</li>"],
-        paragraph: ["<p>", "</p>"],
-        "list-ol": ["<ol>", "</ol>"],
-        "list-ul": ["<ul>", "</ul>"],
-        input: ["<input />", ""],
-        navbar: ["<nav>", "</nav>"],
+        div: ["<div", "</div>"],
+        button: ["<button", "</button>"],
+        form: ["<form", "</form>"],
+        img: ["<img", ""], //single
+        link: ['<a href="#"', ""], //single
+        list: ["<li", "</li>"],
+        paragraph: ["<p", "</p>"],
+        "list-ol": ["<ol", "</ol>"],
+        "list-ul": ["<ul", "</ul>"],
+        input: ["<input", ""], //single
+        navbar: ["<nav", "</nav>"],
+        header: ["<header", "</header>"],
+        footer: ["<footer", "</footer>"],
+        meta: ["<meta", "</meta>"],
+        h1: ["<h1", "</h1>"],
+        h2: ["<h2", "</h2>"],
+        h3: ["<h3", "</h3>"],
+        h4: ["<h4", "</h4>"],
+        h5: ["<h5", "</h5>"],
+        h6: ["<h6", "</h6>"],
+        'e-button':[`<el-button type="info"`,`</el-button>`],
+          'e-input':["<el-input", "</el-input>"],
+          'e-link': [`<el-link type="primary">primary</el-link>
+          <el-link type="success">success</el-link>
+          <el-link type="info">info</el-link>
+          <el-link type="warning">warning</el-link>
+          <el-link type="danger"`, `danger</el-link>`],
+          'e-form': ["<el-form", "</el-form>"],
+          'e-checkbox': ["<el-checkbox", "</el-checkbox>"],
+          'e-checkbox-button': ["<el-checkbox-button", "</el-checkbox-button>"],
+          'e-date-picker': ["<el-date-picker", "</el-date-picker>"],
+          'e-slider':["<el-slider", "</el-slider>"],
+          'e-card': ["<el-card", "</el-card>"],
+          'e-alert': [`<el-alert title="success alert" type="success"></el-alert>
+          <el-alert title="info alert" type="info"></el-alert>
+          <el-alert title="warning alert" type="warning"></el-alert>
+          <el-alert title="danger alert" type="danger"`, `</el-alert>`],
+          'e-dropdown': [ `<el-dropdown split-button type="primary" @click="handleClick">
+          Dropdown List
+          <template #dropdown>
+           <el-dropdown-menu>
+            <el-dropdown-item>
+            Action 1
+          </el-dropdown-item>
+          <el-dropdown-item>
+          Action 2
+        </el-dropdown-item>
+          </el-dropdown-menu>
+          </template`, `
+          </el-dropdown>`],
+          'e-tag': [`<el-tag>Tag 1</el-tag>
+     <el-tag class="ml-2" type="success">Tag 2</el-tag>
+     <el-tag class="ml-2" type="info">Tag 3</el-tag>
+     <el-tag class="ml-2" type="warning">Tag 4</el-tag>
+     <el-tag class="ml-2" type="danger"`, `Tag 5</el-tag>`],
+
+     'e-badge': [`<el-badge :value="12" class="item">
+     <el-button>comments</el-button>
+   </el-badge>
+   <el-badge :value="3" class="item">
+     <el-button>replies</el-button>
+   </el-badge>
+   <el-badge :value="1" class="item" type="primary">
+     <el-button>comments</el-button>
+   </el-badge>
+   <el-badge :value="2" class="item" type="warning">
+     <el-button>replies</el-button`,
+     `
+     </el-badge>`],
+
+
+
       };
 
       // Helper function that recursively iterates through the given html element's children and their children's children.
       // also adds proper indentation to code snippet
-      function writeNested(childrenArray, indent) {
-        if (!childrenArray.length) {
-          return "";
-        }
-        let indented = indent + "  ";
-        let nestedString = "";
-
-        childrenArray.forEach((child) => {
-          nestedString += indented;
-          if (!child.text) {
-            nestedString += `<${child}/>\n`;
-          } else {
-            if (child.children.length) {
-              nestedString += htmlElementMap[child.text][0];
-              nestedString += "\n";
-              nestedString += writeNested(child.children, indented);
-              nestedString += indented + htmlElementMap[child.text][1];
-              nestedString += "\n";
-            } else {
-              nestedString +=
-                htmlElementMap[child.text][0] +
-                htmlElementMap[child.text][1] +
-                "\n";
-            }
-          }
-        });
-        return nestedString;
-      }
+      //add childComponents of the activeCompnent to the htmlElementMap
+      const childComponents = this.componentMap[this.activeComponent].children;
+      childComponents.forEach(child => {
+        htmlElementMap[child]=[`<${child}`, ""] //single
+      })
 
       // Iterates through active component's HTML elements list and adds to code snippet
       let htmlArr = this.componentMap[componentName].htmlList;
@@ -137,16 +181,28 @@ export default {
           outputStr += `    <${el}/>\n`;
         } else {
           outputStr += `    `;
+          outputStr += htmlElementMap[el.text][0]
+          //if conditional to check class
+          if (el.class !== "") {
+            outputStr += " " + "class=" + `"${el.class}"`;
+          }
+
+          if (el.binding !== "") {
+            outputStr += ` v-model="${el.binding}"`
+          }
+          // add an extra slash at the end for child Components and single tags
+          if(childComponents.includes(el.text) || el.text === "img" || el.text === "input" || el.text === "link"){
+            outputStr += "/"
+          }
+          outputStr += ">";
           if (el.children.length) {
-            outputStr += htmlElementMap[el.text][0];
             outputStr += "\n";
             outputStr += writeNested(el.children, `    `);
             outputStr += `    `;
             outputStr += htmlElementMap[el.text][1];
             outputStr += `  \n`;
           } else {
-            outputStr +=
-              htmlElementMap[el.text][0] + htmlElementMap[el.text][1] + "\n";
+            outputStr += htmlElementMap[el.text][1] + "\n";
           }
         }
       }
@@ -171,7 +227,7 @@ export default {
         imports += ' } from "vuex";\n';
       }
 
-       // if Typescript toggle is on, import defineComponent
+      // if Typescript toggle is on, import defineComponent
       if (this.exportAsTypescript === "on") {
         imports += 'import { defineComponent } from "vue";\n';
       }
@@ -186,26 +242,45 @@ export default {
       children.forEach((name) => {
         childrenComponentNames += `    ${name},\n`;
       });
-
       // if true add data section and populate with props
       let data = "";
       if (this.componentMap[this.activeComponent].props.length) {
-        data += "  data () {\n    return {";
+        data += "  props: {";
         this.componentMap[this.activeComponent].props.forEach((prop) => {
-          data += `\n      ${prop}: "PLACEHOLDER FOR VALUE",`;
+          data += `\n    ${prop}: "PLACEHOLDER FOR VALUE",`;
         });
         data += "\n";
-        data += "    }\n";
+        //data += "    }\n";
         data += "  },\n";
       }
+      const htmlBinding = this.componentMap[this.activeComponent].htmlList
+      data += "  data() {\n    return {\n"
+      htmlBinding.forEach(el => {
+        if (el.binding !== '') {
+          data += `      ${el.binding}: "PLACEHOLDER FOR VALUE", `
+          data += '\n'
+        }
+        //checks if there is binding in it's html child's child and will add to code snippet
+        if (el.children.length !== 0) {
+          el.children.forEach( el1 => {
+            if(el1.binding !== '') {
+              data += `      "${el1.binding}": "PLACEHOLDER FOR VALUE", `
+              data += '\n'
+            }
+          })
+        }
+      })
+      data += `    }`
+      data += ` \n  },  \n `
+
 
       // if true add computed section and populate with state
       let computed = "";
       if (this.componentMap[this.activeComponent].state.length) {
-        computed += "  computed: {";
+        computed += " computed: {";
         computed += "\n    ...mapState([";
         this.componentMap[this.activeComponent].state.forEach((state) => {
-          computed += `\n      "${state}",`;
+          computed += `\n      "${state}", `;
         });
         computed += "\n    ]),\n";
         computed += "  },\n";
@@ -217,10 +292,28 @@ export default {
         methods += "  methods: {";
         methods += "\n    ...mapActions([";
         this.componentMap[this.activeComponent].actions.forEach((action) => {
-          methods += `\n      "${action}",`;
+          methods += `\n      "${action}", `;
         });
         methods += "\n    ]),\n";
         methods += "  },\n";
+      }
+
+      let htmlArray = this.componentMap[componentName].htmlList;
+      let styleString = "";
+
+      if (this.activeComponentObj.htmlAttributes.class !== "") {
+        styleString += `.${this.activeComponentObj.htmlAttributes.class} { \n background-color: ${this.activeComponentObj.color};
+ grid-area: ${this.activeComponentObj.htmlAttributes.gridArea[0]} / ${this.activeComponentObj.htmlAttributes.gridArea[1]} / ${this.activeComponentObj.htmlAttributes.gridArea[2]} / ${this.activeComponentObj.htmlAttributes.gridArea[3]};
+ z-index: ${this.activeComponentObj.z};
+} \n`
+      }
+
+      for (const html of htmlArray) {
+        if (html.class === ' ') styleString = "";
+        if (html.class) {
+          styleString += `.${html.class} {\n height: ${html.h}%; \n width: ${html.w}%; \n top: ${html.x}%; \n left: ${html.y}%; \n z-index: ${html.z};
+}\n`
+        }
       }
 
       // concat all code within script tags
@@ -231,7 +324,7 @@ export default {
         output += imports + "\nexport default defineComponent ({\n  name: '" + componentName + "';";
       } else {
         output = "\n\n<script>\n";
-        output += imports + "\nexport default {\n  name: '" + componentName + "';";
+        output += imports + "\nexport default {\n  name: '" + componentName + "'";
       }
       output += ",\n  components: {\n";
       output += childrenComponentNames + "  },\n";
@@ -243,28 +336,28 @@ export default {
         output += "});\n<\/script>\n\n<style scoped>\n</style>"
 
       } else {
-        output += "};\n<\/script>\n\n<style scoped>\n</style>"
+        output += `}; \n <\/script>\n\n<style scoped>\n${styleString}</style > `
       }
-      return output;
+      return output
     },
   },
   watch: {
     // watches activeComponentObj for changes to make it reactive upon mutation
     // // // watches componentMap for changes to make it reactive upon mutation
     activeComponent: {
-      handler () {
+      handler() {
         this.snippetInvoke();
       },
       deep: true
     },
     componentMap: {
-      handler () {
+      handler() {
         this.snippetInvoke();
       },
       deep: true
     },
     exportAsTypescript: {
-      handler () {
+      handler() {
         this.snippetInvoke();
       },
     }
@@ -280,7 +373,7 @@ export default {
     });
   },
 
-  beforeDestroy() {
+  beforeUnmount() {
     window.removeEventListener("resize", this.getWindowHeight);
   },
 };

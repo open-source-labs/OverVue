@@ -50,6 +50,8 @@ Description:
         <q-expansion-item group="accordion" label="HTML Elements">
           <div class="icon-container">
             <Icons
+              v-model="attributeModal"
+              v-if="attributeModal === false"
               class="icons"
               @getClickedIcon="addToSelectedElementList"
               @activeElement="addToComponentElementList"
@@ -57,10 +59,16 @@ Description:
               @activeLayer="addNestedNoActive"
             />
           </div>
+          
           <div class="componentHTML">
+
             <HTMLQueue></HTMLQueue>
           </div>
           <br />
+        </q-expansion-item>
+        <InputHTMLMenu v-model="attributeModal" v-if="attributeModal === true && this.activeLayer.lineage.length === 0 " class="htmlElement-selected"/>
+        <q-expansion-item group="accordion" label="Component Attributes">
+          <AttributesSubMenu />
         </q-expansion-item>
         <!-- Props item that has AddProps component in it -->
         <q-expansion-item group="accordion" label="Props">
@@ -100,7 +108,15 @@ Description:
         <q-expansion-item group="accordion" label="Actions">
           <ActionsSubMenu />
         </q-expansion-item>
+
       </q-list>
+      <q-btn
+        id="create-component-btn"
+        class="sidebar-btn"
+        color="secondary"
+        label="Done"
+        @click="resetActiveComponent"
+      />
       <q-btn
         id="exportButton"
         class="sidebar-btn"
@@ -114,7 +130,7 @@ Description:
         label="Delete currently selected"
       />
      </q-expansion-item>
-     </q-card>  
+     </q-card>
     </div>
   </div>
 </template>
@@ -129,6 +145,9 @@ import Icons from "./Icons.vue";
 import PropsSubMenu from "./PropsSubMenu.vue";
 import StateSubMenu from "./StateSubMenu.vue";
 import ActionsSubMenu from "./ActionsSubMenu.vue";
+import AttributesSubMenu from "./AttributesSubMenu.vue";
+import InputHTMLMenu from './InputHTMLMenu.vue'
+
 
 const cloneDeep = require("lodash.clonedeep");
 const { fs, ipcRenderer } = window;
@@ -139,6 +158,7 @@ export default {
       value: "",
       newName: "",
       childrenSelected: [],
+      attributeModal: false,
     };
   },
   components: {
@@ -148,17 +168,23 @@ export default {
     PropsSubMenu,
     StateSubMenu,
     ActionsSubMenu,
+    AttributesSubMenu,
+    InputHTMLMenu,
   },
   computed: {
     ...mapState([
       "routes",
       "activeRoute",
       "activeComponent",
+      "activeHTML",
+      "activeLayer",
       "activeComponentObj",
       "componentMap",
       "exportAsTypescript",
+      'attributeModalOpen',
+      
     ]),
-    
+
     activeRouteDisplay() {
       let component = this.routes[this.activeRoute];
       return component;
@@ -201,7 +227,7 @@ export default {
           }
         })
       }
-      const optionOutput = val.filter(el => !parentalLineage.includes(el)).filter(el => el !== this.activeComponent); 
+      const optionOutput = val.filter(el => !parentalLineage.includes(el)).filter(el => el !== this.activeComponent);
       return optionOutput;
     },
 
@@ -218,7 +244,8 @@ export default {
       "addToSelectedElementList",
       "addToComponentElementList",
       "addNestedHTML",
-      "addNestedNoActive"
+      "addNestedNoActive",
+      "openAttributeModal",
     ]),
     useExportComponentBound(){
       useExportComponent.bind(this)();
@@ -288,6 +315,11 @@ export default {
       this.setActiveComponent(this.activeComponent);
     },
   },
+  watch: {
+    attributeModalOpen() {
+      this.attributeModal = this.attributeModalOpen;
+    },
+  }
 };
 </script>
 
@@ -305,7 +337,7 @@ export default {
   background-color: $subprimary;
   color: $menutext;
   border: 1px solid $subprimary;
-  margin-bottom: 20px; 
+  margin-bottom: 20px;
   padding: 0;
 }
 
@@ -394,7 +426,7 @@ p {
   margin-bottom: 30px;
 }
 
-#exportButton {
+#exportButton, #create-component-btn {
   background-color: $secondary;
   color: $menutext;
   width: 100%;
@@ -417,5 +449,10 @@ p {
   flex-direction: column;
   height: 94%;
   margin: 10px;
+}
+
+.htmlElement-selected {
+  height:100%;
+
 }
 </style>

@@ -1,20 +1,18 @@
 <template>
   <!-- Get passed down to MyLayout.vue 
   & listen for custom events emitted from MyLayout.vue -->
-  <router-view
-    v-on:undo="undoTrigger"
-    v-on:redo="redoTrigger"
-    v-bind:done-action="doneAction"
-    v-bind:undone-action="undoneAction"
-  />
+  <router-view v-on:undo="undoTrigger" v-on:redo="redoTrigger" v-bind:done-action="doneAction"
+    v-bind:undone-action="undoneAction" />
 </template>
 
 <script>
 import { defineComponent } from "vue";
+import ElementPlus from 'element-plus'; // importing element plus component library
+import 'element-plus/dist/index.css'; // importing element plus styling
 const deepEqual = require("lodash.isequal");
 const cloneDeep = require("lodash.clonedeep");
 const throttle = require("lodash.throttle");
-import { defaultState } from "./store/state/index.js";
+import { defaultState } from "./store/state/index.ts";
 
 // use this to make sure these actions don't count as things you "undo"
 const ignoredActions = new Set([
@@ -44,7 +42,7 @@ let redoMixin = {
         if (this.undoneAction[this.undoneAction.length - 1]) {
           if (
             action.type ===
-              this.undoneAction[this.undoneAction.length - 1].type &&
+            this.undoneAction[this.undoneAction.length - 1].type &&
             deepEqual(
               action.payload,
               this.undoneAction[this.undoneAction.length - 1].payload
