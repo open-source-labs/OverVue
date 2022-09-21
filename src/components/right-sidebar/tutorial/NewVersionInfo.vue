@@ -3,8 +3,9 @@
     <h6 class="infoHeading">What's New in OverVue 8.0?</h6>
 
     <p class="info-sub-heading">Improved Prototyping with Snap to Grid Positioning</p>
-    <p class="infoContent">Level up your prototyping with snap to grid positioning and component sizing that is exported as CSS grid styling in exported SFC's. Overvue 8.0 also fixes bugs that led to conditional application of color and position styling in previous versions. </p>
-
+    
+    <p class="infoContent">Level up your prototyping with snap to grid positioning and component sizing that is exported as CSS grid styling in exported SFC's. Overvue 8.0 also fixes bugs that led to conditional application of color and position styling in previous versions. Click on these buttons below and a menu pull down show appear to change the grid density for either the width or height. </p>
+    <img src="../../../assets/snaptogrid.jpg" class="tut-image"> 
     <p class="info-sub-heading">Augmented Component Creation with Element+ Component Library</p>
     <p class="infoContent">Take advantage of the popular, Vue 3.0 compatible component library, Element+. Manipulate these components in app, and rest easy knowing exported code includes both the library elements, and their necessary dependencies.</p>
 
@@ -85,7 +86,7 @@ export default {
 .tut-screenshot {
   margin: 4px;
   border: 1px solid $primary;
-  max-width: 300px;
+  max-width: 200px;
 }
 
 #advanced-btn {

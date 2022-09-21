@@ -7,14 +7,14 @@
 <template>
   <!-- the background Canvas grid -->
   <div class="component-display grid-bg" :style="{backgroundColor:'#FFFFF' }" v-on:click="handleClick" v-on:click.right="handleRight">
-  <div class="cssContainer" :style="{ 
-    'background-size': `${gridWidth}px ${gridHeight}px, 
-    ${gridWidth}px ${gridHeight}px`, 
-    'height': `${this.containerH}px`, 'width': `${this.containerW}px` 
+    <div class="cssContainer" :style="{ 
+      'background-size': `${gridWidth}px ${gridHeight}px, 
+      ${gridWidth}px ${gridHeight}px`, 
+      'height': `${this.containerH}px`, 'width': `${this.containerW}px` 
     }">
+    <p class="cssContainerText"> {{this.activeRoute}} Preview </p>
     <!-- This is the actual component box -->
     <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
-    <p class="cssContainerText"> {{this.activeRoute}} Preview </p>
     <!--each component box in canvas will have these properties-->
     <vue-draggable-resizable
       class-name="component-box"
@@ -880,10 +880,11 @@ behavior: url(/pie/PIE.htc);
 }
 
 .cssContainerText {
-  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-content: center;
   font-size: 3em;
   margin-top: -4%;
-  margin-left: 29%;
   color: black;
 }
 
