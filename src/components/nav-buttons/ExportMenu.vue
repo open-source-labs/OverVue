@@ -535,6 +535,25 @@ test('renders ${componentName}', () => {
       fs.writeFileSync(path.join(location, "firebaseConfig.js"), str);
       }
     },
+
+    createjestConfigFile(location){
+      if(this.$store.state.importTest ==='on'){
+      let str = `module.exports = {`;
+        str += `\n\tpreset: '@vue/cli-plugin-unit-jest'`;
+        str += `\n}`
+      fs.writeFileSync(path.join(location,"jest.config.js"), str);
+      }
+    },
+    createbabelConfigFile(location){
+      if(this.$store.state.importTest ==='on'){
+      let str = `module.exports = {`;
+        str += `\n\tpresets: [`;
+        str += `\n\t\t'@vue/cli-plugin-babel/preset'`;
+        str += `\n\t]`;
+        str += `\n}`
+      fs.writeFileSync(path.join(location,"babel.config.js"), str);
+      }
+    },
     createOauthFile(location){
       if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){
       let str = `<template>`;
@@ -648,20 +667,13 @@ test('renders ${componentName}', () => {
       str += `\nimport store from './store'`
       str += `\nimport App from './App.vue';`;
       str += `\nimport router from './router';\n`;
-      if(this.$store.state.importLibraries.includes('element')){
-        str+= `\nimport ElementPlus from 'element-plus';`
-        str+=`\nimport 'element-plus/dist/index.css';`
-      };
+      str+= `\nimport ElementPlus from 'element-plus';`
+      str+=`\nimport 'element-plus/dist/index.css';`
       str += `\nconst app = createApp(App);`;
       str += `\napp.use(router);`;
       str += `\napp.use(store)`;
-      if(this.$store.state.importLibraries.includes('element')){
-        str+=`\napp.use(ElementPlus);`;
-      };
+      str+=`\napp.use(ElementPlus);`;
       str += `\napp.mount('#app');`;
-
-
-
 
       // if using typescript, export with .ts extension
       if (this.exportAsTypescript === "on") {
@@ -785,11 +797,19 @@ test('renders ${componentName}', () => {
       str += `\n\t"scripts": {`;
       str += `\n\t\t"dev": "vite",`;
       if (this.exportAsTypescript === "on") {
+
         str += `\n\t\t"build": "vue-tsc --noEmit && vite build",`;
+        if(this.$store.state.importTest ==='on'){
+          str +=`\n\t\t"test:unit": "vue-cli-service test:unit",`
+        }
+
         str += `\n\t\t"typecheck": "vue-tsc --noEmit",`;
         str += `\n\t\t"lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",`;
       } else {
         str += `\n\t\t"build": "vite build",`;
+        if(this.$store.state.importTest ==='on'){
+          str +=`\n\t\t"test:unit": "vue-cli-service test:unit",`
+        }
         str += `\n\t\t"lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",`;
       }
       str += `\n\t\t"preview": "vite preview --port 5050"`;
@@ -798,9 +818,8 @@ test('renders ${componentName}', () => {
       str += `\n\t\t"vue": "^3.2.31",`;
       str += `\n\t\t"vue-router": "^4.0.12",`;
       str += `\n\t\t"vuex": "^4.0.2"`;
-      if(this.$store.state.importLibraries.includes('element')){
-        str += `,\n\t\t"element-plus": "^2.2.16"`;
-      };
+      str += `,\n\t\t"element-plus": "^2.2.16"`;
+
       if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){
         str += `,\n\t\t "firebase": "^9.6.9"`
       }
@@ -810,6 +829,18 @@ test('renders ${componentName}', () => {
       str += `\n\t\t"eslint": "^8.5.0",`;
       str += `\n\t\t"eslint-plugin-vue": "^8.2.0",`;
       str += `\n\t\t"vite": "^2.8.4"`
+      if(this.$store.state.importTest ==='on'){
+      str+=`,\n\t\t"@babel/core": "^7.12.16",`
+      str+=`\n\t\t"@babel/eslint-parser": "^7.12.16",`
+      str+=`\n\t\t"@vue/cli-plugin-babel": "~5.0.0",`
+      str+=`\n\t\t"@vue/cli-plugin-eslint": "~5.0.0",`
+      str+=`\n\t\t"@vue/cli-plugin-unit-jest": "~5.0.0",`
+      str+=`\n\t\t"@vue/cli-service": "~5.0.0",`
+      str+=`\n\t\t"@vue/test-utils": "^2.0.0-0",`
+      str+=`\n\t\t"@vue/vue3-jest": "^27.0.0-alpha.1",`
+      str+=`\n\t\t"babel-jest": "^27.0.6",`
+      str+=`\n\t\t"jest": "^27.0.5"`
+      }
       if (this.exportAsTypescript === "on") {
         str += `,\n\t\t"@rushstack/eslint-patch": "^1.1.0",`
         str += `\n\t\t"@vue/tsconfig": "^0.1.3",`;
@@ -832,8 +863,8 @@ test('renders ${componentName}', () => {
         fs.mkdirSync(path.join(data, "src", "views"));
         fs.mkdirSync(path.join(data, "src", "router"));
         fs.mkdirSync(path.join(data, "src", "store"));
-        fs.mkdirSync(path.join(data, "test-templates"));
-        fs.mkdirSync(path.join(data, "test-templates", "components"));
+        fs.mkdirSync(path.join(data, "tests"));
+        fs.mkdirSync(path.join(data, "tests", "unit"));
       }
       // creating basic boilerplate for vue app
       this.createIndexFile(data);
@@ -847,6 +878,8 @@ test('renders ${componentName}', () => {
       this.createStore(data);
       this.createFirebaseConfigFile(data);
       this.createOauthFile(data);
+      this.createjestConfigFile(data);
+      this.createbabelConfigFile(data)
       // exports images to the /assets folder
       // eslint-disable-next-line no-unused-vars
       for (let [routeImage, imageLocation] of Object.entries(this.imagePath)) {
@@ -876,7 +909,7 @@ test('renders ${componentName}', () => {
               componentName,
               this.componentMap
             );
-            this.createComponentTestCode(path.join(data, "test-templates", "components", componentName + '.spec.js'),
+            this.createComponentTestCode(path.join(data, "tests", "unit", componentName + '.spec.js'),
               componentName,
               this.componentMap)
           }

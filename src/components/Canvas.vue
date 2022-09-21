@@ -7,10 +7,10 @@
 <template>
   <!-- the background Canvas grid -->
   <div class="component-display grid-bg" :style="{backgroundColor:'#FFFFF' }" v-on:click="handleClick" v-on:click.right="handleRight">
-  <div class="cssContainer" :style="{ 
-    'background-size': `${gridWidth}px ${gridHeight}px, 
-    ${gridWidth}px ${gridHeight}px`, 
-    'height': `${this.containerH}px`, 'width': `${this.containerW}px` 
+  <div class="cssContainer" :style="{
+    'background-size': `${gridWidth}px ${gridHeight}px,
+    ${gridWidth}px ${gridHeight}px`,
+    'height': `${this.containerH}px`, 'width': `${this.containerW}px`
     }">
     <!-- This is the actual component box -->
     <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
@@ -467,7 +467,7 @@ export default {
     // find the amount of grid lines for width
     gridWidth() {
       return this.containerW / this.gridLayout[0];
-    }, 
+    },
     // find the amount of grid lines for height
     gridHeight() {
       return this.containerH / this.gridLayout[1];
