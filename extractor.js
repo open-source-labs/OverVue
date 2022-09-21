@@ -80,7 +80,6 @@ const getVueFiles = (package = "iview") => {
   return vueFilePathList;
 };
 
-console.log(getVueFiles());
 
 //work with documentation for parse vue to work out how to use this
 function parseVueFile(path) {
@@ -89,7 +88,7 @@ function parseVueFile(path) {
   return parsedFile
 }
 
-console.log(parseVueFile(getVueFiles()[0]))
+
 
 function generateImportObjs(pathList) { // or something
   // iterate through paths

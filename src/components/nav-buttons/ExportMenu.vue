@@ -482,9 +482,7 @@ test('renders ${componentName}', () => {
     writeStyle(componentName) {
       let htmlArray = this.componentMap[componentName].htmlList;
       let styleString = "";
-      console.log(componentName);
       // Add grid css property to view component div
-      if (this.routes)
       // adds view component id grid style and adds child component css styling
       if (this.routes.hasOwnProperty(componentName)) {
         styleString += `#${componentName} {\n\tdisplay: grid; \n\tgrid-template-columns: repeat(${this.gridLayout[0]}, 1fr);\n\tgrid-template-rows: repeat(${this.gridLayout[1]}, 1fr);\n\tgrid-column-gap: 0px;\n\tgrid-row-gap: 0px;\n}\n`;

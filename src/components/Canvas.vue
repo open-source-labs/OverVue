@@ -16,7 +16,6 @@
     <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
     <p class="cssContainerText"> {{this.activeRoute}} Preview </p>
     <!--each component box in canvas will have these properties-->
-    <!-- :onDragStart="recordInitialPosition" :onResizeStart="recordInitialSize" :preventDeactivation="true" graveyard attribute -->
     <vue-draggable-resizable
       class-name="component-box"
       v-for="componentData in activeRouteArray"
@@ -347,7 +346,6 @@
 import { useExportComponent } from "./composables/useExportComponent.js";
 import { mapState, mapActions } from "vuex";
 import VueDraggableResizable from "vue-draggable-resizable/src/components/vue-draggable-resizable.vue";
-// import Vue3DraggableResizable from 'vue3-draggable-resizable'
 import VueMultiselect from "vue-multiselect";
 import "vue-draggable-resizable/src/components/vue-draggable-resizable.css";
 import 'vue3-draggable-resizable/dist/Vue3DraggableResizable.css'
@@ -360,7 +358,6 @@ const cloneDeep = require("lodash.clonedeep");
 export default {
   name: "Canvas",
   components: {
-    // Vue3DraggableResizable,
     VueDraggableResizable,
     VueMultiselect,
     ColorPicker,
@@ -374,8 +371,6 @@ export default {
       noteModal: false,
       colorModal: false,
       mockImg: false,
-      // initialPosition: { x: 0, y: 0 },
-      // initialSize: { w: 0, h: 0 },
       htmlElements: [],
       childrenSelected: [],
     };
@@ -523,21 +518,7 @@ export default {
     useExportComponentBound() {
       useExportComponent.bind(this)();
     },
-    // !records component's initial position in case of drag - CHRIS: probably don't need this function?
-    // recordInitialPosition: function (e) {
-    //   if (this.activeComponent !== e.target.id) {
-    //     if (e.target.parentElement?.classList.contains('draggable')) {
-    //       // this.setActiveComponent(e.target.parentElement.id)
-    //     } 
-    //     else if (typeof `${e.target.id}` !== 'number') {
-    //       // this.setActiveComponent(e.target.id);
-    //     }
-    //   }
-    //   this.initialPosition.x = this.activeComponentData.x;
-    //   this.initialPosition.y = this.activeComponentData.y;
-    // },
     isElementPlus(htmlList) {
-      console.log(htmlList);
       return htmlList.find(({ text }) => text[0] === 'e');
     },
     //color change function
@@ -551,14 +532,6 @@ export default {
       this.updateColor(payload)
       this.refresh();
     },
-
-    // records component's initial size/position in case of resize (also graveyard - dont need initial size?)
-    // recordInitialSize: function (e) {
-    //   this.initialSize.h = this.activeComponentData.h;
-    //   this.initialSize.w = this.activeComponentData.w;
-    //   this.initialPosition.x = this.activeComponentData.x;
-    //   this.initialPosition.y = this.activeComponentData.y;
-    // },
     // sets component's ending size/position
     finishedResize: function (x, y, w, h) {
       let payload = {
@@ -570,19 +543,12 @@ export default {
         routeArray: this.routes[this.activeRoute],
         activeComponentData: this.activeComponentData,
       };
-      // if (
-      //   payload.x !== this.initialPosition.x ||
-      //   payload.y !== this.initialPosition.y ||
-      //   payload.w !== this.initialSize.w ||
-      //   payload.h !== this.initialSize.h
-      // ) {
       this.updateComponentSize(payload);
       this.updateComponentGridPosition(payload);
-      // }
       this.refresh();
     },
 
-    //refresh function - super ghetto refresh function
+    // refresh function
     refresh() {
       const payload = {
         activeComponent: this.activeComponent,
@@ -595,7 +561,7 @@ export default {
       payload.z--;
       this.updateComponentLayer(payload);
     },
-    //!drag and drop function
+    // drag and drop function
     finishedDrag: function (x, y) {
       let payload = {
         x: x,
@@ -647,12 +613,11 @@ export default {
 
     // renders modal with Update Children and Layer in it
     handleAddNotes() {
-      console.log(this.activeComponentData);
       if (this.wasDragged === false && this.activeComponent !== '') {
         this.openNoteModal();
       }
     },
-//color editor - opens the pop up
+    //color editor - opens the pop up
     handleEditColor() {
       if (this.wasDragged === false && this.activeComponent !== '') {
         this.openColorModal();
@@ -894,7 +859,6 @@ behavior: url(/pie/PIE.htc);
   height: 720px;
   background-color: rgba(223, 218, 218, 0.886);
   background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
-  // background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
   background-image: -webkit-linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px),
     -webkit-linear-gradient(0, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
     -webkit-linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
@@ -973,7 +937,6 @@ behavior: url(/pie/PIE.htc);
 .component-box {
   color: $menutext;
   border: 1.2px dashed $darktext;
-  // background-color: rgba($darktext, .42);
   -webkit-transition: background-color 200ms linear;
   -ms-transition: background-color 200ms linear;
   transition: background-color 200ms linear;
@@ -981,7 +944,6 @@ behavior: url(/pie/PIE.htc);
 }
 
 .active {
-  // background-color: rgba($secondary, .42);
   border: 3px solid $primary;
 }
 

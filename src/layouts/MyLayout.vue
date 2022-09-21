@@ -279,7 +279,6 @@ export default {
 
     },
     syncOauthGitFlag(e) {
-      console.log(this.$store.state.exportOauthGithub);
 
        let checkboxValue;
        if (e.target.value === "off") {
@@ -288,7 +287,6 @@ export default {
          checkboxValue = "off";
        }
        this.$store.commit("EXPORT_OAUTH_GIT", checkboxValue);
-       console.log(this.$store.state.exportOauthGithub);
 
      },
     clickedUndo() {
