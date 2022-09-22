@@ -74,7 +74,8 @@ export default {
           if (this.activeRoute !== "") {
             this.importImage({ img: res, route: this.activeRoute });
             if (this.imagePath[this.activeRoute]) {
-              this.source = "file:///" + this.imagePath[this.activeRoute];
+              this.source = "file://" + this.imagePath[this.activeRoute];
+              console.log(this.source);
             }
           }
         })
@@ -170,7 +171,7 @@ export default {
 
 .file-content {
   padding: 0em 1em 1em 1em;
-  
+
 }
 
 .browser-btn {

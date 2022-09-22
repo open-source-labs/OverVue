@@ -30,9 +30,9 @@ Includes functionality to:
     </template>
     </q-input>
     <Routes></Routes>
-    <!-- <UploadMockup></UploadMockup> -->
+   <!-- <UploadMockup></UploadMockup>  -->
   </div>
-  
+
 </template>
 
 <script>
