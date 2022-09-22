@@ -317,23 +317,18 @@ test('renders ${componentName}', () => {
 
         if (compClass !== "" && compID !== "") {
 
-          if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){
-            return `<template>\n  <div id = "${compID}" class = "${compClass}">\n${templateTagStr}${routeStr}  \n<Oauth/>\n\t</div>\n</template>`;
-          }
           return `<template>\n  <div id = "${compID}" class = "${compClass}">\n${templateTagStr}${routeStr}  \n\t</div>\n</template>`;
         }
         else if (compClass !== "" && compID === "") {
-          if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){
-            return `<template>\n  <div class = "${compClass}">\n${templateTagStr}${routeStr}  \t<Oauth/>\n\t</div>\n</template>`;
-          }
+
           return `<template>\n  <div class = "${compClass}">\n${templateTagStr}${routeStr}  \n\t</div>\n</template>`;
         }
         else if (compClass === "" && compID !== "") {
-          if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){return `<template>\n  <div id = "${compID}">\n${templateTagStr}${routeStr}\n<Oauth/>\n\t</div>\n</template>`;}
+
           return `<template>\n  <div id = "${compID}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
         }
         else {
-          if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){return `<template>\n  <div>\n\t${str}${templateTagStr}${routeStr}\t<Oauth/> \n\t</div>\n</template>`;}
+
           return `<template>\n  <div>\n\t${str}${templateTagStr}${routeStr}  </div>\n</template>`;
         }
       }
@@ -416,22 +411,16 @@ test('renders ${componentName}', () => {
         let output;
         if (this.exportAsTypescript === "on") {
           output = "\n\n<script lang='ts'>\n";
-            if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){
-            output+=`import Oauth from '../components/oauth.vue';`
-          }
+
           output += imports + "\nexport default defineComponent ({\n  name: '" + componentName + "'";
         } else {
           output = "\n\n<script>\n";
-            if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){
-            output+=`import Oauth from '../components/oauth.vue';`
-          }
+
           output += imports + "\nexport default {\n  name: '" + componentName + "'";
 
         }
         output += ",\n  components: {\n";
-        if(this.$store.state.exportOauth ==='on'||this.$store.state.exportOauthGithub ==='on'){
-            output+=`Oauth,`
-          }
+     
         output += childrenComponentNames + "  },\n";
         output += data;
         output += computed;
