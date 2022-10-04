@@ -27,7 +27,7 @@ import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism-tomorrow.css"; // import syntax highlighting styles
 
-import writeNested from "../../mixins/writeNested";
+// import writeNested from "../../mixins/writeNested";
 
 export default {
   data() {
@@ -45,7 +45,6 @@ export default {
     // needs access to current component aka activeComponent
     ...mapState(["componentMap", "activeComponent", "activeComponentObj", "exportAsTypescript"]),
   },
-  mixins: [writeNested],
   methods: {
     snippetInvoke() {
       if (this.activeComponent !== '') {
@@ -77,7 +76,7 @@ export default {
     // Creates beginner boilerplate
     createTemplate(componentName) {
       let templateTagStr = this.writeTemplateTag(componentName);
-
+    if (this.activeComponentObj.htmlAttributes) {
       //if/else statement to determine if there are class and id attributes present in the html element
       if (this.activeComponentObj.htmlAttributes.class !== "" && this.activeComponentObj.htmlAttributes.id !== "") {
         return `<template>\n  <div id = "${this.activeComponentObj.htmlAttributes.id}" class = "${this.activeComponentObj.htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
@@ -85,6 +84,18 @@ export default {
         return `<template>\n  <div class = "${this.activeComponentObj.htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
       } else if (this.activeComponentObj.htmlAttributes.class === "" && this.activeComponentObj.htmlAttributes.id !== "")
         return `<template>\n  <div id = "${this.activeComponentObj.htmlAttributes.id}">\n${templateTagStr}  </div>\n</template>`;
+        else {
+          let routeStr = '';
+          const arrOfChildComp = this.componentMap[componentName].children;
+          arrOfChildComp.forEach(childName => {
+            let childNameClass = this.componentMap[childName].htmlAttributes.class;
+            let childNameClassFullStr = (childNameClass === "") ? "" : ` class = '${childNameClass}'`;
+            routeStr += `    <${childName}${childNameClassFullStr}></${childName}>\n`
+          });
+          
+          return `<template>\n  <div>\n${templateTagStr}${routeStr}  </div>\n</template>`;
+        }
+    }
       else return `<template>\n  <div>\n${templateTagStr}  </div>\n</template>`;
     },
     // Creates <template> boilerplate
@@ -172,6 +183,44 @@ export default {
         htmlElementMap[child]=[`<${child}`, ""] //single
       })
 
+      function writeNested(childrenArray, indent) {
+        if (!childrenArray.length) {
+          return "";
+        }
+        let indented = indent + "  ";
+        let nestedString = "";
+
+        childrenArray.forEach((child) => {
+          nestedString += indented;
+          if (!child.text) {
+            nestedString += `<${child}/>\n`;
+          } else {
+            nestedString += htmlElementMap[child.text][0];
+            if (child.class !== "") {
+              nestedString += " " + "class=" + `"${child.class}"`;
+            }
+            if (child.binding !== "") {
+              if (child.text !== 'img' || child.text !== 'link') {
+                nestedString += ` v-model="${child.binding}"`
+
+              }
+            }
+            if (child.text === "img" || child.text === "input" || child.text === "link" || childComponents.includes(child.text)) {
+              nestedString += "/>";
+            } else { nestedString += ">"; }
+
+            if (child.children.length) {
+              nestedString += "\n";
+              nestedString += writeNested(child.children, indented);
+              nestedString += indented + htmlElementMap[child.text][1];
+              nestedString += "\n"
+            } else {
+              nestedString += htmlElementMap[child.text][1] + "\n";
+            }
+          }
+        });
+        return nestedString;
+      }
       // Iterates through active component's HTML elements list and adds to code snippet
       let htmlArr = this.componentMap[componentName].htmlList;
       let outputStr = ``;
