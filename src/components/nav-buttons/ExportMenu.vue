@@ -365,10 +365,10 @@ test('renders ${componentName}', () => {
           arrOfChildComp.forEach(childName => {
             let childNameClass = this.componentMap[childName].htmlAttributes.class;
             let childNameClassFullStr = (childNameClass === "") ? "" : ` class = '${childNameClass}'`;
-            routeStr += `<${childName}${childNameClassFullStr}></${childName}>\n`
+            routeStr += `    <${childName}${childNameClassFullStr}></${childName}>\n`
           });
           
-          return `<template>\n  <div>\n\t${str}${templateTagStr}${routeStr}  </div>\n</template>`;
+          return `<template>\n  <div>\n${str}${templateTagStr}${routeStr}  </div>\n</template>`;
         }
       }
       else {

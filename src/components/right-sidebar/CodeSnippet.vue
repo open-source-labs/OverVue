@@ -76,7 +76,7 @@ export default {
     // Creates beginner boilerplate
     createTemplate(componentName) {
       let templateTagStr = this.writeTemplateTag(componentName);
-
+    if (this.activeComponentObj.htmlAttributes) {
       //if/else statement to determine if there are class and id attributes present in the html element
       if (this.activeComponentObj.htmlAttributes.class !== "" && this.activeComponentObj.htmlAttributes.id !== "") {
         return `<template>\n  <div id = "${this.activeComponentObj.htmlAttributes.id}" class = "${this.activeComponentObj.htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
@@ -84,6 +84,18 @@ export default {
         return `<template>\n  <div class = "${this.activeComponentObj.htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
       } else if (this.activeComponentObj.htmlAttributes.class === "" && this.activeComponentObj.htmlAttributes.id !== "")
         return `<template>\n  <div id = "${this.activeComponentObj.htmlAttributes.id}">\n${templateTagStr}  </div>\n</template>`;
+        else {
+          let routeStr = '';
+          const arrOfChildComp = this.componentMap[componentName].children;
+          arrOfChildComp.forEach(childName => {
+            let childNameClass = this.componentMap[childName].htmlAttributes.class;
+            let childNameClassFullStr = (childNameClass === "") ? "" : ` class = '${childNameClass}'`;
+            routeStr += `    <${childName}${childNameClassFullStr}></${childName}>\n`
+          });
+          
+          return `<template>\n  <div>\n${templateTagStr}${routeStr}  </div>\n</template>`;
+        }
+    }
       else return `<template>\n  <div>\n${templateTagStr}  </div>\n</template>`;
     },
     // Creates <template> boilerplate
