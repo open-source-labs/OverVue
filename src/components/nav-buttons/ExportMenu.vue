@@ -22,13 +22,11 @@ import { useExportComponent } from "../composables/useExportComponent.js";
 import { mapState } from "vuex";
 const { fs, ipcRenderer } = window;
 
-import writeNested from "../../mixins/writeNested";
-import { result } from "lodash";
+// import writeNested from "../../mixins/writeNested";
 
 
 export default {
   name: "ExportProjectComponent",
-  mixins: [writeNested],
   methods: {
     useExportComponentBound() {
       useExportComponent.bind(this)();
@@ -227,7 +225,42 @@ test('renders ${componentName}', () => {
      `
      </el-badge>`],
       };
+      // function to loop through nested elements
+      function writeNested(childrenArray, indent) {
+        if (!childrenArray.length) {
+          return "";
+        }
+        let indented = indent + "  ";
+        let nestedString = "";
 
+        childrenArray.forEach((child) => {
+            nestedString += indented;
+            if (!child.text) {
+              nestedString += `<${child}/>\n`;
+            } else {
+              nestedString += htmlElementMap[child.text][0];
+              if (child.class !== "") {
+                nestedString += " " + "class = " + `"${child.class}"`;
+              }
+              if(child.binding !== "") {
+                nestedString += " " + "v-model = " + `"${child.binding}"`;
+              }
+              if (child.text === "img" || child.text === "input" || child.text === "link") {
+                nestedString += "/>";
+              } else { nestedString += ">"; }
+
+              if (child.children.length) {
+                nestedString += "\n";
+                nestedString += writeNested(child.children, indented);
+                nestedString += indented + htmlElementMap[child.text][1];
+                nestedString += "\n";
+              } else {
+                nestedString += htmlElementMap[child.text][1] + "\n";
+              }
+            }
+          });
+        return nestedString;
+      }
       // iterate through component's htmllist
       let htmlArr = this.componentMap[componentName].htmlList;
       let outputStr = ``;
@@ -328,12 +361,18 @@ test('renders ${componentName}', () => {
           return `<template>\n  <div id = "${compID}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
         }
         else {
-
+          const arrOfChildComp = this.componentMap[componentName].children;
+          arrOfChildComp.forEach(childName => {
+            let childNameClass = this.componentMap[childName].htmlAttributes.class;
+            let childNameClassFullStr = (childNameClass === "") ? "" : ` class = '${childNameClass}'`;
+            routeStr += `<${childName}${childNameClassFullStr}></${childName}>\n`
+          });
+          
           return `<template>\n  <div>\n\t${str}${templateTagStr}${routeStr}  </div>\n</template>`;
         }
       }
       else {
-        return `<template>\n\t${str}${templateTagStr}${routeStr}\t</div>\n</template>`
+        return `<template>\n<div>\n\t${str}${templateTagStr}${routeStr}\t</div>\n</template>`
       }
     },
     /**
@@ -366,6 +405,20 @@ test('renders ${componentName}', () => {
         }
 
         let childrenComponentNames = "";
+        let childComponentImportNames = "";
+
+        const arrOfChildComp = this.componentMap[componentName].children;
+
+          arrOfChildComp.forEach(childName => {
+            // Build child component text string
+            if (childName !== arrOfChildComp[arrOfChildComp.length - 1]){
+              childrenComponentNames += "    " + childName + ",\n";
+            }
+            else {
+              childrenComponentNames += "    " + childName + "\n";
+            }
+            childComponentImportNames += `import ${childName} from '../components/${childName}.vue';\n`
+        })
 
         let data = "";
         data += "  data () {\n    return {";
@@ -415,6 +468,8 @@ test('renders ${componentName}', () => {
           output += imports + "\nexport default defineComponent ({\n  name: '" + componentName + "'";
         } else {
           output = "\n\n<script>\n";
+
+          output+= `\n${childComponentImportNames}`;
 
           output += imports + "\nexport default {\n  name: '" + componentName + "'";
 
