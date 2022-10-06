@@ -90,24 +90,30 @@ Description:
   </div>
 </template>
 
+<script>
+export default {
+  name: "ComponentDetails",
+};
+</script>
+
 <!-- COMPOSITION API SYNTAX -->
 <script setup>
-  import HTMLQueue from './HTMLQueue';
-  import CodeSnippet from './CodeSnippet';
-  import { useStore } from 'vuex';
-  import { ref, computed } from 'vue';
+import HTMLQueue from "./HTMLQueue";
+import CodeSnippet from "./CodeSnippet";
+import { useStore } from "vuex";
+import { ref, computed } from "vue";
 
-  const store = useStore();
-  const tab = ref('code');
+const store = useStore();
+const tab = ref("code");
 
-  const activeComponentObj = computed(() => store.state.activeComponentObj);
-  const activeComponent = computed(() => store.state.activeComponent);
+const activeComponentObj = computed(() => store.state.activeComponentObj);
+const activeComponent = computed(() => store.state.activeComponent);
 
-  const compObj = computed({
-    get() {
-      return store.state.activeComponentObj;
-    }
-  });
+const compObj = computed({
+  get() {
+    return store.state.activeComponentObj;
+  },
+});
 </script>
 
 <!-- OLD OPTIONS API SYNTAX -->
