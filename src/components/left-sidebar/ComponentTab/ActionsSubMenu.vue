@@ -86,7 +86,7 @@ const actionOptions = userActions;
 
 const selectAction = computed({
        get() {
-        return store.state.selectedActions;
+        return [...selectedActions.value];
       },
       set(value) {
         addActionSelected(value);
@@ -100,7 +100,7 @@ const addActionToComponent = (payload) =>  store.dispatch("addActionToComponent"
 const deleteActionFromComponent = (payload) => store.dispatch("deleteActionFromComponent", payload)
 
 const stopDelete = (e) => {if (e.code === "Backspace") e.stopPropogation()};
-const addActionToComp = () => {addActionToComponent(store.state.selectedActions)};
+const addActionToComp = () => {addActionToComponent([...selectedActions.value])};
 const deleteAction = (action) => {deleteActionFromComponent(action)};
 
 </script>
