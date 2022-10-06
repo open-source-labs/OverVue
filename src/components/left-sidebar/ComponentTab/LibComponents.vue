@@ -141,62 +141,59 @@
     </q-btn-dropdown>
   </div>
 </template>
+
 <script>
-  import { computed } from "vue";
-  import { useStore } from "vuex";
-
   export default {
-    // name: "LibComponents",
-    setup() {
-      const store = useStore();
-
-      const changeLibComponentDisplay = () => store.dispatch('changeLibComponentDisplay');
-      const addLibComponents = (payload) => store.dispatch('addLibComponents', payload);
-
-      const computedLibraries = computed(() => store.state.computedLibraries);
-
-      const pickComponent = (componentName) => {
-        const payload = {};
-        payload[componentName] = ['fa-brands fa-elementor fa-xl']
-        addLibComponents(payload);
-      };
-
-      return {
-        changeLibComponentDisplay,
-        addLibComponents,
-        computedLibraries,
-        pickComponent,
-      }
-    }
+    name: "LibComponents"
   }
 </script>
 
-//OLD SCRIPT CODE USING OPTIONS API
-// import { mapState, mapActions } from "vuex";
-// import { pauseTracking } from "@vue/reactivity";
-//   components: {
-//   },
-//   methods:{
-//     ...mapActions([
+<script setup>
+  import { useStore } from "vuex";
+  // import { computed } from "vue";
+  const store = useStore();
 
-//     'changeLibComponentDisplay',
-//     'addLibComponents'
+  // const changeLibComponentDisplay = () => store.dispatch('changeLibComponentDisplay');
+  // const computedLibraries = computed(() => store.state.computedLibraries);
 
-//     ]),
-//     pickComponent(componentName){
-//       const payload = {
+  const addLibComponents = (payload) => store.dispatch('addLibComponents', payload);
 
-//       };
-//       payload[componentName] = ['fa-brands fa-elementor fa-xl']
-//       this.addLibComponents(payload);
+  const pickComponent = (componentName) => {
+    const payload = {};
+    payload[componentName] = ['fa-brands fa-elementor fa-xl']
+    addLibComponents(payload);
+  };
+</script>
 
-//     }
-//   },
-//   computed: {
-//     ...mapState([
-//     'importLibraries'
-//     ]),
-// }
+// OLD SCRIPT CODE USING OPTIONS API
+<!-- <script>
+import { mapState, mapActions } from "vuex";
+import { pauseTracking } from "@vue/reactivity";
+name: "LibComponents",
+  components: {
+  },
+  methods:{
+    ...mapActions([
+
+    'changeLibComponentDisplay',
+    'addLibComponents'
+
+    ]),
+    pickComponent(componentName){
+      const payload = {
+
+      };
+      payload[componentName] = ['fa-brands fa-elementor fa-xl']
+      this.addLibComponents(payload);
+
+    }
+  },
+  computed: {
+    ...mapState([
+    'importLibraries'
+    ]),
+}
+</script> -->
 
 <style>
 .demo-button{

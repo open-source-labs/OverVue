@@ -24,6 +24,42 @@ Description:
 </template>
 
 <script>
+  export default {
+    name: "ParentMultiselect"
+  }
+</script>
+
+<script setup>
+  import VueMultiselect from "vue-multiselect";
+  import { useStore } from "vuex";
+  import { ref, defineEmits, computed, watch } from "vue";
+
+  const store = useStore();
+  const emit = defineEmits(['addparent'])
+  const value = ref('');
+
+  const componentMap = computed(() => store.state.componentMap);
+  const activeComponent = computed(() => store.state.activeComponent);
+  
+  const options = computed(() => store.state.routes[store.state.activeRoute].map((component) => component.componentName));
+
+  const parentSelected = (payload) => store.dispatch('parentSelected', payload);
+  const setActiveComponent = (payload) => store.dispatch('setActiveComponent', payload);
+
+  const selectParent = (value) => {
+    parentSelected(value);
+    emit('addparent', value);
+  } 
+
+  const resetActiveComponent = () => {
+    if (activeComponent !== '') setActiveComponent('');
+  }
+
+  watch(componentMap, () => value.value = '');
+</script>
+
+// OLD SCRIPT CODE USING OPTIONS API
+<!-- <script>
 import { mapState, mapActions } from "vuex";
 import VueMultiselect from "vue-multiselect";
 
@@ -71,7 +107,7 @@ export default {
     },
   },
 };
-</script>
+</script> -->
 
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>
 <style scoped lang="scss">
