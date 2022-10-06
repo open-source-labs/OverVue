@@ -18,44 +18,49 @@ Description:
       :option-height="20"
       :searchable="true"
     >
-     <template v-slot:noResult>No components found.</template>
+      <template v-slot:noResult>No components found.</template>
     </VueMultiselect>
   </div>
 </template>
 
 <script>
-  export default {
-    name: "ParentMultiselect"
-  }
+export default {
+  name: "ParentMultiselect",
+};
 </script>
 
 <script setup>
-  import VueMultiselect from "vue-multiselect";
-  import { useStore } from "vuex";
-  import { ref, defineEmits, computed, watch } from "vue";
+import VueMultiselect from "vue-multiselect";
+import { useStore } from "vuex";
+import { ref, defineEmits, computed, watch } from "vue";
 
-  const store = useStore();
-  const emit = defineEmits(['addparent'])
-  const value = ref('');
+const store = useStore();
+const emit = defineEmits(["addparent"]);
+const value = ref("");
 
-  const componentMap = computed(() => store.state.componentMap);
-  const activeComponent = computed(() => store.state.activeComponent);
-  
-  const options = computed(() => store.state.routes[store.state.activeRoute].map((component) => component.componentName));
+const componentMap = computed(() => store.state.componentMap);
+const activeComponent = computed(() => store.state.activeComponent);
 
-  const parentSelected = (payload) => store.dispatch('parentSelected', payload);
-  const setActiveComponent = (payload) => store.dispatch('setActiveComponent', payload);
+const options = computed(() =>
+  store.state.routes[store.state.activeRoute].map(
+    (component) => component.componentName
+  )
+);
 
-  const selectParent = (value) => {
-    parentSelected(value);
-    emit('addparent', value);
-  } 
+const parentSelected = (payload) => store.dispatch("parentSelected", payload);
+const setActiveComponent = (payload) =>
+  store.dispatch("setActiveComponent", payload);
 
-  const resetActiveComponent = () => {
-    if (activeComponent !== '') setActiveComponent('');
-  }
+const selectParent = (value) => {
+  parentSelected(value);
+  emit("addparent", value);
+};
 
-  watch(componentMap, () => value.value = '');
+const resetActiveComponent = () => {
+  if (activeComponent !== "") setActiveComponent("");
+};
+
+watch(componentMap, () => (value.value = ""));
 </script>
 
 // OLD SCRIPT CODE USING OPTIONS API
@@ -111,39 +116,45 @@ export default {
 
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>
 <style scoped lang="scss">
-
-.parent-select{
+.parent-select {
   margin-right: 20px;
 }
-  :global(.multiselect__tags) {
-    background-color: $subprimary;
-    border: 1px solid rgb(180, 180, 180);
-  }
-  :global(.multiselect__input) {
-    background-color: $subprimary;
-    color: $menutext;
-  }
-  :global(.multiselect__content) {
-    background-color: $subprimary;
-    color: $menutext;
-  }
-  :global(.multiselect__option) {
-    color: $menutext;
-  }
-  :global(.multiselect__option--selected) {
-    background-color: $accent;
-    color: #155158;
 
-  }
-  :global(.multiselect__single) {
-    background-color: $subprimary;
-    color: $menutext;
-  }
-  :global(.multiselect__single:focus) {
-    background-color: $subprimary;
-    color: $menutext;
-  }
-  :global(.multiselect__input::placeholder) {
+:global(.multiselect__tags) {
+  background-color: $subprimary;
+  border: 1px solid rgb(180, 180, 180);
+}
+
+:global(.multiselect__input) {
+  background-color: $subprimary;
+  color: $menutext;
+}
+
+:global(.multiselect__content) {
+  background-color: $subprimary;
+  color: $menutext;
+}
+
+:global(.multiselect__option) {
+  color: $menutext;
+}
+
+:global(.multiselect__option--selected) {
+  background-color: $accent;
+  color: #155158;
+}
+
+:global(.multiselect__single) {
+  background-color: $subprimary;
+  color: $menutext;
+}
+
+:global(.multiselect__single:focus) {
+  background-color: $subprimary;
+  color: $menutext;
+}
+
+:global(.multiselect__input::placeholder) {
   color: $menutext;
 }
 </style>
