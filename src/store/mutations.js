@@ -14,7 +14,6 @@ import {
 } from "../utils/search.util";
 import _ from "lodash";
 
-
 const cloneDeep = require("lodash.clonedeep");
 
 const mutations = {
@@ -28,8 +27,8 @@ const mutations = {
       userProps: [],
       userState: [],
       userActions: [],
-    }
-    Object.assign(state, emptyObj)
+    };
+    Object.assign(state, emptyObj);
   },
 
   [types.TOGGLE_TUTORIAL]: (state) => {
@@ -105,7 +104,6 @@ const mutations = {
   // *** END ROUTES *** //////////////////////////////////////////////
 
   // *** VUEX *** //////////////////////////////////////////////
-
 
   [types.EXPORT_AS_TYPESCRIPT]: (state, payload) => {
     state.exportAsTypescript = payload;
@@ -198,12 +196,12 @@ const mutations = {
     // const active = state.activeComponentObj;
     const active = state.componentMap[state.activeComponent];
 
-    if (!state.activeComponentObj.state) {
-      state.activeComponentObj.state = payload;
+    if (!active.state) {
+      active.state = payload;
     } else {
       for (const s of payload) {
-        if (!state.activeComponentObj.state.includes(s)) {
-          state.activeComponentObj.state.push(s);
+        if (!active.state.includes(s)) {
+          active.state.push(s);
         }
       }
     }
@@ -217,18 +215,21 @@ const mutations = {
   },
 
   [types.DELETE_ACTION_FROM_COMPONENT]: (state, payload) => {
-    state.componentMap[state.activeComponent].actions = state.componentMap[state.activeComponent].actions.filter(
-      (action) => action !== payload);
+    state.componentMap[state.activeComponent].actions = state.componentMap[
+      state.activeComponent
+    ].actions.filter((action) => action !== payload);
   },
 
   [types.DELETE_PROPS_FROM_COMPONENT]: (state, payload) => {
-    state.componentMap[state.activeComponent].props = state.componentMap[state.activeComponent].props.filter(
-      (prop) => prop !== payload);
+    state.componentMap[state.activeComponent].props = state.componentMap[
+      state.activeComponent
+    ].props.filter((prop) => prop !== payload);
   },
 
   [types.DELETE_STATE_FROM_COMPONENT]: (state, payload) => {
-    state.componentMap[state.activeComponent].state = state.componentMap[state.activeComponent].state.filter(
-      (state) => state !== payload);
+    state.componentMap[state.activeComponent].state = state.componentMap[
+      state.activeComponent
+    ].state.filter((state) => state !== payload);
   },
 
   [types.DELETE_USER_STATE]: (state, payload) => {
@@ -237,8 +238,9 @@ const mutations = {
       // first don't go through if component is App or Homeview
       if (component === "App" || component === "HomeView") continue;
       // splice out if there is a match
-      state.componentMap[component].state = state.componentMap[component].state.filter(
-        (action) => action !== payload);
+      state.componentMap[component].state = state.componentMap[
+        component
+      ].state.filter((action) => action !== payload);
     }
     // remove from userState
     let index = state.userState.indexOf(payload);
@@ -250,8 +252,9 @@ const mutations = {
       // first don't go through if component is App or Homeview
       if (component === "App" || component === "HomeView") continue;
       // splice out if there is a match
-      state.componentMap[component].actions = state.componentMap[component].actions.filter(
-        (action) => action !== payload);
+      state.componentMap[component].actions = state.componentMap[
+        component
+      ].actions.filter((action) => action !== payload);
     }
     let index = state.userActions.indexOf(payload);
     state.userActions.splice(index, 1);
@@ -279,9 +282,9 @@ const mutations = {
       const pastedComponent = { ...copiedComponent };
       pastedComponent.x = 20;
       pastedComponent.y = 20;
-      pastedComponent.componentName += ` (${state.copyNumber})`
+      pastedComponent.componentName += ` (${state.copyNumber})`;
       while (state.componentMap.hasOwnProperty(pastedComponent.componentName)) {
-        pastedComponent.componentName += ` copy`
+        pastedComponent.componentName += ` copy`;
       }
       state.componentMap[pastedComponent.componentName] = pastedComponent;
 
@@ -345,28 +348,27 @@ const mutations = {
         const newArray = [...item.htmlList];
 
         const changeAllChildComponents = (array, name) => {
-          const queue = [...array.filter(el => typeof el === 'object')];
-          while(queue.length) {
+          const queue = [...array.filter((el) => typeof el === "object")];
+          while (queue.length) {
             const evaluate = queue.shift();
-            if(evaluate.text === name) {
+            if (evaluate.text === name) {
               evaluate.text = payload;
             }
-            for(let i = 0; i < evaluate.children.length; i++) {
+            for (let i = 0; i < evaluate.children.length; i++) {
               if (evaluate.children[i].text === name) {
                 evaluate.children[i].text = payload;
               }
               if (evaluate.children.length) {
-                queue.push(...evaluate.children)
+                queue.push(...evaluate.children);
               }
             }
           }
-        }
+        };
 
-        changeAllChildComponents(newArray, temp)
-        item.htmlList = newArray
+        changeAllChildComponents(newArray, temp);
+        item.htmlList = newArray;
       }
     }
-
   },
 
   // *** HTML ELEMENTS *** //////////////////////////////////////////////
@@ -384,18 +386,18 @@ const mutations = {
       text: payload.elementName,
       id: payload.date,
       children: [],
-      class: '',
-      x:0,
-      y:0,
-      z:0,
-      w:0,
-      h:0,
-      note: '',
+      class: "",
+      x: 0,
+      y: 0,
+      z: 0,
+      w: 0,
+      h: 0,
+      note: "",
     });
   },
 
   [types.CLEAR_ACTIVE_HTML]: (state) => {
-    state.activeHTML = '';
+    state.activeHTML = "";
   },
 
   [types.ADD_NESTED_NO_ACTIVE]: (state, payload) => {
@@ -412,14 +414,14 @@ const mutations = {
       text: payload.elementName,
       id: payload.date,
       children: [],
-      class: '',
-      x:0,
-      y:0,
-      z:0,
-      w:0,
-      h:0,
-      note: '',
-      binding: ''
+      class: "",
+      x: 0,
+      y: 0,
+      z: 0,
+      w: 0,
+      h: 0,
+      note: "",
+      binding: "",
     });
   },
 
@@ -432,14 +434,14 @@ const mutations = {
       text: payload.elementName,
       id: payload.date,
       children: [],
-      class: '',
-      x:0,
-      y:0,
-      z:0,
-      w:0,
-      h:0,
-      note: '',
-      binding: ''
+      class: "",
+      x: 0,
+      y: 0,
+      z: 0,
+      w: 0,
+      h: 0,
+      note: "",
+      binding: "",
     });
   },
 
@@ -448,14 +450,14 @@ const mutations = {
       text: payload.elementName,
       id: payload.date,
       children: [],
-      class: '',
-      x:0,
-      y:0,
-      z:0,
-      w:0,
-      h:0,
-      note: '',
-      binding: ''
+      class: "",
+      x: 0,
+      y: 0,
+      z: 0,
+      w: 0,
+      h: 0,
+      note: "",
+      binding: "",
     });
   },
 
@@ -556,10 +558,10 @@ const mutations = {
     const idDrag = state.componentMap[componentName].idDrag;
     const idDrop = state.componentMap[componentName].idDrop;
 
-    if (idDrag !== idDrop && idDrag !== '' && idDrop !== '') {
+    if (idDrag !== idDrop && idDrag !== "" && idDrop !== "") {
       let indexDrag;
       let indexDrop;
-      const htmlList = state.componentMap[componentName].htmlList.slice(0)
+      const htmlList = state.componentMap[componentName].htmlList.slice(0);
 
       if (state.activeLayer.id === "") {
         //find the indexes belonging to the html elements with idDrag and idDrop
@@ -569,31 +571,38 @@ const mutations = {
           } else if (el.id === idDrop) {
             indexDrop = i;
           }
-        })
+        });
         //use the indexes to rearrange htmlList
-        const draggedEl = htmlList.splice(indexDrag, 1)[0]
-        htmlList.splice(indexDrop, 0, draggedEl)
+        const draggedEl = htmlList.splice(indexDrag, 1)[0];
+        htmlList.splice(indexDrop, 0, draggedEl);
       } else {
         //Use breadFirstSearchParent to find the parent and indexes of nested html elements with idDrag and idDrop
         const nestedDrag = breadthFirstSearchParent(htmlList, idDrag);
         const nestedDrop = breadthFirstSearchParent(htmlList, idDrop);
         //use the indexes and parents to rearrange htmlList
-        let nestedEl = nestedDrag.evaluated.children.splice(nestedDrag.index, 1)[0]
-        nestedDrop.evaluated.children.splice(nestedDrop.index, 0, nestedEl)
+        let nestedEl = nestedDrag.evaluated.children.splice(
+          nestedDrag.index,
+          1
+        )[0];
+        nestedDrop.evaluated.children.splice(nestedDrop.index, 0, nestedEl);
       }
       state.componentMap[componentName].htmlList = htmlList;
     }
     //reset the ids
-    state.componentMap[componentName].idDrag = '';
-    state.componentMap[componentName].idDrop = '';
+    state.componentMap[componentName].idDrag = "";
+    state.componentMap[componentName].idDrop = "";
   },
-// use selectedIdDrag and selectedIdDrop to rearrange the selectedElementList to perform drag-and-drop functionality
+  // use selectedIdDrag and selectedIdDrop to rearrange the selectedElementList to perform drag-and-drop functionality
   [types.DRAG_DROP_SORT_SELECTED_HTML_ELEMENTS]: (state) => {
     const selectedIdDrag = state.selectedIdDrag;
     const selectedIdDrop = state.selectedIdDrop;
 
-    if (selectedIdDrag !== selectedIdDrop && selectedIdDrag !== '' && selectedIdDrop !== '') {
-      const htmlList = state.selectedElementList.slice(0)
+    if (
+      selectedIdDrag !== selectedIdDrop &&
+      selectedIdDrag !== "" &&
+      selectedIdDrop !== ""
+    ) {
+      const htmlList = state.selectedElementList.slice(0);
 
       let indexDrag;
       let indexDrop;
@@ -604,15 +613,15 @@ const mutations = {
         } else if (el.id === selectedIdDrop) {
           indexDrop = i;
         }
-      })
+      });
       //use the indexes to delete the dragged element and place them into the new location
-      const draggedEl = htmlList.splice(indexDrag, 1)[0]
-      htmlList.splice(indexDrop, 0, draggedEl)
+      const draggedEl = htmlList.splice(indexDrag, 1)[0];
+      htmlList.splice(indexDrop, 0, draggedEl);
       state.selectedElementList = htmlList;
     }
     //reset the ids
-    state.selectedIdDrag = '';
-    state.selectedIdDrop = '';
+    state.selectedIdDrag = "";
+    state.selectedIdDrop = "";
   },
   // *** COMPONENTS *** //////////////////////////////////////////////
   // adds the component to the selected route (ex: HomeView)
@@ -722,11 +731,11 @@ const mutations = {
 
   [types.SET_ACTIVE_COMPONENT]: (state, payload) => {
     if (!payload) {
-      payload = '';
+      payload = "";
     }
-    if (payload === '') {
-      state.activeComponent = '';
-      state.activeComponentObj = { componentName: '', isActive: false };
+    if (payload === "") {
+      state.activeComponent = "";
+      state.activeComponentObj = { componentName: "", isActive: false };
       state.activeHTML = "";
       state.activeLayer = {
         id: "",
@@ -775,7 +784,6 @@ const mutations = {
     // update component x and y to reflect vue draggable resizeable position on canvas
     updatedComponent.x = payload.x;
     updatedComponent.y = payload.y;
-
   },
 
   // updates state to code snippet component grid area
@@ -785,14 +793,37 @@ const mutations = {
       (element) => element.componentName === payload.activeComponent
     )[0];
     // update CSS grid grid area fr [Y beginning, Y end + 1, x beginning, x end + 1]
-    if (updatedComponent.w === undefined) { updatedComponent.w = (2 * state.containerW / state.gridLayout[0]); }
-    if (updatedComponent.h === undefined) { updatedComponent.h = (2 * state.containerH / state.gridLayout[1]); }
+    if (updatedComponent.w === undefined) {
+      updatedComponent.w = (2 * state.containerW) / state.gridLayout[0];
+    }
+    if (updatedComponent.h === undefined) {
+      updatedComponent.h = (2 * state.containerH) / state.gridLayout[1];
+    }
     // add one - CSS grid-area is one-indexed
-    const rowStart = 1 + Math.round(state.gridLayout[1] * updatedComponent.y / state.containerH);
-    const colStart = 1 + Math.round(state.gridLayout[0] * updatedComponent.x / state.containerW);
-    const rowEnd = 1 + Math.round(state.gridLayout[1] * (updatedComponent.y + updatedComponent.h) / state.containerH);
-    const colEnd = 1 + Math.round(state.gridLayout[0] * (updatedComponent.x + updatedComponent.w) / state.containerW);
-    updatedComponent.htmlAttributes.gridArea = [rowStart, colStart, rowEnd, colEnd];
+    const rowStart =
+      1 +
+      Math.round((state.gridLayout[1] * updatedComponent.y) / state.containerH);
+    const colStart =
+      1 +
+      Math.round((state.gridLayout[0] * updatedComponent.x) / state.containerW);
+    const rowEnd =
+      1 +
+      Math.round(
+        (state.gridLayout[1] * (updatedComponent.y + updatedComponent.h)) /
+          state.containerH
+      );
+    const colEnd =
+      1 +
+      Math.round(
+        (state.gridLayout[0] * (updatedComponent.x + updatedComponent.w)) /
+          state.containerW
+      );
+    updatedComponent.htmlAttributes.gridArea = [
+      rowStart,
+      colStart,
+      rowEnd,
+      colEnd,
+    ];
   },
 
   [types.UPDATE_COMPONENT_SIZE]: (state, payload) => {
@@ -810,14 +841,14 @@ const mutations = {
       (element) => element.componentName === payload.activeComponent
     )[0];
 
-    updatedComponent.color = payload.color
+    updatedComponent.color = payload.color;
   },
   //Attribute updater for parent
   [types.EDIT_ATTRIBUTE]: (state, payload) => {
     const updatedComponent = state.routes[state.activeRoute].filter(
       (element) => element.componentName === payload.activeComponent
     )[0];
-    updatedComponent.htmlAttributes[payload.attribute] = payload.value
+    updatedComponent.htmlAttributes[payload.attribute] = payload.value;
   },
 
   [types.UPDATE_COMPONENT_LAYER]: (state, payload) => {
@@ -833,19 +864,22 @@ const mutations = {
       (element) => element.componentName === payload.activeComponent
     )[0];
 
-    const updatedHTML = updatedComponent.htmlList.filter((element) => element.id === payload.activeHTML)[0]
+    const updatedHTML = updatedComponent.htmlList.filter(
+      (element) => element.id === payload.activeHTML
+    )[0];
 
     updatedHTML.z = payload.z;
     // state.componentMap[payload.activeComponent].htmlList.z = payload.z;
-
   },
 
   [types.UPDATE_ACTIVE_COMPONENT_CHILDREN_VALUE]: (state, payload) => {
     //temp is the activeComponent's children array
-    if (state.activeComponent === payload) { return }
+    if (state.activeComponent === payload) {
+      return;
+    }
     const temp = state.componentMap[state.activeComponent].children;
     // delete block
-    if ((temp.filter((el) => payload === el)).length > 0) {
+    if (temp.filter((el) => payload === el).length > 0) {
       //commented stuff below does not seem necessary for the functionality of this if block.
       //children will be current children EXCLUDING payload
       // const child = temp.filter((el) => payload.includes(el));
@@ -854,9 +888,13 @@ const mutations = {
       for (const comp of components) {
         if (comp.children.includes(payload)) childCount++; //if the component has 2 parents, do not assign the component to the route
       }
-      state.componentMap[state.activeComponent].children = (temp.filter((el) => payload !== el));
+      state.componentMap[state.activeComponent].children = temp.filter(
+        (el) => payload !== el
+      );
       if (childCount <= 1) {
-        state.componentMap[state.activeRoute].children.push(...temp.filter((el) => payload === el));
+        state.componentMap[state.activeRoute].children.push(
+          ...temp.filter((el) => payload === el)
+        );
       }
       // const newHTMLList = state.componentMap[
       //   state.activeComponent
@@ -871,15 +909,13 @@ const mutations = {
 
       // splice out child componenets even if nested
       function deleteChildFromHtmlList(array, payload) {
-        for(let i = array.length; i--;) {
-
-					if(array[i].children.length) {
-            deleteChildFromHtmlList(array[i].children, payload)
+        for (let i = array.length; i--; ) {
+          if (array[i].children.length) {
+            deleteChildFromHtmlList(array[i].children, payload);
           }
-          if(array[i].text === payload) {
-            array.splice(i, 1)
+          if (array[i].text === payload) {
+            array.splice(i, 1);
           }
-
         }
       }
       deleteChildFromHtmlList(htmlList, payload);
@@ -893,13 +929,14 @@ const mutations = {
       // add block
     } else {
       const child = temp;
-      child.push(payload)
+      child.push(payload);
       state.componentMap[state.activeComponent].children = child;
       state.componentMap[state.activeRoute].children = state.componentMap[
         state.activeRoute
       ].children.filter((el) => payload !== el);
-      state.componentMap[child[child.length - 1]].parent[state.activeComponent] =
-        state.componentMap[state.activeComponent];
+      state.componentMap[child[child.length - 1]].parent[
+        state.activeComponent
+      ] = state.componentMap[state.activeComponent];
     }
   },
   // invoked when element is double clicked, changing the boolean value
@@ -908,22 +945,24 @@ const mutations = {
   },
 
   [types.ADD_ACTIVE_COMPONENT_NOTE]: (state, payload) => {
-    if (!state.componentMap[state.activeComponent].hasOwnProperty('noteList')) {
+    if (!state.componentMap[state.activeComponent].hasOwnProperty("noteList")) {
       state.componentMap[state.activeComponent].noteList = [];
     }
-    while (state.componentMap[state.activeComponent].noteList.includes(payload)) {
-      payload = 'DUPLICATE: ' + payload
+    while (
+      state.componentMap[state.activeComponent].noteList.includes(payload)
+    ) {
+      payload = "DUPLICATE: " + payload;
     }
-    state.componentMap[state.activeComponent].noteList.push(payload)
+    state.componentMap[state.activeComponent].noteList.push(payload);
   },
 
   [types.DELETE_ACTIVE_COMPONENT_NOTE]: (state, payload) => {
     state.componentMap[state.activeComponent].noteList.forEach((el, ind) => {
       if (payload === el) {
-        state.componentMap[state.activeComponent].noteList.splice(ind, 1)
+        state.componentMap[state.activeComponent].noteList.splice(ind, 1);
         return;
       }
-    })
+    });
   },
   [types.OPEN_COLOR_MODAL]: (state) => {
     state.colorModalOpen = !state.colorModalOpen;
@@ -938,95 +977,92 @@ const mutations = {
 
   [types.ADD_ACTIVE_COMPONENT_CLASS]: (state, payload) => {
     if (state.activeComponentObj.htmlList)
-
       state.componentMap[state.activeComponent].htmlList.forEach((el) => {
         //adding class into it's child 1st layer
         if (el.children.length !== 0) {
           el.children.forEach((element) => {
             if (payload.id === element.id) {
-              element.class = payload.class
+              element.class = payload.class;
             }
-          })
+          });
         }
         if (payload.id === el.id) {
-          el.class = payload.class
+          el.class = payload.class;
         }
-      })
-
+      });
   },
 
-//add binding
+  //add binding
   [types.ADD_BINDING_TEXT]: (state, payload) => {
     //access the htmlList, add payload to the empty bind obj
     //const active = state.componentMap[state.activeComponent].htmlList;
     if (payload.binding === "") {
       state.componentMap = {
-        ...state.componentMap
-      }
+        ...state.componentMap,
+      };
     } else {
-      const id = payload.id
+      const id = payload.id;
 
       if (state.activeComponentObj.htmlList)
         state.componentMap[state.activeComponent].htmlList.forEach((el) => {
-
           if (el.children.length !== 0) {
             el.children.forEach((element) => {
               if (payload.id === element.id) {
-                element.binding = payload.binding
+                element.binding = payload.binding;
               }
-            })
+            });
           }
           if (payload.id === el.id) {
-            el.binding = payload.binding
+            el.binding = payload.binding;
           }
-        })
+        });
     }
   },
 
   [types.DELETE_ACTIVE_COMPONENT_CLASS]: (state, payload) => {
     state.componentMap[state.activeComponent].classList.forEach((el, ind) => {
       if (payload === el) {
-        state.componentMap[state.activeComponent].classList.splice(ind, 1)
+        state.componentMap[state.activeComponent].classList.splice(ind, 1);
         return;
       }
-    })
+    });
   },
   //htmlElements changes of css
   [types.ADD_ACTIVE_COMPONENT_HEIGHT]: (state, payload) => {
     state.componentMap[state.activeComponent].htmlList.forEach((el) => {
       if (payload.id === el.id) {
-        el.h = payload.height
+        el.h = payload.height;
       }
-    })
+    });
   },
   [types.ADD_ACTIVE_COMPONENT_WIDTH]: (state, payload) => {
     state.componentMap[state.activeComponent].htmlList.forEach((el) => {
       if (payload.id === el.id) {
-        el.w = payload.width
+        el.w = payload.width;
       }
-    })
+    });
   },
   [types.ADD_ACTIVE_COMPONENT_TOP]: (state, payload) => {
     state.componentMap[state.activeComponent].htmlList.forEach((el) => {
       if (payload.id === el.id) {
-        el.x = payload.top
+        el.x = payload.top;
       }
-    })
+    });
   },
   [types.ADD_ACTIVE_COMPONENT_LEFT]: (state, payload) => {
     state.componentMap[state.activeComponent].htmlList.forEach((el) => {
       if (payload.id === el.id) {
-        el.y = payload.left
+        el.y = payload.left;
       }
-    })
+    });
   },
 
   [types.ADD_ACTIVE_COMPONENT_ELEMENT_NOTE]: (state, payload) => {
     state.componentMap[state.activeComponent].htmlList.forEach((el) => {
       if (payload.id === el.id) {
-        el.note = payload.note
+        el.note = payload.note;
       }
-    })
+    });
   },
   // *** PROJECTS *** //////////////////////////////////////////////
 
@@ -1065,8 +1101,7 @@ const mutations = {
 
   //change library array
   [types.CHANGE_LIB]: (state, payload) => {
-   state.importLibraries.push(payload.libName);
-
+    state.importLibraries.push(payload.libName);
   },
 
   [types.CHANGE_LIB_COMPONENT_DISPLAY]: (state, payload) => {
@@ -1074,35 +1109,65 @@ const mutations = {
   },
 
   [types.ADD_LIB_COMPONENTS]: (state, payload) => {
-    for(let key in payload){
+    for (let key in payload) {
       state.icons[key] = payload[key];
     }
   },
 
   // change grid density
   [types.CHANGE_GRID_DENSITY]: (state, payload) => {
-    if (payload.direction === 'height'){
+    if (payload.direction === "height") {
       state.gridLayout[1] = payload.densityNum;
-
-    }
-    else {
+    } else {
       state.gridLayout[0] = payload.densityNum;
     }
     state.routes[state.activeRoute].forEach((updatedComponent) => {
-        if (updatedComponent.w === undefined) { updatedComponent.w = (2 * state.containerW / state.gridLayout[0]); }
-        if (updatedComponent.h === undefined) { updatedComponent.h = (2 * state.containerH / state.gridLayout[1]); }
-        // add one - CSS grid-area is one-indexed
-        const rowStart = 1 + Math.round(state.gridLayout[1] * updatedComponent.y / state.containerH);
-        const colStart = 1 + Math.round(state.gridLayout[0] * updatedComponent.x / state.containerW);
-        const rowEnd = 1 + Math.round(state.gridLayout[1] * (updatedComponent.y + updatedComponent.h) / state.containerH);
-        const colEnd = 1 + Math.round(state.gridLayout[0] * (updatedComponent.x + updatedComponent.w) / state.containerW);
-        updatedComponent.htmlAttributes.gridArea = [rowStart, colStart, rowEnd, colEnd];
-        updatedComponent.x = (colStart - 1) * state.containerH / state.gridLayout[1];
-        updatedComponent.y = (rowStart - 1) * state.containerW / state.gridLayout[0];
-        updatedComponent.w = (colEnd - 1) * state.containerH / state.gridLayout[1] - updatedComponent.y;
-        updatedComponent.h = (rowEnd - 1) * state.containerW / state.gridLayout[0] - updatedComponent.x;
+      if (updatedComponent.w === undefined) {
+        updatedComponent.w = (2 * state.containerW) / state.gridLayout[0];
       }
-    );
+      if (updatedComponent.h === undefined) {
+        updatedComponent.h = (2 * state.containerH) / state.gridLayout[1];
+      }
+      // add one - CSS grid-area is one-indexed
+      const rowStart =
+        1 +
+        Math.round(
+          (state.gridLayout[1] * updatedComponent.y) / state.containerH
+        );
+      const colStart =
+        1 +
+        Math.round(
+          (state.gridLayout[0] * updatedComponent.x) / state.containerW
+        );
+      const rowEnd =
+        1 +
+        Math.round(
+          (state.gridLayout[1] * (updatedComponent.y + updatedComponent.h)) /
+            state.containerH
+        );
+      const colEnd =
+        1 +
+        Math.round(
+          (state.gridLayout[0] * (updatedComponent.x + updatedComponent.w)) /
+            state.containerW
+        );
+      updatedComponent.htmlAttributes.gridArea = [
+        rowStart,
+        colStart,
+        rowEnd,
+        colEnd,
+      ];
+      updatedComponent.x =
+        ((colStart - 1) * state.containerH) / state.gridLayout[1];
+      updatedComponent.y =
+        ((rowStart - 1) * state.containerW) / state.gridLayout[0];
+      updatedComponent.w =
+        ((colEnd - 1) * state.containerH) / state.gridLayout[1] -
+        updatedComponent.y;
+      updatedComponent.h =
+        ((rowEnd - 1) * state.containerW) / state.gridLayout[0] -
+        updatedComponent.x;
+    });
   },
   // *** INACTIVE MUTATIONS - kept for reference *** //////////////////////////////////////////////
 
