@@ -24,9 +24,7 @@ Description:
 </template>
 
 <script>
-export default {
-  name: "ParentMultiselect",
-};
+export default { name: "ParentMultiselect" };
 </script>
 
 <script setup>
