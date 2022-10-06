@@ -82,18 +82,16 @@ const actionOptions = userActions;
 //       return this.userActions;
 //     },
 
-console.log("Can I see this?", selectedActions);
 
-const selectAction = computed(() => ({
+
+const selectAction = computed({
        get() {
-        //do I need this.selectedActions?
-        return selectedActions;
+        return store.state.selectedActions;
       },
       set(value) {
-        //do I need to return here?
         addActionSelected(value);
       }
-    }));
+    });
 
 // Methods
 
@@ -102,7 +100,7 @@ const addActionToComponent = (payload) =>  store.dispatch("addActionToComponent"
 const deleteActionFromComponent = (payload) => store.dispatch("deleteActionFromComponent", payload)
 
 const stopDelete = (e) => {if (e.code === "Backspace") e.stopPropogation()};
-const addActionToComp = () => {addActionToComponent(selectedActions)};
+const addActionToComp = () => {addActionToComponent(store.state.selectedActions)};
 const deleteAction = (action) => {deleteActionFromComponent(action)};
 
 </script>
@@ -124,9 +122,11 @@ export default {
     },
     selectAction: {
       get() {
+        console.log("Inside get!", this.selectedActions);
         return this.selectedActions;
       },
       set(value) {
+        console.log("What is value?", value)
         this.addActionSelected(value);
       },
     },
