@@ -102,10 +102,12 @@ Description:
 
   const activeComponentObj = computed(() => store.state.activeComponentObj);
   const activeComponent = computed(() => store.state.activeComponent);
-  // const compObj = computed({get() {
-  //   return store.state.activeComponentObj;
-  // }});
-  const compObj = computed(() => store.state.activeComponentObj);
+
+  const compObj = computed({
+    get() {
+      return store.state.activeComponentObj;
+    }
+  });
 </script>
 
 <!-- OLD OPTIONS API SYNTAX -->
