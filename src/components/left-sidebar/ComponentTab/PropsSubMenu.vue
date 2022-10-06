@@ -49,9 +49,7 @@
 </template>
 
 <script>
-export default {
-  name: "PropsSubMenu",
-};
+export default { name: "PropsSubMenu" };
 </script>
 
 <script setup>
@@ -65,7 +63,7 @@ const textProps = ref("");
 const selectedProps = computed(() => store.state.selectedProps);
 const userProps = computed(() => store.state.userProps);
 
-const propsOptions = computed(() => store.state.userProps);
+const propsOptions = userProps;
 const selectProps = computed({
   get() {
     return store.state.selectedProps;
@@ -87,7 +85,6 @@ const stopDelete = (e) => {
 
 const createNewProp = (text) => {
   if (![...userProps.value].includes(text) && text) {
-    console.log(userProps);
     createProp(text);
     textProps.value = "";
   }
