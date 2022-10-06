@@ -87,7 +87,6 @@ Description:
             }});
     
         watch(selectedElementList, () => {
-          console.log(selectedElementList, "afterselectedElementlist")
           if (activeComponent.value === "" && [...selectedElementList].length !== 0) {
             tab.value = "tree"
            }});
