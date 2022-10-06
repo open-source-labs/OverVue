@@ -14,7 +14,23 @@
   </section>
 </template>
 
-<script>
+<!-- COMPOSITION API SYNTAX -->
+<script setup>
+  import { useStore } from 'vuex';
+  import { defineEmits } from 'vue';
+  const { shell } = window;
+
+  const store = useStore();
+  const emit = defineEmits(['nextTab', 'versionTab']);
+
+  const toggleTutorial = () => store.dispatch("toggleTutorial");
+  const nextTab = () => emit('nextTab');
+  const openUrl = (url) => shell.openExternal(url, { activate: true });
+
+</script>
+
+<!-- OLD OPTIONS API SYNTAX -->
+<!-- <script>
 const { ipcRenderer, shell } = window;
 import { mapActions } from 'vuex';
 export default {
@@ -29,7 +45,7 @@ export default {
     }
   }
 }
-</script>
+</script> -->
 
 <style lang="scss" scoped>
 #logo {

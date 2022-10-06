@@ -81,7 +81,20 @@
   </section>
 </template>
 
-<script>
+<!-- COMPOSITION API SYNTAX -->
+<script setup>
+  import { useStore } from 'vuex';
+  import { defineEmits } from 'vue';
+
+  const store = useStore();
+  const emit = defineEmits(['nextTab']);
+
+  const toggleTutorial = () => store.dispatch('toggleTutorial');
+  const nextTab = () => emit('nextTab');
+</script>
+
+<!-- OLD OPTIONS API SYNTAX -->
+<!-- <script>
 import { mapActions } from 'vuex';
 
 export default {
@@ -93,7 +106,7 @@ export default {
     }
   }
 }
-</script>
+</script> -->
 
 <style scoped lang="scss">
 #basicFunctions {
