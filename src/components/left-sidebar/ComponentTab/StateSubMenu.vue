@@ -22,7 +22,6 @@
         :searchable="false"
         @search-change="stopDelete($event)"
       >
-      
       </VueMultiselect>
       <br />
       <q-btn
@@ -34,8 +33,14 @@
         @click="addStateToComp"
       />
     </div>
-    <p v-if="!this.componentMap[this.activeComponent].state.length">No state in component</p>
-    <a v-else v-for="state in this.componentMap[this.activeComponent].state" :key="state">
+    <p v-if="!this.componentMap[this.activeComponent].state.length">
+      No state in component
+    </p>
+    <a
+      v-else
+      v-for="state in this.componentMap[this.activeComponent].state"
+      :key="state"
+    >
       <q-list class="list-item" dense bordered separator>
         <q-item clickable v-ripple class="list-item">
           <q-item-section>
@@ -59,6 +64,48 @@
 </template>
 
 <script>
+export default { name: "StateSubMenu" };
+</script>
+
+<script setup>
+import VueMultiselect from "vue-multiselect";
+import { useStore } from "vuex";
+import { computed } from "vue";
+
+const store = useStore();
+
+const selectedState = computed(() => store.state.selectedState);
+const userState = computed(() => store.state.userState);
+const componentMap = computed(() => store.state.componentMap);
+const activeComponent = computed(() => store.state.activeComponent);
+
+const stateOptions = userState;
+const selectState = computed({
+  get() {
+    return [...selectedState.value];
+  },
+  set(value) {
+    addStateSelected(value);
+  },
+});
+
+const addStateSelected = (payload) =>
+  store.dispatch("addStateSelected", payload);
+const addStateToComponent = (payload) =>
+  store.dispatch("addStateToComponent", payload);
+const deleteStateFromComponent = (payload) =>
+  store.dispatch("deleteStateFromComponent", payload);
+
+const stopDelete = (e) => {
+  if (e.code === "Backspace") e.stopPropogation();
+};
+
+const addStateToComp = () => addStateToComponent([...selectedState.value]);
+
+const deleteState = (state) => deleteStateFromComponent(state);
+</script>
+
+<!-- <script>
 import { mapState, mapActions } from "vuex";
 import VueMultiselect from "vue-multiselect";
 
@@ -68,7 +115,12 @@ export default {
     VueMultiselect,
   },
   computed: {
-    ...mapState(["selectedState", "userState", "componentMap", "activeComponent"]),
+    ...mapState([
+      "selectedState",
+      "userState",
+      "componentMap",
+      "activeComponent",
+    ]),
 
     stateOptions() {
       return this.userState;
@@ -102,17 +154,17 @@ export default {
     },
   },
 };
-</script>
+</script> -->
 
 <style lang="scss" scoped>
-  .selection-container {
-    padding: 30px 0;
-  }
+.selection-container {
+  padding: 30px 0;
+}
 
-  .component-container{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
+.component-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
 </style>

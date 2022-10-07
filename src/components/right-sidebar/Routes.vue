@@ -1,4 +1,4 @@
-<!--
+<!-- 
 Description:
   Displays routes in home-sidebar Routes dropdown
   Functionality includes: selects active route || deletes route on click
@@ -31,26 +31,56 @@ Description:
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-
 export default {
-  name: 'Routes',
-  computed: {
-    ...mapState(['routes', 'activeRoute'])
-  },
-  methods: {
-    ...mapActions(['setActiveRoute', 'deleteRoute']),
-    // selects active route
-    selectRoute (route) {
-      this.setActiveRoute(route)
-    },
+  name: "Routes",
+  };
+</script>
+
+<script setup>
+import { useStore } from "vuex";
+import { computed } from "vue";
+
+const store = useStore();
+
+const routes = computed (() => store.state.routes);
+const activeRoute = computed (() => store.state.activeRoutes);
+
+const setActiveRoute = (payload) => store.dispatch("setActiveRoute", payload);
+const deleteRoute = (payload) => store.dispatch("deleteRoute", payload);
+    
+const selectRoute = (route) => {
+      setActiveRoute(route)
+    };
     // deletes route
-    deleteSelectedRoute (route) {
-      this.deleteRoute(route)
+const deleteSelectedRoute = (route) => {
+      deleteRoute(route)
+    };
+</script>
+
+
+<!-- old options API script -->
+
+<!-- <script>
+  import { mapState, mapActions } from 'vuex'
+  
+  export default {
+    name: 'Routes',
+    computed: {
+      ...mapState(['routes', 'activeRoute'])
+    },
+    methods: {
+      ...mapActions(['setActiveRoute', 'deleteRoute']),
+      // selects active route
+      selectRoute (route) {
+        this.setActiveRoute(route)
+      },
+      // deletes route
+      deleteSelectedRoute (route) {
+        this.deleteRoute(route)
+      }
     }
   }
-}
-</script>
+  </script> -->
 
 <style lang="scss" scoped>
  
@@ -65,3 +95,6 @@ export default {
     border: 2px solid $menutext !important;
   }
 </style>
+
+
+

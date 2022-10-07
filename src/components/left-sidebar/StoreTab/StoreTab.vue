@@ -31,16 +31,16 @@ Functionality:
             class="input-add"
             no-error-icon
             reactive-rules
-            :rules="[val => !this.userState.includes(val) || 'A state with this name already exists']"
+            :rules="[
+              (val) =>
+                !this.userState.includes(val) ||
+                'A state with this name already exists',
+            ]"
             @keyup.delete.stop
           >
-          <template v-slot:append>
-            <q-btn
-              flat
-              icon="add"
-              @click="createNewState(textState)"
-            />
-          </template>
+            <template v-slot:append>
+              <q-btn flat icon="add" @click="createNewState(textState)" />
+            </template>
           </q-input>
           <p v-if="!this.stateOptions.length">No state in store</p>
 
@@ -53,8 +53,9 @@ Functionality:
                       {{ state }}
                     </div>
                     <q-btn
-                      round 
-                      flat icon="highlight_off"
+                      round
+                      flat
+                      icon="highlight_off"
                       class="inner-button"
                       v-on:click.stop="deleteState(state)"
                     />
@@ -80,14 +81,14 @@ Functionality:
             @keyup.delete.stop
             no-error-icon
             reactive-rules
-            :rules="[val => !this.userActions.includes(val) || 'An action with this name already exists']"
+            :rules="[
+              (val) =>
+                !this.userActions.includes(val) ||
+                'An action with this name already exists',
+            ]"
           >
             <template v-slot:append>
-              <q-btn
-                flat
-                icon="add"
-                @click="createNewAction(textAction)"
-              />
+              <q-btn flat icon="add" @click="createNewAction(textAction)" />
             </template>
           </q-input>
           <p v-if="!this.actionOptions.length">No actions in store</p>
@@ -118,6 +119,56 @@ Functionality:
 </template>
 
 <script>
+export default { name: "StoreTab" };
+</script>
+
+<script setup>
+import { useStore } from "vuex";
+import { computed, ref } from "vue";
+
+const store = useStore();
+
+const tab = ref("state");
+const textAction = ref("");
+const textState = ref("");
+
+const userActions = computed(() => store.state.userActions);
+const userState = computed(() => store.state.userState);
+
+const actionOptions = userActions;
+const stateOptions = userState;
+
+const createAction = (payload) => store.dispatch("createAction", payload);
+const createState = (payload) => store.dispatch("createState", payload);
+const deleteUserActions = (payload) =>
+  store.dispatch("deleteUserActions", payload);
+const deleteUserState = (payload) => store.dispatch("deleteUserState", payload);
+
+const createNewAction = (text) => {
+  if (![...userActions.value].includes(text) && text) {
+    createAction(text);
+    textAction.value = "";
+  }
+};
+// Creates a new state in userState in the store
+const createNewState = (text) => {
+  if (![...userState.value].includes(text) && text) {
+    createState(text);
+    textState.value = "";
+  }
+};
+// Delete a selected action in the store
+const deleteAction = (action) => {
+  // if delete request comes in, send to actions
+  deleteUserActions(action);
+};
+// Delete a selected state in the store
+const deleteState = (state) => {
+  deleteUserState(state);
+};
+</script>
+
+<!-- <script>
 import { mapState, mapActions } from "vuex";
 
 export default {
@@ -170,7 +221,7 @@ export default {
     },
   },
 };
-</script>
+</script> -->
 
 <style lang="scss" scoped>
 i {
@@ -223,7 +274,7 @@ i {
 }
 
 .q-tabs {
-  background: #11120F;
+  background: #11120f;
 }
 
 #store-cards {
@@ -237,7 +288,7 @@ i {
   background-color: #202122;
 }
 
-.component-container{
+.component-container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
