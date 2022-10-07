@@ -30,59 +30,94 @@ Description:
           <HTMLQueue />
         </q-tab-panel>
         <q-tab-panel name="state">
-        <div class ="componentProperties">
-          <q-expansion-item default-closed label="Component State">
-          <p v-if="!this?.activeComponentObj?.state?.length">
-             {{this.activeComponent ? `No state in ${this.activeComponent}` : 'Select a component.' }}
-          </p>
-          <p v-else>
-            State in {{this.activeComponent}}:
-          </p>
-          <ul id="stateList">
-            <li v-for="comp in compObj.state" :key="comp">
-              {{ comp }}
-            </li>
-          </ul>
-          </q-expansion-item>
-        </div>
-        <div class ="componentProperties">
-        <q-expansion-item default-closed label="Component Actions">
-                <p v-if="!this?.activeComponentObj?.actions?.length">
-            {{this.activeComponent ? `No actions in ${this.activeComponent}` : 'Select a component.' }}
-          </p>
-          <p v-else>
-            Actions in {{this.activeComponent}}:
-          </p>
-          <ul id="actionList">
-            <li v-for="comp in compObj?.actions" :key="comp">
-              {{ comp }}
-            </li>
-          </ul>
-          </q-expansion-item>
+          <div class="componentProperties">
+            <q-expansion-item default-closed label="Component State">
+              <p v-if="!this?.activeComponentObj?.state?.length">
+                {{
+                  this.activeComponent
+                    ? `No state in ${this.activeComponent}`
+                    : "Select a component."
+                }}
+              </p>
+              <p v-else>State in {{ this.activeComponent }}:</p>
+              <ul id="stateList">
+                <li v-for="comp in compObj.state" :key="comp">
+                  {{ comp }}
+                </li>
+              </ul>
+            </q-expansion-item>
           </div>
-          <div class ="componentProperties">
-          <q-expansion-item default-closed label="Component Props">
+          <div class="componentProperties">
+            <q-expansion-item default-closed label="Component Actions">
+              <p v-if="!this?.activeComponentObj?.actions?.length">
+                {{
+                  this.activeComponent
+                    ? `No actions in ${this.activeComponent}`
+                    : "Select a component."
+                }}
+              </p>
+              <p v-else>Actions in {{ this.activeComponent }}:</p>
+              <ul id="actionList">
+                <li v-for="comp in compObj?.actions" :key="comp">
+                  {{ comp }}
+                </li>
+              </ul>
+            </q-expansion-item>
+          </div>
+          <div class="componentProperties">
+            <q-expansion-item default-closed label="Component Props">
               <p v-if="!this?.activeComponentObj?.props?.length">
-            {{this.activeComponent ? `No props in ${this.activeComponent}` : 'Select a component.' }}
-          </p>
-          <p v-else>
-            Props in {{this.activeComponent}}:
-          </p>
-          <ul id="propsList">
-            <li v-for="comp in compObj?.props" :key="comp">
-              {{ comp }}
-            </li>
-          </ul>
-          </q-expansion-item>
+                {{
+                  this.activeComponent
+                    ? `No props in ${this.activeComponent}`
+                    : "Select a component."
+                }}
+              </p>
+              <p v-else>Props in {{ this.activeComponent }}:</p>
+              <ul id="propsList">
+                <li v-for="comp in compObj?.props" :key="comp">
+                  {{ comp }}
+                </li>
+              </ul>
+            </q-expansion-item>
           </div>
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
-    <q-card id="blank-card" v-else>Create or Select a Component to See Details</q-card>
+    <q-card id="blank-card" v-else
+      >Create or Select a Component to See Details</q-card
+    >
   </div>
 </template>
 
 <script>
+export default {
+  name: "ComponentDetails",
+};
+</script>
+
+<!-- COMPOSITION API SYNTAX -->
+<script setup>
+import HTMLQueue from "./HTMLQueue";
+import CodeSnippet from "./CodeSnippet";
+import { useStore } from "vuex";
+import { ref, computed } from "vue";
+
+const store = useStore();
+const tab = ref("code");
+
+const activeComponentObj = computed(() => store.state.activeComponentObj);
+const activeComponent = computed(() => store.state.activeComponent);
+
+const compObj = computed({
+  get() {
+    return store.state.activeComponentObj;
+  },
+});
+</script>
+
+<!-- OLD OPTIONS API SYNTAX -->
+<!-- <script>
 import { mapState } from "vuex";
 import HTMLQueue from "./HTMLQueue";
 import CodeSnippet from "./CodeSnippet";
@@ -91,40 +126,38 @@ export default {
   name: "ComponentDetails",
   components: {
     HTMLQueue,
-    CodeSnippet
+    CodeSnippet,
   },
   computed: {
-    ...mapState(["activeComponentObj","activeComponent"]),
+    ...mapState(["activeComponentObj", "activeComponent"]),
     compObj: {
       get() {
         return this.activeComponentObj;
-      }
-    }
+      },
+    },
   },
   data() {
     return {
-      tab: "code"
+      tab: "code",
     };
-  }
+  },
 };
-</script>
+</script> -->
 
 <style lang="scss" scoped>
 i {
   font-size: 11px;
 }
-  
 
 .q-btn {
   font-size: 8px;
   margin: 5px;
 }
 
-
 // styling for the entire dashboard
 .q-footer {
   transition-timing-function: ease-in;
-  transition: .2s;
+  transition: 0.2s;
   background: $subsecondary;
 }
 
@@ -167,12 +200,11 @@ i {
 }
 
 .q-tabs {
-  background: #11120F;
+  background: #11120f;
 }
 
 .toolbar-background {
   background: black;
-  
 }
 
 #code-window {
@@ -193,7 +225,6 @@ i {
   background-color: #202122;
 }
 
-
 .inner-div {
   display: flex;
   flex-direction: column;
@@ -203,8 +234,6 @@ i {
 }
 
 .componentProperties {
-  margin-bottom:2em;
-
+  margin-bottom: 2em;
 }
-
 </style>
