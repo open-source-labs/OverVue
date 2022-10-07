@@ -14,7 +14,125 @@ Description:
   />
 </template>
 
+<!-- COMPOSITION API SYNTAX -->
 <script>
+export default {
+  name: "SaveProject",
+};
+</script>
+
+<script setup>
+import localforage from "localforage";
+import { useStore } from "vuex";
+const Mousetrap = require("mousetrap");
+const { fs, ipcRenderer } = window;
+
+const store = useStore();
+
+const addProject = (payload) => store.dispatch("addProject", payload);
+
+const showSaveJSONDialog = () => {
+  ipcRenderer
+    .invoke("saveProject", {
+      title: "Choose location to save JSON object in",
+      message: "Choose location to save JSON object in",
+      nameFieldLabel: "Application State Name",
+      filters: [
+        {
+          name: "JSON Files",
+          extensions: ["json"],
+        },
+      ],
+    })
+    .then((res) => {
+      saveJSONLocation(res.filePath);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+const parseFileName = (file) => {
+  if (file) return file.split("/").pop();
+};
+
+const parseAndDelete = (htmlList) => {
+  htmlList.forEach((element) => {
+    if (!Array.isArray(element.children))
+      if (element.children.length > 0) {
+        parseAndDelete(element.children);
+      }
+    delete element._vm;
+    delete element.parent;
+    delete element.open;
+    delete element.active;
+    delete element.style;
+    delete element.class;
+    delete element.innerStyle;
+    delete element.innerClass;
+    delete element.innerBackStyle;
+    delete element.innerBackClass;
+  });
+};
+
+const saveProjectJSON = () => showSaveJSONDialog();
+
+const saveJSONLocation = (data) => {
+  let deleteKey = store.state.projects[store.state.activeTab].filename;
+  localforage
+    .removeItem(deleteKey)
+    .then(function () {})
+    .catch(function (err) {
+      console.log(err);
+    });
+
+  let fileName = parseFileName(data);
+
+  if (fileName) {
+    addProject({
+      filename: fileName,
+      lastSavedLocation: data,
+    });
+
+    let state = store.state;
+    let routes = state.routes;
+
+    fs.writeFileSync(data, JSON.stringify(state));
+    localforage.setItem(fileName, JSON.parse(fs.readFileSync(data, "utf8")));
+    localforage.getItem("slackWebhookURL", (err, value) => {
+      if (value) notifySlack(fileName, value);
+    });
+  }
+};
+
+const notifySlack = (fileName, url) => {
+  remote.dialog.showMessageBox(
+    {
+      title: "Notify Slack?",
+      message: "Save successful. Would you like to notify your team on Slack?",
+      buttons: ["No", "Yes"],
+      defaultId: 1,
+    },
+    (response) => {
+      if (response === 1) {
+        fetch(url, {
+          method: "POST",
+          body: JSON.stringify({
+            text: `A team member has saved an OverVue project file: ${fileName}`,
+          }),
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+    }
+  );
+};
+
+Mousetrap.bind(["command+s", "ctrl+s"], () => {
+  saveProjectJSON();
+});
+</script>
+
+<!-- OLD OPTIONS API SYNTAX -->
+<!-- <script>
 import localforage from "localforage";
 import { mapActions } from "vuex";
 const Mousetrap = require("mousetrap");
@@ -45,10 +163,11 @@ export default {
           ],
         })
         .then((res) => {
-          this.saveJSONLocation(res.filePath)
-          })
+          this.saveJSONLocation(res.filePath);
+        })
         .catch((err) => {
-          console.log(err)});
+          console.log(err);
+        });
     },
     // returns location of where file is stored
     parseFileName(file) {
@@ -59,9 +178,9 @@ export default {
     parseAndDelete(htmlList) {
       htmlList.forEach((element) => {
         if (!Array.isArray(element.children))
-        if (element.children.length > 0) {
-          this.parseAndDelete(element.children);
-        }
+          if (element.children.length > 0) {
+            this.parseAndDelete(element.children);
+          }
         delete element._vm;
         delete element.parent;
         delete element.open;
@@ -87,8 +206,8 @@ export default {
         .removeItem(deleteKey)
         .then(function () {})
         .catch(function (err) {
-          console.log('error')
-          console.log(err)
+          console.log("error");
+          console.log(err);
         });
 
       let fileName = this.parseFileName(data);
@@ -102,7 +221,7 @@ export default {
 
         let state = this.$store.state;
         let routes = state.routes;
-        
+
         fs.writeFileSync(data, JSON.stringify(state));
         localforage.setItem(
           fileName,
@@ -146,7 +265,7 @@ export default {
     });
   },
 };
-</script>
+</script> -->
 
 <style scoped>
 .mr-sm {
