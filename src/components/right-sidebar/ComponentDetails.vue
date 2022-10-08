@@ -111,7 +111,7 @@ const activeComponent = computed(() => store.state.activeComponent);
 
 const compObj = computed({
   get() {
-    return store.state.activeComponentObj;
+    return activeComponentObj.value;
   },
 });
 </script>
