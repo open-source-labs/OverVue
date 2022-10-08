@@ -102,7 +102,6 @@ const createAttribute = (attributeText) => {
     };
 
 
-
 //delete attribute after the delete bvutton has been clicked
 const deleteAttribute = (attribute) => {
       editAttribute({
