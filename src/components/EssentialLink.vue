@@ -22,6 +22,42 @@
 </template>
 
 <script>
+ export default defineComponent({
+  name: 'EssentialLink',
+  props: props,
+})
+</script>
+
+<script setup>
+import { defineComponent, defineProps } from 'vue'
+
+const props = defineProps({
+  title: {
+      type: String,
+      required: true
+    },
+
+    caption: {
+      type: String,
+      default: ''
+    },
+
+    link: {
+      type: String,
+      default: '#'
+    },
+
+    icon: {
+      type: String,
+      default: ''
+    }
+})
+
+</script>
+
+
+<!-- old options api script  -->
+<!-- <script>
 import { defineComponent } from 'vue'
 
 export default defineComponent({
@@ -48,4 +84,4 @@ export default defineComponent({
     }
   }
 })
-</script>
+</script> -->
