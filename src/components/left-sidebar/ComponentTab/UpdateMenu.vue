@@ -8,133 +8,448 @@ Description:
 <template>
   <div class="edit-component-div">
     <div>
-      <button class="menu-link" @click="resetActiveComponent"><i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp; &nbsp; Create Component Menu</button>
+      <button class="menu-link" @click="resetActiveComponent">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp; &nbsp; Create
+        Component Menu
+      </button>
       <q-card class="no-shadow" dark flat>
-      <q-expansion-item default-opened label="Update Component">
-      <q-input
-        @keyup.enter="editCompName(newName)"
-        v-on:keyup.delete.stop
-        v-model="newName"
-        :placeholder="this.activeComponent"
-        color="white"
-        dark
-        dense
-        outlined
-        item-aligned
-        padding="5px"
-        class="input-add"
-        style="margin-bottom: 30px"
-        no-error-icon
-        reactive-rules
-        :rules="[ val => !Object.keys(this.componentMap).includes(val) || val === this.activeComponent || 'A component with this name already exists' ]"
-      ></q-input>
-      <!-- for the icon list -->
-      <VueMultiselect
-        v-model="childrenSelected"
-        placeholder="Add/remove children"
-        :multiple="true"
-        :close-on-select="false"
-        :options="options"
-        :show-labels="false"
-        @remove="handleAddChild"
-        @select="handleAddChild"
-        :max-height="300"
-        :option-height="20"
-        :searchable="false"
-      />
-      <q-list
-        class="accordBorder no-shadow"
-        active-color="secondary"
-        indicator-color="secondary"
-      >
-        <q-expansion-item group="accordion" label="HTML Elements">
-          <div class="icon-container">
-            <Icons
+        <q-expansion-item default-opened label="Update Component">
+          <q-input
+            @keyup.enter="editCompName(newName)"
+            v-on:keyup.delete.stop
+            v-model="newName"
+            :placeholder="activeComponent"
+            color="white"
+            dark
+            dense
+            outlined
+            item-aligned
+            padding="5px"
+            class="input-add"
+            style="margin-bottom: 30px"
+            no-error-icon
+            reactive-rules
+            :rules="[
+              (val) => {
+                !Object.keys(componentMap).includes(val) ||
+                  val === activeComponent ||
+                  'A component with this name already exists';
+              },
+            ]"
+          ></q-input>
+
+          <VueMultiselect
+            v-model="childrenSelected"
+            placeholder="Add/remove children"
+            :multiple="true"
+            :close-on-select="false"
+            :options="options"
+            :show-labels="false"
+            @remove="handleAddChild"
+            @select="handleAddChild"
+            :max-height="300"
+            :option-height="20"
+            :searchable="false"
+          />
+          <q-list
+            class="accordBorder no-shadow"
+            active-color="secondary"
+            indicator-color="secondary"
+          >
+            <q-expansion-item group="accordion" label="HTML Elements">
+              <div class="icon-container">
+                <Icons
+                  v-model="attributeModal"
+                  v-if="attributeModal === false"
+                  class="icons"
+                  @getClickedIcon="addToSelectedElementList"
+                  @activeElement="addToComponentElementList"
+                  @activeHTML="addNestedHTML"
+                  @activeLayer="addNestedNoActive"
+                />
+              </div>
+
+              <div class="componentHTML">
+                <HTMLQueue></HTMLQueue>
+              </div>
+              <br />
+            </q-expansion-item>
+            <InputHTMLMenu
               v-model="attributeModal"
-              v-if="attributeModal === false"
-              class="icons"
-              @getClickedIcon="addToSelectedElementList"
-              @activeElement="addToComponentElementList"
-              @activeHTML="addNestedHTML"
-              @activeLayer="addNestedNoActive"
+              v-if="attributeModal === true && activeLayer.lineage.length === 0"
+              class="htmlElement-selected"
             />
-          </div>
-          
-          <div class="componentHTML">
+            <q-expansion-item group="accordion" label="Component Attributes">
+              <AttributesSubMenu />
+            </q-expansion-item>
 
-            <HTMLQueue></HTMLQueue>
-          </div>
-          <br />
-        </q-expansion-item>
-        <InputHTMLMenu v-model="attributeModal" v-if="attributeModal === true && this.activeLayer.lineage.length === 0 " class="htmlElement-selected"/>
-        <q-expansion-item group="accordion" label="Component Attributes">
-          <AttributesSubMenu />
-        </q-expansion-item>
-        <!-- Props item that has AddProps component in it -->
-        <q-expansion-item group="accordion" label="Props">
-          <PropsSubMenu />
-          <p v-if="!this.activeComponentObj.props.length">
-            No props in component
-          </p>
-          <div v-else>
-            <a
-              v-for="prop in this.activeComponentData.props"
-              :key="prop"
-              v-on:click="onActivated(prop)"
-            >
-              <q-list class="list=item" dense bordered separator>
-                <q-item clickable v-ripple class="list-item">
-                  <q-item-section>
-                    <div class="component-container">
-                      <div class="component-info">
-                        {{ prop }}
-                      </div>
-                      <q-btn
-                        flat
-                        icon="highlight_off"
-                        v-on:click.stop="deleteProp(prop)"
-                      />
-                    </div>
-                  </q-item-section>
-                </q-item>
-              </q-list>
-            </a>
-          </div>
-        </q-expansion-item>
-        <!-- Vuex State item that will have state displayed and option to delete -->
-        <q-expansion-item group="accordion" label="State">
-          <StateSubMenu />
-        </q-expansion-item>
-        <q-expansion-item group="accordion" label="Actions">
-          <ActionsSubMenu />
-        </q-expansion-item>
+            <q-expansion-item group="accordion" label="Props">
+              <PropsSubMenu />
+              <p v-if="!activeComponentObj.props.length">
+                No props in component
+              </p>
+              <div v-else>
+                <a
+                  v-for="prop in componentMap[activeComponent].props"
+                  :key="prop"
+                  v-on:click="onActivated(prop)"
+                >
+                  <q-list class="list=item" dense bordered separator>
+                    <q-item clickable v-ripple class="list-item">
+                      <q-item-section>
+                        <div class="component-container">
+                          <div class="component-info">
+                            {{ prop }}
+                          </div>
+                          <q-btn
+                            flat
+                            icon="highlight_off"
+                            v-on:click.stop="deleteProp(prop)"
+                          />
+                        </div>
+                      </q-item-section>
+                    </q-item>
+                  </q-list>
+                </a>
+              </div>
+            </q-expansion-item>
 
-      </q-list>
-      <q-btn
-        id="create-component-btn"
-        class="sidebar-btn"
-        color="secondary"
-        label="Done"
-        @click="resetActiveComponent"
-      />
-      <q-btn
-        id="exportButton"
-        class="sidebar-btn"
-        @click="useExportComponentBound"
-        label="Export currently selected"
-      />
-      <q-btn
-        id="deleteButton"
-        class="sidebar-btn deleteAction"
-        @click="deleteSelectedComp(activeComponentData)"
-        label="Delete currently selected"
-      />
-     </q-expansion-item>
-     </q-card>
+            <q-expansion-item group="accordion" label="State">
+              <StateSubMenu />
+            </q-expansion-item>
+            <q-expansion-item group="accordion" label="Actions">
+              <ActionsSubMenu />
+            </q-expansion-item>
+          </q-list>
+          <q-btn
+            id="create-component-btn"
+            class="sidebar-btn"
+            color="secondary"
+            label="Done"
+            @click="resetActiveComponent"
+          />
+          <q-btn
+            id="exportButton"
+            class="sidebar-btn"
+            @click="useExportComponent"
+            label="Export currently selected"
+          />
+          <q-btn
+            id="deleteButton"
+            class="sidebar-btn deleteAction"
+            @click="deleteSelectedComp(activeComponentData)"
+            label="Delete currently selected"
+          />
+        </q-expansion-item>
+      </q-card>
     </div>
   </div>
 </template>
 
+<script>
+export default {
+  name: "UpdateMenu",
+};
+</script>
+
+<script setup>
+import { useExportComponent } from "../../composables/useExportComponent.js";
+import VueMultiselect from "vue-multiselect";
+import HTMLQueue from "../../right-sidebar/HTMLQueue.vue";
+import Icons from "./Icons.vue";
+import PropsSubMenu from "./PropsSubMenu.vue";
+import StateSubMenu from "./StateSubMenu.vue";
+import ActionsSubMenu from "./ActionsSubMenu.vue";
+import AttributesSubMenu from "./AttributesSubMenu.vue";
+import InputHTMLMenu from "./InputHTMLMenu.vue";
+
+import { ref, computed, watch } from "vue";
+import { useStore } from "vuex";
+
+const store = useStore();
+
+const cloneDeep = require("lodash.clonedeep");
+const { fs, ipcRenderer } = window;
+
+const value = ref("");
+const newName = ref("");
+const childrenSelected = ref([]);
+const attributeModal = ref(false);
+
+const routes = computed(() => store.state.routes);
+const activeRoute = computed(() => store.state.activeRoute);
+const activeComponent = computed(() => store.state.activeComponent);
+const activeHTML = computed(() => store.state.activeHTML);
+const activeLayer = computed(() => store.state.activeLayer);
+const activeComponentObj = computed(() => store.state.activeComponentObj);
+const componentMap = computed(() => store.state.componentMap);
+const exportAsTypescript = computed(() => store.state.exportAsTypescript);
+const attributeModalOpen = computed(() => store.state.attributeModalOpen);
+
+const activeRouteDisplay = computed(
+  () => store.state.routes[store.state.activeRoute]
+);
+
+const activeComponentData = cloneDeep(activeComponentObj.value);
+
+const options = computed(() => {
+  if (activeComponent.value !== "") {
+    newName.value = activeComponentObj.value.componentName;
+    childrenSelected.value = [];
+    childrenSelected.value = componentMap.value[activeComponent.value].children;
+  } else {
+    childrenSelected.value = [];
+  }
+
+  const compMap = componentMap.value;
+  const activeComp = activeComponent.value;
+  const val = activeRouteDisplay.value.map(
+    (component) => component.componentName
+  );
+
+  const relatives = [...val];
+
+  let parentalLineage = [];
+
+  const findLineage = (children) => {
+    children.forEach((el) => {
+      parentalLineage.push(el);
+      if (compMap[el].children.length > 0) {
+        findLineage(compMap[el].children);
+      }
+      if (el !== activeComp) parentalLineage.pop();
+      else return;
+    });
+  };
+
+  findLineage(relatives);
+
+  const optionOutput = val
+    .filter((el) => !parentalLineage.includes(el))
+    .filter((el) => el !== activeComp);
+
+  return optionOutput;
+});
+
+const setActiveComponent = (payload) =>
+  store.dispatch("setActiveComponent", payload);
+const deleteComponent = (payload) => store.dispatch("deleteComponent", payload);
+const deleteActiveComponent = (payload) =>
+  store.dispatch("deleteActiveComponent", payload);
+const editComponentName = (payload) =>
+  store.dispatch("editComponentName", payload);
+const updateComponentLayer = (payload) =>
+  store.dispatch("updateComponentLayer", payload);
+const updateActiveComponentChildrenValue = (payload) =>
+  store.dispatch("updateActiveComponentChildrenValue", payload);
+const addToSelectedElementList = (payload) =>
+  store.dispatch("addToSelectedElementList", payload);
+const addToComponentElementList = (payload) =>
+  store.dispatch("addToComponentElementList", payload);
+const addNestedHTML = (payload) => store.dispatch("addNestedHTML", payload);
+const addNestedNoActive = (payload) =>
+  store.dispatch("addNestedNoActive", payload);
+const openAttributeModal = (payload) =>
+  store.dispatch("openAttributeModal", payload);
+const deleteProp = (payload) =>
+  store.dispatch("deletePropsFromComponent", payload);
+
+const useExportComponentBound = () => {
+  useExportComponent.bind(this)();
+};
+
+const handleAddChild = (value) => {
+  updateActiveComponentChildrenValue(value);
+};
+
+const onActivated = (componentData) => {
+  setActiveComponent(componentData.componentName);
+  activeComponentData.isActive = true;
+};
+
+const deleteSelectedComp = (componentData) => {
+  if (componentData) deleteActiveComponent(componentData.componentName);
+};
+
+const handleLayer = (e) => {
+  e.preventDefault();
+  const payload = {
+    activeComponent: activeComponent.value,
+    routeArray: activeRouteDisplay.value,
+    activeComponentData: activeComponentData,
+    z: activeComponentData.z,
+  };
+  if (e.target.innerText === "+") payload.z++;
+  if (e.target.innerText === "-" && payload.z > 0) payload.z--;
+  updateComponentLayer(payload);
+};
+
+const handleSelect = (componentName) => {
+  setActiveComponent(componentName);
+  value.value = "";
+  activeComponentData.isActive = true;
+};
+
+const resetActiveComponent = () => {
+  if (activeComponent.value !== "") setActiveComponent("");
+};
+
+const editCompName = (name) => {
+  if (
+    name &&
+    name !== activeComponent.value &&
+    activeComponent.value &&
+    !componentMap.value[name]
+  ) {
+    editComponentName(name);
+    newName.value = "";
+    setActiveComponent(activeComponent.value);
+  }
+};
+
+watch(attributeModalOpen, () => {
+  attributeModal.value = attributeModalOpen.value;
+});
+</script>
+
+<!-- <template>
+  <div class="edit-component-div">
+    <div>
+      <button class="menu-link" @click="resetActiveComponent">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp; &nbsp; Create
+        Component Menu
+      </button>
+      <q-card class="no-shadow" dark flat>
+        <q-expansion-item default-opened label="Update Component">
+          <q-input
+            @keyup.enter="editCompName(newName)"
+            v-on:keyup.delete.stop
+            v-model="newName"
+            :placeholder="this.activeComponent"
+            color="white"
+            dark
+            dense
+            outlined
+            item-aligned
+            padding="5px"
+            class="input-add"
+            style="margin-bottom: 30px"
+            no-error-icon
+            reactive-rules
+            :rules="[
+              (val) =>
+                !Object.keys(this.componentMap).includes(val) ||
+                val === this.activeComponent ||
+                'A component with this name already exists',
+            ]"
+          ></q-input>
+          <VueMultiselect
+            v-model="childrenSelected"
+            placeholder="Add/remove children"
+            :multiple="true"
+            :close-on-select="false"
+            :options="options"
+            :show-labels="false"
+            @remove="handleAddChild"
+            @select="handleAddChild"
+            :max-height="300"
+            :option-height="20"
+            :searchable="false"
+          />
+          <q-list
+            class="accordBorder no-shadow"
+            active-color="secondary"
+            indicator-color="secondary"
+          >
+            <q-expansion-item group="accordion" label="HTML Elements">
+              <div class="icon-container">
+                <Icons
+                  v-model="attributeModal"
+                  v-if="attributeModal === false"
+                  class="icons"
+                  @getClickedIcon="addToSelectedElementList"
+                  @activeElement="addToComponentElementList"
+                  @activeHTML="addNestedHTML"
+                  @activeLayer="addNestedNoActive"
+                />
+              </div>
+
+              <div class="componentHTML">
+                <HTMLQueue></HTMLQueue>
+              </div>
+              <br />
+            </q-expansion-item>
+            <InputHTMLMenu
+              v-model="attributeModal"
+              v-if="
+                attributeModal === true && this.activeLayer.lineage.length === 0
+              "
+              class="htmlElement-selected"
+            />
+            <q-expansion-item group="accordion" label="Component Attributes">
+              <AttributesSubMenu />
+            </q-expansion-item>
+            <q-expansion-item group="accordion" label="Props">
+              <PropsSubMenu />
+              <p v-if="!this.activeComponentObj.props.length">
+                No props in component
+              </p>
+              <div v-else>
+                <a
+                  v-for="prop in this.activeComponentData.props"
+                  :key="prop"
+                  v-on:click="onActivated(prop)"
+                >
+                  <q-list class="list=item" dense bordered separator>
+                    <q-item clickable v-ripple class="list-item">
+                      <q-item-section>
+                        <div class="component-container">
+                          <div class="component-info">
+                            {{ prop }}
+                          </div>
+                          <q-btn
+                            flat
+                            icon="highlight_off"
+                            v-on:click.stop="deleteProp(prop)"
+                          />
+                        </div>
+                      </q-item-section>
+                    </q-item>
+                  </q-list>
+                </a>
+              </div>
+            </q-expansion-item>
+            <q-expansion-item group="accordion" label="State">
+              <StateSubMenu />
+            </q-expansion-item>
+            <q-expansion-item group="accordion" label="Actions">
+              <ActionsSubMenu />
+            </q-expansion-item>
+          </q-list>
+          <q-btn
+            id="create-component-btn"
+            class="sidebar-btn"
+            color="secondary"
+            label="Done"
+            @click="resetActiveComponent"
+          />
+          <q-btn
+            id="exportButton"
+            class="sidebar-btn"
+            @click="useExportComponentBound"
+            label="Export currently selected"
+          />
+          <q-btn
+            id="deleteButton"
+            class="sidebar-btn deleteAction"
+            @click="deleteSelectedComp(activeComponentData)"
+            label="Delete currently selected"
+          />
+        </q-expansion-item>
+      </q-card>
+    </div>
+  </div>
+</template>
 
 <script>
 import { useExportComponent } from "../../composables/useExportComponent.js";
@@ -146,8 +461,7 @@ import PropsSubMenu from "./PropsSubMenu.vue";
 import StateSubMenu from "./StateSubMenu.vue";
 import ActionsSubMenu from "./ActionsSubMenu.vue";
 import AttributesSubMenu from "./AttributesSubMenu.vue";
-import InputHTMLMenu from './InputHTMLMenu.vue'
-
+import InputHTMLMenu from "./InputHTMLMenu.vue";
 
 const cloneDeep = require("lodash.clonedeep");
 const { fs, ipcRenderer } = window;
@@ -181,8 +495,7 @@ export default {
       "activeComponentObj",
       "componentMap",
       "exportAsTypescript",
-      'attributeModalOpen',
-      
+      "attributeModalOpen",
     ]),
 
     activeRouteDisplay() {
@@ -196,41 +509,43 @@ export default {
 
     // returns options for component multiselect
     options() {
-      if (this.activeComponent !== '')
+      if (this.activeComponent !== "")
         this.newName = this.activeComponentObj.componentName;
-        if (this.activeComponent !== ''){
-          this.childrenSelected = [];
-          this.childrenSelected = this.componentMap[this.activeComponent].children;
-        } else {
-          this.childrenSelected = [];
+      if (this.activeComponent !== "") {
+        this.childrenSelected = [];
+        this.childrenSelected =
+          this.componentMap[this.activeComponent].children;
+      } else {
+        this.childrenSelected = [];
       }
       const compMap = this.componentMap;
       const activeComp = this.activeComponent;
       const val = this.activeRouteDisplay.map(
         (component) => component.componentName
       );
-      const relatives = [...val]
-        //also need to filter out any parents
+      const relatives = [...val];
+      //also need to filter out any parents
 
       let parentalLineage = [];
-      findLineage(relatives)
-      function findLineage(children){
-        children.forEach((el)=>{
+      findLineage(relatives);
+      function findLineage(children) {
+        children.forEach((el) => {
           parentalLineage.push(el);
-          if (compMap[el].children.length > 0){
+          if (compMap[el].children.length > 0) {
             findLineage(compMap[el].children);
           }
-          if (el !== activeComp){
+          if (el !== activeComp) {
             parentalLineage.pop();
           } else {
             return;
           }
-        })
+        });
       }
-      const optionOutput = val.filter(el => !parentalLineage.includes(el)).filter(el => el !== this.activeComponent);
+      const optionOutput = val
+        .filter((el) => !parentalLineage.includes(el))
+        .filter((el) => el !== this.activeComponent);
       return optionOutput;
     },
-
   },
 
   methods: {
@@ -247,10 +562,11 @@ export default {
       "addNestedNoActive",
       "openAttributeModal",
     ]),
-    useExportComponentBound(){
+    useExportComponentBound() {
       useExportComponent.bind(this)();
     },
-    handleAddChild(value) { //actually handles adding or deleting
+    handleAddChild(value) {
+      //actually handles adding or deleting
       this.updateActiveComponentChildrenValue(value);
     },
 
@@ -272,7 +588,7 @@ export default {
 
     // Delete prop
     deleteProp(prop) {
-      this.$store.dispatch('deletePropsFromComponent', prop);
+      this.$store.dispatch("deletePropsFromComponent", prop);
     },
 
     // changes layer of active component
@@ -319,12 +635,11 @@ export default {
     attributeModalOpen() {
       this.attributeModal = this.attributeModalOpen;
     },
-  }
+  },
 };
-</script>
+</script> -->
 
 <style lang="scss" scoped>
-
 .edit-component-div {
   display: flex;
   flex-direction: column;
@@ -333,7 +648,7 @@ export default {
   margin: 4px;
 }
 
-.menu-link{
+.menu-link {
   background-color: $subprimary;
   color: $menutext;
   border: 1px solid $subprimary;
@@ -341,7 +656,7 @@ export default {
   padding: 0;
 }
 
-.menu-link:hover{
+.menu-link:hover {
   color: $primary;
 }
 
@@ -362,7 +677,7 @@ export default {
   height: 100px;
   margin-top: 20px;
   padding: 10px;
-  background-color: rgba($subsecondary, .5);
+  background-color: rgba($subsecondary, 0.5);
   overflow-y: scroll;
   border: 1px solid rgba(245, 245, 245, 0.3);
   border-radius: 5px;
@@ -426,7 +741,8 @@ p {
   margin-bottom: 30px;
 }
 
-#exportButton, #create-component-btn {
+#exportButton,
+#create-component-btn {
   background-color: $secondary;
   color: $menutext;
   width: 100%;
@@ -452,7 +768,6 @@ p {
 }
 
 .htmlElement-selected {
-  height:100%;
-
+  height: 100%;
 }
 </style>

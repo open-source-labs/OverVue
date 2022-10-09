@@ -1,44 +1,77 @@
 <template>
   <div>
-
-    <q-btn-dropdown class="attributeDropDown" color="primary" :label="attributeSelection">
+    <q-btn-dropdown
+      class="attributeDropDown"
+      color="primary"
+      :label="attributeSelection"
+    >
       <q-list>
-        <q-item clickable v-close-popup @keyup.enter="changeAttribute('id')" @click="changeAttribute('id')">
+        <q-item
+          clickable
+          v-close-popup
+          @keyup.enter="changeAttribute('id')"
+          @click="changeAttribute('id')"
+        >
           <q-item-section>
             <q-item-label>ID</q-item-label>
           </q-item-section>
         </q-item>
 
-        <q-item clickable v-close-popup @keyup.enter="changeAttribute('class')" @click="changeAttribute('class')">
+        <q-item
+          clickable
+          v-close-popup
+          @keyup.enter="changeAttribute('class')"
+          @click="changeAttribute('class')"
+        >
           <q-item-section>
             <q-item-label>Class</q-item-label>
           </q-item-section>
         </q-item>
       </q-list>
     </q-btn-dropdown>
-<!--Attribute (id/class so far) change function for main component parent-->
-    <q-input @keyup.enter="createAttribute(attributeText)" color="white" dark outlined bottom-slots
-      v-model="attributeText" label="Enter Label" dense class="input-add" v-on:keyup.delete.stop>
+    <!--Attribute (id/class so far) change function for main component parent-->
+    <q-input
+      @keyup.enter="createAttribute(attributeText)"
+      color="white"
+      dark
+      outlined
+      bottom-slots
+      v-model="attributeText"
+      label="Enter Label"
+      dense
+      class="input-add"
+      v-on:keyup.delete.stop
+    >
       <template v-slot:append>
         <q-btn flat icon="add" @click="createAttribute(attributeText)" />
       </template>
     </q-input>
-<!--delete buttons to remove class/id-->
-    <button v-if="this.activeComponentObj.htmlAttributes.class !== ''" class="deleteButton"
-      @click="deleteAttribute('class')" color="primary">Remove class</button>
+    <!--delete buttons to remove class/id-->
+    <button
+      v-if="this.activeComponentObj.htmlAttributes.class !== ''"
+      class="deleteButton"
+      @click="deleteAttribute('class')"
+      color="primary"
+    >
+      Remove class
+    </button>
 
-    <button v-if="this.activeComponentObj.htmlAttributes.id !== ''" class="deleteButton" @click="deleteAttribute('id')"
-      color="primary">Remove id</button>
+    <button
+      v-if="this.activeComponentObj.htmlAttributes.id !== ''"
+      class="deleteButton"
+      @click="deleteAttribute('id')"
+      color="primary"
+    >
+      Remove id
+    </button>
   </div>
 </template>
 
 <script>
-   export default {
-    name: "AttributesSubMenu",
-  };
+export default {
+  name: "AttributesSubMenu",
+};
 </script>
-
-
 
 <script setup>
 import { computed, ref } from "vue";
@@ -61,62 +94,59 @@ const activeComponentObj = computed(() => store.state.activeComponentObj);
 let activeComponent = computed(() => store.state.activeComponent);
 const routes = computed(() => store.state.routes);
 const activeRoute = computed(() => store.state.activeRoute);
-const activeRouteKey = computed(() => store.state.routes[store.state.activeRoute])
+const activeRouteKey = computed(
+  () => store.state.routes[store.state.activeRoute]
+);
 //actions
 
 const editAttribute = (payload) => store.dispatch("editAttribute", payload);
 
 // const activeComponentData = () => store.dispatch("activeComponentData");
 const activeComponentData = () => {
-      return cloneDeep(activeComponentObj.value);
-    }
-
+  return cloneDeep(activeComponentObj.value);
+};
 
 //methods
 
- // Prevent Delete on changes to searchable multiselect
-const stopDelete = (e) => {if (e.code === "Backspace") e.stopPropogation()}
+// Prevent Delete on changes to searchable multiselect
+const stopDelete = (e) => {
+  if (e.code === "Backspace") e.stopPropogation();
+};
 
 //function to change the state of the attribute selection dropdown menu
 const changeAttribute = (attribute) => {
-  attributeSelection.value = attribute
+  attributeSelection.value = attribute;
 };
 
 //attribute change function to create attribute
-const createAttribute = (attributeText) => {
+const createAttribute = (attribute) => {
+  // console.log("What is my attributeSelection?", typeof attributeSelection, attributeSelection)
+  // console.log("What is my attributeText?", typeof attributeText, attributeText)
+  // console.log("What is my activeComponent.value?", typeof activeComponent.value, activeComponent.value)
+  // console.log("What is my activeRouteKey.value?", typeof activeRouteKey.value, activeRouteKey.value)
+  // console.log("What is my activeComponent?", typeof activeComponentData, activeComponentData)
 
-// console.log("What is my attributeSelection?", typeof attributeSelection, attributeSelection)
-// console.log("What is my attributeText?", typeof attributeText, attributeText)
-// console.log("What is my activeComponent.value?", typeof activeComponent.value, activeComponent.value)
-// console.log("What is my activeRouteKey.value?", typeof activeRouteKey.value, activeRouteKey.value)
-// console.log("What is my activeComponent?", typeof activeComponentData, activeComponentData)
-
-      editAttribute({
-        attribute: attributeSelection.value,
-        value: attributeText,
-        activeComponent: activeComponent.value,
-        routeArray: activeRouteKey.value,
-        activeComponentData: activeComponentData,
-      })
-      attributeText = "";
-    };
-
+  editAttribute({
+    attribute: attributeSelection.value,
+    value: attribute,
+    activeComponent: activeComponent.value,
+    routeArray: activeRouteKey.value,
+    activeComponentData: activeComponentData,
+  });
+  attributeText.value = "";
+};
 
 //delete attribute after the delete bvutton has been clicked
 const deleteAttribute = (attribute) => {
-      editAttribute({
-        attribute: attribute,
-        value: "",
-        activeComponent: activeComponent.value,
-        routeArray: activeRouteKey.value,
-        activeComponentData: activeComponentData,
-      })
-    };
-
-
-
+  editAttribute({
+    attribute: attribute,
+    value: "",
+    activeComponent: activeComponent.value,
+    routeArray: activeRouteKey.value,
+    activeComponentData: activeComponentData,
+  });
+};
 </script>
-
 
 <!-- 
 <script>
