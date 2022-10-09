@@ -34,6 +34,147 @@ Description:
 </template>
 
 <script>
+  export default {
+    name: "CreateMenuHTMLQueue",
+  };
+</script>
+
+<script setup>
+
+import { setSelectedElementList, deleteSelectedElement, deleteFromComponentHtmlList } from '../../../store/types'
+import { breadthFirstSearch } from '../../../utils/search.util'
+import { computed, ref } from "vue";
+import { useStore } from "vuex";
+
+const store = useStore();
+
+const props = defineProps({
+  name: {
+      type: String
+    },
+    listToRender: {
+      type: Array
+    }
+})
+
+const exceptions = ref(['input', 'img', 'link']);
+
+const selectedElementList = computed(() => store.state.selectedElementList)
+const componentMap = computed(() => store.state.componentMap)
+const activeComponent = computed(() => store.state.activeComponent)
+const activeHTML = computed(() => store.state.activeHTML)
+const activeLayer = computed(() => store.state.activeLayer)
+
+const renderList = computed({
+      get () {
+        if (activeComponent.value === '') return selectedElementList.value.map((el, index) => [el.text, index, el.id, el.z])
+        // change activeComponent's htmlList into an array of arrays ([element/component name, index in state])
+        if (activeComponent.value !== '' && activeLayer.value.id === '') {
+          let sortedHTML = componentMap.value[activeComponent.value].htmlList
+          .map((el, index) => [el.text, index, el.id, el.z])
+          .filter(el => {
+            return el[0] !== undefined
+          })
+          return sortedHTML
+        }
+        let activeElement = breadthFirstSearch(componentMap.value[activeComponent.value].htmlList, activeLayer.value.id)
+        let sortedHTML = activeElement.children
+        .map((el, index) => [el.text, index, el.id, el.z])
+        .filter(el => {
+          return el[0] !== undefined
+        })
+        return sortedHTML
+      },
+      set (value) {
+        store.dispatch(setSelectedElementList, value)
+      }
+    })
+
+    const depth = () => {
+      let newTitle = ''
+      activeLayer.value.lineage.forEach(el => {
+        newTitle += ` > ${el}`
+      })
+      return newTitle
+    }
+
+
+    //methods
+
+    const setActiveHTML = (payload) => store.dispatch("setActiveHTML", payload)
+    const setActiveLayer = (payload) => store.dispatch("setActiveLayer", payload)
+    const upOneLayer = (payload) => store.dispatch("upOneLayer", payload)
+    const setSelectedIdDrag = (payload) => store.dispatch("setSelectedIdDrag", payload)
+    const setIdDrag = (payload) => store.dispatch("setIdDrag", payload)
+    const setSelectedIdDrop = (payload) => store.dispatch("setSelectedIdDrop", payload)
+    const setIdDrop = (payload) => store.dispatch("setIdDrop", payload)
+    const dragDropSortHtmlElements = (payload) => store.dispatch("dragDropSortHtmlElements", payload)
+    const dragDropSortSelectedHtmlElements = (payload) => store.dispatch("dragDropSortSelectedHtmlElements", payload)
+
+    const deleteElement = (id) => {
+      if (activeComponent.value === '') store.dispatch(deleteSelectedElement, id[0]);
+      else this.$store.dispatch(deleteFromComponentHtmlList, id[1]);
+    };
+
+    const setActiveElement = (element) => {
+      if (activeComponent.value !== '' && !exceptions.value.includes(element[0])) {
+        setActiveHTML(element);
+      }
+    };
+
+    const setLayer = (element) => {
+      setActiveLayer(element)
+    }
+
+    const setParentLayer = () => {
+      if (activeLayer.value.id !== '') {
+        upOneLayer(activeLayer.value.id);
+      }
+    };
+
+    //METHODS FOR DRAG-AND-DROP
+    const startDrag = (event, id) => {
+      //add a class to make the html element currently being drag transparent
+      event.target.classList.add('currentlyDragging')
+      const dragId = id;
+      //store the id of dragged element
+      if (activeComponent.value === '') setSelectedIdDrag(dragId);
+      else setIdDrag(dragId);
+    }
+
+    const dragEnter = (event, id) => {
+      event.preventDefault();
+      const dropId = id;
+      //store the id of the html element whose location the dragged html element could be dropped upon
+      if (activeComponent.value === '') setSelectedIdDrop(dropId);
+      else setIdDrop(dropId);
+    };
+
+    const dragOver = (event) => {
+      //needed stop the dragend animation so endDrag is invoked automatically
+      event.preventDefault();
+    };
+
+   const endDrag = (event) => {
+      //remove the 'currentlyDragging' class after the HTML is dropped to remove transparency
+      event.preventDefault();
+      event.target.classList.remove('currentlyDragging')
+      //invoke the action that will use the idDrag and idDrop to sort the HtmlList
+      if (this.activeComponent === '') this.dragDropSortSelectedHtmlElements()
+      else this.dragDropSortHtmlElements()
+    },
+  watch: {
+    activeComponent: function () {
+      if (this.activeComponent !== '') {
+        this.component = true
+      } else {
+        this.component = false
+      }
+    }
+  }
+</script>
+
+<!-- <script>
 
 import { mapState, mapActions } from 'vuex'
 import { setSelectedElementList, deleteSelectedElement, deleteFromComponentHtmlList } from '../../../store/types'
@@ -143,7 +284,7 @@ export default {
     }
   }
 }
-</script>
+</script> -->
 
 <style lang='scss' scoped>
 .html-queue {
