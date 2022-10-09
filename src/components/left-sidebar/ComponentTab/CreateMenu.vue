@@ -101,7 +101,7 @@ Description:
 
 <script setup>
 import { useCreateComponent } from "../../composables/useCreateComponent.js";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useStore } from "vuex";
 import Icons from "./Icons.vue";
 import ParentMultiselect from "./ParentMultiselect.vue";
@@ -115,6 +115,7 @@ const store = useStore();
 
 let input = ref('');
 let parent = ref('');
+let attributeModal = ref(null);
 const libArray = ref([
         {
           name:'alert',
@@ -205,11 +206,11 @@ const routes = computed(() => store.state.routes);
 //getter function
 const componentNameInputValue = computed({
       get() {
-        console.log(store.state.componentNameInputValue)
+        // console.log(store.state.componentNameInputValue)
       return store.state.componentNameInputValue;
       },
       set(value) {
-        console.log(value)
+        // console.log(value)
         updateComponentNameInputValue(value);
       }
     });
@@ -252,7 +253,7 @@ const createComponent = () => {
       // Parses array of components off routes, then finds parent element name (id), then passes parent into useCreateComponent, where x, y and z are pulled off the parent object
       const parentComponent = JSON.parse(
       JSON.stringify(routes.value.HomeView)).find((ele) => ele.componentName === parent.value);
-    console.log("componentNameInputValue is ", componentNameInputValue.value);
+    // console.log("componentNameInputValue is ", componentNameInputValue.value);
 
       const props = {
         userActions: userActions.value, 
@@ -267,16 +268,16 @@ const createComponent = () => {
         registerComponent, 
         setActiveComponent
       }
-      console.log("componentNameInputValue.value ", componentNameInputValue.value);
+      // console.log("componentNameInputValue.value ", componentNameInputValue.value);
       useCreateComponent({ parentComponent }, props) //invokes composable
     };
 
-//really don't need this as attributeModal is not defined in the original API
-   const watch = {
-   attributeModalOpen : () => {
+//not sure if we need this as attributeModal is not defined in the original API
+  watch (
+   attributeModalOpen, () => {
       attributeModal.value = attributeModalOpen.value;
-    },
-  };
+    }
+  );
 
 
 </script>
