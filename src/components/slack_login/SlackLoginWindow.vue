@@ -54,7 +54,80 @@
   </div>
 </template>
 
-<script>
+<!-- <script>
+export default {
+  name: "SlackLoginWindow",
+}
+</script> -->
+
+<script setup>
+import localforage from "localforage";
+import { useStore } from "vuex";
+import { ref } from "vue";
+const { ipcRenderer, shell } = window;
+
+const store = useStore();
+let isAuthenticating = ref(false);
+let showLogin = ref(false);
+const errorMessage = ref("");
+
+    ipcRenderer.on("tokenReceived", (event, data) => {
+      return saveToLocalForage(
+        "slackWebhookURL",
+        data.incoming_webhook.url
+      );
+    });
+    ipcRenderer.on("slackUser", (event, user) => {
+      return saveToLocalForage("slackUser", user);
+    });
+    ipcRenderer.on("slackError", (event, err) => {
+      printErrorMessage();
+    });
+
+  const slackOauth = () => {
+      const slackBaseUrl = "https://slack.com/oauth/v2/authorize";
+      // const responseType = 'code'
+      const scope = "incoming-webhook";
+      const redirectUri = process.env.SLACK_REDIRECT_URI;
+      const clientId = process.env.SLACK_CLIENT_ID;
+
+      isAuthenticating.value = true;
+
+      const trimmedUri = redirectUri.slice(1, redirectUri.length - 1);
+      const trimmedClientId = clientId.slice(1, clientId.length - 1);
+
+      shell.openExternal(
+        `${slackBaseUrl}?scope=${scope}&redirect_uri=${trimmedUri}&client_id=${trimmedClientId}`,
+        { activate: true }
+      );
+    }
+
+ const saveToLocalForage = (key, value) => {
+      localforage.setItem(key, value);
+      closeLogin();
+    }
+
+  const printErrorMessage = () => {
+      errorMessage.value = "Failed to Connect to Slack";
+    }
+
+  const setErrorMessage = (err) => {
+      errorMessage.value = err;
+    }
+
+  const closeLogin = () => {
+      showLogin.value = false;
+      errorMessage.value = "";
+    }
+
+  const openLogin = () => {
+      showLogin.value = true;
+    }
+</script>
+
+
+<!-- old options api script -->
+<!-- <script>
 import localforage from "localforage";
 const { ipcRenderer, shell } = window;
 
@@ -110,15 +183,17 @@ export default {
       this.errorMessage = err;
     },
     closeLogin: function () {
+      console.log(this.showLogin, "this is showlogin")
       this.showLogin = false;
       this.errorMessage = "";
     },
     openLogin: function () {
+      console.log(this.showLogin, "inopenlogin")
       this.showLogin = true;
     },
   },
 };
-</script>
+</script> -->
 
 <style lang="scss" scoped>
 .slackLogin {
