@@ -43,7 +43,7 @@ Description:
 
 import { setSelectedElementList, deleteSelectedElement, deleteFromComponentHtmlList } from '../../../store/types'
 import { breadthFirstSearch } from '../../../utils/search.util'
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useStore } from "vuex";
 
 const store = useStore();
@@ -58,6 +58,7 @@ const props = defineProps({
 })
 
 const exceptions = ref(['input', 'img', 'link']);
+const component = ref(null);
 
 const selectedElementList = computed(() => store.state.selectedElementList)
 const componentMap = computed(() => store.state.componentMap)
@@ -73,9 +74,9 @@ const renderList = computed({
           let sortedHTML = componentMap.value[activeComponent.value].htmlList
           .map((el, index) => [el.text, index, el.id, el.z])
           .filter(el => {
-            return el[0] !== undefined
+            return el[0] !== undefined;
           })
-          return sortedHTML
+          return sortedHTML;
         }
         let activeElement = breadthFirstSearch(componentMap.value[activeComponent.value].htmlList, activeLayer.value.id)
         let sortedHTML = activeElement.children
@@ -160,18 +161,17 @@ const renderList = computed({
       event.preventDefault();
       event.target.classList.remove('currentlyDragging')
       //invoke the action that will use the idDrag and idDrop to sort the HtmlList
-      if (this.activeComponent === '') this.dragDropSortSelectedHtmlElements()
-      else this.dragDropSortHtmlElements()
-    },
-  watch: {
-    activeComponent: function () {
-      if (this.activeComponent !== '') {
-        this.component = true
+      if (activeComponent.value === '') dragDropSortSelectedHtmlElements()
+      else dragDropSortHtmlElements()
+    };
+
+  watch( activeComponent, () => {
+      if (activeComponent.value !== '') {
+        component.value = true
       } else {
-        this.component = false
+       component.value = false
       }
-    }
-  }
+    });
 </script>
 
 <!-- <script>
