@@ -38,11 +38,11 @@ const value = ref("");
 
 const componentMap = computed(() => store.state.componentMap);
 const activeComponent = computed(() => store.state.activeComponent);
+const routes = computed(() => store.state.routes);
+const activeRoute = computed(() => store.state.activeRoute);
 
 const options = computed(() =>
-  store.state.routes[store.state.activeRoute].map(
-    (component) => component.componentName
-  )
+  routes.value[activeRoute.value].map((component) => component.componentName)
 );
 
 const parentSelected = (payload) => store.dispatch("parentSelected", payload);

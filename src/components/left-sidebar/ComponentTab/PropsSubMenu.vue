@@ -63,10 +63,10 @@ const textProps = ref("");
 const selectedProps = computed(() => store.state.selectedProps);
 const userProps = computed(() => store.state.userProps);
 
-const propsOptions = userProps;
+const propsOptions = userProps.value;
 const selectProps = computed({
   get() {
-    return store.state.selectedProps;
+    return [...selectedProps.value];
   },
   set(value) {
     addPropsSelected(value);

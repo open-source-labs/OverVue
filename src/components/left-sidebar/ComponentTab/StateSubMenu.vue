@@ -79,7 +79,7 @@ const userState = computed(() => store.state.userState);
 const componentMap = computed(() => store.state.componentMap);
 const activeComponent = computed(() => store.state.activeComponent);
 
-const stateOptions = userState;
+const stateOptions = userState.value;
 const selectState = computed({
   get() {
     return [...selectedState.value];
