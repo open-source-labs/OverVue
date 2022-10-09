@@ -186,9 +186,7 @@ const componentMap = computed(() => store.state.componentMap);
 const exportAsTypescript = computed(() => store.state.exportAsTypescript);
 const attributeModalOpen = computed(() => store.state.attributeModalOpen);
 
-const activeRouteDisplay = computed(
-  () => store.state.routes[store.state.activeRoute]
-);
+const activeRouteDisplay = computed(() => routes.value[activeRoute.value]);
 
 const activeComponentData = cloneDeep(activeComponentObj.value);
 
