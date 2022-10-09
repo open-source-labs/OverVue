@@ -59,7 +59,11 @@
   </div>
 </template>
 
-
+<script>
+  export default {
+    name: "ActionsSubMenu",
+  };
+  </script>
 
 <script setup>
 // new script for Composition API

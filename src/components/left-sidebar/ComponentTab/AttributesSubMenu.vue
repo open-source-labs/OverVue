@@ -33,6 +33,94 @@
 </template>
 
 <script>
+   export default {
+    name: "AttributesSubMenu",
+  };
+</script>
+
+
+
+<script setup>
+import { computed, ref } from "vue";
+import { useStore } from "vuex";
+import VueMultiselect from "vue-multiselect";
+
+const store = useStore();
+
+//data
+
+let attributeText = ref("");
+let attributeSelection = ref("id");
+let deleteText = ref("");
+
+//computed
+
+const selectedProps = computed(() => store.state.selectedProps);
+const userProps = computed(() => store.state.userProps);
+const activeComponentObj = computed(() => store.state.activeComponentObj);
+let activeComponent = computed(() => store.state.activeComponent);
+const routes = computed(() => store.state.routes);
+const activeRoute = computed(() => store.state.activeRoute);
+const activeRouteKey = computed(() => store.state.routes[store.state.activeRoute])
+//actions
+
+const editAttribute = (payload) => store.dispatch("editAttribute", payload);
+
+// const activeComponentData = () => store.dispatch("activeComponentData");
+const activeComponentData = () => {
+      return cloneDeep(activeComponentObj.value);
+    }
+
+
+//methods
+
+ // Prevent Delete on changes to searchable multiselect
+const stopDelete = (e) => {if (e.code === "Backspace") e.stopPropogation()}
+
+//function to change the state of the attribute selection dropdown menu
+const changeAttribute = (attribute) => {
+  attributeSelection.value = attribute
+};
+
+//attribute change function to create attribute
+const createAttribute = (attributeText) => {
+
+// console.log("What is my attributeSelection?", typeof attributeSelection, attributeSelection)
+// console.log("What is my attributeText?", typeof attributeText, attributeText)
+// console.log("What is my activeComponent.value?", typeof activeComponent.value, activeComponent.value)
+// console.log("What is my activeRouteKey.value?", typeof activeRouteKey.value, activeRouteKey.value)
+// console.log("What is my activeComponent?", typeof activeComponentData, activeComponentData)
+
+      editAttribute({
+        attribute: attributeSelection.value,
+        value: attributeText,
+        activeComponent: activeComponent.value,
+        routeArray: activeRouteKey.value,
+        activeComponentData: activeComponentData,
+      })
+      attributeText = "";
+    };
+
+
+//delete attribute after the delete bvutton has been clicked
+const deleteAttribute = (attribute) => {
+      editAttribute({
+        attribute: attribute,
+        value: "",
+        activeComponent: activeComponent.value,
+        routeArray: activeRouteKey.value,
+        activeComponentData: activeComponentData,
+      })
+    };
+
+
+
+</script>
+
+
+<!-- 
+<script>
+  //old Options API code
 import { mapState, mapActions } from "vuex";
 import VueMultiselect from "vue-multiselect";
 
@@ -70,6 +158,11 @@ export default {
     },
 //attribute change function to create attribute
     createAttribute(attributeText) {
+      // console.log("what is attributeSelection?", typeof this.attributeSelection, this.attributeSelection)
+      // console.log("what is attributeText?", typeof attributeText, attributeText)
+      // console.log("what is activeComponent?", typeof this.activeComponent, this.activeComponent)
+      // console.log("what is this.routes[this.activeRoute]?", typeof this.routes[this.activeRoute], this.routes[this.activeRoute])
+      // console.log("what is this.activeComponentData?", typeof this.activeComponentData, this.activeComponentData)
       this.editAttribute({
         attribute: this.attributeSelection,
         value: attributeText,
@@ -96,7 +189,7 @@ export default {
     }
   },
 };
-</script>
+</script> -->
 
 <style lang="scss" scoped>
 .attributeDropDown {
