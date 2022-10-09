@@ -35,7 +35,51 @@ Includes functionality to:
 
 </template>
 
-<script>
+<script setup>
+import Routes from "./Routes";
+import { mapState, mapActions } from "vuex";
+import UploadMockup from "./UploadMockup.vue";
+import { useStore } from "vuex";
+import { ref, computed } from "vue";
+
+const store = useStore();
+const newRoute = ref("");
+const activeComponent = ref("")
+
+const routes = computed(() => store.state.routes);
+const componentMap = computed(() => store.state.componentMap);
+// const activeComponent = computed(() => store.state.activeComponent)
+
+const addRouteToRouteMap = (payload) => store.dispatch('addRouteToRouteMap', payload);
+const setRoutes = (payload) => store.dispatch('setRoutes', payload);
+const setActiveComponent = (payload) => store.dispatch('setActiveComponent', payload);
+
+ 
+const handleEnterKeyPress = () => {
+      const newRouteName = newRoute.value.replace(/[^a-z0-9-_.]/gi, "");
+      if (
+        !newRouteName.trim() ||
+        routes[newRouteName] ||
+        componentMap[newRouteName]
+      ) {
+        event.preventDefault();
+        return false;
+      }
+      addRouteToRouteMap(newRouteName).then(() => {
+        newRoute.value = "";
+      });
+    }
+const resetActiveComponent = () => {
+      if (activeComponent !== "") {
+        setActiveComponent("");
+      }
+    }
+</script>
+
+
+
+<!-- Old options API script -->
+<!-- <script>
 import Routes from "./Routes";
 import { mapState, mapActions } from "vuex";
 import UploadMockup from "./UploadMockup.vue";
@@ -77,7 +121,7 @@ export default {
     },
   },
 };
-</script>
+</script> -->
 
 <style scoped>
 .route-display {
