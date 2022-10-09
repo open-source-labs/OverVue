@@ -62,15 +62,14 @@ let activeComponent = computed(() => store.state.activeComponent);
 const routes = computed(() => store.state.routes);
 const activeRoute = computed(() => store.state.activeRoute);
 const activeRouteKey = computed(() => store.state.routes[store.state.activeRoute])
+
 //actions
 
 const editAttribute = (payload) => store.dispatch("editAttribute", payload);
 
-// const activeComponentData = () => store.dispatch("activeComponentData");
 const activeComponentData = () => {
       return cloneDeep(activeComponentObj.value);
-    }
-
+    };
 
 //methods
 
