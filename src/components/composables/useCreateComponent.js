@@ -1,29 +1,30 @@
 // import * as ElementPlus from '../../../node_modules/element-plus/es/components' // importing all components from Element Plus with install wrappers
 
-export function useCreateComponent(importObj) {
+export function useCreateComponent(importObj, propObj) {
+  // this function requires userActions, userState, userProps, componentNameInputValue, createAction, createState, createProp, selectedElementList, componentMap, registerComponent, setActiveComponent
   const createComponent = (importObj) => {
     let imported = false; //alter this logic once ready to import components
     if (importObj.hasOwnProperty('componentName')) {
       imported = true;
       //Check if state and actions on import exist in the store. If not, add them.
       for (let i = 0; i < importObj.actions.length; i++) {
-        if (!this.userActions.includes(importObj.actions[i])) {
-          this.createAction(importObj.actions[i])
+        if (!propObj.userActions.includes(importObj.actions[i])) {
+          propObj.createAction(importObj.actions[i])
         }
       }
       for (let i = 0; i < importObj.state.length; i++) {
-        if (!this.userState.includes(importObj.state[i])) {
-          this.createState(importObj.state[i])
+        if (!propObj.userState.includes(importObj.state[i])) {
+          propObj.createState(importObj.state[i])
         }
       }
       for (let i = 0; i < importObj.props.length; i++) {
-        if (!this.userProps.includes(importObj.props[i])) {
-          this.createProp(importObj.props[i])
+        if (!propObj.userProps.includes(importObj.props[i])) {
+          propObj.createProp(importObj.props[i])
         }
       }
     }
 
-    if (imported === false && !this.componentNameInputValue.replace(/[^a-z0-9-_.]/gi, "")) {
+    if (imported === false && !propObj.componentNameInputValue.replace(/[^a-z0-9-_.]/gi, "")) {
       event.preventDefault();
       return false;
     }
@@ -32,7 +33,7 @@ export function useCreateComponent(importObj) {
       x: importObj?.parent?.x ?? 0,
       y: importObj?.parent?.y ?? 0,
       z: importObj?.parent?.z ?? 0,
-      htmlList: this.selectedElementList,
+      htmlList: propObj.selectedElementList,
       noteList: [],
       children: [],
       actions: [],
@@ -57,11 +58,11 @@ export function useCreateComponent(importObj) {
       component.state = importObj.state;
       component.props = importObj.props;
     } else {
-      component.componentName = this.componentNameInputValue.replace(/[^a-z0-9-_.]/gi, "");
+      component.componentName = propObj.componentNameInputValue.replace(/[^a-z0-9-_.]/gi, "");
     }
-    if (!this.componentMap[component.componentName]) {
-      this.registerComponent(component);
-      this.setActiveComponent(component.componentName);
+    if (!propObj.componentMap[component.componentName]) {
+      propObj.registerComponent(component);
+      propObj.setActiveComponent(component.componentName);
     }
   }
   createComponent(importObj)
