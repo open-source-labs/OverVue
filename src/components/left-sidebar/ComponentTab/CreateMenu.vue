@@ -215,11 +215,11 @@ const componentNameInputValue = computed({
       }
     });
 
-const filter = () => {
+const filter = computed(() => {
   if (input.value == '') return [];
   if (input.length >= 2) {
   return libArray.filter(e=>e.name.includes(input.value.toLowerCase()))}
-  };
+  });
 
   //methods
 

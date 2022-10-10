@@ -46,6 +46,7 @@ import { breadthFirstSearch } from '../../../utils/search.util'
 import { computed, ref, watch } from "vue";
 import { useStore } from "vuex";
 
+
 const store = useStore();
 
 const props = defineProps({
@@ -91,13 +92,13 @@ const renderList = computed({
       }
     })
 
-    const depth = () => {
+    const depth = computed(() => {
       let newTitle = ''
       activeLayer.value.lineage.forEach(el => {
         newTitle += ` > ${el}`
       })
-      return newTitle
-    }
+      return newTitle;
+    });
 
 
     //methods
