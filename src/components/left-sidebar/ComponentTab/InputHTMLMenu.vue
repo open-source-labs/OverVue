@@ -169,10 +169,9 @@ const leftText = ref('');
 const z = ref('0');
 const noteText = ref('');
 const bindingText = ref('');
-const note = ref('');
+// const note = ref('');
 
 onMounted(() => {
-  console.log("onMounted test", widthText.value);
 //for loop to access nested HTML elements of components - sets height/width/top/left sliders to current value of selected HTML element
 for (let i = 0; i <routes.value[activeRoute.value].length; i++) {
       for (let j = 0; j < routes.value[activeRoute.value][i].htmlList.length; j++) {
@@ -238,8 +237,8 @@ const submitNote = (element, idNum) => {
         id: idNum
       }
       addActiveComponentElementNote(payload);
-      console.log("Ins")
-      text.value = '';
+      console.log("Looking for htmlAttributes ", activeComponentObj.value.htmlAttributes);
+      noteText.value = '';
     };
 
 const submitHeight = (element, idNum) => {

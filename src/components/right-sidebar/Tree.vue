@@ -153,7 +153,7 @@ const componentMap = computed (() => store.state.componentMap);
         value: 'App',
         children: []
       }
-      console.log(treeData, 'HELLO I AM TREE DATA');
+      // console.log(treeData, 'HELLO I AM TREE DATA');
       //Views come after the root, as its children. No components will be children of App.
       //ONLY Views will have components as children.
       for (const child of componentData.App.children){
