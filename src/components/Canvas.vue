@@ -340,8 +340,370 @@
 
 </template>
 
+<!-- <script setup>
+import { useExportComponent } from "./composables/useExportComponent.js";
+import { mapState, mapActions } from "vuex";
+import VueDraggableResizable from "vue-draggable-resizable/src/components/vue-draggable-resizable.vue";
+import VueMultiselect from "vue-multiselect";
+import "vue-draggable-resizable/src/components/vue-draggable-resizable.css";
+import 'vue3-draggable-resizable/dist/Vue3DraggableResizable.css'
+import { ColorPicker } from 'vue-accessible-color-picker'
+import { useStore } from "vuex";
+import { ref, computed, onMounted, watch } from "vue";
+
+const { fs, ipcRenderer } = window;
+
+const cloneDeep = require("lodash.clonedeep");
+
+const store = useStore();
+const modalOpen = ref(false);
+const noteText = ref('');
+const wasDragged = ref(false);
+const testModel = ref([]);
+const noteModal = ref(false);
+const colorModal = ref(false);
+const mockImg = ref(false);
+const htmlElements = ref([]);
+const childrenSelected = ref([]);
+const boxes = ref<HTMLElement>(null)
 
 
+
+onMounted(() => {
+  console.log(boxes.value, "onmounted boxes.value")
+    // listener for the copy
+    window.addEventListener("copy", () => {
+      // if there is an activeComponent, copy info to state using dispatch
+      if (activeComponent !== '' && noteModalOpen === false) {
+        store.dispatch("copyActiveComponent");
+      }
+    });
+    window.addEventListener("paste", () => {
+      if (noteModalOpen === false) {
+        store.dispatch("pasteActiveComponent");
+      }
+    });
+  })
+
+  //computed
+  const routes = computed(() => store.state.routes);
+  const activeRoute = computed(() => store.state.activeRoute);
+  const activeComponent = computed(() => store.state.activeComponent);
+  const componentMap = computed(() => store.state.componentMap);
+  const componentChildrenMultiselectValue = computed(() => store.state.componentChildrenMultiselectValue);
+  const imagePath = computed(() => store.state.imagePath);
+  const activeComponentObj = computed(() => store.state.activeComponentObj);
+  const exportAsTypescript = computed(() => store.state.exportAsTypescript);
+  const noteModalOpen = computed(() => store.state.noteModalOpen);
+  const activeRouteDisplay = computed(() => store.state.activeRouteDisplay);
+  const selectedElementList = computed(() => store.state.selectedElementList);
+  const activeLayer = computed(() => store.state.activeLayer);
+  const colorModalOpen = computed(() => store.state.colorModalOpen);
+  const gridLayout = computed(() => store.state.gridLayout);
+  const containerH = computed(() => store.state.containerH);
+  const containerW = computed(() => store.state.containerW);
+  
+    // used in VueDraggableResizeable component
+  const activeRouteArray = computed(() => {
+      return routes[activeRoute];
+    })
+
+    // used to delete active component
+  const activeComponentData = computed(() => {
+      // Must deep clone this so we are not directly mutating state
+      // return this.activeComponentObj;
+      return cloneDeep(activeComponentObj);
+    })
+    
+  const options = computed(() => {
+      if (activeComponent !== '') {
+        childrenSelected = [];
+        childrenSelected = componentMap[activeComponent].children;
+      } else {
+        childrenSelected = [];
+      }
+      const compMap = componentMap;
+      const activeComp = activeComponent;
+      const val = routes[activeRoute].map(
+        (component) => component.componentName
+      );
+      const relatives = [...val]
+      //also need to filter out any parents
+      let parentalLineage = [];
+      findLineage(relatives)
+      function findLineage(children) {
+        children.forEach((el) => {
+          parentalLineage.push(el);
+          if (compMap[el].children.length > 0) {
+            findLineage(compMap[el].children);
+          }
+          if (el !== activeComp) {
+            parentalLineage.pop();
+          } else {
+            return;
+          }
+        })
+      }
+      const optionOutput = val.filter(el => !parentalLineage.includes(el)).filter(el => el !== this.activeComponent);
+      return optionOutput;
+    });
+
+  const userImage = computed(() => {
+      const imgSrc = `file://` + imagePath[activeRoute];
+      return imgSrc;
+    })
+
+    // updates display with mockup image
+  const mockBg = computed(() => {
+      return imagePath[activeRoute]
+        ? {
+          background: `url("${userImage}") no-repeat rgba(223, 218, 218, 0.886) top left`,
+          "background-size": "contain"
+        }
+        : {};
+    })
+
+    // find the amount of grid lines for width
+  const gridWidth = computed(() => {
+      return containerW / gridLayout[0];
+    })
+
+    // find the amount of grid lines for height
+  const gridHeight = computed(() => {
+      return containerH / gridLayout[1];
+    })
+  
+
+const updated = computed(() => {
+    // if there are no active components, all boxes are unhighlighted
+    if (activeComponent === "") {
+      if (boxes) {
+        boxes.forEach((element) => {
+          element.enabled = false;
+          element.$emit("deactivated");
+          element.$emit("update:active", false);
+        });
+      }
+    } else {
+      // if a component is set to active, highlight it
+      boxes.forEach((element) => {
+        if (
+          activeComponent === element.$attrs.id &&
+          element.enabled === false
+        ) {
+          element.enabled = true;
+          element.$emit("activated");
+          element.$emit("update:active", true);
+        }
+      });
+    }
+  })
+
+//methods
+const setActiveComponent = (payload) => store.dispatch("setActiveComponent", payload);
+const updateComponentChildrenMultiselectValue = (payload) => store.dispatch("updateComponentChildrenMultiselectValue", payload);
+const updateActiveComponentChildrenValue = (payload) => store.dispatch("updateActiveComponentChildrenValue", payload);
+const updateComponentPosition = (payload) => store.dispatch("updateComponentPosition", payload);
+const updateStartingPosition = (payload) => store.dispatch("updateStartingPosition", payload);
+const updateComponentLayer = (payload) => store.dispatch("updateComponentLayer", payload);
+const updateStartingSize = (payload) => store.dispatch("updateStartingSize", payload);
+const updateComponentSize = (payload) => store.dispatch("updateComponentSize", payload);
+const addActiveComponentNote = (payload) => store.dispatch("addActiveComponentNote", payload);
+const deleteActiveComponentNote = (payload) => store.dispatch("deleteActiveComponentNote", payload);
+const openNoteModal = (payload) => store.dispatch("openNoteModal", payload);
+const openColorModal = (payload) => store.dispatch("openColorModal", payload);
+const updateColor = (payload) => store.dispatch("updateColor", payload);
+const updateComponentGridPosition = (payload) => store.dispatch("updateComponentGridPosition", payload);
+
+
+const useExportComponentBound = () => {
+      useExportComponent.bind(this)();
+    }
+
+const isElementPlus = (htmlList) => {
+      return htmlList.find(({ text }) => text[0] === 'e');
+    }
+
+    //color change function
+const updateColors = (data) => {
+      let payload = {
+        color: data.cssColor,
+        activeComponent: activeComponent,
+        routeArray: routes[activeRoute],
+        activeComponentData: activeComponentData,
+      }
+      updateColor(payload)
+      refresh();
+    }
+
+    // sets component's ending size/position
+const finishedResize = (x, y, w, h) => {
+      let payload = {
+        x: x,
+        y: y,
+        w: w,
+        h: h,
+        activeComponent: activeComponent,
+        routeArray: routes[activeRoute],
+        activeComponentData: activeComponentData,
+      };
+      updateComponentSize(payload);
+      updateComponentGridPosition(payload);
+      refresh();
+    }
+
+    // refresh function
+const refresh = () => {
+      const payload = {
+        activeComponent: activeComponent,
+        routeArray: routes[activeRoute],
+        activeComponentData: activeComponentData,
+        z: activeComponentData.z,
+      };
+      payload.z++;
+      updateComponentLayer(payload);
+      payload.z--;
+      updateComponentLayer(payload);
+    }
+
+    // drag and drop function
+const finishedDrag = (x, y) => {
+      let payload = {
+        x: x,
+        y: y,
+        activeComponent: activeComponent,
+        routeArray: routes[activeRoute],
+        activeComponentData: activeComponentData,
+      };
+      updateComponentPosition(payload);
+      updateComponentGridPosition(payload);
+      wasDragged = true;
+      setTimeout(() => wasDragged = false, 100)
+      refresh();
+    }
+
+const onActivated = (componentData) => {
+  console.log(componentData, "this is compdata")
+      if (!componentData) {
+        return;
+      }
+      if (boxes) {
+        boxes.forEach((element) => {
+          if (element.$attrs.id !== componentData.componentName) {
+            element.enabled = false;
+            element.$emit("deactivated");
+            element.$emit("update:active", false);
+          }
+          if (
+            activeComponent === element.$attrs.id &&
+            element.enabled === false
+            ) {
+              element.enabled = true;
+              element.$emit("activated");
+              element.$emit("update:active", true);
+            }
+          });
+        }
+        if (!(componentData.componentName === activeComponent)) {
+        setActiveComponent(componentData.componentName);
+      }
+      if (componentData && componentData.hasOwnProperty('componentName')) {
+        activeComponentData.isActive = true;
+      }
+    }
+
+    // deactivated is emitted before activated
+const onDeactivated = () => {
+      if (activeComponent !== "") {
+        activeComponentData.isActive = false;
+      }
+    }
+
+    // renders modal with Update Children and Layer in it
+const handleAddNotes = () => {
+      if (wasDragged === false && activeComponent !== '') {
+        openNoteModal();
+      }
+    }
+
+    //color editor - opens the pop up
+const handleEditColor = () => {
+      if (wasDragged === false && activeComponent !== '') {
+        openColorModal();
+      }
+    }
+
+const handleAddChild = () => {
+      modalOpen = true;
+    }
+
+const submitNote = (e) => {
+      e.preventDefault()
+      if (noteText === '') {
+        return;
+      }
+      addActiveComponentNote(noteText);
+      noteText = '';
+    }
+
+const deleteNote = (e) => {
+      deleteActiveComponentNote(e.target.previousElementSibling.innerText);
+    }
+
+    // used when user selects to add child from dropdown
+const handleSelect = (value) => { //actually handles adding or deleting
+      updateActiveComponentChildrenValue(value);
+    }
+
+    // user can change component's layer order
+const handleLayer = (e) => {
+      e.preventDefault();
+      const payload = {
+        activeComponent: activeComponent,
+        routeArray: routes[activeRoute],
+        activeComponentData: activeComponentData,
+        z: activeComponentData.z,
+      };
+
+      if (e.target.innerText === "+") payload.z++;
+      if (e.target.innerText === "–" && payload.z > 0) payload.z--;
+      updateComponentLayer(payload);
+    }
+
+    // if user clicks on display grid, resets active component to ''
+const handleClick = (event) => {
+      if (event.target.className === "component-display grid-bg") {
+        setActiveComponent("");
+      }
+    }
+
+const handleRight = (event) => {
+      if (event.target.className === "component-display grid-bg") {
+        //right click modal to make a component?
+      }
+    }
+
+  watch(noteModalOpen, () => {
+    noteModal = noteModalOpen;
+  });
+
+  watch(colorModalOpen, () => {
+      colorModal = colorModalOpen;
+  });
+
+ 
+  watch(activeComponent, () => {
+        if (activeComponent !== '' &&
+          store.state.showTutorial === true &&
+          store.state.tutorialFirstOpen === true) {
+          store.commit("TOGGLE_TUTORIAL");
+        }
+        onActivated(activeComponentObj);
+      }
+)
+</script> -->
+
+<!-- old options API script  -->
 <script>
 import { useExportComponent } from "./composables/useExportComponent.js";
 import { mapState, mapActions } from "vuex";
@@ -376,6 +738,7 @@ export default {
     };
   },
   mounted() {
+    // console.log(this.$refs.boxes, "this is this.refs.boxes mounted")
     // listener for the copy
     window.addEventListener("copy", () => {
       // if there is an activeComponent, copy info to state using dispatch
