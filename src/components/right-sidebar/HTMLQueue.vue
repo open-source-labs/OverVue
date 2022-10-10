@@ -199,7 +199,7 @@ const setLayer = (element) => {
 
 const setParentLayer = () => {
   if (activeLayer.value.id !== "") {
-    upOneLayer.value(activeLayer.value.id);
+    upOneLayer(activeLayer.value.id);
   }
 };
 
@@ -258,15 +258,16 @@ const addBinding = (input, idNum) => {
   bindingText.value = "";
 };
 
-watch(
-  () => attributeModalOpen.value,
-  () => (attributeModal.value = attributeModalOpen.value)
-);
+// how to write this? - updateMenu has the same logic
+watch(attributeModalOpen, () => {
+  attributeModal.value = attributeModalOpen.value;
+});
 
+// how to write this? what is component?
 watch(
-  () => activeComponent.value,
+  () => activeComponent,
   () => {
-    if (activeComponent.value !== "") {
+    if (activeComponent !== "") {
       component = true;
     } else {
       component = false;
