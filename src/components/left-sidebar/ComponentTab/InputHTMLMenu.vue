@@ -2,33 +2,33 @@
 
 <template >
   <div class="AttributeBox">
-    <div class="AttributeContainer" v-for="element in componentMap.value[activeComponent.value].htmlList"
+    <div class="AttributeContainer" v-for="element in componentMap[activeComponent].htmlList"
       :key="element.id + Date.now()">
-      <p v-if="element.id === activeHTML.value" class="title">Your class {{ element.class.length !== 0 ? 'is ' + element.class : 'has not been stated yet' }}</p>
+      <p v-if="element.id === activeHTML" class="title">Your class {{ element.class.length !== 0 ? 'is ' + element.class : 'has not been stated yet' }}</p>
     </div>
       <q-form autofocus v-on:submit.prevent="submitClass">
         <q-input label="Add/Change your class name" filled dark autofocus true hide-bottom-space v-model="classText"
           @keydown.enter="submitClass">
           <i id="comp-btn" class="fa-solid fa-right-to-bracket"
-            :disable="classText.length > 0 ? false : true" @click.self="submitClass(classText, activeHTML.value)">
+            :disable="classText.length > 0 ? false : true" @click.self="submitClass(classText, activeHTML)">
           </i>
         </q-input>
       </q-form>
       <q-form autofocus v-on:submit.prevent="addBinding">
         <q-input label="Add/Change two-way binding" filled dark autofocus true hide-bottom-space v-model="bindingText"
-          @keydown.enter="addBinding(bindingText, activeHTML.value)">
+          @keydown.enter="addBinding(bindingText, activeHTML)">
           <i id="compt-btn" class="fa-solid fa-right-to-bracket" label="Add Binding"
-            :disable="bindingText.length > 0 ? false : true" @click.self="addBinding(bindingText, activeHTML.value)">
+            :disable="bindingText.length > 0 ? false : true" @click.self="addBinding(bindingText, activeHTML)">
           </i>
         </q-input>
       </q-form>
-    <div class="AttributeContainer" v-for="element in componentMap.value[activeComponent.value].htmlList"
+    <div class="AttributeContainer" v-for="element in componentMap[activeComponent].htmlList"
       :key="element.id + Date.now()">
-      <div v-if="exceptions.includes(element.text) && element.id === activeHTML.value">
+      <div v-if="exceptions.includes(element.text) && element.id === activeHTML">
         <q-form autofocus v-on:submit.prevent="submitNote">
           <q-input label="Add Inner Text" filled dark autofocus true hide-bottom-space v-model="noteText"  @keydown.enter="submitNote">
             <i class="fa-solid fa-right-to-bracket" color="secondary" label="Submit Note"
-              :disable="noteText.length > 0 ? false : true" @click.self="submitNote(noteText, activeHTML.value)">
+              :disable="noteText.length > 0 ? false : true" @click.self="submitNote(noteText, activeHTML)">
             </i>
           </q-input>
         </q-form>
@@ -44,8 +44,8 @@
             :label-value="'Height:' + heightText"
             inner-track-color="primary"
             color="secondary"
-            @change="submitHeight(heightText, activeHTML.value)"
-            @update:model-value="submitHeight(heightText, activeHTML.value)"
+            @change="submitHeight(heightText, activeHTML)"
+            @update:model-value="submitHeight(heightText, activeHTML)"
             style="float: left; margin-left: 5% "
           />
         </q-form>
@@ -60,8 +60,8 @@
             :label-value="'Elevation:' + topText"
             inner-track-color="primary"
             color="secondary"
-            @change="submitTop(topText, activeHTML.value)"
-            @update:model-value="submitTop(topText, activeHTML.value)"
+            @change="submitTop(topText, activeHTML)"
+            @update:model-value="submitTop(topText, activeHTML)"
             style="float: left; margin-left: 35%"
           />
         </q-form>
@@ -75,8 +75,8 @@
             :label-value="'Width:' + widthText"
             inner-track-color="primary"
             color="secondary"
-            @change="submitWidth(widthText, activeHTML.value)"
-            @update:model-value="submitWidth(widthText, activeHTML.value)"
+            @change="submitWidth(widthText, activeHTML)"
+            @update:model-value="submitWidth(widthText, activeHTML)"
             style="margin-top: 20%"
           />
         </q-form>
@@ -90,36 +90,36 @@
             :label-value="'Position:' + leftText"
             inner-track-color="primary"
             color="secondary"
-            @change="submitLeft(leftText, activeHTML.value)"
-            @update:model-value="submitLeft(leftText, activeHTML.value)"
+            @change="submitLeft(leftText, activeHTML)"
+            @update:model-value="submitLeft(leftText, activeHTML)"
             style="margin-top: 20%"
           />
         </q-form>
         <q-form autofocus v-on:submit.prevent="submitHeight">
           <q-input label="Adjust height (0-100)" filled dark autofocus true hide-bottom-space v-model="heightText" @keydown="submitHeight">
             <i class="fa-solid fa-right-to-bracket" color="secondary" label="Submit Height"
-              @click.self="submitHeight(heightText, activeHTML.value)">
+              @click.self="submitHeight(heightText, activeHTML)">
             </i>
           </q-input>
         </q-form>
         <q-form autofocus v-on:submit.prevent="submitWidth">
           <q-input label="Adjust width (0-100)" filled dark autofocus true hide-bottom-space v-model="widthText" @keydown.enter="submitWidth">
             <i class="fa-solid fa-right-to-bracket" color="secondary" label="Submit Width"
-              @click.self="submitWidth(widthText, activeHTML.value)">
+              @click.self="submitWidth(widthText, activeHTML)">
             </i>
           </q-input>
         </q-form>
         <q-form autofocus v-on:submit.prevent="submitTop">
           <q-input label="Adjust Elevation (0-100)" filled dark autofocus true hide-bottom-space v-model="topText" @keydown.enter="submitTop">
             <i class="fa-solid fa-right-to-bracket" color="secondary" label="Submit Height"
-              @click.self="submitTop(topText, activeHTML.value)">
+              @click.self="submitTop(topText, activeHTML)">
             </i>
           </q-input>
         </q-form>
         <q-form autofocus v-on:submit.prevent="submitLeft">
           <q-input label="Adjust Distance (0-100)" filled dark autofocus true hide-bottom-space v-model="leftText"  @keydown.enter="submitLeft">
             <i class="fa-solid fa-right-to-bracket" color="secondary" label="Submit Position"
-              @click="submitLeft(leftText, activeHTML.value)">
+              @click="submitLeft(leftText, activeHTML)">
             </i>
           </q-input>
         </q-form>
@@ -133,9 +133,9 @@
               @click="(e) => handleLayer(e)"
             />
       <!-- nested for loop to iterate to display current z-index for selected htmlElement -->
-            <template v-for="element in routes.value[activeRoute.value]">
+            <template v-for="element in routes[activeRoute]">
               <template v-for="element1 in element.htmlList">
-                <p v-if="element1.id === activeHTML.value" id="counter" :key="element1.id">{{ element1.z }} </p>
+                <p v-if="element1.id === activeHTML" id="counter" :key="element1.id">{{ element1.z }} </p>
               </template>
             </template>
             <q-btn
@@ -169,8 +169,10 @@ const leftText = ref('');
 const z = ref('0');
 const noteText = ref('');
 const bindingText = ref('');
+const note = ref('');
 
 onMounted(() => {
+  console.log("onMounted test", widthText.value);
 //for loop to access nested HTML elements of components - sets height/width/top/left sliders to current value of selected HTML element
 for (let i = 0; i <routes.value[activeRoute.value].length; i++) {
       for (let j = 0; j < routes.value[activeRoute.value][i].htmlList.length; j++) {
@@ -183,6 +185,8 @@ for (let i = 0; i <routes.value[activeRoute.value].length; i++) {
       }
     }
 });
+
+//computed
 
 const selectedElementList = computed(() => store.state.selectedElementList);
 const componentMap = computed(() => store.state.componentMap);
@@ -234,7 +238,8 @@ const submitNote = (element, idNum) => {
         id: idNum
       }
       addActiveComponentElementNote(payload);
-      note.value = '';
+      console.log("Ins")
+      text.value = '';
     };
 
 const submitHeight = (element, idNum) => {
@@ -327,7 +332,7 @@ const addBinding = (input, idNum) => {
         id: idNum
       }
       addBindingText(payload);
-      bindingText = '';
+      bindingText.value = '';
     };
 
 
