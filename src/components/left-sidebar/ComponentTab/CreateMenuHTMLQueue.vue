@@ -40,10 +40,10 @@ Description:
 </script>
 
 <script setup>
-
+// new script for Composition API
 import { setSelectedElementList, deleteSelectedElement, deleteFromComponentHtmlList } from '../../../store/types'
 import { breadthFirstSearch } from '../../../utils/search.util'
-import { computed, ref, watch } from "vue";
+import { computed, ref, watch, defineProps } from "vue";
 import { useStore } from "vuex";
 
 
@@ -176,7 +176,7 @@ const renderList = computed({
 </script>
 
 <!-- <script>
-
+//old Options API script
 import { mapState, mapActions } from 'vuex'
 import { setSelectedElementList, deleteSelectedElement, deleteFromComponentHtmlList } from '../../../store/types'
 import { breadthFirstSearch } from '../../../utils/search.util'

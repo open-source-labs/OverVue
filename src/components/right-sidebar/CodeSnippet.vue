@@ -289,6 +289,9 @@ const writeTemplateTag = (componentName, activeComponent) => {
         outputStr += "/";
       }
       outputStr += ">";
+      if (el.note !== "") {
+        outputStr += `${el.note}`;
+      }
       if (el.children.length) {
         outputStr += "\n";
         outputStr += writeNested(el.children, `    `);
@@ -450,6 +453,7 @@ watch(
   { deep: true }
 );
 
+console.log(activeComponentObj.value)
 // mounted()
 // https://vuejs.org/v2/api/#Vue-nextTick
 // kinda like a promise, used for the window resize

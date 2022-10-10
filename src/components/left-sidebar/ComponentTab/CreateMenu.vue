@@ -100,6 +100,7 @@ Description:
 </script>
 
 <script setup>
+// new script for Composition API
 import { useCreateComponent } from "../../composables/useCreateComponent.js";
 import { computed, ref, watch } from "vue";
 import { useStore } from "vuex";
@@ -255,7 +256,7 @@ const createComponent = () => {
       JSON.stringify(routes.value.HomeView)).find((ele) => ele.componentName === parent.value);
     // console.log("componentNameInputValue is ", componentNameInputValue.value);
 
-      const props = {
+      const importProps = {
         userActions: userActions.value, 
         userState: userState.value,
         userProps: userProps.value, 
@@ -269,7 +270,7 @@ const createComponent = () => {
         setActiveComponent
       }
       // console.log("componentNameInputValue.value ", componentNameInputValue.value);
-      useCreateComponent({ parentComponent }, props) //invokes composable
+      useCreateComponent({ parentComponent }, importProps) //invokes composable
     };
 
 //not sure if we need this as attributeModal is not defined in the original API
