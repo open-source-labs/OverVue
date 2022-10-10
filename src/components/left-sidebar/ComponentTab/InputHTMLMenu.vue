@@ -2,33 +2,33 @@
 
 <template >
   <div class="AttributeBox">
-    <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList"
+    <div class="AttributeContainer" v-for="element in componentMap.value[activeComponent.value].htmlList"
       :key="element.id + Date.now()">
-      <p v-if="element.id === this.activeHTML" class="title">Your class {{ element.class.length !== 0 ? 'is ' + element.class : 'has not been stated yet' }}</p>
+      <p v-if="element.id === activeHTML.value" class="title">Your class {{ element.class.length !== 0 ? 'is ' + element.class : 'has not been stated yet' }}</p>
     </div>
       <q-form autofocus v-on:submit.prevent="submitClass">
         <q-input label="Add/Change your class name" filled dark autofocus true hide-bottom-space v-model="classText"
           @keydown.enter="submitClass">
           <i id="comp-btn" class="fa-solid fa-right-to-bracket"
-            :disable="classText.length > 0 ? false : true" @click.self="submitClass(classText, this.activeHTML)">
+            :disable="classText.length > 0 ? false : true" @click.self="submitClass(classText, activeHTML.value)">
           </i>
         </q-input>
       </q-form>
       <q-form autofocus v-on:submit.prevent="addBinding">
         <q-input label="Add/Change two-way binding" filled dark autofocus true hide-bottom-space v-model="bindingText"
-          @keydown.enter="addBinding(bindingText, this.activeHTML)">
+          @keydown.enter="addBinding(bindingText, activeHTML.value)">
           <i id="compt-btn" class="fa-solid fa-right-to-bracket" label="Add Binding"
-            :disable="bindingText.length > 0 ? false : true" @click.self="addBinding(bindingText, this.activeHTML)">
+            :disable="bindingText.length > 0 ? false : true" @click.self="addBinding(bindingText, activeHTML.value)">
           </i>
         </q-input>
       </q-form>
-    <div class="AttributeContainer" v-for="element in this.componentMap[this.activeComponent].htmlList"
+    <div class="AttributeContainer" v-for="element in componentMap.value[activeComponent.value].htmlList"
       :key="element.id + Date.now()">
-      <div v-if="exceptions.includes(element.text) && element.id === this.activeHTML">
+      <div v-if="exceptions.includes(element.text) && element.id === activeHTML.value">
         <q-form autofocus v-on:submit.prevent="submitNote">
           <q-input label="Add Inner Text" filled dark autofocus true hide-bottom-space v-model="noteText"  @keydown.enter="submitNote">
             <i class="fa-solid fa-right-to-bracket" color="secondary" label="Submit Note"
-              :disable="noteText.length > 0 ? false : true" @click.self="submitNote(noteText, this.activeHTML)">
+              :disable="noteText.length > 0 ? false : true" @click.self="submitNote(noteText, activeHTML.value)">
             </i>
           </q-input>
         </q-form>
@@ -44,8 +44,8 @@
             :label-value="'Height:' + heightText"
             inner-track-color="primary"
             color="secondary"
-            @change="submitHeight(heightText, this.activeHTML)"
-            @update:model-value="submitHeight(heightText, this.activeHTML)"
+            @change="submitHeight(heightText, activeHTML.value)"
+            @update:model-value="submitHeight(heightText, activeHTML.value)"
             style="float: left; margin-left: 5% "
           />
         </q-form>
@@ -60,8 +60,8 @@
             :label-value="'Elevation:' + topText"
             inner-track-color="primary"
             color="secondary"
-            @change="submitTop(topText, this.activeHTML)"
-            @update:model-value="submitTop(topText, this.activeHTML)"
+            @change="submitTop(topText, activeHTML.value)"
+            @update:model-value="submitTop(topText, activeHTML.value)"
             style="float: left; margin-left: 35%"
           />
         </q-form>
@@ -75,8 +75,8 @@
             :label-value="'Width:' + widthText"
             inner-track-color="primary"
             color="secondary"
-            @change="submitWidth(widthText, this.activeHTML)"
-            @update:model-value="submitWidth(widthText, this.activeHTML)"
+            @change="submitWidth(widthText, activeHTML.value)"
+            @update:model-value="submitWidth(widthText, activeHTML.value)"
             style="margin-top: 20%"
           />
         </q-form>
@@ -90,36 +90,36 @@
             :label-value="'Position:' + leftText"
             inner-track-color="primary"
             color="secondary"
-            @change="submitLeft(leftText, this.activeHTML)"
-            @update:model-value="submitLeft(leftText, this.activeHTML)"
+            @change="submitLeft(leftText, activeHTML.value)"
+            @update:model-value="submitLeft(leftText, activeHTML.value)"
             style="margin-top: 20%"
           />
         </q-form>
         <q-form autofocus v-on:submit.prevent="submitHeight">
           <q-input label="Adjust height (0-100)" filled dark autofocus true hide-bottom-space v-model="heightText" @keydown="submitHeight">
             <i class="fa-solid fa-right-to-bracket" color="secondary" label="Submit Height"
-              @click.self="submitHeight(heightText, this.activeHTML)">
+              @click.self="submitHeight(heightText, activeHTML.value)">
             </i>
           </q-input>
         </q-form>
         <q-form autofocus v-on:submit.prevent="submitWidth">
           <q-input label="Adjust width (0-100)" filled dark autofocus true hide-bottom-space v-model="widthText" @keydown.enter="submitWidth">
             <i class="fa-solid fa-right-to-bracket" color="secondary" label="Submit Width"
-              @click.self="submitWidth(widthText, this.activeHTML)">
+              @click.self="submitWidth(widthText, activeHTML.value)">
             </i>
           </q-input>
         </q-form>
         <q-form autofocus v-on:submit.prevent="submitTop">
           <q-input label="Adjust Elevation (0-100)" filled dark autofocus true hide-bottom-space v-model="topText" @keydown.enter="submitTop">
             <i class="fa-solid fa-right-to-bracket" color="secondary" label="Submit Height"
-              @click.self="submitTop(topText, this.activeHTML)">
+              @click.self="submitTop(topText, activeHTML.value)">
             </i>
           </q-input>
         </q-form>
         <q-form autofocus v-on:submit.prevent="submitLeft">
           <q-input label="Adjust Distance (0-100)" filled dark autofocus true hide-bottom-space v-model="leftText"  @keydown.enter="submitLeft">
             <i class="fa-solid fa-right-to-bracket" color="secondary" label="Submit Position"
-              @click="submitLeft(leftText, this.activeHTML)">
+              @click="submitLeft(leftText, activeHTML.value)">
             </i>
           </q-input>
         </q-form>
@@ -133,9 +133,9 @@
               @click="(e) => handleLayer(e)"
             />
       <!--nested for loop to iterate to display current z-index for selected htmlElement-->
-            <template v-for="element in this.routes[this.activeRoute]">
+            <template v-for="element in routes.value[activeRoute.value]">
               <template v-for="element1 in element.htmlList">
-                <p v-if="element1.id === this.activeHTML" id="counter" :key="element1.id">{{ element1.z }} </p>
+                <p v-if="element1.id === activeHTML.value" id="counter" :key="element1.id">{{ element1.z }} </p>
               </template>
             </template>
             <q-btn
@@ -152,7 +152,191 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { computed, ref, watch } from "vue";
+import { useStore, onMounted } from "vuex";
+
+const store = useStore();
+
+const exceptions = ref(['div','button','form','img','list','paragraph','list-ol','list-ul','input','h1','h2','h3','h4','h5','h6','e-button','e-input','e-link', 'e-form', 'e-checkbox', 'e-checkbox-button', 'e-date-picker', 'e-slider', 'e-card','e-alert','e-dropdown']);
+const attributeModal = ref("false");
+const classText = ref('');
+const heightText = ref('');
+const widthText = ref('')
+const topText = ref ('');
+const leftText = ref('');
+const z = ref('0');
+const noteText = ref('');
+const bindingText = ref('');
+
+onMounted(() => {
+//for loop to access nested HTML elements of components - sets height/width/top/left sliders to current value of selected HTML element
+for (let i = 0; i <routes.value[activeRoute.value].length; i++) {
+      for (let j = 0; j < routes.value[activeRoute.value][i].htmlList.length; j++) {
+        if(activeHTML.value === routes.value[activeRoute.value][i].htmlList[j].id) {
+          heightText.value = routes.value[activeRoute.value][i].htmlList[j].h;
+          widthText.value = routes.value[activeRoute.value][i].htmlList[j].w;
+          topText.value = routes.value[activeRoute.value][i].htmlList[j].x;
+          leftText.value = routes.value[activeRoute.value][i].htmlList[j].y;
+        }
+      }
+    }
+});
+
+const selectedElementList = computed(() => store.state.selectedElementList);
+const componentMap = computed(() => store.state.componentMap);
+const activeComponent = computed(() => store.state.activeComponent);
+const activeHTML = computed(() => store.state.activeHTML);
+const activeLayer = computed(() => store.state.activeLayer);
+const attributeModalOpen = computed(() => store.state.attributeModalOpen);
+const activeRoute = computed(() => store.state.activeRoute);
+const routes = computed(() => store.state.routes);
+const activeComponentData = computed(() => store.state.activeComponentData);
+const activeComponentObj = computed(() => store.state.activeComponentObj);
+const componentData = computed(() => store.state.componentData);
+
+
+//actions
+
+const setActiveHTML = (payload) => store.dispatch("setActiveHTML", payload);
+const setActiveLayer = (payload) => store.dispatch("setActiveLayer", payload);
+const openAttributeModal = (payload) => store.dispatch("openAttributeModal", payload);
+const addActiveComponentClass = (payload) => store.dispatch("addActiveComponentClass", payload);
+const addActiveComponentElementNote = (payload) => store.dispatch("addActiveComponentElementNote", payload);
+const addActiveComponentHeight = (payload) => store.dispatch("addActiveComponentHeight", payload);
+const addActiveComponentWidth = (payload) => store.dispatch("addActiveComponentWidth", payload);
+const addActiveComponentTop = (payload) => store.dispatch("addActiveComponentTop", payload);
+const addActiveComponentLeft = (payload) => store.dispatch("addActiveComponentLeft", payload);
+const clearActiveHTML = (payload) => store.dispatch("clearActiveHTML", payload);
+const updateComponentLayer = (payload) => store.dispatch("updateComponentLayer", payload);
+const updateHTMLLayer = (payload) => store.dispatch("updateHTMLLayer", payload);
+const addBindingText = (payload) => store.dispatch("addBindingText", payload);
+
+const submitClass = (element, idNum) => {
+      if (element === '') {
+        return;
+      }
+      let payload = {
+        class: element,
+        id: idNum
+      }
+      addActiveComponentClass(payload);
+      classText.value = '';
+    };
+
+const submitNote = (element, idNum) => {
+      if (element === '') {
+        return;
+      }
+      let payload = {
+        note: element,
+        id: idNum
+      }
+      addActiveComponentElementNote(payload);
+      note.value = '';
+    };
+
+const submitHeight = (element, idNum) => {
+      if (element === '') {
+        return;
+      }
+      let payload = {
+        height: element,
+        id: idNum
+      }
+      addActiveComponentHeight(payload);
+    };
+
+const submitWidth = (element, idNum) => {
+      if (element === '') {
+        return;
+      }
+      let payload = {
+        width: element,
+        id: idNum
+      }
+      addActiveComponentWidth(payload);
+    };
+
+const submitTop = (element, idNum) => {
+      if (element === '') {
+        return;
+      }
+      let payload = {
+        top: element,
+        id: idNum
+      }
+      addActiveComponentTop(payload);
+    };
+
+const submitLeft = (element, idNum) => {
+      if (element === '') {
+        return;
+      }
+      let payload = {
+        left: element,
+        id: idNum
+      }
+      this.addActiveComponentLeft(payload);
+    };
+
+const closeMenu = (element) => {
+      if (this.activeComponent !== '') {
+        this.clearActiveHTML()
+        this.openAttributeModal(element);
+      }
+    };
+
+//function that adds/subtracts z-index on html Elements
+const handleLayer = (e) => {
+      e.preventDefault();
+      let HTMLZ;
+      for (let i = 0; i <this.routes[this.activeRoute].length; i++) {
+        for (let j = 0; j < this.routes[this.activeRoute][i].htmlList.length; j++) {
+          if(this.activeHTML === this.routes[this.activeRoute][i].htmlList[j].id) {
+              HTMLZ = this.routes[this.activeRoute][i].htmlList[j].z
+          }
+        }
+      }
+      const payload = {
+        activeComponent: this.activeComponent,
+        activeHTML: this.activeHTML,
+        routeArray: this.routes[this.activeRoute],
+        z: HTMLZ,
+      };
+      if (e.target.innerText === "+") {
+          payload.z++;
+      }
+      if (e.target.innerText === "-" && payload.z > 0)  {
+        payload.z--;
+      }
+      this.updateHTMLLayer(payload);
+    };
+
+const activeRouteArray = () => {
+      return this.routes[this.activeRoute];
+    };
+
+const addBinding = (input, idNum) => {
+      if (input === '') {
+        return;
+      }
+      const payload = {
+        binding: input,
+        id: idNum
+      }
+      this.addBindingText(payload);
+      this.bindingText = '';
+    };
+
+
+  watch(attributeModalOpen, () => {
+    attributeModal.value = attributeModalOpen.value
+    });
+    
+</script>
+
+<!-- <script>
 import { mapState, mapActions } from 'vuex'
 export default {
   data () {
@@ -335,7 +519,7 @@ export default {
 }
 
 }
-</script>
+</script> -->
 
 <style lang="scss">
 

@@ -36,6 +36,7 @@ const pickLibrary = (libName) => {
 </script>
 
 <!-- <script>
+  //old Options API code
   import { mapState, mapActions } from "vuex";
   export default {
   name: "ImportLibraryButton",

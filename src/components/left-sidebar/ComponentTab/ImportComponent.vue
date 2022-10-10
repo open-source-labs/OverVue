@@ -38,15 +38,15 @@ const createImport = (importObj) => {
         createProp,
         registerComponent, 
         setActiveComponent
-      }
+      };
       useCreateComponent(importObj, importProps) //this is where we will want to invoke the composable
     };
 
-  const registerComponent = (payload) => store.dispatch("registerComponent", payload);
-  const setActiveComponent = (payload) => store.dispatch("registerComponent", payload);
-  const createAction = (payload) => store.dispatch("createAction", payload);
-  const createState = (payload) => store.dispatch("createState", payload);
-  const createProp = (payload) => store.dispatch("createProp", payload);
+const registerComponent = (payload) => store.dispatch("registerComponent", payload);
+const setActiveComponent = (payload) => store.dispatch("registerComponent", payload);
+const createAction = (payload) => store.dispatch("createAction", payload);
+const createState = (payload) => store.dispatch("createState", payload);
+const createProp = (payload) => store.dispatch("createProp", payload);
 
     //renders the open file
   const importComponent = () => {
@@ -203,7 +203,7 @@ const openVueFile = (data) => {
 
 
       let htmlString = vueFile.substring(vueFile.indexOf('<template >') + 10, vueFile.indexOf('</template>'));
-      let scriptString = vueFile.substring(vueFile.indexOf(`<script>`) + 8, vueFile.indexOf(`/script>`) - 1)
+      let scriptString = vueFile.substring(vueFile.indexOf(`<script>`) + 8, vueFile.indexOf(`/script>`) - 1);
 
       htmlParser(htmlString);
       importObj.props = parsingStringToProps(scriptString);
@@ -219,9 +219,10 @@ const openVueFile = (data) => {
       let groupingArray = [];
       for (const key in groupingObj) {
         groupingArray.push(groupingObj[key])
-      }
+      };
       importObj.htmlList = groupingArray;
-      createImport(importObj) //send the importObj to CreateComponent.
+      createImport(importObj);
+       //send the importObj to CreateComponent.
 
       // /**
       //  * @name: htmlParser
