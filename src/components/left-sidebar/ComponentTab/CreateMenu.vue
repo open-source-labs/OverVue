@@ -100,6 +100,7 @@ Description:
 </script>
 
 <script setup>
+// new script for Composition API
 import { useCreateComponent } from "../../composables/useCreateComponent.js";
 import { computed, ref, watch } from "vue";
 import { useStore } from "vuex";

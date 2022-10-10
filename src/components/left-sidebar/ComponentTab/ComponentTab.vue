@@ -9,6 +9,7 @@ Functionality includes: if active component is selected, will switch view to edi
 
 
 <script setup>
+// new script for Composition API
 import CreateMenu from './CreateMenu.vue';
 import UpdateMenu from './UpdateMenu.vue';
 import { computed } from "vue";

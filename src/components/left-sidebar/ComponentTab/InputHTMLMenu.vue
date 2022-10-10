@@ -153,6 +153,7 @@
 </template>
 
 <script setup>
+// new script for Composition API
 import { computed, ref, watch, onMounted } from "vue";
 import { useStore } from "vuex";
 
@@ -337,6 +338,7 @@ const addBinding = (input, idNum) => {
 </script>
 
 <!-- <script>
+  //old Options API script
 import { mapState, mapActions } from 'vuex'
 export default {
   data () {

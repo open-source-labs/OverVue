@@ -37,7 +37,7 @@ export default {
 </script>
 
 <script setup>
-
+// new script for Composition API
 import { computed, ref, defineEmits } from "vue";
 import { useStore } from "vuex";
 
@@ -125,6 +125,7 @@ const changeState = (elementName) => {
 </script>
 
 <!-- <script>
+  //old Options API script
 import { mapState } from "vuex";
 
 export default {

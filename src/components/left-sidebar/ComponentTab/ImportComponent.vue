@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-
+// new script for Composition API
 import { computed, defineProps } from "vue";
 import { useStore } from "vuex";
 import { useCreateComponent } from "../../composables/useCreateComponent.js";
@@ -349,6 +349,7 @@ const openVueFile = (data) => {
 </script>
 
 <!-- <script>
+// old Options API script
 const { fs, ipcRenderer } = window;
 import { useCreateComponent } from "../../composables/useCreateComponent.js";
 import { mapState, mapActions } from "vuex";

@@ -74,6 +74,7 @@ export default {
 </script>
 
 <script setup>
+// new script for Composition API
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import VueMultiselect from "vue-multiselect";
