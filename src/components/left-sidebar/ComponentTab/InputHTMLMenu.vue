@@ -132,7 +132,7 @@
               label="-"
               @click="(e) => handleLayer(e)"
             />
-      <!--nested for loop to iterate to display current z-index for selected htmlElement-->
+      <!-- nested for loop to iterate to display current z-index for selected htmlElement -->
             <template v-for="element in routes.value[activeRoute.value]">
               <template v-for="element1 in element.htmlList">
                 <p v-if="element1.id === activeHTML.value" id="counter" :key="element1.id">{{ element1.z }} </p>
@@ -153,8 +153,8 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from "vue";
-import { useStore, onMounted } from "vuex";
+import { computed, ref, watch, onMounted } from "vue";
+import { useStore } from "vuex";
 
 const store = useStore();
 
@@ -277,13 +277,13 @@ const submitLeft = (element, idNum) => {
         left: element,
         id: idNum
       }
-      this.addActiveComponentLeft(payload);
+      addActiveComponentLeft(payload);
     };
 
 const closeMenu = (element) => {
-      if (this.activeComponent !== '') {
-        this.clearActiveHTML()
-        this.openAttributeModal(element);
+      if (activeComponent.value !== '') {
+        clearActiveHTML();
+        openAttributeModal(element);
       }
     };
 
@@ -291,17 +291,17 @@ const closeMenu = (element) => {
 const handleLayer = (e) => {
       e.preventDefault();
       let HTMLZ;
-      for (let i = 0; i <this.routes[this.activeRoute].length; i++) {
-        for (let j = 0; j < this.routes[this.activeRoute][i].htmlList.length; j++) {
-          if(this.activeHTML === this.routes[this.activeRoute][i].htmlList[j].id) {
-              HTMLZ = this.routes[this.activeRoute][i].htmlList[j].z
+      for (let i = 0; i <routes.value[activeRoute.value].length; i++) {
+        for (let j = 0; j < routes.value[activeRoute.value][i].htmlList.length; j++) {
+          if(activeHTML.value === routes.value[activeRoute.value][i].htmlList[j].id) {
+              HTMLZ = routes.value[activeRoute.value][i].htmlList[j].z
           }
         }
       }
       const payload = {
-        activeComponent: this.activeComponent,
-        activeHTML: this.activeHTML,
-        routeArray: this.routes[this.activeRoute],
+        activeComponent: activeComponent.value,
+        activeHTML: activeHTML.value,
+        routeArray: routes.value[activeRoute.value],
         z: HTMLZ,
       };
       if (e.target.innerText === "+") {
@@ -310,11 +310,11 @@ const handleLayer = (e) => {
       if (e.target.innerText === "-" && payload.z > 0)  {
         payload.z--;
       }
-      this.updateHTMLLayer(payload);
+      updateHTMLLayer(payload);
     };
 
 const activeRouteArray = () => {
-      return this.routes[this.activeRoute];
+      return routes.value[activeRoute.value];
     };
 
 const addBinding = (input, idNum) => {
@@ -325,8 +325,8 @@ const addBinding = (input, idNum) => {
         binding: input,
         id: idNum
       }
-      this.addBindingText(payload);
-      this.bindingText = '';
+      addBindingText(payload);
+      bindingText = '';
     };
 
 
