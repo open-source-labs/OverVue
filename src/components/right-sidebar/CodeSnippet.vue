@@ -454,7 +454,7 @@ watch(
 // https://vuejs.org/v2/api/#Vue-nextTick
 // kinda like a promise, used for the window resize
 onMounted(() => {
-  snippetInvoke(); //generates the code snippet whenever this is mounted
+  snippetInvoke(); // generates the code snippet whenever this is mounted
   nextTick(() => {
     window.addEventListener("resize", getWindowHeight);
 
