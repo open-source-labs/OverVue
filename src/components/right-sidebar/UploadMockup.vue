@@ -1,10 +1,10 @@
-<!--
+<!-- 
 Description:
   Displays Mockup Image upload dropdown as well as minified mockup image once selected
   Functionality includes: importing and clearing mockup image
   -->
 
-<template>
+<!-- <template>
   <div id="uploadImgMenuItem">
     <q-list>
       <q-expansion-item expand-separator :label="this.mockupUploadLabel">
@@ -41,48 +41,52 @@ Description:
       </q-expansion-item>
     </q-list>
   </div>
-</template>
+</template> -->
 
-<script>
+<!-- <script setup>
 import { mapState, mapActions } from "vuex";
 import uploadImage from "../../utils/uploadImage.util";
 import clearImageDialog from "../../utils/clearImage.util";
+import { useStore } from "vuex";
+import { ref, computed, watch } from "vue";
 
-export default {
-  name: "upload-image",
-  data() {
-    return {
-      files: [],
-      source: "",
-      mockupUploadLabel: `Upload mockup image for ${this.$store.state.activeRoute}`,
-    };
-  },
-  computed: {
-    ...mapState(["imagePath", "activeRoute"]),
-  },
-  methods: {
-    ...mapActions(["importImage", "clearImage"]),
+
+const store = useStore();
+//data;
+const files = ref([]);
+const source = ref("");
+const mockupUploadLabel = ref(`Upload mockup image for ${activeRoute}`)
+
+//computed
+const imagePath = computed(() => store.state.imagePath);
+const activeRoute = computed(() => store.state.activeRoute);
+
+//methods
+const importImage = (payload) => store.dispatch("importImage", payload);
+const clearImage = (payload) => store.dispatch("clearImage", payload);
+
     // imports mockup image
     // ** Importing mockup image ONLY works in build mode due to path differences
     // In dev mode, error thrown is: "Not allowed to load local resource: PATH "
-    importMockup() {
+  const importMockup = () => {
       // A promise gets returned out from uploadImage, imported from uploadImage utils
       const helperPromise = uploadImage();
       helperPromise
         // res contains the selected file path (string)
         .then((res) => {
-          if (this.activeRoute !== "") {
-            this.importImage({ img: res, route: this.activeRoute });
-            if (this.imagePath[this.activeRoute]) {
-              this.source = "file://" + this.imagePath[this.activeRoute];
-              console.log(this.source);
+          if (activeRoute !== "") {
+            importImage({ img: res, route: activeRoute });
+            if (imagePath[activeRoute]) {
+              source.value = "file://" + imagePath[activeRoute];
+              console.log(source.value);
             }
           }
         })
         .catch((err) => console.log(err));
-    },
+    }
+
     // removes mockup image
-    removeImage() {
+  const removeImage = () => {
       const responsePromise = clearImageDialog();
 
       responsePromise
@@ -91,41 +95,38 @@ export default {
           // res.response will be 0 if user chose 'Yes'
           // res.response will be 1 if user chose 'Cancel'
           if (res.response === 0) {
-            this.clearImage({ route: this.activeRoute });
-            this.source = this.imagePath[this.activeRoute];
+            clearImage({ route: activeRoute });
+            source.value = imagePath[activeRoute];
           }
         })
         .catch((err) => {
           console.log(err);
         });
-    },
+    }
 
     // imports image on browser
     // currently images aren't able to be stored on browser
-    async importMockupBrowser() {
-      this.files = this.$refs.myFiles.files[0];
-      await this.importImage(this.files.name);
-    },
+  const importMockupBrowser = async () => {
+      files = $refs.myFiles.files[0];
+      await importImage(files.name);
+    }
     // removes image on browser
-    removeImageBrowser() {
-      this.clearImage();
-    },
-  },
+  const removeImageBrowser = () => {
+      clearImage();
+    }
+
   // watches for changes in state to activeRoute
-  watch: {
     // once you change your active route, the mockup image should change as well
-    activeRoute: function () {
-      this.mockupUploadLabel = `Upload mockup image for ${this.activeRoute}`
-      if (this.imagePath[this.activeRoute]) {
+    watch(activeRoute, () => {
+      mockupUploadLabel = `Upload mockup image for ${activeRoute}`
+      if (imagePath[activeRoute]) {
         // if there is a uploaded image
-        this.source = "file:///" + this.imagePath[this.activeRoute];
+        source.value = "file:///" + imagePath[activeRoute];
       } else {
-        this.source = "";
+        source.value = "";
       }
-    },
-  },
-};
-</script>
+    })
+</script> -->
 
 
 <!-- old options api script -->
@@ -215,7 +216,7 @@ export default {
 
 
 
-<style lang="scss">
+<!-- <style lang="scss">
 
 #uploadImgMenuItem {
   display: flex;
@@ -270,4 +271,4 @@ export default {
 .img {
   max-height: 200px;
 }
-</style>
+</style> -->
