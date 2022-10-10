@@ -128,8 +128,6 @@ const renderList = computed({
   },
 });
 
-// computed functions depth and moreExceptions ???
-
 const depth = () => {
   let newTitle = "";
   activeLayer.value.lineage.forEach((el) => {
@@ -138,6 +136,7 @@ const depth = () => {
   return newTitle;
 };
 
+//make child components in htmlList exceptions
 const moreExceptions = () => {
   let childComponent = [];
   if (activeComponent.value) {
@@ -203,6 +202,7 @@ const setParentLayer = () => {
   }
 };
 
+//METHODS FOR DRAG-AND-DROP
 const startDrag = (event, id) => {
   //add a class to make the html element currently being drag transparent
   event.target.classList.add("currentlyDragging");
@@ -221,6 +221,7 @@ const dragEnter = (event, id) => {
 };
 
 const dragOver = (event) => {
+  //needed stop the dragend animation so endDrag is invoked automatically
   event.preventDefault();
 };
 
@@ -258,19 +259,17 @@ const addBinding = (input, idNum) => {
   bindingText.value = "";
 };
 
-// how to write this? - updateMenu has the same logic
 watch(attributeModalOpen, () => {
   attributeModal.value = attributeModalOpen.value;
 });
 
-// how to write this? what is component?
 watch(
-  () => activeComponent,
+  () => activeComponent.value,
   () => {
     if (activeComponent !== "") {
-      component = true;
+      activeComponent.component = true;
     } else {
-      component = false;
+      activeComponent.component = false;
     }
   }
 );

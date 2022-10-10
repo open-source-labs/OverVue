@@ -56,15 +56,7 @@ const exportAsTypescript = computed(() => store.state.exportAsTypescript);
 
 // methods
 const snippetInvoke = () => {
-  // console.log(store.state.componentMap); // what componentMap should be equal to
-  // console.log(componentMap.value); // need .value to access components
-  // console.log(activeComponent.value); // _value property contains activeComponent name
-  // console.log(componentMap.value[activeComponent.value]); // this is the correct proxy info now for the active component
-  // console.log(componentMap.value[activeComponent.value].componentName);
-  // console.log(componentMap.value[activeComponent.value].children);
   if (activeComponent.value !== "") {
-    // this condition is being met
-    // console.log(code.value);
     code.value = createCodeSnippet(
       componentMap.value[activeComponent.value].componentName,
       componentMap.value[activeComponent.value].children
@@ -84,6 +76,7 @@ const getWindowHeight = () => {
   height.value = minHeight; // height.value here?
 };
 
+// Calls createTemplate and createBoiler to generate snippet
 const createCodeSnippet = (componentName, children) => {
   let result = `${createTemplate(componentName, children)}${createBoiler(
     componentName,
@@ -92,6 +85,7 @@ const createCodeSnippet = (componentName, children) => {
   return result;
 };
 
+// Creates beginner boilerplate
 const createTemplate = (componentName) => {
   let templateTagStr = writeTemplateTag(componentName, activeComponent.value); // testing 2nd arg
   if (activeComponentObj.value.htmlAttributes) {
@@ -126,6 +120,7 @@ const createTemplate = (componentName) => {
   } else return `<template>\n  <div>\n${templateTagStr}  </div>\n</template>`;
 };
 
+// Creates <template> boilerplate
 const writeTemplateTag = (componentName, activeComponent) => {
   const htmlElementMap = {
     div: ["<div", "</div>"],
@@ -212,8 +207,10 @@ const writeTemplateTag = (componentName, activeComponent) => {
   </el-badge>`,
     ],
   };
-  // console.log(componentMap.value);
-  // console.log(activeComponent); // testing passing 2nd arg to this func
+
+  // Helper function that recursively iterates through the given html element's children and their children's children.
+  // also adds proper indentation to code snippet
+  // add childComponents of the activeCompnent to the htmlElementMap
   const childComponents = componentMap.value[activeComponent].children;
   childComponents.forEach((child) => {
     htmlElementMap[child] = [`<${child}`, ""]; //single
@@ -445,6 +442,8 @@ z-index: ${activeComponentObj.value.z};
 };
 
 // watch:
+// watches activeComponentObj for changes to make it reactive upon mutation
+// watches componentMap for changes to make it reactive upon mutation
 watch(
   () => [activeComponent.value, componentMap.value, exportAsTypescript.value],
   () => snippetInvoke(),
@@ -452,8 +451,10 @@ watch(
 );
 
 // mounted()
+// https://vuejs.org/v2/api/#Vue-nextTick
+// kinda like a promise, used for the window resize
 onMounted(() => {
-  snippetInvoke();
+  snippetInvoke(); //generates the code snippet whenever this is mounted
   nextTick(() => {
     window.addEventListener("resize", getWindowHeight);
 
