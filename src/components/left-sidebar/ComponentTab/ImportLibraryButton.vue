@@ -5,10 +5,37 @@
 
 </template>
 
-
-
-
 <script>
+export default {
+    name: "ImportLibraryButton",
+  };
+</script>
+
+<script setup>
+
+import { computed } from "vue";
+import { useStore } from "vuex";
+
+const store = useStore();
+
+const importLibraries = computed(() => store.state.importLibraries);
+
+const changeLib = (payload) => store.dispatch("changeLib", payload);
+const addLibComponents = (payload) => store.dispatch("addLibComponents", payload);
+const changeLibComponentDisplay = (payload) => store.dispatch("changeLibComponentDisplay", payload);
+
+const pickLibrary = (libName) => {
+      let payload = {
+        libName:libName,
+        displaylibComponent:true
+
+      }
+      changeLibComponentDisplay(payload);
+      changeLib(payload);
+    };
+</script>
+
+<!-- <script>
   import { mapState, mapActions } from "vuex";
   export default {
   name: "ImportLibraryButton",
@@ -45,7 +72,8 @@
     ]),
 }
   }
-</script>
+</script> -->
+
 <style>
 .importBtn{
   margin-top: 20px;

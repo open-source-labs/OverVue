@@ -43,7 +43,7 @@ Description:
 
 import { setSelectedElementList, deleteSelectedElement, deleteFromComponentHtmlList } from '../../../store/types'
 import { breadthFirstSearch } from '../../../utils/search.util'
-import { computed, ref, watch } from "vue";
+import { computed, ref, watch, defineProps } from "vue";
 import { useStore } from "vuex";
 
 
