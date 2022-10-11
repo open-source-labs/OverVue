@@ -233,16 +233,15 @@ export default { name: "LibComponents" };
 </script>
 
 <script setup>
-import { useStore } from "vuex";
+import { useStore } from "../../../store/index";
 import { computed } from "vue";
 const store = useStore();
 
-const changeLibComponentDisplay = () =>
-  store.dispatch("changeLibComponentDisplay");
-const computedLibraries = computed(() => store.state.computedLibraries);
+const changeLibComponentDisplay = (payload) =>
+  store.changeLibComponentDisplay(payload);
+const computedLibraries = computed(() => store.computedLibraries);
 
-const addLibComponents = (payload) =>
-  store.dispatch("addLibComponents", payload);
+const addLibComponents = (payload) => store.addLibComponents(payload);
 
 const pickComponent = (componentName) => {
   const payload = {};

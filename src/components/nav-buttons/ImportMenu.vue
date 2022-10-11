@@ -32,7 +32,7 @@ export default { name: "ImportMenu" };
 </script>
 
 <script setup>
-import { useStore } from "vuex";
+import { useStore } from "../../../store/index";
 import ImportComponent from "../left-sidebar/ComponentTab/ImportComponent.vue";
 const Mousetrap = require("mousetrap");
 const { fs, ipcRenderer } = window;
@@ -44,7 +44,7 @@ Mousetrap.bind(["command+o", "ctrl+o"], () => {
   openProjectJSON();
 });
 
-const openProject = (payload) => store.dispatch("openProject", payload);
+const openProject = (payload) => store.openProject(payload);
 
 const openJSONFile = (data) => {
   if (!data) return;

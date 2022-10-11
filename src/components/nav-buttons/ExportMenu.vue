@@ -42,19 +42,19 @@ import { useExportComponent } from "../composables/useExportComponent";
 const store = useStore();
 const { fs, ipcRenderer } = window;
 
-const componentMap = computed(() => store.state.componentMap);
-const imagePath = computed(() => store.state.imagePath);
-const routes = computed(() => store.state.routes);
+const componentMap = computed(() => store.componentMap);
+const imagePath = computed(() => store.imagePath);
+const routes = computed(() => store.routes);
 const exportAsTypescript = computed(() => store.exportAsTypescript);
-const activeComponent = computed(() => store.state.activeComponent);
-const userState = computed(() => store.state.userState);
-const userActions = computed(() => store.state.userActions);
-const gridLayout = computed(() => store.state.gridLayout);
-const containerW = computed(() => store.state.containerW);
-const containerH = computed(() => store.state.containerH);
-const exportOauth = computed(() => store.state.exportOauth);
-const exportOauthGithub = computed(() => store.state.exportOauthGithub);
-const importTest = computed(() => store.state.importTest);
+const activeComponent = computed(() => store.activeComponent);
+const userState = computed(() => store.userState);
+const userActions = computed(() => store.userActions);
+const gridLayout = computed(() => store.gridLayout);
+const containerW = computed(() => store.containerW);
+const containerH = computed(() => store.containerH);
+const exportOauth = computed(() => store.exportOauth);
+const exportOauthGithub = computed(() => store.exportOauthGithub);
+const importTest = computed(() => store.importTest);
 
 const showExportProjectDialog = () => {
   ipcRenderer

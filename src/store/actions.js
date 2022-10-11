@@ -75,7 +75,8 @@ const actions = {
 
   // *** VUEX EXPORT *** //////////////////////////////////////////////
 
-  exportAsTypescript(payload) {
+  //function is capitalized as to not cause conflicts with state
+  ExportAsTypescript(payload) {
     this.exportAsTypescript = payload;
   },
 
@@ -120,7 +121,7 @@ const actions = {
     this.userProps.sort();
   },
 
-  addPropsSelect(payload) {
+  addPropsSelected(payload) {
     this.selectedProps = payload;
   },
 
@@ -377,7 +378,7 @@ const actions = {
     });
   },
 
-  addToComponentHtmlList(payload) {
+  addToComponentElementList(payload) {
     const componentName = this.activeComponent;
     this.componentMap[componentName] = {
       ...this.componentMap[componentName],
