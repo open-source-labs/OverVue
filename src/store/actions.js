@@ -1,3 +1,8 @@
+import {
+  breadthFirstSearch,
+  breadthFirstSearchParent,
+} from "src/utils/search.util";
+
 // *** GLOBAL *** //////////////////////////////////////////////
 
 const actions = {
@@ -195,7 +200,7 @@ const actions = {
     }
     // remove from userState
     let index = this.userState.indexOf(payload);
-    state.userState.splice(index, 1);
+    this.userState.splice(index, 1);
   },
 
   deleteUserActions(payload) {
@@ -615,7 +620,7 @@ const actions = {
       this.updateComponentNameInputValue("");
       this.setSelectedElementList([]);
       this.setActiveComponent("");
-      this.parentSelected("");
+      this.parentSelect("");
     }
   },
 
