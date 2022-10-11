@@ -13,31 +13,32 @@ Description:
     <!-- the top header of OverVue -->
     <q-header elevated class="gradient">
       <q-toolbar>
-        <q-toolbar-title><img alt="OverVue" src="../assets/OverVue_navLogo.png" id="nav-logo"><div id="undo-redo">
-        <q-btn>
-        <i
-          v-if="doneAction.length"
-          class="fa fa-undo"
-          aria-hidden="true"
-          @click="clickedUndo"
-        ></i>
-        <i
-          v-else
-          class="fa fa-undo unavailable"
-          aria-hidden="true"
-        ></i>
-        </q-btn>
-        <q-btn>
-        <i
-          v-if="undoneAction.length"
-          class="fa fa-redo"
-          aria-hidden="true"
-          @click="clickedRedo"
-        ></i>
-        <i v-else class="fa fa-redo unavailable" aria-hidden="true"></i>
-        </q-btn>
-        <GridDensity />
-      </div></q-toolbar-title>
+        <q-toolbar-title
+          ><img
+            alt="OverVue"
+            src="../assets/OverVue_navLogo.png"
+            id="nav-logo" />
+          <div id="undo-redo">
+            <q-btn>
+              <i
+                v-if="doneAction.length"
+                class="fa fa-undo"
+                aria-hidden="true"
+                @click="clickedUndo"
+              ></i>
+              <i v-else class="fa fa-undo unavailable" aria-hidden="true"></i>
+            </q-btn>
+            <q-btn>
+              <i
+                v-if="undoneAction.length"
+                class="fa fa-redo"
+                aria-hidden="true"
+                @click="clickedRedo"
+              ></i>
+              <i v-else class="fa fa-redo unavailable" aria-hidden="true"></i>
+            </q-btn>
+            <GridDensity /></div
+        ></q-toolbar-title>
         <div></div>
 
         <SaveProject />
@@ -45,75 +46,168 @@ Description:
         <ExportMenu />
 
         <q-btn class="nav-btn" icon="fas fa-cog" unelevated size="sm">
-
           <q-menu :offset="[0, 15]" class="dropdown">
+            <div class="column items-center">
+              <q-btn
+                class="tut-btn"
+                color="secondary"
+                label="Getting Started"
+                no-caps
+                @click="this.toggleTutorial"
+              />
 
-          <div class="column items-center">
-            <q-btn
-              class="tut-btn"
-              color="secondary"
-              label="Getting Started"
-              no-caps
-              @click="this.toggleTutorial"
-            />
+              <SlackLoginWindow />
+              <div class="typescript">
+                <p class="typescript-text"><b>TypeScript: </b></p>
+                <label for="typescript" class="switch">
+                  <input
+                    v-if="this.exportAsTypescript === 'on'"
+                    class="switch-input"
+                    type="checkbox"
+                    name="typescript"
+                    id="typescript"
+                    :value="this.exportAsTypescript"
+                    @change="syncTypescriptFlag"
+                    checked
+                  />
+                  <input
+                    v-else
+                    class="switch-input"
+                    type="checkbox"
+                    name="typescript"
+                    id="typescript"
+                    :value="this.exportAsTypescript"
+                    @change="syncTypescriptFlag"
+                  />
+                  <span
+                    class="switch-label"
+                    :value="this.exportAsTypescript"
+                    data-on="on"
+                    data-off="off"
+                  ></span>
+                  <span
+                    class="switch-handle"
+                    :value="this.exportAsTypescript"
+                  ></span>
+                </label>
+              </div>
 
-        <SlackLoginWindow />
-            <div class="typescript">
-              <p class="typescript-text"> <b>TypeScript: </b> </p>
-              <label for="typescript"  class="switch" >
-              <input v-if="this.exportAsTypescript === 'on'" class="switch-input" type="checkbox" name="typescript" id="typescript" :value="this.exportAsTypescript" @change="syncTypescriptFlag" checked/>
-              <input v-else class="switch-input" type="checkbox" name="typescript" id="typescript" :value="this.exportAsTypescript" @change="syncTypescriptFlag"/>
-                <span class="switch-label" :value="this.exportAsTypescript" data-on="on" data-off="off"></span>
-                <span class="switch-handle" :value="this.exportAsTypescript"></span>
-              </label>
-             </div>
+              <div class="Test">
+                <p class="Test-text"><b> Vue Test: </b></p>
+                <label for="Test" class="switch">
+                  <input
+                    v-if="this.importTest === 'on'"
+                    class="switch-input"
+                    type="checkbox"
+                    name="Test"
+                    id="Test"
+                    :value="this.importTest"
+                    @change="syncTestFlag"
+                    checked
+                  />
+                  <input
+                    v-else
+                    class="switch-input"
+                    type="checkbox"
+                    name="Test"
+                    id="Test"
+                    :value="this.importTest"
+                    @change="syncTestFlag"
+                  />
+                  <span
+                    class="switch-label"
+                    :value="this.importTest"
+                    data-on="on"
+                    data-off="off"
+                  ></span>
+                  <span class="switch-handle" :value="this.importTest"></span>
+                </label>
+              </div>
 
-             <div class="Test">
-             <p class="Test-text"> <b>
-         Vue Test:
+              <div class="drawer">
+                <q-expansion-item group="accordion" label="Create Oauth">
+                  <div class="Oauth">
+                    <p class="Oauth-text">
+                      <b>
+                        <img src="../assets/google.svg" alt="" id="google" />
+                      </b>
+                    </p>
+                    <label for="Oauth" class="switch">
+                      <input
+                        v-if="this.exportOauth === 'on'"
+                        class="switch-input"
+                        type="checkbox"
+                        name="Oauth"
+                        id="Oauth"
+                        :value="this.exportOauth"
+                        @change="syncOauthFlag"
+                        checked
+                      />
+                      <input
+                        v-else
+                        class="switch-input"
+                        type="checkbox"
+                        name="Oauth"
+                        id="Oauth"
+                        :value="this.exportOauth"
+                        @change="syncOauthFlag"
+                      />
+                      <span
+                        class="switch-label"
+                        :value="this.exportOauth"
+                        data-on="on"
+                        data-off="off"
+                      ></span>
+                      <span
+                        class="switch-handle"
+                        :value="this.exportOauth"
+                      ></span>
+                    </label>
+                  </div>
 
-             </b> </p>
-              <label for="Test"  class="switch" >
-              <input v-if="this.importTest === 'on'" class="switch-input" type="checkbox" name="Test" id="Test" :value="this.importTest" @change="syncTestFlag" checked/>
-              <input v-else class="switch-input" type="checkbox" name="Test" id="Test" :value="this.importTest" @change="syncTestFlag"/>
-                <span class="switch-label" :value="this.importTest" data-on="on" data-off="off"></span>
-                <span class="switch-handle" :value="this.importTest"></span>
-              </label>
-             </div>
-
-             <div class="drawer">
-             <q-expansion-item group="accordion" label="Create Oauth" >
-             <div class="Oauth">
-             <p class="Oauth-text"> <b>
-             <img src="../assets/google.svg" alt="" id="google">
-
-             </b> </p>
-              <label for="Oauth"  class="switch" >
-              <input v-if="this.exportOauth === 'on'" class="switch-input" type="checkbox" name="Oauth" id="Oauth" :value="this.exportOauth" @change="syncOauthFlag" checked/>
-              <input v-else class="switch-input" type="checkbox" name="Oauth" id="Oauth" :value="this.exportOauth" @change="syncOauthFlag"/>
-                <span class="switch-label" :value="this.exportOauth" data-on="on" data-off="off"></span>
-                <span class="switch-handle" :value="this.exportOauth"></span>
-              </label>
-             </div>
-
-             <div class="Oauth">
-             <p class="Oauth-text"> <b>
-             <img src="../assets/github.png" alt="" id="github">
-
-             </b> </p>
-              <label for="OauthGit"  class="switch" >
-              <input v-if="this.exportOauthGithub === 'on'" class="switch-input" type="checkbox" name="OauthGit" id="OauthGit" :value="this.exportOauthGithub" @change="syncOauthGitFlag" checked/>
-              <input v-else class="switch-input" type="checkbox" name="OauthGit" id="OauthGit" :value="this.exportOauthGithub" @change="syncOauthGitFlag"/>
-                <span class="switch-label" :value="this.exportOauthGithub" data-on="on" data-off="off"></span>
-                <span class="switch-handle" :value="this.exportOauthGithub"></span>
-              </label>
-             </div>
-             </q-expansion-item>
-
+                  <div class="Oauth">
+                    <p class="Oauth-text">
+                      <b>
+                        <img src="../assets/github.png" alt="" id="github" />
+                      </b>
+                    </p>
+                    <label for="OauthGit" class="switch">
+                      <input
+                        v-if="this.exportOauthGithub === 'on'"
+                        class="switch-input"
+                        type="checkbox"
+                        name="OauthGit"
+                        id="OauthGit"
+                        :value="this.exportOauthGithub"
+                        @change="syncOauthGitFlag"
+                        checked
+                      />
+                      <input
+                        v-else
+                        class="switch-input"
+                        type="checkbox"
+                        name="OauthGit"
+                        id="OauthGit"
+                        :value="this.exportOauthGithub"
+                        @change="syncOauthGitFlag"
+                      />
+                      <span
+                        class="switch-label"
+                        :value="this.exportOauthGithub"
+                        data-on="on"
+                        data-off="off"
+                      ></span>
+                      <span
+                        class="switch-handle"
+                        :value="this.exportOauthGithub"
+                      ></span>
+                    </label>
+                  </div>
+                </q-expansion-item>
+              </div>
             </div>
-          </div>
-          <i id="btn"></i>
-          </q-menu >
+            <i id="btn"></i>
+          </q-menu>
         </q-btn>
       </q-toolbar>
     </q-header>
@@ -122,32 +216,32 @@ Description:
       <q-scroll-area
         visible
         dark
-        style="height: 100%; max-width: 100%;"
+        style="height: 100%; max-width: 100%"
         bar-style="{ left: '10px' }"
       >
-      <q-card class="no-shadow">
-        <q-tabs
-          v-model="tab"
-          dense
-          class="bg-subaccent text-white"
-          active-color="secondary"
-          indicator-color="secondary"
-        >
-          <q-tab name="component" label="Component"></q-tab>
-          <q-tab name="store" label="Store"></q-tab>
-        </q-tabs>
-        <!-- individual tab panel's setup -->
-        <q-tab-panels v-model="tab" animated class="html-bg text-white fit">
-          <!--component tab will have creator and editor components -->
-          <q-tab-panel name="component" class="left-panel fit">
-            <ComponentTab />
-          </q-tab-panel>
-          <!-- store will display store elements -->
-          <q-tab-panel name="store" class="left-panel fit">
-            <StoreTab />
-          </q-tab-panel>
-        </q-tab-panels>
-      </q-card>
+        <q-card class="no-shadow">
+          <q-tabs
+            v-model="tab"
+            dense
+            class="bg-subaccent text-white"
+            active-color="secondary"
+            indicator-color="secondary"
+          >
+            <q-tab name="component" label="Component"></q-tab>
+            <q-tab name="store" label="Store"></q-tab>
+          </q-tabs>
+          <!-- individual tab panel's setup -->
+          <q-tab-panels v-model="tab" animated class="html-bg text-white fit">
+            <!--component tab will have creator and editor components -->
+            <q-tab-panel name="component" class="left-panel fit">
+              <ComponentTab />
+            </q-tab-panel>
+            <!-- store will display store elements -->
+            <q-tab-panel name="store" class="left-panel fit">
+              <StoreTab />
+            </q-tab-panel>
+          </q-tab-panels>
+        </q-card>
       </q-scroll-area>
     </q-drawer>
 
@@ -182,7 +276,138 @@ Description:
   </q-layout>
 </template>
 
-<script >
+<script setup>
+import { ref, computed, defineEmits, defineProps } from "vue";
+import { useStore } from "vuex";
+
+import RightSidebar from "../components/right-sidebar/RightSidebar.vue";
+import ExportMenu from "../components/nav-buttons/ExportMenu.vue";
+import SaveProject from "../components/nav-buttons/SaveProject.vue";
+import ImportMenu from "../components/nav-buttons/ImportMenu.vue";
+import SlackLoginWindow from "../components/slack_login/SlackLoginWindow.vue";
+import ComponentTab from "../components/left-sidebar/ComponentTab/ComponentTab.vue";
+import StoreTab from "../components/left-sidebar/StoreTab/StoreTab.vue";
+import GridDensity from "../components/nav-buttons/GridDensity.vue";
+
+const store = useStore();
+const emit = defineEmits(["undo", "redo"]);
+const props = defineProps([
+  "doneAction",
+  "undoneAction",
+  "undoTrigger",
+  "redoTrigger",
+]);
+
+const OauthVal = ref(true);
+const tab = ref("component");
+const left = ref(true);
+const right = ref(true);
+const dashWidth = ref(950);
+const originalWidth = ref(400);
+const originalLeft = ref(400);
+const timer = ref(null);
+const resizeBox = ref(null);
+const displayClose = ref(null);
+
+defineExpose({
+  resizeBox,
+  displayClose,
+});
+
+const exportAsTypescript = computed(() => store.state.exportAsTypescript);
+const exportOauth = computed(() => store.state.exportOauth);
+const exportOauthGithub = computed(() => store.state.exportOauthGithub);
+const importTest = computed(() => store.state.importTest);
+
+const toggleTutorial = () => store.dispatch("toggleTutorial");
+
+const hideRight = () => {
+  right.value = !right.value;
+  if (resizeBox.value.style.display === "none") {
+    resizeBox.value.style.display = "block";
+  } else {
+    resizeBox.value.style.display = "none";
+  }
+};
+
+const handlePan = ({ evt, ...newInfo }) => {
+  if (right.value) {
+    if (newInfo.isFirst) {
+      originalWidth.value = dashWidth.value;
+      originalLeft.value = newInfo.position.left;
+    } else {
+      const newDelta = newInfo.position.left - originalLeft.value;
+      const newWidth = Math.min(950, originalWidth.value - newDelta);
+      dashWidth.value = Math.max(400, newWidth);
+      displayClose.value.style.display = "none";
+      if (newWidth > screen.width * 0.07 && newWidth < 400) {
+        clearTimeout(timer.value);
+        if (newWidth < screen.width * 0.13) {
+          displayClose.value.style.display = "block";
+        }
+        dashWidth.value = 400 - (200 - newWidth / 2);
+      } else {
+        timer.value = setTimeout(() => {
+          displayClose.value.style.display = "none";
+        }, 750);
+      }
+      if (newWidth < screen.width * 0.07) {
+        right.value = !right.value;
+        dashWidth.value = 400;
+        resizeBox.value.style.display = "none";
+      }
+    }
+    timer.value = setTimeout(() => {
+      displayClose.value.style.display = "none";
+    }, 750);
+  }
+};
+
+const syncTypescriptFlag = (e) => {
+  let checkboxValue;
+  if (e.target.value === "off") {
+    checkboxValue = "on";
+  } else {
+    checkboxValue = "off";
+  }
+  store.commit("EXPORT_AS_TYPESCRIPT", checkboxValue);
+};
+
+const syncTestFlag = (e) => {
+  let checkboxValue;
+  if (e.target.value === "off") {
+    checkboxValue = "on";
+  } else {
+    checkboxValue = "off";
+  }
+  store.commit("EXPORT_TEST", checkboxValue);
+};
+
+const syncOauthFlag = (e) => {
+  let checkboxValue;
+  if (e.target.value === "off") {
+    checkboxValue = "on";
+  } else {
+    checkboxValue = "off";
+  }
+  store.commit("EXPORT_OAUTH", checkboxValue);
+};
+
+const syncOauthGitFlag = (e) => {
+  let checkboxValue;
+  if (e.target.value === "off") {
+    checkboxValue = "on";
+  } else {
+    checkboxValue = "off";
+  }
+  store.commit("EXPORT_OAUTH_GIT", checkboxValue);
+};
+
+const clickedUndo = () => emit("undo");
+const clickedRedo = () => emit("redo");
+</script>
+
+<!-- <script>
 // HomeSideDropDown contains RouteDisplay, VuexForm and Edit but we'll be separating these components across different tabs
 import RightSidebar from "../components/right-sidebar/RightSidebar.vue";
 import ExportMenu from "../components/nav-buttons/ExportMenu.vue";
@@ -194,25 +419,24 @@ import ComponentTab from "../components/left-sidebar/ComponentTab/ComponentTab.v
 import StoreTab from "../components/left-sidebar/StoreTab/StoreTab.vue";
 import { mapState, mapActions } from "vuex";
 
-import { ref } from 'vue'
-
+import { ref } from "vue";
 
 export default {
-  setup () {
+  setup() {
     return {
-      OauthVal: ref(true)
-    }
+      OauthVal: ref(true),
+    };
   },
   // Passed down from App.vue
   props: ["doneAction", "undoneAction", "undoTrigger", "redoTrigger"],
   data() {
     return {
-      tab: "component" ,
-      left: true ,
+      tab: "component",
+      left: true,
       right: true,
-      dashWidth: 950 ,
-      originalWidth: 400 ,
-      originalLeft: 400 ,
+      dashWidth: 950,
+      originalWidth: 400,
+      originalLeft: 400,
       timer: null,
     };
   },
@@ -224,10 +448,15 @@ export default {
     SlackLoginWindow,
     ComponentTab,
     StoreTab,
-    GridDensity
+    GridDensity,
   },
   computed: {
-    ...mapState(["exportAsTypescript","exportOauth","exportOauthGithub","importTest"]),
+    ...mapState([
+      "exportAsTypescript",
+      "exportOauth",
+      "exportOauthGithub",
+      "importTest",
+    ]),
   },
   methods: {
     ...mapActions(["toggleTutorial"]),
@@ -273,7 +502,6 @@ export default {
       }
     },
     syncTypescriptFlag(e) {
-
       let checkboxValue;
       if (e.target.value === "off") {
         checkboxValue = "on";
@@ -283,19 +511,7 @@ export default {
       this.$store.commit("EXPORT_AS_TYPESCRIPT", checkboxValue);
     },
     syncTestFlag(e) {
-      console.log(this.$store.state.importTest )
-
-let checkboxValue;
-if (e.target.value === "off") {
-  checkboxValue = "on";
-} else {
-  checkboxValue = "off";
-}
-this.$store.commit("EXPORT_TEST", checkboxValue);
-console.log(this.$store.state.importTest )
-
-},
-    syncOauthFlag(e) {
+      console.log(this.$store.state.importTest);
 
       let checkboxValue;
       if (e.target.value === "off") {
@@ -303,35 +519,38 @@ console.log(this.$store.state.importTest )
       } else {
         checkboxValue = "off";
       }
+      this.$store.commit("EXPORT_TEST", checkboxValue);
+      console.log(this.$store.state.importTest);
+    },
+    syncOauthFlag(e) {
+      let checkboxValue;
+      if (e.target.value === "off") {
+        checkboxValue = "on";
+      } else {
+        checkboxValue = "off";
+      }
       this.$store.commit("EXPORT_OAUTH", checkboxValue);
-
     },
     syncOauthGitFlag(e) {
-
-       let checkboxValue;
-       if (e.target.value === "off") {
-         checkboxValue = "on";
-       } else {
-         checkboxValue = "off";
-       }
-       this.$store.commit("EXPORT_OAUTH_GIT", checkboxValue);
-
-     },
-    clickedUndo() {
-      this.$emit('undo');
+      let checkboxValue;
+      if (e.target.value === "off") {
+        checkboxValue = "on";
+      } else {
+        checkboxValue = "off";
+      }
+      this.$store.commit("EXPORT_OAUTH_GIT", checkboxValue);
     },
-    clickedRedo(){
-      this.$emit('redo')
-    }
+    clickedUndo() {
+      this.$emit("undo");
+    },
+    clickedRedo() {
+      this.$emit("redo");
+    },
   },
-
-
 };
-
-</script>
+</script> -->
 
 <style lang="scss">
-
 .q-toolbar {
   height: 50px;
 }
@@ -361,7 +580,7 @@ q-btn > i {
   align-items: center;
   margin-right: 5px;
   width: 40px;
-  border: 1px solid rgba($primary, .5);
+  border: 1px solid rgba($primary, 0.5);
 }
 
 .fa-undo,
@@ -375,7 +594,11 @@ q-btn > i {
   top: 50%;
   width: 20px;
   height: 40px;
-  background-image: linear-gradient(to right, #202122 50%, rgba(255, 255, 255, 0) 50%);
+  background-image: linear-gradient(
+    to right,
+    #202122 50%,
+    rgba(255, 255, 255, 0) 50%
+  );
   border-radius: 4px;
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
@@ -389,7 +612,11 @@ q-btn > i {
   top: calc(50vh + 25px);
   width: 20px;
   height: 40px;
-  background-image: linear-gradient(to right, #202122 50%, rgba(255, 255, 255, 0) 50%);
+  background-image: linear-gradient(
+    to right,
+    #202122 50%,
+    rgba(255, 255, 255, 0) 50%
+  );
   border-radius: 4px;
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
@@ -471,7 +698,7 @@ q-btn > i {
 
 .q-tab-panels {
   height: 100%;
-  padding:16px;
+  padding: 16px;
 }
 
 .q-panel {
@@ -487,182 +714,182 @@ q-btn > i {
   height: 100%;
 }
 
-.menu-btn{
+.menu-btn {
   width: 80%;
   margin: 10px 0px;
 }
 
-.tut-btn{
-    width: 80%;
-    margin: 20px 0px 10px;
-
+.tut-btn {
+  width: 80%;
+  margin: 20px 0px 10px;
 }
 
-.menu-btn:disabled{
+.menu-btn:disabled {
   background: #437962 !important;
   opacity: 100% !important;
   color: #959a98 !important;
 }
 
-.dropdown{
+.dropdown {
   width: 200px;
   height: auto;
-  overflow:visible;
-  background: rgba(#000000, .8);
+  overflow: visible;
+  background: rgba(#000000, 0.8);
 }
 /* Typescript toggle
 ========================== */
 
 .switch {
-	position: relative;
-	display: block;
-	vertical-align: top;
-	width: 65px;
-	height: 30px;
-	padding: 3px;
-	margin: 0 10px 10px 0;
-	background: linear-gradient(to bottom, #eeeeee, #FFFFFF 25px);
-	background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF 25px);
-	border-radius: 18px;
-	box-shadow: inset 0 -1px white, inset 0 1px 1px rgba(0, 0, 0, 0.05);
-	cursor: pointer;
-	box-sizing:content-box;
+  position: relative;
+  display: block;
+  vertical-align: top;
+  width: 65px;
+  height: 30px;
+  padding: 3px;
+  margin: 0 10px 10px 0;
+  background: linear-gradient(to bottom, #eeeeee, #ffffff 25px);
+  background-image: -webkit-linear-gradient(top, #eeeeee, #ffffff 25px);
+  border-radius: 18px;
+  box-shadow: inset 0 -1px white, inset 0 1px 1px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  box-sizing: content-box;
 }
 .switch-input {
-	position: absolute;
-	top: 0;
-	left: 0;
-	opacity: 0;
-	box-sizing:content-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  box-sizing: content-box;
 }
 .switch-label {
-	position: relative;
-	display: block;
-	height: inherit;
-	font-size: 10px;
-	text-transform: uppercase;
-	background: #eceeef;
-	border-radius: inherit;
-	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.15);
-	box-sizing:content-box;
+  position: relative;
+  display: block;
+  height: inherit;
+  font-size: 10px;
+  text-transform: uppercase;
+  background: #eceeef;
+  border-radius: inherit;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12),
+    inset 0 0 2px rgba(0, 0, 0, 0.15);
+  box-sizing: content-box;
 }
-.switch-label:before, .switch-label:after {
-	position: absolute;
-	top: 20px;
-	margin-top: -.8em;
-	line-height: 1;
-	-webkit-transition: inherit;
-	-moz-transition: inherit;
-	-o-transition: inherit;
-	transition: inherit;
-	box-sizing:content-box;
+.switch-label:before,
+.switch-label:after {
+  position: absolute;
+  top: 20px;
+  margin-top: -0.8em;
+  line-height: 1;
+  -webkit-transition: inherit;
+  -moz-transition: inherit;
+  -o-transition: inherit;
+  transition: inherit;
+  box-sizing: content-box;
 }
 .switch-label:before {
-	content: attr(data-off);
-	right: 11px;
-	color: #000000;
-	text-shadow: 0 1px rgba(255, 255, 255, 0.5);
+  content: attr(data-off);
+  right: 11px;
+  color: #000000;
+  text-shadow: 0 1px rgba(255, 255, 255, 0.5);
 }
 .switch-label:after {
-	content: attr(data-on);
-	left: 11px;
-	color: #FFFFFF;
-	text-shadow: 0 1px rgba(0, 0, 0, 0.2);
-	opacity: 0;
+  content: attr(data-on);
+  left: 11px;
+  color: #ffffff;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+  opacity: 0;
 }
 .switch-input:checked ~ .switch-label {
-	background: $secondary;
-	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
+  background: $secondary;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15),
+    inset 0 0 3px rgba(0, 0, 0, 0.2);
 }
 .switch-input:checked ~ .switch-label:before {
-	opacity: 0;
+  opacity: 0;
 }
 .switch-input:checked ~ .switch-label:after {
-	opacity: 1;
+  opacity: 1;
 }
 .switch-handle {
-	position: absolute;
-	top: 4px;
-	left: 4px;
-	width: 28px;
-	height: 28px;
-	background: linear-gradient(to bottom, #FFFFFF 40%, #f0f0f0);
-	background-image: -webkit-linear-gradient(top, #FFFFFF 40%, #f0f0f0);
-	border-radius: 100%;
-	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(to bottom, #ffffff 40%, #f0f0f0);
+  background-image: -webkit-linear-gradient(top, #ffffff 40%, #f0f0f0);
+  border-radius: 100%;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
 }
 .switch-handle:before {
-	content: "";
-	position: absolute;
-	top: 20px;
-	left: 20px;
-	margin: -12px -12px;
-	width: 12px;
-	height: 12px;
-	background: linear-gradient(to bottom, #eeeeee, #FFFFFF);
-	background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF);
-	border-radius: 6px;
-	box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
+  content: "";
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  margin: -12px -12px;
+  width: 12px;
+  height: 12px;
+  background: linear-gradient(to bottom, #eeeeee, #ffffff);
+  background-image: -webkit-linear-gradient(top, #eeeeee, #ffffff);
+  border-radius: 6px;
+  box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
 }
 .switch-input:checked ~ .switch-handle {
-	left: 40px;
-	box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
+  left: 40px;
+  box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
 }
 
 /* Transition
 ========================== */
-.switch-label, .switch-handle {
-	transition: All 0.3s ease;
-	-webkit-transition: All 0.3s ease;
-	-moz-transition: All 0.3s ease;
-	-o-transition: All 0.3s ease;
+.switch-label,
+.switch-handle {
+  transition: All 0.3s ease;
+  -webkit-transition: All 0.3s ease;
+  -moz-transition: All 0.3s ease;
+  -o-transition: All 0.3s ease;
 }
 
-.typescript{
+.typescript {
   display: flex;
   align-items: flex-end;
   margin: 10px;
   flex-direction: row;
 }
-.typescript-text{
+.typescript-text {
   margin-right: 10px;
 }
-.Oauth{
+.Oauth {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin: 10px;
   flex-direction: row;
 }
-.Oauth-text{
+.Oauth-text {
   margin-right: 10px;
 }
 
-.drawer{
+.drawer {
   font-size: 15px;
   font-weight: bold;
 }
-#google{
+#google {
   width: 100px;
   margin-top: 10px;
 }
 
-#github{
+#github {
   width: 50px;
   margin-top: 10px;
 
   margin-left: 25px;
-
 }
-.Test{
-
+.Test {
   display: flex;
   align-items: flex-end;
   margin: 10px;
   flex-direction: row;
-
 }
-.Test-text{
+.Test-text {
   margin-right: 10px;
 }
 </style>

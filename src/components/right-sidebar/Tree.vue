@@ -13,12 +13,12 @@ Description:
       ref="tree"
       @wheel="zoom">
       <template v-slot:node="{ node }">
-        <span v-if="activeComponent.value === node.value"
+        <span v-if="activeComponent === node.value"
           class="tree-node-active"
           >
           {{ node.value }}
         </span>
-          <span v-else-if="activeRoute.value === node.value"
+          <span v-else-if="activeRoute === node.value"
           class="tree-node-activeRoute"
           >
           {{ node.value }}
@@ -42,7 +42,6 @@ Description:
 
 
 <script setup>
-import { mapState } from "vuex";
 import VueTree from "@ssthouse/vue3-tree-chart";
 import "@ssthouse/vue3-tree-chart/dist/vue3-tree-chart.css";
 import { useStore } from "vuex";
@@ -51,7 +50,7 @@ import { ref, computed, watch, defineExpose } from "vue";
 const store = useStore();
 
 const treeConfig = ref({nodeWidth: 175, nodeHeight: 100, levelHeight: 200});
-const componentData = ref(store.state.componentMap);
+const treeData = ref(null);
 
 //ref to htmlelement
 const tree = ref(null);
@@ -64,6 +63,7 @@ const activeRoute = computed (() => store.state.activeRoute);
 const routes = computed (() => store.state.routes);
 const componentMap = computed (() => store.state.componentMap);
 
+const componentData = componentMap;
 
   const zoom = () => {
       if (event.deltaY < 0){
@@ -102,8 +102,6 @@ const componentMap = computed (() => store.state.componentMap);
 
       //if we click a component, check which route, and then if needed dispatch the route THEN the component
       for (const view of treeData.value.children){
-        console.log(view, "I AM VIEW")
-        console.log(view.value, "I AM VIEW.VALUE")
         if (view.children.length > 0){
           view.children.forEach((el)=>{
             if (view.value !== activeRoute.value){ //only check where the view.value is NOT the active route
@@ -118,12 +116,32 @@ const componentMap = computed (() => store.state.componentMap);
           })
         }
       }
-      if (activeComponent !== nodeToActivate) {
+      if (activeComponent.value !== nodeToActivate) {
         store.dispatch('setActiveComponent', nodeToActivate);
       }
     }
 
-    const buildTreeChildren = (array) => {
+    
+      
+
+  const buildTree = (componentData) => {
+      //App is always the root of the tree.  
+      const treeData = {     
+        value: 'App',
+        children: []
+      }
+      //Views come after the root, as its children. No components will be children of App.
+      //ONLY Views will have components as children.
+      for (const child of componentData.App.children){
+        treeData.children.push({
+          value: child,
+          children: buildTreeChildren(componentData[child].children),
+        })
+      }
+      return treeData
+  }
+
+    function buildTreeChildren(array) {
         if (array.length === 0){
           return [];
         } else {
@@ -147,34 +165,20 @@ const componentMap = computed (() => store.state.componentMap);
       }
       
 
-  const buildTree = (componentData) => {
-      //App is always the root of the tree.  
-      const treeData = {     
-        value: 'App',
-        children: []
-      }
-      // console.log(treeData, 'HELLO I AM TREE DATA');
-      //Views come after the root, as its children. No components will be children of App.
-      //ONLY Views will have components as children.
-      for (const child of componentData.App.children){
-        treeData.children.push({
-          value: child,
-          children: buildTreeChildren(componentData[child].children),
-        })
-      }
-      return treeData;
-    }
 
     
 //data
-const treeData = ref(buildTree(componentMap.value))
+treeData.value = buildTree(componentMap.value)
 
 
   //watch
-watch(treeData, () => {
-  treeData.value = buildTree(componentMap.value)
-      // deep: true
-});
+watch(componentMap, () => {
+  treeData.value = buildTree(componentMap.value) 
+},
+
+{deep: true}
+
+);
 
 </script>
 

@@ -337,6 +337,9 @@ const writeTemplateTag = (componentName) => {
         outputStr += " " + "v-model = " + `"${el.binding}"`;
       }
       outputStr += ">";
+      if (el.note !== "") {
+        outputStr += `${el.note}`;
+      }
       if (el.children.length) {
         outputStr += "\n";
         outputStr += writeNested(el.children, `    `);

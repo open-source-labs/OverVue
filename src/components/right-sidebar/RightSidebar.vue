@@ -87,7 +87,7 @@ Description:
             }});
     
         watch(selectedElementList, () => {
-          if (activeComponent.value === "" && selectedElementList.value.length !== 0) {
+          if (activeComponent.value === "" && [...selectedElementList.value].length !== 0) {
             tab.value = "tree"
            }});
     
