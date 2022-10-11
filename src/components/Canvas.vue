@@ -540,7 +540,7 @@ const updateColors = (data) => {
         color: data.cssColor,
         activeComponent: activeComponent.value,
         routeArray: routes.value[activeRoute.value],
-        activeComponentData: activeComponentData,
+        activeComponentData: activeComponentData.value,
       }
       updateColor(payload)
       refresh();
@@ -555,7 +555,7 @@ const finishedResize = (x, y, w, h) => {
         h: h,
         activeComponent: activeComponent.value,
         routeArray: routes.value[activeRoute.value],
-        activeComponentData: activeComponentData,
+        activeComponentData: activeComponentData.value,
       };
       updateComponentSize(payload);
       updateComponentGridPosition(payload);
@@ -564,11 +564,12 @@ const finishedResize = (x, y, w, h) => {
 
     // refresh function
 const refresh = () => {
+    console.log("Inside of refresh")
       const payload = {
         activeComponent: activeComponent.value,
         routeArray: routes.value[activeRoute.value],
-        activeComponentData: activeComponentData,
-        z: activeComponentData.z,
+        activeComponentData: activeComponentData.value,
+        z: activeComponentData.value.z,
       };
       payload.z++;
       updateComponentLayer(payload);
@@ -580,12 +581,13 @@ const refresh = () => {
     console.log(activeComponentData.value, "I AM ACTIVECOMPONENTDATA.value")
     // drag and drop function
 const finishedDrag = (x, y) => {
+      console.log("Inside of finishedDrag")
       let payload = {
         x: x,
         y: y,
         activeComponent: activeComponent.value,
         routeArray: routes.value[activeRoute.value],
-        activeComponentData: activeComponentData,
+        activeComponentData: activeComponentData.value,
       };
       updateComponentPosition(payload);
       updateComponentGridPosition(payload);
@@ -620,14 +622,14 @@ const onActivated = (componentData) => {
         setActiveComponent(componentData.componentName);
       }
       if (componentData && componentData.hasOwnProperty('componentName')) {
-        activeComponentData.isActive = true;
+        activeComponentData.value.isActive = true;
       }
     }
 
     // deactivated is emitted before activated
 const onDeactivated = () => {
       if (activeComponent.value !== "") {
-        activeComponentData.isActive = false;
+        activeComponentData.value.isActive = false;
       }
     }
 
@@ -654,7 +656,7 @@ const submitNote = (e) => {
       if (noteText.value === '') {
         return;
       }
-      addActiveComponentNote(noteText);
+      addActiveComponentNote(noteText.value);
       noteText.value = '';
     }
 
@@ -670,11 +672,12 @@ const handleSelect = (value) => { //actually handles adding or deleting
     // user can change component's layer order
 const handleLayer = (e) => {
       e.preventDefault();
+      console.log("activeComponent is ", activeComponentData.value)
       const payload = {
         activeComponent: activeComponent.value,
         routeArray: routes.value[activeRoute.value],
-        activeComponentData: activeComponentData,
-        z: activeComponentData.z,
+        activeComponentData: activeComponentData.value,
+        z: activeComponentData.value.z,
       };
 
       if (e.target.innerText === "+") payload.z++;
@@ -697,11 +700,11 @@ const handleRight = (event) => {
 
   watch(noteModalOpen, () => {
     noteModal.value = noteModalOpen.value;
-  });
+  }, {deep:true});
 
   watch(colorModalOpen, () => {
       colorModal.value = colorModalOpen.value;
-  });
+  }, {deep:true});
 
  
   watch(activeComponent, () => {
@@ -711,7 +714,8 @@ const handleRight = (event) => {
           store.commit("TOGGLE_TUTORIAL");
         }
         onActivated(activeComponentObj.value);
-      }
+      },
+      {deep:true},
 )
 </script>
 
