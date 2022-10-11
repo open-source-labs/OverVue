@@ -37,16 +37,16 @@ export default {
 </script>
 
 <script setup>
-import { useStore } from "vuex";
+import { useStore } from "../../../store/index.js";
 import { computed } from "vue";
 
 const store = useStore();
 
-const routes = computed (() => store.state.routes);
-const activeRoute = computed (() => store.state.activeRoutes);
+const routes = computed (() => store.routes);
+const activeRoute = computed (() => store.activeRoutes);
 
-const setActiveRoute = (payload) => store.dispatch("setActiveRoute", payload);
-const deleteRoute = (payload) => store.dispatch("deleteRoute", payload);
+const setActiveRoute = (payload) => store.setActiveRoute(payload);
+const deleteRoute = (payload) => store.deleteRoute(payload);
     
 const selectRoute = (route) => {
       setActiveRoute(route)

@@ -41,12 +41,12 @@ Description:
     
     <!-- composition API conversion -->
     <script setup>
-      import { mapState, mapActions } from "vuex";
+      // import { mapState, mapActions } from "vuex";
       import Tree from "./Tree.vue";
       import ComponentDetails from "./ComponentDetails.vue";
       import RoutesTab from "./RoutesTab.vue";
       import GetStarted from "./GetStarted.vue";
-      import { useStore } from "vuex";
+      import { useStore } from "../../../store/index.js"
       import { ref, computed, watch } from "vue";
       
       const store = useStore();
@@ -56,14 +56,14 @@ Description:
       const up = ref("fas fa-chevron-up");
       const down = ref("fas fa-chevron-down");
     
-          const activeComponent = computed(() => store.state.activeComponent);
-          const componentNameInputValue = computed(() => store.state.componentNameInputValue);
-          const selectedElementList = computed (() => store.state.selectedElementList);
-          const activeHTML = computed (() => store.state.activeHTML);
-          const showTutorial = computed(() => store.state.showTutorial);
+          const activeComponent = computed(() => store.activeComponent);
+          const componentNameInputValue = computed(() => store.componentNameInputValue);
+          const selectedElementList = computed (() => store.selectedElementList);
+          const activeHTML = computed (() => store.activeHTML);
+          const showTutorial = computed(() => store.showTutorial);
     
           //methods mapActions conversion
-          const setActiveHTML = (payload) => store.dispatch('setActiveHTML', payload);
+          const setActiveHTML = (payload) => store.setActiveHTML(payload);
       
           const openBottomDrawer = () => {
              // 15in mb pro - 1027 px 3.75

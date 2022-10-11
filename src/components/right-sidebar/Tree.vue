@@ -44,7 +44,7 @@ Description:
 <script setup>
 import VueTree from "@ssthouse/vue3-tree-chart";
 import "@ssthouse/vue3-tree-chart/dist/vue3-tree-chart.css";
-import { useStore } from "vuex";
+import { useStore } from "../../../store/index.js";
 import { ref, computed, watch, defineExpose } from "vue";
 
 const store = useStore();
@@ -58,10 +58,10 @@ const tree = ref(null);
 defineExpose({tree})
 
 //computed
-const activeComponent = computed (() => store.state.activeComponent);
-const activeRoute = computed (() => store.state.activeRoute);
-const routes = computed (() => store.state.routes);
-const componentMap = computed (() => store.state.componentMap);
+const activeComponent = computed (() => store.activeComponent);
+const activeRoute = computed (() => store.activeRoute);
+const routes = computed (() => store.routes);
+const componentMap = computed (() => store.componentMap);
 
 const componentData = componentMap;
 
@@ -91,9 +91,9 @@ const componentData = componentMap;
       //check first, activating a route? if so, activate that route and then dispatch no active component.
       for (const key in routes.value){
         if (nodeToActivate === key){
-          store.dispatch('setActiveRoute', nodeToActivate)
+          store.setActiveRoute(nodeToActivate)
           if (routes.value[key].length > 0){
-            store.dispatch('setActiveComponent', '')
+            store.setActiveComponent('')
           }
           return;
         }
@@ -106,7 +106,7 @@ const componentData = componentMap;
           view.children.forEach((el)=>{
             if (view.value !== activeRoute.value){ //only check where the view.value is NOT the active route
               if (nodeToActivate === el.value){
-                store.dispatch('setActiveRoute', view.value)
+                store.setActiveRoute(view.value)
                 return;
               }
               if (el.children.length > 0){
@@ -117,7 +117,7 @@ const componentData = componentMap;
         }
       }
       if (activeComponent.value !== nodeToActivate) {
-        store.dispatch('setActiveComponent', nodeToActivate);
+        store.setActiveComponent(nodeToActivate);
       }
     }
 
