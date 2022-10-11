@@ -94,6 +94,197 @@ Description:
 </template>
 
 <script>
+   export default {
+    name: "CreateMenu",
+  };
+</script>
+
+<script setup>
+// new script for Composition API
+import { useCreateComponent } from "../../composables/useCreateComponent.js";
+import { computed, ref, watch } from "vue";
+import { useStore } from "vuex";
+import Icons from "./Icons.vue";
+import ParentMultiselect from "./ParentMultiselect.vue";
+import ImportComponent from "./ImportComponent.vue"
+import CreateMenuHTMLQueue from "./CreateMenuHTMLQueue.vue";
+import ImportLibraryButton from "./ImportLibraryButton.vue";
+import LibComponents from "./LibComponents.vue";
+
+const store = useStore();
+
+
+let input = ref('');
+let parent = ref('');
+let attributeModal = ref(null);
+const libArray = ref([
+        {
+          name:'alert',
+          libname:'e-alert',
+          src:'alert.png'
+        },
+        {name:'button',
+        libname:'e-button',
+         src:'button.png'
+      },
+      {
+        name:'inputbox',
+        libname:'e-input',
+        src:'inputbox.png'
+      },
+      {
+        name:'card',
+        libname:'e-card',
+        src:'card.png'
+      },
+      {
+          name:'badge',
+          libname:'e-badge',
+          src:'badge.png'
+        },
+        {
+          name:'dropdown',
+          libname:'e-dropdown',
+          src:'dropdown.png'
+        },
+        {
+          name:'link',
+          libname:'e-link',
+          src:'link.png'
+        },
+        {
+          name:'form',
+          libname:'e-form',
+          src:'form.png'
+        },
+        {
+          name:'checkbox',
+          libname:'e-checkbox',
+          src:'checkbox.png'
+        },
+        {
+          name:'checkbox button',
+          libname:'e-checkbox-button',
+          src:'checkboxbutton.png'
+        },
+        {
+          name:'datepicker',
+          libname:'e-date-picker',
+          src:'datepicker.png'
+        },
+        {
+          name:'slider',
+          libname:'e-slider',
+          src:'slider.png'
+        },
+        {
+          name:'tag',
+          libname:'e-tag',
+          src:'tag.png'
+        }
+
+      ]);
+
+const componentMap = computed(() => store.state.componentMap);
+// returns an object
+const selectedElementList = computed(() => store.state.selectedElementList);
+// returns an array
+const activeComponent = computed(() => store.state.activeComponent);
+// returns a string
+const activeHTML = computed(() => store.state.activeHTML);
+// returns a string
+const attributeModalOpen = computed(() => store.state.attributeModalOpen);
+// I don't think I need the above variable as the watch function does nothing
+const userActions = computed(() => store.state.userActions);
+// returns an array
+const userState = computed(() => store.state.userState);
+// returns an array
+const userProps = computed(() => store.state.userProps);
+// returns an array
+const routes = computed(() => store.state.routes);
+// returns an object that contains Homeview: []
+
+//getter function
+const componentNameInputValue = computed({
+      get() {
+        // console.log(store.state.componentNameInputValue)
+      return store.state.componentNameInputValue;
+      },
+      set(value) {
+        // console.log(value)
+        updateComponentNameInputValue(value);
+      }
+    });
+
+const filter = computed(() => {
+  if (input.value == '') return [];
+  if (input.length >= 2) {
+  return libArray.filter(e=>e.name.includes(input.value.toLowerCase()))}
+  });
+
+  //methods
+
+const registerComponent = (payload) => store.dispatch("registerComponent", payload)
+const addToSelectedElementList = (payload) =>  store.dispatch("addToSelectedElementList", payload)
+const updateComponentNameInputValue = (payload) => store.dispatch("updateComponentNameInputValue", payload)
+const setActiveComponent = (payload) => store.dispatch("setActiveComponent", payload)
+const addToComponentElementList = (payload) => store.dispatch("addToComponentElementList", payload)
+const addNestedHTML = (payload) => store.dispatch("addNestedHTML", payload)
+const addNestedNoActive = (payload) => store.dispatch("addNestedNoActive", payload)
+const editComponentName = (payload) => store.dispatch("editComponentName", payload)
+const openProject = (payload) => store.dispatch("openProject", payload)
+const createAction = (payload) => store.dispatch("createAction", payload)
+const createState = (payload) => store.dispatch("createState", payload)
+const createProp  = (payload) => store.dispatch("createProp", payload)
+const changeLibComponentDisplay = (payload) => store.dispatch("changeLibComponentDisplay", payload)
+const addLibComponents = (payload) => store.dispatch("addLibComponents", payload)
+
+//all actions from action.js
+
+const pickComponent = (componentName) => {
+  const payload = {
+
+  };
+  payload[componentName.value] = ['fa-brands fa-elementor fa-xl']
+  addLibComponents(payload);
+};
+
+const createComponent = () => {
+      // need to find a dynamic solution to pull current route, here set to HomeView
+      // Parses array of components off routes, then finds parent element name (id), then passes parent into useCreateComponent, where x, y and z are pulled off the parent object
+      const parentComponent = JSON.parse(
+      JSON.stringify(routes.value.HomeView)).find((ele) => ele.componentName === parent.value);
+    // console.log("componentNameInputValue is ", componentNameInputValue.value);
+
+      const importProps = {
+        userActions: userActions.value, 
+        userState: userState.value,
+        userProps: userProps.value, 
+        componentNameInputValue: componentNameInputValue.value, 
+        selectedElementList: selectedElementList.value, 
+        componentMap: componentMap.value, 
+        createAction, 
+        createState, 
+        createProp,
+        registerComponent, 
+        setActiveComponent
+      }
+      // console.log("componentNameInputValue.value ", componentNameInputValue.value);
+      useCreateComponent({ parentComponent }, importProps) //invokes composable
+    };
+
+//not sure if we need this as attributeModal is not defined in the original API
+  watch (
+   attributeModalOpen, () => {
+      attributeModal.value = attributeModalOpen.value;
+    }
+  );
+
+
+</script>
+
+<!-- <script>
+  // old Options API
 import { useCreateComponent } from "../../composables/useCreateComponent.js";
 import Icons from "./Icons.vue";
 import ParentMultiselect from "./ParentMultiselect.vue";
@@ -252,16 +443,20 @@ pickComponent(componentName){
       // Parses array of components off routes, then finds parent element name (id), then passes parent into useCreateComponent, where x, y and z are pulled off the parent object
       const parent = JSON.parse(
       JSON.stringify(this.routes.HomeView)).find((ele) => ele.componentName === this.parent);
+       console.log("routes.value.homeView is ", this.routes.HomeView)
+      console.log("ParentComponent is", parent)
+    console.log("parent.value is ", this.parent)
       useCreateComponent.bind(this)({ parent }) //invokes composable
     },
   },
     watch: {
     attributeModalOpen() {
+      console.log("Is anything watching attributeModalOpen?")
       this.attributeModal = this.attributeModalOpen;
     },
   }
 };
-</script>
+</script> -->
 
 <style lang="scss" scoped>
   .create-component-div {

@@ -7,7 +7,23 @@ Functionality includes: if active component is selected, will switch view to edi
   </q-card>
 </template>
 
-<script>
+
+<script setup>
+// new script for Composition API
+import CreateMenu from './CreateMenu.vue';
+import UpdateMenu from './UpdateMenu.vue';
+import { computed } from "vue";
+import { useStore } from "vuex";
+
+
+const store = useStore();
+
+const activeComponent = computed(() => store.state.activeComponent);
+
+</script>
+
+<!-- <script>
+//Old Options API script
 import CreateMenu from './CreateMenu.vue'
 import UpdateMenu from './UpdateMenu.vue'
 import { mapState } from 'vuex'
@@ -27,7 +43,7 @@ export default {
     UpdateMenu,
   },
 }
-</script>
+</script> -->
 
 <style lang="scss">
 // give html background color of grey

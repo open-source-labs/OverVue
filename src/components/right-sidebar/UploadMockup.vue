@@ -1,10 +1,10 @@
-<!--
+<!-- 
 Description:
   Displays Mockup Image upload dropdown as well as minified mockup image once selected
   Functionality includes: importing and clearing mockup image
   -->
 
-<template>
+<!-- <template>
   <div id="uploadImgMenuItem">
     <q-list>
       <q-expansion-item expand-separator :label="this.mockupUploadLabel">
@@ -41,9 +41,96 @@ Description:
       </q-expansion-item>
     </q-list>
   </div>
-</template>
+</template> -->
 
-<script>
+<!-- <script setup>
+import { mapState, mapActions } from "vuex";
+import uploadImage from "../../utils/uploadImage.util";
+import clearImageDialog from "../../utils/clearImage.util";
+import { useStore } from "vuex";
+import { ref, computed, watch } from "vue";
+
+
+const store = useStore();
+//data;
+const files = ref([]);
+const source = ref("");
+const mockupUploadLabel = ref(`Upload mockup image for ${activeRoute}`)
+
+//computed
+const imagePath = computed(() => store.state.imagePath);
+const activeRoute = computed(() => store.state.activeRoute);
+
+//methods
+const importImage = (payload) => store.dispatch("importImage", payload);
+const clearImage = (payload) => store.dispatch("clearImage", payload);
+
+    // imports mockup image
+    // ** Importing mockup image ONLY works in build mode due to path differences
+    // In dev mode, error thrown is: "Not allowed to load local resource: PATH "
+  const importMockup = () => {
+      // A promise gets returned out from uploadImage, imported from uploadImage utils
+      const helperPromise = uploadImage();
+      helperPromise
+        // res contains the selected file path (string)
+        .then((res) => {
+          if (activeRoute !== "") {
+            importImage({ img: res, route: activeRoute });
+            if (imagePath[activeRoute]) {
+              source.value = "file://" + imagePath[activeRoute];
+              console.log(source.value);
+            }
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+
+    // removes mockup image
+  const removeImage = () => {
+      const responsePromise = clearImageDialog();
+
+      responsePromise
+        .then((res) => {
+          // res will have format: { response: 0, checkboxChecked: false }
+          // res.response will be 0 if user chose 'Yes'
+          // res.response will be 1 if user chose 'Cancel'
+          if (res.response === 0) {
+            clearImage({ route: activeRoute });
+            source.value = imagePath[activeRoute];
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+
+    // imports image on browser
+    // currently images aren't able to be stored on browser
+  const importMockupBrowser = async () => {
+      files = $refs.myFiles.files[0];
+      await importImage(files.name);
+    }
+    // removes image on browser
+  const removeImageBrowser = () => {
+      clearImage();
+    }
+
+  // watches for changes in state to activeRoute
+    // once you change your active route, the mockup image should change as well
+    watch(activeRoute, () => {
+      mockupUploadLabel = `Upload mockup image for ${activeRoute}`
+      if (imagePath[activeRoute]) {
+        // if there is a uploaded image
+        source.value = "file:///" + imagePath[activeRoute];
+      } else {
+        source.value = "";
+      }
+    })
+</script> -->
+
+
+<!-- old options api script -->
+<!-- <script>
 import { mapState, mapActions } from "vuex";
 import uploadImage from "../../utils/uploadImage.util";
 import clearImageDialog from "../../utils/clearImage.util";
@@ -125,9 +212,11 @@ export default {
     },
   },
 };
-</script>
+</script> -->
 
-<style lang="scss">
+
+
+<!-- <style lang="scss">
 
 #uploadImgMenuItem {
   display: flex;
@@ -182,4 +271,4 @@ export default {
 .img {
   max-height: 200px;
 }
-</style>
+</style> -->

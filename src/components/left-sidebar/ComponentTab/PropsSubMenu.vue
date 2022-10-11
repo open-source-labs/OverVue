@@ -49,6 +49,51 @@
 </template>
 
 <script>
+export default { name: "PropsSubMenu" };
+</script>
+
+<script setup>
+import VueMultiselect from "vue-multiselect";
+import { useStore } from "vuex";
+import { ref, computed } from "vue";
+
+const store = useStore();
+const textProps = ref("");
+
+const selectedProps = computed(() => store.state.selectedProps);
+const userProps = computed(() => store.state.userProps);
+
+const propsOptions = userProps.value;
+const selectProps = computed({
+  get() {
+    return [...selectedProps.value];
+  },
+  set(value) {
+    addPropsSelected(value);
+  },
+});
+
+const createProp = (payload) => store.dispatch("createProp", payload);
+const addPropsSelected = (payload) =>
+  store.dispatch("addPropsSelected", payload);
+const addPropsToComponent = (payload) =>
+  store.dispatch("addPropsToComponent", payload);
+
+const stopDelete = (e) => {
+  if (e.code === "Backspace") e.stopPropogation();
+};
+
+const createNewProp = (text) => {
+  if (![...userProps.value].includes(text) && text) {
+    createProp(text);
+    textProps.value = "";
+  }
+};
+
+const addPropsToComp = () => addPropsToComponent([...selectedProps.value]);
+</script>
+
+<!-- <script>
 import { mapState, mapActions } from "vuex";
 import VueMultiselect from "vue-multiselect";
 
@@ -95,10 +140,10 @@ export default {
     },
   },
 };
-</script>
+</script> -->
 
 <style lang="scss" scoped>
-  .q-field {
-    margin: 30px 0 10px;
-  }
+.q-field {
+  margin: 30px 0 10px;
+}
 </style>

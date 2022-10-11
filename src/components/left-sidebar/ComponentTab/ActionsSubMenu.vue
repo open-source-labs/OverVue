@@ -18,7 +18,7 @@
         :max-height="180"
         :option-height="20"
         open-direction="top"
-        :options="actionOptions"
+        :options="userActions"
         :searchable="false"
         @search-change="stopDelete($event)"
       >
@@ -60,6 +60,57 @@
 </template>
 
 <script>
+  export default {
+    name: "ActionsSubMenu",
+  };
+  </script>
+
+<script setup>
+// new script for Composition API
+
+import { computed } from "vue";
+import { useStore } from "vuex";
+import VueMultiselect from "vue-multiselect";
+
+const store = useStore();
+
+const selectedActions = computed(() => store.state.selectedActions);
+const userActions = computed(() => store.state.userActions);
+const componentMap = computed(() => store.state.componentMap);
+const activeComponent = computed(() => store.state.activeComponent);
+
+//getters
+
+const actionOptions = userActions;
+//  actionOptions() {
+//       return this.userActions;
+//     },
+
+
+
+const selectAction = computed({
+       get() {
+        return [...selectedActions.value];
+      },
+      set(value) {
+        addActionSelected(value);
+      }
+    });
+
+// Methods
+
+const addActionSelected = (payload) => store.dispatch("addActionSelected", payload)
+const addActionToComponent = (payload) =>  store.dispatch("addActionToComponent", payload)
+const deleteActionFromComponent = (payload) => store.dispatch("deleteActionFromComponent", payload)
+
+const stopDelete = (e) => {if (e.code === "Backspace") e.stopPropogation()};
+const addActionToComp = () => {addActionToComponent([...selectedActions.value])};
+const deleteAction = (action) => {deleteActionFromComponent(action)};
+
+</script>
+
+
+<!-- <script>
 import { mapState, mapActions } from "vuex";
 import VueMultiselect from "vue-multiselect";
 
@@ -75,9 +126,11 @@ export default {
     },
     selectAction: {
       get() {
+        console.log("Inside get!", this.selectedActions);
         return this.selectedActions;
       },
       set(value) {
+        console.log("What is value?", value)
         this.addActionSelected(value);
       },
     },
@@ -102,7 +155,7 @@ export default {
     },
   },
 };
-</script>
+</script> -->
 
 <style lang="scss" scoped>
 .selection-container {

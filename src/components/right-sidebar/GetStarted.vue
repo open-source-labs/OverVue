@@ -33,7 +33,19 @@
   </q-card>
 </template>
 
-<script lang="ts">
+<!-- COMPOSITION API SYNTAX -->
+<script setup>
+  import BasicFunctions from './tutorial/BasicFunctions.vue'
+  import AdvancedFunctions from './tutorial/AdvancedFunctions.vue'
+  import Landing from './tutorial/Landing.vue'
+  import NewVersionInfo from './tutorial/NewVersionInfo.vue'
+  import { ref } from 'vue';
+
+  const tutorialPage = ref('landing');
+</script>
+
+<!-- OLD OPTIONS API SYNTAX -->
+<!-- <script lang="ts">
 import BasicFunctions from './tutorial/BasicFunctions.vue'
 import AdvancedFunctions from './tutorial/AdvancedFunctions.vue'
 import Landing from './tutorial/Landing.vue'
@@ -53,7 +65,7 @@ export default defineComponent({
     }
   }
 });
-</script>
+</script> -->
 
 <style lang="scss" scoped>
 .q-btn {
