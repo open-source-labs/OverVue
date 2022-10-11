@@ -348,7 +348,7 @@ import VueMultiselect from "vue-multiselect";
 import "vue-draggable-resizable/src/components/vue-draggable-resizable.css";
 import 'vue3-draggable-resizable/dist/Vue3DraggableResizable.css'
 import { ColorPicker } from 'vue-accessible-color-picker'
-import { useStore } from "vuex";
+import { useStore } from "../../store/index.js";
 import { ref, computed, onMounted, watch, defineExpose, defineEmits } from "vue";
 
 const { fs, ipcRenderer } = window;
@@ -378,12 +378,12 @@ onMounted(() => {
     window.addEventListener("copy", () => {
       // if there is an activeComponent, copy info to state using dispatch
       if (activeComponent.value !== '' && noteModalOpen.value === false) {
-        store.dispatch("copyActiveComponent");
+        store.copyActiveComponent;
       }
     });
     window.addEventListener("paste", () => {
       if (noteModalOpen.value === false) {
-        store.dispatch("pasteActiveComponent");
+        store.pasteActiveComponent;
       }
     });
   })
@@ -391,24 +391,24 @@ onMounted(() => {
  
 
   //computed
-  const routes = computed(() => store.state.routes);
-  const activeRoute = computed(() => store.state.activeRoute);
-  const activeComponent = computed(() => store.state.activeComponent);
-  const componentMap = computed(() => store.state.componentMap);
-  const componentChildrenMultiselectValue = computed(() => store.state.componentChildrenMultiselectValue);
-  const imagePath = computed(() => store.state.imagePath);
-  const activeComponentObj = computed(() => store.state.activeComponentObj);
-  const exportAsTypescript = computed(() => store.state.exportAsTypescript);
-  const noteModalOpen = computed(() => store.state.noteModalOpen);
+  const routes = computed(() => store.routes);
+  const activeRoute = computed(() => store.activeRoute);
+  const activeComponent = computed(() => store.activeComponent);
+  const componentMap = computed(() => store.componentMap);
+  const componentChildrenMultiselectValue = computed(() => store.componentChildrenMultiselectValue);
+  const imagePath = computed(() => store.imagePath);
+  const activeComponentObj = computed(() => store.activeComponentObj);
+  const exportAsTypescript = computed(() => store.exportAsTypescript);
+  const noteModalOpen = computed(() => store.noteModalOpen);
   const activeRouteDisplay = computed(() => routes.value[activeRoute.value]);
-  const selectedElementList = computed(() => store.state.selectedElementList);
-  const activeLayer = computed(() => store.state.activeLayer);
-  const colorModalOpen = computed(() => store.state.colorModalOpen);
-  const gridLayout = computed(() => store.state.gridLayout);
-  const containerH = computed(() => store.state.containerH);
-  const containerW = computed(() => store.state.containerW);
-  const showTutorial = computed(() => store.state.showTutorial);
-  const tutorialFirstOpen = computed(() => store.state.tutorialFirstOpen);
+  const selectedElementList = computed(() => store.selectedElementList);
+  const activeLayer = computed(() => store.activeLayer);
+  const colorModalOpen = computed(() => store.colorModalOpen);
+  const gridLayout = computed(() => store.gridLayout);
+  const containerH = computed(() => store.containerH);
+  const containerW = computed(() => store.containerW);
+  const showTutorial = computed(() => store.showTutorial);
+  const tutorialFirstOpen = computed(() => store.tutorialFirstOpen);
   
 
     // used in VueDraggableResizeable component
@@ -510,20 +510,20 @@ const updated = computed(() => {
   })
 
 //methods
-const setActiveComponent = (payload) => store.dispatch("setActiveComponent", payload);
-const updateComponentChildrenMultiselectValue = (payload) => store.dispatch("updateComponentChildrenMultiselectValue", payload);
-const updateActiveComponentChildrenValue = (payload) => store.dispatch("updateActiveComponentChildrenValue", payload);
-const updateComponentPosition = (payload) => store.dispatch("updateComponentPosition", payload);
-const updateStartingPosition = (payload) => store.dispatch("updateStartingPosition", payload);
-const updateComponentLayer = (payload) => store.dispatch("updateComponentLayer", payload);
-const updateStartingSize = (payload) => store.dispatch("updateStartingSize", payload);
-const updateComponentSize = (payload) => store.dispatch("updateComponentSize", payload);
-const addActiveComponentNote = (payload) => store.dispatch("addActiveComponentNote", payload);
-const deleteActiveComponentNote = (payload) => store.dispatch("deleteActiveComponentNote", payload);
-const openNoteModal = (payload) => store.dispatch("openNoteModal", payload);
-const openColorModal = (payload) => store.dispatch("openColorModal", payload);
-const updateColor = (payload) => store.dispatch("updateColor", payload);
-const updateComponentGridPosition = (payload) => store.dispatch("updateComponentGridPosition", payload);
+const setActiveComponent = (payload) => store.setActiveComponent(payload);
+const updateComponentChildrenMultiselectValue = (payload) => storeupdateComponentChildrenMultiselectValue(payload);
+const updateActiveComponentChildrenValue = (payload) => store.updateActiveComponentChildrenValue(payload);
+const updateComponentPosition = (payload) => store.updateComponentPosition(payload);
+const updateStartingPosition = (payload) => store.updateStartingPosition(payload);
+const updateComponentLayer = (payload) => store.updateComponentLayer(payload);
+const updateStartingSize = (payload) => store.updateStartingSize(payload);
+const updateComponentSize = (payload) => store.updateComponentSize(payload);
+const addActiveComponentNote = (payload) => store.addActiveComponentNote(payload);
+const deleteActiveComponentNote = (payload) => store.deleteActiveComponentNote(payload);
+const openNoteModal = (payload) => store.openNoteModal(payload);
+const openColorModal = (payload) => store.openColorModal(payload);
+const updateColor = (payload) => store.updateColor(payload);
+const updateComponentGridPosition = (payload) => store.updateComponentGridPosition(payload);
 
 
 const useExportComponentBound = () => {

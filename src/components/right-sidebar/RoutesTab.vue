@@ -39,20 +39,20 @@ Includes functionality to:
 import Routes from "./Routes";
 import { mapState, mapActions } from "vuex";
 import UploadMockup from "./UploadMockup.vue";
-import { useStore } from "vuex";
+import { useStore } from "../../../store/index.js";
 import { ref, computed } from "vue";
 
 const store = useStore();
 const newRoute = ref("");
 const activeComponent = ref("")
 
-const routes = computed(() => store.state.routes);
-const componentMap = computed(() => store.state.componentMap);
+const routes = computed(() => store.routes);
+const componentMap = computed(() => store.componentMap);
 // const activeComponent = computed(() => store.state.activeComponent)
 
-const addRouteToRouteMap = (payload) => store.dispatch('addRouteToRouteMap', payload);
-const setRoutes = (payload) => store.dispatch('setRoutes', payload);
-const setActiveComponent = (payload) => store.dispatch('setActiveComponent', payload);
+const addRouteToRouteMap = (payload) => store.addRouteToRouteMap(payload);
+const setRoutes = (payload) => store.setRoutes(payload);
+const setActiveComponent = (payload) => store.setActiveComponent(payload);
 
  
 const handleEnterKeyPress = () => {

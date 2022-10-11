@@ -29,7 +29,7 @@ const actions = {
     this.imagePath[payload] = "";
   },
 
-  addRouteToComponentMap(payload) {
+  addRouteToRoute(payload) {
     const { route, children } = payload;
     this.componentMap[route] = {
       componentName: route,
@@ -441,7 +441,7 @@ const actions = {
     this.selectedElementList.splice(payload, 1);
   },
 
-  setActiveHtmlElement(payload) {
+  setActiveHtml(payload) {
     if (payload[0] === "") {
       this.activeHTML = "";
     } else {
