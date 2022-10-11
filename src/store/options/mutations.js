@@ -11,7 +11,7 @@ import * as types from "./types";
 import {
   breadthFirstSearch,
   breadthFirstSearchParent,
-} from "../utils/search.util";
+} from "../../utils/search.util";
 import _ from "lodash";
 
 const cloneDeep = require("lodash.clonedeep");

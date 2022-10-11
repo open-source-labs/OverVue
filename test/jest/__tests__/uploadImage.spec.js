@@ -17,9 +17,9 @@ const components = Object.keys(All).reduce((object, key) => {
   return object;
 }, {});
 
-import actions from "../../../src/store/actions";
-import mutations from "../../../src/store/mutations";
-import * as types from "../../../src/store/types";
+import actions from "../../../src/store/options/actions";
+import mutations from "../../../src/store/options/mutations";
+import * as types from "../../../src/store/options/types";
 import Vuex from "vuex";
 import store from "../../../src/store/state/index";
 
@@ -36,7 +36,7 @@ describe("Test Suite for Image Upload", () => {
   // localVue.use(Quasar, Vuex, { components });
 
   // New version using createApp
-  const App = {}
+  const App = {};
   const app = createApp(App);
   app.use(Quasar, Vuex, { components });
 
@@ -45,9 +45,12 @@ describe("Test Suite for Image Upload", () => {
   test('"[types.IMPORT_IMAGE]" mutation sets file path for electron "imagePath" in newState', () => {
     const newState = {
       imagePath: "",
-      activeRoute: 'HomeView'
+      activeRoute: "HomeView",
     };
-    const payload = { img: "/Users/dev/Documents/test_img.jpg", route: newState.activeRoute };
+    const payload = {
+      img: "/Users/dev/Documents/test_img.jpg",
+      route: newState.activeRoute,
+    };
     mutations[types.IMPORT_IMAGE](newState, payload);
     expect(newState.imagePath).toBeInstanceOf(Object);
     expect(newState.imagePath).toHaveProperty(payload.route);
@@ -57,7 +60,7 @@ describe("Test Suite for Image Upload", () => {
   test('"[types.CLEAR_IMAGE]" mutation removes string from "imagePath" in newState', () => {
     const newState = {
       imagePath: { HomeView: "/Users/dev/Documents/delete_test_img.jpg" },
-      activeRoute: "HomeView"
+      activeRoute: "HomeView",
     };
     const payload = { route: newState.activeRoute };
     mutations[types.CLEAR_IMAGE](newState, payload);
@@ -66,7 +69,7 @@ describe("Test Suite for Image Upload", () => {
 
   test('"[types.importImage]" action calls "IMPORT_IMAGE"', () => {
     const newState = {
-      imagePath: ""
+      imagePath: "",
     };
     const commit = jest.fn();
     const payload = "/Users/dev/Documents/test_img.jpg";

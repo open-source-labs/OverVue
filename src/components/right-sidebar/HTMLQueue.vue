@@ -68,11 +68,6 @@ export default {
 <script setup>
 import { ref, computed, watch } from "vue";
 import { useStore } from "vuex";
-import {
-  setSelectedElementList,
-  deleteSelectedElement,
-  deleteFromComponentHtmlList,
-} from "../../store/types";
 import { breadthFirstSearch } from "../../utils/search.util";
 
 const store = useStore();
@@ -124,7 +119,7 @@ const renderList = computed({
     return sortedHTML;
   },
   set(value) {
-    store.dispatch(setSelectedElementList, value);
+    store.dispatch("setSelectedElementList", value);
   },
 });
 
@@ -169,8 +164,8 @@ const clearActiveHTML = (payload) => store.dispatch("clearActiveHTML", payload);
 
 const deleteElement = (id) => {
   if (activeComponent.value === "")
-    store.dispatch(deleteSelectedElement, id[0]);
-  else store.dispatch(deleteFromComponentHtmlList, id[1]);
+    store.dispatch("deleteSelectedElement", id[0]);
+  else store.dispatch("deleteFromComponentHtmlList", id[1]);
 };
 
 const closeMenu = (element) => {
