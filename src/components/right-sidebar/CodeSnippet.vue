@@ -31,7 +31,7 @@ import styleClassMap from "../../store/state/styleClassMap";
 import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism-tomorrow.css"; // import syntax highlighting styles
-import { useStore } from "vuex";
+import { useStore } from "../../store/index";
 import {
   ref,
   computed,
@@ -49,10 +49,10 @@ const lineNumbers = ref(true);
 const height = ref(null);
 
 // computed
-const componentMap = computed(() => store.state.componentMap);
-const activeComponent = computed(() => store.state.activeComponent);
-const activeComponentObj = computed(() => store.state.activeComponentObj);
-const exportAsTypescript = computed(() => store.state.exportAsTypescript);
+const componentMap = computed(() => store.componentMap);
+const activeComponent = computed(() => store.activeComponent);
+const activeComponentObj = computed(() => store.activeComponentObj);
+const exportAsTypescript = computed(() => store.exportAsTypescript);
 
 // methods
 const snippetInvoke = () => {
