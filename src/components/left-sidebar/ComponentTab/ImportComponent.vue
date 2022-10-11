@@ -7,7 +7,7 @@
 <script setup>
 // new script for Composition API
 import { computed, defineProps } from "vue";
-import { useStore } from "vuex";
+import { useStore } from "../../../store/index.js";
 import { useCreateComponent } from "../../composables/useCreateComponent.js";
 
 const { fs, ipcRenderer } = window;
@@ -15,13 +15,13 @@ const store = useStore();
 
 const props = defineProps(['title']);
 
-const componentMap = computed(() => store.state.componentMap);
-const selectedElementList = computed(() => store.state.selectedElementList);
-const activeComponent = computed(() => store.state.activeComponent);
-const activeHTML = computed(() => store.state.activeHTML);
-const userActions = computed(() => store.state.userActions);
-const userState = computed(() => store.state.userState);
-const userProps = computed(() => store.state.userProps);
+const componentMap = computed(() => store.componentMap);
+const selectedElementList = computed(() => store.selectedElementList);
+const activeComponent = computed(() => store.activeComponent);
+const activeHTML = computed(() => store.activeHTML);
+const userActions = computed(() => store.userActions);
+const userState = computed(() => store.userState);
+const userProps = computed(() => store.userProps);
 
 //emitter to send the importedObj to CreateComponent when fully parsed.
 const createImport = (importObj) => {
@@ -42,11 +42,11 @@ const createImport = (importObj) => {
       useCreateComponent(importObj, importProps) //this is where we will want to invoke the composable
     };
 
-const registerComponent = (payload) => store.dispatch("registerComponent", payload);
-const setActiveComponent = (payload) => store.dispatch("registerComponent", payload);
-const createAction = (payload) => store.dispatch("createAction", payload);
-const createState = (payload) => store.dispatch("createState", payload);
-const createProp = (payload) => store.dispatch("createProp", payload);
+const registerComponent = (payload) => store.registerComponent(payload);
+const setActiveComponent = (payload) => store.registerComponent(payload);
+const createAction = (payload) => store.createAction(payload);
+const createState = (payload) => store.createState(payload);
+const createProp = (payload) => store.createProp(payload);
 
     //renders the open file
   const importComponent = () => {
@@ -122,8 +122,8 @@ const openVueFile = (data) => {
       let compName = data[0].slice(data[0].lastIndexOf('/') + 1).replace(/[^a-z0-9-_.]/gi, '').replace(/.vue/, '');
       const vueFile = fs.readFileSync(data[0], "utf8");
 
-      for (const key in store.state.componentMap) {
-        if (store.state.componentMap[key].componentName === compName) {
+      for (const key in store.componentMap) {
+        if (store.componentMap[key].componentName === compName) {
           compName += 'duplicate'; //appends duplicate if the componentName already exists in state.
         }
       }

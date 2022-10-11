@@ -155,7 +155,7 @@
 <script setup>
 // new script for Composition API
 import { computed, ref, watch, onMounted } from "vue";
-import { useStore } from "vuex";
+import { useStore } from "../../../store/index.js";
 
 const store = useStore();
 
@@ -187,34 +187,34 @@ for (let i = 0; i <routes.value[activeRoute.value].length; i++) {
 
 //computed
 
-const selectedElementList = computed(() => store.state.selectedElementList);
-const componentMap = computed(() => store.state.componentMap);
-const activeComponent = computed(() => store.state.activeComponent);
-const activeHTML = computed(() => store.state.activeHTML);
-const activeLayer = computed(() => store.state.activeLayer);
-const attributeModalOpen = computed(() => store.state.attributeModalOpen);
-const activeRoute = computed(() => store.state.activeRoute);
-const routes = computed(() => store.state.routes);
-const activeComponentData = computed(() => store.state.activeComponentData);
-const activeComponentObj = computed(() => store.state.activeComponentObj);
-const componentData = computed(() => store.state.componentData);
+const selectedElementList = computed(() => store.selectedElementList);
+const componentMap = computed(() => store.componentMap);
+const activeComponent = computed(() => store.activeComponent);
+const activeHTML = computed(() => store.activeHTML);
+const activeLayer = computed(() => store.activeLayer);
+const attributeModalOpen = computed(() => store.attributeModalOpen);
+const activeRoute = computed(() => store.activeRoute);
+const routes = computed(() => store.routes);
+const activeComponentData = computed(() => store.activeComponentData);
+const activeComponentObj = computed(() => store.activeComponentObj);
+const componentData = computed(() => store.componentData);
 
 
 //actions
 
-const setActiveHTML = (payload) => store.dispatch("setActiveHTML", payload);
-const setActiveLayer = (payload) => store.dispatch("setActiveLayer", payload);
-const openAttributeModal = (payload) => store.dispatch("openAttributeModal", payload);
-const addActiveComponentClass = (payload) => store.dispatch("addActiveComponentClass", payload);
-const addActiveComponentElementNote = (payload) => store.dispatch("addActiveComponentElementNote", payload);
-const addActiveComponentHeight = (payload) => store.dispatch("addActiveComponentHeight", payload);
-const addActiveComponentWidth = (payload) => store.dispatch("addActiveComponentWidth", payload);
-const addActiveComponentTop = (payload) => store.dispatch("addActiveComponentTop", payload);
-const addActiveComponentLeft = (payload) => store.dispatch("addActiveComponentLeft", payload);
-const clearActiveHTML = (payload) => store.dispatch("clearActiveHTML", payload);
-const updateComponentLayer = (payload) => store.dispatch("updateComponentLayer", payload);
-const updateHTMLLayer = (payload) => store.dispatch("updateHTMLLayer", payload);
-const addBindingText = (payload) => store.dispatch("addBindingText", payload);
+const setActiveHTML = (payload) => store.setActiveHTML(payload);
+const setActiveLayer = (payload) => store.setActiveLayer(payload);
+const openAttributeModal = (payload) => store.openAttributeModal(payload);
+const addActiveComponentClass = (payload) => store.addActiveComponentClass(payload);
+const addActiveComponentElementNote = (payload) => store.addActiveComponentElementNote(payload);
+const addActiveComponentHeight = (payload) => store.addActiveComponentHeight(payload);
+const addActiveComponentWidth = (payload) => store.addActiveComponentWidth(payload);
+const addActiveComponentTop = (payload) => store.addActiveComponentTop(payload);
+const addActiveComponentLeft = (payload) => store.addActiveComponentLeft(payload);
+const clearActiveHTML = (payload) => store.clearActiveHTML(payload);
+const updateComponentLayer = (payload) => store.updateComponentLayer(payload);
+const updateHTMLLayer = (payload) => store.updateHTMLLayer(payload);
+const addBindingText = (payload) => store.addBindingText(payload);
 
 const submitClass = (element, idNum) => {
       if (element === '') {

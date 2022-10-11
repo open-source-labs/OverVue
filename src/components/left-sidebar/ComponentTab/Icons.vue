@@ -39,7 +39,7 @@ export default {
 <script setup>
 // new script for Composition API
 import { computed, ref, defineEmits } from "vue";
-import { useStore } from "vuex";
+import { useStore } from "../../../store/index.js";
 
 const store = useStore();
 
@@ -49,12 +49,12 @@ const childIcon = ref(["fas fa-code fa-lg"]);
 //emits
 const emit = defineEmits(["getClickedIcon", "activeElement", "activeLayer", "activeHTML"])
 
-const icons = computed(() => store.state.icons);
-const activeComponent = computed(() => store.state.activeComponent);
-const componentMap = computed(() => store.state.componentMap);
-const selectedElementList = computed(() => store.state.selectedElementList);
-const activeHTML = computed(() => store.state.activeHTML);
-const activeLayer = computed(() => store.state.activeLayer);
+const icons = computed(() => store.icons);
+const activeComponent = computed(() => store.activeComponent);
+const componentMap = computed(() => store.componentMap);
+const selectedElementList = computed(() => store.selectedElementList);
+const activeHTML = computed(() => store.activeHTML);
+const activeLayer = computed(() => store.activeLayer);
 
 //it increments html elements when creating component
 const elementStorage = computed(() => {

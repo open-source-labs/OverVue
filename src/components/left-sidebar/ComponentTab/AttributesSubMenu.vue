@@ -76,7 +76,7 @@ export default {
 <script setup>
 // new script for Composition API
 import { computed, ref } from "vue";
-import { useStore } from "vuex";
+import { useStore } from "../../../store/index.js";
 import VueMultiselect from "vue-multiselect";
 
 const store = useStore();
@@ -89,19 +89,19 @@ let deleteText = ref("");
 
 //computed
 
-const selectedProps = computed(() => store.state.selectedProps);
-const userProps = computed(() => store.state.userProps);
-const activeComponentObj = computed(() => store.state.activeComponentObj);
-let activeComponent = computed(() => store.state.activeComponent);
-const routes = computed(() => store.state.routes);
-const activeRoute = computed(() => store.state.activeRoute);
+const selectedProps = computed(() => store.selectedProps);
+const userProps = computed(() => store.userProps);
+const activeComponentObj = computed(() => store.activeComponentObj);
+let activeComponent = computed(() => store.activeComponent);
+const routes = computed(() => store.routes);
+const activeRoute = computed(() => store.activeRoute);
 const activeRouteKey = computed(
-  () => store.state.routes[store.state.activeRoute]
+  () => store.state.routes[store.activeRoute]
 );
 
 //actions
 
-const editAttribute = (payload) => store.dispatch("editAttribute", payload);
+const editAttribute = (payload) => store.editAttribute(payload);
 
 const activeComponentData = () => {
   return cloneDeep(activeComponentObj.value);
