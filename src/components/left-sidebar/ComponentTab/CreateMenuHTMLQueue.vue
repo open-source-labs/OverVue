@@ -53,7 +53,7 @@ export default {
 // new script for Composition API
 import { breadthFirstSearch } from "../../../utils/search.util";
 import { computed, ref, watch, defineProps } from "vue";
-import { useStore } from "vuex";
+import { useStore } from "../../../store/index.js";
 
 const store = useStore();
 
@@ -69,11 +69,11 @@ const props = defineProps({
 const exceptions = ref(["input", "img", "link"]);
 const component = ref(null);
 
-const selectedElementList = computed(() => store.state.selectedElementList);
-const componentMap = computed(() => store.state.componentMap);
-const activeComponent = computed(() => store.state.activeComponent);
-const activeHTML = computed(() => store.state.activeHTML);
-const activeLayer = computed(() => store.state.activeLayer);
+const selectedElementList = computed(() => store.selectedElementList);
+const componentMap = computed(() => store.componentMap);
+const activeComponent = computed(() => store.activeComponent);
+const activeHTML = computed(() => store.activeHTML);
+const activeLayer = computed(() => store.activeLayer);
 
 const renderList = computed({
   get() {
@@ -105,7 +105,7 @@ const renderList = computed({
     return sortedHTML;
   },
   set(value) {
-    store.dispatch("setSelectedElementList", value);
+    store.setSelectedElementList(value);
   },
 });
 
@@ -119,24 +119,24 @@ const depth = computed(() => {
 
 //methods
 
-const setActiveHTML = (payload) => store.dispatch("setActiveHTML", payload);
-const setActiveLayer = (payload) => store.dispatch("setActiveLayer", payload);
-const upOneLayer = (payload) => store.dispatch("upOneLayer", payload);
+const setActiveHTML = (payload) => store.setActiveHTML(payload);
+const setActiveLayer = (payload) => store.setActiveLayer(payload);
+const upOneLayer = (payload) => store.upOneLayer(payload);
 const setSelectedIdDrag = (payload) =>
-  store.dispatch("setSelectedIdDrag", payload);
-const setIdDrag = (payload) => store.dispatch("setIdDrag", payload);
+  store.setSelectedIdDrag(payload);
+const setIdDrag = (payload) => store.setIdDrag(payload);
 const setSelectedIdDrop = (payload) =>
-  store.dispatch("setSelectedIdDrop", payload);
-const setIdDrop = (payload) => store.dispatch("setIdDrop", payload);
+  store.setSelectedIdDrop(payload);
+const setIdDrop = (payload) => store.setIdDrop(payload);
 const dragDropSortHtmlElements = (payload) =>
-  store.dispatch("dragDropSortHtmlElements", payload);
+  store.dragDropSortHtmlElements(payload);
 const dragDropSortSelectedHtmlElements = (payload) =>
-  store.dispatch("dragDropSortSelectedHtmlElements", payload);
+  store.dragDropSortSelectedHtmlElements(payload);
 
 const deleteElement = (id) => {
   if (activeComponent.value === "")
-    store.dispatch("deleteSelectedElement", id[0]);
-  else store.dispatch("deleteFromComponentHtmlList", id[1]);
+    store.deleteSelectedElement(id[0]);
+  else store.deleteFromComponentHtmlList(id[1]);
 };
 
 const setActiveElement = (element) => {

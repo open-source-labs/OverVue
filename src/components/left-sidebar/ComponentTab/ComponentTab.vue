@@ -13,12 +13,12 @@ Functionality includes: if active component is selected, will switch view to edi
 import CreateMenu from './CreateMenu.vue';
 import UpdateMenu from './UpdateMenu.vue';
 import { computed } from "vue";
-import { useStore } from "vuex";
+import { useStore } from "../../../store/index.js";
 
 
 const store = useStore();
 
-const activeComponent = computed(() => store.state.activeComponent);
+const activeComponent = computed(() => store.activeComponent);
 
 </script>
 

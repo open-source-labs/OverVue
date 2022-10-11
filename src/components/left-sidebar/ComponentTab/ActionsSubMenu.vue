@@ -69,15 +69,15 @@
 // new script for Composition API
 
 import { computed } from "vue";
-import { useStore } from "vuex";
+import { useStore } from "../../../store/index.js";
 import VueMultiselect from "vue-multiselect";
 
 const store = useStore();
 
-const selectedActions = computed(() => store.state.selectedActions);
-const userActions = computed(() => store.state.userActions);
-const componentMap = computed(() => store.state.componentMap);
-const activeComponent = computed(() => store.state.activeComponent);
+const selectedActions = computed(() => store.selectedActions);
+const userActions = computed(() => store.userActions);
+const componentMap = computed(() => store.componentMap);
+const activeComponent = computed(() => store.activeComponent);
 
 //getters
 
@@ -99,9 +99,9 @@ const selectAction = computed({
 
 // Methods
 
-const addActionSelected = (payload) => store.dispatch("addActionSelected", payload)
-const addActionToComponent = (payload) =>  store.dispatch("addActionToComponent", payload)
-const deleteActionFromComponent = (payload) => store.dispatch("deleteActionFromComponent", payload)
+const addActionSelected = (payload) => store.addActionSelected(payload);
+const addActionToComponent = (payload) =>  store.addActionToComponent(payload);
+const deleteActionFromComponent = (payload) => store.deleteActionFromComponent(payload);
 
 const stopDelete = (e) => {if (e.code === "Backspace") e.stopPropogation()};
 const addActionToComp = () => {addActionToComponent([...selectedActions.value])};

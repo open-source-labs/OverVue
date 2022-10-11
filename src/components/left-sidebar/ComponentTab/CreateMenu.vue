@@ -103,7 +103,7 @@ Description:
 // new script for Composition API
 import { useCreateComponent } from "../../composables/useCreateComponent.js";
 import { computed, ref, watch } from "vue";
-import { useStore } from "vuex";
+import { useStore } from "../../../store/index.js";
 import Icons from "./Icons.vue";
 import ParentMultiselect from "./ParentMultiselect.vue";
 import ImportComponent from "./ImportComponent.vue"
@@ -185,30 +185,30 @@ const libArray = ref([
 
       ]);
 
-const componentMap = computed(() => store.state.componentMap);
+const componentMap = computed(() => store.componentMap);
 // returns an object
-const selectedElementList = computed(() => store.state.selectedElementList);
+const selectedElementList = computed(() => store.selectedElementList);
 // returns an array
-const activeComponent = computed(() => store.state.activeComponent);
+const activeComponent = computed(() => store.activeComponent);
 // returns a string
-const activeHTML = computed(() => store.state.activeHTML);
+const activeHTML = computed(() => store.activeHTML);
 // returns a string
-const attributeModalOpen = computed(() => store.state.attributeModalOpen);
+const attributeModalOpen = computed(() => store.attributeModalOpen);
 // I don't think I need the above variable as the watch function does nothing
-const userActions = computed(() => store.state.userActions);
+const userActions = computed(() => store.userActions);
 // returns an array
-const userState = computed(() => store.state.userState);
+const userState = computed(() => store.userState);
 // returns an array
-const userProps = computed(() => store.state.userProps);
+const userProps = computed(() => store.userProps);
 // returns an array
-const routes = computed(() => store.state.routes);
+const routes = computed(() => store.routes);
 // returns an object that contains Homeview: []
 
 //getter function
 const componentNameInputValue = computed({
       get() {
-        // console.log(store.state.componentNameInputValue)
-      return store.state.componentNameInputValue;
+       //this used to be store.state.componentNameInputValue
+      return store.componentNameInputValue;
       },
       set(value) {
         // console.log(value)
@@ -224,20 +224,20 @@ const filter = computed(() => {
 
   //methods
 
-const registerComponent = (payload) => store.dispatch("registerComponent", payload)
-const addToSelectedElementList = (payload) =>  store.dispatch("addToSelectedElementList", payload)
-const updateComponentNameInputValue = (payload) => store.dispatch("updateComponentNameInputValue", payload)
-const setActiveComponent = (payload) => store.dispatch("setActiveComponent", payload)
-const addToComponentElementList = (payload) => store.dispatch("addToComponentElementList", payload)
-const addNestedHTML = (payload) => store.dispatch("addNestedHTML", payload)
-const addNestedNoActive = (payload) => store.dispatch("addNestedNoActive", payload)
-const editComponentName = (payload) => store.dispatch("editComponentName", payload)
-const openProject = (payload) => store.dispatch("openProject", payload)
-const createAction = (payload) => store.dispatch("createAction", payload)
-const createState = (payload) => store.dispatch("createState", payload)
-const createProp  = (payload) => store.dispatch("createProp", payload)
-const changeLibComponentDisplay = (payload) => store.dispatch("changeLibComponentDisplay", payload)
-const addLibComponents = (payload) => store.dispatch("addLibComponents", payload)
+const registerComponent = (payload) => store.registerComponent(payload);
+const addToSelectedElementList = (payload) =>  store.addToSelectedElementList(payload);
+const updateComponentNameInputValue = (payload) => store.updateComponentNameInputValue(payload)
+const setActiveComponent = (payload) => store.setActiveComponent(payload)
+const addToComponentElementList = (payload) => store.addToComponentElementList(payload)
+const addNestedHTML = (payload) => store.addNestedHTML(payload)
+const addNestedNoActive = (payload) => store.addNestedNoActive(payload)
+const editComponentName = (payload) => store.editComponentName(payload)
+const openProject = (payload) => store.openProject(payload)
+const createAction = (payload) => store.createAction(payload)
+const createState = (payload) => store.createState(payload)
+const createProp  = (payload) => store.createProp(payload)
+const changeLibComponentDisplay = (payload) => store.changeLibComponentDisplay(payload)
+const addLibComponents = (payload) => store.addLibComponents(payload)
 
 //all actions from action.js
 
