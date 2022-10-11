@@ -138,7 +138,8 @@ const componentData = componentMap;
           children: buildTreeChildren(componentData[child].children),
         })
       }
-    
+      return treeData
+  }
 
     function buildTreeChildren(array) {
         if (array.length === 0){
@@ -162,28 +163,9 @@ const componentData = componentMap;
           return outputArray;
         }
       }
-<<<<<<< HEAD
       
 
-  const buildTree = (componentData) => {
-      //App is always the root of the tree.  
-      const treeData = {     
-        value: 'App',
-        children: []
-      }
-      // console.log(treeData, 'HELLO I AM TREE DATA');
-      //Views come after the root, as its children. No components will be children of App.
-      //ONLY Views will have components as children.
-      for (const child of componentData.App.children){
-        treeData.children.push({
-          value: child,
-          children: buildTreeChildren(componentData[child].children),
-        })
-      }
-=======
->>>>>>> ji-composition
-      return treeData;
-    }
+
     
 //data
 treeData.value = buildTree(componentMap.value)
