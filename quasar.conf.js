@@ -25,7 +25,7 @@ module.exports = configure(function (ctx) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/boot-files
-    boot: [],
+    boot: ["pinia"],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
     css: ["app.scss"],
@@ -57,7 +57,7 @@ module.exports = configure(function (ctx) {
       // extendWebpack(cfg) {
       //   cfg.target = 'electron-main'
       // },
-      
+
       // transpile: false,
       // publicPath: '/',
 
@@ -77,23 +77,24 @@ module.exports = configure(function (ctx) {
 
       // https://quasar.dev/quasar-cli/handling-webpack
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
-      chainWebpack (chain) {
-        chain.plugin('eslint-webpack-plugin')
-          .use(ESLintPlugin, [{ extensions: [ 'js', 'vue' ] }]);
+      chainWebpack(chain) {
+        chain
+          .plugin("eslint-webpack-plugin")
+          .use(ESLintPlugin, [{ extensions: ["js", "vue"] }]);
 
-          chain.resolve.alias.set('child_process', false);// Added this
-          chain.resolve.alias.set('crypto', false);
-          chain.resolve.alias.set('fs', false);
-          chain.resolve.alias.set('http', false);
-          chain.resolve.alias.set('https', false);
-          chain.resolve.alias.set('os', false);
-          chain.resolve.alias.set('path', false);
-          chain.resolve.alias.set('stream', false);
-          chain.resolve.alias.set('tls', false);
-          chain.resolve.alias.set('tty', false);
-          chain.resolve.alias.set('url', false);
-          chain.resolve.alias.set('util', false);
-          chain.resolve.alias.set('zlib', false);
+        chain.resolve.alias.set("child_process", false); // Added this
+        chain.resolve.alias.set("crypto", false);
+        chain.resolve.alias.set("fs", false);
+        chain.resolve.alias.set("http", false);
+        chain.resolve.alias.set("https", false);
+        chain.resolve.alias.set("os", false);
+        chain.resolve.alias.set("path", false);
+        chain.resolve.alias.set("stream", false);
+        chain.resolve.alias.set("tls", false);
+        chain.resolve.alias.set("tty", false);
+        chain.resolve.alias.set("url", false);
+        chain.resolve.alias.set("util", false);
+        chain.resolve.alias.set("zlib", false);
       },
     },
 
@@ -104,7 +105,7 @@ module.exports = configure(function (ctx) {
       },
       port: 8080,
       open: true, // opens browser window automatically
-      vueDevtools: true
+      vueDevtools: true,
     },
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
@@ -264,4 +265,4 @@ module.exports = configure(function (ctx) {
     },
   };
 });
-``
+``;
