@@ -233,7 +233,7 @@ export default { name: "LibComponents" };
 </script>
 
 <script setup>
-import { useStore } from "../../../store/index";
+import { useStore } from "../../../store/main";
 import { computed } from "vue";
 const store = useStore();
 

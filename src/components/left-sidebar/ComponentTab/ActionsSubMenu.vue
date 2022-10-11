@@ -36,7 +36,11 @@
     <p v-if="!this.componentMap[this.activeComponent].actions.length">
       No actions in component
     </p>
-    <a v-else v-for="action in this.componentMap[this.activeComponent].actions" :key="action">
+    <a
+      v-else
+      v-for="action in this.componentMap[this.activeComponent].actions"
+      :key="action"
+    >
       <q-list class="list-item" dense bordered separator>
         <q-item clickable v-ripple class="list-item">
           <q-item-section>
@@ -60,16 +64,16 @@
 </template>
 
 <script>
-  export default {
-    name: "ActionsSubMenu",
-  };
-  </script>
+export default {
+  name: "ActionsSubMenu",
+};
+</script>
 
 <script setup>
 // new script for Composition API
 
 import { computed } from "vue";
-import { useStore } from "../../../store/index.js";
+import { useStore } from "../../../store/main.js";
 import VueMultiselect from "vue-multiselect";
 
 const store = useStore();
@@ -86,29 +90,32 @@ const actionOptions = userActions;
 //       return this.userActions;
 //     },
 
-
-
 const selectAction = computed({
-       get() {
-        return [...selectedActions.value];
-      },
-      set(value) {
-        addActionSelected(value);
-      }
-    });
+  get() {
+    return [...selectedActions.value];
+  },
+  set(value) {
+    addActionSelected(value);
+  },
+});
 
 // Methods
 
 const addActionSelected = (payload) => store.addActionSelected(payload);
-const addActionToComponent = (payload) =>  store.addActionToComponent(payload);
-const deleteActionFromComponent = (payload) => store.deleteActionFromComponent(payload);
+const addActionToComponent = (payload) => store.addActionToComponent(payload);
+const deleteActionFromComponent = (payload) =>
+  store.deleteActionFromComponent(payload);
 
-const stopDelete = (e) => {if (e.code === "Backspace") e.stopPropogation()};
-const addActionToComp = () => {addActionToComponent([...selectedActions.value])};
-const deleteAction = (action) => {deleteActionFromComponent(action)};
-
+const stopDelete = (e) => {
+  if (e.code === "Backspace") e.stopPropogation();
+};
+const addActionToComp = () => {
+  addActionToComponent([...selectedActions.value]);
+};
+const deleteAction = (action) => {
+  deleteActionFromComponent(action);
+};
 </script>
-
 
 <!-- <script>
 import { mapState, mapActions } from "vuex";
@@ -159,10 +166,10 @@ export default {
 
 <style lang="scss" scoped>
 .selection-container {
-    padding: 30px 0;
+  padding: 30px 0;
 }
 
-.component-container{
+.component-container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;

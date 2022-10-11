@@ -13,14 +13,28 @@ Description:
       @click="selectRoute(route)"
     >
       <q-list bordered separator class="list-item">
-        <q-item clickable dense v-ripple :class="route === activeRoute ? 'panel-block is-active list-item' : 'panel-block list-item'">
+        <q-item
+          clickable
+          dense
+          v-ripple
+          :class="
+            route === activeRoute
+              ? 'panel-block is-active list-item'
+              : 'panel-block list-item'
+          "
+        >
           <q-item-section>
             <div class="block-container">
               <div class="block-info">
-              {{route}}
+                {{ route }}
               </div>
               <span v-if="route !== 'HomeView'">
-              <q-btn round flat icon="highlight_off" v-on:click.stop="deleteSelectedRoute(route)" />
+                <q-btn
+                  round
+                  flat
+                  icon="highlight_off"
+                  v-on:click.stop="deleteSelectedRoute(route)"
+                />
               </span>
             </div>
           </q-item-section>
@@ -33,30 +47,29 @@ Description:
 <script>
 export default {
   name: "Routes",
-  };
+};
 </script>
 
 <script setup>
-import { useStore } from "../../../store/index.js";
+import { useStore } from "../../store/main.js";
 import { computed } from "vue";
 
 const store = useStore();
 
-const routes = computed (() => store.routes);
-const activeRoute = computed (() => store.activeRoutes);
+const routes = computed(() => store.routes);
+const activeRoute = computed(() => store.activeRoutes);
 
 const setActiveRoute = (payload) => store.setActiveRoute(payload);
 const deleteRoute = (payload) => store.deleteRoute(payload);
-    
-const selectRoute = (route) => {
-      setActiveRoute(route)
-    };
-    // deletes route
-const deleteSelectedRoute = (route) => {
-      deleteRoute(route)
-    };
-</script>
 
+const selectRoute = (route) => {
+  setActiveRoute(route);
+};
+// deletes route
+const deleteSelectedRoute = (route) => {
+  deleteRoute(route);
+};
+</script>
 
 <!-- old options API script -->
 
@@ -83,18 +96,14 @@ const deleteSelectedRoute = (route) => {
   </script> -->
 
 <style lang="scss" scoped>
- 
-  .panel-block {
-    background: $secondary !important;
-    color: $menutext !important;
-    min-height: 45px;
-  }
-  .is-active {
-    background: $secondary !important;
-    color: $menutext !important;
-    border: 2px solid $menutext !important;
-  }
+.panel-block {
+  background: $secondary !important;
+  color: $menutext !important;
+  min-height: 45px;
+}
+.is-active {
+  background: $secondary !important;
+  color: $menutext !important;
+  border: 2px solid $menutext !important;
+}
 </style>
-
-
-

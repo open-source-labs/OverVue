@@ -441,7 +441,7 @@ const actions = {
     this.selectedElementList.splice(payload, 1);
   },
 
-  setActiveHtml(payload) {
+  setActiveHTML(payload) {
     if (payload[0] === "") {
       this.activeHTML = "";
     } else {
@@ -450,7 +450,7 @@ const actions = {
   },
 
   setActiveLayer(payload) {
-    const newLayer = cloneDeep(this.activeLayer);
+    const newLayer = { ...this.activeLayer };
     newLayer.lineage.push(payload.text);
     newLayer.id = payload.id;
     this.activeLayer = newLayer;
@@ -584,6 +584,41 @@ const actions = {
   // END OF EDIT FUNCTIONALITY SECTION
 
   // *** COMPONENTS *** //////////////////////////////////////////////
+  registerComponent(payload) {
+    /* this action has a lot of mutations deployed
+    Because we have to initialize a whole bunch of propertiess
+    which are determined by the choices made on the left hand panel
+     */
+    const { componentName } = payload;
+    // if the component name doesn't already exist,
+    // then add the component to the display
+    if (!this.componentMap[componentName]) {
+      this.addComponentToComponentMap(payload);
+      // if the component isn't already a child,
+      // add it as child to the homeview display
+      if (!this.parentSelected.length) {
+        this.addComponentToActiveRouteChildren(payload);
+      }
+
+      this.addComponentToActiveRouteInRouteMap(payload);
+
+      const value = this.componentChildrenMultiselectValue.map(
+        (component) => this.componentMap[component]
+      );
+
+      if (this.parentSelected.length) {
+        this.addParent(payload);
+      }
+
+      this.updateComponentChildrenValue({ componentName, value });
+      this.updateComponentChildrenMultiselectValue([]);
+      this.updateComponentNameInputValue("");
+      this.setSelectedElementList([]);
+      this.setActiveComponent("");
+      this.parentSelected("");
+    }
+  },
+
   addComponentToActiveRouteChildren(payload) {
     this.componentMap[this.activeRoute].children.push(payload);
   },
@@ -676,7 +711,7 @@ const actions = {
     this.componentMap = newObj;
   },
 
-  parentSelected(payload) {
+  parentSelect(payload) {
     this.parentSelected = payload;
   },
 

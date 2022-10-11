@@ -69,7 +69,7 @@ export default { name: "StateSubMenu" };
 
 <script setup>
 import VueMultiselect from "vue-multiselect";
-import { useStore } from "../../../store/index";
+import { useStore } from "../../../store/main";
 import { computed } from "vue";
 
 const store = useStore();

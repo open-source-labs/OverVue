@@ -348,7 +348,7 @@ import VueMultiselect from "vue-multiselect";
 import "vue-draggable-resizable/src/components/vue-draggable-resizable.css";
 import 'vue3-draggable-resizable/dist/Vue3DraggableResizable.css'
 import { ColorPicker } from 'vue-accessible-color-picker'
-import { useStore } from "../../store/index.js";
+import { useStore } from "../store/main.js";
 import { ref, computed, onMounted, watch, defineExpose, defineEmits } from "vue";
 
 const { fs, ipcRenderer } = window;
@@ -373,7 +373,6 @@ defineExpose({boxes})
 
 //mount
 onMounted(() => {
-  console.log(boxes.value, "onmounted boxes.value")
     // listener for the copy
     window.addEventListener("copy", () => {
       // if there is an activeComponent, copy info to state using dispatch
@@ -564,7 +563,6 @@ const finishedResize = (x, y, w, h) => {
 
     // refresh function
 const refresh = () => {
-    console.log("Inside of refresh")
       const payload = {
         activeComponent: activeComponent.value,
         routeArray: routes.value[activeRoute.value],
@@ -578,10 +576,8 @@ const refresh = () => {
     }
     // {x: 0, y: 192, z: NaN, htmlList: Array(1), noteList: Array(0), …}actions: []children: []color: "#8845a585"componentName: "ha"h: 96htmlAttributes: {class: '', id: '', gridArea: Array(4)}htmlList: [{…}]idDrag: ""idDrop: ""isActive: falsenoteList: []parent: {}props: []state: []w: 170.66666666666666x: 0y: 192z: NaN[[Prototype]]: Object 'I AM ACTIVECOMPONENTDATA.value'
 
-    console.log(activeComponentData.value, "I AM ACTIVECOMPONENTDATA.value")
     // drag and drop function
 const finishedDrag = (x, y) => {
-      console.log("Inside of finishedDrag")
       let payload = {
         x: x,
         y: y,
@@ -597,7 +593,6 @@ const finishedDrag = (x, y) => {
     }
 
 const onActivated = (componentData) => {
-  console.log(componentData, "this is compdata")
       if (!componentData) {
         return;
       }
@@ -672,7 +667,6 @@ const handleSelect = (value) => { //actually handles adding or deleting
     // user can change component's layer order
 const handleLayer = (e) => {
       e.preventDefault();
-      console.log("activeComponent is ", activeComponentData.value)
       const payload = {
         activeComponent: activeComponent.value,
         routeArray: routes.value[activeRoute.value],
@@ -711,7 +705,7 @@ const handleRight = (event) => {
         if (activeComponent.value !== '' &&
           showTutorial.value === true &&
           tutorialFirstOpen.value === true) {
-          store.commit("TOGGLE_TUTORIAL");
+          store.toggleTutorial();
         }
         onActivated(activeComponentObj.value);
       },

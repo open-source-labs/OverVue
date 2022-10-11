@@ -54,7 +54,7 @@ export default { name: "PropsSubMenu" };
 
 <script setup>
 import VueMultiselect from "vue-multiselect";
-import { useStore } from "../../../store/index";
+import { useStore } from "../../../store/main";
 import { ref, computed } from "vue";
 
 const store = useStore();

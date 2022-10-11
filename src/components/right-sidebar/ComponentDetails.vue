@@ -100,7 +100,7 @@ export default {
 <script setup>
 import HTMLQueue from "./HTMLQueue";
 import CodeSnippet from "./CodeSnippet";
-import { useStore } from "../../store/index";
+import { useStore } from "../../store/main.js";
 import { ref, computed } from "vue";
 
 const store = useStore();

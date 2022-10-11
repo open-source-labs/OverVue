@@ -53,7 +53,7 @@ export default {
 // new script for Composition API
 import { breadthFirstSearch } from "../../../utils/search.util";
 import { computed, ref, watch, defineProps } from "vue";
-import { useStore } from "../../../store/index.js";
+import { useStore } from "../../../store/main.js";
 
 const store = useStore();
 
@@ -122,11 +122,9 @@ const depth = computed(() => {
 const setActiveHTML = (payload) => store.setActiveHTML(payload);
 const setActiveLayer = (payload) => store.setActiveLayer(payload);
 const upOneLayer = (payload) => store.upOneLayer(payload);
-const setSelectedIdDrag = (payload) =>
-  store.setSelectedIdDrag(payload);
+const setSelectedIdDrag = (payload) => store.setSelectedIdDrag(payload);
 const setIdDrag = (payload) => store.setIdDrag(payload);
-const setSelectedIdDrop = (payload) =>
-  store.setSelectedIdDrop(payload);
+const setSelectedIdDrop = (payload) => store.setSelectedIdDrop(payload);
 const setIdDrop = (payload) => store.setIdDrop(payload);
 const dragDropSortHtmlElements = (payload) =>
   store.dragDropSortHtmlElements(payload);
@@ -134,8 +132,7 @@ const dragDropSortSelectedHtmlElements = (payload) =>
   store.dragDropSortSelectedHtmlElements(payload);
 
 const deleteElement = (id) => {
-  if (activeComponent.value === "")
-    store.deleteSelectedElement(id[0]);
+  if (activeComponent.value === "") store.deleteSelectedElement(id[0]);
   else store.deleteFromComponentHtmlList(id[1]);
 };
 

@@ -23,7 +23,8 @@ export default {
 
 <script setup>
 import localforage from "localforage";
-import { useStore } from "../../store/index";
+import { useStore } from "../../store/main";
+import { computed } from "vue";
 const Mousetrap = require("mousetrap");
 const { fs, ipcRenderer } = window;
 

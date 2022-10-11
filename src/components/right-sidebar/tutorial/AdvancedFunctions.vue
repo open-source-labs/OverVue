@@ -81,7 +81,7 @@
 
 <!-- COMPOSITION API SYNTAX -->
 <script setup>
-import { useStore } from "../../../store/index";
+import { useStore } from "../../../store/main.js";
 const store = useStore();
 
 const toggleTutorial = () => store.toggleTutorial();

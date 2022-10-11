@@ -279,7 +279,7 @@ Description:
 <!-- COMPOSITION API -->
 <script setup>
 import { ref, computed, defineEmits, defineProps } from "vue";
-import { useStore } from "../store/index";
+import { useStore } from "../store/main";
 
 import RightSidebar from "../components/right-sidebar/RightSidebar.vue";
 import ExportMenu from "../components/nav-buttons/ExportMenu.vue";

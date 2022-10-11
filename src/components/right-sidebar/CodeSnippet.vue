@@ -31,7 +31,7 @@ import styleClassMap from "../../store/state/styleClassMap";
 import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism-tomorrow.css"; // import syntax highlighting styles
-import { useStore } from "../../store/index";
+import { useStore } from "../../store/main.js";
 import {
   ref,
   computed,

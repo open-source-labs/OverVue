@@ -1,34 +1,88 @@
 <!-- Menu for inputting information into first layer HTML Elements, giving them class, binding, size, location, and inner text-->
 
-<template >
+<template>
   <div class="AttributeBox">
-    <div class="AttributeContainer" v-for="element in componentMap[activeComponent].htmlList"
-      :key="element.id + Date.now()">
-      <p v-if="element.id === activeHTML" class="title">Your class {{ element.class.length !== 0 ? 'is ' + element.class : 'has not been stated yet' }}</p>
+    <div
+      class="AttributeContainer"
+      v-for="element in componentMap[activeComponent].htmlList"
+      :key="element.id + Date.now()"
+    >
+      <p v-if="element.id === activeHTML" class="title">
+        Your class
+        {{
+          element.class.length !== 0
+            ? "is " + element.class
+            : "has not been stated yet"
+        }}
+      </p>
     </div>
-      <q-form autofocus v-on:submit.prevent="submitClass">
-        <q-input label="Add/Change your class name" filled dark autofocus true hide-bottom-space v-model="classText"
-          @keydown.enter="submitClass">
-          <i id="comp-btn" class="fa-solid fa-right-to-bracket"
-            :disable="classText.length > 0 ? false : true" @click.self="submitClass(classText, activeHTML)">
-          </i>
-        </q-input>
-      </q-form>
-      <q-form autofocus v-on:submit.prevent="addBinding">
-        <q-input label="Add/Change two-way binding" filled dark autofocus true hide-bottom-space v-model="bindingText"
-          @keydown.enter="addBinding(bindingText, activeHTML)">
-          <i id="compt-btn" class="fa-solid fa-right-to-bracket" label="Add Binding"
-            :disable="bindingText.length > 0 ? false : true" @click.self="addBinding(bindingText, activeHTML)">
-          </i>
-        </q-input>
-      </q-form>
-    <div class="AttributeContainer" v-for="element in componentMap[activeComponent].htmlList"
-      :key="element.id + Date.now()">
-      <div v-if="exceptions.includes(element.text) && element.id === activeHTML">
+    <q-form autofocus v-on:submit.prevent="submitClass">
+      <q-input
+        label="Add/Change your class name"
+        filled
+        dark
+        autofocus
+        true
+        hide-bottom-space
+        v-model="classText"
+        @keydown.enter="submitClass"
+      >
+        <i
+          id="comp-btn"
+          class="fa-solid fa-right-to-bracket"
+          :disable="classText.length > 0 ? false : true"
+          @click.self="submitClass(classText, activeHTML)"
+        >
+        </i>
+      </q-input>
+    </q-form>
+    <q-form autofocus v-on:submit.prevent="addBinding">
+      <q-input
+        label="Add/Change two-way binding"
+        filled
+        dark
+        autofocus
+        true
+        hide-bottom-space
+        v-model="bindingText"
+        @keydown.enter="addBinding(bindingText, activeHTML)"
+      >
+        <i
+          id="compt-btn"
+          class="fa-solid fa-right-to-bracket"
+          label="Add Binding"
+          :disable="bindingText.length > 0 ? false : true"
+          @click.self="addBinding(bindingText, activeHTML)"
+        >
+        </i>
+      </q-input>
+    </q-form>
+    <div
+      class="AttributeContainer"
+      v-for="element in componentMap[activeComponent].htmlList"
+      :key="element.id + Date.now()"
+    >
+      <div
+        v-if="exceptions.includes(element.text) && element.id === activeHTML"
+      >
         <q-form autofocus v-on:submit.prevent="submitNote">
-          <q-input label="Add Inner Text" filled dark autofocus true hide-bottom-space v-model="noteText"  @keydown.enter="submitNote">
-            <i class="fa-solid fa-right-to-bracket" color="secondary" label="Submit Note"
-              :disable="noteText.length > 0 ? false : true" @click.self="submitNote(noteText, activeHTML)">
+          <q-input
+            label="Add Inner Text"
+            filled
+            dark
+            autofocus
+            true
+            hide-bottom-space
+            v-model="noteText"
+            @keydown.enter="submitNote"
+          >
+            <i
+              class="fa-solid fa-right-to-bracket"
+              color="secondary"
+              label="Submit Note"
+              :disable="noteText.length > 0 ? false : true"
+              @click.self="submitNote(noteText, activeHTML)"
+            >
             </i>
           </q-input>
         </q-form>
@@ -46,7 +100,7 @@
             color="secondary"
             @change="submitHeight(heightText, activeHTML)"
             @update:model-value="submitHeight(heightText, activeHTML)"
-            style="float: left; margin-left: 5% "
+            style="float: left; margin-left: 5%"
           />
         </q-form>
         <q-form autofocus v-on:submit.prevent="submitTop">
@@ -96,93 +150,196 @@
           />
         </q-form>
         <q-form autofocus v-on:submit.prevent="submitHeight">
-          <q-input label="Adjust height (0-100)" filled dark autofocus true hide-bottom-space v-model="heightText" @keydown="submitHeight">
-            <i class="fa-solid fa-right-to-bracket" color="secondary" label="Submit Height"
-              @click.self="submitHeight(heightText, activeHTML)">
+          <q-input
+            label="Adjust height (0-100)"
+            filled
+            dark
+            autofocus
+            true
+            hide-bottom-space
+            v-model="heightText"
+            @keydown="submitHeight"
+          >
+            <i
+              class="fa-solid fa-right-to-bracket"
+              color="secondary"
+              label="Submit Height"
+              @click.self="submitHeight(heightText, activeHTML)"
+            >
             </i>
           </q-input>
         </q-form>
         <q-form autofocus v-on:submit.prevent="submitWidth">
-          <q-input label="Adjust width (0-100)" filled dark autofocus true hide-bottom-space v-model="widthText" @keydown.enter="submitWidth">
-            <i class="fa-solid fa-right-to-bracket" color="secondary" label="Submit Width"
-              @click.self="submitWidth(widthText, activeHTML)">
+          <q-input
+            label="Adjust width (0-100)"
+            filled
+            dark
+            autofocus
+            true
+            hide-bottom-space
+            v-model="widthText"
+            @keydown.enter="submitWidth"
+          >
+            <i
+              class="fa-solid fa-right-to-bracket"
+              color="secondary"
+              label="Submit Width"
+              @click.self="submitWidth(widthText, activeHTML)"
+            >
             </i>
           </q-input>
         </q-form>
         <q-form autofocus v-on:submit.prevent="submitTop">
-          <q-input label="Adjust Elevation (0-100)" filled dark autofocus true hide-bottom-space v-model="topText" @keydown.enter="submitTop">
-            <i class="fa-solid fa-right-to-bracket" color="secondary" label="Submit Height"
-              @click.self="submitTop(topText, activeHTML)">
+          <q-input
+            label="Adjust Elevation (0-100)"
+            filled
+            dark
+            autofocus
+            true
+            hide-bottom-space
+            v-model="topText"
+            @keydown.enter="submitTop"
+          >
+            <i
+              class="fa-solid fa-right-to-bracket"
+              color="secondary"
+              label="Submit Height"
+              @click.self="submitTop(topText, activeHTML)"
+            >
             </i>
           </q-input>
         </q-form>
         <q-form autofocus v-on:submit.prevent="submitLeft">
-          <q-input label="Adjust Distance (0-100)" filled dark autofocus true hide-bottom-space v-model="leftText"  @keydown.enter="submitLeft">
-            <i class="fa-solid fa-right-to-bracket" color="secondary" label="Submit Position"
-              @click="submitLeft(leftText, activeHTML)">
+          <q-input
+            label="Adjust Distance (0-100)"
+            filled
+            dark
+            autofocus
+            true
+            hide-bottom-space
+            v-model="leftText"
+            @keydown.enter="submitLeft"
+          >
+            <i
+              class="fa-solid fa-right-to-bracket"
+              color="secondary"
+              label="Submit Position"
+              @click="submitLeft(leftText, activeHTML)"
+            >
             </i>
           </q-input>
         </q-form>
-        <q-item id="layer-item" filled dark autofocus true hide-bottom-space color="secondary">
+        <q-item
+          id="layer-item"
+          filled
+          dark
+          autofocus
+          true
+          hide-bottom-space
+          color="secondary"
+        >
           <q-item-section class="layer">Component Layer = </q-item-section>
-            <q-btn
-              class="minorAction"
-              color="transparent"
-              text-color="primary"
-              label="-"
-              @click="(e) => handleLayer(e)"
-            />
-      <!-- nested for loop to iterate to display current z-index for selected htmlElement -->
-            <template v-for="element in routes[activeRoute]">
-              <template v-for="element1 in element.htmlList">
-                <p v-if="element1.id === activeHTML" id="counter" :key="element1.id">{{ element1.z }} </p>
-              </template>
+          <q-btn
+            class="minorAction"
+            color="transparent"
+            text-color="primary"
+            label="-"
+            @click="(e) => handleLayer(e)"
+          />
+          <!-- nested for loop to iterate to display current z-index for selected htmlElement -->
+          <template v-for="element in routes[activeRoute]">
+            <template v-for="element1 in element.htmlList">
+              <p
+                v-if="element1.id === activeHTML"
+                id="counter"
+                :key="element1.id"
+              >
+                {{ element1.z }}
+              </p>
             </template>
-            <q-btn
-              class="minorAction"
-              color="transparent"
-              text-color="primary"
-              label="+"
-              @click="(e) => handleLayer(e)"
-            />
+          </template>
+          <q-btn
+            class="minorAction"
+            color="transparent"
+            text-color="primary"
+            label="+"
+            @click="(e) => handleLayer(e)"
+          />
         </q-item>
       </div>
     </div>
-    <q-btn label="Close HTML Element"  class="closeBtn" @click="closeMenu({text: 'reset', id: 'reset' })" />
+    <q-btn
+      label="Close HTML Element"
+      class="closeBtn"
+      @click="closeMenu({ text: 'reset', id: 'reset' })"
+    />
   </div>
 </template>
 
 <script setup>
 // new script for Composition API
 import { computed, ref, watch, onMounted } from "vue";
-import { useStore } from "../../../store/index.js";
+import { useStore } from "../../../store/main.js";
 
 const store = useStore();
 
-const exceptions = ref(['div','button','form','img','list','paragraph','list-ol','list-ul','input','h1','h2','h3','h4','h5','h6','e-button','e-input','e-link', 'e-form', 'e-checkbox', 'e-checkbox-button', 'e-date-picker', 'e-slider', 'e-card','e-alert','e-dropdown']);
+const exceptions = ref([
+  "div",
+  "button",
+  "form",
+  "img",
+  "list",
+  "paragraph",
+  "list-ol",
+  "list-ul",
+  "input",
+  "h1",
+  "h2",
+  "h3",
+  "h4",
+  "h5",
+  "h6",
+  "e-button",
+  "e-input",
+  "e-link",
+  "e-form",
+  "e-checkbox",
+  "e-checkbox-button",
+  "e-date-picker",
+  "e-slider",
+  "e-card",
+  "e-alert",
+  "e-dropdown",
+]);
 const attributeModal = ref("false");
-const classText = ref('');
-const heightText = ref('');
-const widthText = ref('')
-const topText = ref ('');
-const leftText = ref('');
-const z = ref('0');
-const noteText = ref('');
-const bindingText = ref('');
+const classText = ref("");
+const heightText = ref("");
+const widthText = ref("");
+const topText = ref("");
+const leftText = ref("");
+const z = ref("0");
+const noteText = ref("");
+const bindingText = ref("");
 // const note = ref('');
 
 onMounted(() => {
-//for loop to access nested HTML elements of components - sets height/width/top/left sliders to current value of selected HTML element
-for (let i = 0; i <routes.value[activeRoute.value].length; i++) {
-      for (let j = 0; j < routes.value[activeRoute.value][i].htmlList.length; j++) {
-        if(activeHTML.value === routes.value[activeRoute.value][i].htmlList[j].id) {
-          heightText.value = routes.value[activeRoute.value][i].htmlList[j].h;
-          widthText.value = routes.value[activeRoute.value][i].htmlList[j].w;
-          topText.value = routes.value[activeRoute.value][i].htmlList[j].x;
-          leftText.value = routes.value[activeRoute.value][i].htmlList[j].y;
-        }
+  //for loop to access nested HTML elements of components - sets height/width/top/left sliders to current value of selected HTML element
+  for (let i = 0; i < routes.value[activeRoute.value].length; i++) {
+    for (
+      let j = 0;
+      j < routes.value[activeRoute.value][i].htmlList.length;
+      j++
+    ) {
+      if (
+        activeHTML.value === routes.value[activeRoute.value][i].htmlList[j].id
+      ) {
+        heightText.value = routes.value[activeRoute.value][i].htmlList[j].h;
+        widthText.value = routes.value[activeRoute.value][i].htmlList[j].w;
+        topText.value = routes.value[activeRoute.value][i].htmlList[j].x;
+        leftText.value = routes.value[activeRoute.value][i].htmlList[j].y;
       }
     }
+  }
 });
 
 //computed
@@ -199,146 +356,154 @@ const activeComponentData = computed(() => store.activeComponentData);
 const activeComponentObj = computed(() => store.activeComponentObj);
 const componentData = computed(() => store.componentData);
 
-
 //actions
 
 const setActiveHTML = (payload) => store.setActiveHTML(payload);
 const setActiveLayer = (payload) => store.setActiveLayer(payload);
 const openAttributeModal = (payload) => store.openAttributeModal(payload);
-const addActiveComponentClass = (payload) => store.addActiveComponentClass(payload);
-const addActiveComponentElementNote = (payload) => store.addActiveComponentElementNote(payload);
-const addActiveComponentHeight = (payload) => store.addActiveComponentHeight(payload);
-const addActiveComponentWidth = (payload) => store.addActiveComponentWidth(payload);
+const addActiveComponentClass = (payload) =>
+  store.addActiveComponentClass(payload);
+const addActiveComponentElementNote = (payload) =>
+  store.addActiveComponentElementNote(payload);
+const addActiveComponentHeight = (payload) =>
+  store.addActiveComponentHeight(payload);
+const addActiveComponentWidth = (payload) =>
+  store.addActiveComponentWidth(payload);
 const addActiveComponentTop = (payload) => store.addActiveComponentTop(payload);
-const addActiveComponentLeft = (payload) => store.addActiveComponentLeft(payload);
+const addActiveComponentLeft = (payload) =>
+  store.addActiveComponentLeft(payload);
 const clearActiveHTML = (payload) => store.clearActiveHTML(payload);
 const updateComponentLayer = (payload) => store.updateComponentLayer(payload);
 const updateHTMLLayer = (payload) => store.updateHTMLLayer(payload);
 const addBindingText = (payload) => store.addBindingText(payload);
 
 const submitClass = (element, idNum) => {
-      if (element === '') {
-        return;
-      }
-      let payload = {
-        class: element,
-        id: idNum
-      }
-      addActiveComponentClass(payload);
-      classText.value = '';
-    };
+  if (element === "") {
+    return;
+  }
+  let payload = {
+    class: element,
+    id: idNum,
+  };
+  addActiveComponentClass(payload);
+  classText.value = "";
+};
 
 const submitNote = (element, idNum) => {
-      if (element === '') {
-        return;
-      }
-      let payload = {
-        note: element,
-        id: idNum
-      }
-      addActiveComponentElementNote(payload);
-      // console.log("Looking for htmlAttributes ", activeComponentObj.value.htmlAttributes);
-      noteText.value = '';
-    };
+  if (element === "") {
+    return;
+  }
+  let payload = {
+    note: element,
+    id: idNum,
+  };
+  addActiveComponentElementNote(payload);
+  // console.log("Looking for htmlAttributes ", activeComponentObj.value.htmlAttributes);
+  noteText.value = "";
+};
 
 const submitHeight = (element, idNum) => {
-      if (element === '') {
-        return;
-      }
-      let payload = {
-        height: element,
-        id: idNum
-      }
-      addActiveComponentHeight(payload);
-    };
+  if (element === "") {
+    return;
+  }
+  let payload = {
+    height: element,
+    id: idNum,
+  };
+  addActiveComponentHeight(payload);
+};
 
 const submitWidth = (element, idNum) => {
-      if (element === '') {
-        return;
-      }
-      let payload = {
-        width: element,
-        id: idNum
-      }
-      addActiveComponentWidth(payload);
-    };
+  if (element === "") {
+    return;
+  }
+  let payload = {
+    width: element,
+    id: idNum,
+  };
+  addActiveComponentWidth(payload);
+};
 
 const submitTop = (element, idNum) => {
-      if (element === '') {
-        return;
-      }
-      let payload = {
-        top: element,
-        id: idNum
-      }
-      addActiveComponentTop(payload);
-    };
+  if (element === "") {
+    return;
+  }
+  let payload = {
+    top: element,
+    id: idNum,
+  };
+  addActiveComponentTop(payload);
+};
 
 const submitLeft = (element, idNum) => {
-      if (element === '') {
-        return;
-      }
-      let payload = {
-        left: element,
-        id: idNum
-      }
-      addActiveComponentLeft(payload);
-    };
+  if (element === "") {
+    return;
+  }
+  let payload = {
+    left: element,
+    id: idNum,
+  };
+  addActiveComponentLeft(payload);
+};
 
 const closeMenu = (element) => {
-      if (activeComponent.value !== '') {
-        clearActiveHTML();
-        openAttributeModal(element);
-      }
-    };
+  if (activeComponent.value !== "") {
+    clearActiveHTML();
+    openAttributeModal(element);
+  }
+};
 
 //function that adds/subtracts z-index on html Elements
 const handleLayer = (e) => {
-      e.preventDefault();
-      let HTMLZ;
-      for (let i = 0; i <routes.value[activeRoute.value].length; i++) {
-        for (let j = 0; j < routes.value[activeRoute.value][i].htmlList.length; j++) {
-          if(activeHTML.value === routes.value[activeRoute.value][i].htmlList[j].id) {
-              HTMLZ = routes.value[activeRoute.value][i].htmlList[j].z
-          }
-        }
+  e.preventDefault();
+  let HTMLZ;
+  for (let i = 0; i < routes.value[activeRoute.value].length; i++) {
+    for (
+      let j = 0;
+      j < routes.value[activeRoute.value][i].htmlList.length;
+      j++
+    ) {
+      if (
+        activeHTML.value === routes.value[activeRoute.value][i].htmlList[j].id
+      ) {
+        HTMLZ = routes.value[activeRoute.value][i].htmlList[j].z;
       }
-      const payload = {
-        activeComponent: activeComponent.value,
-        activeHTML: activeHTML.value,
-        routeArray: routes.value[activeRoute.value],
-        z: HTMLZ,
-      };
-      if (e.target.innerText === "+") {
-          payload.z++;
-      }
-      if (e.target.innerText === "-" && payload.z > 0)  {
-        payload.z--;
-      }
-      updateHTMLLayer(payload);
-    };
+    }
+  }
+  const payload = {
+    activeComponent: activeComponent.value,
+    activeHTML: activeHTML.value,
+    routeArray: routes.value[activeRoute.value],
+    z: HTMLZ,
+  };
+  if (e.target.innerText === "+") {
+    payload.z++;
+  }
+  if (e.target.innerText === "-" && payload.z > 0) {
+    payload.z--;
+  }
+  updateHTMLLayer(payload);
+};
 
 const activeRouteArray = () => {
-      return routes.value[activeRoute.value];
-    };
+  return routes.value[activeRoute.value];
+};
 
 const addBinding = (input, idNum) => {
-      if (input === '') {
-        return;
-      }
-      const payload = {
-        binding: input,
-        id: idNum
-      }
-      addBindingText(payload);
-      bindingText.value = '';
-    };
+  if (input === "") {
+    return;
+  }
+  const payload = {
+    binding: input,
+    id: idNum,
+  };
+  addBindingText(payload);
+  bindingText.value = "";
+};
 
-
-  watch(attributeModalOpen, () => {
-    attributeModal.value = attributeModalOpen.value
-    });
-    
+watch(attributeModalOpen, () => {
+  attributeModal.value = attributeModalOpen.value;
+});
 </script>
 
 <!-- <script>
@@ -528,7 +693,6 @@ export default {
 </script> -->
 
 <style lang="scss">
-
 .fa-solid {
   position: relative;
   top: 25%;
@@ -542,7 +706,7 @@ export default {
 }
 
 .title {
-  font-size: 1.3em
+  font-size: 1.3em;
 }
 
 .closeBtn {
@@ -553,14 +717,13 @@ export default {
 }
 
 .minorAction {
-  margin-right:5px;
+  margin-right: 5px;
   margin-left: 5px;
-  width:2em;
+  width: 2em;
   height: 1.5em;
 }
 
 #counter {
-padding-top:5px;
+  padding-top: 5px;
 }
-
 </style>

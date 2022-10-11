@@ -36,7 +36,7 @@ export default { name: "ExportProjectComponent" };
 
 <script setup>
 import { computed } from "vue";
-import { useStore } from "vuex";
+import { useStore } from "../../store/main";
 import { useExportComponent } from "../composables/useExportComponent";
 
 const store = useStore();

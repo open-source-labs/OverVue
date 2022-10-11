@@ -32,7 +32,7 @@ export default { name: "ImportMenu" };
 </script>
 
 <script setup>
-import { useStore } from "../../../store/index";
+import { useStore } from "../../store/main";
 import ImportComponent from "../left-sidebar/ComponentTab/ImportComponent.vue";
 const Mousetrap = require("mousetrap");
 const { fs, ipcRenderer } = window;

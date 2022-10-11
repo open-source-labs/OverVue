@@ -164,7 +164,7 @@ import AttributesSubMenu from "./AttributesSubMenu.vue";
 import InputHTMLMenu from "./InputHTMLMenu.vue";
 
 import { ref, computed, watch } from "vue";
-import { useStore } from "../../../store/index";
+import { useStore } from "../../../store/main";
 
 const store = useStore();
 

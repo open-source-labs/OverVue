@@ -29,10 +29,11 @@ export default { name: "ParentMultiselect" };
 
 <script setup>
 import VueMultiselect from "vue-multiselect";
-import { useStore } from "../../../store/index";
+import { useStore } from "../../../store/main";
 import { ref, defineEmits, computed, watch } from "vue";
 
 const store = useStore();
+
 const emit = defineEmits(["addparent"]);
 const value = ref("");
 
@@ -45,11 +46,11 @@ const options = computed(() =>
   routes.value[activeRoute.value].map((component) => component.componentName)
 );
 
-const parentSelected = (payload) => store.parentSelected(payload);
+const parentSelect = (payload) => store.parentSelect(payload);
 const setActiveComponent = (payload) => store.setActiveComponent(payload);
 
 const selectParent = (value) => {
-  parentSelected(value);
+  parentSelect(value);
   emit("addparent", value);
 };
 

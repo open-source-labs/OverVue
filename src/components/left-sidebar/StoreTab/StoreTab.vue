@@ -123,7 +123,7 @@ export default { name: "StoreTab" };
 </script>
 
 <script setup>
-import { useStore } from "../../../store/index";
+import { useStore } from "../../../store/main";
 import { computed, ref } from "vue";
 
 const store = useStore();

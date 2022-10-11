@@ -76,7 +76,7 @@ export default {
 <script setup>
 // new script for Composition API
 import { computed, ref } from "vue";
-import { useStore } from "../../../store/index.js";
+import { useStore } from "../../../store/main.js";
 import VueMultiselect from "vue-multiselect";
 
 const store = useStore();
@@ -95,9 +95,7 @@ const activeComponentObj = computed(() => store.activeComponentObj);
 let activeComponent = computed(() => store.activeComponent);
 const routes = computed(() => store.routes);
 const activeRoute = computed(() => store.activeRoute);
-const activeRouteKey = computed(
-  () => store.state.routes[store.activeRoute]
-);
+const activeRouteKey = computed(() => store.state.routes[store.activeRoute]);
 
 //actions
 

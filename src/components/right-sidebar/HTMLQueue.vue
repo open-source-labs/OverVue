@@ -67,7 +67,7 @@ export default {
 
 <script setup>
 import { ref, computed, watch } from "vue";
-import { useStore } from "../../store/index";
+import { useStore } from "../../store/main.js";
 import { breadthFirstSearch } from "../../utils/search.util";
 
 const store = useStore();

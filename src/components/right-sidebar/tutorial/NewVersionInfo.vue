@@ -54,7 +54,7 @@
 
 <!-- COMPOSITION API SYNTAX -->
 <script setup>
-import { useStore } from "../../../store/index";
+import { useStore } from "../../../store/main.js";
 import { defineEmits } from "vue";
 
 const store = useStore();
