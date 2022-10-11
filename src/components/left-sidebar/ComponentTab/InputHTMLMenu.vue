@@ -237,7 +237,7 @@ const submitNote = (element, idNum) => {
         id: idNum
       }
       addActiveComponentElementNote(payload);
-      console.log("Looking for htmlAttributes ", activeComponentObj.value.htmlAttributes);
+      // console.log("Looking for htmlAttributes ", activeComponentObj.value.htmlAttributes);
       noteText.value = '';
     };
 

@@ -108,7 +108,6 @@ const createTemplate = (componentName) => {
     else {
       let routeStr = "";
       const arrOfChildComp = componentMap.value[componentName].children;
-      // console.log(arrOfChildComp); // testing testing
       arrOfChildComp.forEach((childName) => {
         let childNameClass = componentMap.value[childName].htmlAttributes.class;
         let childNameClassFullStr =
@@ -453,7 +452,6 @@ watch(
   { deep: true }
 );
 
-console.log(activeComponentObj.value)
 // mounted()
 // https://vuejs.org/v2/api/#Vue-nextTick
 // kinda like a promise, used for the window resize
