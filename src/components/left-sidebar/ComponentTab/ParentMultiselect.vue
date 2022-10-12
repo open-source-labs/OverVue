@@ -30,7 +30,7 @@ export default { name: "ParentMultiselect" };
 <script setup>
 import VueMultiselect from "vue-multiselect";
 import { useStore } from "../../../store/main";
-import { ref, defineEmits, computed, watch } from "vue";
+import { ref, computed, watch } from "vue";
 
 const store = useStore();
 

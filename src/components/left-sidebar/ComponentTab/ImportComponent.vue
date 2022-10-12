@@ -10,7 +10,7 @@
 
 <script setup>
 // new script for Composition API
-import { computed, defineProps } from "vue";
+import { computed } from "vue";
 import { useStore } from "../../../store/main.js";
 import { useCreateComponent } from "../../composables/useCreateComponent.js";
 

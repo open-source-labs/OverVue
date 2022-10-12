@@ -34,7 +34,6 @@
 <!-- COMPOSITION API SYNTAX -->
 <script setup>
 import { useStore } from "../../../store/main.js";
-import { defineEmits } from "vue";
 const { shell } = window;
 
 const store = useStore();

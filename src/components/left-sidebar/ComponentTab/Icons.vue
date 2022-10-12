@@ -40,7 +40,7 @@ export default {
 
 <script setup>
 // new script for Composition API
-import { computed, ref, defineEmits } from "vue";
+import { computed, ref } from "vue";
 import { useStore } from "../../../store/main.js";
 
 const store = useStore();

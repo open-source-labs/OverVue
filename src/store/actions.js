@@ -34,7 +34,7 @@ const actions = {
     this.imagePath[payload] = "";
   },
 
-  addRouteToRoute(payload) {
+  addRouteToComponentMap(payload) {
     const { route, children } = payload;
     this.componentMap[route] = {
       componentName: route,
@@ -74,6 +74,19 @@ const actions = {
 
   setRoutes(payload) {
     this.routes = { ...payload };
+  },
+
+  addRouteToRouteMap(payload) {
+    this.addRoute(payload);
+    const route = this.activeRoute;
+    const children = [];
+
+    this.addRouteToComponentMap({ route, children });
+
+    const component = "App";
+    const value = this.componentMap[this.activeRoute].componentName;
+
+    this.addComponentToComponentChildren({ component, value });
   },
 
   // *** END ROUTES *** //////////////////////////////////////////////
@@ -230,6 +243,16 @@ const actions = {
   },
 
   pasteActiveComponent() {
+    //if nothing is copied, don't commit anything
+    if (!this.copiedComponent.componentName) {
+      return;
+    }
+    if (Date.now() < this.pasteTimer) {
+      return;
+    } else {
+      this.updatePasteTimer(); //throttles pasting
+    }
+
     if (this.copiedComponent) {
       const copiedComponent = this;
 
@@ -247,6 +270,18 @@ const actions = {
       // track for pastedComponent
       this.pastedComponent = pastedComponent;
     }
+
+    // if no other parents, update as parent of active route in componentMap
+    if (!Object.keys(this.pastedComponent.parent).length) {
+      this.addComponentToActiveRouteChildren(
+        this.pastedComponent.componentName
+      );
+      // if parents, update parent of pastedComponent to include as a child
+    } else {
+      this.addCopiedParent(this.pastedComponent);
+    }
+    // add pastedComponent as a child of route in activeRoutes
+    this.addComponentToActiveRouteInRouteMap(this.pastedComponent);
   },
 
   // *** END VUEX EXPORT *** //////////////////////////////////////////////
@@ -687,6 +722,9 @@ const actions = {
   },
 
   deleteActiveComponent() {
+    if (this.noteModalOpen === true) {
+      return;
+    }
     const { componentMap, activeComponent, activeRoute } = this;
 
     const newObj = { ...componentMap };
@@ -714,6 +752,13 @@ const actions = {
 
     newObj[activeRoute].children.push(...activeObjChildrenArray);
     this.componentMap = newObj;
+
+    const activeRouteArray = [...this.routes[this.activeRoute]];
+    const newActiveRouteArray = activeRouteArray.filter(
+      (componentData) => this.activeComponent !== componentData.componentName
+    );
+    this.setActiveRouteArray(newActiveRouteArray);
+    this.setActiveComponent("");
   },
 
   parentSelect(payload) {
@@ -1075,15 +1120,29 @@ const actions = {
     this.activeTab -= 1;
   },
 
+  openProject(payload) {
+    this.removeAllStatePropsActions();
+    this.setActiveRoute("HomeView");
+    payload.userProps.forEach((prop) => {
+      this.createProp(prop);
+    });
+    payload.userActions.forEach((action) => {
+      this.createAction(action);
+    });
+    payload.userState.forEach((state) => {
+      this.createState(state);
+    });
+    this.setImagePath(payload.imagePath);
+    this.setComponentMap(payload.componentMap);
+    this.setRoutes(payload.routes);
+    this.setActiveComponent("");
+  },
   // *** END PROJECTS *** //////////////////////////////////////////////
 
   // IMAGES
 
   importImage(payload) {
-    this.imagePath = {
-      ...this.imagePath,
-      [payload.route]: payload.img.replace(/\\/g, "/"),
-    };
+    this.imagePath[payload.route] = payload.img.replace(/\\/g, "/");
   },
 
   clearImage(payload) {

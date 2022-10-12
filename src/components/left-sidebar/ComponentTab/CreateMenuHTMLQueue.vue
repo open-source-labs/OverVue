@@ -52,7 +52,7 @@ export default {
 <script setup>
 // new script for Composition API
 import { breadthFirstSearch } from "../../../utils/search.util";
-import { computed, ref, watch, defineProps } from "vue";
+import { computed, ref, watch } from "vue";
 import { useStore } from "../../../store/main.js";
 
 const store = useStore();

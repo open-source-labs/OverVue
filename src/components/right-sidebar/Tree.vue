@@ -41,7 +41,7 @@ export default {
 import VueTree from "@ssthouse/vue3-tree-chart";
 import "@ssthouse/vue3-tree-chart/dist/vue3-tree-chart.css";
 import { useStore } from "../../store/main.js";
-import { ref, computed, watch, defineExpose } from "vue";
+import { ref, computed, watch } from "vue";
 
 const store = useStore();
 
@@ -59,7 +59,7 @@ const activeRoute = computed(() => store.activeRoute);
 const routes = computed(() => store.routes);
 const componentMap = computed(() => store.componentMap);
 
-const componentData = componentMap;
+const componentData = componentMap.value;
 
 const zoom = () => {
   if (event.deltaY < 0) {
