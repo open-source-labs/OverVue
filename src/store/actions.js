@@ -78,6 +78,7 @@ const actions = {
 
   addRouteToRouteMap(payload) {
     this.addRoute(payload);
+    this.setActiveRoute(payload);
     const route = this.activeRoute;
     const children = [];
 
@@ -637,7 +638,7 @@ const actions = {
       // if the component isn't already a child,
       // add it as child to the homeview display
       if (!this.parentSelected.length) {
-        this.addComponentToActiveRouteChildren(payload);
+        this.addComponentToActiveRouteChildren(payload.componentName);
       }
 
       this.addComponentToActiveRouteInRouteMap(payload);
