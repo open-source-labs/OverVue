@@ -59,7 +59,7 @@ const activeRoute = computed(() => store.activeRoute);
 const routes = computed(() => store.routes);
 const componentMap = computed(() => store.componentMap);
 
-const componentData = componentMap.value;
+const componentData = componentMap;
 
 const zoom = () => {
   if (event.deltaY < 0) {
@@ -72,6 +72,7 @@ const zoom = () => {
 const evalChildren = (children, targetString, view) => {
   children.forEach((el) => {
     if (el.value === targetString) {
+      /// do we need to remove view.value???
       store.setActiveRoute(view.value);
       return;
     } else if (el.children.length > 0) {
@@ -155,6 +156,7 @@ function buildTreeChildren(array) {
       }
       outputArray.push(outputObj);
     });
+    console.log("outputArray is ", outputArray)
     return outputArray;
   }
 }
@@ -166,7 +168,10 @@ treeData.value = buildTree(componentMap.value);
 watch(
   componentMap,
   () => {
+    console.log("Inside of watch: Tree componentMap is ", componentMap.value);
+    console.log("Inside of watch: Tree activeComponent is ", activeComponent.value);
     treeData.value = buildTree(componentMap.value);
+    console.log("Inside of watch: Tree treeData.value is ", treeData.value)
   },
 
   { deep: true }

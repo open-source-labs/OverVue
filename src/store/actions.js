@@ -78,6 +78,7 @@ const actions = {
 
   addRouteToRouteMap(payload) {
     this.addRoute(payload);
+    this.setActiveRoute(payload);
     const route = this.activeRoute;
     const children = [];
 
