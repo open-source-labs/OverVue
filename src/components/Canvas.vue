@@ -674,7 +674,7 @@ const updated = computed(() => {
 //methods
 const setActiveComponent = (payload) => store.setActiveComponent(payload);
 const updateComponentChildrenMultiselectValue = (payload) =>
-  storeupdateComponentChildrenMultiselectValue(payload);
+  store.updateComponentChildrenMultiselectValue(payload);
 const updateActiveComponentChildrenValue = (payload) =>
   store.updateActiveComponentChildrenValue(payload);
 const updateComponentPosition = (payload) =>
