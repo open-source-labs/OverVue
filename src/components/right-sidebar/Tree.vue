@@ -156,7 +156,6 @@ function buildTreeChildren(array) {
       }
       outputArray.push(outputObj);
     });
-    console.log("outputArray is ", outputArray)
     return outputArray;
   }
 }
@@ -168,10 +167,7 @@ treeData.value = buildTree(componentMap.value);
 watch(
   componentMap,
   () => {
-    console.log("Inside of watch: Tree componentMap is ", componentMap.value);
-    console.log("Inside of watch: Tree activeComponent is ", activeComponent.value);
     treeData.value = buildTree(componentMap.value);
-    console.log("Inside of watch: Tree treeData.value is ", treeData.value)
   },
 
   { deep: true }

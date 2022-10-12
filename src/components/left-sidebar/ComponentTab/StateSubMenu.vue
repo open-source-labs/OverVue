@@ -33,14 +33,10 @@
         @click="addStateToComp"
       />
     </div>
-    <p v-if="!this.componentMap[this.activeComponent].state.length">
+    <p v-if="!componentMap[activeComponent].state.length">
       No state in component
     </p>
-    <a
-      v-else
-      v-for="state in this.componentMap[this.activeComponent].state"
-      :key="state"
-    >
+    <a v-else v-for="state in componentMap[activeComponent].state" :key="state">
       <q-list class="list-item" dense bordered separator>
         <q-item clickable v-ripple class="list-item">
           <q-item-section>
