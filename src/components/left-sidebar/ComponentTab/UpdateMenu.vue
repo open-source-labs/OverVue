@@ -191,6 +191,9 @@ const activeRouteDisplay = computed(() => routes.value[activeRoute.value]);
 const activeComponentData = cloneDeep(activeComponentObj.value);
 
 const options = computed(() => {
+  console.log("activeComponentObj is ", activeComponentObj)
+  console.log("activeComponentObj.value is ", activeComponentObj.value)
+  console.log("activeComponentObj.value.componentName is ", activeComponentObj.value.componentName)
   if (activeComponent.value !== "") {
     newName.value = activeComponentObj.value.componentName;
     childrenSelected.value = [];

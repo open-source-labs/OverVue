@@ -47,7 +47,7 @@ const createImport = (importObj) => {
 };
 
 const registerComponent = (payload) => store.registerComponent(payload);
-const setActiveComponent = (payload) => store.registerComponent(payload);
+const setActiveComponent = (payload) => store.setActiveComponent(payload);
 const createAction = (payload) => store.createAction(payload);
 const createState = (payload) => store.createState(payload);
 const createProp = (payload) => store.createProp(payload);
