@@ -171,11 +171,10 @@ const actions = {
   addStateToComponent(payload) {
     const active = this.componentMap[this.activeComponent];
 
-    if (!this.activeComponentObj.state) this.activeComponentObj.state = payload;
+    if (!active.state) active.state = payload;
     else {
       for (const s of payload) {
-        if (this.activeComponentObj.state.includes(s))
-          this.activeComponentObj.state.push(s);
+        if (!active.state.includes(s)) active.state.push(s);
       }
     }
 
