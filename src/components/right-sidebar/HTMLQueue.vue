@@ -6,14 +6,14 @@ Description:
 
 <template>
   <section class="html-queue" @dragover="dragOver($event), false">
-    <span class="list-title" v-if="this.activeLayer.id !== ''">
+    <span class="list-title" v-if="activeLayer.id !== ''">
       <i class="fas fa fa-chevron-up fa-md" @click="setParentLayer"></i>
-      &nbsp; &nbsp; Viewing Elements in {{ this.activeComponent }} '{{ depth }}'
+      &nbsp; &nbsp; Viewing Elements in {{ activeComponent }} '{{ depth }}'
       <hr />
     </span>
-    <span class="list-title" v-else-if="!this.activeComponent"></span>
+    <span class="list-title" v-else-if="!activeComponent"></span>
     <div group="people" class="list-group">
-      <p v-if="!this.componentMap[this.activeComponent]?.htmlList.length">
+      <p v-if="!componentMap[activeComponent]?.htmlList.length">
         No HTML elements in component
       </p>
       <div
@@ -254,16 +254,13 @@ watch(attributeModalOpen, () => {
   attributeModal.value = attributeModalOpen.value;
 });
 
-watch(
-  () => activeComponent.value,
-  () => {
-    if (activeComponent.value !== "") {
-      activeComponent.component = true;
-    } else {
-      activeComponent.component = false;
-    }
+watch(activeComponent, () => {
+  if (activeComponent.value !== "") {
+    activeComponent.component = true;
+  } else {
+    activeComponent.component = false;
   }
-);
+});
 </script>
 
 <!-- <script>
