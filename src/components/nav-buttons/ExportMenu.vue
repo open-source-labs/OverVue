@@ -418,14 +418,14 @@ const writeTemplate = (componentName, children, routes) => {
       let childNameClass = componentMap.value[childName].htmlAttributes.class;
       let childNameClassFullStr =
         childNameClass === "" ? "" : ` class = '${childNameClass}'`;
-      routeStr += `    <${childName}${childNameClassFullStr}></${childName}>`;
+      routeStr += `    <${childName}${childNameClassFullStr}></${childName}>\n`;
     });
     if (compClass !== "" && compID !== "") {
       return `<template>\n  <div id = "${compID}" class = "${compClass}">\n${templateTagStr}${routeStr}  \n\t</div>\n</template>`;
     } else if (compClass !== "" && compID === "") {
       return `<template>\n  <div class = "${compClass}">\n${templateTagStr}${routeStr}  \n\t</div>\n</template>`;
     } else if (compClass === "" && compID !== "") {
-      return `<template>\n  <div id = "${compID}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
+      return `<template>\n  <div id = "${compID}">\n${templateTagStr}${routeStr}  \n\t</div>\n</template>`;
     } else {
       return `<template>\n  <div>\n${str}${templateTagStr}${routeStr}  </div>\n</template>`;
     }
