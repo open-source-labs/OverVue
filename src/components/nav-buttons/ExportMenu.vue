@@ -413,6 +413,13 @@ const writeTemplate = (componentName, children, routes) => {
       ? componentName
       : componentMap.value[componentName].htmlAttributes.class;
 
+    const arrOfChildComp = componentMap.value[componentName].children;
+    arrOfChildComp.forEach((childName) => {
+      let childNameClass = componentMap.value[childName].htmlAttributes.class;
+      let childNameClassFullStr =
+        childNameClass === "" ? "" : ` class = '${childNameClass}'`;
+      routeStr += `    <${childName}${childNameClassFullStr}></${childName}>`;
+    });
     if (compClass !== "" && compID !== "") {
       return `<template>\n  <div id = "${compID}" class = "${compClass}">\n${templateTagStr}${routeStr}  \n\t</div>\n</template>`;
     } else if (compClass !== "" && compID === "") {
@@ -420,18 +427,8 @@ const writeTemplate = (componentName, children, routes) => {
     } else if (compClass === "" && compID !== "") {
       return `<template>\n  <div id = "${compID}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
     } else {
-      const arrOfChildComp = componentMap.value[componentName].children;
-      arrOfChildComp.forEach((childName) => {
-        let childNameClass = componentMap.value[childName].htmlAttributes.class;
-        let childNameClassFullStr =
-          childNameClass === "" ? "" : ` class = '${childNameClass}'`;
-        routeStr += `    <${childName}${childNameClassFullStr}></${childName}>\n`;
-      });
-
       return `<template>\n  <div>\n${str}${templateTagStr}${routeStr}  </div>\n</template>`;
     }
-  } else {
-    return `<template>\n\t${str}${templateTagStr}${routeStr}\t</div>\n</template>`;
   }
 };
 
