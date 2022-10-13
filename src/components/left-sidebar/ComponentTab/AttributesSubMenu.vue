@@ -95,7 +95,7 @@ const activeComponentObj = computed(() => store.activeComponentObj);
 let activeComponent = computed(() => store.activeComponent);
 const routes = computed(() => store.routes);
 const activeRoute = computed(() => store.activeRoute);
-const activeRouteKey = computed(() => store.state.routes[store.activeRoute]);
+const activeRouteKey = computed(() => store.routes[store.activeRoute]);
 
 //actions
 

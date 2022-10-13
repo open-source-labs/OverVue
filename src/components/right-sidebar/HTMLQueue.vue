@@ -257,7 +257,7 @@ watch(attributeModalOpen, () => {
 watch(
   () => activeComponent.value,
   () => {
-    if (activeComponent !== "") {
+    if (activeComponent.value !== "") {
       activeComponent.component = true;
     } else {
       activeComponent.component = false;
