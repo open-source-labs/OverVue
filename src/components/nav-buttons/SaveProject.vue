@@ -32,7 +32,7 @@ const store = useStore();
 
 const projects = computed(() => store.projects);
 const activeTab = computed(() => store.activeTab);
-const stateComputed = computed(() => store.state);
+const stateComputed = computed(() => store);
 const routes = computed(() => store.routes);
 
 const addProject = (payload) => store.addProject(payload);
