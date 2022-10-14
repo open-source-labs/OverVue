@@ -898,7 +898,7 @@ const actions = {
   },
 
   updateHtmlLayer(payload) {
-    const updatedComponent = this.routes[state.activeRoute].filter(
+    const updatedComponent = this.routes[this.activeRoute].filter(
       (element) => element.componentName === payload.activeComponent
     )[0];
 
