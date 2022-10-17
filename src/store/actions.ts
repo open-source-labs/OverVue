@@ -3,9 +3,11 @@ import {
   breadthFirstSearchParent,
 } from "src/utils/search.util";
 
+import { State, Actions } from "../../types";
+import { Store } from "pinia";
 // *** GLOBAL *** //////////////////////////////////////////////
 
-const actions = {
+const actions: Store<"main", State, {}, Actions> = {
   emptyState() {
     this.$reset();
   },
@@ -761,7 +763,7 @@ const actions = {
     this.setActiveComponent("");
   },
 
-  parentSelect(payload) {
+  parentSelect(payload: string) {
     this.parentSelected = payload;
   },
 
