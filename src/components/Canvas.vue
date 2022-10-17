@@ -743,7 +743,7 @@ const refresh = () => {
   payload.z--;
   updateComponentLayer(payload);
 };
-// {x: 0, y: 192, z: NaN, htmlList: Array(1), noteList: Array(0), …}actions: []children: []color: "#8845a585"componentName: "ha"h: 96htmlAttributes: {class: '', id: '', gridArea: Array(4)}htmlList: [{…}]idDrag: ""idDrop: ""isActive: falsenoteList: []parent: {}props: []state: []w: 170.66666666666666x: 0y: 192z: NaN[[Prototype]]: Object 'I AM ACTIVECOMPONENTDATA.value'
+
 
 // drag and drop function
 const finishedDrag = (x, y) => {
