@@ -52,8 +52,8 @@ export type State = {
   exportAsTypescript: "off" | "on";
   exportOauth: "off" | "on";
   exportOauthGithub: "off" | "on";
-  showTutorial: true;
-  tutorialFirstOpen: true;
+  showTutorial: boolean;
+  tutorialFirstOpen: boolean;
   pasteTimer: number;
   gridLayout: [number, number];
   containerH: number;
@@ -62,6 +62,21 @@ export type State = {
   displaylibComponent: boolean;
   importTest: string;
 };
+
+export interface Actions {
+  emptyState: () => void;
+  removeAllStatePropsActions: () => void;
+  toggleTutorial: () => void;
+  addRoute: (payload: string) => void;
+  addRouteToComponentMap: (payload: {
+    route: string;
+    children: string[];
+  }) => void;
+  parentSelect: (payload: string) => void;
+  //Linden
+  //Chris
+  //Ji
+}
 
 // Type for HTML Element Map that used in multiple files
 export type HtmlElementMap = {
