@@ -100,14 +100,14 @@ export default {
 <script setup>
 import HTMLQueue from "./HTMLQueue";
 import CodeSnippet from "./CodeSnippet";
-import { useStore } from "vuex";
+import { useStore } from "../../store/main.js";
 import { ref, computed } from "vue";
 
 const store = useStore();
 const tab = ref("code");
 
-const activeComponentObj = computed(() => store.state.activeComponentObj);
-const activeComponent = computed(() => store.state.activeComponent);
+const activeComponentObj = computed(() => store.activeComponentObj);
+const activeComponent = computed(() => store.activeComponent);
 
 const compObj = computed({
   get() {

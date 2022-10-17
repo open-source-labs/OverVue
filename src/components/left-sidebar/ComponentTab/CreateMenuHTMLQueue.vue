@@ -6,27 +6,37 @@ Description:
 
 <template>
   <section class="html-queue" @dragover="dragOver($event), false">
-    <div
-      group="people"
-      class="list-group"
-    >
-    
-      <div 
-      @dblclick.self="setActiveElement(element)"
-      v-for="(element) in renderList" :key="element[1] + Date.now()"
-      @dragenter="dragEnter($event, element[2])"
+    <div group="people" class="list-group">
+      <div
+        @dblclick.self="setActiveElement(element)"
+        v-for="element in renderList"
+        :key="element[1] + Date.now()"
+        @dragenter="dragEnter($event, element[2])"
       >
         <div
-        :class="activeHTML === element[2] ? 'list-group-item-selected' : 'list-group-item'"
-        @dblclick.self="setActiveElement(element)"
-        @dragstart="startDrag($event, element[2])" 
-        @dragend="endDrag($event)"
-        draggable="true"
+          :class="
+            activeHTML === element[2]
+              ? 'list-group-item-selected'
+              : 'list-group-item'
+          "
+          @dblclick.self="setActiveElement(element)"
+          @dragstart="startDrag($event, element[2])"
+          @dragend="endDrag($event)"
+          draggable="true"
         >
-          <i v-if='activeComponent === "" || exceptions.includes(element[0]) '></i>
-          <i v-else class="fas fa fa-angle-double-down fa-md" @click="setLayer({text: element[0], id: element[2]})"></i>
+          <i
+            v-if="activeComponent === '' || exceptions.includes(element[0])"
+          ></i>
+          <i
+            v-else
+            class="fas fa fa-angle-double-down fa-md"
+            @click="setLayer({ text: element[0], id: element[2] })"
+          ></i>
           {{ element[0] }}
-          <i class="fas fa fa-trash fa-md" @click.self="deleteElement([element[1],element[2]])"></i>
+          <i
+            class="fas fa fa-trash fa-md"
+            @click.self="deleteElement([element[1], element[2]])"
+          ></i>
         </div>
       </div>
     </div>
@@ -34,145 +44,153 @@ Description:
 </template>
 
 <script>
-  export default {
-    name: "CreateMenuHTMLQueue",
-  };
+export default {
+  name: "CreateMenuHTMLQueue",
+};
 </script>
 
 <script setup>
 // new script for Composition API
-import { setSelectedElementList, deleteSelectedElement, deleteFromComponentHtmlList } from '../../../store/types'
-import { breadthFirstSearch } from '../../../utils/search.util'
-import { computed, ref, watch, defineProps } from "vue";
-import { useStore } from "vuex";
-
+import { breadthFirstSearch } from "../../../utils/search.util";
+import { computed, ref, watch } from "vue";
+import { useStore } from "../../../store/main.js";
 
 const store = useStore();
 
 const props = defineProps({
   name: {
-      type: String
-    },
-    listToRender: {
-      type: Array
-    }
-})
+    type: String,
+  },
+  listToRender: {
+    type: Array,
+  },
+});
 
-const exceptions = ref(['input', 'img', 'link']);
+const exceptions = ref(["input", "img", "link"]);
 const component = ref(null);
 
-const selectedElementList = computed(() => store.state.selectedElementList)
-const componentMap = computed(() => store.state.componentMap)
-const activeComponent = computed(() => store.state.activeComponent)
-const activeHTML = computed(() => store.state.activeHTML)
-const activeLayer = computed(() => store.state.activeLayer)
+const selectedElementList = computed(() => store.selectedElementList);
+const componentMap = computed(() => store.componentMap);
+const activeComponent = computed(() => store.activeComponent);
+const activeHTML = computed(() => store.activeHTML);
+const activeLayer = computed(() => store.activeLayer);
 
 const renderList = computed({
-      get () {
-        if (activeComponent.value === '') return selectedElementList.value.map((el, index) => [el.text, index, el.id, el.z])
-        // change activeComponent's htmlList into an array of arrays ([element/component name, index in state])
-        if (activeComponent.value !== '' && activeLayer.value.id === '') {
-          let sortedHTML = componentMap.value[activeComponent.value].htmlList
-          .map((el, index) => [el.text, index, el.id, el.z])
-          .filter(el => {
-            return el[0] !== undefined;
-          })
-          return sortedHTML;
-        }
-        let activeElement = breadthFirstSearch(componentMap.value[activeComponent.value].htmlList, activeLayer.value.id)
-        let sortedHTML = activeElement.children
+  get() {
+    if (activeComponent.value === "")
+      return selectedElementList.value.map((el, index) => [
+        el.text,
+        index,
+        el.id,
+        el.z,
+      ]);
+    // change activeComponent's htmlList into an array of arrays ([element/component name, index in state])
+    if (activeComponent.value !== "" && activeLayer.value.id === "") {
+      let sortedHTML = componentMap.value[activeComponent.value].htmlList
         .map((el, index) => [el.text, index, el.id, el.z])
-        .filter(el => {
-          return el[0] !== undefined
-        })
-        return sortedHTML
-      },
-      set (value) {
-        store.dispatch(setSelectedElementList, value)
-      }
-    })
-
-    const depth = computed(() => {
-      let newTitle = ''
-      activeLayer.value.lineage.forEach(el => {
-        newTitle += ` > ${el}`
-      })
-      return newTitle;
-    });
-
-
-    //methods
-
-    const setActiveHTML = (payload) => store.dispatch("setActiveHTML", payload)
-    const setActiveLayer = (payload) => store.dispatch("setActiveLayer", payload)
-    const upOneLayer = (payload) => store.dispatch("upOneLayer", payload)
-    const setSelectedIdDrag = (payload) => store.dispatch("setSelectedIdDrag", payload)
-    const setIdDrag = (payload) => store.dispatch("setIdDrag", payload)
-    const setSelectedIdDrop = (payload) => store.dispatch("setSelectedIdDrop", payload)
-    const setIdDrop = (payload) => store.dispatch("setIdDrop", payload)
-    const dragDropSortHtmlElements = (payload) => store.dispatch("dragDropSortHtmlElements", payload)
-    const dragDropSortSelectedHtmlElements = (payload) => store.dispatch("dragDropSortSelectedHtmlElements", payload)
-
-    const deleteElement = (id) => {
-      if (activeComponent.value === '') store.dispatch(deleteSelectedElement, id[0]);
-      else this.$store.dispatch(deleteFromComponentHtmlList, id[1]);
-    };
-
-    const setActiveElement = (element) => {
-      if (activeComponent.value !== '' && !exceptions.value.includes(element[0])) {
-        setActiveHTML(element);
-      }
-    };
-
-    const setLayer = (element) => {
-      setActiveLayer(element)
+        .filter((el) => {
+          return el[0] !== undefined;
+        });
+      return sortedHTML;
     }
+    let activeElement = breadthFirstSearch(
+      componentMap.value[activeComponent.value].htmlList,
+      activeLayer.value.id
+    );
+    let sortedHTML = activeElement.children
+      .map((el, index) => [el.text, index, el.id, el.z])
+      .filter((el) => {
+        return el[0] !== undefined;
+      });
+    return sortedHTML;
+  },
+  set(value) {
+    store.setSelectedElementList(value);
+  },
+});
 
-    const setParentLayer = () => {
-      if (activeLayer.value.id !== '') {
-        upOneLayer(activeLayer.value.id);
-      }
-    };
+const depth = computed(() => {
+  let newTitle = "";
+  activeLayer.value.lineage.forEach((el) => {
+    newTitle += ` > ${el}`;
+  });
+  return newTitle;
+});
 
-    //METHODS FOR DRAG-AND-DROP
-    const startDrag = (event, id) => {
-      //add a class to make the html element currently being drag transparent
-      event.target.classList.add('currentlyDragging')
-      const dragId = id;
-      //store the id of dragged element
-      if (activeComponent.value === '') setSelectedIdDrag(dragId);
-      else setIdDrag(dragId);
-    }
+//methods
 
-    const dragEnter = (event, id) => {
-      event.preventDefault();
-      const dropId = id;
-      //store the id of the html element whose location the dragged html element could be dropped upon
-      if (activeComponent.value === '') setSelectedIdDrop(dropId);
-      else setIdDrop(dropId);
-    };
+const setActiveHTML = (payload) => store.setActiveHTML(payload);
+const setActiveLayer = (payload) => store.setActiveLayer(payload);
+const upOneLayer = (payload) => store.upOneLayer(payload);
+const setSelectedIdDrag = (payload) => store.setSelectedIdDrag(payload);
+const setIdDrag = (payload) => store.setIdDrag(payload);
+const setSelectedIdDrop = (payload) => store.setSelectedIdDrop(payload);
+const setIdDrop = (payload) => store.setIdDrop(payload);
+const dragDropSortHtmlElements = (payload) =>
+  store.dragDropSortHtmlElements(payload);
+const dragDropSortSelectedHtmlElements = (payload) =>
+  store.dragDropSortSelectedHtmlElements(payload);
 
-    const dragOver = (event) => {
-      //needed stop the dragend animation so endDrag is invoked automatically
-      event.preventDefault();
-    };
+const deleteElement = (id) => {
+  if (activeComponent.value === "") store.deleteSelectedElement(id[0]);
+  else store.deleteFromComponentHtmlList(id[1]);
+};
 
-   const endDrag = (event) => {
-      //remove the 'currentlyDragging' class after the HTML is dropped to remove transparency
-      event.preventDefault();
-      event.target.classList.remove('currentlyDragging')
-      //invoke the action that will use the idDrag and idDrop to sort the HtmlList
-      if (activeComponent.value === '') dragDropSortSelectedHtmlElements()
-      else dragDropSortHtmlElements()
-    };
+const setActiveElement = (element) => {
+  if (activeComponent.value !== "" && !exceptions.value.includes(element[0])) {
+    setActiveHTML(element);
+  }
+};
 
-  watch( activeComponent, () => {
-      if (activeComponent.value !== '') {
-        component.value = true
-      } else {
-       component.value = false
-      }
-    });
+const setLayer = (element) => {
+  setActiveLayer(element);
+};
+
+const setParentLayer = () => {
+  if (activeLayer.value.id !== "") {
+    upOneLayer(activeLayer.value.id);
+  }
+};
+
+//METHODS FOR DRAG-AND-DROP
+const startDrag = (event, id) => {
+  //add a class to make the html element currently being drag transparent
+  event.target.classList.add("currentlyDragging");
+  const dragId = id;
+  //store the id of dragged element
+  if (activeComponent.value === "") setSelectedIdDrag(dragId);
+  else setIdDrag(dragId);
+};
+
+const dragEnter = (event, id) => {
+  event.preventDefault();
+  const dropId = id;
+  //store the id of the html element whose location the dragged html element could be dropped upon
+  if (activeComponent.value === "") setSelectedIdDrop(dropId);
+  else setIdDrop(dropId);
+};
+
+const dragOver = (event) => {
+  //needed stop the dragend animation so endDrag is invoked automatically
+  event.preventDefault();
+};
+
+const endDrag = (event) => {
+  //remove the 'currentlyDragging' class after the HTML is dropped to remove transparency
+  event.preventDefault();
+  event.target.classList.remove("currentlyDragging");
+  //invoke the action that will use the idDrag and idDrop to sort the HtmlList
+  if (activeComponent.value === "") dragDropSortSelectedHtmlElements();
+  else dragDropSortHtmlElements();
+};
+
+watch(activeComponent, () => {
+  if (activeComponent.value !== "") {
+    component.value = true;
+  } else {
+    component.value = false;
+  }
+});
 </script>
 
 <!-- <script>
@@ -287,7 +305,7 @@ export default {
 }
 </script> -->
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .html-queue {
   padding-bottom: 40px;
 }
@@ -351,7 +369,7 @@ li {
 
 .fa-angle-double-down:hover {
   cursor: pointer;
-  color: #41B883;
+  color: #41b883;
 }
 
 .fa-chevron-up {
@@ -360,20 +378,20 @@ li {
 
 .fa-chevron-up:hover {
   cursor: pointer;
-  color: #41B883;
+  color: #41b883;
 }
 
 #unavailable {
   color: #686868;
-  cursor: default
+  cursor: default;
 }
 
 hr {
-  border: 1px solid grey
+  border: 1px solid grey;
 }
 
 .currentlyDragging {
-  opacity: .5;
+  opacity: 0.5;
 }
 
 .ignoreByDragover {

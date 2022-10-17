@@ -1,38 +1,40 @@
-
 <template>
-
-    <q-btn color="purple" class="importBtn"  label="Import element+" @click="pickLibrary('element')"/>
-
+  <q-btn
+    color="purple"
+    class="importBtn"
+    label="Import element+"
+    @click="pickLibrary('element')"
+  />
 </template>
 
 <script>
 export default {
-    name: "ImportLibraryButton",
-  };
+  name: "ImportLibraryButton",
+};
 </script>
 
 <script setup>
 // new script for Composition API
 import { computed } from "vue";
-import { useStore } from "vuex";
+import { useStore } from "../../../store/main.js";
 
 const store = useStore();
 
-const importLibraries = computed(() => store.state.importLibraries);
+const importLibraries = computed(() => store.importLibraries);
 
-const changeLib = (payload) => store.dispatch("changeLib", payload);
-const addLibComponents = (payload) => store.dispatch("addLibComponents", payload);
-const changeLibComponentDisplay = (payload) => store.dispatch("changeLibComponentDisplay", payload);
+const changeLib = (payload) => store.changeLib(payload);
+const addLibComponents = (payload) => store.addLibComponents(payload);
+const changeLibComponentDisplay = (payload) =>
+  store.changeLibComponentDisplay(payload);
 
 const pickLibrary = (libName) => {
-      let payload = {
-        libName:libName,
-        displaylibComponent:true
-
-      }
-      changeLibComponentDisplay(payload);
-      changeLib(payload);
-    };
+  let payload = {
+    libName: libName,
+    displaylibComponent: true,
+  };
+  changeLibComponentDisplay(payload);
+  changeLib(payload);
+};
 </script>
 
 <!-- <script>
@@ -76,7 +78,7 @@ const pickLibrary = (libName) => {
 </script> -->
 
 <style>
-.importBtn{
+.importBtn {
   margin-top: 20px;
   width: 260px;
   height: 45px;

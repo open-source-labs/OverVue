@@ -23,13 +23,19 @@ export default {
 
 <script setup>
 import localforage from "localforage";
-import { useStore } from "vuex";
+import { useStore } from "../../store/main";
+import { computed } from "vue";
 const Mousetrap = require("mousetrap");
 const { fs, ipcRenderer } = window;
 
 const store = useStore();
 
-const addProject = (payload) => store.dispatch("addProject", payload);
+const projects = computed(() => store.projects);
+const activeTab = computed(() => store.activeTab);
+const stateComputed = computed(() => store);
+const routes = computed(() => store.routes);
+
+const addProject = (payload) => store.addProject(payload);
 
 const showSaveJSONDialog = () => {
   ipcRenderer
@@ -77,7 +83,7 @@ const parseAndDelete = (htmlList) => {
 const saveProjectJSON = () => showSaveJSONDialog();
 
 const saveJSONLocation = (data) => {
-  let deleteKey = store.state.projects[store.state.activeTab].filename;
+  let deleteKey = projects.value[activeTab.value].filename; // store.state.projects
   localforage
     .removeItem(deleteKey)
     .then(function () {})
@@ -93,10 +99,10 @@ const saveJSONLocation = (data) => {
       lastSavedLocation: data,
     });
 
-    let state = store.state;
-    let routes = state.routes;
+    let stateRef = stateComputed.value;
+    let routesRef = routes.value;
 
-    fs.writeFileSync(data, JSON.stringify(state));
+    fs.writeFileSync(data, JSON.stringify(stateRef));
     localforage.setItem(fileName, JSON.parse(fs.readFileSync(data, "utf8")));
     localforage.getItem("slackWebhookURL", (err, value) => {
       if (value) notifySlack(fileName, value);

@@ -36,25 +36,25 @@ export default { name: "ExportProjectComponent" };
 
 <script setup>
 import { computed } from "vue";
-import { useStore } from "vuex";
+import { useStore } from "../../store/main";
 import { useExportComponent } from "../composables/useExportComponent";
 
 const store = useStore();
 const { fs, ipcRenderer } = window;
 
-const componentMap = computed(() => store.state.componentMap);
-const imagePath = computed(() => store.state.imagePath);
-const routes = computed(() => store.state.routes);
+const componentMap = computed(() => store.componentMap);
+const imagePath = computed(() => store.imagePath);
+const routes = computed(() => store.routes);
 const exportAsTypescript = computed(() => store.exportAsTypescript);
-const activeComponent = computed(() => store.state.activeComponent);
-const userState = computed(() => store.state.userState);
-const userActions = computed(() => store.state.userActions);
-const gridLayout = computed(() => store.state.gridLayout);
-const containerW = computed(() => store.state.containerW);
-const containerH = computed(() => store.state.containerH);
-const exportOauth = computed(() => store.state.exportOauth);
-const exportOauthGithub = computed(() => store.state.exportOauthGithub);
-const importTest = computed(() => store.state.importTest);
+const activeComponent = computed(() => store.activeComponent);
+const userState = computed(() => store.userState);
+const userActions = computed(() => store.userActions);
+const gridLayout = computed(() => store.gridLayout);
+const containerW = computed(() => store.containerW);
+const containerH = computed(() => store.containerH);
+const exportOauth = computed(() => store.exportOauth);
+const exportOauthGithub = computed(() => store.exportOauthGithub);
+const importTest = computed(() => store.importTest);
 
 const showExportProjectDialog = () => {
   ipcRenderer
@@ -413,25 +413,22 @@ const writeTemplate = (componentName, children, routes) => {
       ? componentName
       : componentMap.value[componentName].htmlAttributes.class;
 
+    const arrOfChildComp = componentMap.value[componentName].children;
+    arrOfChildComp.forEach((childName) => {
+      let childNameClass = componentMap.value[childName].htmlAttributes.class;
+      let childNameClassFullStr =
+        childNameClass === "" ? "" : ` class = '${childNameClass}'`;
+      routeStr += `    <${childName}${childNameClassFullStr}></${childName}>\n`;
+    });
     if (compClass !== "" && compID !== "") {
       return `<template>\n  <div id = "${compID}" class = "${compClass}">\n${templateTagStr}${routeStr}  \n\t</div>\n</template>`;
     } else if (compClass !== "" && compID === "") {
       return `<template>\n  <div class = "${compClass}">\n${templateTagStr}${routeStr}  \n\t</div>\n</template>`;
     } else if (compClass === "" && compID !== "") {
-      return `<template>\n  <div id = "${compID}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
+      return `<template>\n  <div id = "${compID}">\n${templateTagStr}${routeStr}  \n\t</div>\n</template>`;
     } else {
-      const arrOfChildComp = componentMap.value[componentName].children;
-      arrOfChildComp.forEach((childName) => {
-        let childNameClass = componentMap.value[childName].htmlAttributes.class;
-        let childNameClassFullStr =
-          childNameClass === "" ? "" : ` class = '${childNameClass}'`;
-        routeStr += `    <${childName}${childNameClassFullStr}></${childName}>\n`;
-      });
-
       return `<template>\n  <div>\n${str}${templateTagStr}${routeStr}  </div>\n</template>`;
     }
-  } else {
-    return `<template>\n\t${str}${templateTagStr}${routeStr}\t</div>\n</template>`;
   }
 };
 

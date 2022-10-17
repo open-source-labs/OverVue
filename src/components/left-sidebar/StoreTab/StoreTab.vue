@@ -123,7 +123,7 @@ export default { name: "StoreTab" };
 </script>
 
 <script setup>
-import { useStore } from "vuex";
+import { useStore } from "../../../store/main";
 import { computed, ref } from "vue";
 
 const store = useStore();
@@ -132,17 +132,16 @@ const tab = ref("state");
 const textAction = ref("");
 const textState = ref("");
 
-const userActions = computed(() => store.state.userActions);
-const userState = computed(() => store.state.userState);
+const userActions = computed(() => store.userActions);
+const userState = computed(() => store.userState);
 
 const actionOptions = userActions;
 const stateOptions = userState;
 
-const createAction = (payload) => store.dispatch("createAction", payload);
-const createState = (payload) => store.dispatch("createState", payload);
-const deleteUserActions = (payload) =>
-  store.dispatch("deleteUserActions", payload);
-const deleteUserState = (payload) => store.dispatch("deleteUserState", payload);
+const createAction = (payload) => store.createAction(payload);
+const createState = (payload) => store.createState(payload);
+const deleteUserActions = (payload) => store.deleteUserActions(payload);
+const deleteUserState = (payload) => store.deleteUserState(payload);
 
 const createNewAction = (text) => {
   if (![...userActions.value].includes(text) && text) {

@@ -29,28 +29,28 @@ export default { name: "ParentMultiselect" };
 
 <script setup>
 import VueMultiselect from "vue-multiselect";
-import { useStore } from "vuex";
-import { ref, defineEmits, computed, watch } from "vue";
+import { useStore } from "../../../store/main";
+import { ref, computed, watch } from "vue";
 
 const store = useStore();
+
 const emit = defineEmits(["addparent"]);
 const value = ref("");
 
-const componentMap = computed(() => store.state.componentMap);
-const activeComponent = computed(() => store.state.activeComponent);
-const routes = computed(() => store.state.routes);
-const activeRoute = computed(() => store.state.activeRoute);
+const componentMap = computed(() => store.componentMap);
+const activeComponent = computed(() => store.activeComponent);
+const routes = computed(() => store.routes);
+const activeRoute = computed(() => store.activeRoute);
 
 const options = computed(() =>
   routes.value[activeRoute.value].map((component) => component.componentName)
 );
 
-const parentSelected = (payload) => store.dispatch("parentSelected", payload);
-const setActiveComponent = (payload) =>
-  store.dispatch("setActiveComponent", payload);
+const parentSelect = (payload) => store.parentSelect(payload);
+const setActiveComponent = (payload) => store.setActiveComponent(payload);
 
 const selectParent = (value) => {
-  parentSelected(value);
+  parentSelect(value);
   emit("addparent", value);
 };
 

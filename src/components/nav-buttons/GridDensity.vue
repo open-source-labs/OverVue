@@ -79,15 +79,14 @@ export default { name: "GridDensity" };
 </script>
 
 <script setup>
-import { useStore } from "vuex";
+import { useStore } from "../../store/main";
 import { computed } from "vue";
 
 const store = useStore();
 
-const gridLayout = computed(() => store.state.gridLayout);
+const gridLayout = computed(() => store.gridLayout);
 
-const changeGridDensity = (payload) =>
-  store.dispatch("changeGridDensity", payload);
+const changeGridDensity = (payload) => store.changeGridDensity(payload);
 
 const pickGridDensity = (direction, densityNum) => {
   let payload = { direction, densityNum };

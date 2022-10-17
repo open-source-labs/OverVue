@@ -54,13 +54,12 @@
 
 <!-- COMPOSITION API SYNTAX -->
 <script setup>
-import { useStore } from "vuex";
-import { defineEmits } from "vue";
+import { useStore } from "../../../store/main.js";
 
 const store = useStore();
 const emit = defineEmits(["nextTab"]);
 
-const toggleTutorial = () => store.dispatch("toggleTutorial");
+const toggleTutorial = () => store.toggleTutorial();
 const nextTab = () => emit("nextTab");
 </script>
 

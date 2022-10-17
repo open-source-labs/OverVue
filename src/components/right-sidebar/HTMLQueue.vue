@@ -6,14 +6,14 @@ Description:
 
 <template>
   <section class="html-queue" @dragover="dragOver($event), false">
-    <span class="list-title" v-if="this.activeLayer.id !== ''">
+    <span class="list-title" v-if="activeLayer.id !== ''">
       <i class="fas fa fa-chevron-up fa-md" @click="setParentLayer"></i>
-      &nbsp; &nbsp; Viewing Elements in {{ this.activeComponent }} '{{ depth }}'
+      &nbsp; &nbsp; Viewing Elements in {{ activeComponent }} '{{ depth }}'
       <hr />
     </span>
-    <span class="list-title" v-else-if="!this.activeComponent"></span>
+    <span class="list-title" v-else-if="!activeComponent"></span>
     <div group="people" class="list-group">
-      <p v-if="!this.componentMap[this.activeComponent]?.htmlList.length">
+      <p v-if="!componentMap[activeComponent]?.htmlList.length">
         No HTML elements in component
       </p>
       <div
@@ -67,12 +67,7 @@ export default {
 
 <script setup>
 import { ref, computed, watch } from "vue";
-import { useStore } from "vuex";
-import {
-  setSelectedElementList,
-  deleteSelectedElement,
-  deleteFromComponentHtmlList,
-} from "../../store/types";
+import { useStore } from "../../store/main.js";
 import { breadthFirstSearch } from "../../utils/search.util";
 
 const store = useStore();
@@ -87,13 +82,13 @@ const attributeModal = ref(false);
 const classText = ref("");
 const bindingText = ref("");
 
-const activeComponentObj = computed(() => store.state.activeComponentObj);
-const selectedElementList = computed(() => store.state.selectedElementList);
-const componentMap = computed(() => store.state.componentMap);
-const activeComponent = computed(() => store.state.activeComponent);
-const activeHTML = computed(() => store.state.activeHTML);
-const activeLayer = computed(() => store.state.activeLayer);
-const attributeModalOpen = computed(() => store.state.attributeModalOpen);
+const activeComponentObj = computed(() => store.activeComponentObj);
+const selectedElementList = computed(() => store.selectedElementList);
+const componentMap = computed(() => store.componentMap);
+const activeComponent = computed(() => store.activeComponent);
+const activeHTML = computed(() => store.activeHTML);
+const activeLayer = computed(() => store.activeLayer);
+const attributeModalOpen = computed(() => store.attributeModalOpen);
 
 const renderList = computed({
   get() {
@@ -124,7 +119,7 @@ const renderList = computed({
     return sortedHTML;
   },
   set(value) {
-    store.dispatch(setSelectedElementList, value);
+    store.setSelectedElementList(value);
   },
 });
 
@@ -145,32 +140,28 @@ const moreExceptions = () => {
   return childComponent;
 };
 
-const parentSelected = (payload) => store.dispatch("parentSelected", payload);
+const parentSelected = (payload) => store.parentSelected(payload);
 
-const setActiveHTML = (payload) => store.dispatch("setActiveHTML", payload);
-const setActiveLayer = (payload) => store.dispatch("setActiveLayer", payload);
-const upOneLayer = (payload) => store.dispatch("upOneLayer", payload);
-const setSelectedIdDrag = (payload) =>
-  store.dispatch("setSelectedIdDrag", payload);
-const setIdDrag = (payload) => store.dispatch("setIdDrag", payload);
-const setSelectedIdDrop = (payload) =>
-  store.dispatch("setSelectedIdDrop", payload);
-const setIdDrop = (payload) => store.dispatch("setIdDrop", payload);
+const setActiveHTML = (payload) => store.setActiveHTML(payload);
+const setActiveLayer = (payload) => store.setActiveLayer(payload);
+const upOneLayer = (payload) => store.upOneLayer(payload);
+const setSelectedIdDrag = (payload) => store.setSelectedIdDrag(payload);
+const setIdDrag = (payload) => store.setIdDrag(payload);
+const setSelectedIdDrop = (payload) => store.setSelectedIdDrop(payload);
+const setIdDrop = (payload) => store.setIdDrop(payload);
 const dragDropSortHtmlElements = (payload) =>
-  store.dispatch("dragDropSortHtmlElements", payload);
+  store.dragDropSortHtmlElements(payload);
 const dragDropSortSelectedHtmlElements = (payload) =>
-  store.dispatch("dragDropSortSelectedHtmlElements", payload);
-const openAttributeModal = (payload) =>
-  store.dispatch("openAttributeModal", payload);
+  store.dragDropSortSelectedHtmlElements(payload);
+const openAttributeModal = (payload) => store.openAttributeModal(payload);
 const addActiveComponentClass = (payload) =>
-  store.dispatch("addActiveComponentClass", payload);
-const addBindingText = (payload) => store.dispatch("addBindingText", payload);
-const clearActiveHTML = (payload) => store.dispatch("clearActiveHTML", payload);
+  store.addActiveComponentClass(payload);
+const addBindingText = (payload) => store.addBindingText(payload);
+const clearActiveHTML = (payload) => store.clearActiveHTML(payload);
 
 const deleteElement = (id) => {
-  if (activeComponent.value === "")
-    store.dispatch(deleteSelectedElement, id[0]);
-  else store.dispatch(deleteFromComponentHtmlList, id[1]);
+  if (activeComponent.value === "") store.deleteSelectedElement(id[0]);
+  else store.deleteFromComponentHtmlList(id[1]);
 };
 
 const closeMenu = (element) => {
@@ -263,16 +254,13 @@ watch(attributeModalOpen, () => {
   attributeModal.value = attributeModalOpen.value;
 });
 
-watch(
-  () => activeComponent.value,
-  () => {
-    if (activeComponent !== "") {
-      activeComponent.component = true;
-    } else {
-      activeComponent.component = false;
-    }
+watch(activeComponent, () => {
+  if (activeComponent.value !== "") {
+    activeComponent.component = true;
+  } else {
+    activeComponent.component = false;
   }
-);
+});
 </script>
 
 <!-- <script>

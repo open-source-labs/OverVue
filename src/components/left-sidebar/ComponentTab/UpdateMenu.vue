@@ -164,7 +164,7 @@ import AttributesSubMenu from "./AttributesSubMenu.vue";
 import InputHTMLMenu from "./InputHTMLMenu.vue";
 
 import { ref, computed, watch } from "vue";
-import { useStore } from "vuex";
+import { useStore } from "../../../store/main";
 
 const store = useStore();
 
@@ -176,15 +176,15 @@ const newName = ref("");
 const childrenSelected = ref([]);
 const attributeModal = ref(false);
 
-const routes = computed(() => store.state.routes);
-const activeRoute = computed(() => store.state.activeRoute);
-const activeComponent = computed(() => store.state.activeComponent);
-const activeHTML = computed(() => store.state.activeHTML);
-const activeLayer = computed(() => store.state.activeLayer);
-const activeComponentObj = computed(() => store.state.activeComponentObj);
-const componentMap = computed(() => store.state.componentMap);
-const exportAsTypescript = computed(() => store.state.exportAsTypescript);
-const attributeModalOpen = computed(() => store.state.attributeModalOpen);
+const routes = computed(() => store.routes);
+const activeRoute = computed(() => store.activeRoute);
+const activeComponent = computed(() => store.activeComponent);
+const activeHTML = computed(() => store.activeHTML);
+const activeLayer = computed(() => store.activeLayer);
+const activeComponentObj = computed(() => store.activeComponentObj);
+const componentMap = computed(() => store.componentMap);
+const exportAsTypescript = computed(() => store.exportAsTypescript);
+const attributeModalOpen = computed(() => store.attributeModalOpen);
 
 const activeRouteDisplay = computed(() => routes.value[activeRoute.value]);
 
@@ -229,28 +229,21 @@ const options = computed(() => {
   return optionOutput;
 });
 
-const setActiveComponent = (payload) =>
-  store.dispatch("setActiveComponent", payload);
-const deleteComponent = (payload) => store.dispatch("deleteComponent", payload);
-const deleteActiveComponent = (payload) =>
-  store.dispatch("deleteActiveComponent", payload);
-const editComponentName = (payload) =>
-  store.dispatch("editComponentName", payload);
-const updateComponentLayer = (payload) =>
-  store.dispatch("updateComponentLayer", payload);
+const setActiveComponent = (payload) => store.setActiveComponent(payload);
+const deleteComponent = (payload) => store.deleteComponent(payload);
+const deleteActiveComponent = (payload) => store.deleteActiveComponent(payload);
+const editComponentName = (payload) => store.editComponentName(payload);
+const updateComponentLayer = (payload) => store.updateComponentLayer(payload);
 const updateActiveComponentChildrenValue = (payload) =>
-  store.dispatch("updateActiveComponentChildrenValue", payload);
+  store.updateActiveComponentChildrenValue(payload);
 const addToSelectedElementList = (payload) =>
-  store.dispatch("addToSelectedElementList", payload);
+  store.addToSelectedElementList(payload);
 const addToComponentElementList = (payload) =>
-  store.dispatch("addToComponentElementList", payload);
-const addNestedHTML = (payload) => store.dispatch("addNestedHTML", payload);
-const addNestedNoActive = (payload) =>
-  store.dispatch("addNestedNoActive", payload);
-const openAttributeModal = (payload) =>
-  store.dispatch("openAttributeModal", payload);
-const deleteProp = (payload) =>
-  store.dispatch("deletePropsFromComponent", payload);
+  store.addToComponentElementList(payload);
+const addNestedHTML = (payload) => store.addNestedHTML(payload);
+const addNestedNoActive = (payload) => store.addNestedNoActive(payload);
+const openAttributeModal = (payload) => store.openAttributeModal(payload);
+const deleteProp = (payload) => store.deletePropsFromComponent(payload);
 
 const useExportComponentBound = () => {
   useExportComponent.bind(this)();

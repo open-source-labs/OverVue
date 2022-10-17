@@ -81,10 +81,10 @@
 
 <!-- COMPOSITION API SYNTAX -->
 <script setup>
-  import { useStore } from 'vuex';
-  const store = useStore();
+import { useStore } from "../../../store/main.js";
+const store = useStore();
 
-  const toggleTutorial = () => store.dispatch("toggleTutorial");
+const toggleTutorial = () => store.toggleTutorial();
 </script>
 
 <!-- OLD OPTIONS API SYNTAX -->

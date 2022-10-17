@@ -33,14 +33,13 @@
 
 <!-- COMPOSITION API SYNTAX -->
 <script setup>
-import { useStore } from "vuex";
-import { defineEmits } from "vue";
+import { useStore } from "../../../store/main.js";
 const { shell } = window;
 
 const store = useStore();
 const emit = defineEmits(["nextTab", "versionTab"]);
 
-const toggleTutorial = () => store.dispatch("toggleTutorial");
+const toggleTutorial = () => store.toggleTutorial();
 const nextTab = () => emit("nextTab");
 const openUrl = (url) => shell.openExternal(url, { activate: true });
 </script>

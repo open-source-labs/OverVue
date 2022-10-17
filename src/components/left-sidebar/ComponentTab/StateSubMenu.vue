@@ -33,14 +33,10 @@
         @click="addStateToComp"
       />
     </div>
-    <p v-if="!this.componentMap[this.activeComponent].state.length">
+    <p v-if="!componentMap[activeComponent].state.length">
       No state in component
     </p>
-    <a
-      v-else
-      v-for="state in this.componentMap[this.activeComponent].state"
-      :key="state"
-    >
+    <a v-else v-for="state in componentMap[activeComponent].state" :key="state">
       <q-list class="list-item" dense bordered separator>
         <q-item clickable v-ripple class="list-item">
           <q-item-section>
@@ -69,15 +65,15 @@ export default { name: "StateSubMenu" };
 
 <script setup>
 import VueMultiselect from "vue-multiselect";
-import { useStore } from "vuex";
+import { useStore } from "../../../store/main";
 import { computed } from "vue";
 
 const store = useStore();
 
-const selectedState = computed(() => store.state.selectedState);
-const userState = computed(() => store.state.userState);
-const componentMap = computed(() => store.state.componentMap);
-const activeComponent = computed(() => store.state.activeComponent);
+const selectedState = computed(() => store.selectedState);
+const userState = computed(() => store.userState);
+const componentMap = computed(() => store.componentMap);
+const activeComponent = computed(() => store.activeComponent);
 
 const stateOptions = userState.value;
 const selectState = computed({
@@ -89,12 +85,10 @@ const selectState = computed({
   },
 });
 
-const addStateSelected = (payload) =>
-  store.dispatch("addStateSelected", payload);
-const addStateToComponent = (payload) =>
-  store.dispatch("addStateToComponent", payload);
+const addStateSelected = (payload) => store.addStateSelected(payload);
+const addStateToComponent = (payload) => store.addStateToComponent(payload);
 const deleteStateFromComponent = (payload) =>
-  store.dispatch("deleteStateFromComponent", payload);
+  store.deleteStateFromComponent(payload);
 
 const stopDelete = (e) => {
   if (e.code === "Backspace") e.stopPropogation();

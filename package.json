@@ -47,6 +47,7 @@
     "mousetrap": "^1.6.5",
     "net": "^1.0.2",
     "node-gyp": "^8.4.1",
+    "pinia": "^2.0.23",
     "prismjs": "^1.27.0",
     "quasar": "^2.5.5",
     "quasar-dotenv": "^1.0.5",

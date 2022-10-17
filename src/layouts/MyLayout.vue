@@ -276,9 +276,10 @@ Description:
   </q-layout>
 </template>
 
+<!-- COMPOSITION API -->
 <script setup>
-import { ref, computed, defineEmits, defineProps } from "vue";
-import { useStore } from "vuex";
+import { ref, computed } from "vue";
+import { useStore } from "../store/main";
 
 import RightSidebar from "../components/right-sidebar/RightSidebar.vue";
 import ExportMenu from "../components/nav-buttons/ExportMenu.vue";
@@ -314,12 +315,12 @@ defineExpose({
   displayClose,
 });
 
-const exportAsTypescript = computed(() => store.state.exportAsTypescript);
-const exportOauth = computed(() => store.state.exportOauth);
-const exportOauthGithub = computed(() => store.state.exportOauthGithub);
-const importTest = computed(() => store.state.importTest);
+const exportAsTypescript = computed(() => store.exportAsTypescript);
+const exportOauth = computed(() => store.exportOauth);
+const exportOauthGithub = computed(() => store.exportOauthGithub);
+const importTest = computed(() => store.importTest);
 
-const toggleTutorial = () => store.dispatch("toggleTutorial");
+const toggleTutorial = () => store.toggleTutorial();
 
 const hideRight = () => {
   right.value = !right.value;
@@ -407,6 +408,7 @@ const clickedUndo = () => emit("undo");
 const clickedRedo = () => emit("redo");
 </script>
 
+<!-- OLD OPTIONS API -->
 <!-- <script>
 // HomeSideDropDown contains RouteDisplay, VuexForm and Edit but we'll be separating these components across different tabs
 import RightSidebar from "../components/right-sidebar/RightSidebar.vue";

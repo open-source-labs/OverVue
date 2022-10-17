@@ -2,13 +2,13 @@ import { mount, shallowMount } from "@vue/test-utils";
 import { createApp } from "vue";
 import * as All from "quasar";
 const { Quasar, date } = All;
-import actions from "../../../src/store/actions";
-import mutations from "../../../src/store/mutations";
-import * as types from "../../../src/store/types";
+import actions from "../../../src/store/options/actions";
+import mutations from "../../../src/store/options/mutations";
+import * as types from "../../../src/store/options/types";
 import Vuex from "vuex";
 
 describe("Tests for copy and pasting", () => {
-  const App = {}
+  const App = {};
   const app = createApp(App);
   app.use(Quasar, Vuex);
   let state;
@@ -21,17 +21,17 @@ describe("Tests for copy and pasting", () => {
           htmlList: [],
           componentActions: [],
           state: ["state1", "state2"],
-          actions: ["action1", "action2"]
-        }
+          actions: ["action1", "action2"],
+        },
       },
       activeComponent: "test",
-      userState: ['state1', 'state2'],
-      userActions: ['action1', 'action2'],
-      userProps: ['prop1', 'prop2'],
+      userState: ["state1", "state2"],
+      userActions: ["action1", "action2"],
+      userProps: ["prop1", "prop2"],
       routes: {
-        HomeView: [{componentName: 'testComp', parent: []}],
+        HomeView: [{ componentName: "testComp", parent: [] }],
       },
-      activeRoute: 'HomeView',
+      activeRoute: "HomeView",
       pasteTimer: 0,
     };
   });
@@ -42,14 +42,14 @@ describe("Tests for copy and pasting", () => {
     expect(commit).toHaveBeenCalledWith(types.COPY_ACTIVE_COMPONENT);
   });
 
-  test('"[types.COPY_ACTIVE_COMPONENT]" to update state successfully', ()=>{
-    mutations[types.SET_ACTIVE_COMPONENT](state, 'testComp');
+  test('"[types.COPY_ACTIVE_COMPONENT]" to update state successfully', () => {
+    mutations[types.SET_ACTIVE_COMPONENT](state, "testComp");
     mutations[types.COPY_ACTIVE_COMPONENT](state);
-    expect(state.copiedComponent.componentName).toBe('testComp');
-  })
+    expect(state.copiedComponent.componentName).toBe("testComp");
+  });
 
   test('"[types.PASTE_ACTIVE_COMPONENT]" to update state successfully', () => {
-    mutations[types.SET_ACTIVE_COMPONENT](state, 'testComp');
+    mutations[types.SET_ACTIVE_COMPONENT](state, "testComp");
     mutations[types.COPY_ACTIVE_COMPONENT](state);
     mutations[types.PASTE_ACTIVE_COMPONENT](state);
     expect(Object.keys(state.componentMap).length).toBe(2);
@@ -59,5 +59,4 @@ describe("Tests for copy and pasting", () => {
     mutations[types.UPDATE_PASTE_TIMER](state);
     expect(state.pasteTimer).not.toBe(0);
   });
-
 });

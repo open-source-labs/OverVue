@@ -31,7 +31,7 @@ import styleClassMap from "../../store/state/styleClassMap";
 import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism-tomorrow.css"; // import syntax highlighting styles
-import { useStore } from "vuex";
+import { useStore } from "../../store/main.js";
 import {
   ref,
   computed,
@@ -49,10 +49,10 @@ const lineNumbers = ref(true);
 const height = ref(null);
 
 // computed
-const componentMap = computed(() => store.state.componentMap);
-const activeComponent = computed(() => store.state.activeComponent);
-const activeComponentObj = computed(() => store.state.activeComponentObj);
-const exportAsTypescript = computed(() => store.state.exportAsTypescript);
+const componentMap = computed(() => store.componentMap);
+const activeComponent = computed(() => store.activeComponent);
+const activeComponentObj = computed(() => store.activeComponentObj);
+const exportAsTypescript = computed(() => store.exportAsTypescript);
 
 // methods
 const snippetInvoke = () => {
@@ -88,35 +88,35 @@ const createCodeSnippet = (componentName, children) => {
 // Creates beginner boilerplate
 const createTemplate = (componentName) => {
   let templateTagStr = writeTemplateTag(componentName, activeComponent.value); // testing 2nd arg
+  let routeStr = "";
+  const arrOfChildComp = componentMap.value[componentName].children;
+  arrOfChildComp.forEach((childName) => {
+    let childNameClass = componentMap.value[childName].htmlAttributes.class;
+    let childNameClassFullStr =
+      childNameClass === "" ? "" : ` class = '${childNameClass}'`;
+    routeStr += `    <${childName}${childNameClassFullStr}></${childName}>\n`;
+  });
   if (activeComponentObj.value.htmlAttributes) {
     //if/else statement to determine if there are class and id attributes present in the html element
     if (
       activeComponentObj.value.htmlAttributes.class !== "" &&
       activeComponentObj.value.htmlAttributes.id !== ""
     ) {
-      return `<template>\n  <div id = "${activeComponentObj.value.htmlAttributes.id}" class = "${activeComponentObj.value.htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
+      return `<template>\n  <div id = "${activeComponentObj.value.htmlAttributes.id}" class = "${activeComponentObj.value.htmlAttributes.class}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
     } else if (
       activeComponentObj.value.htmlAttributes.class !== "" &&
       activeComponentObj.value.htmlAttributes.id === ""
     ) {
-      return `<template>\n  <div class = "${activeComponentObj.value.htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
+      return `<template>\n  <div class = "${activeComponentObj.value.htmlAttributes.class}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
     } else if (
       activeComponentObj.value.htmlAttributes.class === "" &&
       activeComponentObj.value.htmlAttributes.id !== ""
     )
-      return `<template>\n  <div id = "${activeComponentObj.value.htmlAttributes.id}">\n${templateTagStr}  </div>\n</template>`;
+      return `<template>\n  <div id = "${activeComponentObj.value.htmlAttributes.id}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
     else {
-      let routeStr = "";
-      const arrOfChildComp = componentMap.value[componentName].children;
-      arrOfChildComp.forEach((childName) => {
-        let childNameClass = componentMap.value[childName].htmlAttributes.class;
-        let childNameClassFullStr =
-          childNameClass === "" ? "" : ` class = '${childNameClass}'`;
-        routeStr += `    <${childName}${childNameClassFullStr}></${childName}>\n`;
-      });
       return `<template>\n  <div>\n${templateTagStr}${routeStr}  </div>\n</template>`;
     }
-  } else return `<template>\n  <div>\n${templateTagStr}  </div>\n</template>`;
+  }
 };
 
 // Creates <template> boilerplate
@@ -401,9 +401,9 @@ const createBoiler = (componentName, children) => {
   let styleString = "";
 
   if (activeComponentObj.value.htmlAttributes.class !== "") {
-    styleString += `.${activeComponentObj.value.htmlAttributes.class} { \n background-color: ${activeComponentObj.value.color};
-grid-area: ${activeComponentObj.value.htmlAttributes.gridArea[0]} / ${activeComponentObj.value.htmlAttributes.gridArea[1]} / ${activeComponentObj.value.htmlAttributes.gridArea[2]} / ${activeComponentObj.value.htmlAttributes.gridArea[3]};
-z-index: ${activeComponentObj.value.z};
+    styleString += `.${activeComponentObj.value.htmlAttributes.class} { \n\tbackground-color: ${activeComponentObj.value.color};
+\tgrid-area: ${activeComponentObj.value.htmlAttributes.gridArea[0]} / ${activeComponentObj.value.htmlAttributes.gridArea[1]} / ${activeComponentObj.value.htmlAttributes.gridArea[2]} / ${activeComponentObj.value.htmlAttributes.gridArea[3]};
+\tz-index: ${activeComponentObj.value.z};
 } \n`;
   }
 
