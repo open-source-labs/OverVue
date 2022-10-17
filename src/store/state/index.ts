@@ -53,6 +53,7 @@ const newState :types.State = {
   activeTab: 0,
   componentChildrenMultiselectValue: [],
   modalOpen: false,
+  attributeModalOpen: false,
   noteModalOpen: false,
   //test
   noteAttributeOpen: false,

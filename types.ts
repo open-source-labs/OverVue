@@ -41,6 +41,7 @@ export type State = {
   activeTab: number,
   componentChildrenMultiselectValue: [],
   modalOpen: boolean,
+  attributeModalOpen: boolean,
   noteModalOpen: boolean,
   noteAttributeOpen: boolean,
   colorModalOpen: boolean,
