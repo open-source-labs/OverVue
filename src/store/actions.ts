@@ -763,7 +763,7 @@ const actions: Store<"main", State, {}, Actions> = {
     this.setActiveComponent("");
   },
 
-  parentSelect(payload) {
+  parentSelect(payload: string) {
     this.parentSelected = payload;
   },
 
