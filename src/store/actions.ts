@@ -563,7 +563,7 @@ const actions: Store<"main", State, {}, Actions> = {
 
       if (this.activeLayer.id === "") {
         //find the indexes belonging to the html elements with idDrag and idDrop
-        htmlList.forEach((el, i) => {
+        htmlList.forEach((el: object, i: number) => {
           if (el.id === idDrag) {
             indexDrag = i;
           } else if (el.id === idDrop) {
@@ -631,7 +631,7 @@ const actions: Store<"main", State, {}, Actions> = {
     Because we have to initialize a whole bunch of propertiess
     which are determined by the choices made on the left hand panel
      */
-    const { componentName } = payload;
+    const { componentName } : { ComponentName : string} = payload;
     // if the component name doesn't already exist,
     // then add the component to the display
     if (!this.componentMap[componentName]) {
@@ -763,7 +763,7 @@ const actions: Store<"main", State, {}, Actions> = {
     this.setActiveComponent("");
   },
 
-  parentSelect(payload: string) {
+  parentSelect(payload) {
     this.parentSelected = payload;
   },
 
