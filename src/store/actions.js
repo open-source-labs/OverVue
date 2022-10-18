@@ -3,12 +3,9 @@ import {
   breadthFirstSearchParent,
 } from "src/utils/search.util";
 
-import { State, Actions, Component } from "../../types";
-import { Store } from "pinia";
-import localforage from "localforage";
 // *** GLOBAL *** //////////////////////////////////////////////
 
-const actions: Store<"main", State, {}, Actions> = {
+const actions = {
   emptyState() {
     this.$reset();
   },
@@ -83,7 +80,7 @@ const actions: Store<"main", State, {}, Actions> = {
     this.addRoute(payload);
     this.setActiveRoute(payload);
     const route = this.activeRoute;
-    const children: string[] = [];
+    const children = [];
 
     this.addRouteToComponentMap({ route, children });
 
@@ -102,11 +99,11 @@ const actions: Store<"main", State, {}, Actions> = {
     this.exportAsTypescript = payload;
   },
 
-  ExportOauth(payload) {
+  exportOauth(payload) {
     this.exportOauth = payload;
   },
 
-  ExportOauthGithub(payload) {
+  exportOauthGithub(payload) {
     this.exportOauthGithub = payload;
   },
 
@@ -564,11 +561,7 @@ const actions: Store<"main", State, {}, Actions> = {
 
       if (this.activeLayer.id === "") {
         //find the indexes belonging to the html elements with idDrag and idDrop
-<<<<<<< HEAD
-        htmlList.forEach((el: { id: number }, i: number) => {
-=======
-        htmlList.forEach((el: object, i: number) => {
->>>>>>> chrisTypescript
+        htmlList.forEach((el, i) => {
           if (el.id === idDrag) {
             indexDrag = i;
           } else if (el.id === idDrop) {
@@ -611,7 +604,7 @@ const actions: Store<"main", State, {}, Actions> = {
       let indexDrag;
       let indexDrop;
       //find the indexes belonging to the html elements with the selectedIdDrag and selectedIdDrop
-      htmlList.forEach((el: { id: string }, i: number) => {
+      htmlList.forEach((el, i) => {
         if (el.id === selectedIdDrag) {
           indexDrag = i;
         } else if (el.id === selectedIdDrop) {
@@ -636,7 +629,7 @@ const actions: Store<"main", State, {}, Actions> = {
     Because we have to initialize a whole bunch of propertiess
     which are determined by the choices made on the left hand panel
      */
-    const { componentName } : { ComponentName : string} = payload;
+    const { componentName } = payload;
     // if the component name doesn't already exist,
     // then add the component to the display
     if (!this.componentMap[componentName]) {
@@ -952,7 +945,7 @@ const actions: Store<"main", State, {}, Actions> = {
       const htmlList = this.componentMap[componentName].htmlList.slice(0);
 
       // splice out child componenets even if nested
-      function deleteChildFromHtmlList(array: Component[] | string[], payload: string) {
+      function deleteChildFromHtmlList(array, payload) {
         for (let i = array.length; i--; ) {
           if (array[i].children.length) {
             deleteChildFromHtmlList(array[i].children, payload);
@@ -1023,7 +1016,7 @@ const actions: Store<"main", State, {}, Actions> = {
       this.componentMap[this.activeComponent].htmlList.forEach((el) => {
         //adding class into it's child 1st layer
         if (el.children.length !== 0) {
-          el.children.forEach((element: {id: string, class: string}) => {
+          el.children.forEach((element) => {
             if (payload.id === element.id) {
               element.class = payload.class;
             }
@@ -1042,7 +1035,7 @@ const actions: Store<"main", State, {}, Actions> = {
       if (this.activeComponentObj.htmlList)
         this.componentMap[this.activeComponent].htmlList.forEach((el) => {
           if (el.children.length !== 0) {
-            el.children.forEach((element: {id: string, binding: string}) => {
+            el.children.forEach((element) => {
               if (payload.id === element.id) {
                 element.binding = payload.binding;
               }
@@ -1056,9 +1049,9 @@ const actions: Store<"main", State, {}, Actions> = {
   },
 
   deleteActiveComponentClass(payload) {
-    this.componentMap[this.activeComponent].classList.forEach((el, ind) => {
+    tthis.componentMap[tthis.activeComponent].classList.forEach((el, ind) => {
       if (payload === el) {
-        this.componentMap[this.activeComponent].classList.splice(ind, 1);
+        tthis.componentMap[tthis.activeComponent].classList.splice(ind, 1);
         return;
       }
     });
@@ -1120,7 +1113,6 @@ const actions: Store<"main", State, {}, Actions> = {
 
   deleteProjectTab(payload) {
     this.projects.splice(payload, 1);
-    //imported localforage from module, like our mutations.js did
     localforage.getItem(this.projects[payload - 1].filename).then((data) => {
       const store = this;
       store = data;
