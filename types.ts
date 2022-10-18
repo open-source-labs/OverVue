@@ -97,7 +97,6 @@ export interface Actions {
   updatePasteTimer: () => void;
   // pasteActiveComponent: () => void;
   // editComponentName:
-  parentSelect: (payload: string) => void;
   //Linden
   addNestedHTML: (payload: { elementName: string; date: string }) => void;
   clearActiveHTML: () => void;
@@ -122,8 +121,49 @@ export interface Actions {
   setSelectedIdDrag: (payload: string) => void;
   setSelectedIdDrop: (payload: string) => void;
   dragDropSortHtmlElements: () => void;
-  dragDropSortSelectedHtmlElements: () => void;
   //Chris
+  dragDropSortSelectedHtmlElements: () => void;
+  registerComponent: (payload: object) => void;
+  addComponentToActiveRouteChildren: (payload: string) => void;
+  addComponentToActiveRouteInRouteMap: (payload: object) => void;
+  addComponentToComponentChildren: (payload: object) => void;
+  addComponentToComponentMap: (payload: {
+    componentName: string;
+    htmlList: Component[];
+    children: string[];
+    parent: Record<string, Component>;
+    isActive: boolean,
+    actions:string[];
+    props: string[],
+    idDrag: string,
+    idDrop: string,
+    htmlAttributes: {
+      class: string;
+      id: string;
+      gridArea: [number, number, number, number];
+    };
+    color: string;
+    state: string[],
+  }) => void;
+  addParent: (payload: object) => void;
+  addCopiedParent: (payload: object) => void;
+  deleteActiveComponent: () => void;
+  parentSelect: (payload: string) => void;
+  setActiveComponent: (payload: string) => void;
+  setComponentMap: (payload: object) => void;
+  updateComponentChildrenMultiselectValue: (payload: string[]) => void;
+  updateComponentChildrenValue: (payload: object) => void;
+  updateComponentNameInputValue: (payload: string) => void;
+  updateComponentPosition: (payload: object) => void;
+  updateComponentGridPosition: (payload: object) => void;
+  updateComponentSize: (payload: object) => void;
+  updateColor: (payload: object) => void;
+  editAttribute: (payload: object) => void;
+  updateComponentLayer: (payload: object) => void;
+  updateHtmlLayer: (payload: object) => void;
+  updateActiveComponentChildrenValue: (payload: string) => void;
+
+
   //Ji
 }
 
@@ -141,7 +181,7 @@ export type Projects = {
 export type RouteComponentMap = {
   children: string[];
   componentName: string;
-  htmlList: string[];
+  htmlList: [];
 };
 
 // Type for generic component used in userCreateComponent.js
@@ -154,14 +194,14 @@ export type Component = {
   h: number;
   id: number;
   // look into html List any create type
-  htmlList: any;
+  htmlList: [];
   noteList: string[];
   children: string[];
   actions: string[];
   props: string[];
   state: string[];
   parent: Record<string, Component>;
-  isActive: false;
+  isActive: boolean;
   idDrag: string;
   idDrop: string;
   color: string;
