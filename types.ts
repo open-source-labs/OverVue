@@ -1,6 +1,7 @@
 // file created to store all TS types in one file for project
 
 import { NoParamCallback } from "original-fs";
+import { deletePropsFromComponent } from "src/store/options/types";
 
 // TS type for State (index.ts) in state folder
 export type State = {
@@ -72,6 +73,33 @@ export interface Actions {
     route: string;
     children: string[];
   }) => void;
+  // deleteRoute: (payload: string) => void;
+  setActiveRoute: (payload: string) => void;
+  // setActiveRouteArray: (payload: {}) => void;
+  // setRoutes: (payload: []) => void;
+  // addRouteToRouteMap: (payload: string) => void;
+  ExportAsTypescript: (payload: "on" | "off") => void;
+  ExportOauth: (payload: "on" | "off") => void;
+  ExportOauthGithub: (payload: "on" | "off") => void;
+  exportTest: (payload: string) => void;
+  createAction: (payload: string) => void;
+  addActionSelected: (payload: string[]) => void;
+  // addActionToComponent:
+  createProp: (payload: string) => void;
+  addPropsSelected: (payload: string[]) => void;
+  // addPropsToComponent:
+  createState: (payload: string) => void;
+  addStateSelected: (payload: string[]) => void;
+  // addStateToComponent:
+  // deleteActionFromComponent:
+  // deletePropsFromComponent:
+  // deleteStateFromComponent:
+  // deleteUserState:
+  // deleteUserActions:
+  copyActiveComponent: () => void;
+  updatePasteTimer: () => void;
+  // pasteActiveComponent: () => void;
+  // editComponentName:
   parentSelect: (payload: string) => void;
   //Linden
   //Chris

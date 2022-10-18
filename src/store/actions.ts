@@ -82,7 +82,7 @@ const actions: Store<"main", State, {}, Actions> = {
     this.addRoute(payload);
     this.setActiveRoute(payload);
     const route = this.activeRoute;
-    const children = [];
+    const children: string[] = [];
 
     this.addRouteToComponentMap({ route, children });
 
@@ -101,11 +101,11 @@ const actions: Store<"main", State, {}, Actions> = {
     this.exportAsTypescript = payload;
   },
 
-  exportOauth(payload) {
+  ExportOauth(payload) {
     this.exportOauth = payload;
   },
 
-  exportOauthGithub(payload) {
+  ExportOauthGithub(payload) {
     this.exportOauthGithub = payload;
   },
 
