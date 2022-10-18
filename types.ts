@@ -35,7 +35,7 @@ export type State = {
   selectedProps: string[];
   selectedState: string[];
   selectedActions: string[];
-  selectedElementList: string[];
+  selectedElementList: any[]; // ?? actions function addToSelectedElementList
   selectedIdDrag: string;
   selectedIdDrop: string;
   projectNumber: number;
@@ -69,10 +69,7 @@ export interface Actions {
   removeAllStatePropsActions: () => void;
   toggleTutorial: () => void;
   addRoute: (payload: string) => void;
-  addRouteToComponentMap: (payload: {
-    route: string;
-    children: string[];
-  }) => void;
+  addRouteToComponentMap: (payload: { route: string; children: [] }) => void;
   // deleteRoute: (payload: string) => void;
   setActiveRoute: (payload: string) => void;
   // setActiveRouteArray: (payload: {}) => void;
@@ -102,6 +99,30 @@ export interface Actions {
   // editComponentName:
   parentSelect: (payload: string) => void;
   //Linden
+  addNestedHTML: (payload: { elementName: string; date: string }) => void;
+  clearActiveHTML: () => void;
+  addNestedNoActive: (payload: { elementName: string; date: string }) => void;
+  addToComponentElementList: (payload: {
+    elementName: string;
+    date: string;
+  }) => void;
+  addToSelectedElementList: (payload: {
+    elementName: string;
+    date: string;
+  }) => void;
+  deleteFromComponentHtmlList: (id: string) => void;
+  deleteSelectedElement: (payload: number) => void;
+  setActiveHTML: (payload: string[]) => void;
+  setActiveLayer: (payload: { text: string; id: string }) => void;
+  setClickedElementList: (payload: string) => void;
+  setSelectedElementList: (payload: any[]) => void;
+  upOneLayer: (payload: number) => void;
+  setIdDrag: (payload: string) => void; // idDrag error line 534 of actions.ts
+  setIdDrop: (payload: string) => void; // idDrag error line 540 of actions.ts
+  setSelectedIdDrag: (payload: string) => void;
+  setSelectedIdDrop: (payload: string) => void;
+  dragDropSortHtmlElements: () => void;
+  dragDropSortSelectedHtmlElements: () => void;
   //Chris
   //Ji
 }

@@ -563,7 +563,7 @@ const actions: Store<"main", State, {}, Actions> = {
 
       if (this.activeLayer.id === "") {
         //find the indexes belonging to the html elements with idDrag and idDrop
-        htmlList.forEach((el, i) => {
+        htmlList.forEach((el: { id: number }, i: number) => {
           if (el.id === idDrag) {
             indexDrag = i;
           } else if (el.id === idDrop) {
@@ -606,7 +606,7 @@ const actions: Store<"main", State, {}, Actions> = {
       let indexDrag;
       let indexDrop;
       //find the indexes belonging to the html elements with the selectedIdDrag and selectedIdDrop
-      htmlList.forEach((el, i) => {
+      htmlList.forEach((el: { id: string }, i: number) => {
         if (el.id === selectedIdDrag) {
           indexDrag = i;
         } else if (el.id === selectedIdDrop) {
