@@ -76,6 +76,81 @@ export interface Actions {
   //Linden
   //Chris
   //Ji
+  updateActiveComponentChildrenValue: (payload: string) => void;
+  updateOpenModal: (payload: boolean) => void;
+  addActiveComponentNote: (payload: string) => void;
+  deleteActiveComponentNote: (payload: string) => void;
+  addActiveComponentClass: (payload: {
+    id: number,
+    class: string
+  }) => void;
+  addBindingText: (payload: {
+    id: number,
+    binding: string
+  }) => void;
+  deleteActiveComponentClass: (payload: string) => void;
+  addActiveComponentHeight: (payload: {
+    id: number,
+    height: number
+  }) => void;
+  addActiveComponentWidth: (payload: {
+    id: number,
+    width: number
+  }) => void;
+  addActiveComponentTop: (payload: {
+    id: number,
+    top: number
+  }) => void;
+  addActiveComponentLeft: (payload: {
+    id: number,
+    left: number
+  }) => void;
+  //unsure of below
+  addActiveComponentElementNote: (payload: {
+    id: number,
+    note: string
+  }) => void;
+  addProject: (payload: {
+    filename: string, lastSavedLocation: string
+  }) => void;
+  changeActiveTab: (payload: number) => void;
+  deleteProjectTab: (payload: number) => void;
+  //unsure of below
+  openProject: (payload: {
+    userProps: string[],
+    userActions: string[],
+    userState: string[],
+    imagePath: {
+      [x: string]: string
+    },
+    componentMap: string,
+    routes: string
+  }) => void;
+  importImage: (payload: {
+    route: string,
+    img: string
+  }) => void;
+  clearImage: (payload: {
+    route: string
+  }) => void;
+  //unsure of below
+  setImagePath: (payload: {
+    [x: string]: string
+  }) => void;
+  changeLib: (payload: {
+    libName: string
+  }) => void;
+  changeLibComponentDisplay: (payload: {
+    displaylibComponent: boolean
+  }) => void;
+  //unsure of below
+  addLibComponents: (payload: {
+    [x: string] : string | string[];
+  }) => void;
+  changeGridDensity: (payload: {
+    direction: string,
+    densityNum: number,
+  }) => void;
 }
 
 // Type for HTML Element Map that used in multiple files

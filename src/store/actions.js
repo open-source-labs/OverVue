@@ -3,12 +3,9 @@ import {
   breadthFirstSearchParent,
 } from "src/utils/search.util";
 
-import { State, Actions, Component } from "../../types";
-import { Store } from "pinia";
-import localforage from "localforage";
 // *** GLOBAL *** //////////////////////////////////////////////
 
-const actions: Store<"main", State, {}, Actions> = {
+const actions = {
   emptyState() {
     this.$reset();
   },
@@ -764,7 +761,7 @@ const actions: Store<"main", State, {}, Actions> = {
     this.setActiveComponent("");
   },
 
-  parentSelect(payload: string) {
+  parentSelect(payload) {
     this.parentSelected = payload;
   },
 
@@ -948,7 +945,7 @@ const actions: Store<"main", State, {}, Actions> = {
       const htmlList = this.componentMap[componentName].htmlList.slice(0);
 
       // splice out child componenets even if nested
-      function deleteChildFromHtmlList(array: Component[] | string[], payload: string) {
+      function deleteChildFromHtmlList(array, payload) {
         for (let i = array.length; i--; ) {
           if (array[i].children.length) {
             deleteChildFromHtmlList(array[i].children, payload);
@@ -1019,7 +1016,7 @@ const actions: Store<"main", State, {}, Actions> = {
       this.componentMap[this.activeComponent].htmlList.forEach((el) => {
         //adding class into it's child 1st layer
         if (el.children.length !== 0) {
-          el.children.forEach((element: {id: string, class: string}) => {
+          el.children.forEach((element) => {
             if (payload.id === element.id) {
               element.class = payload.class;
             }
@@ -1038,7 +1035,7 @@ const actions: Store<"main", State, {}, Actions> = {
       if (this.activeComponentObj.htmlList)
         this.componentMap[this.activeComponent].htmlList.forEach((el) => {
           if (el.children.length !== 0) {
-            el.children.forEach((element: {id: string, binding: string}) => {
+            el.children.forEach((element) => {
               if (payload.id === element.id) {
                 element.binding = payload.binding;
               }
@@ -1052,9 +1049,9 @@ const actions: Store<"main", State, {}, Actions> = {
   },
 
   deleteActiveComponentClass(payload) {
-    this.componentMap[this.activeComponent].classList.forEach((el, ind) => {
+    tthis.componentMap[tthis.activeComponent].classList.forEach((el, ind) => {
       if (payload === el) {
-        this.componentMap[this.activeComponent].classList.splice(ind, 1);
+        tthis.componentMap[tthis.activeComponent].classList.splice(ind, 1);
         return;
       }
     });
@@ -1116,7 +1113,6 @@ const actions: Store<"main", State, {}, Actions> = {
 
   deleteProjectTab(payload) {
     this.projects.splice(payload, 1);
-    //imported localforage from module, like our mutations.js did
     localforage.getItem(this.projects[payload - 1].filename).then((data) => {
       const store = this;
       store = data;

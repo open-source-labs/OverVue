@@ -34,6 +34,7 @@
     "forceConsistentCasingInFileNames": true,
     // See <https://github.com/vuejs/vue-cli/pull/5688>
     "skipLibCheck": true,
+    "strict": true,
   "exclude": [
     "dist",
     ".quasar",
