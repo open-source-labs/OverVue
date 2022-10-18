@@ -162,10 +162,7 @@ export interface Actions {
   updateComponentLayer: (payload: object) => void;
   updateHtmlLayer: (payload: object) => void;
   updateActiveComponentChildrenValue: (payload: string) => void;
-
-
   //Ji
-  updateActiveComponentChildrenValue: (payload: string) => void;
   updateOpenModal: (payload: boolean) => void;
   addActiveComponentNote: (payload: string) => void;
   deleteActiveComponentNote: (payload: string) => void;
