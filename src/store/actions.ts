@@ -3,9 +3,11 @@ import {
   breadthFirstSearchParent,
 } from "src/utils/search.util";
 
+import { State, Actions } from "../../types";
+import { Store } from "pinia";
 // *** GLOBAL *** //////////////////////////////////////////////
 
-const actions = {
+const actions: Store<"main", State, {}, Actions> = {
   emptyState() {
     this.$reset();
   },
@@ -80,7 +82,7 @@ const actions = {
     this.addRoute(payload);
     this.setActiveRoute(payload);
     const route = this.activeRoute;
-    const children = [];
+    const children: string[] = [];
 
     this.addRouteToComponentMap({ route, children });
 
@@ -99,11 +101,11 @@ const actions = {
     this.exportAsTypescript = payload;
   },
 
-  exportOauth(payload) {
+  ExportOauth(payload) {
     this.exportOauth = payload;
   },
 
-  exportOauthGithub(payload) {
+  ExportOauthGithub(payload) {
     this.exportOauthGithub = payload;
   },
 
@@ -561,7 +563,11 @@ const actions = {
 
       if (this.activeLayer.id === "") {
         //find the indexes belonging to the html elements with idDrag and idDrop
-        htmlList.forEach((el, i) => {
+<<<<<<< HEAD
+        htmlList.forEach((el: { id: number }, i: number) => {
+=======
+        htmlList.forEach((el: object, i: number) => {
+>>>>>>> chrisTypescript
           if (el.id === idDrag) {
             indexDrag = i;
           } else if (el.id === idDrop) {
@@ -604,7 +610,7 @@ const actions = {
       let indexDrag;
       let indexDrop;
       //find the indexes belonging to the html elements with the selectedIdDrag and selectedIdDrop
-      htmlList.forEach((el, i) => {
+      htmlList.forEach((el: { id: string }, i: number) => {
         if (el.id === selectedIdDrag) {
           indexDrag = i;
         } else if (el.id === selectedIdDrop) {
@@ -629,7 +635,7 @@ const actions = {
     Because we have to initialize a whole bunch of propertiess
     which are determined by the choices made on the left hand panel
      */
-    const { componentName } = payload;
+    const { componentName } : { ComponentName : string} = payload;
     // if the component name doesn't already exist,
     // then add the component to the display
     if (!this.componentMap[componentName]) {
