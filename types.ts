@@ -116,7 +116,6 @@ export interface Actions {
   updateActiveComponentChildrenValue: (payload: string) => void;
 
 
-
   //Ji
 }
 
