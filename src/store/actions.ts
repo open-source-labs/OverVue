@@ -47,21 +47,23 @@ const actions: Store<"main", State, {}, Actions> = {
   },
 
   deleteRoute(payload) {
-    const deleteChildren = (child) => {
-      if (this.componentMap[child.componentName].children.length) {
-        child.children.forEach((grandchild) => {
+    const deleteChildren = (child: Component | String): void => {
+      if (
+        this.componentMap[(child as Component).componentName].children.length
+      ) {
+        (child as Component).children.forEach((grandchild) => {
           deleteChildren(grandchild);
         });
       }
-      delete this.componentMap[child.componentName];
+      delete this.componentMap[(child as Component).componentName];
     };
 
     delete this.routes[payload];
     delete this.componentMap[payload];
     delete this.imagePath[payload];
 
-    this.componentMap.children = this.componentMap.children.filter(
-      (route) => route !== payload
+    this.componentMap.App.children = this.componentMap.App.children.filter(
+      (route: string) => route !== payload
     );
 
     if (this.routes[this.activeRoute]) this.activeRoute = "HomeView";
@@ -247,7 +249,7 @@ const actions: Store<"main", State, {}, Actions> = {
 
   pasteActiveComponent() {
     //if nothing is copied, don't commit anything
-    if (!this.copiedComponent.componentName) {
+    if (!(this.copiedComponent as Component).componentName) {
       return;
     }
     if (Date.now() < this.pasteTimer) {
@@ -257,9 +259,9 @@ const actions: Store<"main", State, {}, Actions> = {
     }
 
     if (this.copiedComponent) {
-      const copiedComponent = this;
+      const copiedComponent = this.copiedComponent;
+      const pastedComponent = { ...copiedComponent } as Component;
 
-      const pastedComponent = { ...copiedComponent };
       pastedComponent.x = 20;
       pastedComponent.y = 20;
       pastedComponent.componentName += ` (${this.copyNumber})`;
@@ -275,9 +277,9 @@ const actions: Store<"main", State, {}, Actions> = {
     }
 
     // if no other parents, update as parent of active route in componentMap
-    if (!Object.keys(this.pastedComponent.parent).length) {
+    if (!Object.keys((this.pastedComponent as Component).parent).length) {
       this.addComponentToActiveRouteChildren(
-        this.pastedComponent.componentName
+        (this.pastedComponent as Component).componentName
       );
       // if parents, update parent of pastedComponent to include as a child
     } else {
@@ -302,10 +304,8 @@ const actions: Store<"main", State, {}, Actions> = {
     active.componentName = payload;
 
     // edit active component object's name
-    this.activeComponentObj = {
-      ...this.activeComponentObj,
-      componentName: payload,
-    };
+    if (this.activeComponentObj)
+      this.activeComponentObj.componentName = payload;
 
     // update activeComponent
     this.activeComponent = payload;
@@ -327,11 +327,13 @@ const actions: Store<"main", State, {}, Actions> = {
       }
     }
 
-    for (const item of Object.values(this.componentMap)) {
+    for (const item of Object.values(this.componentMap) as Component[]) {
       if (item.parent) {
         const objectCheck = Object.keys(item.parent);
         if (objectCheck[0] === temp) {
-          item.parent[payload] = this.componentMap[this.activeComponent];
+          item.parent[payload] = this.componentMap[
+            this.activeComponent
+          ] as Component;
           delete item.parent[temp];
         }
       }
@@ -342,10 +344,13 @@ const actions: Store<"main", State, {}, Actions> = {
       if (item.htmlList) {
         const newArray = [...item.htmlList];
 
-        const changeAllChildComponents = (array, name) => {
+        const changeAllChildComponents = (
+          array: HtmlElement[],
+          name: string
+        ) => {
           const queue = [...array.filter((el) => typeof el === "object")];
           while (queue.length) {
-            const evaluate = queue.shift();
+            const evaluate = queue.shift() as HtmlElement;
             if (evaluate.text === name) {
               evaluate.text = payload;
             }
