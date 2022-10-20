@@ -148,7 +148,7 @@ export type Actions = {
   updateComponentLayer: (payload: object) => void;
   updateHtmlLayer: (payload: object) => void;
   updateActiveComponentChildrenValue: (payload: string) => void;
-  //Ji
+  //Ji line 1002
   updateOpenModal: (payload: boolean) => void;
   addActiveComponentNote: (payload: string) => void;
   deleteActiveComponentNote: (payload: string) => void;
@@ -207,7 +207,11 @@ export type HtmlElementMap = {
 export type HtmlElement = {
   text: String;
   id: String;
-  children: String[];
+  children: {
+    id: string,
+    class: string
+    binding: string
+  }[];
   class: String;
   x: Number;
   y: Number;
@@ -242,6 +246,7 @@ export type Component = {
   // look into html List any create type
   htmlList: HtmlElement[];
   noteList: string[];
+  classList: string[];
   children: string[];
   actions: string[];
   props: string[];

@@ -1076,9 +1076,10 @@ const actions: Store<"main", State, {}, Actions> = {
   },
 
   deleteActiveComponentClass(payload) {
-    this.componentMap[this.activeComponent].classList.forEach((el, ind) => {
+    const active = this.componentMap[this.activeComponent] as Component
+    active.classList.forEach((el, ind) => {
       if (payload === el) {
-        this.componentMap[this.activeComponent].classList.splice(ind, 1);
+        active.classList.splice(ind, 1);
         return;
       }
     });
