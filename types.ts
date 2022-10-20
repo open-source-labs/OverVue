@@ -126,7 +126,10 @@ export type Actions = {
   registerComponent: (payload: Component) => void;
   addComponentToActiveRouteChildren: (payload: string) => void;
   addComponentToActiveRouteInRouteMap: (payload: Component) => void;
-  addComponentToComponentChildren: (payload: { component: string; value: string }) => void;
+  addComponentToComponentChildren: (payload: {
+    component: string;
+    value: string;
+  }) => void;
   addComponentToComponentMap: (payload: Component) => void;
   addParent: (payload: Component) => void;
   addCopiedParent: (payload: Component) => void;
@@ -139,23 +142,26 @@ export type Actions = {
     [key: string]: RouteComponentMap | Component;
   }) => void;
   updateComponentChildrenMultiselectValue: (payload: string[]) => void;
-  updateComponentChildrenValue: (payload: {componentName: string; value: Component}) => void;
+  updateComponentChildrenValue: (payload: {
+    componentName: string;
+    value: Component;
+  }) => void;
   updateComponentNameInputValue: (payload: string) => void;
   updateComponentPosition: (payload: ResizePayload) => void;
   updateComponentGridPosition: (payload: ResizePayload) => void;
   updateComponentSize: (payload: ResizePayload) => void;
-  updateColor: (payload: { 
+  updateColor: (payload: {
     color: string;
     activeComponent: string;
     routeArray: [];
     activeComponentData: null | Component;
   }) => void;
   editAttribute: (payload: {
-    attribute: string,
-    value: string,
-    activeComponent: string,
-    routeArray: [],
-    activeComponentData:  null | Component,
+    attribute: string;
+    value: string;
+    activeComponent: string;
+    routeArray: [];
+    activeComponentData: null | Component;
   }) => void;
   updateComponentLayer: (payload: {
     activeComponent: string;
@@ -233,11 +239,15 @@ export type HtmlElementMap = {
 export type HtmlElement = {
   text: string;
   id: string;
+<<<<<<< HEAD
   children: {
     id: string,
     class: string
     binding: string
   }[];
+=======
+  children: HtmlElement[];
+>>>>>>> 9456c5686113166c60bdf1fe73f9802b25f6aca1
   class: string;
   x: number;
   y: number;
@@ -262,12 +272,12 @@ export type RouteComponentMap = {
 
 //used in Canvas to resize rendered components
 export type ResizePayload = {
-    x: number,
-    y: number,
-    activeComponent: string,
-    routeArray: [],
-    activeComponentData: null | Component
-}
+  x: number;
+  y: number;
+  activeComponent: string;
+  routeArray: [];
+  activeComponentData: null | Component;
+};
 
 // Type for generic component used in userCreateComponent.js
 export type Component = {

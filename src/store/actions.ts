@@ -174,7 +174,7 @@ const actions: Store<"main", State, {}, Actions> = {
   },
 
   addStateToComponent(payload) {
-    const active = this.componentMap[this.activeComponent];
+    const active = this.componentMap[this.activeComponent] as Component;
 
     if (!active.state) active.state = payload;
     else {
@@ -189,21 +189,20 @@ const actions: Store<"main", State, {}, Actions> = {
   },
 
   deleteActionFromComponent(payload) {
-    this.componentMap[this.activeComponent].actions = this.componentMap[
-      this.activeComponent
-    ].actions.filter((action) => action !== payload);
+    const active = this.componentMap[this.activeComponent] as Component;
+    active.actions = active.actions.filter(
+      (action: string) => action !== payload
+    );
   },
 
   deletePropsFromComponent(payload) {
-    this.componentMap[this.activeComponent].props = this.componentMap[
-      this.activeComponent
-    ].props.filter((prop) => prop !== payload);
+    const active = this.componentMap[this.activeComponent] as Component;
+    active.props = active.props.filter((prop: string) => prop !== payload);
   },
 
   deleteStateFromComponent(payload) {
-    this.componentMap[this.activeComponent].state = this.componentMap[
-      this.activeComponent
-    ].state.filter((state) => state !== payload);
+    const active = this.componentMap[this.activeComponent] as Component;
+    active.state = active.state.filter((state: string) => state !== payload);
   },
 
   deleteUserState(payload) {
@@ -212,9 +211,8 @@ const actions: Store<"main", State, {}, Actions> = {
       // first don't go through if component is App or Homeview
       if (component === "App" || component === "HomeView") continue;
       // filter out if there is a match
-      this.componentMap[component].state = this.componentMap[
-        component
-      ].state.filter((state) => state !== payload);
+      const active = this.componentMap[component] as Component;
+      active.state = active.state.filter((state: string) => state !== payload);
     }
     // remove from userState
     let index = this.userState.indexOf(payload);
@@ -226,9 +224,10 @@ const actions: Store<"main", State, {}, Actions> = {
       // first don't go through if component is App or Homeview
       if (component === "App" || component === "HomeView") continue;
       // splice out if there is a match
-      this.componentMap[component].actions = this.componentMap[
-        component
-      ].actions.filter((action) => action !== payload);
+      const active = this.componentMap[component] as Component;
+      active.actions = active.actions.filter(
+        (action: string) => action !== payload
+      );
     }
     let index = this.userActions.indexOf(payload);
     this.userActions.splice(index, 1);
@@ -283,10 +282,10 @@ const actions: Store<"main", State, {}, Actions> = {
       );
       // if parents, update parent of pastedComponent to include as a child
     } else {
-      this.addCopiedParent(this.pastedComponent);
+      this.addCopiedParent(this.pastedComponent as Component);
     }
     // add pastedComponent as a child of route in activeRoutes
-    this.addComponentToActiveRouteInRouteMap(this.pastedComponent);
+    this.addComponentToActiveRouteInRouteMap(this.pastedComponent as Component);
   },
 
   // *** END VUEX EXPORT *** //////////////////////////////////////////////
@@ -654,7 +653,7 @@ const actions: Store<"main", State, {}, Actions> = {
     Because we have to initialize a whole bunch of propertiess
     which are determined by the choices made on the left hand panel
      */
-    const { componentName }  = payload;
+    const { componentName } = payload;
     // if the component name doesn't already exist,
     // then add the component to the display
     if (!this.componentMap[componentName]) {
@@ -970,10 +969,7 @@ const actions: Store<"main", State, {}, Actions> = {
       const htmlList = this.componentMap[componentName].htmlList.slice(0);
 
       // splice out child componenets even if nested
-      function deleteChildFromHtmlList(
-        array: Component[],
-        payload: string
-      ) {
+      function deleteChildFromHtmlList(array: Component[], payload: string) {
         for (let i = array.length; i--; ) {
           if (array[i].children.length) {
             deleteChildFromHtmlList(array[i].children, payload);
@@ -985,12 +981,12 @@ const actions: Store<"main", State, {}, Actions> = {
       }
 
       deleteChildFromHtmlList(htmlList, payload);
-        const active = this.componentMap[payload] as Component
+      const active = this.componentMap[payload] as Component;
       //updates the htmlList with the child components deleted
       this.componentMap[componentName].htmlList = htmlList;
 
       //delete the parent because the payload is no longer a child to the acitive component
-      
+
       delete active.parent[this.activeComponent];
 
       // add block
@@ -1011,7 +1007,7 @@ const actions: Store<"main", State, {}, Actions> = {
   },
 
   addActiveComponentNote(payload) {
-    const active = this.componentMap[this.activeComponent] as Component
+    const active = this.componentMap[this.activeComponent] as Component;
     if (!this.componentMap[this.activeComponent].hasOwnProperty("noteList")) {
       active.noteList = [];
     }
@@ -1022,7 +1018,7 @@ const actions: Store<"main", State, {}, Actions> = {
   },
 
   deleteActiveComponentNote(payload) {
-    const active = this.componentMap[this.activeComponent] as Component
+    const active = this.componentMap[this.activeComponent] as Component;
     active.noteList.forEach((el, ind) => {
       if (payload === el) {
         active.noteList.splice(ind, 1);
@@ -1044,12 +1040,12 @@ const actions: Store<"main", State, {}, Actions> = {
   },
 
   addActiveComponentClass(payload) {
-    const active = this.activeComponentObj as Component
+    const active = this.activeComponentObj as Component;
     if (active.htmlList)
       this.componentMap[this.activeComponent].htmlList.forEach((el) => {
         //adding class into it's child 1st layer
         if (el.children.length !== 0) {
-          el.children.forEach((element: {id: string, class:string}) => {
+          el.children.forEach((element: { id: string; class: string }) => {
             if (payload.id === element.id) {
               element.class = payload.class;
             }
@@ -1062,14 +1058,14 @@ const actions: Store<"main", State, {}, Actions> = {
   },
 
   addBindingText(payload) {
-    const active = this.activeComponentObj as Component
+    const active = this.activeComponentObj as Component;
     //access the htmlList, add payload to the empty bind obj
     if (payload.binding === "") return;
     else {
       if (active.htmlList)
         this.componentMap[this.activeComponent].htmlList.forEach((el) => {
           if (el.children.length !== 0) {
-            el.children.forEach((element: { id: string, binding: string }) => {
+            el.children.forEach((element: { id: string; binding: string }) => {
               if (payload.id === element.id) {
                 element.binding = payload.binding;
               }
@@ -1083,7 +1079,7 @@ const actions: Store<"main", State, {}, Actions> = {
   },
 
   deleteActiveComponentClass(payload) {
-    const active = this.componentMap[this.activeComponent] as Component
+    const active = this.componentMap[this.activeComponent] as Component;
     active.classList.forEach((el, ind) => {
       if (payload === el) {
         active.classList.splice(ind, 1);
