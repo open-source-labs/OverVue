@@ -527,8 +527,7 @@ const actions: Store<"main", State, {}, Actions> = {
         index: number;
       };
       const newLayer = { ...this.activeLayer };
-      // id: string;
-      // lineage: string[];
+
       newLayer.id = newID.evaluated.id;
       newLayer.lineage.pop();
       this.activeLayer = newLayer;
@@ -649,7 +648,7 @@ const actions: Store<"main", State, {}, Actions> = {
     Because we have to initialize a whole bunch of propertiess
     which are determined by the choices made on the left hand panel
      */
-    const { componentName }  = payload;
+    const { componentName } = payload;
     // if the component name doesn't already exist,
     // then add the component to the display
     if (!this.componentMap[componentName]) {
@@ -965,7 +964,10 @@ const actions: Store<"main", State, {}, Actions> = {
       const htmlList = this.componentMap[componentName].htmlList.slice(0);
 
       // splice out child componenets even if nested
-      function deleteChildFromHtmlList(array: Component[] | string[], payload: string) {
+      function deleteChildFromHtmlList(
+        array: Component[] | string[],
+        payload: string
+      ) {
         for (let i = array.length; i--; ) {
           if (array[i].children.length) {
             deleteChildFromHtmlList(array[i].children, payload);
@@ -1036,7 +1038,7 @@ const actions: Store<"main", State, {}, Actions> = {
       this.componentMap[this.activeComponent].htmlList.forEach((el) => {
         //adding class into it's child 1st layer
         if (el.children.length !== 0) {
-          el.children.forEach((element: {id: string, class: string}) => {
+          el.children.forEach((element: { id: string; class: string }) => {
             if (payload.id === element.id) {
               element.class = payload.class;
             }
@@ -1055,7 +1057,7 @@ const actions: Store<"main", State, {}, Actions> = {
       if (this.activeComponentObj.htmlList)
         this.componentMap[this.activeComponent].htmlList.forEach((el) => {
           if (el.children.length !== 0) {
-            el.children.forEach((element: {id: string, binding: string}) => {
+            el.children.forEach((element: { id: string; binding: string }) => {
               if (payload.id === element.id) {
                 element.binding = payload.binding;
               }
