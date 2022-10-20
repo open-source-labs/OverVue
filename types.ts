@@ -1,8 +1,5 @@
 // file created to store all TS types in one file for project
 
-import { NoParamCallback } from "original-fs";
-import { deletePropsFromComponent } from "src/store/options/types";
-
 // TS type for State (index.ts) in state folder
 export type State = {
   clicked: boolean;
@@ -49,7 +46,7 @@ export type State = {
   parentSelected: any; // need to look deeper into parentSelected - it seems to take many data types
   copiedComponent: Component | {};
   copyNumber: number;
-  pastedComponent: {};
+  pastedComponent: Component | {};
   exportAsTypescript: "off" | "on";
   exportOauth: "off" | "on";
   exportOauthGithub: "off" | "on";
@@ -73,7 +70,7 @@ export type Actions = {
     route: string;
     children: string[];
   }) => void;
-  // deleteRoute: (payload: string) => void;
+  deleteRoute: (payload: string) => void;
   setActiveRoute: (payload: string) => void;
   setActiveRouteArray: (payload: Component[]) => void;
   setRoutes: (payload: { [key: string]: Component[] }) => void;
@@ -98,10 +95,10 @@ export type Actions = {
   deleteUserActions: (payload: string) => void;
   copyActiveComponent: () => void;
   updatePasteTimer: () => void;
-  // pasteActiveComponent: () => void;
-  // editComponentName: (payload: string) => void;
+  pasteActiveComponent: () => void;
+  editComponentName: (payload: string) => void;
   //Linden
-  addNestedHTML: (payload: { elementName: string; date: string }) => void;
+  addNestedHTML: (payload: { elementName: string; date: number }) => void;
   clearActiveHTML: () => void;
   addNestedNoActive: (payload: { elementName: string; date: string }) => void;
   addToComponentElementList: (payload: {
@@ -231,9 +228,9 @@ export type HtmlElementMap = {
 
 export type HtmlElement = {
   text: String;
-  id: String;
-  children: String[];
-  class: String;
+  id: Number;
+  children: HtmlElement[];
+  class: String[];
   x: Number;
   y: Number;
   z: Number;
@@ -280,7 +277,7 @@ export type Component = {
   actions: string[];
   props: string[];
   state: string[];
-  parent: Record<string, Component>;
+  parent: { [key: string]: Component };
   isActive: boolean;
   idDrag: string;
   idDrop: string;
