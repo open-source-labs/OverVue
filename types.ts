@@ -169,8 +169,8 @@ export interface Actions {
   updateOpenModal: (payload: boolean) => void;
   addActiveComponentNote: (payload: string) => void;
   deleteActiveComponentNote: (payload: string) => void;
-  addActiveComponentClass: (payload: { id: number; class: string }) => void;
-  addBindingText: (payload: { id: number; binding: string }) => void;
+  addActiveComponentClass: (payload: { id: string; class: string }) => void;
+  addBindingText: (payload: { id: string; binding: string }) => void;
   deleteActiveComponentClass: (payload: string) => void;
   addActiveComponentHeight: (payload: { id: number; height: number }) => void;
   addActiveComponentWidth: (payload: { id: number; width: number }) => void;
@@ -195,7 +195,7 @@ export interface Actions {
     imagePath: {
       [x: string]: string;
     };
-    componentMap: string;
+    componentMap: Component[];
     routes: string;
   }) => void;
   importImage: (payload: { route: string; img: string }) => void;
