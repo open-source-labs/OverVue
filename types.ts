@@ -155,13 +155,13 @@ export type Actions = {
   addActiveComponentClass: (payload: { id: string; class: string }) => void;
   addBindingText: (payload: { id: string; binding: string }) => void;
   deleteActiveComponentClass: (payload: string) => void;
-  addActiveComponentHeight: (payload: { id: number; height: number }) => void;
-  addActiveComponentWidth: (payload: { id: number; width: number }) => void;
-  addActiveComponentTop: (payload: { id: number; top: number }) => void;
-  addActiveComponentLeft: (payload: { id: number; left: number }) => void;
+  addActiveComponentHeight: (payload: { id: string; height: number }) => void;
+  addActiveComponentWidth: (payload: { id: string; width: number }) => void;
+  addActiveComponentTop: (payload: { id: string; top: number }) => void;
+  addActiveComponentLeft: (payload: { id: string; left: number }) => void;
   //unsure of below
   addActiveComponentElementNote: (payload: {
-    id: number;
+    id: string;
     note: string;
   }) => void;
   addProject: (payload: {

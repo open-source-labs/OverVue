@@ -948,7 +948,7 @@ const actions: Store<"main", State, {}, Actions> = {
 
       // splice out child componenets even if nested
       function deleteChildFromHtmlList(
-        array: Component[] | string[],
+        array: Component[],
         payload: string
       ) {
         for (let i = array.length; i--; ) {
@@ -961,12 +961,13 @@ const actions: Store<"main", State, {}, Actions> = {
         }
       }
       deleteChildFromHtmlList(htmlList, payload);
-
+        const active = this.componentMap[payload] as Component
       //updates the htmlList with the child components deleted
       this.componentMap[componentName].htmlList = htmlList;
 
       //delete the parent because the payload is no longer a child to the acitive component
-      delete this.componentMap[payload].parent[this.activeComponent];
+      
+      delete active.parent[this.activeComponent];
 
       // add block
     } else {
@@ -986,19 +987,21 @@ const actions: Store<"main", State, {}, Actions> = {
   },
 
   addActiveComponentNote(payload) {
+    const active = this.componentMap[this.activeComponent] as Component
     if (!this.componentMap[this.activeComponent].hasOwnProperty("noteList")) {
-      this.componentMap[this.activeComponent].noteList = [];
+      active.noteList = [];
     }
-    while (this.componentMap[this.activeComponent].noteList.includes(payload)) {
+    while (active.noteList.includes(payload)) {
       payload = "DUPLICATE: " + payload;
     }
-    this.componentMap[this.activeComponent].noteList.push(payload);
+    active.noteList.push(payload);
   },
 
   deleteActiveComponentNote(payload) {
-    this.componentMap[this.activeComponent].noteList.forEach((el, ind) => {
+    const active = this.componentMap[this.activeComponent] as Component
+    active.noteList.forEach((el, ind) => {
       if (payload === el) {
-        this.componentMap[this.activeComponent].noteList.splice(ind, 1);
+        active.noteList.splice(ind, 1);
         return;
       }
     });
@@ -1017,11 +1020,12 @@ const actions: Store<"main", State, {}, Actions> = {
   },
 
   addActiveComponentClass(payload) {
-    if (this.activeComponentObj.htmlList)
+    const active = this.activeComponentObj as Component
+    if (active.htmlList)
       this.componentMap[this.activeComponent].htmlList.forEach((el) => {
         //adding class into it's child 1st layer
         if (el.children.length !== 0) {
-          el.children.forEach((element: { id: string; class: string }) => {
+          el.children.forEach((element: {id: string, class:string}) => {
             if (payload.id === element.id) {
               element.class = payload.class;
             }
@@ -1034,13 +1038,14 @@ const actions: Store<"main", State, {}, Actions> = {
   },
 
   addBindingText(payload) {
+    const active = this.activeComponentObj as Component
     //access the htmlList, add payload to the empty bind obj
     if (payload.binding === "") return;
     else {
-      if (this.activeComponentObj.htmlList)
+      if (active.htmlList)
         this.componentMap[this.activeComponent].htmlList.forEach((el) => {
           if (el.children.length !== 0) {
-            el.children.forEach((element: { id: string; binding: string }) => {
+            el.children.forEach((element: { id: string, binding: string }) => {
               if (payload.id === element.id) {
                 element.binding = payload.binding;
               }
