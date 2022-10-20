@@ -126,27 +126,52 @@ export type Actions = {
   dragDropSortHtmlElements: () => void;
   //Chris
   dragDropSortSelectedHtmlElements: () => void;
-  registerComponent: (payload: object) => void;
+  registerComponent: (payload: Component) => void;
   addComponentToActiveRouteChildren: (payload: string) => void;
-  addComponentToActiveRouteInRouteMap: (payload: object) => void;
-  addComponentToComponentChildren: (payload: object) => void;
+  addComponentToActiveRouteInRouteMap: (payload: Component) => void;
+  addComponentToComponentChildren: (payload: { component: string; value: string }) => void;
   addComponentToComponentMap: (payload: Component) => void;
-  addParent: (payload: object) => void;
-  addCopiedParent: (payload: object) => void;
+  addParent: (payload: Component) => void;
+  addCopiedParent: (payload: Component) => void;
   deleteActiveComponent: () => void;
   parentSelect: (payload: string) => void;
   setActiveComponent: (payload: string) => void;
-  setComponentMap: (payload: object) => void;
+  setComponentMap: (payload: {
+    App: RouteComponentMap;
+    HomeView: RouteComponentMap;
+    [key: string]: RouteComponentMap | Component;
+  }) => void;
   updateComponentChildrenMultiselectValue: (payload: string[]) => void;
-  updateComponentChildrenValue: (payload: object) => void;
+  updateComponentChildrenValue: (payload: {componentName: string; value: Component}) => void;
   updateComponentNameInputValue: (payload: string) => void;
-  updateComponentPosition: (payload: object) => void;
-  updateComponentGridPosition: (payload: object) => void;
-  updateComponentSize: (payload: object) => void;
-  updateColor: (payload: object) => void;
-  editAttribute: (payload: object) => void;
-  updateComponentLayer: (payload: object) => void;
-  updateHtmlLayer: (payload: object) => void;
+  updateComponentPosition: (payload: ResizePayload) => void;
+  updateComponentGridPosition: (payload: ResizePayload) => void;
+  updateComponentSize: (payload: ResizePayload) => void;
+  updateColor: (payload: { 
+    color: string;
+    activeComponent: string;
+    routeArray: [];
+    activeComponentData: null | Component;
+  }) => void;
+  editAttribute: (payload: {
+    attribute: string,
+    value: string,
+    activeComponent: string,
+    routeArray: [],
+    activeComponentData:  null | Component,
+  }) => void;
+  updateComponentLayer: (payload: {
+    activeComponent: string;
+    routeArray: [];
+    activeComponentData: null | Component;
+    z: number;
+  }) => void;
+  updateHtmlLayer: (payload: {
+    activeComponent: string;
+    activeHTML: string;
+    routeArray: [];
+    z: number;
+  }) => void;
   updateActiveComponentChildrenValue: (payload: string) => void;
   //Ji
   updateOpenModal: (payload: boolean) => void;
@@ -229,6 +254,15 @@ export type RouteComponentMap = {
   componentName: string;
   htmlList: HtmlElement[];
 };
+
+//used in Canvas to resize rendered components
+export type ResizePayload = {
+    x: number,
+    y: number,
+    activeComponent: string,
+    routeArray: [],
+    activeComponentData: null | Component
+}
 
 // Type for generic component used in userCreateComponent.js
 export type Component = {
