@@ -196,7 +196,9 @@ export interface Actions {
       [x: string]: string;
     };
     componentMap: Component[];
-    routes: string;
+    routes: {
+      [key: string]: Component[];
+    };
   }) => void;
   importImage: (payload: { route: string; img: string }) => void;
   clearImage: (payload: { route: string }) => void;
