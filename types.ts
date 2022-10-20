@@ -64,7 +64,7 @@ export type State = {
   importTest: string;
 };
 
-export interface Actions {
+export type Actions = {
   emptyState: () => void;
   removeAllStatePropsActions: () => void;
   toggleTutorial: () => void;
@@ -84,18 +84,18 @@ export interface Actions {
   exportTest: (payload: string) => void;
   createAction: (payload: string) => void;
   addActionSelected: (payload: string[]) => void;
-  // addActionToComponent: (payload: string[]) => void;
+  addActionToComponent: (payload: string[]) => void;
   createProp: (payload: string) => void;
   addPropsSelected: (payload: string[]) => void;
-  // addPropsToComponent: (payload: string[]) => void;
+  addPropsToComponent: (payload: string[]) => void;
   createState: (payload: string) => void;
   addStateSelected: (payload: string[]) => void;
-  // addStateToComponent: (payload: string[]) => void;
-  // deleteActionFromComponent: (payload: string) => void;
-  // deletePropsFromComponent: (payload: string) => void;
-  // deleteStateFromComponent: (payload: string) => void;
-  // deleteUserState: (payload: string) => void;
-  // deleteUserActions: (payload: string) => void;
+  addStateToComponent: (payload: string[]) => void;
+  deleteActionFromComponent: (payload: string) => void;
+  deletePropsFromComponent: (payload: string) => void;
+  deleteStateFromComponent: (payload: string) => void;
+  deleteUserState: (payload: string) => void;
+  deleteUserActions: (payload: string) => void;
   copyActiveComponent: () => void;
   updatePasteTimer: () => void;
   // pasteActiveComponent: () => void;
@@ -130,24 +130,7 @@ export interface Actions {
   addComponentToActiveRouteChildren: (payload: string) => void;
   addComponentToActiveRouteInRouteMap: (payload: object) => void;
   addComponentToComponentChildren: (payload: object) => void;
-  addComponentToComponentMap: (payload: {
-    componentName: string;
-    htmlList: Component[];
-    children: string[];
-    parent: Record<string, Component>;
-    isActive: boolean;
-    actions: string[];
-    props: string[];
-    idDrag: string;
-    idDrop: string;
-    htmlAttributes: {
-      class: string;
-      id: string;
-      gridArea: [number, number, number, number];
-    };
-    color: string;
-    state: string[];
-  }) => void;
+  addComponentToComponentMap: (payload: Component) => void;
   addParent: (payload: object) => void;
   addCopiedParent: (payload: object) => void;
   deleteActiveComponent: () => void;
@@ -212,11 +195,25 @@ export interface Actions {
     direction: string;
     densityNum: number;
   }) => void;
-}
+};
 
 // Type for HTML Element Map that used in multiple files
 export type HtmlElementMap = {
   [key: string]: [string, string];
+};
+
+export type HtmlElement = {
+  text: String;
+  id: String;
+  children: String[];
+  class: String;
+  x: Number;
+  y: Number;
+  z: Number;
+  w: Number;
+  h: Number;
+  note: String;
+  binding: String;
 };
 
 // Type for saved projects obj
@@ -228,7 +225,7 @@ export type Projects = {
 export type RouteComponentMap = {
   children: string[];
   componentName: string;
-  htmlList: [];
+  htmlList: HtmlElement[];
 };
 
 // Type for generic component used in userCreateComponent.js
@@ -241,7 +238,7 @@ export type Component = {
   h: number;
   id: number;
   // look into html List any create type
-  htmlList: [];
+  htmlList: HtmlElement[];
   noteList: string[];
   children: string[];
   actions: string[];
