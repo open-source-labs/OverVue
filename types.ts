@@ -200,7 +200,11 @@ export type Actions = {
     imagePath: {
       [x: string]: string;
     };
-    componentMap: Component[];
+    componentMap: {
+      App: RouteComponentMap;
+      HomeView: RouteComponentMap;
+      [key: string]: RouteComponentMap | Component;
+    };
     routes: {
       [key: string]: Component[];
     };
@@ -227,21 +231,21 @@ export type HtmlElementMap = {
 };
 
 export type HtmlElement = {
-  text: String;
-  id: String;
+  text: string;
+  id: string;
   children: {
     id: string,
     class: string
     binding: string
   }[];
-  class: String;
-  x: Number;
-  y: Number;
-  z: Number;
-  w: Number;
-  h: Number;
-  note: String;
-  binding: String;
+  class: string;
+  x: number;
+  y: number;
+  z: number;
+  w: number;
+  h: number;
+  note: string;
+  binding: string;
 };
 
 // Type for saved projects obj

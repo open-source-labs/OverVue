@@ -983,6 +983,7 @@ const actions: Store<"main", State, {}, Actions> = {
           }
         }
       }
+
       deleteChildFromHtmlList(htmlList, payload);
         const active = this.componentMap[payload] as Component
       //updates the htmlList with the child components deleted
