@@ -1,8 +1,5 @@
 // file created to store all TS types in one file for project
 
-import { NoParamCallback } from "original-fs";
-import { deletePropsFromComponent } from "src/store/options/types";
-
 // TS type for State (index.ts) in state folder
 export type State = {
   clicked: boolean;
@@ -49,7 +46,7 @@ export type State = {
   parentSelected: any; // need to look deeper into parentSelected - it seems to take many data types
   copiedComponent: Component | {};
   copyNumber: number;
-  pastedComponent: {};
+  pastedComponent: Component | {};
   exportAsTypescript: "off" | "on";
   exportOauth: "off" | "on";
   exportOauthGithub: "off" | "on";
@@ -73,7 +70,7 @@ export type Actions = {
     route: string;
     children: string[];
   }) => void;
-  // deleteRoute: (payload: string) => void;
+  deleteRoute: (payload: string) => void;
   setActiveRoute: (payload: string) => void;
   setActiveRouteArray: (payload: Component[]) => void;
   setRoutes: (payload: { [key: string]: Component[] }) => void;
@@ -98,10 +95,10 @@ export type Actions = {
   deleteUserActions: (payload: string) => void;
   copyActiveComponent: () => void;
   updatePasteTimer: () => void;
-  // pasteActiveComponent: () => void;
-  // editComponentName: (payload: string) => void;
+  pasteActiveComponent: () => void;
+  editComponentName: (payload: string) => void;
   //Linden
-  addNestedHTML: (payload: { elementName: string; date: string }) => void;
+  addNestedHTML: (payload: { elementName: string; date: number }) => void;
   clearActiveHTML: () => void;
   addNestedNoActive: (payload: { elementName: string; date: string }) => void;
   addToComponentElementList: (payload: {
@@ -179,20 +176,20 @@ export type Actions = {
     z: number;
   }) => void;
   updateActiveComponentChildrenValue: (payload: string) => void;
-  //Ji
+  //Ji line 1002
   updateOpenModal: (payload: boolean) => void;
   addActiveComponentNote: (payload: string) => void;
   deleteActiveComponentNote: (payload: string) => void;
   addActiveComponentClass: (payload: { id: string; class: string }) => void;
   addBindingText: (payload: { id: string; binding: string }) => void;
   deleteActiveComponentClass: (payload: string) => void;
-  addActiveComponentHeight: (payload: { id: number; height: number }) => void;
-  addActiveComponentWidth: (payload: { id: number; width: number }) => void;
-  addActiveComponentTop: (payload: { id: number; top: number }) => void;
-  addActiveComponentLeft: (payload: { id: number; left: number }) => void;
+  addActiveComponentHeight: (payload: { id: string; height: number }) => void;
+  addActiveComponentWidth: (payload: { id: string; width: number }) => void;
+  addActiveComponentTop: (payload: { id: string; top: number }) => void;
+  addActiveComponentLeft: (payload: { id: string; left: number }) => void;
   //unsure of below
   addActiveComponentElementNote: (payload: {
-    id: number;
+    id: string;
     note: string;
   }) => void;
   addProject: (payload: {
@@ -236,17 +233,17 @@ export type HtmlElementMap = {
 };
 
 export type HtmlElement = {
-  text: String;
+  text: string;
   id: string;
-  children: String[];
-  class: String;
-  x: Number;
-  y: Number;
-  z: Number;
-  w: Number;
-  h: Number;
-  note: String;
-  binding: String;
+  children: HtmlElement[];
+  class: string;
+  x: number;
+  y: number;
+  z: number;
+  w: number;
+  h: number;
+  note: string;
+  binding: string;
 };
 
 // Type for saved projects obj
@@ -282,11 +279,12 @@ export type Component = {
   // look into html List any create type
   htmlList: HtmlElement[];
   noteList: string[];
+  classList: string[];
   children: string[];
   actions: string[];
   props: string[];
   state: string[];
-  parent: Record<string, Component>;
+  parent: { [key: string]: Component };
   isActive: boolean;
   idDrag: string;
   idDrop: string;
