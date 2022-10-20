@@ -3,7 +3,7 @@ import {
   breadthFirstSearchParent,
 } from "src/utils/search.util";
 
-import { State, Actions, Component } from "../../types";
+import { State, Actions, Component, HtmlElement } from "../../types";
 import { Store } from "pinia";
 import localforage from "localforage";
 // *** GLOBAL *** //////////////////////////////////////////////
@@ -468,7 +468,10 @@ const actions: Store<"main", State, {}, Actions> = {
         }
       }
     } else {
-      const element = breadthFirstSearchParent(htmlList, id);
+      const element = breadthFirstSearchParent(htmlList, id) as {
+        evaluated: HtmlElement;
+        index: number;
+      };
       element.evaluated.children.splice(element.index, 1);
     }
     if (id === this.activeHTML) {
@@ -518,8 +521,13 @@ const actions: Store<"main", State, {}, Actions> = {
       const newID = breadthFirstSearchParent(
         this.componentMap[this.activeComponent].htmlList,
         payload
-      );
+      ) as {
+        evaluated: HtmlElement;
+        index: number;
+      };
       const newLayer = { ...this.activeLayer };
+      // id: string;
+      // lineage: string[];
       newLayer.id = newID.evaluated.id;
       newLayer.lineage.pop();
       this.activeLayer = newLayer;
@@ -531,13 +539,15 @@ const actions: Store<"main", State, {}, Actions> = {
   //store id of dragged html element in activeComponent
   setIdDrag(payload) {
     const componentName = this.activeComponent;
-    this.componentMap[componentName].idDrag = payload;
+    const active = this.componentMap[componentName] as Component;
+    active.idDrag = payload;
   },
 
   //store id of html element whose place the dragged html element is dropped on in activeComponent
   setIdDrop(payload) {
     const componentName = this.activeComponent;
-    this.componentMap[componentName].idDrop = payload;
+    const active = this.componentMap[componentName] as Component;
+    active.idDrop = payload;
   },
 
   //store id of dragged selected html element when creating a component
@@ -553,17 +563,18 @@ const actions: Store<"main", State, {}, Actions> = {
   // use idDrag and idDrop to rearrange the htmlList of the activeComponent to perform drag-and-drop functionality
   dragDropSortHtmlElements() {
     const componentName = this.activeComponent;
-    const idDrag = this.componentMap[componentName].idDrag;
-    const idDrop = this.componentMap[componentName].idDrop;
+    const active = this.componentMap[componentName] as Component;
+    const idDrag = active.idDrag;
+    const idDrop = active.idDrop;
 
     if (idDrag !== idDrop && idDrag !== "" && idDrop !== "") {
-      let indexDrag;
-      let indexDrop;
+      let indexDrag: number = 0;
+      let indexDrop: number = 0;
       const htmlList = this.componentMap[componentName].htmlList.slice(0);
 
       if (this.activeLayer.id === "") {
         //find the indexes belonging to the html elements with idDrag and idDrop
-        htmlList.forEach((el: { id: number }, i: number) => {
+        htmlList.forEach((el: HtmlElement, i: number) => {
           if (el.id === idDrag) {
             indexDrag = i;
           } else if (el.id === idDrop) {
@@ -575,8 +586,14 @@ const actions: Store<"main", State, {}, Actions> = {
         htmlList.splice(indexDrop, 0, draggedEl);
       } else {
         //Use breadFirstSearchParent to find the parent and indexes of nested html elements with idDrag and idDrop
-        const nestedDrag = breadthFirstSearchParent(htmlList, idDrag);
-        const nestedDrop = breadthFirstSearchParent(htmlList, idDrop);
+        const nestedDrag = breadthFirstSearchParent(htmlList, idDrag) as {
+          evaluated: HtmlElement;
+          index: number;
+        };
+        const nestedDrop = breadthFirstSearchParent(htmlList, idDrop) as {
+          evaluated: HtmlElement;
+          index: number;
+        };
         //use the indexes and parents to rearrange htmlList
         let nestedEl = nestedDrag.evaluated.children.splice(
           nestedDrag.index,
@@ -587,8 +604,8 @@ const actions: Store<"main", State, {}, Actions> = {
       this.componentMap[componentName].htmlList = htmlList;
     }
     //reset the ids
-    this.componentMap[componentName].idDrag = "";
-    this.componentMap[componentName].idDrop = "";
+    active.idDrag = "";
+    active.idDrop = "";
   },
 
   // use selectedIdDrag and selectedIdDrop to rearrange the selectedElementList to perform drag-and-drop functionality
