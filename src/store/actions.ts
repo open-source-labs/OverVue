@@ -172,7 +172,7 @@ const actions: Store<"main", State, {}, Actions> = {
   },
 
   addStateToComponent(payload) {
-    const active = this.componentMap[this.activeComponent] as Component;
+    const active = this.componentMap[this.activeComponent];
 
     if (!active.state) active.state = payload;
     else {
@@ -187,20 +187,21 @@ const actions: Store<"main", State, {}, Actions> = {
   },
 
   deleteActionFromComponent(payload) {
-    const active = this.componentMap[this.activeComponent] as Component;
-    active.actions = active.actions.filter(
-      (action: string) => action !== payload
-    );
+    this.componentMap[this.activeComponent].actions = this.componentMap[
+      this.activeComponent
+    ].actions.filter((action) => action !== payload);
   },
 
   deletePropsFromComponent(payload) {
-    const active = this.componentMap[this.activeComponent] as Component;
-    active.props = active.props.filter((prop: string) => prop !== payload);
+    this.componentMap[this.activeComponent].props = this.componentMap[
+      this.activeComponent
+    ].props.filter((prop) => prop !== payload);
   },
 
   deleteStateFromComponent(payload) {
-    const active = this.componentMap[this.activeComponent] as Component;
-    active.state = active.state.filter((state: string) => state !== payload);
+    this.componentMap[this.activeComponent].state = this.componentMap[
+      this.activeComponent
+    ].state.filter((state) => state !== payload);
   },
 
   deleteUserState(payload) {
@@ -209,8 +210,9 @@ const actions: Store<"main", State, {}, Actions> = {
       // first don't go through if component is App or Homeview
       if (component === "App" || component === "HomeView") continue;
       // filter out if there is a match
-      const active = this.componentMap[component] as Component;
-      active.state = active.state.filter((state: string) => state !== payload);
+      this.componentMap[component].state = this.componentMap[
+        component
+      ].state.filter((state) => state !== payload);
     }
     // remove from userState
     let index = this.userState.indexOf(payload);
@@ -222,10 +224,9 @@ const actions: Store<"main", State, {}, Actions> = {
       // first don't go through if component is App or Homeview
       if (component === "App" || component === "HomeView") continue;
       // splice out if there is a match
-      const active = this.componentMap[component] as Component;
-      active.actions = active.actions.filter(
-        (action: string) => action !== payload
-      );
+      this.componentMap[component].actions = this.componentMap[
+        component
+      ].actions.filter((action) => action !== payload);
     }
     let index = this.userActions.indexOf(payload);
     this.userActions.splice(index, 1);
@@ -648,7 +649,7 @@ const actions: Store<"main", State, {}, Actions> = {
     Because we have to initialize a whole bunch of propertiess
     which are determined by the choices made on the left hand panel
      */
-    const { componentName }: { ComponentName: string } = payload;
+    const { componentName }  = payload;
     // if the component name doesn't already exist,
     // then add the component to the display
     if (!this.componentMap[componentName]) {
