@@ -189,19 +189,19 @@ const actions: Store<"main", State, {}, Actions> = {
   deleteActionFromComponent(payload) {
     this.componentMap[this.activeComponent].actions = this.componentMap[
       this.activeComponent
-    ].actions.filter((action) => action !== payload);
+    ].actions.filter((action: string) => action !== payload);
   },
 
   deletePropsFromComponent(payload) {
     this.componentMap[this.activeComponent].props = this.componentMap[
       this.activeComponent
-    ].props.filter((prop) => prop !== payload);
+    ].props.filter((prop: string) => prop !== payload);
   },
 
   deleteStateFromComponent(payload) {
     this.componentMap[this.activeComponent].state = this.componentMap[
       this.activeComponent
-    ].state.filter((state) => state !== payload);
+    ].state.filter((state: string) => state !== payload);
   },
 
   deleteUserState(payload) {
@@ -212,7 +212,7 @@ const actions: Store<"main", State, {}, Actions> = {
       // filter out if there is a match
       this.componentMap[component].state = this.componentMap[
         component
-      ].state.filter((state) => state !== payload);
+      ].state.filter((state: string) => state !== payload);
     }
     // remove from userState
     let index = this.userState.indexOf(payload);
@@ -226,7 +226,7 @@ const actions: Store<"main", State, {}, Actions> = {
       // splice out if there is a match
       this.componentMap[component].actions = this.componentMap[
         component
-      ].actions.filter((action) => action !== payload);
+      ].actions.filter((action: string) => action !== payload);
     }
     let index = this.userActions.indexOf(payload);
     this.userActions.splice(index, 1);

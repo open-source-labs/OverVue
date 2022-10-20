@@ -69,34 +69,37 @@ export interface Actions {
   removeAllStatePropsActions: () => void;
   toggleTutorial: () => void;
   addRoute: (payload: string) => void;
-  addRouteToComponentMap: (payload: { route: string; children: [] }) => void;
+  addRouteToComponentMap: (payload: {
+    route: string;
+    children: string[];
+  }) => void;
   // deleteRoute: (payload: string) => void;
   setActiveRoute: (payload: string) => void;
-  // setActiveRouteArray: (payload: {}) => void;
-  // setRoutes: (payload: []) => void;
-  // addRouteToRouteMap: (payload: string) => void;
+  setActiveRouteArray: (payload: Component[]) => void;
+  setRoutes: (payload: { [key: string]: Component[] }) => void;
+  addRouteToRouteMap: (payload: string) => void;
   ExportAsTypescript: (payload: "on" | "off") => void;
   ExportOauth: (payload: "on" | "off") => void;
   ExportOauthGithub: (payload: "on" | "off") => void;
   exportTest: (payload: string) => void;
   createAction: (payload: string) => void;
   addActionSelected: (payload: string[]) => void;
-  // addActionToComponent:
+  // addActionToComponent: (payload: string[]) => void;
   createProp: (payload: string) => void;
   addPropsSelected: (payload: string[]) => void;
-  // addPropsToComponent:
+  // addPropsToComponent: (payload: string[]) => void;
   createState: (payload: string) => void;
   addStateSelected: (payload: string[]) => void;
-  // addStateToComponent:
-  // deleteActionFromComponent:
-  // deletePropsFromComponent:
-  // deleteStateFromComponent:
-  // deleteUserState:
-  // deleteUserActions:
+  // addStateToComponent: (payload: string[]) => void;
+  // deleteActionFromComponent: (payload: string) => void;
+  // deletePropsFromComponent: (payload: string) => void;
+  // deleteStateFromComponent: (payload: string) => void;
+  // deleteUserState: (payload: string) => void;
+  // deleteUserActions: (payload: string) => void;
   copyActiveComponent: () => void;
   updatePasteTimer: () => void;
   // pasteActiveComponent: () => void;
-  // editComponentName:
+  // editComponentName: (payload: string) => void;
   //Linden
   addNestedHTML: (payload: { elementName: string; date: string }) => void;
   clearActiveHTML: () => void;
@@ -132,18 +135,18 @@ export interface Actions {
     htmlList: Component[];
     children: string[];
     parent: Record<string, Component>;
-    isActive: boolean,
-    actions:string[];
-    props: string[],
-    idDrag: string,
-    idDrop: string,
+    isActive: boolean;
+    actions: string[];
+    props: string[];
+    idDrag: string;
+    idDrop: string;
     htmlAttributes: {
       class: string;
       id: string;
       gridArea: [number, number, number, number];
     };
     color: string;
-    state: string[],
+    state: string[];
   }) => void;
   addParent: (payload: object) => void;
   addCopiedParent: (payload: object) => void;
@@ -166,76 +169,48 @@ export interface Actions {
   updateOpenModal: (payload: boolean) => void;
   addActiveComponentNote: (payload: string) => void;
   deleteActiveComponentNote: (payload: string) => void;
-  addActiveComponentClass: (payload: {
-    id: number,
-    class: string
-  }) => void;
-  addBindingText: (payload: {
-    id: number,
-    binding: string
-  }) => void;
+  addActiveComponentClass: (payload: { id: number; class: string }) => void;
+  addBindingText: (payload: { id: number; binding: string }) => void;
   deleteActiveComponentClass: (payload: string) => void;
-  addActiveComponentHeight: (payload: {
-    id: number,
-    height: number
-  }) => void;
-  addActiveComponentWidth: (payload: {
-    id: number,
-    width: number
-  }) => void;
-  addActiveComponentTop: (payload: {
-    id: number,
-    top: number
-  }) => void;
-  addActiveComponentLeft: (payload: {
-    id: number,
-    left: number
-  }) => void;
+  addActiveComponentHeight: (payload: { id: number; height: number }) => void;
+  addActiveComponentWidth: (payload: { id: number; width: number }) => void;
+  addActiveComponentTop: (payload: { id: number; top: number }) => void;
+  addActiveComponentLeft: (payload: { id: number; left: number }) => void;
   //unsure of below
   addActiveComponentElementNote: (payload: {
-    id: number,
-    note: string
+    id: number;
+    note: string;
   }) => void;
   addProject: (payload: {
-    filename: string, lastSavedLocation: string
+    filename: string;
+    lastSavedLocation: string;
   }) => void;
   changeActiveTab: (payload: number) => void;
   deleteProjectTab: (payload: number) => void;
   //unsure of below
   openProject: (payload: {
-    userProps: string[],
-    userActions: string[],
-    userState: string[],
+    userProps: string[];
+    userActions: string[];
+    userState: string[];
     imagePath: {
-      [x: string]: string
-    },
-    componentMap: string,
-    routes: string
+      [x: string]: string;
+    };
+    componentMap: string;
+    routes: string;
   }) => void;
-  importImage: (payload: {
-    route: string,
-    img: string
-  }) => void;
-  clearImage: (payload: {
-    route: string
-  }) => void;
+  importImage: (payload: { route: string; img: string }) => void;
+  clearImage: (payload: { route: string }) => void;
   //unsure of below
-  setImagePath: (payload: {
-    [x: string]: string
-  }) => void;
-  changeLib: (payload: {
-    libName: string
-  }) => void;
+  setImagePath: (payload: { [x: string]: string }) => void;
+  changeLib: (payload: { libName: string }) => void;
   changeLibComponentDisplay: (payload: {
-    displaylibComponent: boolean
+    displaylibComponent: boolean;
   }) => void;
   //unsure of below
-  addLibComponents: (payload: {
-    [x: string] : string | string[];
-  }) => void;
+  addLibComponents: (payload: { [x: string]: string | string[] }) => void;
   changeGridDensity: (payload: {
-    direction: string,
-    densityNum: number,
+    direction: string;
+    densityNum: number;
   }) => void;
 }
 
