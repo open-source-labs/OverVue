@@ -625,8 +625,8 @@ const actions: Store<"main", State, {}, Actions> = {
     ) {
       const htmlList = this.selectedElementList.slice(0);
 
-      let indexDrag;
-      let indexDrop;
+      let indexDrag: number = 0;
+      let indexDrop: number = 0;
       //find the indexes belonging to the html elements with the selectedIdDrag and selectedIdDrop
       htmlList.forEach((el: { id: string }, i: number) => {
         if (el.id === selectedIdDrag) {

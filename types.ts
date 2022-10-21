@@ -131,7 +131,10 @@ export type Actions = {
     value: string;
   }) => void;
   addComponentToComponentMap: (payload: Component) => void;
-  addParent: (payload: Component) => void;
+  addParent: (payload: {
+    componentName: string;
+    componentMap: Component[];
+  }) => void;
   addCopiedParent: (payload: Component) => void;
   deleteActiveComponent: () => void;
   parentSelect: (payload: string) => void;
@@ -180,6 +183,9 @@ export type Actions = {
   updateOpenModal: (payload: boolean) => void;
   addActiveComponentNote: (payload: string) => void;
   deleteActiveComponentNote: (payload: string) => void;
+  openColorModal: () => void;
+  // openNoteModal: () => void;
+  openAttributeModal: () => void;
   addActiveComponentClass: (payload: { id: string; class: string }) => void;
   addBindingText: (payload: { id: string; binding: string }) => void;
   deleteActiveComponentClass: (payload: string) => void;
@@ -262,6 +268,8 @@ export type RouteComponentMap = {
 export type ResizePayload = {
   x: number;
   y: number;
+  h: number;
+  w: number;
   activeComponent: string;
   routeArray: [];
   activeComponentData: null | Component;
