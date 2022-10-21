@@ -153,26 +153,26 @@ export type Actions = {
   updateColor: (payload: {
     color: string;
     activeComponent: string;
-    routeArray: [];
+    routeArray: Component[];
     activeComponentData: null | Component;
   }) => void;
   editAttribute: (payload: {
     attribute: string;
     value: string;
     activeComponent: string;
-    routeArray: [];
+    routeArray: Component[];
     activeComponentData: null | Component;
   }) => void;
   updateComponentLayer: (payload: {
     activeComponent: string;
-    routeArray: [];
+    routeArray: Component[];
     activeComponentData: null | Component;
     z: number;
   }) => void;
   updateHtmlLayer: (payload: {
     activeComponent: string;
     activeHTML: string;
-    routeArray: [];
+    routeArray: Component[];
     z: number;
   }) => void;
   updateActiveComponentChildrenValue: (payload: string) => void;
