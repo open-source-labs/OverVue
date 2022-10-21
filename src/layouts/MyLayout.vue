@@ -7,7 +7,7 @@ Description:
 <template>
   <!-- original layout: <q-layout view="hHh LpR lFf"> -->
   <q-layout view="hHh lpr fFf">
-    <div v-if="!this.right" class="resizeDragTwo" @mousedown="hideRight">
+    <div v-if="!right" class="resizeDragTwo" @mousedown="hideRight">
       <div class="dragLineTwo"></div>
     </div>
     <!-- the top header of OverVue -->
@@ -53,7 +53,7 @@ Description:
                 color="secondary"
                 label="Getting Started"
                 no-caps
-                @click="this.toggleTutorial"
+                @click="toggleTutorial"
               />
 
               <SlackLoginWindow />
@@ -61,12 +61,12 @@ Description:
                 <p class="typescript-text"><b>TypeScript: </b></p>
                 <label for="typescript" class="switch">
                   <input
-                    v-if="this.exportAsTypescript === 'on'"
+                    v-if="exportAsTypescript === 'on'"
                     class="switch-input"
                     type="checkbox"
                     name="typescript"
                     id="typescript"
-                    :value="this.exportAsTypescript"
+                    :value="exportAsTypescript"
                     @change="syncTypescriptFlag"
                     checked
                   />
@@ -76,18 +76,18 @@ Description:
                     type="checkbox"
                     name="typescript"
                     id="typescript"
-                    :value="this.exportAsTypescript"
+                    :value="exportAsTypescript"
                     @change="syncTypescriptFlag"
                   />
                   <span
                     class="switch-label"
-                    :value="this.exportAsTypescript"
+                    :value="exportAsTypescript"
                     data-on="on"
                     data-off="off"
                   ></span>
                   <span
                     class="switch-handle"
-                    :value="this.exportAsTypescript"
+                    :value="exportAsTypescript"
                   ></span>
                 </label>
               </div>
@@ -96,12 +96,12 @@ Description:
                 <p class="Test-text"><b> Vue Test: </b></p>
                 <label for="Test" class="switch">
                   <input
-                    v-if="this.importTest === 'on'"
+                    v-if="importTest === 'on'"
                     class="switch-input"
                     type="checkbox"
                     name="Test"
                     id="Test"
-                    :value="this.importTest"
+                    :value="importTest"
                     @change="syncTestFlag"
                     checked
                   />
@@ -111,16 +111,16 @@ Description:
                     type="checkbox"
                     name="Test"
                     id="Test"
-                    :value="this.importTest"
+                    :value="importTest"
                     @change="syncTestFlag"
                   />
                   <span
                     class="switch-label"
-                    :value="this.importTest"
+                    :value="importTest"
                     data-on="on"
                     data-off="off"
                   ></span>
-                  <span class="switch-handle" :value="this.importTest"></span>
+                  <span class="switch-handle" :value="importTest"></span>
                 </label>
               </div>
 
@@ -134,12 +134,12 @@ Description:
                     </p>
                     <label for="Oauth" class="switch">
                       <input
-                        v-if="this.exportOauth === 'on'"
+                        v-if="exportOauth === 'on'"
                         class="switch-input"
                         type="checkbox"
                         name="Oauth"
                         id="Oauth"
-                        :value="this.exportOauth"
+                        :value="exportOauth"
                         @change="syncOauthFlag"
                         checked
                       />
@@ -149,19 +149,16 @@ Description:
                         type="checkbox"
                         name="Oauth"
                         id="Oauth"
-                        :value="this.exportOauth"
+                        :value="exportOauth"
                         @change="syncOauthFlag"
                       />
                       <span
                         class="switch-label"
-                        :value="this.exportOauth"
+                        :value="exportOauth"
                         data-on="on"
                         data-off="off"
                       ></span>
-                      <span
-                        class="switch-handle"
-                        :value="this.exportOauth"
-                      ></span>
+                      <span class="switch-handle" :value="exportOauth"></span>
                     </label>
                   </div>
 
@@ -173,12 +170,12 @@ Description:
                     </p>
                     <label for="OauthGit" class="switch">
                       <input
-                        v-if="this.exportOauthGithub === 'on'"
+                        v-if="exportOauthGithub === 'on'"
                         class="switch-input"
                         type="checkbox"
                         name="OauthGit"
                         id="OauthGit"
-                        :value="this.exportOauthGithub"
+                        :value="exportOauthGithub"
                         @change="syncOauthGitFlag"
                         checked
                       />
@@ -188,18 +185,18 @@ Description:
                         type="checkbox"
                         name="OauthGit"
                         id="OauthGit"
-                        :value="this.exportOauthGithub"
+                        :value="exportOauthGithub"
                         @change="syncOauthGitFlag"
                       />
                       <span
                         class="switch-label"
-                        :value="this.exportOauthGithub"
+                        :value="exportOauthGithub"
                         data-on="on"
                         data-off="off"
                       ></span>
                       <span
                         class="switch-handle"
-                        :value="this.exportOauthGithub"
+                        :value="exportOauthGithub"
                       ></span>
                     </label>
                   </div>
@@ -253,7 +250,7 @@ Description:
       v-model="right"
       side="right"
       behavior="desktop"
-      :width="this.dashWidth"
+      :width="dashWidth"
       bordered
     >
       <div
@@ -277,7 +274,7 @@ Description:
 </template>
 
 <!-- COMPOSITION API -->
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from "vue";
 import { useStore } from "../store/main";
 

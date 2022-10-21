@@ -21,10 +21,11 @@ export default {
 };
 </script>
 
-<script setup>
+<script setup lang="ts">
 import localforage from "localforage";
 import { useStore } from "../../store/main";
 import { computed } from "vue";
+import { HtmlElement } from "app/types";
 const Mousetrap = require("mousetrap");
 const { fs, ipcRenderer } = window;
 
@@ -35,7 +36,8 @@ const activeTab = computed(() => store.activeTab);
 const stateComputed = computed(() => store);
 const routes = computed(() => store.routes);
 
-const addProject = (payload) => store.addProject(payload);
+const addProject: typeof store.addProject = (payload) =>
+  store.addProject(payload);
 
 const showSaveJSONDialog = () => {
   ipcRenderer
@@ -57,7 +59,7 @@ const showSaveJSONDialog = () => {
       console.log(err);
     });
 };
-const parseFileName = (file) => {
+const parseFileName = (file: string) => {
   if (file) return file.split("/").pop();
 };
 
@@ -82,7 +84,7 @@ const parseAndDelete = (htmlList) => {
 
 const saveProjectJSON = () => showSaveJSONDialog();
 
-const saveJSONLocation = (data) => {
+const saveJSONLocation = (data: string) => {
   let deleteKey = projects.value[activeTab.value].filename; // store.state.projects
   localforage
     .removeItem(deleteKey)
@@ -91,7 +93,7 @@ const saveJSONLocation = (data) => {
       console.log(err);
     });
 
-  let fileName = parseFileName(data);
+  let fileName: string | undefined = parseFileName(data);
 
   if (fileName) {
     addProject({
@@ -110,7 +112,7 @@ const saveJSONLocation = (data) => {
   }
 };
 
-const notifySlack = (fileName, url) => {
+const notifySlack = (fileName: string | undefined, url) => {
   remote.dialog.showMessageBox(
     {
       title: "Notify Slack?",

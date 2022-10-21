@@ -65,7 +65,7 @@ export default {
 };
 </script>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, watch } from "vue";
 import { useStore } from "../../store/main.js";
 import { breadthFirstSearch } from "../../utils/search.util";
@@ -112,7 +112,7 @@ const renderList = computed({
       activeLayer.value.id
     );
     let sortedHTML = activeElement.children
-      .map((el, index) => [el.text, index, el.id])
+      .map((el, index: number) => [el.text, index, el.id])
       .filter((el) => {
         return el[0] !== undefined;
       });
@@ -142,32 +142,38 @@ const moreExceptions = () => {
 
 const parentSelected = (payload) => store.parentSelected(payload);
 
-const setActiveHTML = (payload) => store.setActiveHTML(payload);
-const setActiveLayer = (payload) => store.setActiveLayer(payload);
-const upOneLayer = (payload) => store.upOneLayer(payload);
-const setSelectedIdDrag = (payload) => store.setSelectedIdDrag(payload);
-const setIdDrag = (payload) => store.setIdDrag(payload);
-const setSelectedIdDrop = (payload) => store.setSelectedIdDrop(payload);
-const setIdDrop = (payload) => store.setIdDrop(payload);
-const dragDropSortHtmlElements = (payload) =>
-  store.dragDropSortHtmlElements(payload);
-const dragDropSortSelectedHtmlElements = (payload) =>
-  store.dragDropSortSelectedHtmlElements(payload);
-const openAttributeModal = (payload) => store.openAttributeModal(payload);
-const addActiveComponentClass = (payload) =>
-  store.addActiveComponentClass(payload);
-const addBindingText = (payload) => store.addBindingText(payload);
-const clearActiveHTML = (payload) => store.clearActiveHTML(payload);
+const setActiveHTML: typeof store.setActiveHTML = (payload) =>
+  store.setActiveHTML(payload);
+const setActiveLayer: typeof store.setActiveLayer = (payload) =>
+  store.setActiveLayer(payload);
+const upOneLayer: typeof store.upOneLayer = (payload) =>
+  store.upOneLayer(payload);
+const setSelectedIdDrag: typeof store.setSelectedIdDrag = (payload) =>
+  store.setSelectedIdDrag(payload);
+const setIdDrag: typeof store.setIdDrag = (payload) => store.setIdDrag(payload);
+const setSelectedIdDrop: typeof store.setSelectedIdDrop = (payload) =>
+  store.setSelectedIdDrop(payload);
+const setIdDrop: typeof store.setIdDrop = (payload) => store.setIdDrop(payload);
+const dragDropSortHtmlElements = () => store.dragDropSortHtmlElements();
+const dragDropSortSelectedHtmlElements = () =>
+  store.dragDropSortSelectedHtmlElements();
+const openAttributeModal = () => store.openAttributeModal();
+const addActiveComponentClass: typeof store.addActiveComponentClass = (
+  payload
+) => store.addActiveComponentClass(payload);
+const addBindingText: typeof store.addBindingText = (payload) =>
+  store.addBindingText(payload);
+const clearActiveHTML = () => store.clearActiveHTML();
 
 const deleteElement = (id) => {
   if (activeComponent.value === "") store.deleteSelectedElement(id[0]);
   else store.deleteFromComponentHtmlList(id[1]);
 };
 
-const closeMenu = (element) => {
+const closeMenu = () => {
   if (activeComponent.value !== "") {
     clearActiveHTML();
-    openAttributeModal(element);
+    openAttributeModal();
   }
 };
 

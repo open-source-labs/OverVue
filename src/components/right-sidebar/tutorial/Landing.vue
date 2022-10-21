@@ -32,7 +32,7 @@
 </template>
 
 <!-- COMPOSITION API SYNTAX -->
-<script setup>
+<script setup lang="ts">
 import { useStore } from "../../../store/main.js";
 const { shell } = window;
 
@@ -41,7 +41,7 @@ const emit = defineEmits(["nextTab", "versionTab"]);
 
 const toggleTutorial = () => store.toggleTutorial();
 const nextTab = () => emit("nextTab");
-const openUrl = (url) => shell.openExternal(url, { activate: true });
+const openUrl = (url: string) => shell.openExternal(url, { activate: true });
 </script>
 
 <!-- OLD OPTIONS API SYNTAX -->

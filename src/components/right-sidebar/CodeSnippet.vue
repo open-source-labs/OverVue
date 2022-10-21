@@ -8,10 +8,8 @@ Description:
 
 <template>
   <div class="codesnippet-container">
-    <div class="top-p" v-if="this.activeComponent === ''">
-      Select a component
-    </div>
-    <div v-else>{{ `${this.activeComponent}.vue` }}</div>
+    <div class="top-p" v-if="activeComponent === ''">Select a component</div>
+    <div v-else>{{ `${activeComponent}.vue` }}</div>
     <prism-editor
       v-model="code"
       :highlight="highlighter"
@@ -23,7 +21,7 @@ Description:
 </template>
 
 <!-- COMPOSITION API SYNTAX -->
-<script setup>
+<script setup lang="ts">
 import { PrismEditor } from "vue-prism-editor";
 import "vue-prism-editor/dist/prismeditor.min.css";
 import { highlight, languages } from "prismjs/components/prism-core";
@@ -66,7 +64,7 @@ const snippetInvoke = () => {
   }
 };
 
-const highlighter = (myCode) => {
+const highlighter = (myCode: string) => {
   return highlight(myCode, languages.js);
 };
 
@@ -77,7 +75,7 @@ const getWindowHeight = () => {
 };
 
 // Calls createTemplate and createBoiler to generate snippet
-const createCodeSnippet = (componentName, children) => {
+const createCodeSnippet = (componentName: string, children: string[]) => {
   let result = `${createTemplate(componentName, children)}${createBoiler(
     componentName,
     children
@@ -86,7 +84,7 @@ const createCodeSnippet = (componentName, children) => {
 };
 
 // Creates beginner boilerplate
-const createTemplate = (componentName) => {
+const createTemplate = (componentName: string) => {
   let templateTagStr = writeTemplateTag(componentName, activeComponent.value); // testing 2nd arg
   let routeStr = "";
   const arrOfChildComp = componentMap.value[componentName].children;
@@ -120,7 +118,7 @@ const createTemplate = (componentName) => {
 };
 
 // Creates <template> boilerplate
-const writeTemplateTag = (componentName, activeComponent) => {
+const writeTemplateTag = (componentName: string, activeComponent: string) => {
   const htmlElementMap = {
     div: ["<div", "</div>"],
     button: ["<button", "</button>"],
