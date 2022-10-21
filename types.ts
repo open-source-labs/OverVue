@@ -174,6 +174,9 @@ export type Actions = {
   updateOpenModal: (payload: boolean) => void;
   addActiveComponentNote: (payload: string) => void;
   deleteActiveComponentNote: (payload: string) => void;
+  openColorModal: () => void;
+  openNoteModal: () => void;
+  // openAttributeModal: () => void;
   addActiveComponentClass: (payload: { id: string; class: string }) => void;
   addBindingText: (payload: { id: string; binding: string }) => void;
   deleteActiveComponentClass: (payload: string) => void;
@@ -200,7 +203,11 @@ export type Actions = {
     imagePath: {
       [x: string]: string;
     };
-    componentMap: Component[];
+    componentMap: {
+      App: RouteComponentMap;
+      HomeView: RouteComponentMap;
+      [key: string]: RouteComponentMap | Component;
+    };
     routes: {
       [key: string]: Component[];
     };
