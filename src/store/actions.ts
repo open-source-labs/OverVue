@@ -996,8 +996,7 @@ const actions: Store<"main", State, {}, Actions> = {
       this.componentMap[this.activeRoute].children = this.componentMap[
         this.activeRoute
       ].children.filter((el) => payload !== el);
-      const newActive = this.componentMap[child[child.length - 1]] as Component
-      newActive.parent[this.activeComponent] =
+      this.componentMap[child[child.length - 1]].parent[this.activeComponent] =
         this.componentMap[this.activeComponent];
     }
   },
