@@ -239,15 +239,7 @@ export type HtmlElementMap = {
 export type HtmlElement = {
   text: string;
   id: string;
-<<<<<<< HEAD
-  children: {
-    id: string,
-    class: string
-    binding: string
-  }[];
-=======
   children: HtmlElement[];
->>>>>>> 9456c5686113166c60bdf1fe73f9802b25f6aca1
   class: string;
   x: number;
   y: number;
