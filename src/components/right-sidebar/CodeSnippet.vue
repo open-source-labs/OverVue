@@ -30,6 +30,7 @@ import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism-tomorrow.css"; // import syntax highlighting styles
 import { useStore } from "../../store/main.js";
+import { Component, HtmlElement } from "../../../types";
 import {
   ref,
   computed,
@@ -37,6 +38,7 @@ import {
   onMounted,
   onBeforeUnmount,
   nextTick,
+  Ref,
 } from "vue";
 
 const store = useStore(); // template
@@ -44,7 +46,7 @@ const store = useStore(); // template
 // data
 const code = ref("Your component boilerplate will be displayed here.");
 const lineNumbers = ref(true);
-const height = ref(null);
+const height: Ref<null | number> = ref(null);
 
 // computed
 const componentMap = computed(() => store.componentMap);
@@ -76,7 +78,7 @@ const getWindowHeight = () => {
 
 // Calls createTemplate and createBoiler to generate snippet
 const createCodeSnippet = (componentName: string, children: string[]) => {
-  let result = `${createTemplate(componentName, children)}${createBoiler(
+  let result = `${createTemplate(componentName /*, children*/)}${createBoiler(
     componentName,
     children
   )}`;
@@ -89,28 +91,30 @@ const createTemplate = (componentName: string) => {
   let routeStr = "";
   const arrOfChildComp = componentMap.value[componentName].children;
   arrOfChildComp.forEach((childName) => {
-    let childNameClass = componentMap.value[childName].htmlAttributes.class;
+    const childNameComponent = componentMap.value[childName] as Component; // added this typing to remove htmlAttributes error on line below
+    let childNameClass = childNameComponent.htmlAttributes.class;
     let childNameClassFullStr =
       childNameClass === "" ? "" : ` class = '${childNameClass}'`;
     routeStr += `    <${childName}${childNameClassFullStr}></${childName}>\n`;
   });
-  if (activeComponentObj.value.htmlAttributes) {
+  const activeCompObj = activeComponentObj.value as Component; // typed this to fix activeComponentObj.value "is possibly null" error
+  if (activeCompObj.htmlAttributes) {
     //if/else statement to determine if there are class and id attributes present in the html element
     if (
-      activeComponentObj.value.htmlAttributes.class !== "" &&
-      activeComponentObj.value.htmlAttributes.id !== ""
+      activeCompObj.htmlAttributes.class !== "" &&
+      activeCompObj.htmlAttributes.id !== ""
     ) {
-      return `<template>\n  <div id = "${activeComponentObj.value.htmlAttributes.id}" class = "${activeComponentObj.value.htmlAttributes.class}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
+      return `<template>\n  <div id = "${activeCompObj.htmlAttributes.id}" class = "${activeCompObj.htmlAttributes.class}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
     } else if (
-      activeComponentObj.value.htmlAttributes.class !== "" &&
-      activeComponentObj.value.htmlAttributes.id === ""
+      activeCompObj.htmlAttributes.class !== "" &&
+      activeCompObj.htmlAttributes.id === ""
     ) {
-      return `<template>\n  <div class = "${activeComponentObj.value.htmlAttributes.class}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
+      return `<template>\n  <div class = "${activeCompObj.htmlAttributes.class}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
     } else if (
-      activeComponentObj.value.htmlAttributes.class === "" &&
-      activeComponentObj.value.htmlAttributes.id !== ""
+      activeCompObj.htmlAttributes.class === "" &&
+      activeCompObj.htmlAttributes.id !== ""
     )
-      return `<template>\n  <div id = "${activeComponentObj.value.htmlAttributes.id}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
+      return `<template>\n  <div id = "${activeCompObj.htmlAttributes.id}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
     else {
       return `<template>\n  <div>\n${templateTagStr}${routeStr}  </div>\n</template>`;
     }
@@ -213,7 +217,7 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
     htmlElementMap[child] = [`<${child}`, ""]; //single
   });
 
-  function writeNested(childrenArray, indent) {
+  function writeNested(childrenArray: HtmlElement[], indent: string) {
     if (!childrenArray.length) {
       return "";
     }
@@ -304,27 +308,21 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
 };
 
 // Creates boiler text for <script> and <style>
-const createBoiler = (componentName, children) => {
+const createBoiler = (componentName: string, children: string[]) => {
   // add import mapstate and mapactions if they exist
   let imports = "";
-  if (
-    componentMap.value[activeComponent.value].actions.length ||
-    componentMap.value[activeComponent.value].state.length
-  ) {
+  const activeComp = componentMap.value[activeComponent.value] as Component;
+  if (activeComp.actions.length || activeComp.state.length) {
     imports += "import { ";
-    if (
-      componentMap.value[activeComponent.value].actions.length &&
-      componentMap.value[activeComponent.value].state.length
-    ) {
+    if (activeComp.actions.length && activeComp.state.length) {
       imports += "mapState, mapActions";
-    } else if (componentMap.value[activeComponent.value].state.length)
-      imports += "mapState";
+    } else if (activeComp.state.length) imports += "mapState";
     else imports += "mapActions";
     imports += ' } from "vuex";\n';
   }
 
   // if Typescript toggle is on, import defineComponent
-  if (exportAsTypescript === "on") {
+  if (exportAsTypescript.value === "on") {
     imports += 'import { defineComponent } from "vue";\n';
   }
 
@@ -341,9 +339,9 @@ const createBoiler = (componentName, children) => {
 
   // if true add data section and populate with props
   let data = "";
-  if (componentMap.value[activeComponent.value].props.length) {
+  if (activeComp.props.length) {
     data += "  props: {";
-    componentMap.value[activeComponent.value].props.forEach((prop) => {
+    activeComp.props.forEach((prop) => {
       data += `\n    ${prop}: "PLACEHOLDER FOR VALUE",`;
     });
     data += "\n";
@@ -373,10 +371,10 @@ const createBoiler = (componentName, children) => {
 
   // if true add computed section and populate with state
   let computed = "";
-  if (componentMap.value[activeComponent.value].state.length) {
+  if (activeComp.state.length) {
     computed += " computed: {";
     computed += "\n    ...mapState([";
-    componentMap.value[activeComponent.value].state.forEach((state) => {
+    activeComp.state.forEach((state) => {
       computed += `\n      "${state}", `;
     });
     computed += "\n    ]),\n";
@@ -385,10 +383,10 @@ const createBoiler = (componentName, children) => {
 
   // if true add methods section and populate with actions
   let methods = "";
-  if (componentMap.value[activeComponent.value].actions.length) {
+  if (activeComp.actions.length) {
     methods += "  methods: {";
     methods += "\n    ...mapActions([";
-    componentMap.value[activeComponent.value].actions.forEach((action) => {
+    activeComp.actions.forEach((action) => {
       methods += `\n      "${action}", `;
     });
     methods += "\n    ]),\n";
@@ -397,11 +395,11 @@ const createBoiler = (componentName, children) => {
 
   let htmlArray = componentMap.value[componentName].htmlList;
   let styleString = "";
-
-  if (activeComponentObj.value.htmlAttributes.class !== "") {
-    styleString += `.${activeComponentObj.value.htmlAttributes.class} { \n\tbackground-color: ${activeComponentObj.value.color};
-\tgrid-area: ${activeComponentObj.value.htmlAttributes.gridArea[0]} / ${activeComponentObj.value.htmlAttributes.gridArea[1]} / ${activeComponentObj.value.htmlAttributes.gridArea[2]} / ${activeComponentObj.value.htmlAttributes.gridArea[3]};
-\tz-index: ${activeComponentObj.value.z};
+  const activeCompObj = activeComponentObj.value as Component; // typed this to fix activeComponentObj.value "is possibly null" error
+  if (activeCompObj.htmlAttributes.class !== "") {
+    styleString += `.${activeCompObj.htmlAttributes.class} { \n\tbackground-color: ${activeCompObj.color};
+\tgrid-area: ${activeCompObj.htmlAttributes.gridArea[0]} / ${activeCompObj.htmlAttributes.gridArea[1]} / ${activeCompObj.htmlAttributes.gridArea[2]} / ${activeCompObj.htmlAttributes.gridArea[3]};
+\tz-index: ${activeCompObj.z};
 } \n`;
   }
 
