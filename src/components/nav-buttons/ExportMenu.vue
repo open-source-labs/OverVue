@@ -40,7 +40,12 @@ import { useStore } from "../../store/main";
 import { useExportComponent } from "../composables/useExportComponent";
 import * as fs from "fs";
 import * as path from "path";
-import { Component, HtmlElement, RouteComponentMap } from "../../../types";
+import {
+  Component,
+  HtmlElement,
+  HtmlElementMap,
+  RouteComponentMap,
+} from "../../../types";
 
 const store = useStore();
 const { ipcRenderer } = window;
@@ -180,18 +185,23 @@ const createComponentTestCode = (
 const createComponentCode = (
   componentLocation: string,
   componentName: string,
-  children: string[]
+  children: {
+    [key: string]: RouteComponentMap | Component;
+    App: RouteComponentMap;
+    HomeView: RouteComponentMap;
+  }
 ) => {
   if (componentName === "App") {
     fs.writeFileSync(
       componentLocation + ".vue",
-      writeTemplate(componentName, children, routes) + writeStyle(componentName)
+      writeTemplate(componentName, children, routes.value) +
+        writeStyle(componentName)
     );
   } else {
     fs.writeFileSync(
       componentLocation + ".vue",
       writeComments(componentName) +
-        writeTemplate(componentName, children, routes) +
+        writeTemplate(componentName, children, routes.value) +
         writeScript(componentName, children) +
         writeStyle(componentName)
     );
@@ -205,7 +215,7 @@ const createAssetFile = (targetLocation: string, assetLocation: string) => {
 };
 
 const writeTemplateTag = (componentName: string) => {
-  const htmlElementMap = {
+  const htmlElementMap: HtmlElementMap = {
     div: ["<div", "</div>"],
     button: ["<button", "</button>"],
     form: ["<form", "</form>"],
@@ -368,10 +378,10 @@ const writeTemplateTag = (componentName: string) => {
   return outputStr;
 };
 
-const writeComments = (componentName) => {
-  if (componentMap.value[componentName]?.noteList?.length > 0) {
+const writeComments = (componentName: string) => {
+  if ((componentMap.value[componentName] as Component).noteList.length > 0) {
     let commentStr = "<!--";
-    componentMap.value[componentName].noteList.forEach((el) => {
+    (componentMap.value[componentName] as Component).noteList.forEach((el) => {
       commentStr += "\n";
       commentStr += el;
     });
@@ -387,7 +397,15 @@ const writeComments = (componentName) => {
  * also creates the <template></template> tag for each component
  */
 
-const writeTemplate = (componentName, children, routes) => {
+const writeTemplate = (
+  componentName: string,
+  children: {
+    [key: string]: RouteComponentMap | Component;
+    App: RouteComponentMap;
+    HomeView: RouteComponentMap;
+  },
+  routes: { [key: string]: Component[] }
+) => {
   let str = "";
   let routeStr = "";
 
@@ -408,10 +426,11 @@ const writeTemplate = (componentName, children, routes) => {
   let templateTagStr = writeTemplateTag(componentName);
 
   // Add import component string to routes template
-  if (routes.value[componentName]) {
+  if (routes[componentName]) {
     const arrOfChildComp = componentMap.value[componentName].children;
     arrOfChildComp.forEach((childName) => {
-      let childNameClass = componentMap.value[childName].htmlAttributes.class;
+      let childNameClass = (componentMap.value[childName] as Component)
+        .htmlAttributes.class;
       let childNameClassFullStr =
         childNameClass === "" ? "" : ` class = '${childNameClass}'`;
       routeStr += `<${childName}${childNameClassFullStr}></${childName}>\n`;
@@ -421,15 +440,17 @@ const writeTemplate = (componentName, children, routes) => {
   }
 
   //adds class/id into code snippet with exporting
-  if (componentMap.value[componentName].htmlAttributes) {
-    let compID = componentMap.value[componentName].htmlAttributes.id;
-    let compClass = routes.value[componentName]
+  if ((componentMap.value[componentName] as Component).htmlAttributes) {
+    let compID = (componentMap.value[componentName] as Component).htmlAttributes
+      .id;
+    let compClass = routes[componentName]
       ? componentName
-      : componentMap.value[componentName].htmlAttributes.class;
+      : (componentMap.value[componentName] as Component).htmlAttributes.class;
 
     const arrOfChildComp = componentMap.value[componentName].children;
     arrOfChildComp.forEach((childName) => {
-      let childNameClass = componentMap.value[childName].htmlAttributes.class;
+      let childNameClass = (componentMap.value[childName] as Component)
+        .htmlAttributes.class;
       let childNameClassFullStr =
         childNameClass === "" ? "" : ` class = '${childNameClass}'`;
       routeStr += `    <${childName}${childNameClassFullStr}></${childName}>\n`;
@@ -450,7 +471,14 @@ const writeTemplate = (componentName, children, routes) => {
  * @description imports child components into <script>
  */
 
-const writeScript = (componentName: string, children: string[]) => {
+const writeScript = (
+  componentName: string,
+  children: {
+    [key: string]: RouteComponentMap | Component;
+    App: RouteComponentMap;
+    HomeView: RouteComponentMap;
+  }
+) => {
   // add import mapstate and mapactions if they exist
   const currentComponent = componentMap.value[componentName];
   const route = Object.keys(routes.value);
@@ -458,11 +486,17 @@ const writeScript = (componentName: string, children: string[]) => {
   // Writes script boilerplate for non-route components
   if (!route.includes(componentName)) {
     let imports = "";
-    if (currentComponent.actions.length || currentComponent.state.length) {
+    if (
+      (currentComponent as Component).actions.length ||
+      (currentComponent as Component).state.length
+    ) {
       imports += "import { ";
-      if (currentComponent.actions.length && currentComponent.state.length) {
+      if (
+        (currentComponent as Component).actions.length &&
+        (currentComponent as Component).state.length
+      ) {
         imports += "mapState, mapActions";
-      } else if (currentComponent.state.length) {
+      } else if ((currentComponent as Component).state.length) {
         imports += "mapState";
       } else {
         imports += "mapActions";
@@ -491,8 +525,8 @@ const writeScript = (componentName: string, children: string[]) => {
 
     let data = "";
     data += "  data () {\n    return {";
-    if (currentComponent.props.length) {
-      currentComponent.props.forEach((prop) => {
+    if ((currentComponent as Component).props.length) {
+      (currentComponent as Component).props.forEach((prop) => {
         data += `\n      ${prop}: "PLACEHOLDER FOR VALUE",`;
       });
     }
@@ -509,10 +543,10 @@ const writeScript = (componentName: string, children: string[]) => {
 
     // if true add computed section and populate with state
     let computed = "";
-    if (currentComponent.state.length) {
+    if ((currentComponent as Component).state.length) {
       computed += "  computed: {";
       computed += "\n    ...mapState([";
-      currentComponent.state.forEach((state) => {
+      (currentComponent as Component).state.forEach((state) => {
         computed += `\n      "${state}",`;
       });
       computed += "\n    ]),\n";
@@ -520,10 +554,10 @@ const writeScript = (componentName: string, children: string[]) => {
     }
     // if true add methods section and populate with actions
     let methods = "";
-    if (currentComponent.actions.length) {
+    if ((currentComponent as Component).actions.length) {
       methods += "  methods: {";
       methods += "\n    ...mapActions([";
-      currentComponent.actions.forEach((action) => {
+      (currentComponent as Component).actions.forEach((action) => {
         methods += `\n      "${action}",`;
       });
       methods += "\n    ]),\n";
@@ -1030,21 +1064,21 @@ const exportFile = (data: string) => {
   // main logic below for creating components
   createRouter(data);
   // eslint-disable-next-line no-unused-vars
-  for (let componentName in componentMap.value) {
+  for (const componentName in componentMap.value) {
     // if componentName is a route:
     if (componentName !== "App") {
       if (routes.value[componentName]) {
         createComponentCode(
           path.join(data, "src", "views", componentName),
           componentName,
-          componentMap
+          componentMap.value
         );
         // if componentName is a just a component
       } else {
         createComponentCode(
           path.join(data, "src", "components", componentName),
           componentName,
-          componentMap
+          componentMap.value
         );
         createComponentTestCode(
           path.join(data, "tests", "unit", componentName + ".spec.js"),
@@ -1057,7 +1091,7 @@ const exportFile = (data: string) => {
       createComponentCode(
         path.join(data, "src", componentName),
         componentName,
-        componentMap
+        componentMap.value
       );
     }
   }
