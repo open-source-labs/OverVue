@@ -34,13 +34,16 @@ Description:
 export default { name: "ExportProjectComponent" };
 </script>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from "vue";
 import { useStore } from "../../store/main";
 import { useExportComponent } from "../composables/useExportComponent";
+import * as fs from "fs";
+import * as path from "path";
+import { Component, HtmlElement, RouteComponentMap } from "../../../types";
 
 const store = useStore();
-const { fs, ipcRenderer } = window;
+const { ipcRenderer } = window;
 
 const componentMap = computed(() => store.componentMap);
 const imagePath = computed(() => store.imagePath);
@@ -63,11 +66,11 @@ const showExportProjectDialog = () => {
       message: "Choose location to save folder in",
       nameFieldLabel: "Application Name",
     })
-    .then((result) => {
+    .then((result: { filePath: string }) => {
       exportFile(result.filePath);
       alert("Successfully Exported");
     })
-    .catch((err) => console.log(err));
+    .catch((err: Error) => console.log(err));
 };
 
 const exportProject = () => showExportProjectDialog();
@@ -79,7 +82,7 @@ const exportProject = () => showExportProjectDialog();
  *          createExport(this.componentMap['App'].children)
  *  */
 
-const createRouter = (location) => {
+const createRouter = (location: string) => {
   if (exportAsTypescript.value === "on") {
     fs.writeFileSync(
       path.join(location, "src", "router", "index.ts"),
@@ -98,7 +101,7 @@ const createRouter = (location) => {
  * @argument: this.componentMap['App'].children
  */
 
-const createRouterImports = (routes) => {
+const createRouterImports = (routes: { [key: string]: Component[] }) => {
   let str = "import { createRouter, createWebHistory } from 'vue-router';\n";
   for (let view in routes) {
     str += `import ${view} from '../views/${view}.vue';\n`;
@@ -110,7 +113,7 @@ const createRouterImports = (routes) => {
  * @description creates the `export default` code in <script>
  */
 
-const createExport = (routes) => {
+const createExport = (routes: { [key: string]: Component[] }) => {
   let str =
     "export default createRouter({\n\thistory: createWebHistory(import.meta.env.BASE_URL),\n\troutes: [\n";
   for (let view in routes) {
@@ -133,7 +136,10 @@ const createExport = (routes) => {
  * invokes writeTemplate, writeScript, writeStyle
  */
 
-const writeRenderUnitTestString = (componentName, htmlList) => {
+const writeRenderUnitTestString = (
+  componentName: string,
+  htmlList: HtmlElement[]
+) => {
   const imports = `import { mount } from '@vue/test-utils'
 import ${componentName} from '../../src/components/${componentName}.vue'
 `;
@@ -154,9 +160,13 @@ test('renders ${componentName}', () => {
 };
 
 const createComponentTestCode = (
-  componentLocation,
-  componentName,
-  componentMap
+  componentLocation: string,
+  componentName: string,
+  componentMap: {
+    App: RouteComponentMap;
+    HomeView: RouteComponentMap;
+    [key: string]: RouteComponentMap | Component;
+  }
 ) => {
   fs.writeFileSync(
     componentLocation,
@@ -167,7 +177,11 @@ const createComponentTestCode = (
   );
 };
 
-const createComponentCode = (componentLocation, componentName, children) => {
+const createComponentCode = (
+  componentLocation: string,
+  componentName: string,
+  children: string[]
+) => {
   if (componentName === "App") {
     fs.writeFileSync(
       componentLocation + ".vue",
@@ -184,13 +198,13 @@ const createComponentCode = (componentLocation, componentName, children) => {
   }
 };
 
-const createAssetFile = (targetLocation, assetLocation) => {
+const createAssetFile = (targetLocation: string, assetLocation: string) => {
   let saved = remote.nativeImage.createFromPath(assetLocation);
   let urlData = saved.toPNG();
   fs.writeFileSync(targetLocation + ".png", urlData);
 };
 
-const writeTemplateTag = (componentName) => {
+const writeTemplateTag = (componentName: string) => {
   const htmlElementMap = {
     div: ["<div", "</div>"],
     button: ["<button", "</button>"],
@@ -277,7 +291,7 @@ const writeTemplateTag = (componentName) => {
     ],
   };
 
-  const writeNested = (childrenArray, indent) => {
+  const writeNested = (childrenArray: HtmlElement[], indent: string) => {
     if (!childrenArray.length) {
       return "";
     }
@@ -436,7 +450,7 @@ const writeTemplate = (componentName, children, routes) => {
  * @description imports child components into <script>
  */
 
-const writeScript = (componentName, children) => {
+const writeScript = (componentName: string, children: string[]) => {
   // add import mapstate and mapactions if they exist
   const currentComponent = componentMap.value[componentName];
   const route = Object.keys(routes.value);
@@ -581,7 +595,7 @@ const writeScript = (componentName, children) => {
   }
 };
 
-const writeStyle = (componentName) => {
+const writeStyle = (componentName: string) => {
   let htmlArray = componentMap.value[componentName].htmlList;
   let styleString = "";
   // Add grid css property to view component div
@@ -622,7 +636,7 @@ const writeStyle = (componentName) => {
   } else return `\n\n<style scoped>\n${styleString}</style >`;
 };
 
-const createFirebaseConfigFile = (location) => {
+const createFirebaseConfigFile = (location: string) => {
   if (exportOauth.value === "on") {
     let str = `import { initializeApp } from 'firebase/app';`;
     str += `\n\tconst firebaseConfig = {`;
@@ -641,7 +655,7 @@ const createFirebaseConfigFile = (location) => {
   }
 };
 
-const createjestConfigFile = (location) => {
+const createjestConfigFile = (location: string) => {
   if (importTest.value === "on") {
     let str = `module.exports = {`;
     str += `\n\tpreset: '@vue/cli-plugin-unit-jest'`;
@@ -650,7 +664,7 @@ const createjestConfigFile = (location) => {
   }
 };
 
-const createbabelConfigFile = (location) => {
+const createbabelConfigFile = (location: string) => {
   if (importTest.value === "on") {
     let str = `module.exports = {`;
     str += `\n\tpresets: [`;
@@ -661,7 +675,7 @@ const createbabelConfigFile = (location) => {
   }
 };
 
-const createOauthFile = (location) => {
+const createOauthFile = (location: string) => {
   if (exportOauth.value === "on" || exportOauthGithub.value === "on") {
     let str = `<template>`;
     str += `\n\t<!-- you can see the username when you log in -->`;
@@ -749,7 +763,7 @@ const createOauthFile = (location) => {
   }
 };
 
-const createIndexFile = (location) => {
+const createIndexFile = (location: string) => {
   let str = `<!DOCTYPE html>\n<html lang="en">\n\n<head>`;
   str += `\n\t<meta charset="utf-8">`;
   str += `\n\t<meta http-equiv="X-UA-Compatible" content="IE=edge">`;
@@ -773,7 +787,7 @@ const createIndexFile = (location) => {
   fs.writeFileSync(path.join(location, "index.html"), str);
 };
 
-const createMainFile = (location) => {
+const createMainFile = (location: string) => {
   let str = `import { createApp } from 'vue';`;
   str += `\nimport store from './store'`;
   str += `\nimport App from './App.vue';`;
@@ -794,7 +808,7 @@ const createMainFile = (location) => {
   }
 };
 
-const createViteConfig = (location) => {
+const createViteConfig = (location: string) => {
   let str = `import { fileURLToPath, URL } from 'url';\n\n`;
   str += `import { defineConfig } from 'vite';\n`;
   str += `import vue from '@vitejs/plugin-vue';\n\n`;
@@ -813,8 +827,8 @@ const createViteConfig = (location) => {
   }
 };
 
-const createESLintRC = (location) => {
-  let str;
+const createESLintRC = (location: string) => {
+  let str = "";
   if (exportAsTypescript.value === "on") {
     str += `require("@rushstack/eslint-patch/modern-module-resolution");\n\n`;
   }
@@ -833,7 +847,7 @@ const createESLintRC = (location) => {
   fs.writeFileSync(path.join(location, ".eslintrc.cjs"), str);
 };
 
-const createTSConfig = (location) => {
+const createTSConfig = (location: string) => {
   if (exportAsTypescript.value === "on") {
     let str = `{\n\t"extends": "@vue/tsconfig/tsconfig.web.json",\n\t"include": ["env.d.ts", "src/**/*", "src/**/*.vue"],\n\t"compilerOptions": {\n\t\t"baseUrl": ".",\n\t\t"paths": {\n\t\t\t"@/*": ["./src/*"]\n\t\t}\n\t},`;
     str += `\t"references": [\n`;
@@ -844,7 +858,7 @@ const createTSConfig = (location) => {
   }
 };
 
-const createTSViteConfig = (location) => {
+const createTSViteConfig = (location: string) => {
   if (exportAsTypescript.value === "on") {
     let str = `{\n\t"extends": "@vue/tsconfig/tsconfig.node.json",\n\t"include": ["vite.config.*"],\n\t"compilerOptions": {\n\t\t"composite": true,\n\t\t"types": ["node", "viteset"]\n\t}\n}`;
     fs.writeFileSync(path.join(location, "tsconfig.vite-config.json"), str);
@@ -853,7 +867,7 @@ const createTSViteConfig = (location) => {
   }
 };
 
-const createTSDeclaration = (location) => {
+const createTSDeclaration = (location: string) => {
   if (exportAsTypescript.value === "on") {
     let str = `/// <reference types="vite/client" />`;
     fs.writeFileSync(path.join(location, "env.d.ts"), str);
@@ -862,7 +876,7 @@ const createTSDeclaration = (location) => {
   }
 };
 
-const createStore = (location) => {
+const createStore = (location: string) => {
   let str = `import { createStore } from 'vuex';\n`;
   str += `\nconst store = createStore({`;
   str += `\n\tstate () {`;
@@ -913,7 +927,7 @@ const createStore = (location) => {
   }
 };
 
-const createPackage = (location) => {
+const createPackage = (location: string) => {
   let str = `{`;
   str += `\n\t"name": "My-OverVue-Project",`;
   str += `\n\t"version": "0.0.0",`;
@@ -975,7 +989,7 @@ const createPackage = (location) => {
   fs.writeFileSync(path.join(location, "package.json"), str);
 };
 
-const exportFile = (data) => {
+const exportFile = (data: string) => {
   if (data === undefined) return;
   if (!fs.existsSync(data)) {
     fs.mkdirSync(data);
