@@ -33,12 +33,12 @@
         @click="addActionToComp"
       />
     </div>
-    <p v-if="!this.componentMap[this.activeComponent].actions.length">
+    <p v-if="!(componentMap[activeComponent] as Component).actions.length">
       No actions in component
     </p>
     <a
       v-else
-      v-for="action in this.componentMap[this.activeComponent].actions"
+      v-for="action in (componentMap[activeComponent] as Component).actions"
       :key="action"
     >
       <q-list class="list-item" dense bordered separator>
@@ -69,11 +69,12 @@ export default {
 };
 </script>
 
-<script setup>
+<script setup lang="ts">
 // new script for Composition API
 
 import { computed } from "vue";
 import { useStore } from "../../../store/main.js";
+import { Component } from "../../../../types";
 import VueMultiselect from "vue-multiselect";
 
 const store = useStore();
@@ -101,18 +102,18 @@ const selectAction = computed({
 
 // Methods
 
-const addActionSelected = (payload) => store.addActionSelected(payload);
-const addActionToComponent = (payload) => store.addActionToComponent(payload);
-const deleteActionFromComponent = (payload) =>
+const addActionSelected: typeof store.addActionSelected = (payload) => store.addActionSelected(payload);
+const addActionToComponent: typeof store.addActionToComponent = (payload) => store.addActionToComponent(payload);
+const deleteActionFromComponent: typeof store.deleteActionFromComponent = (payload) =>
   store.deleteActionFromComponent(payload);
 
-const stopDelete = (e) => {
-  if (e.code === "Backspace") e.stopPropogation();
+const stopDelete = (e:KeyboardEvent) => {
+  if (e.code === "Backspace") e.stopPropagation();
 };
 const addActionToComp = () => {
   addActionToComponent([...selectedActions.value]);
 };
-const deleteAction = (action) => {
+const deleteAction = (action: string) => {
   deleteActionFromComponent(action);
 };
 </script>

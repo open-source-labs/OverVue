@@ -73,11 +73,13 @@ export default {
 };
 </script>
 
-<script setup>
+<script setup lang="ts">
 // new script for Composition API
 import { computed, ref } from "vue";
 import { useStore } from "../../../store/main.js";
+import { Component } from "../../../../types";
 import VueMultiselect from "vue-multiselect";
+const cloneDeep = require("lodash.clonedeep");
 
 const store = useStore();
 
@@ -99,26 +101,25 @@ const activeRouteKey = computed(() => store.routes[store.activeRoute]);
 
 //actions
 
-const editAttribute = (payload) => store.editAttribute(payload);
+const editAttribute: typeof store.editAttribute = (payload) => store.editAttribute(payload);
 
-const activeComponentData = () => {
+const activeComponentData = () : Component => {
   return cloneDeep(activeComponentObj.value);
-};
 
 //methods
 
 // Prevent Delete on changes to searchable multiselect
-const stopDelete = (e) => {
-  if (e.code === "Backspace") e.stopPropogation();
+const stopDelete = (e: KeyboardEvent) => {
+  if (e.code === "Backspace") e.stopPropagation();
 };
 
 //function to change the state of the attribute selection dropdown menu
-const changeAttribute = (attribute) => {
+const changeAttribute = (attribute: "id" | "class") => {
   attributeSelection.value = attribute;
 };
 
 //attribute change function to create attribute
-const createAttribute = (attribute) => {
+const createAttribute = (attribute: "id" | "class") => {
   // console.log("What is my attributeSelection?", typeof attributeSelection, attributeSelection)
   // console.log("What is my attributeText?", typeof attributeText, attributeText)
   // console.log("What is my activeComponent.value?", typeof activeComponent.value, activeComponent.value)
@@ -126,7 +127,7 @@ const createAttribute = (attribute) => {
   // console.log("What is my activeComponent?", typeof activeComponentData, activeComponentData)
 
   editAttribute({
-    attribute: attributeSelection.value,
+    attribute: attributeSelection.value as "id" | "class",
     value: attribute,
     activeComponent: activeComponent.value,
     routeArray: activeRouteKey.value,
@@ -136,7 +137,7 @@ const createAttribute = (attribute) => {
 };
 
 //delete attribute after the delete bvutton has been clicked
-const deleteAttribute = (attribute) => {
+const deleteAttribute = (attribute: "id" | "class") => {
   editAttribute({
     attribute: attribute,
     value: "",
