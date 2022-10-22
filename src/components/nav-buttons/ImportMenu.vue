@@ -31,11 +31,13 @@ Description:
 export default { name: "ImportMenu" };
 </script>
 
-<script setup>
+<script setup lang="ts">
 import { useStore } from "../../store/main";
 import ImportComponent from "../left-sidebar/ComponentTab/ImportComponent.vue";
+import { Component } from "../../../types";
+import * as fs from "fs";
 const Mousetrap = require("mousetrap");
-const { fs, ipcRenderer } = window;
+const { ipcRenderer } = window;
 
 const store = useStore();
 
@@ -44,9 +46,10 @@ Mousetrap.bind(["command+o", "ctrl+o"], () => {
   openProjectJSON();
 });
 
-const openProject = (payload) => store.openProject(payload);
+const openProject: typeof store.openProject = (payload) =>
+  store.openProject(payload);
 
-const openJSONFile = (data) => {
+const openJSONFile = (data: fs.PathOrFileDescriptor[]) => {
   if (!data) return;
   const jsonFile = JSON.parse(fs.readFileSync(data[0], "utf8"));
   openProject(jsonFile);
@@ -63,8 +66,10 @@ const showOpenJSONDialog = () => {
         },
       ],
     })
-    .then((res) => openJSONFile(res.filePaths))
-    .catch((e) => console.log(e));
+    .then((res: { filePaths: fs.PathOrFileDescriptor[] }) =>
+      openJSONFile(res.filePaths)
+    )
+    .catch((e: Error) => console.log(e));
 };
 
 const openProjectJSON = () => {
