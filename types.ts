@@ -181,11 +181,7 @@ export type Actions = {
   addActiveComponentNote: (payload: string) => void;
   deleteActiveComponentNote: (payload: string) => void;
   openColorModal: () => void;
-<<<<<<< HEAD
   openNoteModal: () => void;
-=======
-  // openNoteModal: () => void;
->>>>>>> chrisTypescript
   openAttributeModal: () => void;
   addActiveComponentClass: (payload: { id: string; class: string }) => void;
   addBindingText: (payload: { id: string; binding: string }) => void;
