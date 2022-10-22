@@ -265,9 +265,9 @@ watch(attributeModalOpen, () => {
 
 watch(activeComponent, () => {
   if (activeComponent.value !== "") {
-    activeComponent.component = true;
+    (store.componentMap[activeComponent.value] as Component).isActive = true;
   } else {
-    activeComponent.component = false;
+    (store.componentMap[activeComponent.value] as Component).isActive = false;
   }
 });
 </script>

@@ -275,7 +275,7 @@ Description:
 
 <!-- COMPOSITION API -->
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, Ref } from "vue";
 import { useStore } from "../store/main";
 
 import RightSidebar from "../components/right-sidebar/RightSidebar.vue";
@@ -304,9 +304,9 @@ const right = ref(true);
 const dashWidth = ref(950);
 const originalWidth = ref(400);
 const originalLeft = ref(400);
-const timer = ref(null);
-const resizeBox = ref(null);
-const displayClose = ref(null);
+const timer = ref<ReturnType<typeof setTimeout> | null>(null);
+const resizeBox = ref<HTMLElement | null>(null);
+const displayClose = ref<HTMLElement | null>(null);
 
 defineExpose({
   resizeBox,
@@ -322,13 +322,13 @@ const toggleTutorial = () => store.toggleTutorial();
 
 const hideRight = () => {
   right.value = !right.value;
-  if (resizeBox.value.style.display === "none") {
-    resizeBox.value.style.display = "block";
+  if ((resizeBox.value as HTMLElement).style.display === "none") {
+    (resizeBox.value as HTMLElement).style.display = "block";
   } else {
-    resizeBox.value.style.display = "none";
+    (resizeBox.value as HTMLElement).style.display = "none";
   }
 };
-
+// @ts-ignore
 const handlePan = ({ evt, ...newInfo }) => {
   if (right.value) {
     if (newInfo.isFirst) {
@@ -338,68 +338,68 @@ const handlePan = ({ evt, ...newInfo }) => {
       const newDelta = newInfo.position.left - originalLeft.value;
       const newWidth = Math.min(950, originalWidth.value - newDelta);
       dashWidth.value = Math.max(400, newWidth);
-      displayClose.value.style.display = "none";
+      (displayClose.value as HTMLElement).style.display = "none";
       if (newWidth > screen.width * 0.07 && newWidth < 400) {
-        clearTimeout(timer.value);
+        clearTimeout(timer.value as ReturnType<typeof setTimeout>);
         if (newWidth < screen.width * 0.13) {
-          displayClose.value.style.display = "block";
+          (displayClose.value as HTMLElement).style.display = "block";
         }
         dashWidth.value = 400 - (200 - newWidth / 2);
       } else {
         timer.value = setTimeout(() => {
-          displayClose.value.style.display = "none";
+          (displayClose.value as HTMLElement).style.display = "none";
         }, 750);
       }
       if (newWidth < screen.width * 0.07) {
         right.value = !right.value;
         dashWidth.value = 400;
-        resizeBox.value.style.display = "none";
+        (displayClose.value as HTMLElement).style.display = "none";
       }
     }
     timer.value = setTimeout(() => {
-      displayClose.value.style.display = "none";
+      (displayClose.value as HTMLElement).style.display = "none";
     }, 750);
   }
 };
 
-const syncTypescriptFlag = (e) => {
-  let checkboxValue;
-  if (e.target.value === "off") {
+const syncTypescriptFlag = (e: Event) => {
+  let checkboxValue: "off" | "on";
+  if ((e.target as HTMLInputElement).value === "off") {
     checkboxValue = "on";
   } else {
     checkboxValue = "off";
   }
-  store.commit("EXPORT_AS_TYPESCRIPT", checkboxValue);
+  store.ExportAsTypescript(checkboxValue);
 };
 
-const syncTestFlag = (e) => {
-  let checkboxValue;
-  if (e.target.value === "off") {
+const syncTestFlag = (e: Event) => {
+  let checkboxValue: "off" | "on";
+  if ((e.target as HTMLInputElement).value === "off") {
     checkboxValue = "on";
   } else {
     checkboxValue = "off";
   }
-  store.commit("EXPORT_TEST", checkboxValue);
+  store.exportTest(checkboxValue);
 };
 
-const syncOauthFlag = (e) => {
-  let checkboxValue;
-  if (e.target.value === "off") {
+const syncOauthFlag = (e: Event) => {
+  let checkboxValue: "off" | "on";
+  if ((e.target as HTMLInputElement).value === "off") {
     checkboxValue = "on";
   } else {
     checkboxValue = "off";
   }
-  store.commit("EXPORT_OAUTH", checkboxValue);
+  store.ExportOauth(checkboxValue);
 };
 
-const syncOauthGitFlag = (e) => {
-  let checkboxValue;
-  if (e.target.value === "off") {
+const syncOauthGitFlag = (e: Event) => {
+  let checkboxValue: "off" | "on";
+  if ((e.target as HTMLInputElement).value === "off") {
     checkboxValue = "on";
   } else {
     checkboxValue = "off";
   }
-  store.commit("EXPORT_OAUTH_GIT", checkboxValue);
+  store.ExportOauthGithub(checkboxValue);
 };
 
 const clickedUndo = () => emit("undo");

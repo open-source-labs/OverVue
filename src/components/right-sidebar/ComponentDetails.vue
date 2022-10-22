@@ -31,7 +31,7 @@ Description:
         <q-tab-panel name="state">
           <div class="componentProperties">
             <q-expansion-item default-closed label="Component State">
-              <p v-if="!activeComponentObj?.state?.length">
+              <p v-if="!(activeComponentObj as Component)?.state?.length">
                 {{
                   activeComponent
                     ? `No state in ${activeComponent}`
@@ -48,7 +48,7 @@ Description:
           </div>
           <div class="componentProperties">
             <q-expansion-item default-closed label="Component Actions">
-              <p v-if="!activeComponentObj?.actions?.length">
+              <p v-if="!(activeComponentObj as Component)?.actions?.length">
                 {{
                   activeComponent
                     ? `No actions in ${activeComponent}`
@@ -65,7 +65,7 @@ Description:
           </div>
           <div class="componentProperties">
             <q-expansion-item default-closed label="Component Props">
-              <p v-if="!activeComponentObj?.props?.length">
+              <p v-if="!(activeComponentObj as Component)?.props?.length">
                 {{
                   activeComponent
                     ? `No props in ${activeComponent}`
@@ -97,8 +97,8 @@ export default {
 
 <!-- COMPOSITION API SYNTAX -->
 <script setup lang="ts">
-import HTMLQueue from "./HTMLQueue";
-import CodeSnippet from "./CodeSnippet";
+import HTMLQueue from "./HTMLQueue.vue";
+import CodeSnippet from "./CodeSnippet.vue";
 import { useStore } from "../../store/main.js";
 import { ref, computed } from "vue";
 import { Component } from "../../../types";
