@@ -276,7 +276,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 // new script for Composition API
 import { computed, ref, watch, onMounted } from "vue";
 import { useStore } from "../../../store/main.js";
@@ -358,30 +358,30 @@ const componentData = computed(() => store.componentData);
 
 //actions
 
-const setActiveHTML = (payload) => store.setActiveHTML(payload);
-const setActiveLayer = (payload) => store.setActiveLayer(payload);
-const openAttributeModal = (payload) => store.openAttributeModal(payload);
-const addActiveComponentClass = (payload) =>
+const setActiveHTML: typeof store.setActiveHTML = (payload) => store.setActiveHTML(payload);
+const setActiveLayer: typeof store.setActiveLayer = (payload) => store.setActiveLayer(payload);
+const openAttributeModal: typeof store.openAttributeModal = () => store.openAttributeModal();
+const addActiveComponentClass: typeof store.addActiveComponentClass = (payload) =>
   store.addActiveComponentClass(payload);
-const addActiveComponentElementNote = (payload) =>
+const addActiveComponentElementNote: typeof store.addActiveComponentElementNote = (payload) =>
   store.addActiveComponentElementNote(payload);
-const addActiveComponentHeight = (payload) =>
+const addActiveComponentHeight: typeof store.addActiveComponentHeight = (payload) =>
   store.addActiveComponentHeight(payload);
-const addActiveComponentWidth = (payload) =>
+const addActiveComponentWidth: typeof store.addActiveComponentWidth = (payload) =>
   store.addActiveComponentWidth(payload);
-const addActiveComponentTop = (payload) => store.addActiveComponentTop(payload);
-const addActiveComponentLeft = (payload) =>
+const addActiveComponentTop: typeof store.addActiveComponentTop = (payload) => store.addActiveComponentTop(payload);
+const addActiveComponentLeft: typeof store.addActiveComponentLeft = (payload) =>
   store.addActiveComponentLeft(payload);
-const clearActiveHTML = (payload) => store.clearActiveHTML(payload);
-const updateComponentLayer = (payload) => store.updateComponentLayer(payload);
-const updateHTMLLayer = (payload) => store.updateHTMLLayer(payload);
-const addBindingText = (payload) => store.addBindingText(payload);
+const clearActiveHTML: typeof store.clearActiveHTML = () => store.clearActiveHTML();
+const updateComponentLayer: typeof store.updateComponentLayer = (payload) => store.updateComponentLayer(payload);
+const updateHTMLLayer: typeof store.updateHtmlLayer = (payload) => store.updateHtmlLayer(payload);
+const addBindingText: typeof store.addBindingText = (payload) => store.addBindingText(payload);
 
-const submitClass = (element, idNum) => {
+const submitClass = (element: string, idNum: string) => {
   if (element === "") {
     return;
   }
-  let payload = {
+  let payload: {class: string; id: string} = {
     class: element,
     id: idNum,
   };
@@ -389,11 +389,11 @@ const submitClass = (element, idNum) => {
   classText.value = "";
 };
 
-const submitNote = (element, idNum) => {
+const submitNote = (element: string, idNum: string) => {
   if (element === "") {
     return;
   }
-  let payload = {
+  let payload : {note: string; id: string} = {
     note: element,
     id: idNum,
   };
@@ -402,18 +402,18 @@ const submitNote = (element, idNum) => {
   noteText.value = "";
 };
 
-const submitHeight = (element, idNum) => {
+const submitHeight = (element: string, idNum: string) => {
   if (element === "") {
     return;
   }
-  let payload = {
+  let payload: {height: string; id: string} = {
     height: element,
     id: idNum,
   };
   addActiveComponentHeight(payload);
 };
 
-const submitWidth = (element, idNum) => {
+const submitWidth = (element: string, idNum: string) => {
   if (element === "") {
     return;
   }
@@ -424,29 +424,29 @@ const submitWidth = (element, idNum) => {
   addActiveComponentWidth(payload);
 };
 
-const submitTop = (element, idNum) => {
+const submitTop = (element: string, idNum: string) => {
   if (element === "") {
     return;
   }
-  let payload = {
+  let payload : {top: string; id: string} = {
     top: element,
     id: idNum,
   };
   addActiveComponentTop(payload);
 };
 
-const submitLeft = (element, idNum) => {
+const submitLeft = (element: string, idNum: string) => {
   if (element === "") {
     return;
   }
-  let payload = {
+  let payload : {left: string; id: string} = {
     left: element,
     id: idNum,
   };
   addActiveComponentLeft(payload);
 };
 
-const closeMenu = (element) => {
+const closeMenu = (element: { text: string, id: string }) => {
   if (activeComponent.value !== "") {
     clearActiveHTML();
     openAttributeModal(element);
