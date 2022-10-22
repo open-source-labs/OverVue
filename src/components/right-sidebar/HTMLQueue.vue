@@ -168,7 +168,7 @@ const addBindingText: typeof store.addBindingText = (payload) =>
   store.addBindingText(payload);
 const clearActiveHTML = () => store.clearActiveHTML();
 
-const deleteElement = (id) => {
+const deleteElement = (id: number[]) => {
   if (activeComponent.value === "") store.deleteSelectedElement(id[0]);
   else store.deleteFromComponentHtmlList(id[1]);
 };
@@ -203,16 +203,16 @@ const setParentLayer = () => {
 };
 
 //METHODS FOR DRAG-AND-DROP
-const startDrag = (event, id: string) => {
+const startDrag = (event: MouseEvent, id: string) => {
   //add a class to make the html element currently being drag transparent
-  event.target.classList.add("currentlyDragging");
+  (event.target as HTMLElement).classList.add("currentlyDragging");
   const dragId = id;
   //store the id of dragged element
   if (activeComponent.value === "") setSelectedIdDrag(dragId);
   else setIdDrag(dragId);
 };
 
-const dragEnter = (event, id: string) => {
+const dragEnter = (event: MouseEvent, id: string) => {
   event.preventDefault();
   const dropId = id;
   //store the id of the html element whose location the dragged html element could be dropped upon
@@ -220,15 +220,15 @@ const dragEnter = (event, id: string) => {
   else setIdDrop(dropId);
 };
 
-const dragOver = (event) => {
+const dragOver = (event: MouseEvent) => {
   //needed stop the dragend animation so endDrag is invoked automatically
   event.preventDefault();
 };
 
-const endDrag = (event) => {
+const endDrag = (event: MouseEvent) => {
   //remove the 'currentlyDragging' class after the HTML is dropped to remove transparency
   event.preventDefault();
-  event.target.classList.remove("currentlyDragging");
+  (event.target as HTMLElement).classList.remove("currentlyDragging");
   //invoke the action that will use the idDrag and idDrop to sort the HtmlList
   if (activeComponent.value === "") dragDropSortSelectedHtmlElements();
   else dragDropSortHtmlElements();
