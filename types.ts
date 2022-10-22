@@ -109,13 +109,13 @@ export type Actions = {
     elementName: string;
     date: string;
   }) => void;
-  deleteFromComponentHtmlList: (id: string) => void;
+  deleteFromComponentHtmlList: (id: number) => void;
   deleteSelectedElement: (payload: number) => void;
   setActiveHTML: (payload: string[]) => void;
   setActiveLayer: (payload: { text: string; id: string }) => void;
   setClickedElementList: (payload: HtmlElement[]) => void;
   setSelectedElementList: (payload: HtmlElement[]) => void;
-  upOneLayer: (payload: number) => void;
+  upOneLayer: (payload: string) => void;
   setIdDrag: (payload: string) => void; // idDrag error line 534 of actions.ts
   setIdDrop: (payload: string) => void; // idDrag error line 540 of actions.ts
   setSelectedIdDrag: (payload: string) => void;

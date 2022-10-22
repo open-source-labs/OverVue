@@ -467,7 +467,7 @@ const actions: Store<"main", State, {}, Actions> = {
     // splice out selected element and return resulting array
     if (this.activeLayer.id === "") {
       for (let i = 0; i < htmlList.length; i++) {
-        if (htmlList[i].id === id) {
+        if (htmlList[i].id === id.toString()) {
           htmlList.splice(i, 1);
           break;
         }
@@ -479,7 +479,7 @@ const actions: Store<"main", State, {}, Actions> = {
       };
       element.evaluated.children.splice(element.index, 1);
     }
-    if (id === this.activeHTML) {
+    if (id.toString() === this.activeHTML) {
       this.activeHTML = "";
     }
     let newCompMap = this.componentMap;
@@ -531,8 +531,7 @@ const actions: Store<"main", State, {}, Actions> = {
         index: number;
       };
       const newLayer = { ...this.activeLayer };
-      // id: string;
-      // lineage: string[];
+
       newLayer.id = newID.evaluated.id;
       newLayer.lineage.pop();
       this.activeLayer = newLayer;

@@ -48,7 +48,7 @@ import {
 } from "../../../types";
 
 const store = useStore();
-const { ipcRenderer } = window;
+const { ipcRenderer } = window.require("electron");
 
 const componentMap = computed(() => store.componentMap);
 const imagePath = computed(() => store.imagePath);
@@ -209,6 +209,7 @@ const createComponentCode = (
 };
 
 const createAssetFile = (targetLocation: string, assetLocation: string) => {
+  // @ts-ignore
   let saved = remote.nativeImage.createFromPath(assetLocation);
   let urlData = saved.toPNG();
   fs.writeFileSync(targetLocation + ".png", urlData);
