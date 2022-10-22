@@ -23,7 +23,7 @@ export type State = {
   projects: Projects[];
   activeRoute: string;
   activeComponent: string;
-  activeComponentObj: null | Component;
+  activeComponentObj: null | Component | { componentName: string, isActive: false };
   activeHTML: string;
   activeLayer: {
     id: string;
@@ -32,7 +32,7 @@ export type State = {
   selectedProps: string[];
   selectedState: string[];
   selectedActions: string[];
-  selectedElementList: any[]; // ?? actions function addToSelectedElementList
+  selectedElementList: HtmlElement[]; // ?? actions function addToSelectedElementList
   selectedIdDrag: string;
   selectedIdDrop: string;
   projectNumber: number;
@@ -144,7 +144,7 @@ export type Actions = {
   updateComponentChildrenMultiselectValue: (payload: string[]) => void;
   updateComponentChildrenValue: (payload: {
     componentName: string;
-    value: Component;
+    value: Component[];
   }) => void;
   updateComponentNameInputValue: (payload: string) => void;
   updateComponentPosition: (payload: ResizePayload) => void;
@@ -157,7 +157,7 @@ export type Actions = {
     activeComponentData: null | Component;
   }) => void;
   editAttribute: (payload: {
-    attribute: string;
+    attribute: "class" | "id";
     value: string;
     activeComponent: string;
     routeArray: Component[];
@@ -181,7 +181,11 @@ export type Actions = {
   addActiveComponentNote: (payload: string) => void;
   deleteActiveComponentNote: (payload: string) => void;
   openColorModal: () => void;
+<<<<<<< HEAD
   openNoteModal: () => void;
+=======
+  // openNoteModal: () => void;
+>>>>>>> chrisTypescript
   openAttributeModal: () => void;
   addActiveComponentClass: (payload: { id: string; class: string }) => void;
   addBindingText: (payload: { id: string; binding: string }) => void;
@@ -269,6 +273,8 @@ export type RouteComponentMap = {
 export type ResizePayload = {
   x: number;
   y: number;
+  h: number;
+  w: number;
   activeComponent: string;
   routeArray: [];
   activeComponentData: null | Component;
@@ -296,11 +302,13 @@ export type Component = {
   idDrag: string;
   idDrop: string;
   color: string;
-  htmlAttributes: {
-    class: string;
-    id: string;
-    gridArea: [number, number, number, number];
-  };
+  htmlAttributes: HtmlAttributes
+};
+
+export type HtmlAttributes = {
+  class: string;
+  id: string;
+  gridArea: [number, number, number, number];
 };
 
 export type Icons = {
