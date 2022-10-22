@@ -13,7 +13,7 @@ export default {
 };
 </script>
 
-<script setup>
+<script setup lang="ts">
 // new script for Composition API
 import { computed } from "vue";
 import { useStore } from "../../../store/main.js";
@@ -22,12 +22,14 @@ const store = useStore();
 
 const importLibraries = computed(() => store.importLibraries);
 
-const changeLib = (payload) => store.changeLib(payload);
-const addLibComponents = (payload) => store.addLibComponents(payload);
-const changeLibComponentDisplay = (payload) =>
-  store.changeLibComponentDisplay(payload);
+const changeLib: typeof store.changeLib = (payload) => store.changeLib(payload);
+const addLibComponents: typeof store.addLibComponents = (payload) =>
+  store.addLibComponents(payload);
+const changeLibComponentDisplay: typeof store.changeLibComponentDisplay = (
+  payload
+) => store.changeLibComponentDisplay(payload);
 
-const pickLibrary = (libName) => {
+const pickLibrary = (libName: string) => {
   let payload = {
     libName: libName,
     displaylibComponent: true,
