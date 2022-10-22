@@ -38,8 +38,9 @@ export default {
 };
 </script>
 
-<script setup>
+<script setup lang="ts">
 // new script for Composition API
+import { HtmlElement } from "app/types";
 import { computed, ref } from "vue";
 import { useStore } from "../../../store/main.js";
 
@@ -65,12 +66,12 @@ const activeLayer = computed(() => store.activeLayer);
 
 //it increments html elements when creating component
 const elementStorage = computed(() => {
-  let computedElementalStorage = {};
+  let computedElementalStorage: { [key: string]: number } = {};
   if (activeComponent.value) {
     computedElementalStorage = {};
 
     //function searches through HtmlList and is invoke recursively to search its children(Html Elements that are nested)
-    const checkHtmlElements = (array) => {
+    const checkHtmlElements = (array: HtmlElement[]) => {
       for (let html of array) {
         if (html.children.length) {
           checkHtmlElements(html.children);
@@ -86,7 +87,7 @@ const elementStorage = computed(() => {
     checkHtmlElements(componentMap.value[activeComponent.value].htmlList);
   } else if (activeComponent.value === "") {
     // if component was switched from existing component to '', reset cache and update items
-    if (computedElementalStorage !== {}) computedElementalStorage = {};
+    computedElementalStorage = {};
     selectedElementList.value.forEach((el) => {
       if (!computedElementalStorage[el.text]) {
         computedElementalStorage[el.text] = 1;
@@ -100,7 +101,7 @@ const elementStorage = computed(() => {
 
 //Compute Child Components of the activeComponent to include them as icons
 const childrenComp = computed(() => {
-  let childrenAvailable = [];
+  let childrenAvailable: string[] = [];
   if (activeComponent.value) {
     childrenAvailable = componentMap.value[activeComponent.value].children;
   }
@@ -110,7 +111,7 @@ const childrenComp = computed(() => {
 //methods
 
 // Logic to decide where to place selected html element
-const changeState = (elementName) => {
+const changeState = (elementName: string) => {
   // if no active component & creating a new component: add html to selectedElement list
   if (activeComponent.value === "") {
     emit("getClickedIcon", { elementName, date: Date.now() });

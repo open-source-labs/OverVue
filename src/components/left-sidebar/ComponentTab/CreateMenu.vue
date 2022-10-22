@@ -26,7 +26,7 @@ Description:
         :rules="[
           (val) => val.length != 0 || 'Please set a component name',
           (val) =>
-            !Object.keys(this.componentMap).includes(val) ||
+            !Object.keys(componentMap).includes(val) ||
             'A component/route with this name already exists',
         ]"
       ></q-input>
@@ -105,7 +105,7 @@ Description:
       @click="createComponent"
       :disabled="
         !componentNameInputValue.trim() ||
-        Object.keys(this.componentMap).includes(componentNameInputValue.trim())
+        Object.keys(componentMap).includes(componentNameInputValue.trim())
       "
     />
 
@@ -119,7 +119,7 @@ export default {
 };
 </script>
 
-<script setup>
+<script setup lang="ts">
 // new script for Composition API
 import { useCreateComponent } from "../../composables/useCreateComponent.js";
 import { computed, ref, watch } from "vue";
@@ -130,12 +130,14 @@ import ImportComponent from "./ImportComponent.vue";
 import CreateMenuHTMLQueue from "./CreateMenuHTMLQueue.vue";
 import ImportLibraryButton from "./ImportLibraryButton.vue";
 import LibComponents from "./LibComponents.vue";
+import { registerComponent } from "src/store/options/types";
+import { Component } from "../../../../types";
 
 const store = useStore();
 
-let input = ref("");
-let parent = ref("");
-let attributeModal = ref(null);
+const input = ref("");
+const parent = ref("");
+const attributeModal = ref<boolean | null>(null);
 const libArray = ref([
   {
     name: "alert",
@@ -233,37 +235,52 @@ const componentNameInputValue = computed({
 
 const filter = computed(() => {
   if (input.value == "") return [];
-  if (input.length >= 2) {
-    return libArray.filter((e) => e.name.includes(input.value.toLowerCase()));
+  if (input.value.length >= 2) {
+    return libArray.value.filter((e) =>
+      e.name.includes(input.value.toLowerCase())
+    );
   }
 });
 
 //methods
 
-const registerComponent = (payload) => store.registerComponent(payload);
-const addToSelectedElementList = (payload) =>
-  store.addToSelectedElementList(payload);
-const updateComponentNameInputValue = (payload) =>
-  store.updateComponentNameInputValue(payload);
-const setActiveComponent = (payload) => store.setActiveComponent(payload);
-const addToComponentElementList = (payload) =>
-  store.addToComponentElementList(payload);
-const addNestedHTML = (payload) => store.addNestedHTML(payload);
-const addNestedNoActive = (payload) => store.addNestedNoActive(payload);
-const editComponentName = (payload) => store.editComponentName(payload);
-const openProject = (payload) => store.openProject(payload);
-const createAction = (payload) => store.createAction(payload);
-const createState = (payload) => store.createState(payload);
-const createProp = (payload) => store.createProp(payload);
-const changeLibComponentDisplay = (payload) =>
-  store.changeLibComponentDisplay(payload);
-const addLibComponents = (payload) => store.addLibComponents(payload);
+const registerComponent: typeof store.registerComponent = (payload) =>
+  store.registerComponent(payload);
+const addToSelectedElementList: typeof store.addToSelectedElementList = (
+  payload
+) => store.addToSelectedElementList(payload);
+const updateComponentNameInputValue: typeof store.updateComponentNameInputValue =
+  (payload) => store.updateComponentNameInputValue(payload);
+const setActiveComponent: typeof store.setActiveComponent = (payload) =>
+  store.setActiveComponent(payload);
+const addToComponentElementList: typeof store.addToComponentElementList = (
+  payload
+) => store.addToComponentElementList(payload);
+const addNestedHTML: typeof store.addNestedHTML = (payload) =>
+  store.addNestedHTML(payload);
+const addNestedNoActive: typeof store.addNestedNoActive = (payload) =>
+  store.addNestedNoActive(payload);
+const editComponentName: typeof store.editComponentName = (payload) =>
+  store.editComponentName(payload);
+const openProject: typeof store.openProject = (payload) =>
+  store.openProject(payload);
+const createAction: typeof store.createAction = (payload) =>
+  store.createAction(payload);
+const createState: typeof store.createState = (payload) =>
+  store.createState(payload);
+const createProp: typeof store.createProp = (payload) =>
+  store.createProp(payload);
+const changeLibComponentDisplay: typeof store.changeLibComponentDisplay = (
+  payload
+) => store.changeLibComponentDisplay(payload);
+const addLibComponents: typeof store.addLibComponents = (payload) =>
+  store.addLibComponents(payload);
 
 //all actions from action.js
 
-const pickComponent = (componentName) => {
-  const payload = {};
-  payload[componentName.value] = ["fa-brands fa-elementor fa-xl"];
+const pickComponent = (componentName: string) => {
+  const payload: { [key: string]: string[] } = {};
+  payload[componentName] = ["fa-brands fa-elementor fa-xl"];
   addLibComponents(payload);
 };
 
@@ -272,7 +289,7 @@ const createComponent = () => {
   // Parses array of components off routes, then finds parent element name (id), then passes parent into useCreateComponent, where x, y and z are pulled off the parent object
   const parentComponent = JSON.parse(
     JSON.stringify(routes.value.HomeView)
-  ).find((ele) => ele.componentName === parent.value);
+  ).find((ele: Component) => ele.componentName === parent.value);
   // console.log("componentNameInputValue is ", componentNameInputValue.value);
 
   const importProps = {
