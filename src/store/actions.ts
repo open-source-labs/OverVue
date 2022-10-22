@@ -3,7 +3,7 @@ import {
   breadthFirstSearchParent,
 } from "src/utils/search.util";
 
-import { State, Actions, Component, HtmlElement } from "../../types";
+import { State, Actions, Component, HtmlElement, HtmlAttributes } from "../../types";
 import { Store } from "pinia";
 import localforage from "localforage";
 // *** GLOBAL *** //////////////////////////////////////////////
@@ -234,7 +234,7 @@ const actions: Store<"main", State, {}, Actions> = {
   },
 
   copyActiveComponent() {
-    const copy = { ...this.activeComponentObj };
+    const copy = { ...this.activeComponentObj } as Component;
     copy.children = [];
     copy.isActive = false;
     this.copiedComponent = copy;
@@ -756,7 +756,7 @@ const actions: Store<"main", State, {}, Actions> = {
     const activeObjChildrenArray = newObj[activeComponent].children;
 
     activeObjChildrenArray.forEach((child) => {
-      delete newObj[child].parent[activeComponent];
+      delete (newObj[child] as Component).parent[activeComponent];
     });
 
     delete newObj[activeComponent];
@@ -768,7 +768,8 @@ const actions: Store<"main", State, {}, Actions> = {
           children.splice(index, 1);
           // removes component from activeComponent's htmlList
           newObj[compKey].htmlList = newObj[compKey].htmlList.filter(
-            (el) => el !== activeComponent
+            //this used to be el !== activeComponent. However this was comparing an object to a string
+            (el) => el.text !== activeComponent
           );
         }
       });
@@ -918,7 +919,7 @@ const actions: Store<"main", State, {}, Actions> = {
       (element) => element.componentName === payload.activeComponent
     )[0];
     updatedComponent.z = payload.z;
-    this.componentMap[payload.activeComponent].z = payload.z;
+    (this.componentMap[payload.activeComponent] as Component).z = payload.z;
   },
 
   updateHtmlLayer(payload) {
@@ -969,7 +970,7 @@ const actions: Store<"main", State, {}, Actions> = {
       const htmlList = this.componentMap[componentName].htmlList.slice(0);
 
       // splice out child componenets even if nested
-      function deleteChildFromHtmlList(array: Component[], payload: string) {
+      function deleteChildFromHtmlList(array: HtmlElement[], payload: string) {
         for (let i = array.length; i--; ) {
           if (array[i].children.length) {
             deleteChildFromHtmlList(array[i].children, payload);
@@ -996,8 +997,8 @@ const actions: Store<"main", State, {}, Actions> = {
       this.componentMap[this.activeRoute].children = this.componentMap[
         this.activeRoute
       ].children.filter((el) => payload !== el);
-      this.componentMap[child[child.length - 1]].parent[this.activeComponent] =
-        this.componentMap[this.activeComponent];
+      (this.componentMap[child[child.length - 1]] as Component).parent[this.activeComponent] =
+        this.componentMap[this.activeComponent] as Component;
     }
   },
 

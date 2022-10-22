@@ -23,7 +23,7 @@ export type State = {
   projects: Projects[];
   activeRoute: string;
   activeComponent: string;
-  activeComponentObj: null | Component;
+  activeComponentObj: null | Component | { componentName: string, isActive: false };
   activeHTML: string;
   activeLayer: {
     id: string;
@@ -32,7 +32,7 @@ export type State = {
   selectedProps: string[];
   selectedState: string[];
   selectedActions: string[];
-  selectedElementList: any[]; // ?? actions function addToSelectedElementList
+  selectedElementList: HtmlElement[]; // ?? actions function addToSelectedElementList
   selectedIdDrag: string;
   selectedIdDrop: string;
   projectNumber: number;
@@ -131,10 +131,7 @@ export type Actions = {
     value: string;
   }) => void;
   addComponentToComponentMap: (payload: Component) => void;
-  addParent: (payload: {
-    componentName: string;
-    componentMap: Component[];
-  }) => void;
+  addParent: (payload: Component) => void;
   addCopiedParent: (payload: Component) => void;
   deleteActiveComponent: () => void;
   parentSelect: (payload: string) => void;
@@ -147,7 +144,7 @@ export type Actions = {
   updateComponentChildrenMultiselectValue: (payload: string[]) => void;
   updateComponentChildrenValue: (payload: {
     componentName: string;
-    value: Component;
+    value: Component[];
   }) => void;
   updateComponentNameInputValue: (payload: string) => void;
   updateComponentPosition: (payload: ResizePayload) => void;
@@ -160,7 +157,7 @@ export type Actions = {
     activeComponentData: null | Component;
   }) => void;
   editAttribute: (payload: {
-    attribute: string;
+    attribute: "class" | "id";
     value: string;
     activeComponent: string;
     routeArray: [];
@@ -212,7 +209,11 @@ export type Actions = {
     imagePath: {
       [x: string]: string;
     };
-    componentMap: Component[];
+    componentMap: {
+      App: RouteComponentMap;
+      HomeView: RouteComponentMap;
+      [key: string]: RouteComponentMap | Component;
+    };
     routes: {
       [key: string]: Component[];
     };
@@ -297,11 +298,13 @@ export type Component = {
   idDrag: string;
   idDrop: string;
   color: string;
-  htmlAttributes: {
-    class: string;
-    id: string;
-    gridArea: [number, number, number, number];
-  };
+  htmlAttributes: HtmlAttributes
+};
+
+export type HtmlAttributes = {
+  class: string;
+  id: string;
+  gridArea: [number, number, number, number];
 };
 
 export type Icons = {
