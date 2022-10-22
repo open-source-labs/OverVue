@@ -3,7 +3,7 @@ import {
   breadthFirstSearchParent,
 } from "src/utils/search.util";
 
-import { State, Actions, Component, HtmlElement, HtmlAttributes } from "../../types";
+import { State, Actions, Component, HtmlElement } from "../../types";
 import { Store } from "pinia";
 import localforage from "localforage";
 // *** GLOBAL *** //////////////////////////////////////////////
@@ -998,8 +998,9 @@ const actions: Store<"main", State, {}, Actions> = {
       this.componentMap[this.activeRoute].children = this.componentMap[
         this.activeRoute
       ].children.filter((el) => payload !== el);
-      (this.componentMap[child[child.length - 1]] as Component).parent[this.activeComponent] =
-        this.componentMap[this.activeComponent] as Component;
+      (this.componentMap[child[child.length - 1]] as Component).parent[
+        this.activeComponent
+      ] = this.componentMap[this.activeComponent] as Component;
     }
   },
 
