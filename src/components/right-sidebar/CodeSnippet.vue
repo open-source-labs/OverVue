@@ -30,7 +30,7 @@ import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism-tomorrow.css"; // import syntax highlighting styles
 import { useStore } from "../../store/main.js";
-import { Component, HtmlElement } from "../../../types";
+import { Component, HtmlElement, HtmlElementMap } from "../../../types";
 import {
   ref,
   computed,
@@ -123,7 +123,7 @@ const createTemplate = (componentName: string) => {
 
 // Creates <template> boilerplate
 const writeTemplateTag = (componentName: string, activeComponent: string) => {
-  const htmlElementMap = {
+  const htmlElementMap: HtmlElementMap = {
     div: ["<div", "</div>"],
     button: ["<button", "</button>"],
     form: ["<form", "</form>"],
@@ -234,7 +234,8 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
           nestedString += " " + "class=" + `"${child.class}"`;
         }
         if (child.binding !== "") {
-          if (child.text !== "img" || child.text !== "link") {
+          // child.text !== "img" || child.text !== "link"
+          if (child.text !== "img") {
             nestedString += ` v-model="${child.binding}"`;
           }
         }

@@ -26,8 +26,10 @@ import localforage from "localforage";
 import { useStore } from "../../store/main";
 import { computed } from "vue";
 import { HtmlElement } from "app/types";
+import * as fs from "fs";
 const Mousetrap = require("mousetrap");
-const { fs, ipcRenderer } = window;
+// @ts-ignore
+const { ipcRenderer } = window;
 
 const store = useStore();
 
@@ -52,10 +54,10 @@ const showSaveJSONDialog = () => {
         },
       ],
     })
-    .then((res) => {
+    .then((res: { filePath: string }) => {
       saveJSONLocation(res.filePath);
     })
-    .catch((err) => {
+    .catch((err: Error) => {
       console.log(err);
     });
 };
@@ -63,7 +65,7 @@ const parseFileName = (file: string) => {
   if (file) return file.split("/").pop();
 };
 
-const parseAndDelete = (htmlList) => {
+const parseAndDelete = (htmlList: any[]) => {
   htmlList.forEach((element) => {
     if (!Array.isArray(element.children))
       if (element.children.length > 0) {
@@ -106,13 +108,14 @@ const saveJSONLocation = (data: string) => {
 
     fs.writeFileSync(data, JSON.stringify(stateRef));
     localforage.setItem(fileName, JSON.parse(fs.readFileSync(data, "utf8")));
-    localforage.getItem("slackWebhookURL", (err, value) => {
+    localforage.getItem("slackWebhookURL", (err, value: any) => {
       if (value) notifySlack(fileName, value);
     });
   }
 };
 
-const notifySlack = (fileName: string | undefined, url) => {
+const notifySlack = (fileName: string | undefined, url: RequestInfo | URL) => {
+  // @ts-ignore
   remote.dialog.showMessageBox(
     {
       title: "Notify Slack?",
@@ -120,7 +123,7 @@ const notifySlack = (fileName: string | undefined, url) => {
       buttons: ["No", "Yes"],
       defaultId: 1,
     },
-    (response) => {
+    (response: number) => {
       if (response === 1) {
         fetch(url, {
           method: "POST",

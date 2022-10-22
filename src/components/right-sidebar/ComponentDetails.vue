@@ -12,7 +12,6 @@ Description:
     <q-card id="code-window" class="no-shadow" v-if="activeComponentObj">
       <q-tabs
         v-model="tab"
-        dense=""
         class="bg-subaccent text-white"
         active-color="secondary"
         indicator-color="secondary"
@@ -102,6 +101,7 @@ import HTMLQueue from "./HTMLQueue";
 import CodeSnippet from "./CodeSnippet";
 import { useStore } from "../../store/main.js";
 import { ref, computed } from "vue";
+import { Component } from "../../../types";
 
 const store = useStore();
 const tab = ref("code");
@@ -109,11 +109,12 @@ const tab = ref("code");
 const activeComponentObj = computed(() => store.activeComponentObj);
 const activeComponent = computed(() => store.activeComponent);
 
-const compObj = computed({
-  get() {
-    return activeComponentObj.value;
-  },
-});
+// const compObj: Component = computed({
+//   get() {
+//     return activeComponentObj.value;
+//   },
+// });
+const compObj = activeComponentObj.value as Component;
 </script>
 
 <!-- OLD OPTIONS API SYNTAX -->

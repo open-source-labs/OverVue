@@ -69,6 +69,8 @@ export default {
 import { ref, computed, watch } from "vue";
 import { useStore } from "../../store/main.js";
 import { breadthFirstSearch } from "../../utils/search.util";
+import { HtmlElement, Component } from "../../../types";
+import { string } from "yargs";
 
 const store = useStore();
 
@@ -112,8 +114,8 @@ const renderList = computed({
       activeLayer.value.id
     );
     let sortedHTML = activeElement.children
-      .map((el, index: number) => [el.text, index, el.id])
-      .filter((el) => {
+      .map((el: HtmlElement, index: number) => [el.text, index, el.id])
+      .filter((el: HtmlElement[]) => {
         return el[0] !== undefined;
       });
     return sortedHTML;
@@ -133,14 +135,15 @@ const depth = () => {
 
 //make child components in htmlList exceptions
 const moreExceptions = () => {
-  let childComponent = [];
+  let childComponent: string[] = [];
   if (activeComponent.value) {
     childComponent = componentMap.value[activeComponent.value].children;
   }
   return childComponent;
 };
 
-const parentSelected = (payload) => store.parentSelected(payload);
+const parentSelected: typeof store.parentSelected = (payload: any) =>
+  store.parentSelected(payload);
 
 const setActiveHTML: typeof store.setActiveHTML = (payload) =>
   store.setActiveHTML(payload);
@@ -177,18 +180,18 @@ const closeMenu = () => {
   }
 };
 
-const setActiveElement = (element) => {
+const setActiveElement = (element: string[]) => {
   if (activeComponent.value !== "") {
     setActiveHTML(element);
     if (attributeModal.value === false) {
-      openAttributeModal(element);
+      openAttributeModal();
     } else {
-      closeMenu(element);
+      closeMenu();
     }
   }
 };
 
-const setLayer = (element) => {
+const setLayer = (element: { text: string; id: string }) => {
   setActiveLayer(element);
   element.id = activeHTML.value;
 };
@@ -200,7 +203,7 @@ const setParentLayer = () => {
 };
 
 //METHODS FOR DRAG-AND-DROP
-const startDrag = (event, id) => {
+const startDrag = (event, id: string) => {
   //add a class to make the html element currently being drag transparent
   event.target.classList.add("currentlyDragging");
   const dragId = id;
@@ -209,7 +212,7 @@ const startDrag = (event, id) => {
   else setIdDrag(dragId);
 };
 
-const dragEnter = (event, id) => {
+const dragEnter = (event, id: string) => {
   event.preventDefault();
   const dropId = id;
   //store the id of the html element whose location the dragged html element could be dropped upon
@@ -231,7 +234,7 @@ const endDrag = (event) => {
   else dragDropSortHtmlElements();
 };
 
-const submitClass = (element, idNum) => {
+const submitClass = (element: string, idNum: string) => {
   if (element === "") {
     return;
   }
@@ -244,7 +247,7 @@ const submitClass = (element, idNum) => {
   classText.value = "";
 };
 
-const addBinding = (input, idNum) => {
+const addBinding = (input: string, idNum: string) => {
   if (input === "") {
     return;
   }
