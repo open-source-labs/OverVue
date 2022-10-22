@@ -8,13 +8,15 @@
   />
 </template>
 
-<script setup>
+<script setup lang="ts">
 // new script for Composition API
 import { computed } from "vue";
 import { useStore } from "../../../store/main.js";
 import { useCreateComponent } from "../../composables/useCreateComponent.js";
-
-const { fs, ipcRenderer } = window;
+import * as fs from "fs";
+import { Component, HtmlElement, HtmlElementMap } from "../../../../types";
+import { types } from "@babel/core";
+const { ipcRenderer } = window.require("electron");
 const store = useStore();
 
 const props = defineProps(["title"]);
@@ -26,9 +28,10 @@ const activeHTML = computed(() => store.activeHTML);
 const userActions = computed(() => store.userActions);
 const userState = computed(() => store.userState);
 const userProps = computed(() => store.userProps);
+const componentNameInputValue = computed(() => store.componentNameInputValue);
 
 //emitter to send the importedObj to CreateComponent when fully parsed.
-const createImport = (importObj) => {
+const createImport = (importObj: Component) => {
   // define a props object to pass into useCreateComponent here
   const importProps = {
     userActions: userActions.value,
@@ -46,11 +49,16 @@ const createImport = (importObj) => {
   useCreateComponent(importObj, importProps); //this is where we will want to invoke the composable
 };
 
-const registerComponent = (payload) => store.registerComponent(payload);
-const setActiveComponent = (payload) => store.setActiveComponent(payload);
-const createAction = (payload) => store.createAction(payload);
-const createState = (payload) => store.createState(payload);
-const createProp = (payload) => store.createProp(payload);
+const registerComponent: typeof store.registerComponent = (payload) =>
+  store.registerComponent(payload);
+const setActiveComponent: typeof store.setActiveComponent = (payload) =>
+  store.setActiveComponent(payload);
+const createAction: typeof store.createAction = (payload) =>
+  store.createAction(payload);
+const createState: typeof store.createState = (payload) =>
+  store.createState(payload);
+const createProp: typeof store.createProp = (payload) =>
+  store.createProp(payload);
 
 //renders the open file
 const importComponent = () => {
@@ -64,15 +72,15 @@ const importComponent = () => {
         },
       ],
     })
-    .then((res) => {
+    .then((res: { filePaths: fs.PathOrFileDescriptor }) => {
       openVueFile(res.filePaths);
       alert("Successfully Imported");
     })
-    .catch((err) => console.log(err));
+    .catch((err: Error) => console.log(err));
 };
 
 //parses script tag string for props
-const parsingStringToProps = (str) => {
+const parsingStringToProps = (str: string) => {
   let props = [];
   let split = str.split(" ");
   for (let i = 0; i < split.length; i++) {
@@ -91,8 +99,8 @@ const parsingStringToProps = (str) => {
 };
 
 //parses script tag string for actions
-const parsingStringToAction = (str) => {
-  let action = [];
+const parsingStringToAction = (str: string) => {
+  let action: string[] = [];
   if (str.indexOf("...mapActions") === -1) {
     return action;
   }
@@ -112,8 +120,8 @@ const parsingStringToAction = (str) => {
 };
 
 //parses script tag string for state
-const parsingStringToState = (str) => {
-  let state = [];
+const parsingStringToState = (str: string) => {
+  let state: string[] = [];
   if (str.indexOf("...mapState") === -1) {
     return state;
   }
@@ -136,8 +144,8 @@ const parsingStringToState = (str) => {
 const openVueFile = (data) => {
   if (data === undefined) return;
 
-  const importObj = {}; //final output
-  const htmlList = []; //array populated with substrings '<div>' '</div>' '<p>' etc.
+  const importObj = {} as Component; //final output
+  const htmlList: string[] = []; //array populated with substrings '<div>' '</div>' '<p>' etc.
 
   let compName = data[0]
     .slice(data[0].lastIndexOf("/") + 1)
@@ -258,7 +266,7 @@ const openVueFile = (data) => {
   //OverVue adds a <div></div> wrapper to all components. remove this before importing.
 
   let groupings = findGroupings(htmlList);
-  let groupingObj = objectGenerator(groupings);
+  let groupingObj: { [key: string]: string[] } = objectGenerator(groupings);
   let groupingArray = [];
   for (const key in groupingObj) {
     groupingArray.push(groupingObj[key]);
@@ -274,12 +282,13 @@ const openVueFile = (data) => {
   //  * @return: nothing: passes the substrings into buildList to generate an array of elements
   //  */
 
-  function htmlParser(htmlString) {
+  function htmlParser(htmlString: string): void {
+    // library issue
     if (!htmlString) {
       return;
     }
     //remove new lines and tabs from HTML
-    htmlString = htmlString.replaceAll("\n", "").replaceAll("\t", "");
+    htmlString = htmlString.replace("\n", "").replace("\t", "");
     //find index for the first < and > in the string
     let openTag = htmlString.indexOf("<");
     let closeTag = htmlString.indexOf(">");
@@ -300,7 +309,7 @@ const openVueFile = (data) => {
   //  * @return: nothing -- pushes into htmlList array which is defined outside scope of buildList
   //  */
 
-  function buildList(substring) {
+  function buildList(substring: string) {
     for (const elem in htmlElementMap) {
       for (let i = 0; i < htmlElementMap[elem].length; i++) {
         //if the htmlElementMap[elem][index] matches the substring, push it into the output array
@@ -326,7 +335,7 @@ const openVueFile = (data) => {
   //  * @return: returns an array of arrays (grouped by parent/child)
   //  */
 
-  function findGroupings(array) {
+  function findGroupings(array: string[]) {
     let count = 0; //tracks where the parent ends
     let stopIndexes = []; //an array that will be used to slice out the parent/child relationships
     for (let i = 0; i < array.length; i++) {
@@ -366,7 +375,7 @@ const openVueFile = (data) => {
   //  * @return: returns an object containing parent/children html elements nested.
   //  */
 
-  function objectGenerator(array) {
+  function objectGenerator(array: string[][]) {
     let groupingObj = {};
     for (let i = 0; i < array.length; i++) {
       for (const key in htmlElementMap) {
