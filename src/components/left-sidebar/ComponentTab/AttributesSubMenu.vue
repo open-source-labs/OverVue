@@ -31,7 +31,7 @@
     </q-btn-dropdown>
     <!--Attribute (id/class so far) change function for main component parent-->
     <q-input
-      @keyup.enter="createAttribute(attributeText)"
+      @keyup.enter="createAttribute(attributeText as 'id' | 'class')"
       color="white"
       dark
       outlined
@@ -43,12 +43,12 @@
       v-on:keyup.delete.stop
     >
       <template v-slot:append>
-        <q-btn flat icon="add" @click="createAttribute(attributeText)" />
+        <q-btn flat icon="add" @click="createAttribute(attributeText as 'id' | 'class')" />
       </template>
     </q-input>
     <!--delete buttons to remove class/id-->
     <button
-      v-if="this.activeComponentObj.htmlAttributes.class !== ''"
+      v-if="(activeComponentObj as Component).htmlAttributes.class !== ''"
       class="deleteButton"
       @click="deleteAttribute('class')"
       color="primary"
@@ -57,7 +57,7 @@
     </button>
 
     <button
-      v-if="this.activeComponentObj.htmlAttributes.id !== ''"
+      v-if="(activeComponentObj as Component).htmlAttributes.id !== ''"
       class="deleteButton"
       @click="deleteAttribute('id')"
       color="primary"
@@ -105,6 +105,7 @@ const editAttribute: typeof store.editAttribute = (payload) => store.editAttribu
 
 const activeComponentData = () : Component => {
   return cloneDeep(activeComponentObj.value);
+}
 
 //methods
 
@@ -131,7 +132,7 @@ const createAttribute = (attribute: "id" | "class") => {
     value: attribute,
     activeComponent: activeComponent.value,
     routeArray: activeRouteKey.value,
-    activeComponentData: activeComponentData,
+    activeComponentData: activeComponentData as unknown as Component,
   });
   attributeText.value = "";
 };
@@ -143,7 +144,7 @@ const deleteAttribute = (attribute: "id" | "class") => {
     value: "",
     activeComponent: activeComponent.value,
     routeArray: activeRouteKey.value,
-    activeComponentData: activeComponentData,
+    activeComponentData: activeComponentData as unknown as Component,
   });
 };
 </script>
