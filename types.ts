@@ -43,7 +43,7 @@ export type State = {
   noteModalOpen: boolean;
   noteAttributeOpen: boolean;
   colorModalOpen: boolean;
-  parentSelected: any; // need to look deeper into parentSelected - it seems to take many data types
+  parentSelected: string; // need to look deeper into parentSelected - it seems to take many data types
   copiedComponent: Component | {};
   copyNumber: number;
   pastedComponent: Component | {};
@@ -144,7 +144,7 @@ export type Actions = {
   updateComponentChildrenMultiselectValue: (payload: string[]) => void;
   updateComponentChildrenValue: (payload: {
     componentName: string;
-    value: Component[];
+    value: Component | RouteComponentMap[] | string[];
   }) => void;
   updateComponentNameInputValue: (payload: string) => void;
   updateComponentPosition: (payload: ResizePayload) => void;
