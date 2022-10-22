@@ -1,6 +1,7 @@
 {
   "extends": "@quasar/app/tsconfig-preset",
   "compilerOptions": {
+    "typeRoots": ["src/customTypings", "node_modules/@types"],
     "baseUrl": ".",
     "jsx": "preserve",
     "paths": {
