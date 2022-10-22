@@ -51,13 +51,13 @@ import ComponentDetails from "./ComponentDetails.vue";
 import RoutesTab from "./RoutesTab.vue";
 import GetStarted from "./GetStarted.vue";
 import { useStore } from "../../store/main.js";
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, Ref } from "vue";
 // import type { Ref } from "vue"
 
 const store = useStore();
 const tab = ref("routes");
 const open = ref(true);
-let height = ref(40);
+const height= ref(40);
 const up = ref("fas fa-chevron-up");
 const down = ref("fas fa-chevron-down");
 
@@ -75,19 +75,19 @@ const openBottomDrawer = () => {
   // big screens 2.5
   let minHeight =
     window.outerHeight < 900 ? 4.5 : window.outerHeight < 1035 ? 3.75 : 2.5;
-  height === 40 ? (height = minHeight) : (height = 40);
-  open === true ? (open = false) : (open = true);
+  height.value === 40 ? (height.value = minHeight) : (height.value = 40);
+  open.value === true ? (open.value = false) : (open.value = true);
 };
 
-const handleHtmlDeselection = (event) => {
-  if (event.target.className !== "list-group-item") {
+const handleHtmlDeselection = (event: MouseEvent) => {
+  if ((event.target as HTMLElement).className !== "list-group-item") {
     // if html element classname is not equal to this string that all html elements have
-    if (!(activeHTML === "")) setActiveHTML([""]); // if activeHtml is not already deselected, do so
+    if (!(activeHTML.value === "")) setActiveHTML([""]); // if activeHtml is not already deselected, do so
   }
 };
 
 watch(componentNameInputValue, () => {
-  if (componentNameInputValue !== "" && activeComponent.value === "") {
+  if (componentNameInputValue.value !== "" && activeComponent.value === "") {
     tab.value = "tree";
   }
 });

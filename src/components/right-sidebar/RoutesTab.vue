@@ -21,7 +21,7 @@ Includes functionality to:
       reactive-rules
       :rules="[
         (val) =>
-          !Object.keys(this.componentMap).includes(val) ||
+          !Object.keys(componentMap).includes(val) ||
           'A component/route with this name already exists',
       ]"
     >
@@ -34,8 +34,8 @@ Includes functionality to:
   </div>
 </template>
 
-<script setup>
-import Routes from "./Routes";
+<script setup lang="ts">
+import Routes from "./Routes.vue";
 import { mapState, mapActions } from "vuex";
 import UploadMockup from "./UploadMockup.vue";
 import { useStore } from "../../store/main.js";
@@ -49,26 +49,25 @@ const routes = computed(() => store.routes);
 const componentMap = computed(() => store.componentMap);
 // const activeComponent = computed(() => store.state.activeComponent)
 
-const addRouteToRouteMap = (payload) => store.addRouteToRouteMap(payload);
-const setRoutes = (payload) => store.setRoutes(payload);
-const setActiveComponent = (payload) => store.setActiveComponent(payload);
+const addRouteToRouteMap: typeof store.addRouteToRouteMap = (payload) => store.addRouteToRouteMap(payload);
+const setRoutes: typeof store.setRoutes = (payload) => store.setRoutes(payload);
+const setActiveComponent: typeof store.setActiveComponent = (payload) => store.setActiveComponent(payload);
 
-const handleEnterKeyPress = () => {
+const handleEnterKeyPress = (event: Event) => {
   const newRouteName = newRoute.value.replace(/[^a-z0-9-_.]/gi, "");
   if (
     !newRouteName.trim() ||
-    routes[newRouteName] ||
-    componentMap[newRouteName]
+    routes.value[newRouteName] ||
+    componentMap.value[newRouteName]
   ) {
     event.preventDefault();
     return false;
   }
-  addRouteToRouteMap(newRouteName).then(() => {
+  addRouteToRouteMap(newRouteName)
     newRoute.value = "";
-  });
 };
 const resetActiveComponent = () => {
-  if (activeComponent !== "") {
+  if (activeComponent.value !== "") {
     setActiveComponent("");
   }
 };

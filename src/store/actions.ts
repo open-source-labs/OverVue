@@ -1170,6 +1170,15 @@ const actions: Store<"main", State, {}, Actions> = {
     this.setRoutes(payload.routes);
     this.setActiveComponent("");
   },
+
+  // updateStartingPosition (payload) {
+
+  // },
+
+  // updateStartingSize (payload) {
+
+  // },
+
   // *** END PROJECTS *** //////////////////////////////////////////////
 
   // IMAGES

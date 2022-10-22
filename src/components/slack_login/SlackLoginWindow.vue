@@ -60,11 +60,11 @@ export default {
 }
 </script> -->
 
-<script setup>
+<script setup lang="ts">
 import localforage from "localforage";
 import { useStore } from "vuex";
 import { ref } from "vue";
-const { ipcRenderer, shell } = window;
+const { ipcRenderer, shell } = window.require("electron");
 
 const store = useStore();
 let isAuthenticating = ref(false);
@@ -102,7 +102,7 @@ const errorMessage = ref("");
       );
     }
 
- const saveToLocalForage = (key, value) => {
+ const saveToLocalForage = (key: string, value: string) => {
       localforage.setItem(key, value);
       closeLogin();
     }
@@ -111,7 +111,7 @@ const errorMessage = ref("");
       errorMessage.value = "Failed to Connect to Slack";
     }
 
-  const setErrorMessage = (err) => {
+  const setErrorMessage = (err: string) => {
       errorMessage.value = err;
     }
 
