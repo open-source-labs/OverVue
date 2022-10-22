@@ -44,7 +44,7 @@ Description:
 </template>
 
 <!-- composition API conversion -->
-<script setup>
+<script setup lang="ts">
 // import { mapState, mapActions } from "vuex";
 import Tree from "./Tree.vue";
 import ComponentDetails from "./ComponentDetails.vue";
@@ -52,11 +52,12 @@ import RoutesTab from "./RoutesTab.vue";
 import GetStarted from "./GetStarted.vue";
 import { useStore } from "../../store/main.js";
 import { ref, computed, watch } from "vue";
+// import type { Ref } from "vue"
 
 const store = useStore();
 const tab = ref("routes");
 const open = ref(true);
-const height = ref(40);
+let height = ref(40);
 const up = ref("fas fa-chevron-up");
 const down = ref("fas fa-chevron-down");
 
@@ -67,7 +68,7 @@ const activeHTML = computed(() => store.activeHTML);
 const showTutorial = computed(() => store.showTutorial);
 
 //methods mapActions conversion
-const setActiveHTML = (payload) => store.setActiveHTML(payload);
+const setActiveHTML: typeof store.setActiveHTML = (payload) => store.setActiveHTML(payload);
 
 const openBottomDrawer = () => {
   // 15in mb pro - 1027 px 3.75

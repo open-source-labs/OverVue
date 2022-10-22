@@ -969,7 +969,7 @@ const actions: Store<"main", State, {}, Actions> = {
       const htmlList = this.componentMap[componentName].htmlList.slice(0);
 
       // splice out child componenets even if nested
-      function deleteChildFromHtmlList(array: Component[], payload: string) {
+      function deleteChildFromHtmlList(array: HtmlElement[], payload: string) {
         for (let i = array.length; i--; ) {
           if (array[i].children.length) {
             deleteChildFromHtmlList(array[i].children, payload);
@@ -1146,8 +1146,7 @@ const actions: Store<"main", State, {}, Actions> = {
     this.projects.splice(payload, 1);
     //imported localforage from module, like our mutations.js did
     localforage.getItem(this.projects[payload - 1].filename).then((data) => {
-      const store = this;
-      store = data;
+      let store = data;
     });
     this.activeTab -= 1;
   },

@@ -688,8 +688,8 @@ const addActiveComponentNote = (payload) =>
   store.addActiveComponentNote(payload);
 const deleteActiveComponentNote = (payload) =>
   store.deleteActiveComponentNote(payload);
-const openNoteModal = (payload) => store.openNoteModal(payload);
-const openColorModal = (payload) => store.openColorModal(payload);
+const openNoteModal = () => store.openNoteModal();
+const openColorModal = () => store.openColorModal();
 const updateColor = (payload) => store.updateColor(payload);
 const updateComponentGridPosition = (payload) =>
   store.updateComponentGridPosition(payload);
