@@ -514,6 +514,7 @@ import { ColorPicker } from "vue-accessible-color-picker";
 import { useStore } from "../store/main.js";
 import { ref, computed, onMounted, watch } from "vue";
 import * as fs from "fs";
+import { ResizePayload } from "../../types"
 const { ipcRenderer } = window.require("electron");
 
 const cloneDeep = require("lodash.clonedeep");
@@ -521,14 +522,14 @@ const cloneDeep = require("lodash.clonedeep");
 const store = useStore();
 const modalOpen = ref(false);
 const noteText = ref("");
-let wasDragged = ref(false);
+const wasDragged = ref(false);
 const testModel = ref([]);
 const noteModal = ref(false);
 const colorModal = ref(false);
 const mockImg = ref(false);
 const htmlElements = ref([]);
-const childrenSelected = ref([]);
-const boxes = ref(null);
+const childrenSelected = ref<typeof VueMultiselect>([]);
+const boxes = ref<typeof VueDraggableResizable>(null);
 
 //emitter
 const emit = defineEmits(["deactivated", "update:active", "activated"]);
@@ -650,7 +651,7 @@ const updated = computed(() => {
   // if there are no active components, all boxes are unhighlighted
   if (activeComponent.value === "") {
     if (boxes.value) {
-      boxes.value.forEach((element: {enabled: boolean, emit: }) => {
+      boxes.value.forEach((element: typeof VueDraggableResizable) => {
         element.enabled = false;
         element.emit("deactivated");
         element.emit("update:active", false);
@@ -658,7 +659,7 @@ const updated = computed(() => {
     }
   } else {
     // if a component is set to active, highlight it
-    boxes.value.forEach((element) => {
+    (boxes.value as typeof VueDraggableResizable).forEach((element: typeof VueDraggableResizable) => {
       if (
         activeComponent.value === element.$attrs.id &&
         element.enabled === false
@@ -716,7 +717,7 @@ const updateColors = (data: {cssColor: string}) => {
 
 // sets component's ending size/position
 const finishedResize = (x: number, y: number, w: number, h: number) => {
-  let payload = {
+  let payload: ResizePayload = {
     x: x,
     y: y,
     w: w,
@@ -747,7 +748,7 @@ const refresh = () => {
 
 // drag and drop function
 const finishedDrag = (x: number, y: number) => {
-  let payload = {
+  let payload: ResizePayload = {
     x: x,
     y: y,
     activeComponent: activeComponent.value,
@@ -756,8 +757,8 @@ const finishedDrag = (x: number, y: number) => {
   };
   updateComponentPosition(payload);
   updateComponentGridPosition(payload);
-  wasDragged = true;
-  setTimeout(() => (wasDragged = false), 100);
+  wasDragged.value = true;
+  setTimeout(() => (wasDragged.value = false), 100);
   refresh();
 };
 
@@ -766,7 +767,7 @@ const onActivated = (componentData: {componentName: string}) => {
     return;
   }
   if (boxes.value) {
-    boxes.value.forEach((element) => {
+    boxes.value.forEach((element: typeof VueDraggableResizable) => {
       if (element.$attrs.id !== componentData.componentName) {
         element.enabled = false;
         element.emit("deactivated");
@@ -799,14 +800,14 @@ const onDeactivated = () => {
 
 // renders modal with Update Children and Layer in it
 const handleAddNotes = () => {
-  if (wasDragged === false && activeComponent.value !== "") {
+  if (wasDragged.value === false && activeComponent.value !== "") {
     openNoteModal();
   }
 };
 
 //color editor - opens the pop up
 const handleEditColor = () => {
-  if (wasDragged === false && activeComponent.value !== "") {
+  if (wasDragged.value === false && activeComponent.value !== "") {
     openColorModal();
   }
 };
@@ -815,7 +816,7 @@ const handleAddChild = () => {
   modalOpen.value = true;
 };
 
-const submitNote = (e) => {
+const submitNote = (e: Event) => {
   e.preventDefault();
   if (noteText.value === "") {
     return;
@@ -825,7 +826,7 @@ const submitNote = (e) => {
 };
 
 const deleteNote = (e: Event) => {
-  deleteActiveComponentNote(e.target.previousElementSibling.innerText);
+  deleteActiveComponentNote((((e.target) as HTMLElement).previousElementSibling as HTMLElement).innerText);
 };
 
 // used when user selects to add child from dropdown
@@ -888,7 +889,7 @@ watch(
     ) {
       store.toggleTutorial();
     }
-    onActivated(activeComponentObj.value);
+    onActivated(activeComponentData.value);
   },
   { deep: true }
 );

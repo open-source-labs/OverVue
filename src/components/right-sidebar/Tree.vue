@@ -118,7 +118,7 @@ const activateNode = (nodeToActivate: string) => {
   }
 };
 
-const buildTree = (componentData) => {
+const buildTree = (componentData: typeof VueTree.treeData) => {
   //App is always the root of the tree.
   const treeData = {
     value: "App",
@@ -139,7 +139,7 @@ function buildTreeChildren(array: string[]) {
   if (array.length === 0) {
     return [];
   } else {
-    const outputArray = [];
+    const outputArray: [] = [];
     array.forEach((el) => {
       const outputObj = {
         value: el,

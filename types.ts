@@ -266,13 +266,13 @@ export type RouteComponentMap = {
 };
 
 //used in Canvas to resize rendered components
-export type ResizePayload = {
+export interface ResizePayload  {
   x: number;
   y: number;
-  h: number;
-  w: number;
+  h?: number;
+  w?: number;
   activeComponent: string;
-  routeArray: [];
+  routeArray: Component[];
   activeComponentData: null | Component;
 };
 
