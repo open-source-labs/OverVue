@@ -144,7 +144,7 @@ export type Actions = {
   updateComponentChildrenMultiselectValue: (payload: string[]) => void;
   updateComponentChildrenValue: (payload: {
     componentName: string;
-    value: Component | RouteComponentMap[] | string[];
+    value: string[];
   }) => void;
   updateComponentNameInputValue: (payload: string) => void;
   updateComponentPosition: (payload: ResizePayload) => void;
