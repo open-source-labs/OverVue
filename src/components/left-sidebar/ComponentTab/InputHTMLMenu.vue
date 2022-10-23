@@ -377,11 +377,11 @@ const updateComponentLayer: typeof store.updateComponentLayer = (payload) => sto
 const updateHTMLLayer: typeof store.updateHtmlLayer = (payload) => store.updateHtmlLayer(payload);
 const addBindingText: typeof store.addBindingText = (payload) => store.addBindingText(payload);
 
-const submitClass = (element: string, idNum: string) => {
+const submitClass = (element: string, idNum: number) => {
   if (element === "") {
     return;
   }
-  let payload: {class: string; id: string} = {
+  let payload: {class: string; id: number} = {
     class: element,
     id: idNum,
   };
@@ -389,11 +389,11 @@ const submitClass = (element: string, idNum: string) => {
   classText.value = "";
 };
 
-const submitNote = (element: string, idNum: string) => {
+const submitNote = (element: string, idNum: number) => {
   if (element === "") {
     return;
   }
-  let payload : {note: string; id: string} = {
+  let payload : {note: string; id: number} = {
     note: element,
     id: idNum,
   };
@@ -402,18 +402,18 @@ const submitNote = (element: string, idNum: string) => {
   noteText.value = "";
 };
 
-const submitHeight = (element: string, idNum: string) => {
+const submitHeight = (element: string, idNum: number) => {
   if (element === "") {
     return;
   }
-  let payload: {height: string; id: string} = {
+  let payload: {height: string; id: number} = {
     height: element,
     id: idNum,
   };
   addActiveComponentHeight(payload);
 };
 
-const submitWidth = (element: string, idNum: string) => {
+const submitWidth = (element: string, idNum: number) => {
   if (element === "") {
     return;
   }
@@ -424,22 +424,22 @@ const submitWidth = (element: string, idNum: string) => {
   addActiveComponentWidth(payload);
 };
 
-const submitTop = (element: string, idNum: string) => {
+const submitTop = (element: string, idNum: number) => {
   if (element === "") {
     return;
   }
-  let payload : {top: string; id: string} = {
+  let payload : {top: string; id: number} = {
     top: element,
     id: idNum,
   };
   addActiveComponentTop(payload);
 };
 
-const submitLeft = (element: string, idNum: string) => {
+const submitLeft = (element: string, idNum: number) => {
   if (element === "") {
     return;
   }
-  let payload : {left: string; id: string} = {
+  let payload : {left: string; id: number} = {
     left: element,
     id: idNum,
   };

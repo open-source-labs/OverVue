@@ -183,8 +183,8 @@ export type Actions = {
   openColorModal: () => void;
   openNoteModal: () => void;
   openAttributeModal: (payload: { text: string, id: string }) => void;
-  addActiveComponentClass: (payload: { id: string; class: string }) => void;
-  addBindingText: (payload: { id: string; binding: string }) => void;
+  addActiveComponentClass: (payload: { id: string; class: string | number }) => void;
+  addBindingText: (payload: { id: string; binding: number }) => void;
   deleteActiveComponentClass: (payload: string) => void;
   addActiveComponentHeight: (payload: { id: string; height: string }) => void;
   addActiveComponentWidth: (payload: { id: string; width: string }) => void;
@@ -193,7 +193,7 @@ export type Actions = {
   //unsure of below
   addActiveComponentElementNote: (payload: {
     id: string;
-    note: string;
+    note: number;
   }) => void;
   addProject: (payload: {
     filename: string;
@@ -249,8 +249,8 @@ export type HtmlElement = {
   z: number;
   w: number;
   h: number;
-  note: string;
-  binding: string;
+  note: number;
+  binding: number;
 };
 
 // Type for saved projects obj

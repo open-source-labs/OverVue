@@ -247,11 +247,11 @@ const submitClass = (element: string, idNum: string) => {
   classText.value = "";
 };
 
-const addBinding = (input: string, idNum: string) => {
+const addBinding = (input: string, idNum: number) => {
   if (input === "") {
     return;
   }
-  const payload = {
+  const payload  : {binding: string, id: number} = {
     binding: input,
     id: idNum,
   };
