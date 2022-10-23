@@ -37,7 +37,7 @@ export type State = {
   selectedIdDrop: string;
   projectNumber: number;
   activeTab: number;
-  componentChildrenMultiselectValue: string[];
+  // componentChildrenMultiselectValue: string[];
   modalOpen: boolean;
   attributeModalOpen: boolean;
   noteModalOpen: boolean;

@@ -674,8 +674,8 @@ const updated = computed(() => {
 
 //methods
 const setActiveComponent: typeof store.setActiveComponent = (payload) => store.setActiveComponent(payload);
-const updateComponentChildrenMultiselectValue: typeof store.updateComponentChildrenMultiselectValue = (payload) =>
-  store.updateComponentChildrenMultiselectValue(payload);
+// const updateComponentChildrenMultiselectValue: typeof store.updateComponentChildrenMultiselectValue = (payload) =>
+//   store.updateComponentChildrenMultiselectValue(payload);
 const updateActiveComponentChildrenValue: typeof store.updateActiveComponentChildrenValue = (payload) =>
   store.updateActiveComponentChildrenValue(payload);
 const updateComponentPosition: typeof store.updateComponentPosition = (payload) =>

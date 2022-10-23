@@ -665,16 +665,16 @@ const actions: Store<"main", State, {}, Actions> = {
 
       this.addComponentToActiveRouteInRouteMap(payload);
 
-      const value = this.componentChildrenMultiselectValue.map(
-        (component) => this.componentMap[component]
-      );
+      // const value = this.componentChildrenMultiselectValue.map(
+      //   (component) => this.componentMap[component]
+      // );
 
       if (this.parentSelected.length) {
         this.addParent(payload);
       }
 
-      this.updateComponentChildrenValue({ componentName, value });
-      this.updateComponentChildrenMultiselectValue([]);
+      // this.updateComponentChildrenValue({ componentName, value });
+      // this.updateComponentChildrenMultiselectValue([]);
       this.updateComponentNameInputValue("");
       this.setSelectedElementList([]);
       this.setActiveComponent("");
@@ -822,16 +822,16 @@ const actions: Store<"main", State, {}, Actions> = {
   // also invoked when a child is added to the parent from the sidebar (EditSidebar or HomeSidebar?)
   // also invoked when clicked on invoking the modal-view
   // event: @ VueMultiselect
-  updateComponentChildrenMultiselectValue(payload) {
-    this.componentChildrenMultiselectValue = payload;
-  },
+  // updateComponentChildrenMultiselectValue(payload) {
+  //   this.componentChildrenMultiselectValue = payload;
+  // },
 
   // executed when a new component is made
   // additionally adds children to the component
-  updateComponentChildrenValue(payload) {
-    const { componentName, value } = payload;
-    this.componentMap[componentName].children = value;
-  },
+  // updateComponentChildrenValue(payload) {
+  //   const { componentName, value } = payload;
+  //   this.componentMap[componentName].children = value;
+  // },
 
   updateComponentNameInputValue(payload) {
     this.componentNameInputValue = payload;
