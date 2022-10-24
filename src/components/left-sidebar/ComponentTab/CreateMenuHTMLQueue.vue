@@ -147,7 +147,7 @@ const setLayer = (element: { text: string; id: string }) => {
 
 const setParentLayer = () => {
   if (activeLayer.value.id !== "") {
-    upOneLayer(activeLayer.value.id);
+    upOneLayer(activeLayer.value.id as string);
   }
 };
 
