@@ -253,8 +253,8 @@ const addNestedHTML: typeof store.addNestedHTML = (payload) =>
   store.addNestedHTML(payload);
 const addNestedNoActive: typeof store.addNestedNoActive = (payload) =>
   store.addNestedNoActive(payload);
-const openAttributeModal: typeof store.openAttributeModal = (payload) =>
-  store.openAttributeModal(payload);
+const openAttributeModal: typeof store.openAttributeModal = () =>
+  store.openAttributeModal();
 const deleteProp: typeof store.deletePropsFromComponent = (payload) =>
   store.deletePropsFromComponent(payload);
 

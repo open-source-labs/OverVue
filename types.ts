@@ -24,17 +24,17 @@ export type State = {
   activeRoute: string;
   activeComponent: string;
   activeComponentObj: null | Component | { componentName: string, isActive: false };
-  activeHTML: string;
+  activeHTML: string | number;
   activeLayer: {
-    id: string;
+    id: string | number;
     lineage: string[];
   };
   selectedProps: string[];
   selectedState: string[];
   selectedActions: string[];
   selectedElementList: HtmlElement[]; // ?? actions function addToSelectedElementList
-  selectedIdDrag: string;
-  selectedIdDrop: string;
+  selectedIdDrag: string | number;
+  selectedIdDrop: string | number;
   projectNumber: number;
   activeTab: number;
   // componentChildrenMultiselectValue: string[];
@@ -171,7 +171,7 @@ export type Actions = {
   }) => void;
   updateHtmlLayer: (payload: {
     activeComponent: string;
-    activeHTML: string;
+    activeHTML: string | number;
     routeArray: Component[];
     z: number;
   }) => void;
@@ -182,18 +182,18 @@ export type Actions = {
   deleteActiveComponentNote: (payload: string) => void;
   openColorModal: () => void;
   openNoteModal: () => void;
-  openAttributeModal: (payload: { text: string, id: string }) => void;
-  addActiveComponentClass: (payload: { id: string; class: string | number }) => void;
-  addBindingText: (payload: { id: string; binding: number }) => void;
+  openAttributeModal: () => void;
+  addActiveComponentClass: (payload: { id: number; class: string }) => void;
+  addBindingText: (payload: { id: number; binding: string }) => void;
   deleteActiveComponentClass: (payload: string) => void;
-  addActiveComponentHeight: (payload: { id: string; height: string }) => void;
-  addActiveComponentWidth: (payload: { id: string; width: string }) => void;
-  addActiveComponentTop: (payload: { id: string; top: string }) => void;
-  addActiveComponentLeft: (payload: { id: string; left: string }) => void;
+  addActiveComponentHeight: (payload: { id: number | string; height: string }) => void;
+  addActiveComponentWidth: (payload: { id: number | string; width: string }) => void;
+  addActiveComponentTop: (payload: { id: number | string; top: string }) => void;
+  addActiveComponentLeft: (payload: { id: number | string; left: string }) => void;
   //unsure of below
   addActiveComponentElementNote: (payload: {
-    id: string;
-    note: number;
+    id: number | string;
+    note: number | string;
   }) => void;
   addProject: (payload: {
     filename: string;
@@ -241,16 +241,16 @@ export type HtmlElementMap = {
 
 export type HtmlElement = {
   text: string;
-  id: string;
+  id: string | number;
   children: HtmlElement[];
   class: string;
-  x: number;
-  y: number;
-  z: number;
-  w: number;
-  h: number;
-  note: number;
-  binding: number;
+  x: number | string;
+  y: number | string;
+  z: number | string;
+  w: number | string;
+  h: number | string;
+  note: number | string;
+  binding: number | string;
 };
 
 // Type for saved projects obj
@@ -263,16 +263,15 @@ export type RouteComponentMap = {
   children: string[];
   componentName: string;
   htmlList: HtmlElement[];
-  parent: { [key: string]: Component | RouteComponentMap };
-
+  parent?: { [key: string]: Component | RouteComponentMap };
 };
 
 //used in Canvas to resize rendered components
 export interface ResizePayload  {
   x: number;
   y: number;
-  h?: number;
-  w?: number;
+  h: number;
+  w: number;
   activeComponent: string;
   routeArray: Component[];
   activeComponentData: null | Component;
@@ -297,8 +296,8 @@ export type Component = {
   state: string[];
   parent: { [key: string]: Component };
   isActive: boolean;
-  idDrag: string;
-  idDrop: string;
+  idDrag: string | number;
+  idDrop: string | number;
   color: string;
   htmlAttributes: HtmlAttributes
 };

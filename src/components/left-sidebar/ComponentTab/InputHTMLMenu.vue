@@ -5,7 +5,7 @@
     <div
       class="AttributeContainer"
       v-for="element in componentMap[activeComponent].htmlList"
-      :key="element.id + Date.now()"
+      :key="element.id as number + Date.now()"
     >
       <p v-if="element.id === activeHTML" class="title">
         Your class
@@ -31,7 +31,7 @@
           id="comp-btn"
           class="fa-solid fa-right-to-bracket"
           :disable="classText.length > 0 ? false : true"
-          @click.self="submitClass(classText, activeHTML)"
+          @click.self="submitClass(classText, activeHTML as number)"
         >
         </i>
       </q-input>
@@ -45,14 +45,14 @@
         true
         hide-bottom-space
         v-model="bindingText"
-        @keydown.enter="addBinding(bindingText, activeHTML)"
+        @keydown.enter="addBinding(bindingText, activeHTML as number)"
       >
         <i
           id="compt-btn"
           class="fa-solid fa-right-to-bracket"
           label="Add Binding"
           :disable="bindingText.length > 0 ? false : true"
-          @click.self="addBinding(bindingText, activeHTML)"
+          @click.self="addBinding(bindingText, activeHTML as number)"
         >
         </i>
       </q-input>
@@ -60,7 +60,7 @@
     <div
       class="AttributeContainer"
       v-for="element in componentMap[activeComponent].htmlList"
-      :key="element.id + Date.now()"
+      :key="element.id as number + Date.now()"
     >
       <div
         v-if="exceptions.includes(element.text) && element.id === activeHTML"
@@ -81,7 +81,7 @@
               color="secondary"
               label="Submit Note"
               :disable="noteText.length > 0 ? false : true"
-              @click.self="submitNote(noteText, activeHTML)"
+              @click.self="submitNote(noteText, activeHTML as number)"
             >
             </i>
           </q-input>
@@ -98,8 +98,8 @@
             :label-value="'Height:' + heightText"
             inner-track-color="primary"
             color="secondary"
-            @change="submitHeight(heightText, activeHTML)"
-            @update:model-value="submitHeight(heightText, activeHTML)"
+            @change="submitHeight(heightText, activeHTML as number)"
+            @update:model-value="submitHeight(heightText, activeHTML as number)"
             style="float: left; margin-left: 5%"
           />
         </q-form>
@@ -114,8 +114,8 @@
             :label-value="'Elevation:' + topText"
             inner-track-color="primary"
             color="secondary"
-            @change="submitTop(topText, activeHTML)"
-            @update:model-value="submitTop(topText, activeHTML)"
+            @change="submitTop(topText, activeHTML as number)"
+            @update:model-value="submitTop(topText, activeHTML as number)"
             style="float: left; margin-left: 35%"
           />
         </q-form>
@@ -129,8 +129,8 @@
             :label-value="'Width:' + widthText"
             inner-track-color="primary"
             color="secondary"
-            @change="submitWidth(widthText, activeHTML)"
-            @update:model-value="submitWidth(widthText, activeHTML)"
+            @change="submitWidth(widthText, activeHTML as number)"
+            @update:model-value="submitWidth(widthText, activeHTML as number)"
             style="margin-top: 20%"
           />
         </q-form>
@@ -144,8 +144,8 @@
             :label-value="'Position:' + leftText"
             inner-track-color="primary"
             color="secondary"
-            @change="submitLeft(leftText, activeHTML)"
-            @update:model-value="submitLeft(leftText, activeHTML)"
+            @change="submitLeft(leftText, activeHTML as number)"
+            @update:model-value="submitLeft(leftText, activeHTML as number)"
             style="margin-top: 20%"
           />
         </q-form>
@@ -164,7 +164,7 @@
               class="fa-solid fa-right-to-bracket"
               color="secondary"
               label="Submit Height"
-              @click.self="submitHeight(heightText, activeHTML)"
+              @click.self="submitHeight(heightText, activeHTML as number)"
             >
             </i>
           </q-input>
@@ -184,7 +184,7 @@
               class="fa-solid fa-right-to-bracket"
               color="secondary"
               label="Submit Width"
-              @click.self="submitWidth(widthText, activeHTML)"
+              @click.self="submitWidth(widthText, activeHTML as number)"
             >
             </i>
           </q-input>
@@ -204,7 +204,7 @@
               class="fa-solid fa-right-to-bracket"
               color="secondary"
               label="Submit Height"
-              @click.self="submitTop(topText, activeHTML)"
+              @click.self="submitTop(topText, activeHTML as number)"
             >
             </i>
           </q-input>
@@ -224,7 +224,7 @@
               class="fa-solid fa-right-to-bracket"
               color="secondary"
               label="Submit Position"
-              @click="submitLeft(leftText, activeHTML)"
+              @click="submitLeft(leftText, activeHTML as number)"
             >
             </i>
           </q-input>
@@ -244,7 +244,7 @@
             color="transparent"
             text-color="primary"
             label="-"
-            @click="(e) => handleLayer(e)"
+            @click="(e: Event) => handleLayer(e)"
           />
           <!-- nested for loop to iterate to display current z-index for selected htmlElement -->
           <template v-for="element in routes[activeRoute]">
@@ -263,7 +263,7 @@
             color="transparent"
             text-color="primary"
             label="+"
-            @click="(e) => handleLayer(e)"
+            @click="(e: Event) => handleLayer(e)"
           />
         </q-item>
       </div>
@@ -271,13 +271,14 @@
     <q-btn
       label="Close HTML Element"
       class="closeBtn"
-      @click="closeMenu({ text: 'reset', id: 'reset' })"
+      @click="closeMenu()"
     />
   </div>
 </template>
 
 <script setup lang="ts">
 // new script for Composition API
+import { Event } from "electron";
 import { computed, ref, watch, onMounted } from "vue";
 import { useStore } from "../../../store/main.js";
 
@@ -311,13 +312,13 @@ const exceptions = ref([
   "e-alert",
   "e-dropdown",
 ]);
-const attributeModal = ref("false");
-const classText = ref("");
-const heightText = ref("");
-const widthText = ref("");
-const topText = ref("");
-const leftText = ref("");
-const z = ref("0");
+const attributeModal = ref(false);
+const classText = ref();
+const heightText = ref();
+const widthText = ref();
+const topText = ref();
+const leftText = ref();
+// const z = ref("0");
 const noteText = ref("");
 const bindingText = ref("");
 // const note = ref('');
@@ -333,10 +334,10 @@ onMounted(() => {
       if (
         activeHTML.value === routes.value[activeRoute.value][i].htmlList[j].id
       ) {
-        heightText.value = routes.value[activeRoute.value][i].htmlList[j].h;
-        widthText.value = routes.value[activeRoute.value][i].htmlList[j].w;
-        topText.value = routes.value[activeRoute.value][i].htmlList[j].x;
-        leftText.value = routes.value[activeRoute.value][i].htmlList[j].y;
+        heightText.value = routes.value[activeRoute.value][i].htmlList[j].h as number;
+        widthText.value = routes.value[activeRoute.value][i].htmlList[j].w as number;
+        topText.value = routes.value[activeRoute.value][i].htmlList[j].x as number;
+        leftText.value = routes.value[activeRoute.value][i].htmlList[j].y as number;
       }
     }
   }
@@ -352,9 +353,9 @@ const activeLayer = computed(() => store.activeLayer);
 const attributeModalOpen = computed(() => store.attributeModalOpen);
 const activeRoute = computed(() => store.activeRoute);
 const routes = computed(() => store.routes);
-const activeComponentData = computed(() => store.activeComponentData);
-const activeComponentObj = computed(() => store.activeComponentObj);
-const componentData = computed(() => store.componentData);
+// const activeComponentData = computed(() => store.activeComponentData);
+// const activeComponentObj = computed(() => store.activeComponentObj);
+// const componentData = computed(() => store.componentData);
 
 //actions
 
@@ -446,17 +447,17 @@ const submitLeft = (element: string, idNum: number) => {
   addActiveComponentLeft(payload);
 };
 
-const closeMenu = (element: { text: string, id: string }) => {
+const closeMenu = () => {
   if (activeComponent.value !== "") {
     clearActiveHTML();
-    openAttributeModal(element);
+    openAttributeModal();
   }
 };
 
 //function that adds/subtracts z-index on html Elements
-const handleLayer = (e) => {
+const handleLayer = (e: Event) => {
   e.preventDefault();
-  let HTMLZ;
+  let HTMLZ: number = 0;
   for (let i = 0; i < routes.value[activeRoute.value].length; i++) {
     for (
       let j = 0;
@@ -466,7 +467,7 @@ const handleLayer = (e) => {
       if (
         activeHTML.value === routes.value[activeRoute.value][i].htmlList[j].id
       ) {
-        HTMLZ = routes.value[activeRoute.value][i].htmlList[j].z;
+        HTMLZ = routes.value[activeRoute.value][i].htmlList[j].z as number;
       }
     }
   }
@@ -476,10 +477,10 @@ const handleLayer = (e) => {
     routeArray: routes.value[activeRoute.value],
     z: HTMLZ,
   };
-  if (e.target.innerText === "+") {
+  if ((e.target as HTMLElement).innerText === "+") {
     payload.z++;
   }
-  if (e.target.innerText === "-" && payload.z > 0) {
+  if ((e.target as HTMLElement).innerText === "-" && payload.z > 0) {
     payload.z--;
   }
   updateHTMLLayer(payload);
@@ -489,7 +490,7 @@ const activeRouteArray = () => {
   return routes.value[activeRoute.value];
 };
 
-const addBinding = (input, idNum) => {
+const addBinding = (input: string, idNum: number) => {
   if (input === "") {
     return;
   }

@@ -3,7 +3,7 @@ import {
   breadthFirstSearchParent,
 } from "src/utils/search.util";
 
-import { State, Actions, Component, HtmlElement } from "../../types";
+import { State, Actions, Component, RouteComponentMap, HtmlElement } from "../../types";
 import { Store } from "pinia";
 import localforage from "localforage";
 // *** GLOBAL *** //////////////////////////////////////////////
@@ -627,7 +627,7 @@ const actions: Store<"main", State, {}, Actions> = {
       let indexDrag: number = 0;
       let indexDrop: number = 0;
       //find the indexes belonging to the html elements with the selectedIdDrag and selectedIdDrop
-      htmlList.forEach((el: { id: string }, i: number) => {
+      htmlList.forEach((el: { id: string | number }, i: number) => {
         if (el.id === selectedIdDrag) {
           indexDrag = i;
         } else if (el.id === selectedIdDrop) {
@@ -733,7 +733,8 @@ const actions: Store<"main", State, {}, Actions> = {
   },
 
   addParent(payload) {
-    this.componentMap[payload.componentName].parent[this.parentSelected] =
+    const a = this.componentMap[payload.componentName].parent as { [key: string]: Component | RouteComponentMap }
+    a[this.parentSelected] =
       this.componentMap[this.parentSelected];
     this.componentMap[this.parentSelected].children.push(payload.componentName);
   },
@@ -1046,7 +1047,7 @@ const actions: Store<"main", State, {}, Actions> = {
       this.componentMap[this.activeComponent].htmlList.forEach((el) => {
         //adding class into it's child 1st layer
         if (el.children.length !== 0) {
-          el.children.forEach((element: { id: string; class: string }) => {
+          el.children.forEach((element: { id: string | number; class: string }) => {
             if (payload.id === element.id) {
               element.class = payload.class;
             }
@@ -1066,7 +1067,7 @@ const actions: Store<"main", State, {}, Actions> = {
       if (active.htmlList)
         this.componentMap[this.activeComponent].htmlList.forEach((el) => {
           if (el.children.length !== 0) {
-            el.children.forEach((element: { id: string; binding: string }) => {
+            el.children.forEach((element: { id: string | number; binding: string | number }) => {
               if (payload.id === element.id) {
                 element.binding = payload.binding;
               }
