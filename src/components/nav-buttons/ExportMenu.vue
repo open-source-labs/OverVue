@@ -44,6 +44,7 @@ import {
 } from "../../../types";
 
 const store = useStore();
+// @ts-ignore
 const { ipcRenderer } = window;
 
 const componentMap = computed(() => store.componentMap);
