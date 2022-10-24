@@ -3,11 +3,17 @@ import {
   breadthFirstSearchParent,
 } from "src/utils/search.util";
 
-import { State, Actions, Component, RouteComponentMap, HtmlElement } from "../../types";
+import {
+  State,
+  Actions,
+  Component,
+  RouteComponentMap,
+  HtmlElement,
+} from "../../types";
 import { Store } from "pinia";
 import localforage from "localforage";
 // *** GLOBAL *** //////////////////////////////////////////////
-
+// @ts-ignore
 const actions: Store<"main", State, {}, Actions> = {
   emptyState() {
     this.$reset();
@@ -733,9 +739,10 @@ const actions: Store<"main", State, {}, Actions> = {
   },
 
   addParent(payload) {
-    const a = this.componentMap[payload.componentName].parent as { [key: string]: Component | RouteComponentMap }
-    a[this.parentSelected] =
-      this.componentMap[this.parentSelected];
+    const a = this.componentMap[payload.componentName].parent as {
+      [key: string]: Component | RouteComponentMap;
+    };
+    a[this.parentSelected] = this.componentMap[this.parentSelected];
     this.componentMap[this.parentSelected].children.push(payload.componentName);
   },
 
@@ -1047,11 +1054,13 @@ const actions: Store<"main", State, {}, Actions> = {
       this.componentMap[this.activeComponent].htmlList.forEach((el) => {
         //adding class into it's child 1st layer
         if (el.children.length !== 0) {
-          el.children.forEach((element: { id: string | number; class: string }) => {
-            if (payload.id === element.id) {
-              element.class = payload.class;
+          el.children.forEach(
+            (element: { id: string | number; class: string }) => {
+              if (payload.id === element.id) {
+                element.class = payload.class;
+              }
             }
-          });
+          );
         }
         if (payload.id === el.id) {
           el.class = payload.class;
@@ -1067,11 +1076,13 @@ const actions: Store<"main", State, {}, Actions> = {
       if (active.htmlList)
         this.componentMap[this.activeComponent].htmlList.forEach((el) => {
           if (el.children.length !== 0) {
-            el.children.forEach((element: { id: string | number; binding: string | number }) => {
-              if (payload.id === element.id) {
-                element.binding = payload.binding;
+            el.children.forEach(
+              (element: { id: string | number; binding: string | number }) => {
+                if (payload.id === element.id) {
+                  element.binding = payload.binding;
+                }
               }
-            });
+            );
           }
           if (payload.id === el.id) {
             el.binding = payload.binding;
