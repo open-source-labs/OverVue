@@ -330,7 +330,7 @@
                 color="transparent"
                 text-color="primary"
                 label="&ndash;"
-                @click="(e) => handleLayer(e)"
+                @click="(e : Event) => handleLayer(e)"
               />
               <p id="counter">{{ componentData.z }}</p>
               <q-btn
@@ -338,7 +338,7 @@
                 color="transparent"
                 text-color="primary"
                 label="+"
-                @click="(e) => handleLayer(e)"
+                @click="(e : Event) => handleLayer(e)"
               />
             </q-item>
             <q-item clickable v-ripple v-close-popup @click="handleAddChild">
@@ -1435,7 +1435,7 @@ li:hover {
     linear-gradient(90deg, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
     linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
-  -pie-background: linear-gradient(
+    -pie-background: linear-gradient(
         rgba(255, 255, 255, 0.8) 1px,
         transparent 1px
       ) -2px -2px / 100px,
