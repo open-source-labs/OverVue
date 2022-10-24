@@ -308,7 +308,7 @@ const exceptions = ref([
   "e-dropdown",
 ]);
 const attributeModal = ref(false);
-const classText = ref();
+const classText = ref("");
 const heightText = ref();
 const widthText = ref();
 const topText = ref();
