@@ -258,13 +258,13 @@ watch(attributeModalOpen, () => {
   attributeModal.value = attributeModalOpen.value;
 });
 
-watch(activeComponent, () => {
-  if (activeComponent.value !== "") {
-    (store.componentMap[activeComponent.value] as Component).isActive = true;
-  } else {
-    (store.componentMap[activeComponent.value] as Component).isActive = false;
-  }
-});
+// watch(activeComponent, () => {
+//   if (activeComponent.value !== "") {
+//     (store.componentMap[activeComponent.value] as Component).isActive = true;
+//   } else {
+//     (store.componentMap[activeComponent.value] as Component).isActive = false;
+//   }
+// });
 </script>
 
 <!-- <script>
