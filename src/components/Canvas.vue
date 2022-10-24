@@ -4,6 +4,8 @@
   Functionality includes: resizing/dragging component boxes, display grid image, active component
   -->
 
+  <!-- beneath line 419, we deleted :hint="hint" -->
+
 <template>
   <!-- the background Canvas grid -->
   <div
@@ -68,7 +70,7 @@
         <!-- Rendering HTML Elements for each Component -->
         <div
           v-for="element in componentMap[componentData.componentName].htmlList"
-          :key="element.id + new Date()"
+          :key="element.id as string + new Date()"
         >
           <div
             v-if="element.text === 'button'"
@@ -79,8 +81,8 @@
               element.w !== 0 ? { width: element.w + '%' } : { width: '25%' },
               element.h !== 0 ? { height: element.h + '%' } : { height: '10%' },
               element.z !== 0
-                ? { 'z-index': element.z + '%' }
-                : { 'z-index': '0' },
+                ? { 'z-index': element.z as number}
+                : { 'z-index': 0 },
               { 'background-color': componentData.color },
             ]"
           >
@@ -96,7 +98,7 @@
               element.y !== 0 ? { left: element.y + '%' } : { left: '10%' },
               element.w !== 0 ? { width: element.w + '%' } : { width: '80%' },
               element.h !== 0 ? { height: element.h + '%' } : { height: '75%' },
-              element.z !== 0 ? { 'z-index': element.z } : { 'z-index': '0' },
+              element.z !== 0 ? { 'z-index': element.z as number } : { 'z-index': 0 },
               { 'background-color': componentData.color },
             ]"
           >
@@ -113,7 +115,7 @@
               element.y !== 0 ? { left: element.y + '%' } : { left: '10%' },
               element.w !== 0 ? { width: element.w + '%' } : { width: '80%' },
               element.h !== 0 ? { height: element.h + '%' } : { height: '40%' },
-              element.z !== 0 ? { 'z-index': element.z } : { 'z-index': '0' },
+              element.z !== 0 ? { 'z-index': element.z as number } : { 'z-index': 0 },
               { 'background-color': componentData.color },
             ]"
           >
@@ -129,7 +131,7 @@
               element.y !== 0 ? { left: element.y + '%' } : { left: '5%' },
               element.w !== 0 ? { width: element.w + '%' } : { width: '90%' },
               element.h !== 0 ? { height: element.h + '%' } : { height: '20%' },
-              element.z !== 0 ? { 'z-index': element.z } : { 'z-index': '0' },
+              element.z !== 0 ? { 'z-index': element.z as number } : { 'z-index': 0 },
               { 'background-color': componentData.color },
             ]"
           >
@@ -145,7 +147,7 @@
               element.y !== 0 ? { left: element.y + '%' } : { left: '10%' },
               element.w !== 0 ? { width: element.w + '%' } : { width: '80%' },
               element.h !== 0 ? { height: element.h + '%' } : { height: '15%' },
-              element.z !== 0 ? { 'z-index': element.z } : { 'z-index': '0' },
+              element.z !== 0 ? { 'z-index': element.z as number } : { 'z-index': 0 },
               { 'background-color': componentData.color },
             ]"
           >
@@ -161,7 +163,7 @@
               element.y !== 0 ? { left: element.y + '%' } : { left: '15%' },
               element.w !== 0 ? { width: element.w } + '%' : { width: '70%' },
               element.h !== 0 ? { height: element.h + '%' } : { height: '12%' },
-              element.z !== 0 ? { 'z-index': element.z } : { 'z-index': '0' },
+              element.z !== 0 ? { 'z-index': element.z as number } : { 'z-index': 0 },
               { 'background-color': componentData.color },
             ]"
           >
@@ -177,7 +179,7 @@
               element.y !== 0 ? { left: element.y + '%' } : { left: '20%' },
               element.w !== 0 ? { width: element.w + '%' } : { width: '60%' },
               element.h !== 0 ? { height: element.h + '%' } : { height: '10%' },
-              element.z !== 0 ? { 'z-index': element.z } : { 'z-index': '0' },
+              element.z !== 0 ? { 'z-index': element.z as number } : { 'z-index': 0 },
               { 'background-color': componentData.color },
             ]"
           >
@@ -193,7 +195,7 @@
               element.y !== 0 ? { left: element.y + '%' } : { left: '25%' },
               element.w !== 0 ? { width: element.w + '%' } : { width: '50%' },
               element.h !== 0 ? { height: element.h + '%' } : { height: '8%' },
-              element.z !== 0 ? { 'z-index': element.z } : { 'z-index': '0' },
+              element.z !== 0 ? { 'z-index': element.z as number } : { 'z-index': 0 },
               { 'background-color': componentData.color },
             ]"
           >
@@ -209,7 +211,7 @@
               element.y !== 0 ? { left: element.y + '%' } : { left: '30%' },
               element.w !== 0 ? { width: element.w + '%' } : { width: '40%' },
               element.h !== 0 ? { height: element.h + '%' } : { height: '5%' },
-              element.z !== 0 ? { 'z-index': element.z } : { 'z-index': '0' },
+              element.z !== 0 ? { 'z-index': element.z as number } : { 'z-index': 0 },
               { 'background-color': componentData.color },
             ]"
           >
@@ -226,7 +228,7 @@
               element.y !== 0 ? { left: element.y + '%' } : { left: '20%' },
               element.w !== 0 ? { width: element.w + '%' } : { width: '40%' },
               element.h !== 0 ? { height: element.h + '%' } : { height: '40%' },
-              element.z !== 0 ? { 'z-index': element.z } : { 'z-index': '0' },
+              element.z !== 0 ? { 'z-index': element.z as number } : { 'z-index': 0 },
               { 'background-color': componentData.color },
             ]"
           >
@@ -243,7 +245,7 @@
               element.y !== 0 ? { left: element.y + '%' } : { left: '30%' },
               element.w !== 0 ? { width: element.w + '%' } : { width: '60%' },
               element.h !== 0 ? { height: element.h + '%' } : { height: '10%' },
-              element.z !== 0 ? { 'z-index': element.z } : { 'z-index': '0' },
+              element.z !== 0 ? { 'z-index': element.z as number } : { 'z-index': 0 },
               { 'background-color': componentData.color },
             ]"
           >
@@ -259,7 +261,7 @@
               element.y !== 0 ? { left: element.y + '%' } : { left: '10%' },
               element.w !== 0 ? { width: element.w + '%' } : { width: '80%' },
               element.h !== 0 ? { height: element.h + '%' } : { height: '40%' },
-              element.z !== 0 ? { 'z-index': element.z } : { 'z-index': '0' },
+              element.z !== 0 ? { 'z-index': element.z as number } : { 'z-index': 0 },
               { 'background-color': componentData.color },
             ]"
           >
@@ -280,7 +282,7 @@
               element.y !== 0 ? { left: element.y + '%' } : { left: '10%' },
               element.w !== 0 ? { width: element.w + '%' } : { width: '80%' },
               element.h !== 0 ? { height: element.h + '%' } : { height: '40%' },
-              element.z !== 0 ? { 'z-index': element.z } : { 'z-index': '0' },
+              element.z !== 0 ? { 'z-index': element.z as number } : { 'z-index': 0 },
               { 'background-color': componentData.color },
             ]"
           >
@@ -301,7 +303,7 @@
               element.y !== 0 ? { left: element.y + '%' } : { left: '10%' },
               element.w !== 0 ? { width: element.w + '%' } : { width: '80%' },
               element.h !== 0 ? { height: element.h + '%' } : { height: '40%' },
-              element.z !== 0 ? { 'z-index': element.z } : { 'z-index': '0' },
+              element.z !== 0 ? { 'z-index': element.z as number } : { 'z-index': 0 },
               { 'background-color': componentData.color },
             ]"
           >
@@ -398,7 +400,7 @@
               <p class="title">Adding notes to {{ activeComponent }}</p>
               <div class="noteContainer">
                 <li
-                  v-for="(note, index) in componentMap[activeComponent]
+                  v-for="(note, index) in (componentMap[activeComponent] as Component)
                     .noteList"
                   :key="note"
                 >
@@ -417,7 +419,6 @@
                     autofocus
                     true
                     hide-bottom-space
-                    :hint="hint"
                     @keyup.enter="submitNote"
                   ></q-input>
                   <q-btn
@@ -514,7 +515,7 @@ import { ColorPicker } from "vue-accessible-color-picker";
 import { useStore } from "../store/main.js";
 import { ref, computed, onMounted, watch } from "vue";
 import * as fs from "fs";
-import { ResizePayload } from "../../types"
+import { ResizePayload, Component } from "../../types"
 const { ipcRenderer } = window.require("electron");
 
 const cloneDeep = require("lodash.clonedeep");
@@ -556,9 +557,9 @@ const routes = computed(() => store.routes);
 const activeRoute = computed(() => store.activeRoute);
 const activeComponent = computed(() => store.activeComponent);
 const componentMap = computed(() => store.componentMap);
-const componentChildrenMultiselectValue = computed(
-  () => store.componentChildrenMultiselectValue
-);
+// const componentChildrenMultiselectValue = computed(
+//   () => store.componentChildrenMultiselectValue
+// );
 const imagePath = computed(() => store.imagePath);
 const activeComponentObj = computed(() => store.activeComponentObj);
 const exportAsTypescript = computed(() => store.exportAsTypescript);
@@ -748,7 +749,7 @@ const refresh = () => {
 
 // drag and drop function
 const finishedDrag = (x: number, y: number) => {
-  let payload: ResizePayload = {
+  let payload = {
     x: x,
     y: y,
     activeComponent: activeComponent.value,

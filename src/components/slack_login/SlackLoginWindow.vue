@@ -90,17 +90,18 @@ const errorMessage = ref("");
       const scope = "incoming-webhook";
       const redirectUri = process.env.SLACK_REDIRECT_URI;
       const clientId = process.env.SLACK_CLIENT_ID;
-
       isAuthenticating.value = true;
 
+    if (redirectUri && clientId) {
       const trimmedUri = redirectUri.slice(1, redirectUri.length - 1);
       const trimmedClientId = clientId.slice(1, clientId.length - 1);
-
+    
       shell.openExternal(
         `${slackBaseUrl}?scope=${scope}&redirect_uri=${trimmedUri}&client_id=${trimmedClientId}`,
         { activate: true }
       );
     }
+  }
 
  const saveToLocalForage = (key: string, value: string) => {
       localforage.setItem(key, value);

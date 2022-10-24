@@ -270,8 +270,8 @@ export type RouteComponentMap = {
 export interface ResizePayload  {
   x: number;
   y: number;
-  h: number;
-  w: number;
+  h?: number;
+  w?: number;
   activeComponent: string;
   routeArray: Component[];
   activeComponentData: null | Component;
