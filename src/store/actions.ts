@@ -900,8 +900,8 @@ const actions: Store<"main", State, {}, Actions> = {
     const updatedComponent = this.routes[this.activeRoute].filter(
       (element) => element.componentName === payload.activeComponent
     )[0];
-    updatedComponent.h = payload.h;
-    updatedComponent.w = payload.w;
+    (updatedComponent.h as number | undefined) = payload.h;
+    (updatedComponent.w as number | undefined) = payload.w;
     updatedComponent.x = payload.x;
     updatedComponent.y = payload.y;
   },
