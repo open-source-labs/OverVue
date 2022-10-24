@@ -36,6 +36,7 @@ import VueTree from "@ssthouse/vue3-tree-chart";
 import "@ssthouse/vue3-tree-chart/dist/vue3-tree-chart.css";
 import { useStore } from "../../store/main.js";
 import { ref, computed, watch } from "vue";
+import { Component, RouteComponentMap } from "../../../types";
 
 const store = useStore();
 
@@ -118,7 +119,7 @@ const activateNode = (nodeToActivate: string) => {
 
 const buildTree = (componentData: typeof VueTree.treeData) => {
   //App is always the root of the tree.
-  const treeData = {
+  const treeData : {value: string; children:{value: string; children: string[]}[]} = {
     value: "App",
     children: [],
   };
@@ -152,7 +153,7 @@ function buildTreeChildren(array: string[]) {
           }
         }
       }
-      outputArray.push(outputObj);
+      (outputArray as { value: string; children: string[]}[]).push(outputObj);
     });
     return outputArray;
   }
