@@ -59,12 +59,6 @@ Description:
   </section>
 </template>
 
-<script>
-export default {
-  name: "HTMLQueue",
-};
-</script>
-
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
 import { useStore } from "../../store/main.js";
@@ -252,7 +246,7 @@ const addBinding = (input: string, idNum: number) => {
   if (input === "") {
     return;
   }
-  const payload  : {binding: string, id: number} = {
+  const payload: { binding: string; id: number } = {
     binding: input,
     id: idNum,
   };
