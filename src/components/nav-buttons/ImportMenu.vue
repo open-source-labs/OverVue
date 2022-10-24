@@ -31,10 +31,10 @@ Description:
 import { useStore } from "../../store/main";
 import ImportComponent from "../left-sidebar/ComponentTab/ImportComponent.vue";
 import { Component } from "../../../types";
-import * as fs from "fs";
+// import * as fs from "fs";
 const Mousetrap = require("mousetrap");
 // @ts-ignore
-const { ipcRenderer } = window;
+const { fs, ipcRenderer } = window;
 
 const store = useStore();
 
