@@ -59,12 +59,6 @@ Description:
   </section>
 </template>
 
-<!-- <script>
-export default {
-  name: "HTMLQueue",
-};
-</script> -->
-
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
 import { useStore } from "../../store/main.js";
@@ -264,13 +258,13 @@ watch(attributeModalOpen, () => {
   attributeModal.value = attributeModalOpen.value;
 });
 
-watch(activeComponent, () => {
-  if (activeComponent.value !== "") {
-    (store.componentMap[activeComponent.value] as Component).isActive = true;
-  } else {
-    (store.componentMap[activeComponent.value] as Component).isActive = false;
-  }
-});
+// watch(activeComponent, () => {
+//   if (activeComponent.value !== "") {
+//     (store.componentMap[activeComponent.value] as Component).isActive = true;
+//   } else {
+//     (store.componentMap[activeComponent.value] as Component).isActive = false;
+//   }
+// });
 </script>
 
 <!-- <script>
