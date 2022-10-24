@@ -34,8 +34,8 @@ Description:
 import { computed } from "vue";
 import { useStore } from "../../store/main";
 import { useExportComponent } from "../composables/useExportComponent";
-import * as fs from "fs";
-import path from "path";
+// import * as fs from "fs";
+// import path from "path";
 import {
   Component,
   HtmlElement,
@@ -45,7 +45,7 @@ import {
 
 const store = useStore();
 // @ts-ignore
-const { ipcRenderer } = window;
+const { fs, ipcRenderer } = window;
 
 const componentMap = computed(() => store.componentMap);
 const imagePath = computed(() => store.imagePath);

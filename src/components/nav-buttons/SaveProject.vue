@@ -21,10 +21,10 @@ import localforage from "localforage";
 import { useStore } from "../../store/main";
 import { computed } from "vue";
 import { HtmlElement } from "app/types";
-import * as fs from "fs";
+// import * as fs from "fs";
 const Mousetrap = require("mousetrap");
 // @ts-ignore
-const { ipcRenderer } = window;
+const { fs, ipcRenderer } = window;
 
 const store = useStore();
 

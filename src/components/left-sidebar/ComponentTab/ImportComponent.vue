@@ -13,9 +13,10 @@
 import { computed } from "vue";
 import { useStore } from "../../../store/main.js";
 import { useCreateComponent } from "../../composables/useCreateComponent.js";
-import * as fs from "fs";
+// import * as fs from "fs";
 import { Component, HtmlElement, HtmlElementMap } from "../../../../types";
-const { ipcRenderer } = window.require("electron");
+// @ts-ignore
+const { fs, ipcRenderer } = window;
 const store = useStore();
 
 const props = defineProps(["title"]);
@@ -140,6 +141,7 @@ const parsingStringToState = (str: string) => {
 };
 
 //the bulk of the work for this component
+// @ts-ignore
 const openVueFile = (data) => {
   if (data === undefined) return;
 

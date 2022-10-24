@@ -40,5 +40,6 @@
     "dist",
     ".quasar",
     "node_modules",
+    "src",
   ]
 }
