@@ -27,17 +27,13 @@ Description:
   </q-btn>
 </template>
 
-<script>
-export default { name: "ImportMenu" };
-</script>
-
 <script setup lang="ts">
 import { useStore } from "../../store/main";
 import ImportComponent from "../left-sidebar/ComponentTab/ImportComponent.vue";
 import { Component } from "../../../types";
 import * as fs from "fs";
 const Mousetrap = require("mousetrap");
-const { ipcRenderer } = window.require("electron");
+const { ipcRenderer } = window;
 
 const store = useStore();
 

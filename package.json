@@ -56,6 +56,7 @@
     "vue": "^3.2.31",
     "vue-accessible-color-picker": "^4.0.3",
     "vue-draggable-resizable": "^2.3.0",
+    "vue-loader": "^17.0.0",
     "vue-multiselect": "^3.0.0-alpha.2",
     "vue-prism-editor": "^2.0.0-alpha.2",
     "vue-router": "4.0.13",

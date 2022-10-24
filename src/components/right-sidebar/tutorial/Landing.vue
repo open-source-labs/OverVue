@@ -34,7 +34,7 @@
 <!-- COMPOSITION API SYNTAX -->
 <script setup lang="ts">
 import { useStore } from "../../../store/main.js";
-const { shell } = window.require("electron");
+const { shell } = window;
 
 const store = useStore();
 const emit = defineEmits(["nextTab", "versionTab"]);

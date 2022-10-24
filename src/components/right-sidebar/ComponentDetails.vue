@@ -89,12 +89,6 @@ Description:
   </div>
 </template>
 
-<script>
-export default {
-  name: "ComponentDetails",
-};
-</script>
-
 <!-- COMPOSITION API SYNTAX -->
 <script setup lang="ts">
 import HTMLQueue from "./HTMLQueue.vue";

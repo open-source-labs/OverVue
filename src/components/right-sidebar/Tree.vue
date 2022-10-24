@@ -31,12 +31,6 @@ Description:
   </div>
 </template>
 
-<script>
-export default {
-  name: "Tree",
-};
-</script>
-
 <script setup lang="ts">
 import VueTree from "@ssthouse/vue3-tree-chart";
 import "@ssthouse/vue3-tree-chart/dist/vue3-tree-chart.css";
@@ -69,7 +63,11 @@ const zoom = (event: WheelEvent) => {
   }
 };
 
-const evalChildren = (children: typeof VueTree.treeData.children, targetString: string, view: {value: string}) => {
+const evalChildren = (
+  children: typeof VueTree.treeData.children,
+  targetString: string,
+  view: { value: string }
+) => {
   children.forEach((el: typeof VueTree.treeData.value) => {
     if (el.value === targetString) {
       /// do we need to remove view.value???

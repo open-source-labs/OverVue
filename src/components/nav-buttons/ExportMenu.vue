@@ -30,16 +30,12 @@ Description:
   </q-btn>
 </template>
 
-<script>
-export default { name: "ExportProjectComponent" };
-</script>
-
 <script setup lang="ts">
 import { computed } from "vue";
 import { useStore } from "../../store/main";
 import { useExportComponent } from "../composables/useExportComponent";
 import * as fs from "fs";
-import * as path from "path";
+import path from "path";
 import {
   Component,
   HtmlElement,
@@ -48,7 +44,7 @@ import {
 } from "../../../types";
 
 const store = useStore();
-const { ipcRenderer } = window.require("electron");
+const { ipcRenderer } = window;
 
 const componentMap = computed(() => store.componentMap);
 const imagePath = computed(() => store.imagePath);

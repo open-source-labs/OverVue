@@ -268,17 +268,12 @@
         </q-item>
       </div>
     </div>
-    <q-btn
-      label="Close HTML Element"
-      class="closeBtn"
-      @click="closeMenu()"
-    />
+    <q-btn label="Close HTML Element" class="closeBtn" @click="closeMenu()" />
   </div>
 </template>
 
 <script setup lang="ts">
 // new script for Composition API
-import { Event } from "electron";
 import { computed, ref, watch, onMounted } from "vue";
 import { useStore } from "../../../store/main.js";
 
@@ -313,7 +308,7 @@ const exceptions = ref([
   "e-dropdown",
 ]);
 const attributeModal = ref(false);
-const classText = ref();
+const classText = ref("");
 const heightText = ref();
 const widthText = ref();
 const topText = ref();
@@ -334,10 +329,14 @@ onMounted(() => {
       if (
         activeHTML.value === routes.value[activeRoute.value][i].htmlList[j].id
       ) {
-        heightText.value = routes.value[activeRoute.value][i].htmlList[j].h as number;
-        widthText.value = routes.value[activeRoute.value][i].htmlList[j].w as number;
-        topText.value = routes.value[activeRoute.value][i].htmlList[j].x as number;
-        leftText.value = routes.value[activeRoute.value][i].htmlList[j].y as number;
+        heightText.value = routes.value[activeRoute.value][i].htmlList[j]
+          .h as number;
+        widthText.value = routes.value[activeRoute.value][i].htmlList[j]
+          .w as number;
+        topText.value = routes.value[activeRoute.value][i].htmlList[j]
+          .x as number;
+        leftText.value = routes.value[activeRoute.value][i].htmlList[j]
+          .y as number;
       }
     }
   }
@@ -359,30 +358,41 @@ const routes = computed(() => store.routes);
 
 //actions
 
-const setActiveHTML: typeof store.setActiveHTML = (payload) => store.setActiveHTML(payload);
-const setActiveLayer: typeof store.setActiveLayer = (payload) => store.setActiveLayer(payload);
-const openAttributeModal: typeof store.openAttributeModal = () => store.openAttributeModal();
-const addActiveComponentClass: typeof store.addActiveComponentClass = (payload) =>
-  store.addActiveComponentClass(payload);
-const addActiveComponentElementNote: typeof store.addActiveComponentElementNote = (payload) =>
-  store.addActiveComponentElementNote(payload);
-const addActiveComponentHeight: typeof store.addActiveComponentHeight = (payload) =>
-  store.addActiveComponentHeight(payload);
-const addActiveComponentWidth: typeof store.addActiveComponentWidth = (payload) =>
-  store.addActiveComponentWidth(payload);
-const addActiveComponentTop: typeof store.addActiveComponentTop = (payload) => store.addActiveComponentTop(payload);
+const setActiveHTML: typeof store.setActiveHTML = (payload) =>
+  store.setActiveHTML(payload);
+const setActiveLayer: typeof store.setActiveLayer = (payload) =>
+  store.setActiveLayer(payload);
+const openAttributeModal: typeof store.openAttributeModal = () =>
+  store.openAttributeModal();
+const addActiveComponentClass: typeof store.addActiveComponentClass = (
+  payload
+) => store.addActiveComponentClass(payload);
+const addActiveComponentElementNote: typeof store.addActiveComponentElementNote =
+  (payload) => store.addActiveComponentElementNote(payload);
+const addActiveComponentHeight: typeof store.addActiveComponentHeight = (
+  payload
+) => store.addActiveComponentHeight(payload);
+const addActiveComponentWidth: typeof store.addActiveComponentWidth = (
+  payload
+) => store.addActiveComponentWidth(payload);
+const addActiveComponentTop: typeof store.addActiveComponentTop = (payload) =>
+  store.addActiveComponentTop(payload);
 const addActiveComponentLeft: typeof store.addActiveComponentLeft = (payload) =>
   store.addActiveComponentLeft(payload);
-const clearActiveHTML: typeof store.clearActiveHTML = () => store.clearActiveHTML();
-const updateComponentLayer: typeof store.updateComponentLayer = (payload) => store.updateComponentLayer(payload);
-const updateHTMLLayer: typeof store.updateHtmlLayer = (payload) => store.updateHtmlLayer(payload);
-const addBindingText: typeof store.addBindingText = (payload) => store.addBindingText(payload);
+const clearActiveHTML: typeof store.clearActiveHTML = () =>
+  store.clearActiveHTML();
+const updateComponentLayer: typeof store.updateComponentLayer = (payload) =>
+  store.updateComponentLayer(payload);
+const updateHTMLLayer: typeof store.updateHtmlLayer = (payload) =>
+  store.updateHtmlLayer(payload);
+const addBindingText: typeof store.addBindingText = (payload) =>
+  store.addBindingText(payload);
 
 const submitClass = (element: string, idNum: number) => {
   if (element === "") {
     return;
   }
-  let payload: {class: string; id: number} = {
+  let payload: { class: string; id: number } = {
     class: element,
     id: idNum,
   };
@@ -394,7 +404,7 @@ const submitNote = (element: string, idNum: number) => {
   if (element === "") {
     return;
   }
-  let payload : {note: string; id: number} = {
+  let payload: { note: string; id: number } = {
     note: element,
     id: idNum,
   };
@@ -407,7 +417,7 @@ const submitHeight = (element: string, idNum: number) => {
   if (element === "") {
     return;
   }
-  let payload: {height: string; id: number} = {
+  let payload: { height: string; id: number } = {
     height: element,
     id: idNum,
   };
@@ -429,7 +439,7 @@ const submitTop = (element: string, idNum: number) => {
   if (element === "") {
     return;
   }
-  let payload : {top: string; id: number} = {
+  let payload: { top: string; id: number } = {
     top: element,
     id: idNum,
   };
@@ -440,7 +450,7 @@ const submitLeft = (element: string, idNum: number) => {
   if (element === "") {
     return;
   }
-  let payload : {left: string; id: number} = {
+  let payload: { left: string; id: number } = {
     left: element,
     id: idNum,
   };

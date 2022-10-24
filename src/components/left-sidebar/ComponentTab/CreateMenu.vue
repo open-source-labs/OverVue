@@ -113,12 +113,6 @@ Description:
   </div>
 </template>
 
-<script>
-export default {
-  name: "CreateMenu",
-};
-</script>
-
 <script setup lang="ts">
 // new script for Composition API
 import { useCreateComponent } from "../../composables/useCreateComponent.js";
@@ -130,7 +124,6 @@ import ImportComponent from "./ImportComponent.vue";
 import CreateMenuHTMLQueue from "./CreateMenuHTMLQueue.vue";
 import ImportLibraryButton from "./ImportLibraryButton.vue";
 import LibComponents from "./LibComponents.vue";
-import { registerComponent } from "src/store/options/types";
 import { Component } from "../../../../types";
 
 const store = useStore();

@@ -7,12 +7,6 @@
   />
 </template>
 
-<script>
-export default {
-  name: "ImportLibraryButton",
-};
-</script>
-
 <script setup lang="ts">
 // new script for Composition API
 import { computed } from "vue";

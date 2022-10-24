@@ -15,7 +15,6 @@ import { useStore } from "../../../store/main.js";
 import { useCreateComponent } from "../../composables/useCreateComponent.js";
 import * as fs from "fs";
 import { Component, HtmlElement, HtmlElementMap } from "../../../../types";
-import { types } from "@babel/core";
 const { ipcRenderer } = window.require("electron");
 const store = useStore();
 

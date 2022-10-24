@@ -23,7 +23,10 @@ export type State = {
   projects: Projects[];
   activeRoute: string;
   activeComponent: string;
-  activeComponentObj: null | Component | { componentName: string, isActive: false };
+  activeComponentObj:
+    | null
+    | Component
+    | { componentName: string; isActive: false };
   activeHTML: string | number;
   activeLayer: {
     id: string | number;
@@ -186,10 +189,22 @@ export type Actions = {
   addActiveComponentClass: (payload: { id: number; class: string }) => void;
   addBindingText: (payload: { id: number; binding: string }) => void;
   deleteActiveComponentClass: (payload: string) => void;
-  addActiveComponentHeight: (payload: { id: number | string; height: string }) => void;
-  addActiveComponentWidth: (payload: { id: number | string; width: string }) => void;
-  addActiveComponentTop: (payload: { id: number | string; top: string }) => void;
-  addActiveComponentLeft: (payload: { id: number | string; left: string }) => void;
+  addActiveComponentHeight: (payload: {
+    id: number | string;
+    height: string;
+  }) => void;
+  addActiveComponentWidth: (payload: {
+    id: number | string;
+    width: string;
+  }) => void;
+  addActiveComponentTop: (payload: {
+    id: number | string;
+    top: string;
+  }) => void;
+  addActiveComponentLeft: (payload: {
+    id: number | string;
+    left: string;
+  }) => void;
   //unsure of below
   addActiveComponentElementNote: (payload: {
     id: number | string;
@@ -267,7 +282,7 @@ export type RouteComponentMap = {
 };
 
 //used in Canvas to resize rendered components
-export interface ResizePayload  {
+export interface ResizePayload {
   x: number;
   y: number;
   h?: number;
@@ -275,7 +290,7 @@ export interface ResizePayload  {
   activeComponent: string;
   routeArray: Component[];
   activeComponentData: null | Component;
-};
+}
 
 // Type for generic component used in userCreateComponent.js
 export type Component = {
@@ -299,7 +314,7 @@ export type Component = {
   idDrag: string | number;
   idDrop: string | number;
   color: string;
-  htmlAttributes: HtmlAttributes
+  htmlAttributes: HtmlAttributes;
 };
 
 export type HtmlAttributes = {
