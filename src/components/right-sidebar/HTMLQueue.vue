@@ -59,6 +59,12 @@ Description:
   </section>
 </template>
 
+<script>
+export default {
+  name: "HTMLQueue",
+};
+</script>
+
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
 import { useStore } from "../../store/main.js";
@@ -136,8 +142,8 @@ const moreExceptions = () => {
   return childComponent;
 };
 
-const parentSelected: typeof store.parentSelected = (payload: any) =>
-  store.parentSelected(payload);
+// const parentSelected: typeof store.parentSelected = (payload: any) =>
+//   store.parentSelected(payload);
 
 const setActiveHTML: typeof store.setActiveHTML = (payload) =>
   store.setActiveHTML(payload);
@@ -187,12 +193,12 @@ const setActiveElement = (element: string[]) => {
 
 const setLayer = (element: { text: string; id: string }) => {
   setActiveLayer(element);
-  element.id = activeHTML.value;
+  element.id = activeHTML.value as string;
 };
 
 const setParentLayer = () => {
   if (activeLayer.value.id !== "") {
-    upOneLayer(activeLayer.value.id);
+    upOneLayer(activeLayer.value.id as string);
   }
 };
 
@@ -228,7 +234,7 @@ const endDrag = (event: MouseEvent) => {
   else dragDropSortHtmlElements();
 };
 
-const submitClass = (element: string, idNum: string) => {
+const submitClass = (element: string, idNum: number) => {
   if (element === "") {
     return;
   }
@@ -237,6 +243,7 @@ const submitClass = (element: string, idNum: string) => {
     class: element,
     id: idNum,
   };
+
   addActiveComponentClass(payload);
   classText.value = "";
 };
@@ -245,7 +252,7 @@ const addBinding = (input: string, idNum: number) => {
   if (input === "") {
     return;
   }
-  const payload: { binding: string; id: number } = {
+  const payload  : {binding: string, id: number} = {
     binding: input,
     id: idNum,
   };
@@ -257,13 +264,13 @@ watch(attributeModalOpen, () => {
   attributeModal.value = attributeModalOpen.value;
 });
 
-// watch(activeComponent, () => {
-//   if (activeComponent.value !== "") {
-//     (store.componentMap[activeComponent.value] as Component).isActive = true;
-//   } else {
-//     (store.componentMap[activeComponent.value] as Component).isActive = false;
-//   }
-// });
+watch(activeComponent, () => {
+  if (activeComponent.value !== "") {
+    (store.componentMap[activeComponent.value] as Component).isActive = true;
+  } else {
+    (store.componentMap[activeComponent.value] as Component).isActive = false;
+  }
+});
 </script>
 
 <!-- <script>
