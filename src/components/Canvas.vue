@@ -516,7 +516,9 @@ import { useStore } from "../store/main.js";
 import { ref, computed, onMounted, watch } from "vue";
 import * as fs from "fs";
 import { ResizePayload, Component } from "../../types";
-const { ipcRenderer } = window;
+// @ts-ignore
+// const { ipcRenderer } = window;
+// ipcRenderer is not used
 
 const cloneDeep = require("lodash.clonedeep");
 
