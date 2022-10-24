@@ -148,12 +148,6 @@ Description:
   </div>
 </template>
 
-<script>
-export default {
-  name: "UpdateMenu",
-};
-</script>
-
 <script setup lang="ts">
 import { useExportComponent } from "../../composables/useExportComponent.js";
 import VueMultiselect from "vue-multiselect";

@@ -74,10 +74,6 @@ Description:
   </div>
 </template>
 
-<script>
-export default { name: "GridDensity" };
-</script>
-
 <script setup lang="ts">
 import { useStore } from "../../store/main";
 import { computed } from "vue";

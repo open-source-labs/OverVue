@@ -15,11 +15,6 @@ Description:
 </template>
 
 <!-- COMPOSITION API SYNTAX -->
-<script>
-export default {
-  name: "SaveProject",
-};
-</script>
 
 <script setup lang="ts">
 import localforage from "localforage";

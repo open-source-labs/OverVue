@@ -43,7 +43,11 @@
       v-on:keyup.delete.stop
     >
       <template v-slot:append>
-        <q-btn flat icon="add" @click="createAttribute(attributeText as 'id' | 'class')" />
+        <q-btn
+          flat
+          icon="add"
+          @click="createAttribute(attributeText as 'id' | 'class')"
+        />
       </template>
     </q-input>
     <!--delete buttons to remove class/id-->
@@ -66,12 +70,6 @@
     </button>
   </div>
 </template>
-
-<script>
-export default {
-  name: "AttributesSubMenu",
-};
-</script>
 
 <script setup lang="ts">
 // new script for Composition API
@@ -101,11 +99,12 @@ const activeRouteKey = computed(() => store.routes[store.activeRoute]);
 
 //actions
 
-const editAttribute: typeof store.editAttribute = (payload) => store.editAttribute(payload);
+const editAttribute: typeof store.editAttribute = (payload) =>
+  store.editAttribute(payload);
 
-const activeComponentData = () : Component => {
+const activeComponentData = (): Component => {
   return cloneDeep(activeComponentObj.value);
-}
+};
 
 //methods
 

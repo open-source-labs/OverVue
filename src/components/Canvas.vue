@@ -4,7 +4,7 @@
   Functionality includes: resizing/dragging component boxes, display grid image, active component
   -->
 
-  <!-- beneath line 419, we deleted :hint="hint" -->
+<!-- beneath line 419, we deleted :hint="hint" -->
 
 <template>
   <!-- the background Canvas grid -->
@@ -515,8 +515,8 @@ import { ColorPicker } from "vue-accessible-color-picker";
 import { useStore } from "../store/main.js";
 import { ref, computed, onMounted, watch } from "vue";
 import * as fs from "fs";
-import { ResizePayload, Component } from "../../types"
-const { ipcRenderer } = window.require("electron");
+import { ResizePayload, Component } from "../../types";
+const { ipcRenderer } = window;
 
 const cloneDeep = require("lodash.clonedeep");
 
@@ -660,52 +660,62 @@ const updated = computed(() => {
     }
   } else {
     // if a component is set to active, highlight it
-    (boxes.value as typeof VueDraggableResizable).forEach((element: typeof VueDraggableResizable) => {
-      if (
-        activeComponent.value === element.$attrs.id &&
-        element.enabled === false
-      ) {
-        element.enabled = true;
-        element.emit("activated");
-        element.emit("update:active", true);
+    (boxes.value as typeof VueDraggableResizable).forEach(
+      (element: typeof VueDraggableResizable) => {
+        if (
+          activeComponent.value === element.$attrs.id &&
+          element.enabled === false
+        ) {
+          element.enabled = true;
+          element.emit("activated");
+          element.emit("update:active", true);
+        }
       }
-    });
+    );
   }
 });
 
 //methods
-const setActiveComponent: typeof store.setActiveComponent = (payload) => store.setActiveComponent(payload);
+const setActiveComponent: typeof store.setActiveComponent = (payload) =>
+  store.setActiveComponent(payload);
 // const updateComponentChildrenMultiselectValue: typeof store.updateComponentChildrenMultiselectValue = (payload) =>
 //   store.updateComponentChildrenMultiselectValue(payload);
-const updateActiveComponentChildrenValue: typeof store.updateActiveComponentChildrenValue = (payload) =>
-  store.updateActiveComponentChildrenValue(payload);
-const updateComponentPosition: typeof store.updateComponentPosition = (payload) =>
-  store.updateComponentPosition(payload);
+const updateActiveComponentChildrenValue: typeof store.updateActiveComponentChildrenValue =
+  (payload) => store.updateActiveComponentChildrenValue(payload);
+const updateComponentPosition: typeof store.updateComponentPosition = (
+  payload
+) => store.updateComponentPosition(payload);
 // const updateStartingPosition: typeof store.updateStartingPosition = (payload) =>
-  // (payload);
-const updateComponentLayer: typeof store.updateComponentLayer = (payload) => store.updateComponentLayer(payload);
+// (payload);
+const updateComponentLayer: typeof store.updateComponentLayer = (payload) =>
+  store.updateComponentLayer(payload);
 // const updateStartingSize: typeof store.updateStartingSize = (payload) => store.updateStartingSize(payload);
-const updateComponentSize: typeof store.updateComponentSize = (payload) => store.updateComponentSize(payload);
+const updateComponentSize: typeof store.updateComponentSize = (payload) =>
+  store.updateComponentSize(payload);
 const addActiveComponentNote: typeof store.addActiveComponentNote = (payload) =>
   store.addActiveComponentNote(payload);
-const deleteActiveComponentNote: typeof store.deleteActiveComponentNote = (payload) =>
-  store.deleteActiveComponentNote(payload);
+const deleteActiveComponentNote: typeof store.deleteActiveComponentNote = (
+  payload
+) => store.deleteActiveComponentNote(payload);
 const openNoteModal: typeof store.openNoteModal = () => store.openNoteModal();
-const openColorModal: typeof store.openColorModal = () => store.openColorModal();
-const updateColor: typeof store.updateColor = (payload) => store.updateColor(payload);
-const updateComponentGridPosition: typeof store.updateComponentGridPosition = (payload) =>
-  store.updateComponentGridPosition(payload);
+const openColorModal: typeof store.openColorModal = () =>
+  store.openColorModal();
+const updateColor: typeof store.updateColor = (payload) =>
+  store.updateColor(payload);
+const updateComponentGridPosition: typeof store.updateComponentGridPosition = (
+  payload
+) => store.updateComponentGridPosition(payload);
 
 const useExportComponentBound = () => {
   useExportComponent();
 };
 
-const isElementPlus = (htmlList: {text: string}[]) => {
+const isElementPlus = (htmlList: { text: string }[]) => {
   return htmlList.find(({ text }) => text[0] === "e");
 };
 
 //color change function
-const updateColors = (data: {cssColor: string}) => {
+const updateColors = (data: { cssColor: string }) => {
   let payload = {
     color: data.cssColor,
     activeComponent: activeComponent.value,
@@ -746,7 +756,6 @@ const refresh = () => {
   updateComponentLayer(payload);
 };
 
-
 // drag and drop function
 const finishedDrag = (x: number, y: number) => {
   let payload = {
@@ -763,7 +772,7 @@ const finishedDrag = (x: number, y: number) => {
   refresh();
 };
 
-const onActivated = (componentData: {componentName: string}) => {
+const onActivated = (componentData: { componentName: string }) => {
   if (!componentData) {
     return;
   }
@@ -827,7 +836,9 @@ const submitNote = (e: Event) => {
 };
 
 const deleteNote = (e: Event) => {
-  deleteActiveComponentNote((((e.target) as HTMLElement).previousElementSibling as HTMLElement).innerText);
+  deleteActiveComponentNote(
+    ((e.target as HTMLElement).previousElementSibling as HTMLElement).innerText
+  );
 };
 
 // used when user selects to add child from dropdown

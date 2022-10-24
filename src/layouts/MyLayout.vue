@@ -286,7 +286,6 @@ import SlackLoginWindow from "../components/slack_login/SlackLoginWindow.vue";
 import ComponentTab from "../components/left-sidebar/ComponentTab/ComponentTab.vue";
 import StoreTab from "../components/left-sidebar/StoreTab/StoreTab.vue";
 import GridDensity from "../components/nav-buttons/GridDensity.vue";
-import { TimeoutsOptions } from "retry";
 
 const store = useStore();
 const emit = defineEmits(["undo", "redo"]);

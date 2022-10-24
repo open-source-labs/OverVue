@@ -48,10 +48,6 @@
   </div>
 </template>
 
-<script>
-export default { name: "PropsSubMenu" };
-</script>
-
 <script setup lang="ts">
 import VueMultiselect from "vue-multiselect";
 import { useStore } from "../../../store/main";

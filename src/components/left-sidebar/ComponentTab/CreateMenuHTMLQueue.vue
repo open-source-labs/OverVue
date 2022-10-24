@@ -43,12 +43,6 @@ Description:
   </section>
 </template>
 
-<script>
-export default {
-  name: "CreateMenuHTMLQueue",
-};
-</script>
-
 <script setup lang="ts">
 // new script for Composition API
 import { breadthFirstSearch } from "../../../utils/search.util";

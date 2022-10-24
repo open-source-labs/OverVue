@@ -32,12 +32,6 @@ Description:
   </section>
 </template>
 
-<script>
-export default {
-  name: "Icons",
-};
-</script>
-
 <script setup lang="ts">
 // new script for Composition API
 import { HtmlElement } from "app/types";

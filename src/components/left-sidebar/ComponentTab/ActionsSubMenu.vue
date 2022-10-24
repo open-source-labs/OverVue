@@ -63,12 +63,6 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "ActionsSubMenu",
-};
-</script>
-
 <script setup lang="ts">
 // new script for Composition API
 
@@ -102,12 +96,15 @@ const selectAction = computed({
 
 // Methods
 
-const addActionSelected: typeof store.addActionSelected = (payload) => store.addActionSelected(payload);
-const addActionToComponent: typeof store.addActionToComponent = (payload) => store.addActionToComponent(payload);
-const deleteActionFromComponent: typeof store.deleteActionFromComponent = (payload) =>
-  store.deleteActionFromComponent(payload);
+const addActionSelected: typeof store.addActionSelected = (payload) =>
+  store.addActionSelected(payload);
+const addActionToComponent: typeof store.addActionToComponent = (payload) =>
+  store.addActionToComponent(payload);
+const deleteActionFromComponent: typeof store.deleteActionFromComponent = (
+  payload
+) => store.deleteActionFromComponent(payload);
 
-const stopDelete = (e:KeyboardEvent) => {
+const stopDelete = (e: KeyboardEvent) => {
   if (e.code === "Backspace") e.stopPropagation();
 };
 const addActionToComp = () => {

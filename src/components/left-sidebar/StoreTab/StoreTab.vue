@@ -118,10 +118,6 @@ Functionality:
   </div>
 </template>
 
-<script>
-export default { name: "StoreTab" };
-</script>
-
 <script setup lang="ts">
 import { useStore } from "../../../store/main";
 import { computed, ref } from "vue";
