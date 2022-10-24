@@ -140,6 +140,7 @@ const parsingStringToState = (str: string) => {
 };
 
 //the bulk of the work for this component
+// @ts-ignore
 const openVueFile = (data) => {
   if (data === undefined) return;
 
