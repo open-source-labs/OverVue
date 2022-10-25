@@ -136,8 +136,8 @@ const moreExceptions = () => {
   return childComponent;
 };
 
-const parentSelected: typeof store.parentSelected = (payload: any) =>
-  store.parentSelected(payload);
+// const parentSelected: typeof store.parentSelected = (payload: any) =>
+//   store.parentSelected(payload);
 
 const setActiveHTML: typeof store.setActiveHTML = (payload) =>
   store.setActiveHTML(payload);
@@ -187,12 +187,12 @@ const setActiveElement = (element: string[]) => {
 
 const setLayer = (element: { text: string; id: string }) => {
   setActiveLayer(element);
-  element.id = activeHTML.value;
+  element.id = activeHTML.value as string;
 };
 
 const setParentLayer = () => {
   if (activeLayer.value.id !== "") {
-    upOneLayer(activeLayer.value.id);
+    upOneLayer(activeLayer.value.id as string);
   }
 };
 
@@ -228,7 +228,7 @@ const endDrag = (event: MouseEvent) => {
   else dragDropSortHtmlElements();
 };
 
-const submitClass = (element: string, idNum: string) => {
+const submitClass = (element: string, idNum: number) => {
   if (element === "") {
     return;
   }
@@ -237,6 +237,7 @@ const submitClass = (element: string, idNum: string) => {
     class: element,
     id: idNum,
   };
+
   addActiveComponentClass(payload);
   classText.value = "";
 };

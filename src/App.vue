@@ -9,12 +9,6 @@
   />
 </template>
 
-<script>
-export default {
-  name: "App",
-};
-</script>
-
 <script setup>
 // import { defineComponent } from "vue";
 // import ElementPlus from 'element-plus'; // importing element plus component library

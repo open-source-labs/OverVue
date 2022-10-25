@@ -147,7 +147,7 @@ const setLayer = (element: { text: string; id: string }) => {
 
 const setParentLayer = () => {
   if (activeLayer.value.id !== "") {
-    upOneLayer(activeLayer.value.id);
+    upOneLayer(activeLayer.value.id as string);
   }
 };
 
@@ -183,13 +183,13 @@ const endDrag = (event: Event) => {
   else dragDropSortHtmlElements();
 };
 
-watch(activeComponent, () => {
-  if (activeComponent.value !== "") {
-    (store.componentMap[activeComponent.value] as Component).isActive = true;
-  } else {
-    (store.componentMap[activeComponent.value] as Component).isActive = false;
-  }
-});
+// watch(activeComponent, () => {
+//   if (activeComponent.value !== "") {
+//     (store.componentMap[activeComponent.value] as Component).isActive = true;
+//   } else {
+//     (store.componentMap[activeComponent.value] as Component).isActive = false;
+//   }
+// });
 </script>
 
 <!-- <script>
