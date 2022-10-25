@@ -69,23 +69,27 @@
 </template>
 
 <script setup lang="ts">
+// @ts-ignore
 import localforage from "localforage";
-import { useStore } from "vuex";
+import { useStore } from "../../store/main";
 import { ref } from "vue";
-const { ipcRenderer, shell } = window.require("electron");
+const { ipcRenderer, shell } = window;
 
 const store = useStore();
 let isAuthenticating = ref(false);
 let showLogin = ref(false);
 const errorMessage = ref("");
 
-ipcRenderer.on("tokenReceived", (event, data) => {
-  return saveToLocalForage("slackWebhookURL", data.incoming_webhook.url);
-});
-ipcRenderer.on("slackUser", (event, user) => {
+ipcRenderer.on(
+  "tokenReceived",
+  (event: Event, data: { incoming_webhook: { url: string } }) => {
+    return saveToLocalForage("slackWebhookURL", data.incoming_webhook.url);
+  }
+);
+ipcRenderer.on("slackUser", (event: Event, user: string) => {
   return saveToLocalForage("slackUser", user);
 });
-ipcRenderer.on("slackError", (event, err) => {
+ipcRenderer.on("slackError", (event: Event, err: Error) => {
   printErrorMessage();
 });
 

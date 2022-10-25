@@ -35,19 +35,19 @@ const isTimetraveling = ref(false);
 
 const store = useStore();
 
-const subscribeAction = store.$subscribe((action, state) => {
-  if (typeof action.payload === "object") {
-    action.payload = cloneDeep(action.payload);
+store.$onAction((action) => {
+  if (typeof action.args[0] === "object") {
+    action.args = cloneDeep(action.args[0]);
   }
   doneAction.value.push(action);
   if (!isTimetraveling.value) {
     if (undoneAction.value[undoneAction.value.length - 1]) {
       if (
-        action.type ===
-          undoneAction.value[undoneAction.value.length - 1].type &&
+        action.name ===
+          undoneAction.value[undoneAction.value.length - 1].name &&
         deepEqual(
-          action.payload,
-          undoneAction.value[undoneAction.value.length - 1].payload
+          action.args,
+          undoneAction.value[undoneAction.value.length - 1].args[0]
         )
       ) {
         undoneAction.value.pop();
@@ -92,10 +92,10 @@ const undo = () => {
             if this happens we keep popping the doneAction.value queue and building up the redo queue. */
   if (undone !== undefined) {
     undoneAction.value.push(undone);
-    if (ignoredActions.has(undone.type)) {
+    if (ignoredActions.has(undone.name)) {
       while (
         doneAction.value[doneAction.value.length - 1] &&
-        ignoredActions.has(doneAction.value[doneAction.value.length - 1].type)
+        ignoredActions.has(doneAction.value[doneAction.value.length - 1].name)
       ) {
         undoneAction.value.push(doneAction.value.pop());
       }
@@ -111,9 +111,8 @@ const undo = () => {
   store.emptyState();
 
   doneAction.value.forEach((action) => {
-    const actionType = action.type;
-    store.action.type(cloneDeep(action.payload));
-    doneAction.pop();
+    store[action.name](cloneDeep(action.args[0]));
+    doneAction.value.pop();
   });
   isTimetraveling.value = false;
 };
@@ -124,11 +123,11 @@ const redo = () => {
   // we have to set timeTraveling to true to preserve the undoneAction array while we make changes
   isTimetraveling.value = true;
   if (action) {
-    const actionType = action.type;
-    store[actionType](cloneDeep(action.payload));
+    const actionName = action.name;
+    store[actionName](cloneDeep(action.args[0]));
   }
   isTimetraveling.value = false;
-  if (action && ignoredActions.has(action.type)) {
+  if (action && ignoredActions.has(action.name)) {
     redo();
   }
 };
