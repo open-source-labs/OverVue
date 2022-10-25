@@ -45,7 +45,7 @@ import {
 
 const store = useStore();
 // @ts-ignore
-const { fs, ipcRenderer } = window;
+const { fs, ipcRenderer, path } = window;
 
 const componentMap = computed(() => store.componentMap);
 const imagePath = computed(() => store.imagePath);
@@ -377,7 +377,7 @@ const writeTemplateTag = (componentName: string) => {
 };
 
 const writeComments = (componentName: string) => {
-  if ((componentMap.value[componentName] as Component).noteList.length > 0) {
+  if ((componentMap.value[componentName] as Component).noteList) {
     let commentStr = "<!--";
     (componentMap.value[componentName] as Component).noteList.forEach((el) => {
       commentStr += "\n";
