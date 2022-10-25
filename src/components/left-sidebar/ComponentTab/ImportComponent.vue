@@ -16,7 +16,7 @@ import { useCreateComponent } from "../../composables/useCreateComponent.js";
 // import * as fs from "fs";
 import { Component, HtmlElement, HtmlElementMap } from "../../../../types";
 // @ts-ignore
-const { fs, ipcRenderer } = window;
+const { fs, ipcRenderer } = window as any;
 const store = useStore();
 
 const props = defineProps(["title"]);
@@ -72,7 +72,7 @@ const importComponent = () => {
         },
       ],
     })
-    .then((res: { filePaths: fs.PathOrFileDescriptor }) => {
+    .then((res: { filePaths }) => {
       openVueFile(res.filePaths);
       alert("Successfully Imported");
     })
@@ -81,7 +81,7 @@ const importComponent = () => {
 
 //parses script tag string for props
 const parsingStringToProps = (str: string) => {
-  let props = [];
+  let props: string[] = [];
   let split = str.split(" ");
   for (let i = 0; i < split.length; i++) {
     if (
@@ -267,8 +267,8 @@ const openVueFile = (data) => {
   //OverVue adds a <div></div> wrapper to all components. remove this before importing.
 
   let groupings = findGroupings(htmlList);
-  let groupingObj: { [key: string]: string[] } = objectGenerator(groupings);
-  let groupingArray = [];
+  let groupingObj: { [key: string]: HtmlElement } = objectGenerator(groupings);
+  let groupingArray: HtmlElement[] = [];
   for (const key in groupingObj) {
     groupingArray.push(groupingObj[key]);
   }
@@ -338,7 +338,7 @@ const openVueFile = (data) => {
 
   function findGroupings(array: string[]) {
     let count = 0; //tracks where the parent ends
-    let stopIndexes = []; //an array that will be used to slice out the parent/child relationships
+    let stopIndexes: number[] = []; //an array that will be used to slice out the parent/child relationships
     for (let i = 0; i < array.length; i++) {
       if (array[i][1] !== "/") {
         if (
@@ -360,7 +360,7 @@ const openVueFile = (data) => {
         stopIndexes.push(i);
       }
     }
-    let groupings = [];
+    let groupings: string[][] = [];
     let startIndex = 0;
     for (let i = 0; i < stopIndexes.length; i++) {
       groupings.push(array.slice(startIndex, stopIndexes[i] + 1));
@@ -390,7 +390,7 @@ const openVueFile = (data) => {
       if (array[i].length > 0) {
         const childGroupings = findGroupings(array[i]);
         const childrenObj = objectGenerator(childGroupings);
-        const childrenArray = [];
+        const childrenArray: any[] = [];
         for (const key in childrenObj) {
           childrenArray.push(childrenObj[key]);
         }
