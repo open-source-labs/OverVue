@@ -36,19 +36,18 @@ const isTimetraveling = ref(false);
 const store = useStore();
 
 store.$onAction((action) => {
-
-  if (typeof action.args === "object") {
-    action.args = cloneDeep(action.args);
+  if (typeof action.args[0] === "object") {
+    action.args = cloneDeep(action.args[0]);
   }
   doneAction.value.push(action);
   if (!isTimetraveling.value) {
     if (undoneAction.value[undoneAction.value.length - 1]) {
       if (
         action.name ===
-          undoneAction.value[undoneAction.value.length - 1].type &&
+          undoneAction.value[undoneAction.value.length - 1].name &&
         deepEqual(
           action.args,
-          undoneAction.value[undoneAction.value.length - 1].args
+          undoneAction.value[undoneAction.value.length - 1].args[0]
         )
       ) {
         undoneAction.value.pop();
@@ -93,10 +92,10 @@ const undo = () => {
             if this happens we keep popping the doneAction.value queue and building up the redo queue. */
   if (undone !== undefined) {
     undoneAction.value.push(undone);
-    if (ignoredActions.has(undone.type)) {
+    if (ignoredActions.has(undone.name)) {
       while (
         doneAction.value[doneAction.value.length - 1] &&
-        ignoredActions.has(doneAction.value[doneAction.value.length - 1].type)
+        ignoredActions.has(doneAction.value[doneAction.value.length - 1].name)
       ) {
         undoneAction.value.push(doneAction.value.pop());
       }
@@ -112,8 +111,8 @@ const undo = () => {
   store.emptyState();
 
   doneAction.value.forEach((action) => {
-    store.action[name](cloneDeep(action.args));
-    doneAction.pop();
+    store[action.name](cloneDeep(action.args[0]));
+    doneAction.value.pop();
   });
   isTimetraveling.value = false;
 };
@@ -125,7 +124,7 @@ const redo = () => {
   isTimetraveling.value = true;
   if (action) {
     const actionName = action.name;
-    store[actionType](cloneDeep(action.args));
+    store[actionName](cloneDeep(action.args[0]));
   }
   isTimetraveling.value = false;
   if (action && ignoredActions.has(action.name)) {
