@@ -1,5 +1,5 @@
 import { openHtmlElementMap } from "src/store/state/htmlElementMap";
-import path from "path";
+import { useStore } from "src/store/main";
 export function useExportComponent() {
   // OVERVUE 8.0: export active component
   /**
@@ -9,6 +9,8 @@ export function useExportComponent() {
    * @return: none -- outputs file to fs
    *
    */
+  const { ipcRenderer, fs, path } = window;
+  const store = useStore();
 
   const exportComponent = () => {
     ipcRenderer
@@ -17,7 +19,10 @@ export function useExportComponent() {
         message: "Choose location to save folder in",
         nameFieldLabel: "Component Name",
       })
-      .then((result) => exportComponentFile(result.filePath))
+      .then((result) => {
+        exportComponentFile(result.filePath);
+        alert("Successfully Exported");
+      })
       .catch((err) => console.log(err));
   };
 
@@ -167,7 +172,7 @@ export function useExportComponent() {
       return nestedString;
     };
     // iterate through component's htmllist
-    let htmlArr = this.componentMap[componentName].htmlList;
+    let htmlArr = store.componentMap[componentName].htmlList;
     let outputStr = ``;
     // eslint-disable-next-line no-unused-vars
     for (let el of htmlArr) {
@@ -199,9 +204,9 @@ export function useExportComponent() {
   };
 
   const writeComments = (componentName) => {
-    if (this.componentMap[componentName]?.noteList?.length > 0) {
+    if (store.componentMap[componentName]?.noteList?.length > 0) {
       let commentStr = "<!--";
-      this.componentMap[componentName].noteList.forEach((el) => {
+      store.componentMap[componentName].noteList.forEach((el) => {
         commentStr += "\n";
         commentStr += el;
       });
@@ -222,21 +227,21 @@ export function useExportComponent() {
 
     //used to loop through - and apply class/id in code snippet
     if (
-      this.componentMap[componentName].htmlAttributes.class !== "" &&
-      this.componentMap[componentName].htmlAttributes.id !== ""
+      store.componentMap[componentName].htmlAttributes.class !== "" &&
+      store.componentMap[componentName].htmlAttributes.id !== ""
     ) {
-      return `<template>\n  <div id = "${this.componentMap[componentName].htmlAttributes.id}" class = "${this.componentMap[componentName].htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
+      return `<template>\n  <div id = "${store.componentMap[componentName].htmlAttributes.id}" class = "${store.componentMap[componentName].htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
     } else if (
-      this.componentMap[componentName].htmlAttributes.class !== "" &&
-      this.componentMap[componentName].htmlAttributes.id === ""
+      store.componentMap[componentName].htmlAttributes.class !== "" &&
+      store.componentMap[componentName].htmlAttributes.id === ""
     ) {
-      return `<template>\n  <div class = "${this.componentMap[componentName].htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
+      return `<template>\n  <div class = "${store.componentMap[componentName].htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
     } else if (
-      this.componentMap[componentName].htmlAttributes.class === "" &&
-      this.componentMap[componentName].htmlAttributes.id !== ""
+      store.componentMap[componentName].htmlAttributes.class === "" &&
+      store.componentMap[componentName].htmlAttributes.id !== ""
     )
-      return `<template>\n  <div id = "${this.componentMap[componentName].htmlAttributes.id}">\n${templateTagStr}  </div>\n</template>`;
-    else return `<template>\n <div>\n${templateTagStr}  </div>\n</template>`;
+      return `<template>\n  <div id = "${store.componentMap[componentName].htmlAttributes.id}">\n${templateTagStr}  </div>\n</template>`;
+    else return `<template>\n  <div>\n${templateTagStr}  </div>\n</template>`;
   };
 
   /**
@@ -244,7 +249,7 @@ export function useExportComponent() {
    */
   const writeScript = (componentName, children) => {
     // add import mapstate and mapactions if they exist
-    const currentComponent = this.componentMap[componentName];
+    const currentComponent = store.componentMap[componentName];
     let imports = "";
     if (currentComponent.actions.length || currentComponent.state.length) {
       imports += "import { ";
@@ -255,7 +260,7 @@ export function useExportComponent() {
       imports += ' } from "vuex"\n';
     }
     // if Typescript toggle is on, import defineComponent
-    if (this.exportAsTypescript === "on") {
+    if (store.exportAsTypescript === "on") {
       imports += 'import { defineComponent } from "vue";\n';
     }
     // add imports for children
@@ -277,7 +282,7 @@ export function useExportComponent() {
         data += `\n      ${prop}: "PLACEHOLDER FOR VALUE",`;
       });
     }
-    this.routes.HomeView.forEach((element) => {
+    store.routes.HomeView.forEach((element) => {
       element.htmlList.forEach((html) => {
         if (html.binding !== "") {
           data += `\n      ${html.binding}: "PLACEHOLDER FOR VALUE",`;
@@ -313,7 +318,7 @@ export function useExportComponent() {
     // concat all code within script tags
     // if exportAsTypescript is on, out should be <script lang="ts">
     let output;
-    if (this.exportAsTypescript === "on") {
+    if (store.exportAsTypescript === "on") {
       output = "\n\n<script lang='ts'>\n";
       output +=
         imports +
@@ -330,7 +335,7 @@ export function useExportComponent() {
     output += computed;
     output += methods;
     // eslint-disable-next-line no-useless-escape
-    if (this.exportAsTypescript === "on") {
+    if (store.exportAsTypescript === "on") {
       output += "});\n</script>";
     } else {
       output += "};\n</script>";
@@ -343,10 +348,10 @@ export function useExportComponent() {
    * if component is 'App', writes css, else returns <style scoped>
    */
   const writeStyle = (componentName) => {
-    let htmlArray = this.componentMap[componentName].htmlList;
+    let htmlArray = store.componentMap[componentName].htmlList;
     let styleString = "";
 
-    this.routes.HomeView.forEach((element) => {
+    store.routes.HomeView.forEach((element) => {
       if (element.htmlAttributes.class !== "") {
         styleString += `.${element.htmlAttributes.class} {\nbackground-color: ${element.color};
 width: ${element.w}px;
@@ -378,10 +383,11 @@ z-index: ${html.z};
     // main logic below for creating single component
     // eslint-disable-next-line no-unused-vars
     createComponentCode(
-      path.join(data, this.activeComponent),
-      this.activeComponent,
-      this.componentMap[this.activeComponent].children
+      path.join(data, store.activeComponent),
+      store.activeComponent,
+      store.componentMap[store.activeComponent].children
     );
   };
+
   exportComponent();
 }

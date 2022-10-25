@@ -38,8 +38,8 @@ const activeComponent = computed(() => store.activeComponent);
 const routes = computed(() => store.routes);
 const activeRoute = computed(() => store.activeRoute);
 
-const options = computed(() =>
-  routes.value[activeRoute.value].map((component) => component.componentName)
+const options = routes.value[activeRoute.value].map(
+  (component) => component.componentName
 );
 
 const parentSelect: typeof store.parentSelect = (payload) =>
