@@ -35,19 +35,20 @@ const isTimetraveling = ref(false);
 
 const store = useStore();
 
-const subscribeAction = store.$subscribe((action, state) => {
-  if (typeof action.payload === "object") {
-    action.payload = cloneDeep(action.payload);
+store.$onAction((action) => {
+
+  if (typeof action.args === "object") {
+    action.args = cloneDeep(action.args);
   }
   doneAction.value.push(action);
   if (!isTimetraveling.value) {
     if (undoneAction.value[undoneAction.value.length - 1]) {
       if (
-        action.type ===
+        action.name ===
           undoneAction.value[undoneAction.value.length - 1].type &&
         deepEqual(
-          action.payload,
-          undoneAction.value[undoneAction.value.length - 1].payload
+          action.args,
+          undoneAction.value[undoneAction.value.length - 1].args
         )
       ) {
         undoneAction.value.pop();
@@ -111,8 +112,7 @@ const undo = () => {
   store.emptyState();
 
   doneAction.value.forEach((action) => {
-    const actionType = action.type;
-    store.action.type(cloneDeep(action.payload));
+    store.action[name](cloneDeep(action.args));
     doneAction.pop();
   });
   isTimetraveling.value = false;
@@ -124,11 +124,11 @@ const redo = () => {
   // we have to set timeTraveling to true to preserve the undoneAction array while we make changes
   isTimetraveling.value = true;
   if (action) {
-    const actionType = action.type;
-    store[actionType](cloneDeep(action.payload));
+    const actionName = action.name;
+    store[actionType](cloneDeep(action.args));
   }
   isTimetraveling.value = false;
-  if (action && ignoredActions.has(action.type)) {
+  if (action && ignoredActions.has(action.name)) {
     redo();
   }
 };
