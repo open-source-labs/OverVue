@@ -72,7 +72,7 @@
 import localforage from "localforage";
 import { useStore } from "vuex";
 import { ref } from "vue";
-const { ipcRenderer, shell } = window.require("electron");
+const { ipcRenderer, shell } = window;
 
 const store = useStore();
 let isAuthenticating = ref(false);
