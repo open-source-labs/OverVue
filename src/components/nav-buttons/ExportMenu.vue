@@ -45,7 +45,7 @@ import {
 
 const store = useStore();
 // @ts-ignore
-const { fs, ipcRenderer } = window;
+const { fs, ipcRenderer, path } = window;
 
 const componentMap = computed(() => store.componentMap);
 const imagePath = computed(() => store.imagePath);
