@@ -69,6 +69,7 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.17.0",
+    "@pinia/testing": "^0.0.14",
     "@quasar/app": "^3.3.3",
     "@quasar/quasar-app-extension-testing-unit-jest": "^3.0.0-alpha.7",
     "@vue/devtools": "^6.0.12",
