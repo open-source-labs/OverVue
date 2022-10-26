@@ -3,6 +3,10 @@ import { createApp } from "vue";
 import * as All from "quasar";
 const { Quasar, date } = All;
 
+import { createTestingPinia } from "@pinia/testing"; // *
+import { useStore } from "../../src/store/main"; // *
+const piniaStore = useStore(); // *
+
 const components = Object.keys(All).reduce((object, key) => {
   const val = All[key];
   if (val && val.component && val.component.name != null) {
@@ -27,7 +31,8 @@ import store from "../../../src/store/state/index";
 describe("Test Suite for Image Upload", () => {
   const App = {};
   const app = createApp(App);
-  app.use(Quasar, Vuex, { components });
+  app.use(Quasar, piniaStore, { components }); // *
+  // app.use(Quasar, Vuex, { components });
   const payload = {
     icons: {
       div: "far fa-square fa-lg",
