@@ -48,7 +48,10 @@
         @deactivated="onDeactivated(componentData)"
         @dragstop="finishedDrag"
         @resizestop="finishedResize"
-        :style="{ 'background-color': componentData.color }"
+        :style="{
+          'background-color': componentData.color,
+          color: 'black',
+        }"
         :parent="true"
       >
         <div class="component-title">
@@ -1448,7 +1451,7 @@ li:hover {
     linear-gradient(90deg, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
     linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
-    -pie-background: linear-gradient(
+  -pie-background: linear-gradient(
         rgba(255, 255, 255, 0.8) 1px,
         transparent 1px
       ) -2px -2px / 100px,

@@ -2,7 +2,7 @@
   <div class="">
     <q-btn-dropdown
       class="selectLib"
-      color="pink"
+      color=""
       label="Select Element+ Component"
       dropdown-icon="change_history"
     >
@@ -334,5 +334,6 @@ name: "LibComponents",
   margin-top: 20px;
   width: 260px;
   height: 45px;
+  background-color: rgb(101 180 132);
 }
 </style>

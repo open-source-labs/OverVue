@@ -19,7 +19,7 @@ Description:
             src="../assets/OverVue_navLogo.png"
             id="nav-logo" />
           <div id="undo-redo">
-            <q-btn>
+            <!-- <q-btn>
               <i
                 v-if="doneAction.length"
                 class="fa fa-undo"
@@ -27,8 +27,8 @@ Description:
                 @click="clickedUndo"
               ></i>
               <i v-else class="fa fa-undo unavailable" aria-hidden="true"></i>
-            </q-btn>
-            <q-btn>
+            </q-btn> -->
+            <!-- <q-btn>
               <i
                 v-if="undoneAction.length"
                 class="fa fa-redo"
@@ -36,7 +36,7 @@ Description:
                 @click="clickedRedo"
               ></i>
               <i v-else class="fa fa-redo unavailable" aria-hidden="true"></i>
-            </q-btn>
+            </q-btn> -->
             <GridDensity /></div
         ></q-toolbar-title>
         <div></div>
