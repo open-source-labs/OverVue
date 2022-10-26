@@ -48,7 +48,49 @@
   </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import VueMultiselect from "vue-multiselect";
+import { useStore } from "../../../store/main";
+import { ref, computed } from "vue";
+
+const store = useStore();
+const textProps = ref("");
+
+const selectedProps = computed(() => store.selectedProps);
+const userProps = computed(() => store.userProps);
+
+const propsOptions = userProps.value;
+const selectProps = computed({
+  get() {
+    return [...selectedProps.value];
+  },
+  set(value) {
+    addPropsSelected(value);
+  },
+});
+
+const createProp: typeof store.createProp = (payload) =>
+  store.createProp(payload);
+const addPropsSelected: typeof store.addPropsSelected = (payload) =>
+  store.addPropsSelected(payload);
+const addPropsToComponent: typeof store.addPropsToComponent = (payload) =>
+  store.addPropsToComponent(payload);
+
+const stopDelete = (e: KeyboardEvent) => {
+  if (e.code === "Backspace") e.stopPropagation();
+};
+
+const createNewProp = (text: string) => {
+  if (![...userProps.value].includes(text) && text) {
+    createProp(text);
+    textProps.value = "";
+  }
+};
+
+const addPropsToComp = () => addPropsToComponent([...selectedProps.value]);
+</script>
+
+<!-- <script>
 import { mapState, mapActions } from "vuex";
 import VueMultiselect from "vue-multiselect";
 
@@ -95,10 +137,10 @@ export default {
     },
   },
 };
-</script>
+</script> -->
 
 <style lang="scss" scoped>
-  .q-field {
-    margin: 30px 0 10px;
-  }
+.q-field {
+  margin: 30px 0 10px;
+}
 </style>

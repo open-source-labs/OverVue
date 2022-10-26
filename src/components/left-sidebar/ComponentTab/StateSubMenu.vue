@@ -22,7 +22,6 @@
         :searchable="false"
         @search-change="stopDelete($event)"
       >
-      
       </VueMultiselect>
       <br />
       <q-btn
@@ -34,8 +33,14 @@
         @click="addStateToComp"
       />
     </div>
-    <p v-if="!this.componentMap[this.activeComponent].state.length">No state in component</p>
-    <a v-else v-for="state in this.componentMap[this.activeComponent].state" :key="state">
+    <p v-if="!(componentMap[activeComponent] as Component).state.length">
+      No state in component
+    </p>
+    <a
+      v-else
+      v-for="state in (componentMap[activeComponent] as Component).state"
+      :key="state"
+    >
       <q-list class="list-item" dense bordered separator>
         <q-item clickable v-ripple class="list-item">
           <q-item-section>
@@ -58,7 +63,47 @@
   </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import VueMultiselect from "vue-multiselect";
+import { useStore } from "../../../store/main";
+import { computed } from "vue";
+import { Component } from "../../../../types";
+
+const store = useStore();
+
+const selectedState = computed(() => store.selectedState);
+const userState = computed(() => store.userState);
+const componentMap = computed(() => store.componentMap);
+const activeComponent = computed(() => store.activeComponent);
+
+const stateOptions = userState.value;
+const selectState = computed({
+  get() {
+    return [...selectedState.value];
+  },
+  set(value) {
+    addStateSelected(value);
+  },
+});
+
+const addStateSelected: typeof store.addStateSelected = (payload) =>
+  store.addStateSelected(payload);
+const addStateToComponent: typeof store.addStateToComponent = (payload) =>
+  store.addStateToComponent(payload);
+const deleteStateFromComponent: typeof store.deleteStateFromComponent = (
+  payload
+) => store.deleteStateFromComponent(payload);
+
+const stopDelete = (e: KeyboardEvent) => {
+  if (e.code === "Backspace") e.stopPropagation();
+};
+
+const addStateToComp = () => addStateToComponent([...selectedState.value]);
+
+const deleteState = (state: string) => deleteStateFromComponent(state);
+</script>
+
+<!-- <script>
 import { mapState, mapActions } from "vuex";
 import VueMultiselect from "vue-multiselect";
 
@@ -68,7 +113,12 @@ export default {
     VueMultiselect,
   },
   computed: {
-    ...mapState(["selectedState", "userState", "componentMap", "activeComponent"]),
+    ...mapState([
+      "selectedState",
+      "userState",
+      "componentMap",
+      "activeComponent",
+    ]),
 
     stateOptions() {
       return this.userState;
@@ -102,17 +152,17 @@ export default {
     },
   },
 };
-</script>
+</script> -->
 
 <style lang="scss" scoped>
-  .selection-container {
-    padding: 30px 0;
-  }
+.selection-container {
+  padding: 30px 0;
+}
 
-  .component-container{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
+.component-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
 </style>

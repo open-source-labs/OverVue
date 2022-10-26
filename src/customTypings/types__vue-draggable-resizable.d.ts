@@ -1,0 +1,1 @@
+declare module "vue-draggable-resizable/src/components/vue-draggable-resizable.vue";

@@ -1,11 +1,16 @@
 <template>
   <q-card id="dashboard-cards">
-    <q-tabs v-model="tutorialPage" class="bg-subaccent text-white" active-color="secondary" indicator-color="secondary"
-      align="left" dense breakpoint="950">
-      <q-tab name="landing" label="Welcome to OverVue" id="label-text">
-      </q-tab>
-      <q-tab name="basics" label="The Basics" id="label-text">
-      </q-tab>
+    <q-tabs
+      v-model="tutorialPage"
+      class="bg-subaccent text-white"
+      active-color="secondary"
+      indicator-color="secondary"
+      align="left"
+      dense
+      breakpoint="950"
+    >
+      <q-tab name="landing" label="Welcome to OverVue" id="label-text"> </q-tab>
+      <q-tab name="basics" label="The Basics" id="label-text"> </q-tab>
       <q-tab name="version" label="What's New in OverVue" id="label-text">
       </q-tab>
       <q-tab name="advanced" label="Advanced Functionality" id="label-text">
@@ -13,7 +18,6 @@
     </q-tabs>
 
     <q-tab-panels v-model="tutorialPage" animated>
-
       <q-tab-panel name="landing">
         <Landing @nextTab="tutorialPage = 'basics'" />
       </q-tab-panel>
@@ -33,7 +37,19 @@
   </q-card>
 </template>
 
-<script lang="ts">
+<!-- COMPOSITION API SYNTAX -->
+<script setup lang="ts">
+import BasicFunctions from "./tutorial/BasicFunctions.vue";
+import AdvancedFunctions from "./tutorial/AdvancedFunctions.vue";
+import Landing from "./tutorial/Landing.vue";
+import NewVersionInfo from "./tutorial/NewVersionInfo.vue";
+import { ref } from "vue";
+
+const tutorialPage = ref("landing");
+</script>
+
+<!-- OLD OPTIONS API SYNTAX -->
+<!-- <script lang="ts">
 import BasicFunctions from './tutorial/BasicFunctions.vue'
 import AdvancedFunctions from './tutorial/AdvancedFunctions.vue'
 import Landing from './tutorial/Landing.vue'
@@ -53,7 +69,7 @@ export default defineComponent({
     }
   }
 });
-</script>
+</script> -->
 
 <style lang="scss" scoped>
 .q-btn {
