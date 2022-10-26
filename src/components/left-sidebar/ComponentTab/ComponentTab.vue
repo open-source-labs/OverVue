@@ -2,12 +2,25 @@
 Functionality includes: if active component is selected, will switch view to editing mode. If not, it will be in create mode -->
 <template>
   <q-card id="store-cards" class="no-shadow">
-    <CreateMenu v-if="activeComponent === ''"/>
-    <UpdateMenu v-if="activeComponent !== ''"/>
+    <CreateMenu v-if="activeComponent === ''" />
+    <UpdateMenu v-if="activeComponent !== ''" />
   </q-card>
 </template>
 
-<script>
+<script setup lang="ts">
+// new script for Composition API
+import CreateMenu from "./CreateMenu.vue";
+import UpdateMenu from "./UpdateMenu.vue";
+import { computed } from "vue";
+import { useStore } from "../../../store/main.js";
+
+const store = useStore();
+
+const activeComponent = computed(() => store.activeComponent);
+</script>
+
+<!-- <script>
+//Old Options API script
 import CreateMenu from './CreateMenu.vue'
 import UpdateMenu from './UpdateMenu.vue'
 import { mapState } from 'vuex'
@@ -27,18 +40,17 @@ export default {
     UpdateMenu,
   },
 }
-</script>
+</script> -->
 
 <style lang="scss">
 // give html background color of grey
 .html-bg {
-    background-color: $subprimary;
+  background-color: $subprimary;
 }
 #store-cards {
   height: 100%;
   border-radius: 0px !important;
   background-color: $subprimary;
-  
 }
 .q-tab-panel {
   height: calc(100% - 30px);
@@ -56,7 +68,7 @@ export default {
   background: $subprimary;
 }
 
-.q-tab__content{
+.q-tab__content {
   padding: 10px 0;
 }
 </style>

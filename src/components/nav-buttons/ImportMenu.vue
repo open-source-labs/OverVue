@@ -5,28 +5,85 @@ Description:
   -->
 
 <template>
-    <q-btn class="nav-btn" color="secondary" label="Import">
+  <q-btn class="nav-btn" color="secondary" label="Import">
     <q-menu :offset="[0, 15]" class="dropdown">
       <div class="column items-center">
-      <p class="center">Import:</p>
-      <q-btn class="menu-btn" no-caps color="secondary" label="Project JSON" @click="openProjectJSON"/>
-      <ImportComponent class="import-comp menu-btn" no-caps title="Vue Component (coming soon)" :disable = "true"/>
+        <p class="center">Import:</p>
+        <q-btn
+          class="menu-btn"
+          no-caps
+          color="secondary"
+          label="Project JSON"
+          @click="openProjectJSON"
+        />
+        <ImportComponent
+          class="import-comp menu-btn"
+          no-caps
+          title="Vue Component (coming soon)"
+          :disable="true"
+        />
       </div>
     </q-menu>
-
   </q-btn>
 </template>
 
-<script>
+<script setup lang="ts">
+import { useStore } from "../../store/main";
+import ImportComponent from "../left-sidebar/ComponentTab/ImportComponent.vue";
+import { Component } from "../../../types";
+// import * as fs from "fs";
+const Mousetrap = require("mousetrap");
+// @ts-ignore
+const { fs, ipcRenderer } = window;
+
+const store = useStore();
+
+// ON CREATED
+Mousetrap.bind(["command+o", "ctrl+o"], () => {
+  openProjectJSON();
+});
+
+const openProject: typeof store.openProject = (payload) =>
+  store.openProject(payload);
+
+const openJSONFile = (data: fs.PathOrFileDescriptor[]) => {
+  if (!data) return;
+  const jsonFile = JSON.parse(fs.readFileSync(data[0], "utf8"));
+  openProject(jsonFile);
+};
+
+const showOpenJSONDialog = () => {
+  ipcRenderer
+    .invoke("openProject", {
+      properties: ["openFile"],
+      filters: [
+        {
+          name: "JSON Files",
+          extensions: ["json"],
+        },
+      ],
+    })
+    .then((res: { filePaths: fs.PathOrFileDescriptor[] }) =>
+      openJSONFile(res.filePaths)
+    )
+    .catch((e: Error) => console.log(e));
+};
+
+const openProjectJSON = () => {
+  showOpenJSONDialog();
+};
+</script>
+
+<!-- <script>
 import { mapActions } from "vuex";
-import ImportComponent from "../left-sidebar/ComponentTab/ImportComponent.vue"
+import ImportComponent from "../left-sidebar/ComponentTab/ImportComponent.vue";
 const Mousetrap = require("mousetrap");
 const { fs, ipcRenderer } = window;
 
 export default {
   name: "ImportMenu",
   components: {
-    ImportComponent
+    ImportComponent,
   },
   methods: {
     ...mapActions(["openProject"]),
@@ -62,21 +119,20 @@ export default {
     });
   },
 };
-</script>
+</script> -->
 
 <style scoped>
 .mr-sm {
   margin-right: 0.2rem;
 }
-.menu-btn{
+.menu-btn {
   width: 70%;
   margin: 10px 0px;
   max-height: 50px !important;
 }
 
-.import-comp{
+.import-comp {
   width: 80% !important;
   margin: 10px 0 20px 0 !important;
 }
-
 </style>

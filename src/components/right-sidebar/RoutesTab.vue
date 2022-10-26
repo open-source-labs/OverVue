@@ -19,23 +19,62 @@ Includes functionality to:
       class="input-add"
       @click="resetActiveComponent"
       reactive-rules
-      :rules="[val => !Object.keys(this.componentMap).includes(val) || 'A component/route with this name already exists' ]"
+      :rules="[
+        (val) =>
+          !Object.keys(componentMap).includes(val) ||
+          'A component/route with this name already exists',
+      ]"
     >
-    <template v-slot:append>
-      <q-btn
-        flat
-        icon="add"
-        @click="handleEnterKeyPress"
-      />
-    </template>
+      <template v-slot:append>
+        <q-btn flat icon="add" @click="handleEnterKeyPress" />
+      </template>
     </q-input>
     <Routes></Routes>
-   <!-- <UploadMockup></UploadMockup>  -->
+    <!-- <UploadMockup></UploadMockup>  -->
   </div>
-
 </template>
 
-<script>
+<script setup lang="ts">
+import Routes from "./Routes.vue";
+import { mapState, mapActions } from "vuex";
+import UploadMockup from "./UploadMockup.vue";
+import { useStore } from "../../store/main.js";
+import { ref, computed } from "vue";
+
+const store = useStore();
+const newRoute = ref("");
+const activeComponent = ref("");
+
+const routes = computed(() => store.routes);
+const componentMap = computed(() => store.componentMap);
+// const activeComponent = computed(() => store.state.activeComponent)
+
+const addRouteToRouteMap: typeof store.addRouteToRouteMap = (payload) => store.addRouteToRouteMap(payload);
+const setRoutes: typeof store.setRoutes = (payload) => store.setRoutes(payload);
+const setActiveComponent: typeof store.setActiveComponent = (payload) => store.setActiveComponent(payload);
+
+const handleEnterKeyPress = (event: Event) => {
+  const newRouteName = newRoute.value.replace(/[^a-z0-9-_.]/gi, "");
+  if (
+    !newRouteName.trim() ||
+    routes.value[newRouteName] ||
+    componentMap.value[newRouteName]
+  ) {
+    event.preventDefault();
+    return false;
+  }
+  addRouteToRouteMap(newRouteName)
+    newRoute.value = "";
+};
+const resetActiveComponent = () => {
+  if (activeComponent.value !== "") {
+    setActiveComponent("");
+  }
+};
+</script>
+
+<!-- Old options API script -->
+<!-- <script>
 import Routes from "./Routes";
 import { mapState, mapActions } from "vuex";
 import UploadMockup from "./UploadMockup.vue";
@@ -77,7 +116,7 @@ export default {
     },
   },
 };
-</script>
+</script> -->
 
 <style scoped>
 .route-display {

@@ -6,15 +6,18 @@ Description:
 
 <template>
   <section class="icon-grid">
-    <button @click.prevent="changeState(elementName)" v-for="([elementName, iconString], idx) in Object.entries(icons)"
-      :key="idx + Date.now()">
+    <button
+      @click.prevent="changeState(elementName)"
+      v-for="([elementName, iconString], idx) in Object.entries(icons)"
+      :key="idx + Date.now()"
+    >
       <span class="badge"> {{ elementStorage[elementName] }}</span>
       <br />
       <i :class="iconString"></i>
       <br />
       <span>{{ elementName }}</span>
     </button>
-<!-- Icons for activeComponent's Child Components-->
+    <!-- Icons for activeComponent's Child Components-->
     <button
       @click.prevent="changeState(elementName)"
       v-for="(elementName, idx) in childrenComp"
@@ -26,11 +29,103 @@ Description:
       <br />
       <span>{{ elementName }}</span>
     </button>
-    
   </section>
 </template>
 
-<script>
+<script setup lang="ts">
+// new script for Composition API
+import { HtmlElement } from "app/types";
+import { computed, ref } from "vue";
+import { useStore } from "../../../store/main.js";
+
+const store = useStore();
+
+//to give the child componenets of the active components icons
+const childIcon = ref(["fas fa-code fa-lg"]);
+
+//emits
+const emit = defineEmits([
+  "getClickedIcon",
+  "activeElement",
+  "activeLayer",
+  "activeHTML",
+]);
+
+const icons = computed(() => store.icons);
+const activeComponent = computed(() => store.activeComponent);
+const componentMap = computed(() => store.componentMap);
+const selectedElementList = computed(() => store.selectedElementList);
+const activeHTML = computed(() => store.activeHTML);
+const activeLayer = computed(() => store.activeLayer);
+
+//it increments html elements when creating component
+const elementStorage = computed(() => {
+  let computedElementalStorage: { [key: string]: number } = {};
+  if (activeComponent.value) {
+    computedElementalStorage = {};
+
+    //function searches through HtmlList and is invoke recursively to search its children(Html Elements that are nested)
+    const checkHtmlElements = (array: HtmlElement[]) => {
+      for (let html of array) {
+        if (html.children.length) {
+          checkHtmlElements(html.children);
+        }
+        if (!computedElementalStorage[html.text]) {
+          computedElementalStorage[html.text] = 1;
+        } else {
+          ++computedElementalStorage[html.text];
+        }
+      }
+    };
+    //invoke the recursive function
+    checkHtmlElements(componentMap.value[activeComponent.value].htmlList);
+  } else if (activeComponent.value === "") {
+    // if component was switched from existing component to '', reset cache and update items
+    computedElementalStorage = {};
+    selectedElementList.value.forEach((el) => {
+      if (!computedElementalStorage[el.text]) {
+        computedElementalStorage[el.text] = 1;
+      } else {
+        computedElementalStorage[el.text] += 1;
+      }
+    });
+  }
+  return computedElementalStorage;
+});
+
+//Compute Child Components of the activeComponent to include them as icons
+const childrenComp = computed(() => {
+  let childrenAvailable: string[] = [];
+  if (activeComponent.value) {
+    childrenAvailable = componentMap.value[activeComponent.value].children;
+  }
+  return childrenAvailable;
+});
+
+//methods
+
+// Logic to decide where to place selected html element
+const changeState = (elementName: string) => {
+  // if no active component & creating a new component: add html to selectedElement list
+  if (activeComponent.value === "") {
+    emit("getClickedIcon", { elementName, date: Date.now() });
+  } else {
+    if (activeHTML.value === "" && activeLayer.value.id === "") {
+      // if active component & no active html: add html to component's htmlList no nesting
+      emit("activeElement", { elementName, date: Date.now() });
+    } else if (activeLayer.value.id !== "" && activeHTML.value === "") {
+      // if active component & in a different layer: add html to current layers htmlList
+      emit("activeLayer", { elementName, date: Date.now() });
+    } else {
+      // if active component, active layer is not selected, but have active html: add html to active html's htmlList
+      emit("activeHTML", { elementName, date: Date.now() });
+    }
+  }
+};
+</script>
+
+<!-- <script>
+  //old Options API script
 import { mapState } from "vuex";
 
 export default {
@@ -117,7 +212,7 @@ export default {
   // watch for changes to selectedElementList when creating a component
   //  },
 };
-</script>
+</script> -->
 
 <style scoped lang="scss">
 .icon-grid {

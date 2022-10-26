@@ -18,12 +18,49 @@ Description:
       :option-height="20"
       :searchable="true"
     >
-     <template v-slot:noResult>No components found.</template>
+      <template v-slot:noResult>No components found.</template>
     </VueMultiselect>
   </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import VueMultiselect from "vue-multiselect";
+import { useStore } from "../../../store/main";
+import { ref, computed, watch } from "vue";
+
+const store = useStore();
+
+const emit = defineEmits(["addparent"]);
+const value = ref("");
+
+const componentMap = computed(() => store.componentMap);
+const activeComponent = computed(() => store.activeComponent);
+const routes = computed(() => store.routes);
+const activeRoute = computed(() => store.activeRoute);
+
+const options = routes.value[activeRoute.value].map(
+  (component) => component.componentName
+);
+
+const parentSelect: typeof store.parentSelect = (payload) =>
+  store.parentSelect(payload);
+const setActiveComponent: typeof store.setActiveComponent = (payload) =>
+  store.setActiveComponent(payload);
+
+const selectParent = (value: string) => {
+  parentSelect(value);
+  emit("addparent", value);
+};
+
+const resetActiveComponent = (): void => {
+  if (activeComponent.value !== "") setActiveComponent("");
+};
+
+watch(componentMap, () => (value.value = ""));
+</script>
+
+// OLD SCRIPT CODE USING OPTIONS API
+<!-- <script>
 import { mapState, mapActions } from "vuex";
 import VueMultiselect from "vue-multiselect";
 
@@ -71,43 +108,49 @@ export default {
     },
   },
 };
-</script>
+</script> -->
 
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>
 <style scoped lang="scss">
-
-.parent-select{
+.parent-select {
   margin-right: 20px;
 }
-  :global(.multiselect__tags) {
-    background-color: $subprimary;
-    border: 1px solid rgb(180, 180, 180);
-  }
-  :global(.multiselect__input) {
-    background-color: $subprimary;
-    color: $menutext;
-  }
-  :global(.multiselect__content) {
-    background-color: $subprimary;
-    color: $menutext;
-  }
-  :global(.multiselect__option) {
-    color: $menutext;
-  }
-  :global(.multiselect__option--selected) {
-    background-color: $accent;
-    color: #155158;
 
-  }
-  :global(.multiselect__single) {
-    background-color: $subprimary;
-    color: $menutext;
-  }
-  :global(.multiselect__single:focus) {
-    background-color: $subprimary;
-    color: $menutext;
-  }
-  :global(.multiselect__input::placeholder) {
+:global(.multiselect__tags) {
+  background-color: $subprimary;
+  border: 1px solid rgb(180, 180, 180);
+}
+
+:global(.multiselect__input) {
+  background-color: $subprimary;
+  color: $menutext;
+}
+
+:global(.multiselect__content) {
+  background-color: $subprimary;
+  color: $menutext;
+}
+
+:global(.multiselect__option) {
+  color: $menutext;
+}
+
+:global(.multiselect__option--selected) {
+  background-color: $accent;
+  color: #155158;
+}
+
+:global(.multiselect__single) {
+  background-color: $subprimary;
+  color: $menutext;
+}
+
+:global(.multiselect__single:focus) {
+  background-color: $subprimary;
+  color: $menutext;
+}
+
+:global(.multiselect__input::placeholder) {
   color: $menutext;
 }
 </style>

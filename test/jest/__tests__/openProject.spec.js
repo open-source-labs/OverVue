@@ -1,7 +1,12 @@
+// * = added to convert tests to OverVue 9.0, using Pinia instead of Vuex
 import { mount, createLocalVue, shallowMount } from "@vue/test-utils";
 import { createApp } from "vue";
 import * as All from "quasar";
 const { Quasar, date } = All;
+
+import { createTestingPinia } from "@pinia/testing"; // *
+import { useStore } from "../../src/store/main"; // *
+const piniaStore = useStore(); // *
 
 const components = Object.keys(All).reduce((object, key) => {
   const val = All[key];
@@ -11,11 +16,11 @@ const components = Object.keys(All).reduce((object, key) => {
   return object;
 }, {});
 
-import actions from "../../../src/store/actions";
-import mutations from "../../../src/store/mutations";
-import * as types from "../../../src/store/types";
-import Vuex from "vuex";
-import store from "../../../src/store/state/index";
+// import actions from "../../../src/store/options/actions";
+// import mutations from "../../../src/store/options/mutations";
+import * as types from "../../../src/store/options/types";
+// import Vuex from "vuex";
+// import store from "../../../src/store/state/index";
 
 /**
  * @description: Testing functionality of the openProject action and following mutations
@@ -25,78 +30,192 @@ import store from "../../../src/store/state/index";
  */
 
 describe("Test Suite for Image Upload", () => {
-    const App = {}
-    const app = createApp(App);
-    app.use(Quasar, Vuex, { components });
-    const payload = {"icons":{"div":"far fa-square fa-lg","button":"fas fa-toggle-off fa-lg","form":"fab fa-wpforms fa-lg","img":"far fa-image fa-lg","link":"fas fa-link fa-lg","list":"fas fa-circle fa-lg","paragraph":"fas fa-paragraph fa-lg","list-ol":"fas fa-list-ol fa-lg","list-ul":"fas fa-list-ul fa-lg","input":"fas fa-pen fa-lg","navbar":"fas fa-window-maximize fa-lg", "unicorn":"fa-duotone fa-alicorn"},
-        "htmlElementMap":{"div":["<div>","</div>"],"button":["<button>","</button>"],"form":["<form>","</form>"],"img":["<img>",""],"link":["<a href=\"#\"/>",""],"list":["<li>","</li>"],"paragraph":["<p>","</p>"],"list-ol":["<ol>","</ol>"],"list-ul":["<ul>","</ul>"],"input":["<input />",""],"navbar":["<nav>","</nav>"]},
-        "componentMap":{"App":{"componentName":"App","children":["HomeView","b"],"htmlList":[]},
-            "HomeView":{"componentName":"HomeView","children":["a"],"htmlList":[]},
-            "a":{"componentName":"a","x":0,"y":0,"z":0,"w":200,"h":200,"children":[],"parent":{},"htmlList":[],"isActive":false},
-            "b":{"componentName":"b","children":[],"htmlList":[]}
+  const App = {};
+  const app = createApp(App);
+  app.use(Quasar, piniaStore, { components }); // *
+  // app.use(Quasar, Vuex, { components });
+  const payload = {
+    icons: {
+      div: "far fa-square fa-lg",
+      button: "fas fa-toggle-off fa-lg",
+      form: "fab fa-wpforms fa-lg",
+      img: "far fa-image fa-lg",
+      link: "fas fa-link fa-lg",
+      list: "fas fa-circle fa-lg",
+      paragraph: "fas fa-paragraph fa-lg",
+      "list-ol": "fas fa-list-ol fa-lg",
+      "list-ul": "fas fa-list-ul fa-lg",
+      input: "fas fa-pen fa-lg",
+      navbar: "fas fa-window-maximize fa-lg",
+      unicorn: "fa-duotone fa-alicorn",
+    },
+    htmlElementMap: {
+      div: ["<div>", "</div>"],
+      button: ["<button>", "</button>"],
+      form: ["<form>", "</form>"],
+      img: ["<img>", ""],
+      link: ['<a href="#"/>', ""],
+      list: ["<li>", "</li>"],
+      paragraph: ["<p>", "</p>"],
+      "list-ol": ["<ol>", "</ol>"],
+      "list-ul": ["<ul>", "</ul>"],
+      input: ["<input />", ""],
+      navbar: ["<nav>", "</nav>"],
+    },
+    componentMap: {
+      App: { componentName: "App", children: ["HomeView", "b"], htmlList: [] },
+      HomeView: { componentName: "HomeView", children: ["a"], htmlList: [] },
+      a: {
+        componentName: "a",
+        x: 0,
+        y: 0,
+        z: 0,
+        w: 200,
+        h: 200,
+        children: [],
+        parent: {},
+        htmlList: [],
+        isActive: false,
+      },
+      b: { componentName: "b", children: [], htmlList: [] },
+    },
+    routes: {
+      HomeView: [
+        {
+          componentName: "a",
+          x: 0,
+          y: 20,
+          z: 0,
+          w: 200,
+          h: 200,
+          htmlList: [],
+          children: [],
+          parent: {},
+          isActive: false,
         },
-        "routes":{"HomeView":[{"componentName":"a","x":0,"y":20,"z":0,"w":200,"h":200,"htmlList":[],"children":[],"parent":{},"isActive":false}],"b":[]},
-        "userActions":[],
-        "userState":[],
-        "userProps":[],
-        "componentNameInputValue":"",
-        "projects":[{"filename":"test.json","lastSavedLocation":"/Users/joju/Desktop/test.json"}],
-        "activeRoute":"b","activeComponent":"","activeHTML":"","activeLayer":{"id":"","lineage":[]},
-        "selectedElementList":[],
-        "projectNumber":2,"activeTab":0,
-        "componentChildrenMultiselectValue":[],
-        "modalOpen":false,"parentSelected":"",
-        "imagePath":{"HomeView":"/Users/joju/Desktop/bootstrap1.png","b":""}
-    }
+      ],
+      b: [],
+    },
+    userActions: [],
+    userState: [],
+    userProps: [],
+    componentNameInputValue: "",
+    projects: [
+      {
+        filename: "test.json",
+        lastSavedLocation: "/Users/joju/Desktop/test.json",
+      },
+    ],
+    activeRoute: "b",
+    activeComponent: "",
+    activeHTML: "",
+    activeLayer: { id: "", lineage: [] },
+    selectedElementList: [],
+    projectNumber: 2,
+    activeTab: 0,
+    componentChildrenMultiselectValue: [],
+    modalOpen: false,
+    parentSelected: "",
+    imagePath: { HomeView: "/Users/joju/Desktop/bootstrap1.png", b: "" },
+  };
 
-    test('"[types.openProject]" action calls set_image_path, set_component_map, and set_routes', () => {
-        const commit = jest.fn();
-        actions[types.openProject]({ commit }, payload);
-        expect(commit).toHaveBeenCalledWith("SET_IMAGE_PATH", payload.imagePath);
-        expect(commit).toHaveBeenCalledWith("SET_COMPONENT_MAP", payload.componentMap);
-        expect(commit).toHaveBeenCalledWith("SET_ROUTES", payload.routes);
-        expect(commit).toHaveBeenCalledWith("REMOVE_ALL_STATE_PROPS_ACTIONS");
-        expect(commit).toHaveBeenCalledWith("SET_ACTIVE_ROUTE", 'HomeView');
-        expect(commit).toHaveBeenCalledWith("SET_ACTIVE_COMPONENT", '')
-      });
-    
-    test('"[types.SET_IMAGE_PATH]" mutation expect add payload to imagePath object in state', ()=>{
-        const openState = {
-            imagePath: {
-                HomeView: '',
-            }
-        }
-        mutations[types.SET_IMAGE_PATH](openState, payload.imagePath);
-        expect(openState.imagePath).toMatchObject({ ...openState.imagePath, ... payload.imagePath});
-    });
-    test('"[types.SET_COMPONENT_MAP]" mutation expect state.componentMap object to match payload.componentMap', ()=>{
-        const openState = {
-            componentMap: {
-                App: {
-                  componentName: 'App',
-                  children: ['HomeView'],
-                  htmlList: []
-                },
-                HomeView: {
-                  componentName: 'HomeView',
-                  children: [],
-                  htmlList: []
-                }
-              }
-        }
-        mutations[types.SET_COMPONENT_MAP](openState, payload.componentMap);
-        expect(openState.componentMap).toMatchObject(payload.componentMap);
-    });
-    test('"[types.SET_ROUTES]" mutation expect state.routes object to match payload.routes ', ()=>{
-        const openState = {
-            routes: {
-                HomeView: []
-              }
-        }
+  // test('"[types.openProject]" action calls set_image_path, set_component_map, and set_routes', () => {
+  //   const commit = jest.fn();
+  //   actions[types.openProject]({ commit }, payload);
+  //   expect(commit).toHaveBeenCalledWith("SET_IMAGE_PATH", payload.imagePath);
+  //   expect(commit).toHaveBeenCalledWith(
+  //     "SET_COMPONENT_MAP",
+  //     payload.componentMap
+  //   );
+  //   expect(commit).toHaveBeenCalledWith("SET_ROUTES", payload.routes);
+  //   expect(commit).toHaveBeenCalledWith("REMOVE_ALL_STATE_PROPS_ACTIONS");
+  //   expect(commit).toHaveBeenCalledWith("SET_ACTIVE_ROUTE", "HomeView");
+  //   expect(commit).toHaveBeenCalledWith("SET_ACTIVE_COMPONENT", "");
+  // });
 
-        mutations[types.SET_ROUTES](openState, payload.routes);
-        expect(openState.routes).toMatchObject(payload.routes);
+  test('"[types.SET_IMAGE_PATH]" mutation expect add payload to imagePath object in state', () => {
+    const openState = {
+      imagePath: {
+        HomeView: "",
+      },
+    };
+    piniaStore.setImagePath(payload.imagePath);
+    expect(piniaStore.imagePath).toMatchObject({
+      ...openState.imagePath,
+      ...payload.imagePath,
     });
-
   });
-  
+
+  // test('"[types.SET_IMAGE_PATH]" mutation expect add payload to imagePath object in state', () => {
+  //   const openState = {
+  //     imagePath: {
+  //       HomeView: "",
+  //     },
+  //   };
+  //   mutations[types.SET_IMAGE_PATH](openState, payload.imagePath);
+  //   expect(openState.imagePath).toMatchObject({
+  //     ...openState.imagePath,
+  //     ...payload.imagePath,
+  //   });
+  // });
+
+  test('"[types.SET_COMPONENT_MAP]" mutation expect state.componentMap object to match payload.componentMap', () => {
+    const openState = {
+      componentMap: {
+        App: {
+          componentName: "App",
+          children: ["HomeView"],
+          htmlList: [],
+        },
+        HomeView: {
+          componentName: "HomeView",
+          children: [],
+          htmlList: [],
+        },
+      },
+    };
+    piniaStore.setComponentMap(payload.componentMap);
+    expect(piniaStore.componentMap).toMatchObject(payload.componentMap);
+  });
+
+  // test('"[types.SET_COMPONENT_MAP]" mutation expect state.componentMap object to match payload.componentMap', () => {
+  //   const openState = {
+  //     componentMap: {
+  //       App: {
+  //         componentName: "App",
+  //         children: ["HomeView"],
+  //         htmlList: [],
+  //       },
+  //       HomeView: {
+  //         componentName: "HomeView",
+  //         children: [],
+  //         htmlList: [],
+  //       },
+  //     },
+  //   };
+  //   mutations[types.SET_COMPONENT_MAP](openState, payload.componentMap);
+  //   expect(openState.componentMap).toMatchObject(payload.componentMap);
+  // });
+
+  test('"[types.SET_ROUTES]" mutation expect state.routes object to match payload.routes ', () => {
+    const openState = {
+      routes: {
+        HomeView: [],
+      },
+    };
+    piniaStore.setRoutes(payload.routes);
+    expect(piniaStore.routes).toMatchObject(payload.routes);
+  });
+
+  // test('"[types.SET_ROUTES]" mutation expect state.routes object to match payload.routes ', () => {
+  //   const openState = {
+  //     routes: {
+  //       HomeView: [],
+  //     },
+  //   };
+
+  //   mutations[types.SET_ROUTES](openState, payload.routes);
+  //   expect(openState.routes).toMatchObject(payload.routes);
+  // });
+
+});

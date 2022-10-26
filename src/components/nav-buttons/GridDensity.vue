@@ -74,31 +74,44 @@ Description:
   </div>
 </template>
 
-<script lang="ts">
-  import { mapState, mapActions } from "vuex";
-  import { defineComponent } from "vue";
+<script setup lang="ts">
+import { useStore } from "../../store/main";
+import { computed } from "vue";
 
-  export default defineComponent({
-    name: "GridDensity" as string,
-    computed: {
-    ...mapState([
-      "gridLayout",
-    ]),
-    },
-    methods: {
-    ...mapActions([
-      "changeGridDensity"
-    ]),
-    pickGridDensity(direction: string, densityNum: number):void {
+const store = useStore();
+
+const gridLayout = computed(() => store.gridLayout);
+
+const changeGridDensity: typeof store.changeGridDensity = (payload) =>
+  store.changeGridDensity(payload);
+
+const pickGridDensity = (direction: string, densityNum: number) => {
+  let payload = { direction, densityNum };
+  changeGridDensity(payload);
+};
+</script>
+
+<!-- <script lang="ts">
+import { mapState, mapActions } from "vuex";
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  name: "GridDensity" as string,
+  computed: {
+    ...mapState(["gridLayout"]),
+  },
+  methods: {
+    ...mapActions(["changeGridDensity"]),
+    pickGridDensity(direction: string, densityNum: number): void {
       let payload: object = {
-        direction:direction,
-        densityNum:densityNum,
-      }
+        direction: direction,
+        densityNum: densityNum,
+      };
       this.changeGridDensity(payload);
     },
-    },
-  })
-</script>
+  },
+});
+</script> -->
 
 <style scoped lang="scss">
 #gridDensity {
@@ -109,6 +122,6 @@ Description:
   margin-right: 15px;
 }
 .q-expansion-item {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 </style>

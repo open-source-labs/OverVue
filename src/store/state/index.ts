@@ -1,87 +1,88 @@
-import icons from './icons';
-import htmlElementMap from './htmlElementMap';
-import styleClassmap from './styleClassMap';
-import * as types from '../../../types';
+import icons from "./icons";
+import htmlElementMap from "./htmlElementMap";
+import styleClassmap from "./styleClassMap";
+import * as types from "../../../types";
 
-const cloneDeep = require('lodash.clonedeep');
+const cloneDeep = require("lodash.clonedeep");
 
-const newState :types.State = {
-  clicked:false,
+const newState: types.State = {
+  clicked: false,
   icons,
   htmlElementMap,
   componentMap: {
     App: {
-      componentName: 'App',
-      children: ['HomeView'],
-      htmlList: []
+      componentName: "App",
+      children: ["HomeView"],
+      htmlList: [],
     },
     HomeView: {
-      componentName: 'HomeView',
+      componentName: "HomeView",
       children: [],
       htmlList: [],
-    }
+    },
   },
   routes: {
-    HomeView: []
+    HomeView: [],
   },
   userActions: [],
   userProps: [],
   userState: [],
   imagePath: {
-    HomeView: ''
+    HomeView: "",
   },
-  componentNameInputValue: '',
-  projects: [{ filename: 'Untitled-1', lastSavedLocation: '' }],
+  componentNameInputValue: "",
+  projects: [{ filename: "Untitled-1", lastSavedLocation: "" }],
 
-  activeRoute: 'HomeView',
+  activeRoute: "HomeView",
   // need to change to activeComponentName
-  activeComponent: '',
+  activeComponent: "",
   activeComponentObj: null,
-  activeHTML: '',
+  activeHTML: "",
   activeLayer: {
-    id: '',
-    lineage: []
+    id: "",
+    lineage: [],
   },
 
   selectedProps: [],
   selectedState: [],
   selectedActions: [],
   selectedElementList: [],
-  selectedIdDrag: '',
-  selectedIdDrop: '',
+  selectedIdDrag: "",
+  selectedIdDrop: "",
   projectNumber: 2,
   activeTab: 0,
-  componentChildrenMultiselectValue: [],
+  // componentChildrenMultiselectValue: [],
   modalOpen: false,
+  attributeModalOpen: false,
   noteModalOpen: false,
   //test
   noteAttributeOpen: false,
   colorModalOpen: false,
-  parentSelected: false,
+  parentSelected: "",
   // for storing copied component
   copiedComponent: {},
   copyNumber: 0,
   pastedComponent: {},
-  exportAsTypescript: 'off',
-  exportOauth: 'off',
-  exportOauthGithub: 'off',
+  exportAsTypescript: "off",
+  exportOauth: "off",
+  exportOauthGithub: "off",
   showTutorial: true,
   tutorialFirstOpen: true,
   pasteTimer: 0,
   gridLayout: [15, 15], // [Width Ratio, Height Ratio] this will be used to have containerH / gridLayout[0] and have fr
   containerH: 720, // in px
   containerW: 1280, // in px
-  importLibraries:[],
-  displaylibComponent:false,
-  importTest:'off'
+  importLibraries: [],
+  displaylibComponent: false,
+  importTest: "off",
   //push libraries string to the array
 };
 
 // closured method to ensure we only ever write the default state ONCE
-const writeTheDefault = ():any => {
-  let initial:object = {};
-  let needsToRun:boolean = true;
-  function onced(payload:any) {
+const writeTheDefault = (): any => {
+  let initial: object = {};
+  let needsToRun: boolean = true;
+  function onced(payload: any) {
     if (needsToRun) {
       initial = cloneDeep(payload);
       needsToRun = false;
@@ -89,7 +90,7 @@ const writeTheDefault = ():any => {
     return initial;
   }
   return onced;
-}
+};
 
 const defaultState = writeTheDefault();
 

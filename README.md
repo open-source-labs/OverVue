@@ -62,7 +62,6 @@ If you choose to use VcXsrv, you will need to select a couple options:
 
 If you choose to use x410, you will need to set the environment DISPLAY variable on each console:
 
-
 So, to open either the Vue devtools or OverVue in dev mode, first start your X Server then enter into the terminal:
 For WSL 1 :
 
@@ -76,7 +75,9 @@ For WSL 2 :
 export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
 export LIBGL_ALWAYS_INDIRECT=1
 ```
+
 Then run the following command to run both OverVue and Vue developer tools.
+
 ```
 npm run dev
 ```
@@ -92,7 +93,9 @@ Then to start only OverVue in developer mode, open a new terminal instance and s
 ```
 quasar dev -m electron
 ```
-**NOTE**: 
+
+**NOTE**:
+
 <ul>
 <li>Electron-deeplink currently does not work on our WSL2 computers and output an error during installing the dependency which prevented the application to open in dev mode. Go to /src-electron/electron-main.js and comment out line 3/import line to bypass error. The developers did not find any impacts on application so far.</li>
 <li>There might be an npm install error despite all instructions. Try the following command below:</li>
@@ -101,9 +104,6 @@ quasar dev -m electron
 ```
 sudo apt install libgconf-2-4 libatk1.0-0 libatk-bridge2.0-0 libgdk-pixbuf2.0-0 libgtk-3-0 libgbm-dev libnss3-dev libxss-dev
 ```
-
-
-
 
 ## Running the Docker Image
 
@@ -114,8 +114,11 @@ In your terminal, run:
 ```
 docker run -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY -v`pwd`/src:/app/src --rm -it overvue
 ```
+
 ### Running the dev environment on Docker as a Mac User
+
 To run OverVue through Docker on a Mac, you'll need to install XQuartz:
+
 ```
 brew install --cask xquartz
 ```
@@ -123,11 +126,13 @@ brew install --cask xquartz
 <strong>Important:</strong> RESTART your computer.
 
 Update your PATH variable to /opt/x11/bin to your .zshrc. For example:
+
 ```
 export PATH=/opt/X11/bin:$PATH
 ```
 
 Set up XQuartz:
+
 <ul>
 <li>Launch XQuartz</li>
 <li>Under the XQuartz menu, select Preferences.</li>
@@ -136,30 +141,37 @@ Set up XQuartz:
 </ul>
 
 Run the following command in your terminal (replacing localhostname with your local host name)
+
 ```
 xhost +localhostname
 ```
+
 If you don't know your local host name, run the following command to find it:
+
 ```
 echo $(hostname)
 ```
 
 Build the image using Dockerfile-Mac:
+
 ```
 docker build -t overvue -f Dockerfile-Mac .
 ```
 
 Run the image using the following command
+
 ```
 docker run -it --env="DISPLAY=$(ifconfig en0 | grep inet | awk '$1=="inet" {print$2}'):0" --security-opt seccomp=./chrome.json overvue
 ```
 
 Run in dev mode using:
+
 ```
-npm run dev 
+npm run dev
 ```
 
 For more information about running Electron through Docker on a Mac, check out these posts:
+
 <li><a href="https://jaked.org/blog/2021-02-18-How-to-run-Electron-on-Linux-on-Docker-on-Mac">How to run Electron on Linux on Docker on Mac</a></li>
 <li><a href="https://gist.github.com/paul-krohn/e45f96181b1cf5e536325d1bdee6c949">Workaround for sockets on Docker on macOS</a></li>
 <li><a href="https://blog.jessfraz.com/post/how-to-use-new-docker-seccomp-profiles/">How to use new Docker seccomp profiles</a></li>
@@ -168,19 +180,23 @@ For more information about running Electron through Docker on a Mac, check out t
 ### Running the dev environment on Docker as a WSL user
 
 Build the image using Dockerfile-WSL:
+
 ```
 docker build -t overvue -f Dockerfile-WSL .
 ```
 
-To run 
+To run
+
 ```
 docker run -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY -v`pwd`/src:/app/src --rm -it overvue bash
 ```
 
 Run in dev mode using:
+
 ```
 npm run dev
 ```
+
 [↥Back to top](#table-of-contents)
 <br/>
 
@@ -193,7 +209,7 @@ npm run dev
 - You may nest HTML elements by clicking the chevron and selecting the nested HTML elements. Return to the parent HTML element by clicking clicking the carrot above the HTML element.
 
 - Select a parent component for the new component if needed.
-- After creating the component, you can move, resize, and recolor the component in the display. For advanced styling options, double click on the desired HTML element to modify. Here, you may add attributes such as class, ID, and v-model. 
+- After creating the component, you can move, resize, and recolor the component in the display. For advanced styling options, double click on the desired HTML element to modify. Here, you may add attributes such as class, ID, and v-model.
   ![](./src/assets/readme/v4Creating_Component.gif)
 
 - You can also duplicate components with Ctrl/Cmd C & V and see the component tree updated in real time.
@@ -203,10 +219,10 @@ npm run dev
 - Child components will inherit the same parents, but parent components will not inherit duplicate children.
   ![](./src/assets/readme/v4Copy_Parent_Component.gif)
 
-- The right-side, Component Details > Code Snippet Tab displays live code snippets for the selected component.  
+- The right-side, Component Details > Code Snippet Tab displays live code snippets for the selected component.
   ![](./src/assets/readme/v4Code_Snippet.gif)
 
-- You can view and add new routes and associated components in the right-side, Routes Gab. The newly created routes will be visible in the Project Tree Tab. 
+- You can view and add new routes and associated components in the right-side, Routes Gab. The newly created routes will be visible in the Project Tree Tab.
   ![](./src/assets/readme/v4Copying_Route.gif)
 
 - State and actions can be created, edited, and assigned to components.
@@ -235,11 +251,13 @@ src/
 babel.config.js
 package.json
 ```
-<br/> 
+
+<br/>
 
 [↥Back to top](#table-of-contents)
 
 ## BETA
+
 ### Slack OAuth
 
 For the Slack OAuth, you will need to create a Slack app through their website (https://api.slack.com/apps?new_app=1), so that you have your own Client Secret and Client ID. Then create two .env files (one for development and one for production).
@@ -271,6 +289,7 @@ SLACK_REDIRECT_URI = "overvuedev://test"
 [↥Back to top](#table-of-contents)
 
 ### Changelog
+
 ### Changelog 2.0
 
 <details><summary>OverVue 2.0</summary>
@@ -371,7 +390,7 @@ SLACK_REDIRECT_URI = "overvuedev://test"
     <li>Fixed clicking canvas does not fully deactivate active component</li>
     <li>Fixed Error handling for 'pasting' component when no component is copied</li>
     <li>Fixed dancing components</li>
-    <li>Fixed project tree visulization</li> 
+    <li>Fixed project tree visulization</li>
   </ul>
 </details>
 
@@ -421,21 +440,43 @@ SLACK_REDIRECT_URI = "overvuedev://test"
 <li>Eliminated code redundancy by implementing mixins</li>
 </ul>
 </details>
+
+### Changelog 9.0
+
+<details><summary>OverVue 9.0</summary>
+<ul>
+<li>Converted codebase (40+ components) from Options API to Composition API</li>
+<li>Migrated store from Vuex to Pinia</li>
+<li>Migrated codebase to TypeScript</li>
+<li>Implemented testing of Pinia store</li>
+<li>Updated Electron builder dependency</li>
+<li>UI overhaul</li>
+<br>
+<h4><strong>Bug Fixes</strong></h4>
+<li>Fixed nesting HTML elements functionality</li>
+<li>Fixed adding innerText functionality</li>
+<li>Fixed formatting of exported code</li>
+<li>Fixed parent child component relationship in code snippet and on export</li>
+<li>Fixed typing and initial values of store to match actions usage</li>
+<li>Eliminated code redundancy by implementing Composition API and Pinia</li>
+</ul>
+</details>
 <br/>
 
 [↥Back to top](#table-of-contents)
+
 ## Contributing
 
-We'd love for you to test this application out and submit any issues you encounter. Also feel free to fork to your own repo and submit PRs.
+We'd love for you to test out the application and submit any issues you encounter. Also feel free to fork to your own repo and submit PRs.
 Here are some features we're thinking about adding:
 
-
-- Ability to place child components into HTML elements
-- Ability to export Vuex store boilerplate
+- Ability to choose options or composition API for code snippet and exported code
+- Ability to choose Vuex or Pinia for code snippet and exported code
 - Ability to add two-way binding to input elements
-- More granular typing options for TypeScript mode
+- Make snap-to-grid optional with a toggle feature
+- Expand testing suite and add more dynamic tests
 
-If you make changes and wish to update the website, here is the link to the repo: https://github.com/TeamOverVue/OverVuePage
+If you make changes and wish to update the website, here is the link to the repo: https://github.com/OverVue9/OverVueWebsite
 
 <br/>
 
@@ -479,6 +520,10 @@ Chris Wong @Koregano73
 Honghao(Michael) Sun @sunhonghaoparis
 Alex Law @alexlaw528
 Emma Genesen @EGenesen
+Jigar Patel @jigarxp
+Linden Young @lindenyoung
+Chris Davis @chdavis0917
+Ji Kim @dwejikim
 ```
 
 Inspired by [PreVue](https://github.com/open-source-labs/PreVue)
