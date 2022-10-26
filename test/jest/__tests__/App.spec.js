@@ -5,7 +5,7 @@
 // import mutations from "../../../src/store/options/mutations";
 import { setActivePinia, createPinia } from 'pinia'
 import { useStore } from "src/store/main.js";
-const store = useStore();
+
 
 /**
  * @description: Tests for deleting state
@@ -17,6 +17,10 @@ const store = useStore();
 
 describe("Delete state/actions in userStore/componentMap", () => {
   beforeEach(() => {
+
+    setActivePinia(createPinia());
+    const store = useStore();
+    
     store.componentMap = {
       testComp: {
         componentName: "test",
