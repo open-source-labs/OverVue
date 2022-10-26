@@ -1471,11 +1471,14 @@ li:hover {
   // align-content: center;
   position: absolute;
   text-align: center;
-  font-size: 3em;
+  font-size: 4em;
   margin: 0px;
-  margin-top: -4%;
+  margin-top: -5%;
   width: 80%;
   color: black;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-weight: 600;
 }
 
 .menu {

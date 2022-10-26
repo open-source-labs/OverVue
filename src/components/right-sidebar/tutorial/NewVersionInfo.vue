@@ -1,41 +1,54 @@
 <template>
   <section id="newFeatures">
-    <h6 class="infoHeading">What's New in OverVue 8.0?</h6>
-
+    <h6 class="infoHeading">What's New in OverVue?</h6>
     <p class="info-sub-heading">
       Improved Prototyping with Snap to Grid Positioning
     </p>
 
     <p class="infoContent">
       Level up your prototyping with snap to grid positioning and component
-      sizing that is exported as CSS grid styling in exported SFC's. Overvue 8.0
-      also fixes bugs that led to conditional application of color and position
-      styling in previous versions. Click on these buttons below and a menu pull
-      down show appear to change the grid density for either the width or
-      height.
+      sizing that is exported as CSS grid styling in exported SFC's. Click on
+      these buttons below to access this feature!
     </p>
     <img src="../../../assets/snaptogrid.jpg" class="tut-image" />
     <p class="info-sub-heading">
       Augmented Component Creation with Element+ Component Library
     </p>
     <p class="infoContent">
-      Take advantage of the popular, Vue 3.0 compatible component library,
+      Take advantage of the popular Vue 3.0 compatible component library,
       Element+. Manipulate these components in app, and rest easy knowing
       exported code includes both the library elements, and their necessary
       dependencies.
     </p>
 
-    <p class="info-sub-heading">OAuth</p>
-    <p class="infoContent">
-      You can now opt-in to add boilerplate code for OAuth with Google or Github
-      to your project. In the exported code, take advantage of Firebase to
-      seemlessly configure OAuth for your organization.
+    <p class="info-sub-heading">
+      Migrated Codebase to Composition API and Pinia State Management
     </p>
-    <p class="info-sub-heading">Testing</p>
+
     <p class="infoContent">
-      All exported projects now come with boilerplate configuration files and
-      unit test templates so you can easily implement testing with Jest and Vue
-      Test Utils.
+      With the move of Vuex to maintanenace mode, Pinia has now become Vue's
+      official state management library. In addition, Composition API allows for
+      an efficient transition from Vuex to Pinia. Pinia provides SSR support,
+      Hot Module Replacement, and integration with the Vue Devtools.
+    </p>
+    <p class="info-sub-heading">Added Typescript Support</p>
+    <p class="infoContent">
+      Typescript has been taking the world by storm, and aptly so. With the
+      added benefit of Pinia having strong type inference, every component and
+      piece of state has been typed to allow for a better developer experience
+      and scalability.
+    </p>
+
+    <p class="info-sub-heading">Parent and Child Component Relationship</p>
+    <p class="infoContent">
+      Exported code now properly shows the relationship between parent and child
+      components. Child components are declared in Parent script and appear
+      correctly in templates.
+    </p>
+    <p class="info-sub-heading">HTML Element Nesting</p>
+    <p class="infoContent">
+      HTML elements now account for nesting in the exported code. Also the
+      ability to include inner text has been added to the HTML elements.
     </p>
     <q-btn
       class="tut-btn"
