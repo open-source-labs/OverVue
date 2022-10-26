@@ -2,7 +2,7 @@
 import { createApp } from "vue";
 import * as All from "quasar";
 import { setActivePinia, createPinia } from 'pinia'
-import * as types from "../../../types";
+import * as types from "types.ts";
 import { useStore } from "src/store/main.js";
 // import Vuex from "vuex";
 const { Quasar, date } = All;
