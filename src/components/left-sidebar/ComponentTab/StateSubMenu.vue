@@ -33,10 +33,14 @@
         @click="addStateToComp"
       />
     </div>
-    <p v-if="!componentMap[activeComponent].state.length">
+    <p v-if="!(componentMap[activeComponent] as Component).state.length">
       No state in component
     </p>
-    <a v-else v-for="state in componentMap[activeComponent].state" :key="state">
+    <a
+      v-else
+      v-for="state in (componentMap[activeComponent] as Component).state"
+      :key="state"
+    >
       <q-list class="list-item" dense bordered separator>
         <q-item clickable v-ripple class="list-item">
           <q-item-section>
@@ -59,14 +63,11 @@
   </div>
 </template>
 
-<script>
-export default { name: "StateSubMenu" };
-</script>
-
-<script setup>
+<script setup lang="ts">
 import VueMultiselect from "vue-multiselect";
 import { useStore } from "../../../store/main";
 import { computed } from "vue";
+import { Component } from "../../../../types";
 
 const store = useStore();
 
@@ -85,18 +86,21 @@ const selectState = computed({
   },
 });
 
-const addStateSelected = (payload) => store.addStateSelected(payload);
-const addStateToComponent = (payload) => store.addStateToComponent(payload);
-const deleteStateFromComponent = (payload) =>
-  store.deleteStateFromComponent(payload);
+const addStateSelected: typeof store.addStateSelected = (payload) =>
+  store.addStateSelected(payload);
+const addStateToComponent: typeof store.addStateToComponent = (payload) =>
+  store.addStateToComponent(payload);
+const deleteStateFromComponent: typeof store.deleteStateFromComponent = (
+  payload
+) => store.deleteStateFromComponent(payload);
 
-const stopDelete = (e) => {
-  if (e.code === "Backspace") e.stopPropogation();
+const stopDelete = (e: KeyboardEvent) => {
+  if (e.code === "Backspace") e.stopPropagation();
 };
 
 const addStateToComp = () => addStateToComponent([...selectedState.value]);
 
-const deleteState = (state) => deleteStateFromComponent(state);
+const deleteState = (state: string) => deleteStateFromComponent(state);
 </script>
 
 <!-- <script>

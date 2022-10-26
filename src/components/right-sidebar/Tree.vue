@@ -31,25 +31,20 @@ Description:
   </div>
 </template>
 
-<script>
-export default {
-  name: "Tree",
-};
-</script>
-
-<script setup>
+<script setup lang="ts">
 import VueTree from "@ssthouse/vue3-tree-chart";
 import "@ssthouse/vue3-tree-chart/dist/vue3-tree-chart.css";
 import { useStore } from "../../store/main.js";
 import { ref, computed, watch } from "vue";
+import { Component, RouteComponentMap } from "../../../types";
 
 const store = useStore();
 
 const treeConfig = ref({ nodeWidth: 175, nodeHeight: 100, levelHeight: 200 });
-const treeData = ref(null);
+const treeData = ref<typeof VueTree.treeData>(null);
 
 //ref to htmlelement
-const tree = ref(null);
+const tree = ref<typeof VueTree>(null);
 
 defineExpose({ tree });
 
@@ -61,7 +56,7 @@ const componentMap = computed(() => store.componentMap);
 
 const componentData = componentMap;
 
-const zoom = () => {
+const zoom = (event: WheelEvent) => {
   if (event.deltaY < 0) {
     tree.value.zoomIn();
   } else {
@@ -69,8 +64,12 @@ const zoom = () => {
   }
 };
 
-const evalChildren = (children, targetString, view) => {
-  children.forEach((el) => {
+const evalChildren = (
+  children: typeof VueTree.treeData.children,
+  targetString: string,
+  view: { value: string }
+) => {
+  children.forEach((el: typeof VueTree.treeData.value) => {
     if (el.value === targetString) {
       /// do we need to remove view.value???
       store.setActiveRoute(view.value);
@@ -81,7 +80,7 @@ const evalChildren = (children, targetString, view) => {
   });
 };
 
-const activateNode = (nodeToActivate) => {
+const activateNode = (nodeToActivate: string) => {
   if (nodeToActivate === "App") {
     return;
   }
@@ -99,7 +98,7 @@ const activateNode = (nodeToActivate) => {
   //if we click a component, check which route, and then if needed dispatch the route THEN the component
   for (const view of treeData.value.children) {
     if (view.children.length > 0) {
-      view.children.forEach((el) => {
+      view.children.forEach((el: typeof VueTree.treeData.value) => {
         if (view.value !== activeRoute.value) {
           //only check where the view.value is NOT the active route
           if (nodeToActivate === el.value) {
@@ -118,9 +117,9 @@ const activateNode = (nodeToActivate) => {
   }
 };
 
-const buildTree = (componentData) => {
+const buildTree = (componentData: typeof VueTree.treeData) => {
   //App is always the root of the tree.
-  const treeData = {
+  const treeData : {value: string; children:{value: string; children: string[]}[]} = {
     value: "App",
     children: [],
   };
@@ -135,11 +134,11 @@ const buildTree = (componentData) => {
   return treeData;
 };
 
-function buildTreeChildren(array) {
+function buildTreeChildren(array: string[]) {
   if (array.length === 0) {
     return [];
   } else {
-    const outputArray = [];
+    const outputArray: [] = [];
     array.forEach((el) => {
       const outputObj = {
         value: el,
@@ -154,7 +153,7 @@ function buildTreeChildren(array) {
           }
         }
       }
-      outputArray.push(outputObj);
+      (outputArray as { value: string; children: string[]}[]).push(outputObj);
     });
     return outputArray;
   }

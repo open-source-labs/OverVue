@@ -23,11 +23,7 @@ Description:
   </div>
 </template>
 
-<script>
-export default { name: "ParentMultiselect" };
-</script>
-
-<script setup>
+<script setup lang="ts">
 import VueMultiselect from "vue-multiselect";
 import { useStore } from "../../../store/main";
 import { ref, computed, watch } from "vue";
@@ -42,20 +38,22 @@ const activeComponent = computed(() => store.activeComponent);
 const routes = computed(() => store.routes);
 const activeRoute = computed(() => store.activeRoute);
 
-const options = computed(() =>
-  routes.value[activeRoute.value].map((component) => component.componentName)
+const options = routes.value[activeRoute.value].map(
+  (component) => component.componentName
 );
 
-const parentSelect = (payload) => store.parentSelect(payload);
-const setActiveComponent = (payload) => store.setActiveComponent(payload);
+const parentSelect: typeof store.parentSelect = (payload) =>
+  store.parentSelect(payload);
+const setActiveComponent: typeof store.setActiveComponent = (payload) =>
+  store.setActiveComponent(payload);
 
-const selectParent = (value) => {
+const selectParent = (value: string) => {
   parentSelect(value);
   emit("addparent", value);
 };
 
-const resetActiveComponent = () => {
-  if (activeComponent !== "") setActiveComponent("");
+const resetActiveComponent = (): void => {
+  if (activeComponent.value !== "") setActiveComponent("");
 };
 
 watch(componentMap, () => (value.value = ""));

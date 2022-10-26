@@ -9,10 +9,9 @@ Description:
 
 <template>
   <div class="inner-div">
-    <q-card id="code-window" class="no-shadow" v-if="this.activeComponentObj">
+    <q-card id="code-window" class="no-shadow" v-if="activeComponentObj">
       <q-tabs
         v-model="tab"
-        dense=""
         class="bg-subaccent text-white"
         active-color="secondary"
         indicator-color="secondary"
@@ -32,14 +31,14 @@ Description:
         <q-tab-panel name="state">
           <div class="componentProperties">
             <q-expansion-item default-closed label="Component State">
-              <p v-if="!this?.activeComponentObj?.state?.length">
+              <p v-if="!(activeComponentObj as Component)?.state?.length">
                 {{
-                  this.activeComponent
-                    ? `No state in ${this.activeComponent}`
+                  activeComponent
+                    ? `No state in ${activeComponent}`
                     : "Select a component."
                 }}
               </p>
-              <p v-else>State in {{ this.activeComponent }}:</p>
+              <p v-else>State in {{ activeComponent }}:</p>
               <ul id="stateList">
                 <li v-for="comp in compObj.state" :key="comp">
                   {{ comp }}
@@ -49,14 +48,14 @@ Description:
           </div>
           <div class="componentProperties">
             <q-expansion-item default-closed label="Component Actions">
-              <p v-if="!this?.activeComponentObj?.actions?.length">
+              <p v-if="!(activeComponentObj as Component)?.actions?.length">
                 {{
-                  this.activeComponent
-                    ? `No actions in ${this.activeComponent}`
+                  activeComponent
+                    ? `No actions in ${activeComponent}`
                     : "Select a component."
                 }}
               </p>
-              <p v-else>Actions in {{ this.activeComponent }}:</p>
+              <p v-else>Actions in {{ activeComponent }}:</p>
               <ul id="actionList">
                 <li v-for="comp in compObj?.actions" :key="comp">
                   {{ comp }}
@@ -66,14 +65,14 @@ Description:
           </div>
           <div class="componentProperties">
             <q-expansion-item default-closed label="Component Props">
-              <p v-if="!this?.activeComponentObj?.props?.length">
+              <p v-if="!(activeComponentObj as Component)?.props?.length">
                 {{
-                  this.activeComponent
-                    ? `No props in ${this.activeComponent}`
+                  activeComponent
+                    ? `No props in ${activeComponent}`
                     : "Select a component."
                 }}
               </p>
-              <p v-else>Props in {{ this.activeComponent }}:</p>
+              <p v-else>Props in {{ activeComponent }}:</p>
               <ul id="propsList">
                 <li v-for="comp in compObj?.props" :key="comp">
                   {{ comp }}
@@ -90,18 +89,13 @@ Description:
   </div>
 </template>
 
-<script>
-export default {
-  name: "ComponentDetails",
-};
-</script>
-
 <!-- COMPOSITION API SYNTAX -->
-<script setup>
-import HTMLQueue from "./HTMLQueue";
-import CodeSnippet from "./CodeSnippet";
+<script setup lang="ts">
+import HTMLQueue from "./HTMLQueue.vue";
+import CodeSnippet from "./CodeSnippet.vue";
 import { useStore } from "../../store/main.js";
 import { ref, computed } from "vue";
+import { Component } from "../../../types";
 
 const store = useStore();
 const tab = ref("code");
@@ -109,11 +103,12 @@ const tab = ref("code");
 const activeComponentObj = computed(() => store.activeComponentObj);
 const activeComponent = computed(() => store.activeComponent);
 
-const compObj = computed({
-  get() {
-    return activeComponentObj.value;
-  },
-});
+// const compObj: Component = computed({
+//   get() {
+//     return activeComponentObj.value;
+//   },
+// });
+const compObj = activeComponentObj.value as Component;
 </script>
 
 <!-- OLD OPTIONS API SYNTAX -->

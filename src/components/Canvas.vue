@@ -4,6 +4,8 @@
   Functionality includes: resizing/dragging component boxes, display grid image, active component
   -->
 
+<!-- beneath line 419, we deleted :hint="hint" -->
+
 <template>
   <!-- the background Canvas grid -->
   <div
@@ -68,7 +70,7 @@
         <!-- Rendering HTML Elements for each Component -->
         <div
           v-for="element in componentMap[componentData.componentName].htmlList"
-          :key="element.id + new Date()"
+          :key="element.id as string + new Date()"
         >
           <div
             v-if="element.text === 'button'"
@@ -79,8 +81,8 @@
               element.w !== 0 ? { width: element.w + '%' } : { width: '25%' },
               element.h !== 0 ? { height: element.h + '%' } : { height: '10%' },
               element.z !== 0
-                ? { 'z-index': element.z + '%' }
-                : { 'z-index': '0' },
+                ? { 'z-index': element.z as number}
+                : { 'z-index': 0 },
               { 'background-color': componentData.color },
             ]"
           >
@@ -96,7 +98,7 @@
               element.y !== 0 ? { left: element.y + '%' } : { left: '10%' },
               element.w !== 0 ? { width: element.w + '%' } : { width: '80%' },
               element.h !== 0 ? { height: element.h + '%' } : { height: '75%' },
-              element.z !== 0 ? { 'z-index': element.z } : { 'z-index': '0' },
+              element.z !== 0 ? { 'z-index': element.z as number } : { 'z-index': 0 },
               { 'background-color': componentData.color },
             ]"
           >
@@ -113,7 +115,7 @@
               element.y !== 0 ? { left: element.y + '%' } : { left: '10%' },
               element.w !== 0 ? { width: element.w + '%' } : { width: '80%' },
               element.h !== 0 ? { height: element.h + '%' } : { height: '40%' },
-              element.z !== 0 ? { 'z-index': element.z } : { 'z-index': '0' },
+              element.z !== 0 ? { 'z-index': element.z as number } : { 'z-index': 0 },
               { 'background-color': componentData.color },
             ]"
           >
@@ -129,7 +131,7 @@
               element.y !== 0 ? { left: element.y + '%' } : { left: '5%' },
               element.w !== 0 ? { width: element.w + '%' } : { width: '90%' },
               element.h !== 0 ? { height: element.h + '%' } : { height: '20%' },
-              element.z !== 0 ? { 'z-index': element.z } : { 'z-index': '0' },
+              element.z !== 0 ? { 'z-index': element.z as number } : { 'z-index': 0 },
               { 'background-color': componentData.color },
             ]"
           >
@@ -145,7 +147,7 @@
               element.y !== 0 ? { left: element.y + '%' } : { left: '10%' },
               element.w !== 0 ? { width: element.w + '%' } : { width: '80%' },
               element.h !== 0 ? { height: element.h + '%' } : { height: '15%' },
-              element.z !== 0 ? { 'z-index': element.z } : { 'z-index': '0' },
+              element.z !== 0 ? { 'z-index': element.z as number } : { 'z-index': 0 },
               { 'background-color': componentData.color },
             ]"
           >
@@ -161,7 +163,7 @@
               element.y !== 0 ? { left: element.y + '%' } : { left: '15%' },
               element.w !== 0 ? { width: element.w } + '%' : { width: '70%' },
               element.h !== 0 ? { height: element.h + '%' } : { height: '12%' },
-              element.z !== 0 ? { 'z-index': element.z } : { 'z-index': '0' },
+              element.z !== 0 ? { 'z-index': element.z as number } : { 'z-index': 0 },
               { 'background-color': componentData.color },
             ]"
           >
@@ -177,7 +179,7 @@
               element.y !== 0 ? { left: element.y + '%' } : { left: '20%' },
               element.w !== 0 ? { width: element.w + '%' } : { width: '60%' },
               element.h !== 0 ? { height: element.h + '%' } : { height: '10%' },
-              element.z !== 0 ? { 'z-index': element.z } : { 'z-index': '0' },
+              element.z !== 0 ? { 'z-index': element.z as number } : { 'z-index': 0 },
               { 'background-color': componentData.color },
             ]"
           >
@@ -193,7 +195,7 @@
               element.y !== 0 ? { left: element.y + '%' } : { left: '25%' },
               element.w !== 0 ? { width: element.w + '%' } : { width: '50%' },
               element.h !== 0 ? { height: element.h + '%' } : { height: '8%' },
-              element.z !== 0 ? { 'z-index': element.z } : { 'z-index': '0' },
+              element.z !== 0 ? { 'z-index': element.z as number } : { 'z-index': 0 },
               { 'background-color': componentData.color },
             ]"
           >
@@ -209,7 +211,7 @@
               element.y !== 0 ? { left: element.y + '%' } : { left: '30%' },
               element.w !== 0 ? { width: element.w + '%' } : { width: '40%' },
               element.h !== 0 ? { height: element.h + '%' } : { height: '5%' },
-              element.z !== 0 ? { 'z-index': element.z } : { 'z-index': '0' },
+              element.z !== 0 ? { 'z-index': element.z as number } : { 'z-index': 0 },
               { 'background-color': componentData.color },
             ]"
           >
@@ -226,7 +228,7 @@
               element.y !== 0 ? { left: element.y + '%' } : { left: '20%' },
               element.w !== 0 ? { width: element.w + '%' } : { width: '40%' },
               element.h !== 0 ? { height: element.h + '%' } : { height: '40%' },
-              element.z !== 0 ? { 'z-index': element.z } : { 'z-index': '0' },
+              element.z !== 0 ? { 'z-index': element.z as number } : { 'z-index': 0 },
               { 'background-color': componentData.color },
             ]"
           >
@@ -243,7 +245,7 @@
               element.y !== 0 ? { left: element.y + '%' } : { left: '30%' },
               element.w !== 0 ? { width: element.w + '%' } : { width: '60%' },
               element.h !== 0 ? { height: element.h + '%' } : { height: '10%' },
-              element.z !== 0 ? { 'z-index': element.z } : { 'z-index': '0' },
+              element.z !== 0 ? { 'z-index': element.z as number } : { 'z-index': 0 },
               { 'background-color': componentData.color },
             ]"
           >
@@ -259,7 +261,7 @@
               element.y !== 0 ? { left: element.y + '%' } : { left: '10%' },
               element.w !== 0 ? { width: element.w + '%' } : { width: '80%' },
               element.h !== 0 ? { height: element.h + '%' } : { height: '40%' },
-              element.z !== 0 ? { 'z-index': element.z } : { 'z-index': '0' },
+              element.z !== 0 ? { 'z-index': element.z as number } : { 'z-index': 0 },
               { 'background-color': componentData.color },
             ]"
           >
@@ -280,7 +282,7 @@
               element.y !== 0 ? { left: element.y + '%' } : { left: '10%' },
               element.w !== 0 ? { width: element.w + '%' } : { width: '80%' },
               element.h !== 0 ? { height: element.h + '%' } : { height: '40%' },
-              element.z !== 0 ? { 'z-index': element.z } : { 'z-index': '0' },
+              element.z !== 0 ? { 'z-index': element.z as number } : { 'z-index': 0 },
               { 'background-color': componentData.color },
             ]"
           >
@@ -301,7 +303,7 @@
               element.y !== 0 ? { left: element.y + '%' } : { left: '10%' },
               element.w !== 0 ? { width: element.w + '%' } : { width: '80%' },
               element.h !== 0 ? { height: element.h + '%' } : { height: '40%' },
-              element.z !== 0 ? { 'z-index': element.z } : { 'z-index': '0' },
+              element.z !== 0 ? { 'z-index': element.z as number } : { 'z-index': 0 },
               { 'background-color': componentData.color },
             ]"
           >
@@ -328,7 +330,7 @@
                 color="transparent"
                 text-color="primary"
                 label="&ndash;"
-                @click="(e) => handleLayer(e)"
+                @click="(e : Event) => handleLayer(e)"
               />
               <p id="counter">{{ componentData.z }}</p>
               <q-btn
@@ -336,7 +338,7 @@
                 color="transparent"
                 text-color="primary"
                 label="+"
-                @click="(e) => handleLayer(e)"
+                @click="(e : Event) => handleLayer(e)"
               />
             </q-item>
             <q-item clickable v-ripple v-close-popup @click="handleAddChild">
@@ -398,7 +400,7 @@
               <p class="title">Adding notes to {{ activeComponent }}</p>
               <div class="noteContainer">
                 <li
-                  v-for="(note, index) in componentMap[activeComponent]
+                  v-for="(note, index) in (componentMap[activeComponent] as Component)
                     .noteList"
                   :key="note"
                 >
@@ -417,7 +419,6 @@
                     autofocus
                     true
                     hide-bottom-space
-                    :hint="hint"
                     @keyup.enter="submitNote"
                   ></q-input>
                   <q-btn
@@ -503,7 +504,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useExportComponent } from "./composables/useExportComponent.js";
 import { mapState, mapActions } from "vuex";
 import VueDraggableResizable from "vue-draggable-resizable/src/components/vue-draggable-resizable.vue";
@@ -513,22 +514,25 @@ import "vue3-draggable-resizable/dist/Vue3DraggableResizable.css";
 import { ColorPicker } from "vue-accessible-color-picker";
 import { useStore } from "../store/main.js";
 import { ref, computed, onMounted, watch } from "vue";
-
-const { fs, ipcRenderer } = window;
+import * as fs from "fs";
+import { ResizePayload, Component } from "../../types";
+// @ts-ignore
+// const { ipcRenderer } = window;
+// ipcRenderer is not used
 
 const cloneDeep = require("lodash.clonedeep");
 
 const store = useStore();
 const modalOpen = ref(false);
 const noteText = ref("");
-let wasDragged = ref(false);
+const wasDragged = ref(false);
 const testModel = ref([]);
 const noteModal = ref(false);
 const colorModal = ref(false);
 const mockImg = ref(false);
 const htmlElements = ref([]);
-const childrenSelected = ref([]);
-const boxes = ref(null);
+const childrenSelected = ref<typeof VueMultiselect>([]);
+const boxes = ref<typeof VueDraggableResizable>(null);
 
 //emitter
 const emit = defineEmits(["deactivated", "update:active", "activated"]);
@@ -555,9 +559,9 @@ const routes = computed(() => store.routes);
 const activeRoute = computed(() => store.activeRoute);
 const activeComponent = computed(() => store.activeComponent);
 const componentMap = computed(() => store.componentMap);
-const componentChildrenMultiselectValue = computed(
-  () => store.componentChildrenMultiselectValue
-);
+// const componentChildrenMultiselectValue = computed(
+//   () => store.componentChildrenMultiselectValue
+// );
 const imagePath = computed(() => store.imagePath);
 const activeComponentObj = computed(() => store.activeComponentObj);
 const exportAsTypescript = computed(() => store.exportAsTypescript);
@@ -597,9 +601,9 @@ const options = computed(() => {
   );
   const relatives = [...val];
   //also need to filter out any parents
-  let parentalLineage = [];
+  let parentalLineage: string[] = [];
 
-  function findLineage(children) {
+  function findLineage(children: string[]) {
     children.forEach((el) => {
       parentalLineage.push(el);
       if (compMap[el].children.length > 0) {
@@ -650,7 +654,7 @@ const updated = computed(() => {
   // if there are no active components, all boxes are unhighlighted
   if (activeComponent.value === "") {
     if (boxes.value) {
-      boxes.value.forEach((element) => {
+      boxes.value.forEach((element: typeof VueDraggableResizable) => {
         element.enabled = false;
         element.emit("deactivated");
         element.emit("update:active", false);
@@ -658,52 +662,62 @@ const updated = computed(() => {
     }
   } else {
     // if a component is set to active, highlight it
-    boxes.value.forEach((element) => {
-      if (
-        activeComponent.value === element.$attrs.id &&
-        element.enabled === false
-      ) {
-        element.enabled = true;
-        element.emit("activated");
-        element.emit("update:active", true);
+    (boxes.value as typeof VueDraggableResizable).forEach(
+      (element: typeof VueDraggableResizable) => {
+        if (
+          activeComponent.value === element.$attrs.id &&
+          element.enabled === false
+        ) {
+          element.enabled = true;
+          element.emit("activated");
+          element.emit("update:active", true);
+        }
       }
-    });
+    );
   }
 });
 
 //methods
-const setActiveComponent = (payload) => store.setActiveComponent(payload);
-const updateComponentChildrenMultiselectValue = (payload) =>
-  store.updateComponentChildrenMultiselectValue(payload);
-const updateActiveComponentChildrenValue = (payload) =>
-  store.updateActiveComponentChildrenValue(payload);
-const updateComponentPosition = (payload) =>
-  store.updateComponentPosition(payload);
-const updateStartingPosition = (payload) =>
-  store.updateStartingPosition(payload);
-const updateComponentLayer = (payload) => store.updateComponentLayer(payload);
-const updateStartingSize = (payload) => store.updateStartingSize(payload);
-const updateComponentSize = (payload) => store.updateComponentSize(payload);
-const addActiveComponentNote = (payload) =>
+const setActiveComponent: typeof store.setActiveComponent = (payload) =>
+  store.setActiveComponent(payload);
+// const updateComponentChildrenMultiselectValue: typeof store.updateComponentChildrenMultiselectValue = (payload) =>
+//   store.updateComponentChildrenMultiselectValue(payload);
+const updateActiveComponentChildrenValue: typeof store.updateActiveComponentChildrenValue =
+  (payload) => store.updateActiveComponentChildrenValue(payload);
+const updateComponentPosition: typeof store.updateComponentPosition = (
+  payload
+) => store.updateComponentPosition(payload);
+// const updateStartingPosition: typeof store.updateStartingPosition = (payload) =>
+// (payload);
+const updateComponentLayer: typeof store.updateComponentLayer = (payload) =>
+  store.updateComponentLayer(payload);
+// const updateStartingSize: typeof store.updateStartingSize = (payload) => store.updateStartingSize(payload);
+const updateComponentSize: typeof store.updateComponentSize = (payload) =>
+  store.updateComponentSize(payload);
+const addActiveComponentNote: typeof store.addActiveComponentNote = (payload) =>
   store.addActiveComponentNote(payload);
-const deleteActiveComponentNote = (payload) =>
-  store.deleteActiveComponentNote(payload);
-const openNoteModal = (payload) => store.openNoteModal(payload);
-const openColorModal = (payload) => store.openColorModal(payload);
-const updateColor = (payload) => store.updateColor(payload);
-const updateComponentGridPosition = (payload) =>
-  store.updateComponentGridPosition(payload);
+const deleteActiveComponentNote: typeof store.deleteActiveComponentNote = (
+  payload
+) => store.deleteActiveComponentNote(payload);
+const openNoteModal: typeof store.openNoteModal = () => store.openNoteModal();
+const openColorModal: typeof store.openColorModal = () =>
+  store.openColorModal();
+const updateColor: typeof store.updateColor = (payload) =>
+  store.updateColor(payload);
+const updateComponentGridPosition: typeof store.updateComponentGridPosition = (
+  payload
+) => store.updateComponentGridPosition(payload);
 
 const useExportComponentBound = () => {
   useExportComponent();
 };
 
-const isElementPlus = (htmlList) => {
+const isElementPlus = (htmlList: { text: string }[]) => {
   return htmlList.find(({ text }) => text[0] === "e");
 };
 
 //color change function
-const updateColors = (data) => {
+const updateColors = (data: { cssColor: string }) => {
   let payload = {
     color: data.cssColor,
     activeComponent: activeComponent.value,
@@ -715,8 +729,8 @@ const updateColors = (data) => {
 };
 
 // sets component's ending size/position
-const finishedResize = (x, y, w, h) => {
-  let payload = {
+const finishedResize = (x: number, y: number, w: number, h: number) => {
+  let payload: ResizePayload = {
     x: x,
     y: y,
     w: w,
@@ -743,10 +757,9 @@ const refresh = () => {
   payload.z--;
   updateComponentLayer(payload);
 };
-// {x: 0, y: 192, z: NaN, htmlList: Array(1), noteList: Array(0), …}actions: []children: []color: "#8845a585"componentName: "ha"h: 96htmlAttributes: {class: '', id: '', gridArea: Array(4)}htmlList: [{…}]idDrag: ""idDrop: ""isActive: falsenoteList: []parent: {}props: []state: []w: 170.66666666666666x: 0y: 192z: NaN[[Prototype]]: Object 'I AM ACTIVECOMPONENTDATA.value'
 
 // drag and drop function
-const finishedDrag = (x, y) => {
+const finishedDrag = (x: number, y: number) => {
   let payload = {
     x: x,
     y: y,
@@ -756,17 +769,17 @@ const finishedDrag = (x, y) => {
   };
   updateComponentPosition(payload);
   updateComponentGridPosition(payload);
-  wasDragged = true;
-  setTimeout(() => (wasDragged = false), 100);
+  wasDragged.value = true;
+  setTimeout(() => (wasDragged.value = false), 100);
   refresh();
 };
 
-const onActivated = (componentData) => {
+const onActivated = (componentData: { componentName: string }) => {
   if (!componentData) {
     return;
   }
   if (boxes.value) {
-    boxes.value.forEach((element) => {
+    boxes.value.forEach((element: typeof VueDraggableResizable) => {
       if (element.$attrs.id !== componentData.componentName) {
         element.enabled = false;
         element.emit("deactivated");
@@ -799,14 +812,14 @@ const onDeactivated = () => {
 
 // renders modal with Update Children and Layer in it
 const handleAddNotes = () => {
-  if (wasDragged === false && activeComponent.value !== "") {
+  if (wasDragged.value === false && activeComponent.value !== "") {
     openNoteModal();
   }
 };
 
 //color editor - opens the pop up
 const handleEditColor = () => {
-  if (wasDragged === false && activeComponent.value !== "") {
+  if (wasDragged.value === false && activeComponent.value !== "") {
     openColorModal();
   }
 };
@@ -815,7 +828,7 @@ const handleAddChild = () => {
   modalOpen.value = true;
 };
 
-const submitNote = (e) => {
+const submitNote = (e: Event) => {
   e.preventDefault();
   if (noteText.value === "") {
     return;
@@ -824,18 +837,20 @@ const submitNote = (e) => {
   noteText.value = "";
 };
 
-const deleteNote = (e) => {
-  deleteActiveComponentNote(e.target.previousElementSibling.innerText);
+const deleteNote = (e: Event) => {
+  deleteActiveComponentNote(
+    ((e.target as HTMLElement).previousElementSibling as HTMLElement).innerText
+  );
 };
 
 // used when user selects to add child from dropdown
-const handleSelect = (value) => {
+const handleSelect = (value: string) => {
   //actually handles adding or deleting
   updateActiveComponentChildrenValue(value);
 };
 
 // user can change component's layer order
-const handleLayer = (e) => {
+const handleLayer = (e: Event) => {
   e.preventDefault();
   const payload = {
     activeComponent: activeComponent.value,
@@ -844,20 +859,20 @@ const handleLayer = (e) => {
     z: activeComponentData.value.z,
   };
 
-  if (e.target.innerText === "+") payload.z++;
-  if (e.target.innerText === "–" && payload.z > 0) payload.z--;
+  if ((e.target as HTMLElement).innerText === "+") payload.z++;
+  if ((e.target as HTMLElement).innerText === "–" && payload.z > 0) payload.z--;
   updateComponentLayer(payload);
 };
 
 // if user clicks on display grid, resets active component to ''
-const handleClick = (event) => {
-  if (event.target.className === "component-display grid-bg") {
+const handleClick = (event: MouseEvent) => {
+  if ((event.target as HTMLElement).className === "component-display grid-bg") {
     setActiveComponent("");
   }
 };
 
-const handleRight = (event) => {
-  if (event.target.className === "component-display grid-bg") {
+const handleRight = (event: MouseEvent) => {
+  if ((event.target as HTMLElement).className === "component-display grid-bg") {
     //right click modal to make a component?
   }
 };
@@ -888,7 +903,7 @@ watch(
     ) {
       store.toggleTutorial();
     }
-    onActivated(activeComponentObj.value);
+    onActivated(activeComponentData.value);
   },
   { deep: true }
 );
@@ -1433,7 +1448,7 @@ li:hover {
     linear-gradient(90deg, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
     linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
-  -pie-background: linear-gradient(
+    -pie-background: linear-gradient(
         rgba(255, 255, 255, 0.8) 1px,
         transparent 1px
       ) -2px -2px / 100px,

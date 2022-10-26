@@ -32,8 +32,11 @@
 </template>
 
 <!-- COMPOSITION API SYNTAX -->
-<script setup>
+<script setup lang="ts">
+// @ts-nocheck
+// No check for the shell
 import { useStore } from "../../../store/main.js";
+
 const { shell } = window;
 
 const store = useStore();
@@ -41,7 +44,7 @@ const emit = defineEmits(["nextTab", "versionTab"]);
 
 const toggleTutorial = () => store.toggleTutorial();
 const nextTab = () => emit("nextTab");
-const openUrl = (url) => shell.openExternal(url, { activate: true });
+const openUrl = (url: string) => shell.openExternal(url, { activate: true });
 </script>
 
 <!-- OLD OPTIONS API SYNTAX -->

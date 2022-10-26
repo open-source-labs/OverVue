@@ -7,7 +7,7 @@ Description:
 <template>
   <!-- original layout: <q-layout view="hHh LpR lFf"> -->
   <q-layout view="hHh lpr fFf">
-    <div v-if="!this.right" class="resizeDragTwo" @mousedown="hideRight">
+    <div v-if="!right" class="resizeDragTwo" @mousedown="hideRight">
       <div class="dragLineTwo"></div>
     </div>
     <!-- the top header of OverVue -->
@@ -53,7 +53,7 @@ Description:
                 color="secondary"
                 label="Getting Started"
                 no-caps
-                @click="this.toggleTutorial"
+                @click="toggleTutorial"
               />
 
               <SlackLoginWindow />
@@ -61,12 +61,12 @@ Description:
                 <p class="typescript-text"><b>TypeScript: </b></p>
                 <label for="typescript" class="switch">
                   <input
-                    v-if="this.exportAsTypescript === 'on'"
+                    v-if="exportAsTypescript === 'on'"
                     class="switch-input"
                     type="checkbox"
                     name="typescript"
                     id="typescript"
-                    :value="this.exportAsTypescript"
+                    :value="exportAsTypescript"
                     @change="syncTypescriptFlag"
                     checked
                   />
@@ -76,18 +76,18 @@ Description:
                     type="checkbox"
                     name="typescript"
                     id="typescript"
-                    :value="this.exportAsTypescript"
+                    :value="exportAsTypescript"
                     @change="syncTypescriptFlag"
                   />
                   <span
                     class="switch-label"
-                    :value="this.exportAsTypescript"
+                    :value="exportAsTypescript"
                     data-on="on"
                     data-off="off"
                   ></span>
                   <span
                     class="switch-handle"
-                    :value="this.exportAsTypescript"
+                    :value="exportAsTypescript"
                   ></span>
                 </label>
               </div>
@@ -96,12 +96,12 @@ Description:
                 <p class="Test-text"><b> Vue Test: </b></p>
                 <label for="Test" class="switch">
                   <input
-                    v-if="this.importTest === 'on'"
+                    v-if="importTest === 'on'"
                     class="switch-input"
                     type="checkbox"
                     name="Test"
                     id="Test"
-                    :value="this.importTest"
+                    :value="importTest"
                     @change="syncTestFlag"
                     checked
                   />
@@ -111,16 +111,16 @@ Description:
                     type="checkbox"
                     name="Test"
                     id="Test"
-                    :value="this.importTest"
+                    :value="importTest"
                     @change="syncTestFlag"
                   />
                   <span
                     class="switch-label"
-                    :value="this.importTest"
+                    :value="importTest"
                     data-on="on"
                     data-off="off"
                   ></span>
-                  <span class="switch-handle" :value="this.importTest"></span>
+                  <span class="switch-handle" :value="importTest"></span>
                 </label>
               </div>
 
@@ -134,12 +134,12 @@ Description:
                     </p>
                     <label for="Oauth" class="switch">
                       <input
-                        v-if="this.exportOauth === 'on'"
+                        v-if="exportOauth === 'on'"
                         class="switch-input"
                         type="checkbox"
                         name="Oauth"
                         id="Oauth"
-                        :value="this.exportOauth"
+                        :value="exportOauth"
                         @change="syncOauthFlag"
                         checked
                       />
@@ -149,19 +149,16 @@ Description:
                         type="checkbox"
                         name="Oauth"
                         id="Oauth"
-                        :value="this.exportOauth"
+                        :value="exportOauth"
                         @change="syncOauthFlag"
                       />
                       <span
                         class="switch-label"
-                        :value="this.exportOauth"
+                        :value="exportOauth"
                         data-on="on"
                         data-off="off"
                       ></span>
-                      <span
-                        class="switch-handle"
-                        :value="this.exportOauth"
-                      ></span>
+                      <span class="switch-handle" :value="exportOauth"></span>
                     </label>
                   </div>
 
@@ -173,12 +170,12 @@ Description:
                     </p>
                     <label for="OauthGit" class="switch">
                       <input
-                        v-if="this.exportOauthGithub === 'on'"
+                        v-if="exportOauthGithub === 'on'"
                         class="switch-input"
                         type="checkbox"
                         name="OauthGit"
                         id="OauthGit"
-                        :value="this.exportOauthGithub"
+                        :value="exportOauthGithub"
                         @change="syncOauthGitFlag"
                         checked
                       />
@@ -188,18 +185,18 @@ Description:
                         type="checkbox"
                         name="OauthGit"
                         id="OauthGit"
-                        :value="this.exportOauthGithub"
+                        :value="exportOauthGithub"
                         @change="syncOauthGitFlag"
                       />
                       <span
                         class="switch-label"
-                        :value="this.exportOauthGithub"
+                        :value="exportOauthGithub"
                         data-on="on"
                         data-off="off"
                       ></span>
                       <span
                         class="switch-handle"
-                        :value="this.exportOauthGithub"
+                        :value="exportOauthGithub"
                       ></span>
                     </label>
                   </div>
@@ -253,7 +250,7 @@ Description:
       v-model="right"
       side="right"
       behavior="desktop"
-      :width="this.dashWidth"
+      :width="dashWidth"
       bordered
     >
       <div
@@ -277,8 +274,8 @@ Description:
 </template>
 
 <!-- COMPOSITION API -->
-<script setup>
-import { ref, computed } from "vue";
+<script setup lang="ts">
+import { ref, computed, Ref } from "vue";
 import { useStore } from "../store/main";
 
 import RightSidebar from "../components/right-sidebar/RightSidebar.vue";
@@ -306,9 +303,9 @@ const right = ref(true);
 const dashWidth = ref(950);
 const originalWidth = ref(400);
 const originalLeft = ref(400);
-const timer = ref(null);
-const resizeBox = ref(null);
-const displayClose = ref(null);
+const timer = ref<ReturnType<typeof setTimeout> | null>(null);
+const resizeBox = ref<HTMLElement | null>(null);
+const displayClose = ref<HTMLElement | null>(null);
 
 defineExpose({
   resizeBox,
@@ -324,13 +321,13 @@ const toggleTutorial = () => store.toggleTutorial();
 
 const hideRight = () => {
   right.value = !right.value;
-  if (resizeBox.value.style.display === "none") {
-    resizeBox.value.style.display = "block";
+  if ((resizeBox.value as HTMLElement).style.display === "none") {
+    (resizeBox.value as HTMLElement).style.display = "block";
   } else {
-    resizeBox.value.style.display = "none";
+    (resizeBox.value as HTMLElement).style.display = "none";
   }
 };
-
+// @ts-ignore
 const handlePan = ({ evt, ...newInfo }) => {
   if (right.value) {
     if (newInfo.isFirst) {
@@ -340,68 +337,68 @@ const handlePan = ({ evt, ...newInfo }) => {
       const newDelta = newInfo.position.left - originalLeft.value;
       const newWidth = Math.min(950, originalWidth.value - newDelta);
       dashWidth.value = Math.max(400, newWidth);
-      displayClose.value.style.display = "none";
+      (displayClose.value as HTMLElement).style.display = "none";
       if (newWidth > screen.width * 0.07 && newWidth < 400) {
-        clearTimeout(timer.value);
+        clearTimeout(timer.value as ReturnType<typeof setTimeout>);
         if (newWidth < screen.width * 0.13) {
-          displayClose.value.style.display = "block";
+          (displayClose.value as HTMLElement).style.display = "block";
         }
         dashWidth.value = 400 - (200 - newWidth / 2);
       } else {
         timer.value = setTimeout(() => {
-          displayClose.value.style.display = "none";
+          (displayClose.value as HTMLElement).style.display = "none";
         }, 750);
       }
       if (newWidth < screen.width * 0.07) {
         right.value = !right.value;
         dashWidth.value = 400;
-        resizeBox.value.style.display = "none";
+        (displayClose.value as HTMLElement).style.display = "none";
       }
     }
     timer.value = setTimeout(() => {
-      displayClose.value.style.display = "none";
+      (displayClose.value as HTMLElement).style.display = "none";
     }, 750);
   }
 };
 
-const syncTypescriptFlag = (e) => {
-  let checkboxValue;
-  if (e.target.value === "off") {
+const syncTypescriptFlag = (e: Event) => {
+  let checkboxValue: "off" | "on";
+  if ((e.target as HTMLInputElement).value === "off") {
     checkboxValue = "on";
   } else {
     checkboxValue = "off";
   }
-  store.commit("EXPORT_AS_TYPESCRIPT", checkboxValue);
+  store.ExportAsTypescript(checkboxValue);
 };
 
-const syncTestFlag = (e) => {
-  let checkboxValue;
-  if (e.target.value === "off") {
+const syncTestFlag = (e: Event) => {
+  let checkboxValue: "off" | "on";
+  if ((e.target as HTMLInputElement).value === "off") {
     checkboxValue = "on";
   } else {
     checkboxValue = "off";
   }
-  store.commit("EXPORT_TEST", checkboxValue);
+  store.exportTest(checkboxValue);
 };
 
-const syncOauthFlag = (e) => {
-  let checkboxValue;
-  if (e.target.value === "off") {
+const syncOauthFlag = (e: Event) => {
+  let checkboxValue: "off" | "on";
+  if ((e.target as HTMLInputElement).value === "off") {
     checkboxValue = "on";
   } else {
     checkboxValue = "off";
   }
-  store.commit("EXPORT_OAUTH", checkboxValue);
+  store.ExportOauth(checkboxValue);
 };
 
-const syncOauthGitFlag = (e) => {
-  let checkboxValue;
-  if (e.target.value === "off") {
+const syncOauthGitFlag = (e: Event) => {
+  let checkboxValue: "off" | "on";
+  if ((e.target as HTMLInputElement).value === "off") {
     checkboxValue = "on";
   } else {
     checkboxValue = "off";
   }
-  store.commit("EXPORT_OAUTH_GIT", checkboxValue);
+  store.ExportOauthGithub(checkboxValue);
 };
 
 const clickedUndo = () => emit("undo");

@@ -13,11 +13,7 @@
   </q-item>
 </template>
 
-<script>
-export default { name: "EssentialLink" };
-</script>
-
-<script setup>
+<script setup lang="ts">
 const props = defineProps({
   title: {
     type: String,

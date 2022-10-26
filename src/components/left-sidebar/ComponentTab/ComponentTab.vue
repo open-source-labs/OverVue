@@ -7,7 +7,7 @@ Functionality includes: if active component is selected, will switch view to edi
   </q-card>
 </template>
 
-<script setup>
+<script setup lang="ts">
 // new script for Composition API
 import CreateMenu from "./CreateMenu.vue";
 import UpdateMenu from "./UpdateMenu.vue";

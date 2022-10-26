@@ -48,11 +48,7 @@
   </div>
 </template>
 
-<script>
-export default { name: "PropsSubMenu" };
-</script>
-
-<script setup>
+<script setup lang="ts">
 import VueMultiselect from "vue-multiselect";
 import { useStore } from "../../../store/main";
 import { ref, computed } from "vue";
@@ -73,15 +69,18 @@ const selectProps = computed({
   },
 });
 
-const createProp = (payload) => store.createProp(payload);
-const addPropsSelected = (payload) => store.addPropsSelected(payload);
-const addPropsToComponent = (payload) => store.addPropsToComponent(payload);
+const createProp: typeof store.createProp = (payload) =>
+  store.createProp(payload);
+const addPropsSelected: typeof store.addPropsSelected = (payload) =>
+  store.addPropsSelected(payload);
+const addPropsToComponent: typeof store.addPropsToComponent = (payload) =>
+  store.addPropsToComponent(payload);
 
-const stopDelete = (e) => {
-  if (e.code === "Backspace") e.stopPropogation();
+const stopDelete = (e: KeyboardEvent) => {
+  if (e.code === "Backspace") e.stopPropagation();
 };
 
-const createNewProp = (text) => {
+const createNewProp = (text: string) => {
   if (![...userProps.value].includes(text) && text) {
     createProp(text);
     textProps.value = "";

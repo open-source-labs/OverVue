@@ -33,7 +33,7 @@ Functionality:
             reactive-rules
             :rules="[
               (val) =>
-                !this.userState.includes(val) ||
+                !userState.includes(val) ||
                 'A state with this name already exists',
             ]"
             @keyup.delete.stop
@@ -42,7 +42,7 @@ Functionality:
               <q-btn flat icon="add" @click="createNewState(textState)" />
             </template>
           </q-input>
-          <p v-if="!this.stateOptions.length">No state in store</p>
+          <p v-if="!stateOptions.length">No state in store</p>
 
           <a v-else v-for="state in stateOptions" :key="state">
             <q-list class="list-item" dense bordered separator>
@@ -83,7 +83,7 @@ Functionality:
             reactive-rules
             :rules="[
               (val) =>
-                !this.userActions.includes(val) ||
+                !userActions.includes(val) ||
                 'An action with this name already exists',
             ]"
           >
@@ -91,7 +91,7 @@ Functionality:
               <q-btn flat icon="add" @click="createNewAction(textAction)" />
             </template>
           </q-input>
-          <p v-if="!this.actionOptions.length">No actions in store</p>
+          <p v-if="!actionOptions.length">No actions in store</p>
 
           <a v-else v-for="action in actionOptions" :key="action">
             <q-list class="list-item" dense bordered separator>
@@ -118,11 +118,7 @@ Functionality:
   </div>
 </template>
 
-<script>
-export default { name: "StoreTab" };
-</script>
-
-<script setup>
+<script setup lang="ts">
 import { useStore } from "../../../store/main";
 import { computed, ref } from "vue";
 
@@ -138,31 +134,35 @@ const userState = computed(() => store.userState);
 const actionOptions = userActions;
 const stateOptions = userState;
 
-const createAction = (payload) => store.createAction(payload);
-const createState = (payload) => store.createState(payload);
-const deleteUserActions = (payload) => store.deleteUserActions(payload);
-const deleteUserState = (payload) => store.deleteUserState(payload);
+const createAction: typeof store.createAction = (payload) =>
+  store.createAction(payload);
+const createState: typeof store.createState = (payload) =>
+  store.createState(payload);
+const deleteUserActions: typeof store.deleteUserActions = (payload) =>
+  store.deleteUserActions(payload);
+const deleteUserState: typeof store.deleteUserState = (payload) =>
+  store.deleteUserState(payload);
 
-const createNewAction = (text) => {
+const createNewAction = (text: string) => {
   if (![...userActions.value].includes(text) && text) {
     createAction(text);
     textAction.value = "";
   }
 };
 // Creates a new state in userState in the store
-const createNewState = (text) => {
+const createNewState = (text: string) => {
   if (![...userState.value].includes(text) && text) {
     createState(text);
     textState.value = "";
   }
 };
 // Delete a selected action in the store
-const deleteAction = (action) => {
+const deleteAction = (action: string) => {
   // if delete request comes in, send to actions
   deleteUserActions(action);
 };
 // Delete a selected state in the store
-const deleteState = (state) => {
+const deleteState = (state: string) => {
   deleteUserState(state);
 };
 </script>

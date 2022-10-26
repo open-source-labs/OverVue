@@ -59,16 +59,12 @@ Description:
   </section>
 </template>
 
-<script>
-export default {
-  name: "HTMLQueue",
-};
-</script>
-
-<script setup>
+<script setup lang="ts">
 import { ref, computed, watch } from "vue";
 import { useStore } from "../../store/main.js";
 import { breadthFirstSearch } from "../../utils/search.util";
+import { HtmlElement, Component } from "../../../types";
+import { string } from "yargs";
 
 const store = useStore();
 
@@ -112,8 +108,8 @@ const renderList = computed({
       activeLayer.value.id
     );
     let sortedHTML = activeElement.children
-      .map((el, index) => [el.text, index, el.id])
-      .filter((el) => {
+      .map((el: HtmlElement, index: number) => [el.text, index, el.id])
+      .filter((el: HtmlElement[]) => {
         return el[0] !== undefined;
       });
     return sortedHTML;
@@ -133,77 +129,84 @@ const depth = () => {
 
 //make child components in htmlList exceptions
 const moreExceptions = () => {
-  let childComponent = [];
+  let childComponent: string[] = [];
   if (activeComponent.value) {
     childComponent = componentMap.value[activeComponent.value].children;
   }
   return childComponent;
 };
 
-const parentSelected = (payload) => store.parentSelected(payload);
+// const parentSelected: typeof store.parentSelected = (payload: any) =>
+//   store.parentSelected(payload);
 
-const setActiveHTML = (payload) => store.setActiveHTML(payload);
-const setActiveLayer = (payload) => store.setActiveLayer(payload);
-const upOneLayer = (payload) => store.upOneLayer(payload);
-const setSelectedIdDrag = (payload) => store.setSelectedIdDrag(payload);
-const setIdDrag = (payload) => store.setIdDrag(payload);
-const setSelectedIdDrop = (payload) => store.setSelectedIdDrop(payload);
-const setIdDrop = (payload) => store.setIdDrop(payload);
-const dragDropSortHtmlElements = (payload) =>
-  store.dragDropSortHtmlElements(payload);
-const dragDropSortSelectedHtmlElements = (payload) =>
-  store.dragDropSortSelectedHtmlElements(payload);
-const openAttributeModal = (payload) => store.openAttributeModal(payload);
-const addActiveComponentClass = (payload) =>
-  store.addActiveComponentClass(payload);
-const addBindingText = (payload) => store.addBindingText(payload);
-const clearActiveHTML = (payload) => store.clearActiveHTML(payload);
+const setActiveHTML: typeof store.setActiveHTML = (payload) =>
+  store.setActiveHTML(payload);
+const setActiveLayer: typeof store.setActiveLayer = (payload) =>
+  store.setActiveLayer(payload);
+const upOneLayer: typeof store.upOneLayer = (payload) =>
+  store.upOneLayer(payload);
+const setSelectedIdDrag: typeof store.setSelectedIdDrag = (payload) =>
+  store.setSelectedIdDrag(payload);
+const setIdDrag: typeof store.setIdDrag = (payload) => store.setIdDrag(payload);
+const setSelectedIdDrop: typeof store.setSelectedIdDrop = (payload) =>
+  store.setSelectedIdDrop(payload);
+const setIdDrop: typeof store.setIdDrop = (payload) => store.setIdDrop(payload);
+const dragDropSortHtmlElements = () => store.dragDropSortHtmlElements();
+const dragDropSortSelectedHtmlElements = () =>
+  store.dragDropSortSelectedHtmlElements();
+const openAttributeModal = () => store.openAttributeModal();
+const addActiveComponentClass: typeof store.addActiveComponentClass = (
+  payload
+) => store.addActiveComponentClass(payload);
+const addBindingText: typeof store.addBindingText = (payload) =>
+  store.addBindingText(payload);
+const clearActiveHTML = () => store.clearActiveHTML();
 
-const deleteElement = (id) => {
+const deleteElement = (id: number[]) => {
   if (activeComponent.value === "") store.deleteSelectedElement(id[0]);
   else store.deleteFromComponentHtmlList(id[1]);
 };
 
-const closeMenu = (element) => {
+const closeMenu = () => {
   if (activeComponent.value !== "") {
     clearActiveHTML();
-    openAttributeModal(element);
+    openAttributeModal();
   }
 };
 
-const setActiveElement = (element) => {
+const setActiveElement = (element: string[]) => {
   if (activeComponent.value !== "") {
     setActiveHTML(element);
     if (attributeModal.value === false) {
-      openAttributeModal(element);
+      openAttributeModal();
     } else {
-      closeMenu(element);
+      closeMenu();
     }
   }
 };
 
-const setLayer = (element) => {
+const setLayer = (element: { text: string; id: string }) => {
   setActiveLayer(element);
-  element.id = activeHTML.value;
+  element.id = activeHTML.value as string;
 };
 
 const setParentLayer = () => {
   if (activeLayer.value.id !== "") {
-    upOneLayer(activeLayer.value.id);
+    upOneLayer(activeLayer.value.id as string);
   }
 };
 
 //METHODS FOR DRAG-AND-DROP
-const startDrag = (event, id) => {
+const startDrag = (event: MouseEvent, id: string) => {
   //add a class to make the html element currently being drag transparent
-  event.target.classList.add("currentlyDragging");
+  (event.target as HTMLElement).classList.add("currentlyDragging");
   const dragId = id;
   //store the id of dragged element
   if (activeComponent.value === "") setSelectedIdDrag(dragId);
   else setIdDrag(dragId);
 };
 
-const dragEnter = (event, id) => {
+const dragEnter = (event: MouseEvent, id: string) => {
   event.preventDefault();
   const dropId = id;
   //store the id of the html element whose location the dragged html element could be dropped upon
@@ -211,21 +214,21 @@ const dragEnter = (event, id) => {
   else setIdDrop(dropId);
 };
 
-const dragOver = (event) => {
+const dragOver = (event: MouseEvent) => {
   //needed stop the dragend animation so endDrag is invoked automatically
   event.preventDefault();
 };
 
-const endDrag = (event) => {
+const endDrag = (event: MouseEvent) => {
   //remove the 'currentlyDragging' class after the HTML is dropped to remove transparency
   event.preventDefault();
-  event.target.classList.remove("currentlyDragging");
+  (event.target as HTMLElement).classList.remove("currentlyDragging");
   //invoke the action that will use the idDrag and idDrop to sort the HtmlList
   if (activeComponent.value === "") dragDropSortSelectedHtmlElements();
   else dragDropSortHtmlElements();
 };
 
-const submitClass = (element, idNum) => {
+const submitClass = (element: string, idNum: number) => {
   if (element === "") {
     return;
   }
@@ -234,15 +237,16 @@ const submitClass = (element, idNum) => {
     class: element,
     id: idNum,
   };
+
   addActiveComponentClass(payload);
   classText.value = "";
 };
 
-const addBinding = (input, idNum) => {
+const addBinding = (input: string, idNum: number) => {
   if (input === "") {
     return;
   }
-  const payload = {
+  const payload: { binding: string; id: number } = {
     binding: input,
     id: idNum,
   };
@@ -254,13 +258,13 @@ watch(attributeModalOpen, () => {
   attributeModal.value = attributeModalOpen.value;
 });
 
-watch(activeComponent, () => {
-  if (activeComponent.value !== "") {
-    activeComponent.component = true;
-  } else {
-    activeComponent.component = false;
-  }
-});
+// watch(activeComponent, () => {
+//   if (activeComponent.value !== "") {
+//     (store.componentMap[activeComponent.value] as Component).isActive = true;
+//   } else {
+//     (store.componentMap[activeComponent.value] as Component).isActive = false;
+//   }
+// });
 </script>
 
 <!-- <script>

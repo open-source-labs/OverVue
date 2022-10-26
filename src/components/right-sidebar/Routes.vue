@@ -44,29 +44,25 @@ Description:
   </div>
 </template>
 
-<script>
-export default {
-  name: "Routes",
-};
-</script>
-
-<script setup>
+<script setup lang="ts">
 import { useStore } from "../../store/main.js";
 import { computed } from "vue";
 
 const store = useStore();
 
 const routes = computed(() => store.routes);
-const activeRoute = computed(() => store.activeRoutes);
+const activeRoute = computed(() => store.activeRoute);
 
-const setActiveRoute = (payload) => store.setActiveRoute(payload);
-const deleteRoute = (payload) => store.deleteRoute(payload);
+const setActiveRoute: typeof store.setActiveRoute = (payload) =>
+  store.setActiveRoute(payload);
+const deleteRoute: typeof store.deleteRoute = (payload) =>
+  store.deleteRoute(payload);
 
-const selectRoute = (route) => {
+const selectRoute = (route: string) => {
   setActiveRoute(route);
 };
 // deletes route
-const deleteSelectedRoute = (route) => {
+const deleteSelectedRoute = (route: string) => {
   deleteRoute(route);
 };
 </script>

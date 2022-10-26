@@ -53,7 +53,7 @@
 </template>
 
 <!-- COMPOSITION API SYNTAX -->
-<script setup>
+<script setup lang="ts">
 import { useStore } from "../../../store/main.js";
 
 const store = useStore();

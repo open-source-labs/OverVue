@@ -15,17 +15,15 @@ Description:
 </template>
 
 <!-- COMPOSITION API SYNTAX -->
-<script>
-export default {
-  name: "SaveProject",
-};
-</script>
 
-<script setup>
+<script setup lang="ts">
 import localforage from "localforage";
 import { useStore } from "../../store/main";
 import { computed } from "vue";
+import { HtmlElement } from "app/types";
+// import * as fs from "fs";
 const Mousetrap = require("mousetrap");
+// @ts-ignore
 const { fs, ipcRenderer } = window;
 
 const store = useStore();
@@ -35,7 +33,8 @@ const activeTab = computed(() => store.activeTab);
 const stateComputed = computed(() => store);
 const routes = computed(() => store.routes);
 
-const addProject = (payload) => store.addProject(payload);
+const addProject: typeof store.addProject = (payload) =>
+  store.addProject(payload);
 
 const showSaveJSONDialog = () => {
   ipcRenderer
@@ -50,18 +49,18 @@ const showSaveJSONDialog = () => {
         },
       ],
     })
-    .then((res) => {
+    .then((res: { filePath: string }) => {
       saveJSONLocation(res.filePath);
     })
-    .catch((err) => {
+    .catch((err: Error) => {
       console.log(err);
     });
 };
-const parseFileName = (file) => {
+const parseFileName = (file: string) => {
   if (file) return file.split("/").pop();
 };
 
-const parseAndDelete = (htmlList) => {
+const parseAndDelete = (htmlList: any[]) => {
   htmlList.forEach((element) => {
     if (!Array.isArray(element.children))
       if (element.children.length > 0) {
@@ -82,7 +81,7 @@ const parseAndDelete = (htmlList) => {
 
 const saveProjectJSON = () => showSaveJSONDialog();
 
-const saveJSONLocation = (data) => {
+const saveJSONLocation = (data: string) => {
   let deleteKey = projects.value[activeTab.value].filename; // store.state.projects
   localforage
     .removeItem(deleteKey)
@@ -91,7 +90,7 @@ const saveJSONLocation = (data) => {
       console.log(err);
     });
 
-  let fileName = parseFileName(data);
+  let fileName: string | undefined = parseFileName(data);
 
   if (fileName) {
     addProject({
@@ -104,13 +103,14 @@ const saveJSONLocation = (data) => {
 
     fs.writeFileSync(data, JSON.stringify(stateRef));
     localforage.setItem(fileName, JSON.parse(fs.readFileSync(data, "utf8")));
-    localforage.getItem("slackWebhookURL", (err, value) => {
+    localforage.getItem("slackWebhookURL", (err, value: any) => {
       if (value) notifySlack(fileName, value);
     });
   }
 };
 
-const notifySlack = (fileName, url) => {
+const notifySlack = (fileName: string | undefined, url: RequestInfo | URL) => {
+  // @ts-ignore
   remote.dialog.showMessageBox(
     {
       title: "Notify Slack?",
@@ -118,7 +118,7 @@ const notifySlack = (fileName, url) => {
       buttons: ["No", "Yes"],
       defaultId: 1,
     },
-    (response) => {
+    (response: number) => {
       if (response === 1) {
         fetch(url, {
           method: "POST",
