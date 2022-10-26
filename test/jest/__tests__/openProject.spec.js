@@ -1,3 +1,4 @@
+// * = added to convert tests to OverVue 9.0, using Pinia instead of Vuex
 import { mount, createLocalVue, shallowMount } from "@vue/test-utils";
 import { createApp } from "vue";
 import * as All from "quasar";
@@ -15,11 +16,11 @@ const components = Object.keys(All).reduce((object, key) => {
   return object;
 }, {});
 
-import actions from "../../../src/store/options/actions";
-import mutations from "../../../src/store/options/mutations";
+// import actions from "../../../src/store/options/actions";
+// import mutations from "../../../src/store/options/mutations";
 import * as types from "../../../src/store/options/types";
-import Vuex from "vuex";
-import store from "../../../src/store/state/index";
+// import Vuex from "vuex";
+// import store from "../../../src/store/state/index";
 
 /**
  * @description: Testing functionality of the openProject action and following mutations
@@ -118,19 +119,19 @@ describe("Test Suite for Image Upload", () => {
     imagePath: { HomeView: "/Users/joju/Desktop/bootstrap1.png", b: "" },
   };
 
-  test('"[types.openProject]" action calls set_image_path, set_component_map, and set_routes', () => {
-    const commit = jest.fn();
-    actions[types.openProject]({ commit }, payload);
-    expect(commit).toHaveBeenCalledWith("SET_IMAGE_PATH", payload.imagePath);
-    expect(commit).toHaveBeenCalledWith(
-      "SET_COMPONENT_MAP",
-      payload.componentMap
-    );
-    expect(commit).toHaveBeenCalledWith("SET_ROUTES", payload.routes);
-    expect(commit).toHaveBeenCalledWith("REMOVE_ALL_STATE_PROPS_ACTIONS");
-    expect(commit).toHaveBeenCalledWith("SET_ACTIVE_ROUTE", "HomeView");
-    expect(commit).toHaveBeenCalledWith("SET_ACTIVE_COMPONENT", "");
-  });
+  // test('"[types.openProject]" action calls set_image_path, set_component_map, and set_routes', () => {
+  //   const commit = jest.fn();
+  //   actions[types.openProject]({ commit }, payload);
+  //   expect(commit).toHaveBeenCalledWith("SET_IMAGE_PATH", payload.imagePath);
+  //   expect(commit).toHaveBeenCalledWith(
+  //     "SET_COMPONENT_MAP",
+  //     payload.componentMap
+  //   );
+  //   expect(commit).toHaveBeenCalledWith("SET_ROUTES", payload.routes);
+  //   expect(commit).toHaveBeenCalledWith("REMOVE_ALL_STATE_PROPS_ACTIONS");
+  //   expect(commit).toHaveBeenCalledWith("SET_ACTIVE_ROUTE", "HomeView");
+  //   expect(commit).toHaveBeenCalledWith("SET_ACTIVE_COMPONENT", "");
+  // });
 
   test('"[types.SET_IMAGE_PATH]" mutation expect add payload to imagePath object in state', () => {
     const openState = {
@@ -138,12 +139,26 @@ describe("Test Suite for Image Upload", () => {
         HomeView: "",
       },
     };
-    mutations[types.SET_IMAGE_PATH](openState, payload.imagePath);
-    expect(openState.imagePath).toMatchObject({
+    piniaStore.setImagePath(payload.imagePath);
+    expect(piniaStore.imagePath).toMatchObject({
       ...openState.imagePath,
       ...payload.imagePath,
     });
   });
+
+  // test('"[types.SET_IMAGE_PATH]" mutation expect add payload to imagePath object in state', () => {
+  //   const openState = {
+  //     imagePath: {
+  //       HomeView: "",
+  //     },
+  //   };
+  //   mutations[types.SET_IMAGE_PATH](openState, payload.imagePath);
+  //   expect(openState.imagePath).toMatchObject({
+  //     ...openState.imagePath,
+  //     ...payload.imagePath,
+  //   });
+  // });
+
   test('"[types.SET_COMPONENT_MAP]" mutation expect state.componentMap object to match payload.componentMap', () => {
     const openState = {
       componentMap: {
@@ -159,17 +174,48 @@ describe("Test Suite for Image Upload", () => {
         },
       },
     };
-    mutations[types.SET_COMPONENT_MAP](openState, payload.componentMap);
-    expect(openState.componentMap).toMatchObject(payload.componentMap);
+    piniaStore.setComponentMap(payload.componentMap);
+    expect(piniaStore.componentMap).toMatchObject(payload.componentMap);
   });
+
+  // test('"[types.SET_COMPONENT_MAP]" mutation expect state.componentMap object to match payload.componentMap', () => {
+  //   const openState = {
+  //     componentMap: {
+  //       App: {
+  //         componentName: "App",
+  //         children: ["HomeView"],
+  //         htmlList: [],
+  //       },
+  //       HomeView: {
+  //         componentName: "HomeView",
+  //         children: [],
+  //         htmlList: [],
+  //       },
+  //     },
+  //   };
+  //   mutations[types.SET_COMPONENT_MAP](openState, payload.componentMap);
+  //   expect(openState.componentMap).toMatchObject(payload.componentMap);
+  // });
+
   test('"[types.SET_ROUTES]" mutation expect state.routes object to match payload.routes ', () => {
     const openState = {
       routes: {
         HomeView: [],
       },
     };
-
-    mutations[types.SET_ROUTES](openState, payload.routes);
-    expect(openState.routes).toMatchObject(payload.routes);
+    piniaStore.setRoutes(payload.routes);
+    expect(piniaStore.routes).toMatchObject(payload.routes);
   });
+
+  // test('"[types.SET_ROUTES]" mutation expect state.routes object to match payload.routes ', () => {
+  //   const openState = {
+  //     routes: {
+  //       HomeView: [],
+  //     },
+  //   };
+
+  //   mutations[types.SET_ROUTES](openState, payload.routes);
+  //   expect(openState.routes).toMatchObject(payload.routes);
+  // });
+
 });
