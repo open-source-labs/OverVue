@@ -445,7 +445,7 @@ SLACK_REDIRECT_URI = "overvuedev://test"
 
 <details><summary>OverVue 9.0</summary>
 <ul>
-<li>Converted codebase (40+ component files) from Options API to Composition API</li>
+<li>Converted codebase (40+ components) from Options API to Composition API</li>
 <li>Migrated store from Vuex to Pinia</li>
 <li>Migrated codebase to TypeScript</li>
 <li>Implemented testing of Pinia store</li>
