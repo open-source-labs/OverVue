@@ -25,7 +25,7 @@
 
 ## Installation
 
-To download the production version for windows or mac, please visit https://www.Overvue.io
+To download the production version for windows or mac, please visit https://www.overvue.org
 
 Install dependencies
 
