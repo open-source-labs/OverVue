@@ -35,7 +35,6 @@
     "bootstrap-vue": "^2.22.0",
     "core-js": "^3.21.1",
     "dotenv": "^16.0.0",
-    "electron-deeplink": "^1.0.10",
     "element-plus": "^2.2.16",
     "fs-extra": "^10.0.0",
     "http": "^0.0.1-security",
