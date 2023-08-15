@@ -1,6 +1,6 @@
 import { app, BrowserWindow, nativeTheme, dialog, ipcMain } from "electron";
 //import deeplink currently did not work in our WSL2 computers - commented out line 3 fixed our issue to be able to run in dev mode
-import { Deeplink } from "electron-deeplink";
+// import { Deeplink } from "electron-deeplink";
 import isDev from "electron-is-dev";
 import path from "path";
 import os from "os";
