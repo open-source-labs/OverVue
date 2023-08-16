@@ -267,6 +267,7 @@ Description:
       </q-list>
     </q-drawer>
 
+    <!-- THIS ENABLES THE GRID -->
     <q-page-container>
       <router-view />
     </q-page-container>
