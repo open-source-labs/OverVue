@@ -96,7 +96,7 @@ const activateNode = (nodeToActivate: string) => {
 };
 
 const buildTree = (componentData: typeof VueTree.treeData) => {
-  console.log("component data in buildTree", componentData);
+  // console.log("component data in buildTree", componentData);
   //App is always the root of the tree.
   const treeData: {
     value: string;
