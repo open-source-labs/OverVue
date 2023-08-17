@@ -162,7 +162,7 @@ watch(
 <template>
   <div class="container">
     <vue-tree
-      style="width: 100%; height: 80vh; border: 1px solid gray"
+      style="width: 100%; height: 100vh; border: 1px solid gray"
       :dataset="treeData"
       :config="treeConfig"
       ref="tree"
@@ -190,6 +190,7 @@ watch(
 .container {
   height: 100%;
   width: 100%;
+  background-color: black;
 }
 
 .container:hover {

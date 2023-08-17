@@ -1,34 +1,23 @@
- <!--
+<!--
 Description:
-  Displays Canvas
+  Displays Tree
   Functionality includes: N/A
   -->
 
 <template>
-  <q-page class="flex flex-center" id="compDisplay">
-    <Canvas />
-  </q-page>
+  <Tree />
 </template>
 
-<style>
-</style>
-
-<script>
-import Canvas from '../components/Canvas.vue'
-
-export default {
-  name: 'PageIndex',
-  components: {
-    Canvas
-}
-}
+<script setup>
+import Tree from "../components/right-sidebar/Tree.vue";
 </script>
 
 <style scoped>
- #compDisplay{
-   overflow-x: scroll;
-   overflow-y: scroll;
-   margin: 0px;
-   padding: 0px;
- }
+#compDisplay {
+  /* overflow-x: scroll;
+  overflow-y: scroll; */
+  margin: 0px;
+  padding: 0px;
+  height: 100%;
+}
 </style>
