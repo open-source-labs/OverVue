@@ -5,8 +5,13 @@ Description:
   -->
 
 <script setup lang="ts">
-import VueTree from "@ssthouse/vue3-tree-chart";
-import "@ssthouse/vue3-tree-chart/dist/vue3-tree-chart.css";
+// import VueTree from "@ssthouse/vue3-tree-chart";
+// import "@ssthouse/vue3-tree-chart/dist/vue3-tree-chart.css";
+
+// OverVue v.10.0 –– edited @sst-house files to remove background drag functionality
+import VueTree from "@overvue/vue3-tree-chart";
+import "@overvue/vue3-tree-chart/dist/vue3-tree-chart.css";
+
 import { useStore } from "../../store/main.js";
 import { ref, computed, watch } from "vue";
 
@@ -157,6 +162,40 @@ watch(
 
   { deep: true }
 );
+
+/*METHODS FOR DRAG-AND-DROP */
+const startDrag = (event: Event) => {
+  // //add a class to make the html element currently being drag transparent
+  (event.target as HTMLElement).classList.add("currentlyDragging");
+  // const dragId = id;
+  // //store the id of dragged element
+  // if (activeComponent.value === "") setSelectedIdDrag(dragId);
+  // else setIdDrag(dragId);
+  console.log("drag event: ", event);
+};
+
+const dragEnter = (event: Event, id: string) => {
+  // event.preventDefault();
+  // const dropId = id;
+  // //store the id of the html element whose location the dragged html element could be dropped upon
+  // if (activeComponent.value === "") setSelectedIdDrop(dropId);
+  // else setIdDrop(dropId);
+};
+
+const dragOver = (event: Event) => {
+  // //needed stop the dragend animation so endDrag is invoked automatically
+  // event.preventDefault();
+};
+
+const endDrag = (event: Event) => {
+  // //remove the 'currentlyDragging' class after the HTML is dropped to remove transparency
+  event.preventDefault();
+  (event.target as HTMLElement).classList.remove("currentlyDragging");
+  console.log("drag ended: ", event);
+  // //invoke the action that will use the idDrag and idDrop to sort the HtmlList
+  // if (activeComponent.value === "") dragDropSortSelectedHtmlElements();
+  // else dragDropSortHtmlElements();
+};
 </script>
 
 <template>
@@ -169,7 +208,14 @@ watch(
       @wheel="zoom"
     >
       <template v-slot:node="{ node }">
-        <span v-if="activeComponent === node.value" class="tree-node-active">
+        <span
+          v-if="activeComponent === node.value"
+          class="tree-node-active"
+          @dragstart="startDrag($event)"
+          draggable="true"
+          :stop-propagation="true"
+          @dragend="endDrag($event)"
+        >
           {{ node.value }}
         </span>
         <span
@@ -178,7 +224,15 @@ watch(
         >
           {{ node.value }}
         </span>
-        <span v-else class="tree-node" @click="activateNode(node.value)">
+        <span
+          v-else
+          class="tree-node"
+          @click="activateNode(node.value)"
+          @dragstart="startDrag($event)"
+          draggable="true"
+          :stop-propagation="true"
+          @dragend="endDrag($event)"
+        >
           {{ node.value }}
         </span>
       </template>
