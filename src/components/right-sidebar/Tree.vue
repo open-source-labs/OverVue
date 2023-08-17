@@ -4,39 +4,11 @@ Description:
   Functionality includes: formatting componentMap object to displaying in tree form
   -->
 
-<template>
-  <div class="container">
-    <vue-tree
-      style="width: 100%; height: 80vh; border: 1px solid gray"
-      :dataset="treeData"
-      :config="treeConfig"
-      ref="tree"
-      @wheel="zoom"
-    >
-      <template v-slot:node="{ node }">
-        <span v-if="activeComponent === node.value" class="tree-node-active">
-          {{ node.value }}
-        </span>
-        <span
-          v-else-if="activeRoute === node.value"
-          class="tree-node-activeRoute"
-        >
-          {{ node.value }}
-        </span>
-        <span v-else class="tree-node" @click="activateNode(node.value)">
-          {{ node.value }}
-        </span>
-      </template>
-    </vue-tree>
-  </div>
-</template>
-
 <script setup lang="ts">
 import VueTree from "@ssthouse/vue3-tree-chart";
 import "@ssthouse/vue3-tree-chart/dist/vue3-tree-chart.css";
 import { useStore } from "../../store/main.js";
 import { ref, computed, watch } from "vue";
-import { Component, RouteComponentMap } from "../../../types";
 
 const store = useStore();
 
@@ -46,16 +18,22 @@ const treeData = ref<typeof VueTree.treeData>(null);
 //ref to htmlelement
 const tree = ref<typeof VueTree>(null);
 
+// makes tree available through template refs
 defineExpose({ tree });
 
-//computed
+/* COMPUTED */
 const activeComponent = computed(() => store.activeComponent);
+
+// default state of 'activeRoute' is "HomeView"
 const activeRoute = computed(() => store.activeRoute);
 const routes = computed(() => store.routes);
+
+// App --> HomeView --> ...
 const componentMap = computed(() => store.componentMap);
 
 const componentData = componentMap;
 
+// are there options to desensitize this?
 const zoom = (event: WheelEvent) => {
   if (event.deltaY < 0) {
     tree.value.zoomIn();
@@ -118,11 +96,18 @@ const activateNode = (nodeToActivate: string) => {
 };
 
 const buildTree = (componentData: typeof VueTree.treeData) => {
+  console.log("component data in buildTree", componentData);
   //App is always the root of the tree.
-  const treeData : {value: string; children:{value: string; children: string[]}[]} = {
+  const treeData: {
+    value: string;
+    children: { value: string; children: string[] }[];
+  } = {
     value: "App",
     children: [],
   };
+
+  // console.log("tree data", treeData);
+
   //Views come after the root, as its children. No components will be children of App.
   //ONLY Views will have components as children.
   for (const child of componentData.App.children) {
@@ -135,6 +120,7 @@ const buildTree = (componentData: typeof VueTree.treeData) => {
 };
 
 function buildTreeChildren(array: string[]) {
+  // console.log("array in buildTreeChildren", array);
   if (array.length === 0) {
     return [];
   } else {
@@ -153,7 +139,7 @@ function buildTreeChildren(array: string[]) {
           }
         }
       }
-      (outputArray as { value: string; children: string[]}[]).push(outputObj);
+      (outputArray as { value: string; children: string[] }[]).push(outputObj);
     });
     return outputArray;
   }
@@ -173,137 +159,32 @@ watch(
 );
 </script>
 
-<!-- Old Options API Script -->
-
-<!-- <script>
-  import { mapState } from "vuex";
-  import VueTree from "@ssthouse/vue3-tree-chart";
-  import "@ssthouse/vue3-tree-chart/dist/vue3-tree-chart.css";
-  
-  export default {
-    name: "Tree",
-    components: { VueTree },
-    computed: {
-      ...mapState([
-      'activeComponent',
-      'activeRoute',
-      'routes',
-      'componentMap',
-      ])
-    },
-    methods: {
-      zoom(){
-        if (event.deltaY < 0){
-          console.log(this.$refs.tree, "this is tree")
-          this.$refs.tree.zoomIn();
-        } else {
-          this.$refs.tree.zoomOut();
-        }
-      },
-      activateNode(nodeToActivate){
-        if (nodeToActivate === "App"){
-          return;
-        }
-        //check first, activating a route? if so, activate that route and then dispatch no active component.
-        for (const key in this.routes){
-          if (nodeToActivate === key){
-            this.$store.dispatch('setActiveRoute', nodeToActivate)
-            if (this.routes[key].length > 0){
-              this.$store.dispatch('setActiveComponent', '')
-            }
-            return;
-          }
-        }
-        
-        //if we click a component, check which route, and then if needed dispatch the route THEN the component
-        for (const view of this.treeData.children){
-          if (view.children.length > 0){
-            view.children.forEach((el)=>{
-              if (view.value !== this.activeRoute){ //only check where the view.value is NOT the active route
-                if (nodeToActivate === el.value){
-                  this.$store.dispatch('setActiveRoute', view.value)
-                  return;
-                }
-                if (el.children.length > 0){
-                  this.evalChildren(el.children, nodeToActivate, view);
-                }
-              }
-            })
-          }
-        }
-        if (this.activeComponent !== nodeToActivate) {
-          this.$store.dispatch('setActiveComponent', nodeToActivate);
-        }
-      },
-      evalChildren(children, targetString, view){
-          children.forEach((el)=>{
-            if (el.value === targetString){
-              this.$store.dispatch('setActiveRoute', view.value)
-              return;
-            } else if (el.children.length >0){
-              return this.evalChildren(el.children, targetString, view)
-          }
-        })
-      },
-  
-      buildTree(componentData){
-        //App is always the root of the tree.  
-        const treeData = {     
-          value: 'App',
-          children: []
-        }
-        console.log(treeData, "hello i am treeData inside buildtree")
-        //Views come after the root, as its children. No components will be children of App.
-        //ONLY Views will have components as children.
-        for (const child of componentData.App.children){
-          treeData.children.push({
-            value: child,
-            children: buildTreeChildren(componentData[child].children),
-          })
-        }
-        
-        function buildTreeChildren (array){
-          if (array.length === 0){
-            return [];
-          } else {
-            const outputArray = [];
-            array.forEach((el)=>{
-              const outputObj = {
-              value: el,
-              children: []
-              }
-              for (const component in componentData){
-                if (component === el){
-                  if (componentData[component].children.length > 0){
-                    outputObj.children = buildTreeChildren(componentData[component].children);
-                  }
-                }
-              }
-              outputArray.push(outputObj);
-            })
-            return outputArray;
-          }
-        }
-        return treeData;
-      }
-    },
-    watch: {
-      componentMap: {
-        handler(){
-          this.treeData = this.buildTree(this.componentMap);
-        },
-        deep: true,
-      },
-    },
-    data() { 
-      return {
-        treeData: this.buildTree(this.$store.state.componentMap),
-        treeConfig: { nodeWidth: 175, nodeHeight: 100, levelHeight: 200},
-        componentData: this.$store.state.componentMap,
-      }
-    }
-  }
-</script> -->
+<template>
+  <div class="container">
+    <vue-tree
+      style="width: 100%; height: 80vh; border: 1px solid gray"
+      :dataset="treeData"
+      :config="treeConfig"
+      ref="tree"
+      @wheel="zoom"
+    >
+      <template v-slot:node="{ node }">
+        <span v-if="activeComponent === node.value" class="tree-node-active">
+          {{ node.value }}
+        </span>
+        <span
+          v-else-if="activeRoute === node.value"
+          class="tree-node-activeRoute"
+        >
+          {{ node.value }}
+        </span>
+        <span v-else class="tree-node" @click="activateNode(node.value)">
+          {{ node.value }}
+        </span>
+      </template>
+    </vue-tree>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 .container {

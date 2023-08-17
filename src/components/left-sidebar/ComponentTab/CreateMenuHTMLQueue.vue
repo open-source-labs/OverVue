@@ -46,9 +46,9 @@ Description:
 <script setup lang="ts">
 // new script for Composition API
 import { breadthFirstSearch } from "../../../utils/search.util";
-import { computed, ref, watch } from "vue";
+import { computed, ref } from "vue";
 import { useStore } from "../../../store/main.js";
-import { HtmlElement, Component } from "app/types";
+import { HtmlElement } from "app/types";
 
 const store = useStore();
 
@@ -69,15 +69,15 @@ const activeComponent = computed(() => store.activeComponent);
 const activeHTML = computed(() => store.activeHTML);
 const activeLayer = computed(() => store.activeLayer);
 
+// /src/components/Canvas.vue
+
 const renderList = computed({
   get() {
-    if (activeComponent.value === "")
-      return selectedElementList.value.map((el, index) => [
-        el.text,
-        index,
-        el.id,
-        el.z,
-      ]);
+    if (activeComponent.value === "") {
+      return selectedElementList.value.map((el, index) => {
+        return [el.text, index, el.id, el.z];
+      });
+    }
     // change activeComponent's htmlList into an array of arrays ([element/component name, index in state])
     if (activeComponent.value !== "" && activeLayer.value.id === "") {
       let sortedHTML = componentMap.value[activeComponent.value].htmlList
@@ -103,13 +103,13 @@ const renderList = computed({
   },
 });
 
-const depth = computed(() => {
-  let newTitle = "";
-  activeLayer.value.lineage.forEach((el) => {
-    newTitle += ` > ${el}`;
-  });
-  return newTitle;
-});
+// const depth = computed(() => {
+//   let newTitle = "";
+//   activeLayer.value.lineage.forEach((el) => {
+//     newTitle += ` > ${el}`;
+//   });
+//   return newTitle;
+// });
 
 //methods
 
@@ -182,127 +182,7 @@ const endDrag = (event: Event) => {
   if (activeComponent.value === "") dragDropSortSelectedHtmlElements();
   else dragDropSortHtmlElements();
 };
-
-// watch(activeComponent, () => {
-//   if (activeComponent.value !== "") {
-//     (store.componentMap[activeComponent.value] as Component).isActive = true;
-//   } else {
-//     (store.componentMap[activeComponent.value] as Component).isActive = false;
-//   }
-// });
 </script>
-
-<!-- <script>
-//old Options API script
-import { mapState, mapActions } from 'vuex'
-import { setSelectedElementList, deleteSelectedElement, deleteFromComponentHtmlList } from '../../../store/types'
-import { breadthFirstSearch } from '../../../utils/search.util'
-
-export default {
-  name: 'CreateMenuHTMLQueue',
-  props: {
-    name: {
-      type: String
-    },
-    listToRender: {
-      type: Array
-    }
-  },
-  data () {
-    return {
-      exceptions: ['input', 'img', 'link']
-    }
-  },
-  computed: {
-    ...mapState(['selectedElementList', 'componentMap', 'activeComponent', 'activeHTML', 'activeLayer']),
-    renderList: {
-      get () {
-        if (this.activeComponent === '') return this.selectedElementList.map((el, index) => [el.text, index, el.id, el.z])
-        // change activeComponent's htmlList into an array of arrays ([element/component name, index in state])
-        if (this.activeComponent !== '' && this.activeLayer.id === '') {
-          let sortedHTML = this.componentMap[this.activeComponent].htmlList.map((el, index) => [el.text, index, el.id, el.z]).filter(el => {
-            return el[0] !== undefined
-          })
-          return sortedHTML
-        }
-        let activeElement = breadthFirstSearch(this.componentMap[this.activeComponent].htmlList, this.activeLayer.id)
-        let sortedHTML = activeElement.children.map((el, index) => [el.text, index, el.id, el.z]).filter(el => {
-          return el[0] !== undefined
-        })
-        return sortedHTML
-      },
-      set (value) {
-        this.$store.dispatch(setSelectedElementList, value)
-      }
-    },
-    depth: function () {
-      let newTitle = ''
-      this.activeLayer.lineage.forEach(el => {
-        newTitle += ` > ${el}`
-      })
-      return newTitle
-    }
-
-  },
-  methods: {
-    ...mapActions(['setActiveHTML', 'setActiveLayer', 'upOneLayer', 'setSelectedIdDrag', 'setIdDrag', 'setSelectedIdDrop', 'setIdDrop', 'dragDropSortHtmlElements', 'dragDropSortSelectedHtmlElements']),
-    deleteElement (id) {
-      if (this.activeComponent === '') this.$store.dispatch(deleteSelectedElement, id[0])
-      else this.$store.dispatch(deleteFromComponentHtmlList, id[1])
-    },
-    setActiveElement (element) {
-      if (this.activeComponent !== '' && !this.exceptions.includes(element[0])) {
-        this.setActiveHTML(element)
-      }
-    },
-    setLayer (element) {
-      this.setActiveLayer(element)
-    },
-    setParentLayer () {
-      if (this.activeLayer.id !== '') {
-        this.upOneLayer(this.activeLayer.id)
-      }
-    },
-    //METHODS FOR DRAG-AND-DROP
-    startDrag (event, id) {
-      //add a class to make the html element currently being drag transparent
-      event.target.classList.add('currentlyDragging')
-      const dragId = id;
-      //store the id of dragged element
-      if (this.activeComponent === '') this.setSelectedIdDrag(dragId)
-      else this.setIdDrag(dragId)
-    },
-    dragEnter (event, id) {
-      event.preventDefault();
-      const dropId = id;
-      //store the id of the html element whose location the dragged html element could be dropped upon
-      if (this.activeComponent === '') this.setSelectedIdDrop(dropId)
-      else this.setIdDrop(dropId)
-    },
-    dragOver (event) {
-      //needed stop the dragend animation so endDrag is invoked automatically
-      event.preventDefault();
-    },
-    endDrag (event) {
-      //remove the 'currentlyDragging' class after the HTML is dropped to remove transparency
-      event.preventDefault();
-      event.target.classList.remove('currentlyDragging')
-      //invoke the action that will use the idDrag and idDrop to sort the HtmlList
-      if (this.activeComponent === '') this.dragDropSortSelectedHtmlElements()
-      else this.dragDropSortHtmlElements()
-    },
-  },
-  watch: {
-    activeComponent: function () {
-      if (this.activeComponent !== '') {
-        this.component = true
-      } else {
-        this.component = false
-      }
-    }
-  }
-}
-</script> -->
 
 <style lang="scss" scoped>
 .html-queue {
