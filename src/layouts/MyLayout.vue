@@ -598,7 +598,7 @@ q-btn > i {
 .switch {
   position: relative;
   display: block;
-  vertical-align: top;
+  // vertical-align: top;
   width: 65px;
   height: 30px;
   padding: 3px;

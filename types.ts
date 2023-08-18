@@ -10,6 +10,8 @@ export type State = {
     HomeView: RouteComponentMap;
     [key: string]: RouteComponentMap | Component;
   };
+  activeTreeNode: string;
+  potentialParentNode: string;
   routes: {
     [key: string]: Component[];
   };
@@ -121,6 +123,11 @@ export type Actions = {
   upOneLayer: (payload: string) => void;
   setIdDrag: (payload: string) => void; // idDrag error line 534 of actions.ts
   setIdDrop: (payload: string) => void; // idDrag error line 540 of actions.ts
+  //Overvue v10.0: drag n drop tree
+  setActiveTreeNode: (payload: string) => void;
+  moveNode: (payload: string) => void;
+  setPotentialParentNode: (payload: string) => void;
+  ///////
   setSelectedIdDrag: (payload: string) => void;
   setSelectedIdDrop: (payload: string) => void;
   dragDropSortHtmlElements: () => void;

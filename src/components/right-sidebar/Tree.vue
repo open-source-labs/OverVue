@@ -17,28 +17,22 @@ import { ref, computed, watch } from "vue";
 
 const store = useStore();
 
+/* DATA */
 const treeConfig = ref({ nodeWidth: 175, nodeHeight: 100, levelHeight: 200 });
 const treeData = ref<typeof VueTree.treeData>(null);
-
-//ref to htmlelement
-const tree = ref<typeof VueTree>(null);
-
-// makes tree available through template refs
-defineExpose({ tree });
+const tree = ref<typeof VueTree>(null); //ref to htmlelement
+defineExpose({ tree }); // makes tree available through template refs
 
 /* COMPUTED */
-const activeComponent = computed(() => store.activeComponent);
+const componentMap = computed(() => store.componentMap);
+const activeComponent = computed(() => store.activeComponent); // to collapse child nodes
+const activeTreeNode = computed(() => store.activeTreeNode); // to drag nodes
 
-// default state of 'activeRoute' is "HomeView"
 const activeRoute = computed(() => store.activeRoute);
 const routes = computed(() => store.routes);
 
-// App --> HomeView --> ...
-const componentMap = computed(() => store.componentMap);
+/* FUNCTIONS */
 
-const componentData = componentMap;
-
-// are there options to desensitize this?
 const zoom = (event: WheelEvent) => {
   if (event.deltaY < 0) {
     tree.value.zoomIn();
@@ -101,7 +95,7 @@ const activateNode = (nodeToActivate: string) => {
 };
 
 const buildTree = (componentData: typeof VueTree.treeData) => {
-  // console.log("component data in buildTree", componentData);
+  console.log("component data in buildTree", componentData);
   //App is always the root of the tree.
   const treeData: {
     value: string;
@@ -124,7 +118,7 @@ const buildTree = (componentData: typeof VueTree.treeData) => {
   return treeData;
 };
 
-function buildTreeChildren(array: string[]) {
+const buildTreeChildren = (array: string[]) => {
   // console.log("array in buildTreeChildren", array);
   if (array.length === 0) {
     return [];
@@ -135,11 +129,11 @@ function buildTreeChildren(array: string[]) {
         value: el,
         children: [],
       };
-      for (const component in componentData.value) {
+      for (const component in componentMap.value) {
         if (component === el) {
-          if (componentData.value[component].children.length > 0) {
+          if (componentMap.value[component].children.length > 0) {
             outputObj.children = buildTreeChildren(
-              componentData.value[component].children
+              componentMap.value[component].children
             );
           }
         }
@@ -148,12 +142,11 @@ function buildTreeChildren(array: string[]) {
     });
     return outputArray;
   }
-}
+};
 
-//data
+// invoke + watch buildTree
 treeData.value = buildTree(componentMap.value);
 
-//watch
 watch(
   componentMap,
   () => {
@@ -163,38 +156,44 @@ watch(
   { deep: true }
 );
 
-/*METHODS FOR DRAG-AND-DROP */
-const startDrag = (event: Event) => {
-  // //add a class to make the html element currently being drag transparent
+// store methods (update state)
+const setActiveTreeNode: typeof store.setActiveTreeNode = (payload) =>
+  store.setActiveTreeNode(payload);
+
+const setPotentialParentNode: typeof store.setPotentialParentNode = (payload) =>
+  store.setPotentialParentNode(payload);
+
+const moveNode: typeof store.moveNode = (payload) => store.moveNode(payload);
+
+/* METHODS FOR DRAG-AND-DROP */
+const startDrag = (event: Event, activeNode: string) => {
+  // add a class to make the activeTreeNode currently being dragged transparent
   (event.target as HTMLElement).classList.add("currentlyDragging");
-  // const dragId = id;
-  // //store the id of dragged element
-  // if (activeComponent.value === "") setSelectedIdDrag(dragId);
-  // else setIdDrag(dragId);
+
+  //get current activeTreeNode
+  setActiveTreeNode(activeNode);
+
   console.log("drag event: ", event);
 };
 
-const dragEnter = (event: Event, id: string) => {
+const dragEnter = (event: Event, nodeName: string) => {
   // event.preventDefault();
-  // const dropId = id;
-  // //store the id of the html element whose location the dragged html element could be dropped upon
-  // if (activeComponent.value === "") setSelectedIdDrop(dropId);
-  // else setIdDrop(dropId);
+
+  // Add componentName to potential new parent (store in state)
+  setPotentialParentNode(nodeName);
 };
 
 const dragOver = (event: Event) => {
-  // //needed stop the dragend animation so endDrag is invoked automatically
+  //needed stop the dragend animation so endDrag is invoked automatically
   // event.preventDefault();
 };
 
-const endDrag = (event: Event) => {
-  // //remove the 'currentlyDragging' class after the HTML is dropped to remove transparency
+const endDrag = (event: Event, activeNode: string) => {
   event.preventDefault();
-  (event.target as HTMLElement).classList.remove("currentlyDragging");
-  console.log("drag ended: ", event);
-  // //invoke the action that will use the idDrag and idDrop to sort the HtmlList
-  // if (activeComponent.value === "") dragDropSortSelectedHtmlElements();
-  // else dragDropSortHtmlElements();
+
+  // add component that is being dragged to children of  current potential parent
+  // remove component from children list of previous parent
+  moveNode(activeNode);
 };
 </script>
 
@@ -206,15 +205,17 @@ const endDrag = (event: Event) => {
       :config="treeConfig"
       ref="tree"
       @wheel="zoom"
+      @dragover.prevent="dragOver($event), false"
     >
       <template v-slot:node="{ node }">
         <span
           v-if="activeComponent === node.value"
           class="tree-node-active"
-          @dragstart="startDrag($event)"
+          @dragstart="startDrag($event, node.value)"
           draggable="true"
           :stop-propagation="true"
-          @dragend="endDrag($event)"
+          @dragend="endDrag($event, node.value)"
+          @dragenter.prevent="dragEnter($event, node.value)"
         >
           {{ node.value }}
         </span>
@@ -228,10 +229,11 @@ const endDrag = (event: Event) => {
           v-else
           class="tree-node"
           @click="activateNode(node.value)"
-          @dragstart="startDrag($event)"
+          @dragstart="startDrag($event, node.value)"
           draggable="true"
           :stop-propagation="true"
-          @dragend="endDrag($event)"
+          @dragend="endDrag($event, node.value)"
+          @dragenter.prevent="dragEnter($event, node.value)"
         >
           {{ node.value }}
         </span>

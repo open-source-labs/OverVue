@@ -14,8 +14,8 @@ import Tree from "../components/right-sidebar/Tree.vue";
 
 <style scoped>
 #compDisplay {
-  /* overflow-x: scroll;
-  overflow-y: scroll; */
+  overflow-x: scroll;
+  overflow-y: scroll;
   margin: 0px;
   padding: 0px;
   height: 100%;

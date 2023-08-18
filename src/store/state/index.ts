@@ -33,6 +33,9 @@ const newState: types.State = {
   componentNameInputValue: "",
   projects: [{ filename: "Untitled-1", lastSavedLocation: "" }],
 
+  activeTreeNode: "", // OverVue v.10.0 –– Node that is being dragged in tree UI
+  potentialParentNode: "",
+
   activeRoute: "HomeView",
   // need to change to activeComponentName
   activeComponent: "",
