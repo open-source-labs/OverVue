@@ -544,6 +544,27 @@ const actions: Store<"main", State, {}, Actions> = {
     }
     this.activeHTML = "";
   },
+  // OverVue v.10.0 –– Drag and Drop for Tree Nodes
+  setActiveTreeNode(payload) {
+    this.activeTreeNode = payload;
+  },
+
+  setPotentialParentNode(payload) {
+    this.potentialParentNode = payload;
+  },
+
+  moveNode(payload) {
+
+    console.log('move node: ', payload);
+    // current node is payload
+    // potential parent this.potentialParentNode
+    // update componentMap accordingly
+    if (this.componentMap[payload]) {
+      
+    }
+
+    // remember to clear potential parent
+  },
 
   // !Drag-andDrop
   //store id of dragged html element in activeComponent
