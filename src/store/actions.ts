@@ -554,16 +554,25 @@ const actions: Store<"main", State, {}, Actions> = {
   },
 
   moveNode(payload) {
-
-    console.log('move node: ', payload);
-    // current node is payload
+    console.log("move node: ", payload);
+    // current node being dragged is payload
     // potential parent this.potentialParentNode
-    // update componentMap accordingly
-    if (this.componentMap[payload]) {
-      
-    }
+
+    const componentMapAtPayload = JSON.parse(
+      JSON.stringify(this.componentMap[payload])
+    );
+    // store parent in variable
+    const oldParent = Object.keys(componentMapAtPayload.parent)[0];
+    // console.log("oldParent: ", oldParent);
+
+    // remove payload inside oldParent children array
+    const index = this.componentMap[oldParent].children.indexOf(payload);
+    if (index !== -1) this.componentMap[oldParent].children.splice(index, 1);
+
+    this.componentMap[this.potentialParentNode].children.push(payload);
 
     // remember to clear potential parent
+    this.potentialParentNode = "";
   },
 
   // !Drag-andDrop
