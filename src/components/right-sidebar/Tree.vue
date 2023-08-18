@@ -194,6 +194,7 @@ const endDrag = (event: Event, activeNode: string) => {
   // add component that is being dragged to children of  current potential parent
   // remove component from children list of previous parent
   moveNode(activeNode);
+  
 };
 </script>
 
