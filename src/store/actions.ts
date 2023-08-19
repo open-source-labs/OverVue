@@ -336,10 +336,8 @@ const actions: Store<"main", State, {}, Actions> = {
       if (item.parent) {
         const objectCheck = Object.keys(item.parent);
         if (objectCheck[0] === temp) {
-          item.parent[payload] = this.componentMap[
-            this.activeComponent
-          ] as Component;
-          delete item.parent[temp];
+          item.parent = this.componentMap[this.activeComponent] as Component;
+          // delete item.parent[temp];
         }
       }
     }
@@ -554,7 +552,12 @@ const actions: Store<"main", State, {}, Actions> = {
   },
 
   moveNode(payload) {
-    console.log("move node: ", payload);
+    console.log(
+      "component map in moveNode",
+      JSON.parse(JSON.stringify(this.componentMap))
+    );
+    if (payload === this.potentialParentNode) return; //edge case: current component cannot drag onto itself
+    console.log("potential parent node", this.potentialParentNode);
     // current node being dragged is payload
     // potential parent this.potentialParentNode
 
@@ -562,14 +565,22 @@ const actions: Store<"main", State, {}, Actions> = {
       JSON.stringify(this.componentMap[payload])
     );
     // store parent in variable
-    const oldParent = Object.keys(componentMapAtPayload.parent)[0];
-    // console.log("oldParent: ", oldParent);
+    const oldParent = componentMapAtPayload.parent.componentName;
+    console.log("oldParent: ", oldParent);
+
+    // console.log("componentMapAtPayload: ", componentMapAtPayload);
+
+    // Do nothing if dragging to current parent
+    if (oldParent === this.potentialParentNode) return;
 
     // remove payload inside oldParent children array
     const index = this.componentMap[oldParent].children.indexOf(payload);
     if (index !== -1) this.componentMap[oldParent].children.splice(index, 1);
 
     this.componentMap[this.potentialParentNode].children.push(payload);
+
+    // Change parent of payload
+    this.componentMap[payload].parent = this.componentMap[this.potentialParentNode];
 
     // remember to clear potential parent
     this.potentialParentNode = "";
@@ -769,15 +780,18 @@ const actions: Store<"main", State, {}, Actions> = {
   },
 
   addParent(payload) {
-    const a = this.componentMap[payload.componentName].parent as {
-      [key: string]: Component | RouteComponentMap;
-    };
-    a[this.parentSelected] = this.componentMap[this.parentSelected];
+    this.componentMap[payload.componentName].parent =
+      this.componentMap[this.parentSelected];
     this.componentMap[this.parentSelected].children.push(payload.componentName);
+    console.log(
+      "componentMap in addParent",
+      JSON.parse(JSON.stringify(this.componentMap))
+    );
   },
 
+  // Used in Canvas.vue (untested)
   addCopiedParent(payload) {
-    const parentSelected = Object.values(payload.parent)[0].componentName;
+    const parentSelected: string = payload.parent.componentName;
     // push into parent's children array
     this.componentMap[parentSelected].children.push(payload.componentName);
   },
@@ -793,7 +807,8 @@ const actions: Store<"main", State, {}, Actions> = {
     const activeObjChildrenArray = newObj[activeComponent].children;
 
     activeObjChildrenArray.forEach((child) => {
-      delete (newObj[child] as Component).parent[activeComponent];
+      // delete (newObj[child] as Component).parent[activeComponent];
+      newObj[child].parent = this.componentMap[activeRoute];
     });
 
     delete newObj[activeComponent];
@@ -972,6 +987,7 @@ const actions: Store<"main", State, {}, Actions> = {
   },
 
   updateActiveComponentChildrenValue(payload) {
+    console.log("MAKE THIS WORK");
     //temp is the activeComponent's children array
     if (this.activeComponent === payload) {
       return;
@@ -1023,9 +1039,9 @@ const actions: Store<"main", State, {}, Actions> = {
       //updates the htmlList with the child components deleted
       this.componentMap[componentName].htmlList = htmlList;
 
-      //delete the parent because the payload is no longer a child to the acitive component
+      //delete the parent because the payload is no longer a child to the active component
 
-      delete active.parent[this.activeComponent];
+      // delete active.parent[this.activeComponent];
 
       // add block
     } else {
@@ -1035,9 +1051,8 @@ const actions: Store<"main", State, {}, Actions> = {
       this.componentMap[this.activeRoute].children = this.componentMap[
         this.activeRoute
       ].children.filter((el) => payload !== el);
-      (this.componentMap[child[child.length - 1]] as Component).parent[
-        this.activeComponent
-      ] = this.componentMap[this.activeComponent] as Component;
+      (this.componentMap[child[child.length - 1]] as Component).parent = this
+        .componentMap[this.activeComponent] as Component;
     }
   },
 

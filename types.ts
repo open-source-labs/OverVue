@@ -285,7 +285,7 @@ export type RouteComponentMap = {
   children: string[];
   componentName: string;
   htmlList: HtmlElement[];
-  parent?: { [key: string]: Component | RouteComponentMap };
+  parent?: Component | RouteComponentMap;
 };
 
 //used in Canvas to resize rendered components
@@ -316,7 +316,7 @@ export type Component = {
   actions: string[];
   props: string[];
   state: string[];
-  parent: { [key: string]: Component };
+  parent: Component; // fix this later
   isActive: boolean;
   idDrag: string | number;
   idDrop: string | number;
