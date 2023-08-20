@@ -316,7 +316,7 @@ export type Component = {
   actions: string[];
   props: string[];
   state: string[];
-  parent: Component; // fix this later
+  parent: Component | RouteComponentMap; // fix this later
   isActive: boolean;
   idDrag: string | number;
   idDrop: string | number;

@@ -124,7 +124,7 @@ import ImportComponent from "./ImportComponent.vue";
 import CreateMenuHTMLQueue from "./CreateMenuHTMLQueue.vue";
 import ImportLibraryButton from "./ImportLibraryButton.vue";
 import LibComponents from "./LibComponents.vue";
-import { Component } from "../../../../types";
+import { Component, RouteComponentMap } from "../../../../types";
 
 const store = useStore();
 
@@ -213,6 +213,7 @@ const userProps = computed(() => store.userProps);
 // returns an array
 const routes = computed(() => store.routes);
 // returns an object that contains Homeview: []
+const activeRoute = computed(() => store.activeRoute);
 
 //getter function
 const componentNameInputValue = computed({
@@ -269,6 +270,10 @@ const changeLibComponentDisplay: typeof store.changeLibComponentDisplay = (
 const addLibComponents: typeof store.addLibComponents = (payload) =>
   store.addLibComponents(payload);
 
+const parentSelect: typeof store.parentSelect = (payload) =>
+  store.parentSelect(payload);
+const addParent: typeof store.addParent = (payload) => store.addParent(payload);
+
 //all actions from action.js
 
 const pickComponent = (componentName: string) => {
@@ -280,10 +285,21 @@ const pickComponent = (componentName: string) => {
 const createComponent = () => {
   // need to find a dynamic solution to pull current route, here set to HomeView
   // Parses array of components off routes, then finds parent element name (id), then passes parent into useCreateComponent, where x, y and z are pulled off the parent object
-  const parentComponent = JSON.parse(
-    JSON.stringify(routes.value.HomeView)
+
+  let parentComponent = JSON.parse(
+    JSON.stringify(routes.value[activeRoute.value])
   ).find((ele: Component) => ele.componentName === parent.value);
-  // console.log("componentNameInputValue is ", componentNameInputValue.value);
+
+  if (parentComponent === undefined) {
+    parentSelect(activeRoute.value);
+    parentComponent = componentMap.value[activeRoute.value];
+
+    // change parentSelected to route (activeRoute.value) and then call addParent()
+
+    // parentSelect(activeRoute.value);
+    // addParent( ** component ** );
+  }
+  console.log("parent component", JSON.parse(JSON.stringify(parentComponent)));
 
   const importProps = {
     userActions: userActions.value,
@@ -298,7 +314,7 @@ const createComponent = () => {
     registerComponent,
     setActiveComponent,
   };
-  // console.log("componentNameInputValue.value ", componentNameInputValue.value);
+
   useCreateComponent({ parentComponent }, importProps); //invokes composable
 };
 
@@ -307,181 +323,6 @@ watch(attributeModalOpen, () => {
   attributeModal.value = attributeModalOpen.value;
 });
 </script>
-
-<!-- <script>
-  // old Options API
-import { useCreateComponent } from "../../composables/useCreateComponent.js";
-import Icons from "./Icons.vue";
-import ParentMultiselect from "./ParentMultiselect.vue";
-import ImportComponent from "./ImportComponent.vue"
-import CreateMenuHTMLQueue from "./CreateMenuHTMLQueue.vue";
-import { mapState, mapActions } from "vuex";
-import ImportLibraryButton from "./ImportLibraryButton.vue";
-import LibComponents from "./LibComponents.vue";
-
-
-export default {
-  data(){
-    return {
-      input:'',
-      parent: '',
-      libArray:[
-        {
-          name:'alert',
-          libname:'e-alert',
-          src:'alert.png'
-        },
-        {name:'button',
-        libname:'e-button',
-         src:'button.png'
-      },
-      {
-        name:'inputbox',
-        libname:'e-input',
-        src:'inputbox.png'
-      },
-      {
-        name:'card',
-        libname:'e-card',
-        src:'card.png'
-      },
-      {
-          name:'badge',
-          libname:'e-badge',
-          src:'badge.png'
-        },
-        {
-          name:'dropdown',
-          libname:'e-dropdown',
-          src:'dropdown.png'
-        },
-        {
-          name:'link',
-          libname:'e-link',
-          src:'link.png'
-        },
-        {
-          name:'form',
-          libname:'e-form',
-          src:'form.png'
-        },
-        {
-          name:'checkbox',
-          libname:'e-checkbox',
-          src:'checkbox.png'
-        },
-        {
-          name:'checkbox button',
-          libname:'e-checkbox-button',
-          src:'checkboxbutton.png'
-        },
-        {
-          name:'datepicker',
-          libname:'e-date-picker',
-          src:'datepicker.png'
-        },
-        {
-          name:'slider',
-          libname:'e-slider',
-          src:'slider.png'
-        },
-        {
-          name:'tag',
-          libname:'e-tag',
-          src:'tag.png'
-        }
-
-      ]
-    }
-  },
-
-  name: "CreateMenu",
-  components: {
-    Icons,
-    ParentMultiselect,
-    ImportComponent,
-    CreateMenuHTMLQueue,
-    ImportLibraryButton,
-    ImportLibraryButton,
-    LibComponents,
-
-},
-  computed: {
-
-    ...mapState([
-      "componentMap",
-      "selectedElementList",
-      "activeComponent",
-      "activeHTML",
-      "attributeModalOpen",
-      "userActions",
-      "userState",
-      "userProps",
-      "routes",
-    ]),
-    componentNameInputValue: {
-      get() {
-        return this.$store.state.componentNameInputValue;
-      },
-      set(value) {
-        this.updateComponentNameInputValue(value);
-      },
-    },
-    filter(){
-  if(this.input =='') return [];
-  if(this.input.length >=2){
-  return this.libArray.filter(e=>e.name.includes(this.input.toLowerCase()))}
-  }
-  },
-  methods: {
-    ...mapActions([
-      "registerComponent",
-      "addToSelectedElementList",
-      "updateComponentNameInputValue",
-      "setActiveComponent",
-      "addToComponentElementList",
-      "addNestedHTML",
-      "addNestedNoActive",
-      "editComponentName",
-      "openProject",
-      "createAction",
-      "createState",
-      "createProp",
-'changeLibComponentDisplay',
-'addLibComponents'
-
-]),
-pickComponent(componentName){
-  const payload = {
-
-  };
-  payload[componentName] = ['fa-brands fa-elementor fa-xl']
-
-
-
-  this.addLibComponents(payload);
-
-}
-   ,
-    createComponent() {
-      // need to find a dynamic solution to pull current route, here set to HomeView
-      // Parses array of components off routes, then finds parent element name (id), then passes parent into useCreateComponent, where x, y and z are pulled off the parent object
-      const parent = JSON.parse(
-      JSON.stringify(this.routes.HomeView)).find((ele) => ele.componentName === this.parent);
-       console.log("routes.value.homeView is ", this.routes.HomeView)
-      console.log("ParentComponent is", parent)
-    console.log("parent.value is ", this.parent)
-      useCreateComponent.bind(this)({ parent }) //invokes composable
-    },
-  },
-    watch: {
-    attributeModalOpen() {
-      console.log("Is anything watching attributeModalOpen?")
-      this.attributeModal = this.attributeModalOpen;
-    },
-  }
-};
-</script> -->
 
 <style lang="scss" scoped>
 .create-component-div {
