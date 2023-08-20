@@ -4,30 +4,35 @@ export function useCreateComponent(importObj, propObj) {
   // this function requires userActions, userState, userProps, componentNameInputValue, createAction, createState, createProp, selectedElementList, componentMap, registerComponent, setActiveComponent
   const createComponent = (importObj) => {
     let imported = false; //alter this logic once ready to import components
-    if (importObj.hasOwnProperty('componentName')) {
+    if (importObj.hasOwnProperty("componentName")) {
       imported = true;
+
       //Check if state and actions on import exist in the store. If not, add them.
       for (let i = 0; i < importObj.actions.length; i++) {
         if (!propObj.userActions.includes(importObj.actions[i])) {
-          propObj.createAction(importObj.actions[i])
+          propObj.createAction(importObj.actions[i]);
         }
       }
       for (let i = 0; i < importObj.state.length; i++) {
         if (!propObj.userState.includes(importObj.state[i])) {
-          propObj.createState(importObj.state[i])
+          propObj.createState(importObj.state[i]);
         }
       }
       for (let i = 0; i < importObj.props.length; i++) {
         if (!propObj.userProps.includes(importObj.props[i])) {
-          propObj.createProp(importObj.props[i])
+          propObj.createProp(importObj.props[i]);
         }
       }
     }
 
-    if (imported === false && !propObj.componentNameInputValue.replace(/[^a-z0-9-_.]/gi, "")) {
+    if (
+      imported === false &&
+      !propObj.componentNameInputValue.replace(/[^a-z0-9-_.]/gi, "")
+    ) {
       event.preventDefault();
       return false;
     }
+    
     // boilerplate properties for each component upon creation
     const component = {
       x: importObj?.parent?.x ?? 0,
@@ -41,8 +46,8 @@ export function useCreateComponent(importObj, propObj) {
       state: [],
       parent: {},
       isActive: false,
-      idDrag: '',
-      idDrop: '',
+      idDrag: "",
+      idDrop: "",
       color: "#ffffff85",
       htmlAttributes: {
         class: "",
@@ -58,13 +63,15 @@ export function useCreateComponent(importObj, propObj) {
       component.state = importObj.state;
       component.props = importObj.props;
     } else {
-      component.componentName = propObj.componentNameInputValue.replace(/[^a-z0-9-_.]/gi, "");
+      component.componentName = propObj.componentNameInputValue.replace(
+        /[^a-z0-9-_.]/gi,
+        ""
+      );
     }
     if (!propObj.componentMap[component.componentName]) {
       propObj.registerComponent(component);
       propObj.setActiveComponent(component.componentName);
     }
-  }
-  createComponent(importObj)
-
+  };
+  createComponent(importObj);
 }

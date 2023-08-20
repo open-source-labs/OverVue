@@ -780,6 +780,7 @@ const actions: Store<"main", State, {}, Actions> = {
   },
 
   addParent(payload) {
+    console.log('payload in addParent: ', payload);
     this.componentMap[payload.componentName].parent =
       this.componentMap[this.parentSelected];
     this.componentMap[this.parentSelected].children.push(payload.componentName);

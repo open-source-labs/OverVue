@@ -216,6 +216,7 @@ const endDrag = (event: Event, activeTreeNode: string) => {
         <span
           v-else-if="activeRoute === node.value"
           class="tree-node-activeRoute"
+          @dragenter.prevent="dragEnter($event, node.value)"
         >
           {{ node.value }}
         </span>
