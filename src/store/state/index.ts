@@ -35,6 +35,7 @@ const newState: types.State = {
 
   activeTreeNode: "", // OverVue v.10.0 –– Node that is being dragged in tree UI
   potentialParentNode: "",
+  // inspectComponentModal: false,
 
   activeRoute: "HomeView",
   // need to change to activeComponentName

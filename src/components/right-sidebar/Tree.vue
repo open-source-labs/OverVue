@@ -23,11 +23,13 @@ const treeConfig = ref({ nodeWidth: 175, nodeHeight: 100, levelHeight: 200 });
 const treeData = ref<typeof VueTree.treeData>(null);
 const tree = ref<typeof VueTree>(null); // ref to htmlelement
 defineExpose({ tree }); // makes tree available through template refs
+const inspectComponentModal = ref(false);
 
 /* COMPUTED */
 const componentMap = computed(() => store.componentMap);
 const activeComponent = computed(() => store.activeComponent); // handles collapsing child nodes
 const activeTreeNode = computed(() => store.activeTreeNode); // handles drag & drop functionality within main Tree UI
+// const inspectComponentModal = computed(() => store.inspectComponentModal);
 
 // routes
 const routes = computed(() => store.routes);
@@ -189,6 +191,14 @@ const endDrag = (event: Event, activeTreeNode: string) => {
   // remove component from children list of previous parent
   moveNode(activeTreeNode);
 };
+
+/* [OverVue v.10.0] INSPECT COMPONENT MODAL FEATURE */
+
+const inspectComponent = (event: Event) => {
+  console.log("double clicked");
+  inspectComponentModal.value = !inspectComponentModal.value;
+  console.log("inspect component modal value", inspectComponentModal);
+};
 </script>
 
 <template>
@@ -205,6 +215,7 @@ const endDrag = (event: Event, activeTreeNode: string) => {
         <span
           v-if="activeComponent === node.value"
           class="tree-node-active"
+          @dblclick="inspectComponent($event)"
           @dragstart="startDrag($event, node.value)"
           draggable="true"
           :stop-propagation="true"
@@ -224,6 +235,7 @@ const endDrag = (event: Event, activeTreeNode: string) => {
           v-else
           class="tree-node"
           @click="activateNode(node.value)"
+          @dblclick="inspectComponent($event)"
           @dragstart="startDrag($event, node.value)"
           draggable="true"
           :stop-propagation="true"
@@ -232,6 +244,9 @@ const endDrag = (event: Event, activeTreeNode: string) => {
         >
           {{ node.value }}
         </span>
+        <q-dialog v-model="inspectComponentModal">
+          <div>hi please work</div>
+        </q-dialog>
       </template>
     </vue-tree>
   </div>
