@@ -6,10 +6,14 @@ Description:
 
 <template>
   <Tree />
+  <!-- <q-page class="flex flex-center" id="compDisplay">
+    <Canvas />
+  </q-page> -->
 </template>
 
 <script setup>
 import Tree from "../components/right-sidebar/Tree.vue";
+import Canvas from "src/components/Canvas.vue";
 </script>
 
 <style scoped>

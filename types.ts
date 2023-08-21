@@ -12,6 +12,7 @@ export type State = {
   };
   activeTreeNode: string;
   potentialParentNode: string;
+  // inspectComponentModal: boolean;
   routes: {
     [key: string]: Component[];
   };
