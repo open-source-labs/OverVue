@@ -37,9 +37,9 @@ Description:
       v-if="activeComponent === ''"
     ></ParentMultiselect>
 
-    <!-- <q-expansion-item group="accordion" label="Create Component" > -->
-    <LibComponents></LibComponents>
-    <div class="searchinput">
+    <!-- [OverVue v.10.0] set CSS display to hidden (in favor of Vuetensils library) -->
+    <LibComponents />
+    <div class="searchinput" id="elementplussearch">
       <q-input
         outlined
         v-model="input"
@@ -55,6 +55,7 @@ Description:
         no-error-icon
       />
     </div>
+    <!-- [OverVue v.10.0] end hidden section -->
 
     <q-list bordered separator>
       <q-item
@@ -90,9 +91,9 @@ Description:
         @activeLayer="addNestedNoActive"
       />
     </div>
-    <button class="componentHTML">
-      <CreateMenuHTMLQueue></CreateMenuHTMLQueue>
-    </button>
+    <!-- <button class="componentHTML">
+      <CreateMenuHTMLQueue />
+    </button> -->
 
     <br />
 

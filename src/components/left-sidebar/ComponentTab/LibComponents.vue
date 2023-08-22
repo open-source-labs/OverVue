@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="elementplus">
     <q-btn-dropdown
       class="selectLib"
       color=""

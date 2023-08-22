@@ -22,16 +22,18 @@ Description:
           label="Component Details"
           class="label-text"
         ></q-tab>
-        <q-tab name="tree" label="Project Tree" class="label-text"></q-tab>
+        <!-- [OverVue v.10.0] deprecated tree in right sidebar :) -->
+        <!-- <q-tab name="tree" label="Project Tree" class="label-text"></q-tab> -->
         <q-tab name="routes" label="Routes" class="label-text"></q-tab>
       </q-tabs>
       <q-tab-panels v-model="tab" animated>
         <q-tab-panel name="routes">
           <RoutesTab />
         </q-tab-panel>
-        <q-tab-panel name="tree">
+        <!-- [OverVue v.10.0] deprecated tree in right sidebar :) -->
+        <!-- <q-tab-panel name="tree">
           <Tree />
-        </q-tab-panel>
+        </q-tab-panel> -->
         <q-tab-panel name="detail">
           <ComponentDetails />
         </q-tab-panel>
@@ -57,7 +59,7 @@ import { ref, computed, watch, Ref } from "vue";
 const store = useStore();
 const tab = ref("routes");
 const open = ref(true);
-const height= ref(40);
+const height = ref(40);
 const up = ref("fas fa-chevron-up");
 const down = ref("fas fa-chevron-down");
 
@@ -68,7 +70,8 @@ const activeHTML = computed(() => store.activeHTML);
 const showTutorial = computed(() => store.showTutorial);
 
 //methods mapActions conversion
-const setActiveHTML: typeof store.setActiveHTML = (payload) => store.setActiveHTML(payload);
+const setActiveHTML: typeof store.setActiveHTML = (payload) =>
+  store.setActiveHTML(payload);
 
 const openBottomDrawer = () => {
   // 15in mb pro - 1027 px 3.75
