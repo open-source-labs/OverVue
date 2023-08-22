@@ -13,6 +13,9 @@ Description:
 import VueTree from "@overvue/vue3-tree-chart";
 import "@overvue/vue3-tree-chart/dist/vue3-tree-chart.css";
 
+import HTMLQueue from "./HTMLQueue.vue";
+import NewHTMLQueue10 from "./NewHTMLQueue10.vue";
+
 import { useStore } from "../../store/main.js";
 import { ref, computed, watch } from "vue";
 
@@ -29,7 +32,6 @@ const inspectComponentModal = ref(false);
 const componentMap = computed(() => store.componentMap);
 const activeComponent = computed(() => store.activeComponent); // handles collapsing child nodes
 const activeTreeNode = computed(() => store.activeTreeNode); // handles drag & drop functionality within main Tree UI
-// const inspectComponentModal = computed(() => store.inspectComponentModal);
 
 // routes
 const routes = computed(() => store.routes);
@@ -197,7 +199,7 @@ const endDrag = (event: Event, activeTreeNode: string) => {
 const inspectComponent = (event: Event) => {
   console.log("double clicked");
   inspectComponentModal.value = !inspectComponentModal.value;
-  console.log("inspect component modal value", inspectComponentModal);
+  console.log("inspect component modal value", inspectComponentModal.value);
 };
 </script>
 
@@ -245,7 +247,11 @@ const inspectComponent = (event: Event) => {
           {{ node.value }}
         </span>
         <q-dialog v-model="inspectComponentModal">
-          <div>hi please work</div>
+          <div class="modal-box">
+            <!-- <HTMLQueue /> -->
+            <NewHTMLQueue10 />
+            <!-- <Tree /> -->
+          </div>
         </q-dialog>
       </template>
     </vue-tree>
@@ -253,6 +259,11 @@ const inspectComponent = (event: Event) => {
 </template>
 
 <style lang="scss" scoped>
+.modal-box {
+  background: hotpink;
+  width: 400px;
+}
+
 .container {
   height: 100%;
   width: 100%;

@@ -64,7 +64,6 @@ import { ref, computed, watch } from "vue";
 import { useStore } from "../../store/main.js";
 import { breadthFirstSearch } from "../../utils/search.util";
 import { HtmlElement, Component } from "../../../types";
-import { string } from "yargs";
 
 const store = useStore();
 
@@ -78,6 +77,8 @@ const attributeModal = ref(false);
 const classText = ref("");
 const bindingText = ref("");
 
+/* COMPUTED */
+
 const activeComponentObj = computed(() => store.activeComponentObj);
 const selectedElementList = computed(() => store.selectedElementList);
 const componentMap = computed(() => store.componentMap);
@@ -88,6 +89,7 @@ const attributeModalOpen = computed(() => store.attributeModalOpen);
 
 const renderList = computed({
   get() {
+    //if we don't have an activeComponent:
     if (activeComponent.value === "")
       return selectedElementList.value.map((el, index) => [
         el.text,
@@ -96,6 +98,7 @@ const renderList = computed({
       ]);
     // change activeComponent's htmlList into an array of arrays ([element/component name, index in state])
     if (activeComponent.value !== "" && activeLayer.value.id === "") {
+      //sort each component's html list
       let sortedHTML = componentMap.value[activeComponent.value].htmlList
         .map((el, index) => [el.text, index, el.id, el.z])
         .filter((el) => {
@@ -266,218 +269,6 @@ watch(attributeModalOpen, () => {
 //   }
 // });
 </script>
-
-<!-- <script>
-import { keys } from "localforage";
-import { mapState, mapActions } from "vuex";
-import {
-  setSelectedElementList,
-  deleteSelectedElement,
-  deleteFromComponentHtmlList,
-} from "../../store/types";
-import { breadthFirstSearch } from "../../utils/search.util";
-
-export default {
-  name: "HTMLQueue",
-  props: {
-    name: {
-      type: String,
-    },
-    listToRender: {
-      type: Array,
-    },
-  },
-  data() {
-    return {
-      exceptions: ["input", "img", "link"],
-      attributeModal: false,
-      classText: "",
-      bindingText: "",
-    };
-  },
-  computed: {
-    ...mapState([
-      "activeComponentObj",
-      "selectedElementList",
-      "componentMap",
-      "activeComponent",
-      "activeHTML",
-      "activeLayer",
-      "attributeModalOpen",
-    ]),
-    renderList: {
-      get() {
-        if (this.activeComponent === "")
-          return this.selectedElementList.map((el, index) => [
-            el.text,
-            index,
-            el.id,
-          ]);
-        // change activeComponent's htmlList into an array of arrays ([element/component name, index in state])
-        if (this.activeComponent !== "" && this.activeLayer.id === "") {
-          let sortedHTML = this.componentMap[this.activeComponent].htmlList
-            .map((el, index) => [el.text, index, el.id, el.z])
-            .filter((el) => {
-              return el[0] !== undefined;
-            });
-          return sortedHTML;
-        }
-        let activeElement = breadthFirstSearch(
-          this.componentMap[this.activeComponent].htmlList,
-          this.activeLayer.id
-        );
-        let sortedHTML = activeElement.children
-          .map((el, index) => [el.text, index, el.id])
-          .filter((el) => {
-            return el[0] !== undefined;
-          });
-        return sortedHTML;
-      },
-      set(value) {
-        this.$store.dispatch(setSelectedElementList, value);
-      },
-    },
-    depth: function () {
-      let newTitle = "";
-      this.activeLayer.lineage.forEach((el) => {
-        newTitle += ` > ${el}`;
-      });
-      return newTitle;
-    },
-    //make child components in htmlList exceptions
-    moreExceptions: function () {
-      let childComponent = [];
-      if (this.activeComponent) {
-        childComponent = this.componentMap[this.activeComponent].children;
-      }
-      return childComponent;
-    },
-  },
-  methods: {
-    ...mapActions([
-      "setActiveHTML",
-      "setActiveLayer",
-      "upOneLayer",
-      "setSelectedIdDrag",
-      "setIdDrag",
-      "setSelectedIdDrop",
-      "setIdDrop",
-      "dragDropSortHtmlElements",
-      "dragDropSortSelectedHtmlElements",
-      "openAttributeModal",
-      "addActiveComponentClass",
-      "addBindingText",
-      "clearActiveHTML",
-    ]),
-    deleteElement(id) {
-      if (this.activeComponent === "")
-        this.$store.dispatch(deleteSelectedElement, id[0]);
-      else this.$store.dispatch(deleteFromComponentHtmlList, id[1]);
-    },
-
-    closeMenu(element) {
-      if (this.activeComponent !== "") {
-        this.clearActiveHTML();
-        this.openAttributeModal(element);
-      }
-    },
-
-    setActiveElement(element) {
-      if (this.activeComponent !== "") {
-        this.setActiveHTML(element);
-        if (this.attributeModal === false) {
-          this.openAttributeModal(element);
-        } else {
-          this.closeMenu(element);
-        }
-      }
-    },
-
-    setLayer(element) {
-      this.setActiveLayer(element);
-      element.id = this.activeHTML;
-    },
-    setParentLayer() {
-      if (this.activeLayer.id !== "") {
-        this.upOneLayer(this.activeLayer.id);
-      }
-    },
-    //METHODS FOR DRAG-AND-DROP
-    startDrag(event, id) {
-      //add a class to make the html element currently being drag transparent
-      event.target.classList.add("currentlyDragging");
-      const dragId = id;
-      //store the id of dragged element
-      if (this.activeComponent === "") this.setSelectedIdDrag(dragId);
-      else this.setIdDrag(dragId);
-    },
-    dragEnter(event, id) {
-      event.preventDefault();
-      const dropId = id;
-      //store the id of the html element whose location the dragged html element could be dropped upon
-      if (this.activeComponent === "") this.setSelectedIdDrop(dropId);
-      else this.setIdDrop(dropId);
-    },
-    dragOver(event) {
-      //needed stop the dragend animation so endDrag is invoked automatically
-      event.preventDefault();
-    },
-    endDrag(event) {
-      //remove the 'currentlyDragging' class after the HTML is dropped to remove transparency
-      event.preventDefault();
-      event.target.classList.remove("currentlyDragging");
-      //invoke the action that will use the idDrag and idDrop to sort the HtmlList
-      if (this.activeComponent === "") this.dragDropSortSelectedHtmlElements();
-      else this.dragDropSortHtmlElements();
-    },
-    submitClass(element, idNum) {
-      if (element === "") {
-        return;
-      }
-
-      let payload = {
-        class: element,
-        id: idNum,
-      };
-      this.addActiveComponentClass(payload);
-      this.classText = "";
-    },
-    addBinding(input, idNum) {
-      if (input === "") {
-        return;
-      }
-      const payload = {
-        binding: input,
-        id: idNum,
-      };
-      this.addBindingText(payload);
-      this.bindingText = "";
-    },
-  },
-  /*
-  watch(attributeModalOpen, () => attributeModal = attributeModalOpen);
-
-  watch(activeComponent, () => {
-    if (activeComponent !== '') {
-      component = true;
-    } else {
-      component = false;
-    }
-  }) */
-  watch: {
-    attributeModalOpen() {
-      this.attributeModal = this.attributeModalOpen;
-    },
-    activeComponent: function () {
-      if (this.activeComponent !== "") {
-        this.component = true;
-      } else {
-        this.component = false;
-      }
-    },
-  },
-};
-</script> -->
 
 <style lang="scss" scoped>
 .html-queue {
