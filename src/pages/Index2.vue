@@ -13,7 +13,6 @@ Description:
 
 <script setup>
 import Tree from "../components/right-sidebar/Tree.vue";
-import Canvas from "src/components/Canvas.vue";
 </script>
 
 <style scoped>

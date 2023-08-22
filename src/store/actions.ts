@@ -376,6 +376,7 @@ const actions: Store<"main", State, {}, Actions> = {
 
   // HTML ELEMENTS
 
+  // assigned as to a function 
   addNestedHTML(payload) {
     const componentName = this.activeComponent;
     const { activeHTML } = this;
