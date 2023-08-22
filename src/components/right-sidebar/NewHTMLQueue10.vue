@@ -1,8 +1,13 @@
 <!-- [OverVue v.10.0] new & improved HTML Queue (now includes nesting) -->
 
 <template>
-  <button @click="outputTreeData"></button>
-  <Draggable v-model="treeData" />
+  <button @click="outputTreeData">Output Tree Data</button>
+  <div class="top-p" v-if="activeComponent === ''">
+    Select a component to see your HTML elements.
+  </div>
+  <div v-else>
+    <Draggable v-model="treeData" />
+  </div>
 </template>
 
 <script setup>
@@ -14,16 +19,30 @@ import { ref, computed, watch } from "vue";
 
 const store = useStore();
 
+const treeData = ref([]);
+
 const componentMap = computed(() => store.componentMap);
 const activeComponent = computed(() => store.activeComponent);
+// const htmlList = computed(() => store.activeComponent.htmlList);
 
-const htmlList = JSON.parse(JSON.stringify(componentMap.value))[
-  activeComponent.value
-].htmlList;
+// const htmlList = computed(() => {
+//   if (activeComponent.value !== "") {
+//     treeData.value = JSON.parse(JSON.stringify(componentMap.value))[
+//       activeComponent.value
+//     ].htmlList;
+//     return treeData.value;
+//   }
+// });
 
-const treeData = ref(
-  JSON.parse(JSON.stringify(componentMap.value))[activeComponent.value].htmlList
-);
+if (activeComponent.value !== "") {
+  treeData.value = JSON.parse(JSON.stringify(componentMap.value))[
+    activeComponent.value
+  ].htmlList;
+}
+
+const outputTreeData = () => {
+  console.log(treeData.value);
+};
 
 // Watching tree data so that state updates when user interacts with tree
 watch(
@@ -55,6 +74,7 @@ watch(
 // convertFromTreeData(htmlList);
 // // console.log("converted", JSON.parse(JSON.stringify(convertedTreeData.value)));
 </script>
+
 
 <style>
 .he-tree--rtl {
