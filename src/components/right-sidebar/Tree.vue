@@ -246,16 +246,16 @@ const inspectComponent = (event: Event) => {
         >
           {{ node.value }}
         </span>
-        <q-dialog v-model="inspectComponentModal">
-          <div class="modal-box">
-            <!-- <HTMLQueue /> -->
-            <NewHTMLQueue10 />
-            <!-- <Tree /> -->
-          </div>
-        </q-dialog>
       </template>
     </vue-tree>
   </div>
+  <q-dialog v-model="inspectComponentModal">
+    <div class="modal-box">
+      <!-- <HTMLQueue /> -->
+      <NewHTMLQueue10 />
+      <!-- <Tree /> -->
+    </div>
+  </q-dialog>
 </template>
 
 <style lang="scss" scoped>
