@@ -1,3 +1,5 @@
+<!-- [OverVue v.10.0] new & improved HTML Queue (now includes nesting) -->
+
 <template>
   <button @click="outputTreeData"></button>
   <Draggable v-model="treeData" />
@@ -19,8 +21,24 @@ const htmlList = JSON.parse(JSON.stringify(componentMap.value))[
   activeComponent.value
 ].htmlList;
 
-// Parsing - unneeded for HeTree
-// const convertToTreeData = (htmlList) => {
+const treeData = ref(
+  JSON.parse(JSON.stringify(componentMap.value))[activeComponent.value].htmlList
+);
+
+// Watching tree data so that state updates when user interacts with tree
+watch(
+  treeData,
+  () => {
+    // Filters out empty objects that are placed in indices where elements were moved from
+    componentMap.value[activeComponent.value].htmlList = JSON.parse(
+      JSON.stringify(treeData.value)
+    ).filter((obj) => Object.keys(obj).length > 0);
+  },
+  { deep: true }
+);
+
+// Parsing –– needed for HeTree
+// const convertFromTreeData = (htmlList) => {
 //   // const newTreeData = [];
 //   //iterate through HTMLList of activeComponent in componentMap
 //   for (let i = 0; i < htmlList.length; i++) {
@@ -34,77 +52,6 @@ const htmlList = JSON.parse(JSON.stringify(componentMap.value))[
 //   }
 //   //do this recursively???
 // };
-// convertToTreeData(htmlList);
+// convertFromTreeData(htmlList);
 // // console.log("converted", JSON.parse(JSON.stringify(convertedTreeData.value)));
-
-const treeData = ref(
-  JSON.parse(JSON.stringify(componentMap.value))[activeComponent.value].htmlList
-);
-
-const outputTreeData = () => {
-  console.log(treeData.value);
-};
-
-watch(
-  treeData,
-  () => {
-    componentMap.value[activeComponent.value].htmlList = treeData.value;
-    console.log(
-      "updated htmlList: ",
-      componentMap.value[activeComponent.value].htmlList
-    );
-  },
-  { deep: true }
-);
-
-/*
-
-types:
-
-type HTMLTreeElement = {
-  text: string,
-  children: HTMLTreeElement[]
-}
-
-htmlTreeData: HTMLTreeElement[]
-
-===
-
-2 divs, 1 img, 3 forms
-(then drag second div as child of first div)
-
-activeComponent.htmlList -->
-[
-  {
-    text: div,
-    children: [
-        {
-          text: div,
-          children: []
-        },
-    ]
-  },
-  {
-    text: img,
-    children: []
-  },
-  {
-    text: form,
-    children: []
-  },
-  {
-    text: form,
-    children: []
-  },
-  {
-    text: form,
-    children: []
-  },
-]
-
-*/
-
-// [{text: 'Frontend', children: [{text: 'Vue', children: [{text: Nuxt}]}, {text: 'React', chldren: [{text: 'Next'}]}, {text:Angular}]}, {text" 'Backend'}]
 </script>
-
-<style scoped></style>
