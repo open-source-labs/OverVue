@@ -13,7 +13,7 @@
 <script setup>
 // [OverVue v.10.0] he-tree library: https://hetree.phphe.com/v2/
 import { Draggable } from "@he-tree/vue";
-import "@he-tree/vue/style/default.css";
+// import "@he-tree/vue/style/default.css";
 import { useStore } from "src/store/main";
 import { ref, computed, watch } from "vue";
 
@@ -74,3 +74,54 @@ watch(
 // convertFromTreeData(htmlList);
 // // console.log("converted", JSON.parse(JSON.stringify(convertedTreeData.value)));
 </script>
+
+
+<style>
+.he-tree--rtl {
+  direction:rtl
+}
+
+.he-tree--drag-overing {
+  background: #333334;
+}
+
+.he-tree-drag-placeholder {
+  background:#72d096;
+  /* border:1px dashed #00ff80; */
+  height:40px;
+}
+
+.he-tree {
+
+}
+
+.vtlist {
+  display: flex;
+}
+
+.vtlist-inner {
+  gap: 2px;
+  /* display: flex; */
+}
+
+.tree-node {
+  display: flex;
+  /* width: 50px; */
+}
+
+.tree-node-inner {
+  box-sizing: border-box;
+  font-size: 20px;
+  background-color: #72d096;
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 5px;
+  text-align: center;
+  width: 200px;
+  height: 40px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+
+</style>
