@@ -75,10 +75,9 @@ watch(
 // // console.log("converted", JSON.parse(JSON.stringify(convertedTreeData.value)));
 </script>
 
-
 <style>
 .he-tree--rtl {
-  direction:rtl
+  direction: rtl;
 }
 
 .he-tree--drag-overing {
@@ -86,13 +85,13 @@ watch(
 }
 
 .he-tree-drag-placeholder {
-  background:#72d096;
+  background: #72d096;
   /* border:1px dashed #00ff80; */
-  height:40px;
+  height: 40px;
 }
 
 .he-tree {
-
+  /* disappointing */
 }
 
 .vtlist {
@@ -122,6 +121,4 @@ watch(
   text-overflow: ellipsis;
   overflow: hidden;
 }
-
-
 </style>

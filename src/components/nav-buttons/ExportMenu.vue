@@ -649,7 +649,7 @@ const writeStyle = (componentName: string) => {
   // Add default styling to App
   if (componentName === "App") {
     return `\n\n<style scoped>\n#nav {
-    margin: auto;
+    margin: 0;
     text-align: center;
     display: flex;
     justify-content: space-between;
@@ -658,6 +658,7 @@ const writeStyle = (componentName: string) => {
     border: 1px solid black;
 	  width:50%;
 }
+
 .router-view {
   margin:auto;
   background-color: gray;

@@ -5,7 +5,10 @@ Description:
   -->
 
 <template>
-  <Tree />
+  <!-- <Tree /> -->
+  <q-page class="flex flex-center" id="compDisplay">
+    <Tree />
+  </q-page>
   <!-- <q-page class="flex flex-center" id="compDisplay">
     <Canvas />
   </q-page> -->

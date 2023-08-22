@@ -66,6 +66,7 @@
     "vue3-tree": "^0.11.0",
     "vued3tree": "^5.1.0",
     "vuedraggable": "^4.1.0",
+    "vuetensils": "^0.13.2",
     "vuex": "^4.0.2"
   },
   "devDependencies": {

@@ -407,6 +407,15 @@ const clickedRedo = () => emit("redo");
 </script>
 
 <style lang="scss">
+.q-page-container {
+  // Overriding original q-page-container padding
+  padding-top: 0px !important;
+}
+
+// .q-header {
+//   position: relative;
+// }
+
 .q-toolbar {
   height: 50px;
 }
