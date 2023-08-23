@@ -17,17 +17,17 @@ Description:
         indicator-color="secondary"
         align="left"
       >
-        <q-tab name="code" label="Code Snippet" class="label-text" />
         <q-tab name="newhtml" label="New HTML Section" class="label-text" />
+        <q-tab name="code" label="Code Snippet" class="label-text" />
         <q-tab name="html" label="HTML Elements" class="label-text" />
         <q-tab name="state" label="Component Properties" class="label-text" />
       </q-tabs>
       <q-tab-panels v-model="tab" animated class="html-bg text-white">
-        <q-tab-panel name="code">
-          <CodeSnippet />
-        </q-tab-panel>
         <q-tab-panel name="newhtml">
           <NewHTMLQueue />
+        </q-tab-panel>
+        <q-tab-panel name="code">
+          <CodeSnippet />
         </q-tab-panel>
         <q-tab-panel name="html">
           <HTMLQueue />
@@ -103,7 +103,7 @@ import { ref, computed } from "vue";
 import { Component } from "../../../types";
 
 const store = useStore();
-const tab = ref("code");
+const tab = ref("newhtml");
 
 const activeComponentObj = computed(() => store.activeComponentObj);
 const activeComponent = computed(() => store.activeComponent);
