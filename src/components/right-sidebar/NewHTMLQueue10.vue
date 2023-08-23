@@ -1,7 +1,7 @@
 <!-- [OverVue v.10.0] new & improved HTML Queue (now includes nesting) -->
 
 <template>
-  <button @click="outputTreeData">Output Tree Data</button>
+  <!-- <button @click="outputTreeData">Output Tree Data</button> -->
   <div class="top-p" v-if="activeComponent === ''">
     Select a component to see your HTML elements.
   </div>
@@ -40,9 +40,9 @@ if (activeComponent.value !== "") {
   ].htmlList;
 }
 
-const outputTreeData = () => {
-  console.log(treeData.value);
-};
+// const outputTreeData = () => {
+//   console.log(treeData.value);
+// };
 
 // Watching tree data so that state updates when user interacts with tree
 watch(
@@ -90,29 +90,27 @@ watch(
   height: 40px;
 }
 
-.he-tree {
-  /* disappointing */
-}
+/* .he-tree {
+
+} */
 
 .vtlist {
   display: flex;
 }
 
-.vtlist-inner {
-  gap: 2px;
-  /* display: flex; */
+/* .vtlist-inner {
+  display: flex;
 }
 
 .tree-node {
   display: flex;
-  /* width: 50px; */
-}
+} */
 
 .tree-node-inner {
   box-sizing: border-box;
   font-size: 20px;
   background-color: #72d096;
-  border: 1px solid white;
+  border: 1px solid rgb(150, 150, 150);
   border-radius: 5px;
   padding: 5px;
   text-align: center;
