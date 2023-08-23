@@ -132,10 +132,6 @@ const changeState = (elementName: string) => {
   padding-top: 10px;
 }
 
-.icon-grid button {
-  border: 1px solid white;
-}
-
 @media (max-width: 680px) {
   .icon-grid {
     display: grid;
