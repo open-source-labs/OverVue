@@ -91,7 +91,7 @@ const handleHtmlDeselection = (event: MouseEvent) => {
 
 watch(componentNameInputValue, () => {
   if (componentNameInputValue.value !== "" && activeComponent.value === "") {
-    tab.value = "tree";
+    tab.value = "detail";
   }
 });
 
@@ -100,7 +100,7 @@ watch(selectedElementList, () => {
     activeComponent.value === "" &&
     [...selectedElementList.value].length !== 0
   ) {
-    tab.value = "tree";
+    tab.value = "detail";
   }
 });
 </script>

@@ -4,6 +4,7 @@
 export type State = {
   clicked: boolean;
   icons: Icons;
+  vtIcons: Icons;
   htmlElementMap: HtmlElementMap;
   componentMap: {
     App: RouteComponentMap;

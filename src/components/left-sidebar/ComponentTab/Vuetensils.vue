@@ -1,6 +1,6 @@
 <!--
 Description:
-  Displays all html elements icons that can be added to component in createComponent
+  Displays all Vuetensils element icons that can be added to component in createComponent
   Functionality includes: Adding (nesting) html elements to components
   -->
 
@@ -8,7 +8,7 @@ Description:
   <section class="icon-grid">
     <button
       @click.prevent="changeState(elementName)"
-      v-for="([elementName, iconString], idx) in Object.entries(icons)"
+      v-for="([elementName, iconString], idx) in Object.entries(vtIcons)"
       :key="idx + Date.now()"
     >
       <span class="badge"> {{ elementStorage[elementName] }}</span>
@@ -18,7 +18,7 @@ Description:
       <span>{{ elementName }}</span>
     </button>
     <!-- Icons for activeComponent's Child Components-->
-    <!-- <button
+    <button
       @click.prevent="changeState(elementName)"
       v-for="(elementName, idx) in childrenComp"
       :key="idx + Date.now()"
@@ -28,7 +28,7 @@ Description:
       <i :class="childIcon"></i>
       <br />
       <span>{{ elementName }}</span>
-    </button> -->
+    </button>
   </section>
 </template>
 
@@ -37,7 +37,6 @@ Description:
 import { HtmlElement } from "app/types";
 import { computed, ref } from "vue";
 import { useStore } from "../../../store/main.js";
-
 const store = useStore();
 
 //to give the child componenets of the active components icons
@@ -51,7 +50,8 @@ const emit = defineEmits([
   "activeHTML",
 ]);
 
-const icons = computed(() => store.icons);
+const vtIcons = computed(() => store.vtIcons);
+// const icons = computed(() => store.icons);
 const activeComponent = computed(() => store.activeComponent);
 const componentMap = computed(() => store.componentMap);
 const selectedElementList = computed(() => store.selectedElementList);
@@ -176,5 +176,77 @@ button:active {
   border-radius: 50%;
   background-color: $secondary;
   color: $menutext;
+
+  i.fa-utensils {
+    // text-align: center;
+    // width: 1px !important;
+    // height: 1px !important;
+    // font-size: 5px !important;
+  }
 }
+
+// .icon-grid {
+//   display: grid;
+//   grid-template-columns: 33% 33% 33%;
+//   grid-row-gap: 1em;
+//   padding-top: 10px;
+// }
+
+// .icon-grid button {
+//   border: solid 1px white;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-content: center;
+//   margin: auto;
+// }
+
+// @media (max-width: 680px) {
+//   .icon-grid {
+//     display: grid;
+//     grid-template-columns: 50% 50%;
+//     grid-row-gap: 1em;
+//     width: 100%;
+//   }
+// }
+
+// button {
+//   background: none;
+//   color: $menutext;
+//   border: none;
+// }
+
+// button:hover {
+//   cursor: pointer;
+//   color: $secondary;
+// }
+
+// button:focus {
+//   outline: none;
+//   color: $secondary;
+// }
+
+// button:active {
+//   box-shadow: 0 5px inherit;
+//   transform: translateY(4px);
+// }
+
+// .badge {
+//   width: 15px;
+//   line-height: 15px;
+//   text-align: center;
+//   font-size: 10px;
+//   font-weight: bold;
+//   float: right;
+//   border-radius: 50%;
+//   background-color: $secondary;
+//   color: $menutext;
+// }
+
+// i.fa-utensils {
+//   // text-align: center;
+//   // width: 17.5px !important;
+//   // height: 17.5px !important;
+//   font-size: 22px !important;
+// }
 </style>

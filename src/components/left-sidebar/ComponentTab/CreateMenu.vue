@@ -81,19 +81,52 @@ Description:
       </q-item>
     </q-list>
 
-    <div class="subsection">Elements/Components</div>
-    <div class="icon-container">
-      <Icons
-        class="icons"
-        @getClickedIcon="addToSelectedElementList"
-        @activeElement="addToComponentElementList"
-        @activeHTML="addNestedHTML"
-        @activeLayer="addNestedNoActive"
-      />
+    <div class="subsection">
+      <!-- [OverVue v.10.0] NEW TAB SECTION:
+        (separates standard HTML elements/components from Vuetensils components -->
+
+      <!-- tabs -->
+      <q-tabs
+        v-model="tab"
+        align="left"
+        dense
+        breakpoint="1050"
+        class="bg-subaccent text-white"
+        active-color="secondary"
+        indicator-color="secondary"
+      >
+        <q-tab
+          name="standard-elements"
+          label="Elements"
+          class="label-text"
+        ></q-tab>
+        <q-tab name="vuetensils" label="Vuetensils" class="label-text"></q-tab>
+      </q-tabs>
+
+      <!-- tab panels -->
+      <q-tab-panels v-model="tab" animated>
+        <q-tab-panel name="standard-elements">
+          <!-- <div class="icon-container"> -->
+          <Icons
+            class="icons"
+            @getClickedIcon="addToSelectedElementList"
+            @activeElement="addToComponentElementList"
+            @activeHTML="addNestedHTML"
+            @activeLayer="addNestedNoActive"
+          />
+          <!-- </div> -->
+        </q-tab-panel>
+        <q-tab-panel name="vuetensils">
+          <Vuetensils
+            class="icons"
+            @getClickedIcon="addToSelectedElementList"
+            @activeElement="addToComponentElementList"
+            @activeHTML="addNestedHTML"
+            @activeLayer="addNestedNoActive"
+          />
+        </q-tab-panel>
+      </q-tab-panels>
     </div>
-    <!-- <button class="componentHTML">
-      <CreateMenuHTMLQueue />
-    </button> -->
 
     <br />
 
@@ -109,8 +142,6 @@ Description:
         Object.keys(componentMap).includes(componentNameInputValue.trim())
       "
     />
-
-    <!-- </q-expansion-item> -->
   </div>
 </template>
 
@@ -120,6 +151,7 @@ import { useCreateComponent } from "../../composables/useCreateComponent.js";
 import { computed, ref, watch } from "vue";
 import { useStore } from "../../../store/main.js";
 import Icons from "./Icons.vue";
+import Vuetensils from "./Vuetensils.vue";
 import ParentMultiselect from "./ParentMultiselect.vue";
 import ImportComponent from "./ImportComponent.vue";
 import CreateMenuHTMLQueue from "./CreateMenuHTMLQueue.vue";
@@ -132,6 +164,7 @@ const store = useStore();
 const input = ref("");
 const parent = ref("");
 const attributeModal = ref<boolean | null>(null);
+const tab = ref("standard-elements");
 const libArray = ref([
   {
     name: "alert",
@@ -372,5 +405,10 @@ img {
 }
 .searchinput {
   width: 260px;
+}
+
+.q-tab-panels {
+  padding: 0px !important;
+  background: $subprimary;
 }
 </style>
