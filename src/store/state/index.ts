@@ -1,4 +1,4 @@
-import icons from "./icons";
+import { icons, vtIcons } from "./icons";
 import htmlElementMap from "./htmlElementMap";
 import styleClassmap from "./styleClassMap";
 import * as types from "../../../types";
@@ -8,6 +8,7 @@ const cloneDeep = require("lodash.clonedeep");
 const newState: types.State = {
   clicked: false,
   icons,
+  vtIcons,
   htmlElementMap,
   componentMap: {
     App: {
