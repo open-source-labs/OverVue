@@ -108,41 +108,8 @@ const tab = ref("newhtml");
 const activeComponentObj = computed(() => store.activeComponentObj);
 const activeComponent = computed(() => store.activeComponent);
 
-// const compObj: Component = computed({
-//   get() {
-//     return activeComponentObj.value;
-//   },
-// });
 const compObj = activeComponentObj.value as Component;
 </script>
-
-<!-- OLD OPTIONS API SYNTAX -->
-<!-- <script>
-import { mapState } from "vuex";
-import HTMLQueue from "./HTMLQueue";
-import CodeSnippet from "./CodeSnippet";
-
-export default {
-  name: "ComponentDetails",
-  components: {
-    HTMLQueue,
-    CodeSnippet,
-  },
-  computed: {
-    ...mapState(["activeComponentObj", "activeComponent"]),
-    compObj: {
-      get() {
-        return this.activeComponentObj;
-      },
-    },
-  },
-  data() {
-    return {
-      tab: "code",
-    };
-  },
-};
-</script> -->
 
 <style lang="scss" scoped>
 i {

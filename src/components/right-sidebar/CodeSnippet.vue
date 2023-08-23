@@ -144,6 +144,29 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
     h4: ["<h4", "</h4>"],
     h5: ["<h5", "</h5>"],
     h6: ["<h6", "</h6>"],
+
+    // [OverVue v.10.0] –– Vuetensils elements :)
+    alert: ["<VAlert", "</VAlert>"],
+    date: ["<VDate", ""],
+    dialog: ["<VDialog", "</VDialog>"],
+    drawer: [
+      `<VDrawer>      
+      <template #toggle="{ bind, on }">
+        <button v-bind="bind" v-on="on">
+          Toggle Drawer
+        </button>
+      </template`,
+      `\n\t\t My drawer content\n\t\t</VDrawer>`,
+    ],
+    dropdown: ["<VDropdown", "</VDropdown>"],
+    file: ["<VFile", ""],
+    notifications: ["<VNotifications", ""],
+    resize: ["<VResize", "</VResize>"],
+    skip: ["<VSkip", "</VSkip>"],
+    tab: ["<VTabs", "</VTabs>"],
+    toggle: ["<VToggle", "</VToggle>"],
+
+    // deprecated by OV10.0: Elements+ elements
     "e-button": [`<el-button type="info"`, `</el-button>`],
     "e-input": ["<el-input", "</el-input>"],
     "e-link": [
@@ -243,6 +266,9 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
           child.text === "img" ||
           child.text === "input" ||
           child.text === "link" ||
+          child.text === "date" ||
+          child.text === "file" ||
+          child.text === "notifications" ||
           childComponents.includes(child.text)
         ) {
           nestedString += "/>";
@@ -286,7 +312,10 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
         childComponents.includes(el.text) ||
         el.text === "img" ||
         el.text === "input" ||
-        el.text === "link"
+        el.text === "link" ||
+        el.text === "date" ||
+        el.text === "file" ||
+        el.text === "notifications"
       ) {
         outputStr += "/";
       }
