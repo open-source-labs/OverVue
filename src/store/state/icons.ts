@@ -24,8 +24,6 @@ const icons: Icons = {
 };
 
 const vuetensilIcon = "fa-solid fa-utensils fa-lg";
-// const vuetensilIcon = "fa-solid fa-spoon fa-2xs";
-// const vuetensilIcon = "far fa-square fa-lg";
 
 const vtIcons: Icons = {
   alert: [vuetensilIcon],
