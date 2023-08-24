@@ -1,6 +1,13 @@
 <template>
   <div>
-    <Draggable v-model="treeData" />
+    <Draggable v-model="treeData">
+      <template #default="{ node, stat }">
+        <span @click="deleteSelectedNode(node)">
+          <i class="fas fa fa-trash fa-md"></i>
+        </span>
+        {{ node.text }}
+      </template>
+    </Draggable>
   </div>
 </template>
 
@@ -17,6 +24,10 @@ const componentMap = computed(() => store.componentMap);
 const activeComponent = computed(() => store.activeComponent);
 
 const deleteElement = (id) => store.deleteFromElementHtmlList(id);
+
+const deleteSelectedNode = function (node) {
+  deleteElement(node.id);
+};
 
 if (activeComponent.value !== "") {
   treeData.value = JSON.parse(JSON.stringify(componentMap.value))[
@@ -38,63 +49,63 @@ watch(
   { deep: true }
 );
 
-onMounted(() => {
-  //vtlist he-tree
-  // const trees = document.getElementsByClassName("he-tree");
-  // console.log('tree', trees);
-  // //trees[0].children[0].children
-  // for (const tree in trees) {
-  //   for (const treeNode in tree.children) {
+// onMounted(() => {
+//vtlist he-tree
+// const trees = document.getElementsByClassName("he-tree");
+// console.log('tree', trees);
+// //trees[0].children[0].children
+// for (const tree in trees) {
+//   for (const treeNode in tree.children) {
 
-  //   }
-  // }
+//   }
+// }
 
-  //compute = componentMap.value[activeComponent.value].htmlList
-  //if(vt-index === htmlList[index])
+//compute = componentMap.value[activeComponent.value].htmlList
+//if(vt-index === htmlList[index])
 
-  const flattenTreeData = (data) => {
-    const flattened = [];
+//   const flattenTreeData = (data) => {
+//     const flattened = [];
 
-    const flattenRecurse = (data) => {
-      for (let i = 0; i < data.length; i++) {
-        flattened.push({
-          text: data[i].text,
-          id: data[i].id,
-        });
+//     const flattenRecurse = (data) => {
+//       for (let i = 0; i < data.length; i++) {
+//         flattened.push({
+//           text: data[i].text,
+//           id: data[i].id,
+//         });
 
-        if (data[i].children.length) flattenRecurse(data[i].children);
-      }
-    };
+//         if (data[i].children.length) flattenRecurse(data[i].children);
+//       }
+//     };
 
-    flattenRecurse(data);
-    return flattened;
-  };
+//     flattenRecurse(data);
+//     return flattened;
+//   };
 
-  const flattenedTreeData = flattenTreeData(treeData.value);
-  // console.log('flattenedTreeData:', flattenedTreeData);
+//   const flattenedTreeData = flattenTreeData(treeData.value);
+//   // console.log('flattenedTreeData:', flattenedTreeData);
 
-  const tree = document.getElementsByClassName("vtlist-inner");
-  console.log("tree", tree);
+//   const tree = document.getElementsByClassName("vtlist-inner");
+//   console.log("tree", tree);
 
-  for (const [index, treeNode] of Object.entries(tree[0].children)) {
-    // console.log("children array ", index);
-    console.log("current html list: ", treeData.value);
-    console.log("flattened tree data: ", flattenedTreeData);
-    // console.log('he tree structure: ', Object.entries(tree[0].children));
+//   for (const [index, treeNode] of Object.entries(tree[0].children)) {
+//     // console.log("children array ", index);
+//     console.log("current html list: ", treeData.value);
+//     console.log("flattened tree data: ", flattenedTreeData);
+//     // console.log('he tree structure: ', Object.entries(tree[0].children));
 
-    const deleteButton = document.createElement("button");
-    const icon = document.createElement("i");
-    deleteButton.appendChild(icon);
-    icon.setAttribute("class", "fas fa fa-trash fa-md");
+//     const deleteButton = document.createElement("button");
+//     const icon = document.createElement("i");
+//     deleteButton.appendChild(icon);
+//     icon.setAttribute("class", "fas fa fa-trash fa-md");
 
-    deleteButton.addEventListener("click", () => {
-      console.log("inside click: ", flattenedTreeData[index].id);
-      deleteElement(flattenedTreeData[index].id);
-    });
+//     deleteButton.addEventListener("click", () => {
+//       console.log("inside click: ", flattenedTreeData[index].id);
 
-    treeNode.children[0].appendChild(deleteButton);
-  }
-});
+//     });
+
+//     treeNode.children[0].appendChild(deleteButton);
+//   }
+// });
 
 const checkChildren = (node) => {};
 </script>
@@ -138,6 +149,7 @@ const checkChildren = (node) => {};
   border-radius: 5px;
   padding: 5px;
   text-align: center;
+  margin-top: 5px;
   width: 200px;
   height: 40px;
   text-overflow: ellipsis;

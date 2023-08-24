@@ -468,50 +468,63 @@ const actions: Store<"main", State, {}, Actions> = {
 
   deleteFromElementHtmlList(payload): void {
     // find ID of html element in htmlList (of activeComponent)
-
-    if (this.activeComponent === "") {
-      console.log("active component not selected :o", this.activeComponent);
-    }
-
-    const deleteRecursively = (
-      payload: number,
-      htmlList: HtmlElement[]
-    ): void => {
-      console.log("initial stuff at recursion: ", payload, htmlList);
-      // iterate through htmllist objects
-      for (let i = 0; i < htmlList.length; i++) {
-        if (payload === htmlList[i].id) {
-          htmlList.splice(i, 1);
-          console.log("htmllist: ", htmlList);
-          console.log(
-            "state htmllist: ",
-            this.componentMap[this.activeComponent].htmlList
-          );
-          return;
-        }
-
-        // if current object has a childrens array, then recurse
-        if (htmlList[i].children.length)
-          deleteRecursively(payload, htmlList[i].children);
-      }
-    };
-
-    // if (!this.componentMap[this.activeComponent].htmlList.length) {
-
-    // }
-
-    // if (this.activeComponent === "")
-    //   this.selectedElementList.splice(payload, 1);
-    // else {
-    //   const componentName = this.activeComponent;
-    //   this.componentMap[componentName].htmlList.splice(payload, 1);
-    // }
-    console.log("deletefromelementhtmllist: ", payload);
-    deleteRecursively(
-      payload,
-      this.componentMap[this.activeComponent].htmlList
+    const componentName = this.activeComponent;
+    const index = this.componentMap[componentName].htmlList.findIndex(
+      (obj) => obj.id === payload
     );
+    console.log("index", index);
+    // console.log("htmlList", htmlList);
+    console.log(
+      "removed element",
+      this.componentMap[componentName].htmlList[index]
+    );
+    console.log("componentNAme", componentName);
+    this.componentMap[componentName].htmlList.splice(index, 1);
+    console.log("the updated list", this.componentMap[componentName].htmlList);
+    this.selectedElementList;
+    // if (this.activeComponent === "") {
+    //   console.log("active component not selected :o", this.activeComponent);
+    // }
+
+    // const deleteRecursively = (
+    //   payload: number,
+    //   htmlList: HtmlElement[]
+    // ): void => {
+    //   console.log("initial stuff at recursion: ", payload, htmlList);
+    //   // iterate through htmllist objects
+    //   for (let i = 0; i < htmlList.length; i++) {
+    //     if (payload === htmlList[i].id) {
+    //       htmlList.splice(i, 1);
+    //       console.log("htmllist: ", htmlList);
+    //       console.log(
+    //         "state htmllist: ",
+    //         this.componentMap[this.activeComponent].htmlList
+    //       );
+    //       return;
+    //     }
+
+    //     // if current object has a childrens array, then recurse
+    //     if (htmlList[i].children.length)
+    //       deleteRecursively(payload, htmlList[i].children);
+    //   }
   },
+
+  // if (!this.componentMap[this.activeComponent].htmlList.length) {
+
+  // }
+
+  // if (this.activeComponent === "")
+  //   this.selectedElementList.splice(payload, 1);
+  // else {
+  //   const componentName = this.activeComponent;
+  //   this.componentMap[componentName].htmlList.splice(payload, 1);
+  // }
+  // console.log("deletefromelementhtmllist: ", payload);
+  // deleteRecursively(
+  //   payload,
+  //   this.componentMap[this.activeComponent].htmlList
+  // );
+  // },
 
   setActiveHTML(payload) {
     if (payload[0] === "") {
