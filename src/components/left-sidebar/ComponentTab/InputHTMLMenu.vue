@@ -7,14 +7,14 @@
       v-for="element in componentMap[activeComponent].htmlList"
       :key="element.id as number + Date.now()"
     >
-      <p v-if="element.id === activeHTML" class="title">
+      <!-- <p v-if="element.id === activeHTML" class="title">
         Your class
         {{
           element.class.length !== 0
-            ? "is " + element.class
+            ? "Your class is " + element.class
             : "has not been stated yet"
         }}
-      </p>
+      </p> -->
     </div>
     <q-form autofocus v-on:submit.prevent="submitClass">
       <q-input
@@ -86,7 +86,7 @@
             </i>
           </q-input>
         </q-form>
-        <p class="title">Adjust Height and Elevation:</p>
+        <!-- <p class="title">Adjust Height and Elevation:</p>
         <q-form autofocus v-on:submit.prevent="submitHeight">
           <q-slider
             v-model="heightText"
@@ -245,9 +245,9 @@
             text-color="primary"
             label="-"
             @click="(e: Event) => handleLayer(e)"
-          />
-          <!-- nested for loop to iterate to display current z-index for selected htmlElement -->
-          <template v-for="element in routes[activeRoute]">
+          /> -->
+        <!-- nested for loop to iterate to display current z-index for selected htmlElement -->
+        <!-- <template v-for="element in routes[activeRoute]">
             <template v-for="element1 in element.htmlList">
               <p
                 v-if="element1.id === activeHTML"
@@ -265,7 +265,7 @@
             label="+"
             @click="(e: Event) => handleLayer(e)"
           />
-        </q-item>
+        </q-item> -->
       </div>
     </div>
     <q-btn label="Close HTML Element" class="closeBtn" @click="closeMenu()" />
@@ -722,7 +722,7 @@ export default {
 
 .closeBtn {
   background-color: $primary;
-  margin-top: 2em;
+  // margin-top: 2em;
   margin-bottom: 2em;
   width: 100%;
 }

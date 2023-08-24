@@ -1,11 +1,17 @@
 <template>
   <div>
-    <Draggable v-model="treeData">
+    <Draggable v-model="htmlTreeData">
       <template #default="{ node, stat }">
+        <span class="pencil-icon">
+          <i
+            class="fa-solid fa-pencil fa-2xs"
+            @click="setActiveElement([node.text, node.id])"
+          ></i>
+        </span>
+        {{ node.text }}
         <span @click="deleteSelectedNode(node)">
           <i class="fas fa fa-trash fa-md"></i>
         </span>
-        {{ node.text }}
       </template>
     </Draggable>
   </div>
@@ -14,109 +20,89 @@
 <script setup>
 import { Draggable } from "@he-tree/vue";
 import { useStore } from "src/store/main";
-import { ref, computed, watch, onMounted } from "vue";
+import { ref, computed, watch, onMounted, watchEffect } from "vue";
 
 const store = useStore();
 
-const treeData = ref([]);
-
-const componentMap = computed(() => store.componentMap);
-const activeComponent = computed(() => store.activeComponent);
-
-const deleteElement = (id) => store.deleteFromElementHtmlList(id);
-
-const deleteSelectedNode = function (node) {
-  deleteElement(node.id);
+const logThis = (thing) => {
+  console.log("node", thing);
 };
 
+/* DATA */
+const htmlTreeData = ref([]);
+const attributeModal = ref(false);
+
+/* COMPUTED VALUES */
+const componentMap = computed(() => store.componentMap);
+const activeComponent = computed(() => store.activeComponent);
+const attributeModalOpen = computed(() => store.attributeModalOpen);
+
+/* EDIT ATTRIBUTES */
+const openAttributeModal = () => store.openAttributeModal();
+const setActiveHTML = (payload) => store.setActiveHTML(payload);
+const clearActiveHTML = () => store.clearActiveHTML();
+
+/* DELETE METHODS */
+const deleteElement = (id) => store.deleteFromElementHtmlList(id);
+const deleteSelectedNode = (node) => deleteElement(node.id);
+
+/* EDIT ATTRIBUTE METHODS */
+const closeMenu = () => {
+  if (activeComponent.value !== "") {
+    clearActiveHTML();
+    openAttributeModal();
+  }
+};
+
+const setActiveElement = (element) => {
+  // console.log("render list: ", renderList.value);
+  console.log("element in html queue: ", element);
+  if (activeComponent.value !== "") {
+    setActiveHTML(element);
+    if (attributeModal.value === false) {
+      openAttributeModal();
+    } else {
+      closeMenu();
+    }
+  }
+};
+
+// when active component is selected, render HTML list
 if (activeComponent.value !== "") {
-  treeData.value = JSON.parse(JSON.stringify(componentMap.value))[
+  htmlTreeData.value = JSON.parse(JSON.stringify(componentMap.value))[
     activeComponent.value
   ].htmlList;
+  // console.log("htmlTreeData", htmlTreeData.value);
 }
-
-// const outputTreeData = () => console.log(treeData.value);
 
 // Watching tree data so that state updates when user interacts with tree
 watch(
-  treeData,
+  // () => [activeComponent.value, htmlTreeData.value],
+  htmlTreeData,
   () => {
     // Filters out empty objects that are placed in indices where elements were moved from
-    componentMap.value[activeComponent.value].htmlList = JSON.parse(
-      JSON.stringify(treeData.value)
-    ).filter((obj) => Object.keys(obj).length > 0);
+    componentMap.value[activeComponent.value].htmlList =
+      htmlTreeData.value.filter((obj) => Object.keys(obj).length > 0);
   },
   { deep: true }
 );
 
-// onMounted(() => {
-//vtlist he-tree
-// const trees = document.getElementsByClassName("he-tree");
-// console.log('tree', trees);
-// //trees[0].children[0].children
-// for (const tree in trees) {
-//   for (const treeNode in tree.children) {
-
-//   }
-// }
-
-//compute = componentMap.value[activeComponent.value].htmlList
-//if(vt-index === htmlList[index])
-
-//   const flattenTreeData = (data) => {
-//     const flattened = [];
-
-//     const flattenRecurse = (data) => {
-//       for (let i = 0; i < data.length; i++) {
-//         flattened.push({
-//           text: data[i].text,
-//           id: data[i].id,
-//         });
-
-//         if (data[i].children.length) flattenRecurse(data[i].children);
-//       }
-//     };
-
-//     flattenRecurse(data);
-//     return flattened;
-//   };
-
-//   const flattenedTreeData = flattenTreeData(treeData.value);
-//   // console.log('flattenedTreeData:', flattenedTreeData);
-
-//   const tree = document.getElementsByClassName("vtlist-inner");
-//   console.log("tree", tree);
-
-//   for (const [index, treeNode] of Object.entries(tree[0].children)) {
-//     // console.log("children array ", index);
-//     console.log("current html list: ", treeData.value);
-//     console.log("flattened tree data: ", flattenedTreeData);
-//     // console.log('he tree structure: ', Object.entries(tree[0].children));
-
-//     const deleteButton = document.createElement("button");
-//     const icon = document.createElement("i");
-//     deleteButton.appendChild(icon);
-//     icon.setAttribute("class", "fas fa fa-trash fa-md");
-
-//     deleteButton.addEventListener("click", () => {
-//       console.log("inside click: ", flattenedTreeData[index].id);
-
-//     });
-
-//     treeNode.children[0].appendChild(deleteButton);
-//   }
-// });
-
-const checkChildren = (node) => {};
+watch(attributeModalOpen, () => {
+  attributeModal.value = attributeModalOpen.value;
+});
 </script>
 
-<style>
+<style lang="scss">
+.vtlist .he-tree {
+  cursor: pointer;
+}
+
 .he-tree--rtl {
   direction: rtl;
 }
 
 .he-tree--drag-overing {
-  background: #333334;
+  background: $subprimary;
 }
 
 .he-tree-drag-placeholder {
@@ -139,6 +125,7 @@ const checkChildren = (node) => {};
 
 .tree-node {
   display: flex;
+  justify-content: space-around;
 } */
 
 .tree-node-inner {
@@ -154,5 +141,7 @@ const checkChildren = (node) => {};
   height: 40px;
   text-overflow: ellipsis;
   overflow: hidden;
+  display: flex;
+  justify-content: space-around;
 }
 </style>

@@ -40,7 +40,7 @@ Description:
             ]"
           ></q-input>
 
-          <VueMultiselect
+          <!-- <VueMultiselect
             v-model="childrenSelected"
             placeholder="Add/remove children"
             :multiple="true"
@@ -52,23 +52,62 @@ Description:
             :max-height="300"
             :option-height="20"
             :searchable="false"
-          />
+          /> -->
           <q-list
             class="accordBorder no-shadow"
             active-color="secondary"
             indicator-color="secondary"
           >
             <q-expansion-item group="accordion" label="HTML Elements">
-              <div class="icon-container">
-                <Icons
-                  v-model="attributeModal"
-                  v-if="attributeModal === false"
-                  class="icons"
-                  @getClickedIcon="addToSelectedElementList"
-                  @activeElement="addToComponentElementList"
-                  @activeHTML="addNestedHTML"
-                  @activeLayer="addNestedNoActive"
-                />
+              <div class="subsection">
+                <!-- [OverVue v.10.0] NEW TAB SECTION:
+                (separates standard HTML elements/components from Vuetensils components -->
+
+                <!-- tabs -->
+                <q-tabs
+                  v-model="tab"
+                  align="left"
+                  dense
+                  breakpoint="1050"
+                  class="bg-subaccent text-white"
+                  active-color="secondary"
+                  indicator-color="secondary"
+                >
+                  <q-tab
+                    name="standard-elements"
+                    label="Elements"
+                    class="label-text"
+                  ></q-tab>
+                  <q-tab
+                    name="vuetensils"
+                    label="Vuetensils"
+                    class="label-text"
+                  ></q-tab>
+                </q-tabs>
+
+                <!-- tab panels -->
+                <q-tab-panels v-model="tab" animated>
+                  <q-tab-panel name="standard-elements">
+                    <!-- <div class="icon-container"> -->
+                    <Icons
+                      class="icons"
+                      @getClickedIcon="addToSelectedElementList"
+                      @activeElement="addToComponentElementList"
+                      @activeHTML="addNestedHTML"
+                      @activeLayer="addNestedNoActive"
+                    />
+                    <!-- </div> -->
+                  </q-tab-panel>
+                  <q-tab-panel name="vuetensils">
+                    <Vuetensils
+                      class="icons"
+                      @getClickedIcon="addToSelectedElementList"
+                      @activeElement="addToComponentElementList"
+                      @activeHTML="addNestedHTML"
+                      @activeLayer="addNestedNoActive"
+                    />
+                  </q-tab-panel>
+                </q-tab-panels>
               </div>
 
               <!-- <div class="componentHTML">
@@ -153,6 +192,7 @@ import { useExportComponent } from "../../composables/useExportComponent.js";
 import VueMultiselect from "vue-multiselect";
 import HTMLQueue from "../../right-sidebar/HTMLQueue.vue";
 import Icons from "./Icons.vue";
+import Vuetensils from "./Vuetensils.vue";
 import PropsSubMenu from "./PropsSubMenu.vue";
 import StateSubMenu from "./StateSubMenu.vue";
 import ActionsSubMenu from "./ActionsSubMenu.vue";
@@ -171,6 +211,7 @@ const value = ref("");
 const newName = ref("");
 const childrenSelected = ref([""]);
 const attributeModal = ref(false);
+const tab = ref("standard-elements");
 
 const routes = computed(() => store.routes);
 const activeRoute = computed(() => store.activeRoute);
@@ -311,6 +352,17 @@ watch(attributeModalOpen, () => {
 </script>
 
 <style lang="scss" scoped>
+.subsection {
+  border-top: 1px solid rgba(245, 245, 245, 0.3);
+  padding: 10px 0 0;
+  margin: 20px 0 0;
+}
+
+.q-tab-panels {
+  padding: 0px !important;
+  background: $subprimary;
+}
+
 .edit-component-div {
   display: flex;
   flex-direction: column;

@@ -24,6 +24,20 @@ i.fa-utensils {
   float: none;
 }
 
+i.fa-pencil {
+  font-size: 18px;
+  float: none;
+
+  &:hover {
+    color: white;
+  }
+}
+
+// modal backdrop
+.q-dialog__backdrop {
+  backdrop-filter: blur(4px);
+}
+
 .q-item__label {
   color: $menutext;
 }
