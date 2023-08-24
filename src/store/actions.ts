@@ -376,7 +376,7 @@ const actions: Store<"main", State, {}, Actions> = {
 
   // HTML ELEMENTS
 
-  // assigned as to a function 
+  // assigned as to a function
   addNestedHTML(payload) {
     const componentName = this.activeComponent;
     const { activeHTML } = this;
@@ -466,34 +466,51 @@ const actions: Store<"main", State, {}, Actions> = {
     });
   },
 
-  deleteFromComponentHtmlList(id) {
-    const componentName = this.activeComponent;
-    const htmlList = this.componentMap[componentName].htmlList.slice(0);
-    // splice out selected element and return resulting array
-    if (this.activeLayer.id === "") {
-      for (let i = 0; i < htmlList.length; i++) {
-        if (htmlList[i].id === id.toString()) {
-          htmlList.splice(i, 1);
-          break;
-        }
-      }
-    } else {
-      const element = breadthFirstSearchParent(htmlList, id) as {
-        evaluated: HtmlElement;
-        index: number;
-      };
-      element.evaluated.children.splice(element.index, 1);
-    }
-    if (id.toString() === this.activeHTML) {
-      this.activeHTML = "";
-    }
-    let newCompMap = this.componentMap;
-    newCompMap[componentName].htmlList = htmlList;
-    this.componentMap = Object.assign({}, newCompMap);
-  },
+  deleteFromElementHtmlList(payload): void {
+    // find ID of html element in htmlList (of activeComponent)
 
-  deleteSelectedElement(payload) {
-    this.selectedElementList.splice(payload, 1);
+    if (this.activeComponent === "") {
+      console.log("active component not selected :o", this.activeComponent);
+    }
+
+    const deleteRecursively = (
+      payload: number,
+      htmlList: HtmlElement[]
+    ): void => {
+      console.log("initial stuff at recursion: ", payload, htmlList);
+      // iterate through htmllist objects
+      for (let i = 0; i < htmlList.length; i++) {
+        if (payload === htmlList[i].id) {
+          htmlList.splice(i, 1);
+          console.log("htmllist: ", htmlList);
+          console.log(
+            "state htmllist: ",
+            this.componentMap[this.activeComponent].htmlList
+          );
+          return;
+        }
+
+        // if current object has a childrens array, then recurse
+        if (htmlList[i].children.length)
+          deleteRecursively(payload, htmlList[i].children);
+      }
+    };
+
+    // if (!this.componentMap[this.activeComponent].htmlList.length) {
+
+    // }
+
+    // if (this.activeComponent === "")
+    //   this.selectedElementList.splice(payload, 1);
+    // else {
+    //   const componentName = this.activeComponent;
+    //   this.componentMap[componentName].htmlList.splice(payload, 1);
+    // }
+    console.log("deletefromelementhtmllist: ", payload);
+    deleteRecursively(
+      payload,
+      this.componentMap[this.activeComponent].htmlList
+    );
   },
 
   setActiveHTML(payload) {
@@ -581,7 +598,8 @@ const actions: Store<"main", State, {}, Actions> = {
     this.componentMap[this.potentialParentNode].children.push(payload);
 
     // Change parent of payload
-    this.componentMap[payload].parent = this.componentMap[this.potentialParentNode];
+    this.componentMap[payload].parent =
+      this.componentMap[this.potentialParentNode];
 
     // remember to clear potential parent
     this.potentialParentNode = "";
@@ -781,7 +799,7 @@ const actions: Store<"main", State, {}, Actions> = {
   },
 
   addParent(payload) {
-    console.log('payload in addParent: ', payload);
+    console.log("payload in addParent: ", payload);
     this.componentMap[payload.componentName].parent =
       this.componentMap[this.parentSelected];
     this.componentMap[this.parentSelected].children.push(payload.componentName);

@@ -267,7 +267,7 @@ const inspectComponent = (event: Event) => {
 .container {
   height: 100%;
   width: 100%;
-  background-color: black;
+  background-color: rgb(26, 26, 26);
 }
 
 .container:hover {

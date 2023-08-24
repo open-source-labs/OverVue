@@ -166,8 +166,7 @@ const addBindingText: typeof store.addBindingText = (payload) =>
 const clearActiveHTML = () => store.clearActiveHTML();
 
 const deleteElement = (id: number[]) => {
-  if (activeComponent.value === "") store.deleteSelectedElement(id[0]);
-  else store.deleteFromComponentHtmlList(id[1]);
+  store.deleteFromElementHtmlList(id[0]);
 };
 
 const closeMenu = () => {
