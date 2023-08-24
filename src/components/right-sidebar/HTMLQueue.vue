@@ -177,6 +177,8 @@ const closeMenu = () => {
 };
 
 const setActiveElement = (element: string[]) => {
+  console.log("render list: ", renderList.value);
+  console.log("element in html queue: ", element);
   if (activeComponent.value !== "") {
     setActiveHTML(element);
     if (attributeModal.value === false) {
@@ -350,6 +352,7 @@ hr {
 
 .currentlyDragging {
   opacity: 0.5;
+  transform: scale(1.1);
 }
 
 .ignoreByDragover {

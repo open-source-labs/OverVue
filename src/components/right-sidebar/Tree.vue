@@ -175,7 +175,7 @@ const moveNode: typeof store.moveNode = (payload) => store.moveNode(payload);
 const startDrag = (event: Event, activeTreeNode: string) => {
   // update class to make activeTreeNode transparent while being dragged
   (event.target as HTMLElement).classList.add("currentlyDragging");
-
+  // event.target.style.transform="scale(1.1);"
   setActiveTreeNode(activeTreeNode); // set active tree node
 };
 
@@ -206,7 +206,7 @@ const inspectComponent = (event: Event) => {
 <template>
   <div class="container">
     <vue-tree
-      style="width: 100%; height: 100vh; border: 1px solid gray"
+      style="width: 100%; height: 100vh; border: 1px solid rgb(96, 96, 96)"
       :dataset="treeData"
       :config="treeConfig"
       ref="tree"
@@ -250,23 +250,52 @@ const inspectComponent = (event: Event) => {
     </vue-tree>
   </div>
   <q-dialog v-model="inspectComponentModal">
-    <div class="modal-box">
-      <!-- <HTMLQueue /> -->
-      <NewHTMLQueue10 />
-      <!-- <Tree /> -->
+    <div class="modal-box-container">
+      <div class="modal-box-title">
+        {{ activeComponent }}
+      </div>
+      <div class="modal-box">
+        <!-- <HTMLQueue /> -->
+        <NewHTMLQueue10 />
+      </div>
     </div>
   </q-dialog>
 </template>
 
 <style lang="scss" scoped>
+.currentlyDragging {
+  // opacity: 0.5;
+  transform: scale(1.1);
+}
+
 .modal-box {
-  background: hotpink;
-  width: 400px;
+  background: $subprimary;
+  min-width: 400px;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  // padding: 10em;
+  border-radius: 5px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+    rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+  border: 1px solid white;
+  position: relative;
+}
+
+.modal-box-title {
+  font-size: 2.5em;
+  margin: 0 auto;
+  font-weight: bold;
+  text-align: center;
 }
 
 .container {
   height: 100%;
   width: 100%;
+  text-shadow: -2px 0px 10px rgba(0, 0, 0, 0.16);
   background-color: rgb(26, 26, 26);
 }
 

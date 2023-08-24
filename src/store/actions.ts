@@ -3,6 +3,7 @@ import {
   breadthFirstSearchParent,
 } from "src/utils/search.util";
 
+import { isProxy, toRaw } from 'vue';
 import {
   State,
   Actions,
@@ -469,67 +470,59 @@ const actions: Store<"main", State, {}, Actions> = {
   deleteFromElementHtmlList(payload): void {
     // find ID of html element in htmlList (of activeComponent)
     const componentName = this.activeComponent;
-    const index = this.componentMap[componentName].htmlList.findIndex(
-      (obj) => obj.id === payload
-    );
-    console.log("index", index);
-    // console.log("htmlList", htmlList);
-    console.log(
-      "removed element",
-      this.componentMap[componentName].htmlList[index]
-    );
-    console.log("componentNAme", componentName);
-    this.componentMap[componentName].htmlList.splice(index, 1);
-    console.log("the updated list", this.componentMap[componentName].htmlList);
+    const htmlList = toRaw(this.componentMap[componentName].htmlList);
+
+    // console.log("the updated list", this.componentMap[componentName].htmlList);
+    // console.log("componentNAme", componentName);
+    //console.log("htmlList", toRaw(this.componentMap[componentName].htmlList));
+    // this.componentMap[componentName].htmlList.splice(index, 1);
+
+    const deleteNested = (array: HtmlElement[]): number => {
+      for (let i = 0; i < array.length; i++) {
+        if (array[i].id === payload) {
+          return i; // Found the index
+        }
+
+        for (let i = 0; i < array.length; i++) {
+          // console.log("curr array", array);
+          const nestedIndex = deleteNested(array[i].children);
+          if (nestedIndex !== -1) {
+            array[i].children.splice(nestedIndex, 1); // Remove nested child element
+            console.log("removed");
+            return 1; // Return the index in the current array (nested index)
+          }
+        }
+      }
+      return -1;
+    };
+
+    deleteNested(htmlList);
+
+    console.log("htmllist", htmlList);
+    console.log(this.componentMap[componentName].htmlList);
     // if (this.activeComponent === "") {
     //   console.log("active component not selected :o", this.activeComponent);
     // }
-
-    // const deleteRecursively = (
-    //   payload: number,
-    //   htmlList: HtmlElement[]
-    // ): void => {
-    //   console.log("initial stuff at recursion: ", payload, htmlList);
-    //   // iterate through htmllist objects
-    //   for (let i = 0; i < htmlList.length; i++) {
-    //     if (payload === htmlList[i].id) {
-    //       htmlList.splice(i, 1);
-    //       console.log("htmllist: ", htmlList);
-    //       console.log(
-    //         "state htmllist: ",
-    //         this.componentMap[this.activeComponent].htmlList
-    //       );
-    //       return;
-    //     }
 
     //     // if current object has a childrens array, then recurse
     //     if (htmlList[i].children.length)
     //       deleteRecursively(payload, htmlList[i].children);
     //   }
+    // if (this.activeComponent === "")
+    //   this.selectedElementList.splice(payload, 1);
+    // else {
+    //   const componentName = this.activeComponent;
+    //   this.componentMap[componentName].htmlList.splice(payload, 1);
+    // }
   },
 
-  // if (!this.componentMap[this.activeComponent].htmlList.length) {
-
-  // }
-
-  // if (this.activeComponent === "")
-  //   this.selectedElementList.splice(payload, 1);
-  // else {
-  //   const componentName = this.activeComponent;
-  //   this.componentMap[componentName].htmlList.splice(payload, 1);
-  // }
-  // console.log("deletefromelementhtmllist: ", payload);
-  // deleteRecursively(
-  //   payload,
-  //   this.componentMap[this.activeComponent].htmlList
-  // );
-  // },
 
   setActiveHTML(payload) {
     if (payload[0] === "") {
       this.activeHTML = "";
     } else {
-      this.activeHTML = payload[2];
+      // changed from payload[2] after deprecating HTMLQueue
+      this.activeHTML = payload[1];
     }
   },
 
