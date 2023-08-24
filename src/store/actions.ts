@@ -481,7 +481,6 @@ const actions: Store<"main", State, {}, Actions> = {
     console.log("componentNAme", componentName);
     this.componentMap[componentName].htmlList.splice(index, 1);
     console.log("the updated list", this.componentMap[componentName].htmlList);
-    this.selectedElementList;
     // if (this.activeComponent === "") {
     //   console.log("active component not selected :o", this.activeComponent);
     // }
