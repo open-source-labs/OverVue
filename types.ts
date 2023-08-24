@@ -116,8 +116,7 @@ export type Actions = {
     elementName: string;
     date: string;
   }) => void;
-  deleteFromComponentHtmlList: (id: number) => void;
-  deleteSelectedElement: (payload: number) => void;
+  deleteFromElementHtmlList: (payload: number) => void;
   setActiveHTML: (payload: string[]) => void;
   setActiveLayer: (payload: { text: string; id: string }) => void;
   setClickedElementList: (payload: HtmlElement[]) => void;

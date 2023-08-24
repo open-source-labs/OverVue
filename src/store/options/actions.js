@@ -321,7 +321,7 @@ const actions = {
     commit(types.ADD_NESTED_NO_ACTIVE, payload);
   },
 
-  [types.deleteFromComponentHtmlList]: ({ commit }, payload) => {
+  [types.deleteFromElementHtmlList]: ({ commit }, payload) => {
     commit(types.DELETE_FROM_COMPONENT_HTML_LIST, payload);
   },
 

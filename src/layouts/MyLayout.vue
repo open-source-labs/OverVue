@@ -17,7 +17,8 @@ Description:
           ><img
             alt="OverVue"
             src="../assets/OverVue_navLogo.png"
-            id="nav-logo" />
+            id="nav-logo"
+          />
           <div id="undo-redo">
             <!-- <q-btn>
               <i
@@ -37,8 +38,9 @@ Description:
               ></i>
               <i v-else class="fa fa-redo unavailable" aria-hidden="true"></i>
             </q-btn> -->
-            <GridDensity /></div
-        ></q-toolbar-title>
+            <!-- <GridDensity /> -->
+          </div>
+        </q-toolbar-title>
         <div></div>
 
         <SaveProject />

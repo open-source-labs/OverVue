@@ -15,7 +15,7 @@ import { useStore } from "src/store/main";
 /**
  * @description: Testing functionality of HTML element mutations and actions
  * `actions:` `addNestedHtml', `AddNestedNoActive`, `setActiveHTML`, `setActiveLayer`,
- * `upOneLayer`,  `deleteFromComponentHtmlList`, `deleteSelectedElement`
+ * `upOneLayer`,  `deleteFromElementHtmlList`, `deleteSelectedElement`
  * `mutations: SET_ACTIVE_LAYER, UP_ONE_LAYER, ADD_TO_SELECTED_ELEMENT_LIST, SET_SELECTED_ELEMENT_LIST,
  * ADD_TO_COMPONENT_HTML_LIST, ADD_NESTED_HTML, ADD_NESTED_NO_ACTIVE, DELETE_FROM_COMPONENT_HTML_LIST,
  * DELETE_SELECTED_ELEMENT, SET_ACTIVE_HTML_ELEMENT
@@ -177,7 +177,7 @@ describe("Tests for navigating layers in HTML elements", () => {
   it("delete from component html list", () => {
     let htmlList = state.componentMap[state.activeComponent].htmlList;
     let id = htmlList[0].children[0].id;
-    state.deleteFromComponentHtmlList(state, id);
+    state.deleteFromElementHtmlList(state, id);
     const filtered = htmlList.filter((el) => el.id === id);
     expect(filtered.length).toBe(0);
   });
@@ -262,10 +262,10 @@ describe("tests for HTML element actions", () => {
     expect(commit).toHaveBeenCalledWith("UP_ONE_LAYER", id);
   });
 
-  test('"[types.deleteFromComponentHtmlList]" action calls the "DELETE_FROM_COMPONENT_HTML_LIST" mutation', () => {
+  test('"[types.deleteFromElementHtmlList]" action calls the "DELETE_FROM_COMPONENT_HTML_LIST" mutation', () => {
     const id = Date.now();
     const commit = jest.fn();
-    actions[types.deleteFromComponentHtmlList]({ commit }, id);
+    actions[types.deleteFromElementHtmlList]({ commit }, id);
     expect(commit).toHaveBeenCalledWith("DELETE_FROM_COMPONENT_HTML_LIST", id);
   });
 
@@ -523,10 +523,10 @@ describe("tests for HTML element actions", () => {
 //     expect(commit).toHaveBeenCalledWith("UP_ONE_LAYER", id);
 //   });
 
-//   test('"[types.deleteFromComponentHtmlList]" action calls the "DELETE_FROM_COMPONENT_HTML_LIST" mutation', () => {
+//   test('"[types.deleteFromElementHtmlList]" action calls the "DELETE_FROM_COMPONENT_HTML_LIST" mutation', () => {
 //     const id = Date.now();
 //     const commit = jest.fn();
-//     actions[types.deleteFromComponentHtmlList]({ commit }, id);
+//     actions[types.deleteFromElementHtmlList]({ commit }, id);
 //     expect(commit).toHaveBeenCalledWith("DELETE_FROM_COMPONENT_HTML_LIST", id);
 //   });
 
