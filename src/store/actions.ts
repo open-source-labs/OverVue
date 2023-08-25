@@ -881,9 +881,10 @@ const actions: Store<"main", State, {}, Actions> = {
       };
     } else {
       this.activeComponent = payload;
-      this.activeComponentObj = this.routes[this.activeRoute].filter(
-        (comp) => comp.componentName === this.activeComponent
-      )[0];
+      // this.activeComponentObj = this.routes[this.activeRoute].filter(
+      //   (comp) => comp.componentName === this.activeComponent
+      // )[0];
+      this.activeComponentObj = this.componentMap[this.activeComponent] as Component;
     }
     this.activeHTML = "";
     this.activeLayer = {

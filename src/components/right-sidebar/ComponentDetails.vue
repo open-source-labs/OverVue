@@ -44,7 +44,7 @@ Description:
               </p>
               <p v-else>State in {{ activeComponent }}:</p>
               <ul id="stateList">
-                <li v-for="comp in compObj.state" :key="comp">
+                <li v-for="comp in (activeComponentObj as Component).state" :key="comp">
                   {{ comp }}
                 </li>
               </ul>
@@ -61,7 +61,7 @@ Description:
               </p>
               <p v-else>Actions in {{ activeComponent }}:</p>
               <ul id="actionList">
-                <li v-for="comp in compObj?.actions" :key="comp">
+                <li v-for="comp in (activeComponentObj as Component)?.actions" :key="comp">
                   {{ comp }}
                 </li>
               </ul>
@@ -78,7 +78,7 @@ Description:
               </p>
               <p v-else>Props in {{ activeComponent }}:</p>
               <ul id="propsList">
-                <li v-for="comp in compObj?.props" :key="comp">
+                <li v-for="comp in (activeComponentObj as Component)?.props" :key="comp">
                   {{ comp }}
                 </li>
               </ul>

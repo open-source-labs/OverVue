@@ -98,23 +98,23 @@ const createTemplate = (componentName: string) => {
     routeStr += `    <${childName}${childNameClassFullStr}></${childName}>\n`;
   });
   const activeCompObj = activeComponentObj.value as Component; // typed this to fix activeComponentObj.value "is possibly null" error
-  if (activeCompObj.htmlAttributes) {
+  if (activeComponentObj.value && (activeComponentObj.value as Component).htmlAttributes) {
     //if/else statement to determine if there are class and id attributes present in the html element
     if (
-      activeCompObj.htmlAttributes.class !== "" &&
-      activeCompObj.htmlAttributes.id !== ""
+      (activeComponentObj.value as Component).htmlAttributes.class !== "" &&
+      (activeComponentObj.value as Component).htmlAttributes.id !== ""
     ) {
-      return `<template>\n  <div id = "${activeCompObj.htmlAttributes.id}" class = "${activeCompObj.htmlAttributes.class}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
+      return `<template>\n  <div id = "${(activeComponentObj.value as Component).htmlAttributes.id}" class = "${(activeComponentObj.value as Component).htmlAttributes.class}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
     } else if (
-      activeCompObj.htmlAttributes.class !== "" &&
-      activeCompObj.htmlAttributes.id === ""
+      (activeComponentObj.value as Component).htmlAttributes.class !== "" &&
+      (activeComponentObj.value as Component).htmlAttributes.id === ""
     ) {
-      return `<template>\n  <div class = "${activeCompObj.htmlAttributes.class}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
+      return `<template>\n  <div class = "${(activeComponentObj.value as Component).htmlAttributes.class}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
     } else if (
-      activeCompObj.htmlAttributes.class === "" &&
-      activeCompObj.htmlAttributes.id !== ""
+      (activeComponentObj.value as Component).htmlAttributes.class === "" &&
+      (activeComponentObj.value as Component).htmlAttributes.id !== ""
     )
-      return `<template>\n  <div id = "${activeCompObj.htmlAttributes.id}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
+      return `<template>\n  <div id = "${(activeComponentObj.value as Component).htmlAttributes.id}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
     else {
       return `<template>\n  <div>\n${templateTagStr}${routeStr}  </div>\n</template>`;
     }
@@ -426,10 +426,10 @@ const createBoiler = (componentName: string, children: string[]) => {
   let htmlArray = componentMap.value[componentName].htmlList;
   let styleString = "";
   const activeCompObj = activeComponentObj.value as Component; // typed this to fix activeComponentObj.value "is possibly null" error
-  if (activeCompObj.htmlAttributes.class !== "") {
-    styleString += `.${activeCompObj.htmlAttributes.class} { \n\tbackground-color: ${activeCompObj.color};
-\tgrid-area: ${activeCompObj.htmlAttributes.gridArea[0]} / ${activeCompObj.htmlAttributes.gridArea[1]} / ${activeCompObj.htmlAttributes.gridArea[2]} / ${activeCompObj.htmlAttributes.gridArea[3]};
-\tz-index: ${activeCompObj.z};
+  if (activeComponentObj.value && (activeComponentObj.value as Component).htmlAttributes.class !== "") {
+    styleString += `.${(activeComponentObj.value as Component).htmlAttributes.class} { \n\tbackground-color: ${(activeComponentObj.value as Component).color};
+\tgrid-area: ${(activeComponentObj.value as Component).htmlAttributes.gridArea[0]} / ${(activeComponentObj.value as Component).htmlAttributes.gridArea[1]} / ${(activeComponentObj.value as Component).htmlAttributes.gridArea[2]} / ${(activeComponentObj.value as Component).htmlAttributes.gridArea[3]};
+\tz-index: ${(activeComponentObj.value as Component).z};
 } \n`;
   }
 

@@ -52,7 +52,7 @@
     </q-input>
     <!--delete buttons to remove class/id-->
     <button
-      v-if="(activeComponentObj as Component).htmlAttributes.class !== ''"
+      v-if="activeComponentObj && (activeComponentObj as Component).htmlAttributes.class !== ''"
       class="deleteButton"
       @click="deleteAttribute('class')"
       color="primary"
@@ -61,7 +61,7 @@
     </button>
 
     <button
-      v-if="(activeComponentObj as Component).htmlAttributes.id !== ''"
+      v-if="activeComponentObj && (activeComponentObj as Component).htmlAttributes.id !== ''"
       class="deleteButton"
       @click="deleteAttribute('id')"
       color="primary"
