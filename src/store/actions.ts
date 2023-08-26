@@ -3,7 +3,7 @@ import {
   breadthFirstSearchParent,
 } from "src/utils/search.util";
 
-import { isProxy, toRaw } from 'vue';
+import { isProxy, toRaw } from "vue";
 import {
   State,
   Actions,
@@ -516,7 +516,6 @@ const actions: Store<"main", State, {}, Actions> = {
     // }
   },
 
-
   setActiveHTML(payload) {
     if (payload[0] === "") {
       this.activeHTML = "";
@@ -884,7 +883,9 @@ const actions: Store<"main", State, {}, Actions> = {
       // this.activeComponentObj = this.routes[this.activeRoute].filter(
       //   (comp) => comp.componentName === this.activeComponent
       // )[0];
-      this.activeComponentObj = this.componentMap[this.activeComponent] as Component;
+      this.activeComponentObj = this.componentMap[
+        this.activeComponent
+      ] as Component;
     }
     this.activeHTML = "";
     this.activeLayer = {
@@ -1120,13 +1121,39 @@ const actions: Store<"main", State, {}, Actions> = {
   },
 
   addActiveComponentClass(payload) {
-    const active = this.activeComponentObj as Component;
-    if (active.htmlList)
+    //
+    
+    // const active = this.activeComponentObj as Component;
+    // if (active.htmlList)
+    //   this.componentMap[this.activeComponent].htmlList.forEach((el) => {
+    //     console.log("addActiveComponentClass htmlList", el);
+    //     //adding class into it's child 1st layer
+    //     //if our element has children,
+    //     if (el.children.length !== 0) {
+    //       el.children.forEach(
+    //         (element: { id: string | number; class: string }) => {
+    //           console.log("addActiveComponentClass element", element);
+    //           if (payload.id === element.id) {
+    //             element.class = payload.class;
+    //           }
+    //         }
+    //       );
+    //     }
+    //     if (payload.id === el.id) {
+    //       el.class = payload.class;
+    //     }
+    //   });
+    // const active = this.activeComponentObj as Component;
+    
+    console.log("addActiveComponentClass htmlList", (this.activeComponentObj as Component).htmlList)
+    if ((this.activeComponentObj as Component).htmlList){
       this.componentMap[this.activeComponent].htmlList.forEach((el) => {
         //adding class into it's child 1st layer
+        //if our element has children,
         if (el.children.length !== 0) {
           el.children.forEach(
             (element: { id: string | number; class: string }) => {
+              console.log("addActiveComponentClass element", element);
               if (payload.id === element.id) {
                 element.class = payload.class;
               }
@@ -1137,6 +1164,7 @@ const actions: Store<"main", State, {}, Actions> = {
           el.class = payload.class;
         }
       });
+    }
   },
 
   addBindingText(payload) {

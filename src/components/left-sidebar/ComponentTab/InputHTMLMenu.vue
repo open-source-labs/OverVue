@@ -389,6 +389,7 @@ const addBindingText: typeof store.addBindingText = (payload) =>
   store.addBindingText(payload);
 
 const submitClass = (element: string, idNum: number) => {
+  console.log('activeComponent Attributes', componentMap.value[activeComponent.value].htmlList)
   if (element === "") {
     return;
   }
