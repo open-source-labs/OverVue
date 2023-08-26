@@ -24,7 +24,7 @@ Description:
       </q-tabs>
       <q-tab-panels v-model="tab" animated class="html-bg text-white">
         <q-tab-panel name="newhtml">
-          <NewHTMLQueue />
+          <V10HTMLQueue />
         </q-tab-panel>
         <q-tab-panel name="code">
           <CodeSnippet />
@@ -96,7 +96,7 @@ Description:
 <!-- COMPOSITION API SYNTAX -->
 <script setup lang="ts">
 import HTMLQueue from "./HTMLQueue.vue";
-import NewHTMLQueue from "./NewHTMLQueue10.vue";
+import V10HTMLQueue from "./V10HTMLQueue.vue";
 import CodeSnippet from "./CodeSnippet.vue";
 import { useStore } from "../../store/main.js";
 import { ref, computed } from "vue";
