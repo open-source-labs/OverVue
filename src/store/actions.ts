@@ -1121,7 +1121,6 @@ const actions: Store<"main", State, {}, Actions> = {
   },
 
   addActiveComponentClass(payload) {
-    //
     
     // const active = this.activeComponentObj as Component;
     // if (active.htmlList)
