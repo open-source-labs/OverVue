@@ -36,6 +36,7 @@ export type State = {
     id: string | number;
     lineage: string[];
   };
+  componentDetailsTab: string;
   selectedProps: string[];
   selectedState: string[];
   selectedActions: string[];
@@ -117,6 +118,7 @@ export type Actions = {
     date: string;
   }) => void;
   deleteFromElementHtmlList: (payload: number) => void;
+  setComponentDetailsTab: (payload: string) => void;
   setActiveHTML: (payload: string[]) => void;
   setActiveLayer: (payload: { text: string; id: string }) => void;
   setClickedElementList: (payload: HtmlElement[]) => void;

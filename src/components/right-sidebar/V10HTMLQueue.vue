@@ -30,9 +30,8 @@ const htmlList = computed({
       forceRender();
       return store.componentMap[store.activeComponent].htmlList;
     }
-  },
+  }
 })
-
 
 </script>
 

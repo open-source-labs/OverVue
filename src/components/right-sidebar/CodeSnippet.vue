@@ -387,14 +387,16 @@ const createBoiler = (componentName: string, children: string[]) => {
       data += "\n";
     }
     //checks if there is binding in it's html child's child and will add to code snippet
-    if (el.children.length !== 0) {
-      el.children.forEach((el1) => {
-        if (el1.binding !== "") {
-          data += `      "${el1.binding}": "PLACEHOLDER FOR VALUE", `;
-          data += "\n";
-        }
-      });
-    }
+    console.log('element: ', el);
+    console.log('element children: ', el.children);
+    // if (el.children.length !== 0) {
+    //   el.children.forEach((el1) => {
+    //     if (el1.binding !== "") {
+    //       data += `      "${el1.binding}": "PLACEHOLDER FOR VALUE", `;
+    //       data += "\n";
+    //     }
+    //   });
+    // }
   });
   data += `    }`;
   data += ` \n  },  \n `;

@@ -99,14 +99,23 @@ import HTMLQueue from "./HTMLQueue.vue";
 import V10HTMLQueue from "./V10HTMLQueue.vue";
 import CodeSnippet from "./CodeSnippet.vue";
 import { useStore } from "../../store/main.js";
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { Component } from "../../../types";
 
 const store = useStore();
-const tab = ref("newhtml");
+// const tab = ref("newhtml");
+
+const setComponentDetailsTab: typeof store.setComponentDetailsTab = (payload) =>
+  store.setComponentDetailsTab(payload);
 
 const activeComponentObj = computed(() => store.activeComponentObj);
 const activeComponent = computed(() => store.activeComponent);
+const tab = computed({
+  get: () => store.componentDetailsTab,
+  set: (newTab) => {
+    setComponentDetailsTab(newTab);
+  }
+});
 
 const compObj = activeComponentObj.value as Component;
 </script>
