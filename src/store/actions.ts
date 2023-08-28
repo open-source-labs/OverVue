@@ -472,50 +472,18 @@ const actions: Store<"main", State, {}, Actions> = {
     const componentName = this.activeComponent;
     const htmlList = toRaw(this.componentMap[componentName].htmlList);
 
-    // console.log("the updated list", this.componentMap[componentName].htmlList);
-    // console.log("componentNAme", componentName);
-    //console.log("htmlList", toRaw(this.componentMap[componentName].htmlList));
-    // this.componentMap[componentName].htmlList.splice(index, 1);
-
-    const deleteNested = (array: HtmlElement[]): number => {
+    const deleteNested = (array: HtmlElement[]): void => {
+      console.log("array in deleteNested", array);
       for (let i = 0; i < array.length; i++) {
         if (array[i].id === payload) {
-          return i; // Found the index
-        }
-
-        for (let i = 0; i < array.length; i++) {
-          // console.log("curr array", array);
-          const nestedIndex = deleteNested(array[i].children);
-          //if there is nested children, we want to delete its nested children
-          if (nestedIndex !== -1) {
-            array[i].children.splice(nestedIndex, 1); // Remove nested child element
-            console.log("removed");
-            return 1; // Return the index in the current array (nested index)
-          }
-          //if it = -1, we deleted everything already
+          array.splice(i, 1);
+        } else {
+          if (array[i].children.length) deleteNested(array[i].children);
         }
       }
-      return -1;
     };
 
     deleteNested(htmlList);
-
-    console.log("htmllist", htmlList);
-    console.log(this.componentMap[componentName].htmlList);
-    // if (this.activeComponent === "") {
-    //   console.log("active component not selected :o", this.activeComponent);
-    // }
-
-    //     // if current object has a childrens array, then recurse
-    //     if (htmlList[i].children.length)
-    //       deleteRecursively(payload, htmlList[i].children);
-    //   }
-    // if (this.activeComponent === "")
-    //   this.selectedElementList.splice(payload, 1);
-    // else {
-    //   const componentName = this.activeComponent;
-    //   this.componentMap[componentName].htmlList.splice(payload, 1);
-    // }
   },
   setComponentDetailsTab(payload) {
     this.componentDetailsTab = payload;
