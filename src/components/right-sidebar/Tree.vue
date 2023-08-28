@@ -73,9 +73,8 @@ const activateNode = (nodeToActivate: string) => {
   for (const key in routes.value) {
     if (nodeToActivate === key) {
       store.setActiveRoute(nodeToActivate);
-      if (routes.value[key].length > 0) {
-        store.setActiveComponent("");
-      }
+      store.setActiveComponent("");
+
       return;
     }
   }
