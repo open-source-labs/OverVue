@@ -17,7 +17,7 @@ import HTMLQueue from "./HTMLQueue.vue";
 import V10HTMLQueue from "./V10HTMLQueue.vue";
 
 import { useStore } from "../../store/main.js";
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 
 const store = useStore();
 
@@ -36,6 +36,12 @@ const activeTreeNode = computed(() => store.activeTreeNode); // handles drag & d
 // routes
 const routes = computed(() => store.routes);
 const activeRoute = computed(() => store.activeRoute);
+
+/* ON MOUNT */
+onMounted(() => {
+  // Sets tree view to origin on initial render
+  tree.value.setToOrigin();
+})
 
 /* FUNCTIONS */
 
