@@ -53,6 +53,7 @@ const setActiveElement = (element) => {
   console.log("element in html queue: ", element);
   if (activeComponent.value !== "") {
     setActiveHTML(element);
+    // element.classList.add('currentHtmlElement')
     if (attributeModal.value === false) {
       openAttributeModal();
     } else {
@@ -68,11 +69,15 @@ watch(attributeModalOpen, () => {
 });
 
 </script>
-
 <style lang="scss" scoped>
 .vtlist .he-tree {
   cursor: pointer;
 }
+//background-color: #59a476;
+
+// .tree-node {
+//   background-color: #59a476
+// } 
 
 .he-tree--rtl {
   direction: rtl;
@@ -88,22 +93,9 @@ watch(attributeModalOpen, () => {
   height: 40px;
 }
 
-/* .he-tree {
-
-} */
-
 .vtlist {
   display: flex;
 }
-
-/* .vtlist-inner {
-  display: flex;
-}
-
-.tree-node {
-  display: flex;
-  justify-content: space-around;
-} */
 
 .tree-node-inner {
   box-sizing: border-box;
@@ -121,4 +113,12 @@ watch(attributeModalOpen, () => {
   display: flex;
   justify-content: space-around;
 }
+/* .vtlist-inner {
+  display: flex;
+}
+*/
+
+
+
+
 </style>
