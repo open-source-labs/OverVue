@@ -14,7 +14,7 @@ import VueTree from "@overvue/vue3-tree-chart";
 import "@overvue/vue3-tree-chart/dist/vue3-tree-chart.css";
 
 import HTMLQueue from "./HTMLQueue.vue";
-import NewHTMLQueue10 from "./NewHTMLQueue10.vue";
+import V10HTMLQueue from "./V10HTMLQueue.vue";
 
 import { useStore } from "../../store/main.js";
 import { ref, computed, watch } from "vue";
@@ -170,6 +170,9 @@ const setPotentialParentNode: typeof store.setPotentialParentNode = (payload) =>
 
 const moveNode: typeof store.moveNode = (payload) => store.moveNode(payload);
 
+const setComponentDetailsTab: typeof store.setComponentDetailsTab = (payload) =>
+  store.setComponentDetailsTab(payload);
+
 /* [OverVue v.10.0] DRAG & DROP METHODS (TREE UI) */
 
 const startDrag = (event: Event, activeTreeNode: string) => {
@@ -198,6 +201,7 @@ const endDrag = (event: Event, activeTreeNode: string) => {
 
 const inspectComponent = (event: Event) => {
   console.log("double clicked");
+  setComponentDetailsTab("code");
   inspectComponentModal.value = !inspectComponentModal.value;
   console.log("inspect component modal value", inspectComponentModal.value);
 };
@@ -256,7 +260,7 @@ const inspectComponent = (event: Event) => {
       </div>
       <div class="modal-box">
         <!-- <HTMLQueue /> -->
-        <NewHTMLQueue10 />
+        <V10HTMLQueue />
       </div>
     </div>
   </q-dialog>

@@ -36,6 +36,7 @@ export type State = {
     id: string | number;
     lineage: string[];
   };
+  componentDetailsTab: string;
   selectedProps: string[];
   selectedState: string[];
   selectedActions: string[];
@@ -117,6 +118,7 @@ export type Actions = {
     date: string;
   }) => void;
   deleteFromElementHtmlList: (payload: number) => void;
+  setComponentDetailsTab: (payload: string) => void;
   setActiveHTML: (payload: string[]) => void;
   setActiveLayer: (payload: { text: string; id: string }) => void;
   setClickedElementList: (payload: HtmlElement[]) => void;
@@ -194,7 +196,13 @@ export type Actions = {
   openColorModal: () => void;
   openNoteModal: () => void;
   openAttributeModal: () => void;
-  addActiveComponentClass: (payload: { id: number; class: string }) => void;
+  addAttributes: (
+    payload: { id: number, [key: string]:any } ///**** */
+  ) => void;
+  
+  addActiveComponentClass: (
+    payload: { id: number; class: string }
+  ) => void;
   addBindingText: (payload: { id: number; binding: string }) => void;
   deleteActiveComponentClass: (payload: string) => void;
   addActiveComponentHeight: (payload: {
@@ -263,15 +271,16 @@ export type HtmlElementMap = {
 };
 
 export type HtmlElement = {
+  [key: string]: any;
   text: string;
   id: string | number;
   children: HtmlElement[];
   class: string;
-  x: number | string;
-  y: number | string;
-  z: number | string;
-  w: number | string;
-  h: number | string;
+  x: number | string; //top
+  y: number | string; 
+  z: number | string; //width
+  w: number | string; //width
+  h: number | string; //height
   note: number | string;
   binding: number | string;
 };

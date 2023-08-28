@@ -57,6 +57,27 @@
         </i>
       </q-input>
     </q-form>
+    <q-form autofocus v-on:submit.prevent="submitNote">
+      <q-input
+        label="Add Inner Text"
+        filled
+        dark
+        autofocus
+        true
+        hide-bottom-space
+        v-model="noteText"
+        @keydown.enter="submitNote"
+      >
+        <i
+          class="fa-solid fa-right-to-bracket"
+          color="secondary"
+          label="Submit Note"
+          :disable="noteText.length > 0 ? false : true"
+          @click.self="submitNote(noteText, activeHTML as number)"
+        >
+        </i>
+      </q-input>
+    </q-form>
     <div
       class="AttributeContainer"
       v-for="element in componentMap[activeComponent].htmlList"
@@ -65,7 +86,7 @@
       <div
         v-if="exceptions.includes(element.text) && element.id === activeHTML"
       >
-        <q-form autofocus v-on:submit.prevent="submitNote">
+        <!-- <q-form autofocus v-on:submit.prevent="submitNote">
           <q-input
             label="Add Inner Text"
             filled
@@ -85,7 +106,7 @@
             >
             </i>
           </q-input>
-        </q-form>
+        </q-form> -->
         <!-- <p class="title">Adjust Height and Elevation:</p>
         <q-form autofocus v-on:submit.prevent="submitHeight">
           <q-slider
@@ -276,6 +297,7 @@
 // new script for Composition API
 import { computed, ref, watch, onMounted } from "vue";
 import { useStore } from "../../../store/main.js";
+import { HtmlElement } from "../../../../types";
 
 const store = useStore();
 
@@ -352,6 +374,7 @@ const activeLayer = computed(() => store.activeLayer);
 const attributeModalOpen = computed(() => store.attributeModalOpen);
 const activeRoute = computed(() => store.activeRoute);
 const routes = computed(() => store.routes);
+
 // const activeComponentData = computed(() => store.activeComponentData);
 // const activeComponentObj = computed(() => store.activeComponentObj);
 // const componentData = computed(() => store.componentData);
@@ -387,9 +410,15 @@ const updateHTMLLayer: typeof store.updateHtmlLayer = (payload) =>
   store.updateHtmlLayer(payload);
 const addBindingText: typeof store.addBindingText = (payload) =>
   store.addBindingText(payload);
+const addAttributes: typeof store.addAttributes = (payload) => {
+  store.addAttributes(payload);
+};
 
 const submitClass = (element: string, idNum: number) => {
-  console.log('activeComponent Attributes', componentMap.value[activeComponent.value].htmlList)
+  console.log(
+    "activeComponent Attributes",
+    componentMap.value[activeComponent.value].htmlList
+  );
   if (element === "") {
     return;
   }
@@ -397,7 +426,7 @@ const submitClass = (element: string, idNum: number) => {
     class: element,
     id: idNum,
   };
-  addActiveComponentClass(payload);
+  addAttributes(payload);
   classText.value = "";
 };
 
@@ -409,7 +438,9 @@ const submitNote = (element: string, idNum: number) => {
     note: element,
     id: idNum,
   };
-  addActiveComponentElementNote(payload);
+
+  addAttributes(payload);
+  // addActiveComponentElementNote(payload);
   // console.log("Looking for htmlAttributes ", activeComponentObj.value.htmlAttributes);
   noteText.value = "";
 };
@@ -418,11 +449,12 @@ const submitHeight = (element: string, idNum: number) => {
   if (element === "") {
     return;
   }
-  let payload: { height: string; id: number } = {
-    height: element,
+  let payload: { h: string; id: number } = {
+    h: element,
     id: idNum,
   };
-  addActiveComponentHeight(payload);
+  addAttributes(payload);
+  //addActiveComponentHeight(payload);
 };
 
 const submitWidth = (element: string, idNum: number) => {
@@ -430,32 +462,34 @@ const submitWidth = (element: string, idNum: number) => {
     return;
   }
   let payload = {
-    width: element,
+    w: element,
     id: idNum,
   };
-  addActiveComponentWidth(payload);
+  addAttributes(payload); //add width (w)
+  // addActiveComponentWidth(payload);
 };
 
 const submitTop = (element: string, idNum: number) => {
   if (element === "") {
     return;
   }
-  let payload: { top: string; id: number } = {
-    top: element,
+  let payload: { x: string; id: number } = {
+    x: element,
     id: idNum,
   };
-  addActiveComponentTop(payload);
+  addAttributes(payload);
 };
 
 const submitLeft = (element: string, idNum: number) => {
   if (element === "") {
     return;
   }
-  let payload: { left: string; id: number } = {
-    left: element,
+  let payload: { y: string; id: number } = {
+    y: element,
     id: idNum,
   };
-  addActiveComponentLeft(payload);
+  // addActiveComponentLeft(payload);
+  addAttributes(payload); //add left (y)
 };
 
 const closeMenu = () => {
@@ -483,10 +517,10 @@ const handleLayer = (e: Event) => {
     }
   }
   const payload = {
+    z: HTMLZ,
     activeComponent: activeComponent.value,
     activeHTML: activeHTML.value,
     routeArray: routes.value[activeRoute.value],
-    z: HTMLZ,
   };
   if ((e.target as HTMLElement).innerText === "+") {
     payload.z++;
@@ -501,15 +535,15 @@ const activeRouteArray = () => {
   return routes.value[activeRoute.value];
 };
 
-const addBinding = (input: string, idNum: number) => {
-  if (input === "") {
+const addBinding = (binding: string, idNum: number) => {
+  if (binding === "") {
     return;
   }
   const payload = {
-    binding: input,
+    binding: binding,
     id: idNum,
   };
-  addBindingText(payload);
+  addAttributes(payload);
   bindingText.value = "";
 };
 
@@ -517,192 +551,6 @@ watch(attributeModalOpen, () => {
   attributeModal.value = attributeModalOpen.value;
 });
 </script>
-
-<!-- <script>
-  //old Options API script
-import { mapState, mapActions } from 'vuex'
-export default {
-  data () {
-    return {
-      exceptions: ['div','button','form','img','list','paragraph','list-ol','list-ul','input','h1','h2','h3','h4','h5','h6','e-button','e-input','e-link', 'e-form', 'e-checkbox', 'e-checkbox-button', 'e-date-picker', 'e-slider', 'e-card','e-alert','e-dropdown'],
-      attributeModal : "false",
-      classText: '',
-      heightText: '',
-      widthText: '',
-      topText: '',
-      leftText: '',
-      z: '0',
-      noteText: '',
-      bindingText: '',
-    }
-  },
-
-  mounted () {
-    //for loop to access nested HTML elements of components - sets height/width/top/left sliders to current value of selected HTML element
-    for (let i = 0; i <this.routes[this.activeRoute].length; i++) {
-      for (let j = 0; j < this.routes[this.activeRoute][i].htmlList.length; j++) {
-        if(this.activeHTML === this.routes[this.activeRoute][i].htmlList[j].id) {
-          this.heightText = this.routes[this.activeRoute][i].htmlList[j].h;
-          this.widthText = this.routes[this.activeRoute][i].htmlList[j].w;
-          this.topText = this.routes[this.activeRoute][i].htmlList[j].x;
-          this.leftText = this.routes[this.activeRoute][i].htmlList[j].y;
-        }
-      }
-    }
-  },
-
-  computed: {
-    ...mapState([
-      'activeComponent',
-      'selectedElementList',
-      'componentMap',
-      'activeComponent',
-      'activeHTML',
-      'activeLayer',
-      'attributeModalOpen',
-      'activeRoute',
-      'routes',
-      'activeComponentData',
-      'activeComponentObj',
-      'componentData'
-    ])
-  },
-  components: {
-  },
-  methods: {
-    ...mapActions([
-      'setActiveHTML',
-      'setActiveLayer',
-      'openAttributeModal',
-      'addActiveComponentClass',
-      'addActiveComponentElementNote',
-      'addActiveComponentHeight',
-      'addActiveComponentWidth',
-      'addActiveComponentTop',
-      'addActiveComponentLeft',
-      'clearActiveHTML',
-      'updateComponentLayer',
-      'updateHTMLLayer',
-      'addBindingText'
-      ]),
-    submitClass(element, idNum) {
-      if (element === '') {
-        return;
-      }
-      let payload = {
-        class: element,
-        id: idNum
-      }
-      this.addActiveComponentClass(payload);
-      this.classText = '';
-    },
-    submitNote(element, idNum) {
-      if (element === '') {
-        return;
-      }
-      let payload = {
-        note: element,
-        id: idNum
-      }
-      this.addActiveComponentElementNote(payload);
-      this.note = '';
-    },
-    submitHeight(element, idNum) {
-      if (element === '') {
-        return;
-      }
-      let payload = {
-        height: element,
-        id: idNum
-      }
-      this.addActiveComponentHeight(payload);
-    },
-    submitWidth(element, idNum) {
-      if (element === '') {
-        return;
-      }
-      let payload = {
-        width: element,
-        id: idNum
-      }
-      this.addActiveComponentWidth(payload);
-    },
-    submitTop(element, idNum) {
-      if (element === '') {
-        return;
-      }
-      let payload = {
-        top: element,
-        id: idNum
-      }
-      this.addActiveComponentTop(payload);
-    },
-    submitLeft(element, idNum) {
-      if (element === '') {
-        return;
-      }
-      let payload = {
-        left: element,
-        id: idNum
-      }
-      this.addActiveComponentLeft(payload);
-
-    },
-    closeMenu(element) {
-      if (this.activeComponent !== '') {
-        this.clearActiveHTML()
-        this.openAttributeModal(element);
-      }
-    },
-//function that adds/subtracts z-index on html Elements
-    handleLayer(e) {
-      e.preventDefault();
-      let HTMLZ;
-      for (let i = 0; i <this.routes[this.activeRoute].length; i++) {
-        for (let j = 0; j < this.routes[this.activeRoute][i].htmlList.length; j++) {
-          if(this.activeHTML === this.routes[this.activeRoute][i].htmlList[j].id) {
-              HTMLZ = this.routes[this.activeRoute][i].htmlList[j].z
-          }
-        }
-      }
-      const payload = {
-        activeComponent: this.activeComponent,
-        activeHTML: this.activeHTML,
-        routeArray: this.routes[this.activeRoute],
-        z: HTMLZ,
-      };
-      if (e.target.innerText === "+") {
-          payload.z++;
-      }
-      if (e.target.innerText === "-" && payload.z > 0)  {
-        payload.z--;
-      }
-      this.updateHTMLLayer(payload);
-    },
-    activeRouteArray() {
-      return this.routes[this.activeRoute];
-    },
-    addBinding(input, idNum) {
-      if (input === '') {
-        return;
-      }
-      const payload = {
-        binding: input,
-        id: idNum
-      }
-      this.addBindingText(payload);
-      this.bindingText = '';
-    },
-
-  watch: {
-    attributeModalOpen() {
-      this.attributeModal = this.attributeModalOpen;
-    },
-  }
-}
-
-}
-</script> -->
 
 <style lang="scss">
 .fa-solid {
