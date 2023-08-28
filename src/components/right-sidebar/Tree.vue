@@ -32,6 +32,9 @@ const inspectComponentModal = ref(false);
 const componentMap = computed(() => store.componentMap);
 const activeComponent = computed(() => store.activeComponent); // handles collapsing child nodes
 const activeTreeNode = computed(() => store.activeTreeNode); // handles drag & drop functionality within main Tree UI
+const htmlList = computed(
+  () => store.componentMap[store.activeComponent].htmlList
+);
 
 // routes
 const routes = computed(() => store.routes);
@@ -206,10 +209,15 @@ const endDrag = (event: Event, activeTreeNode: string) => {
 /* [OverVue v.10.0] INSPECT COMPONENT MODAL FEATURE */
 
 const inspectComponent = (event: Event) => {
-  console.log("double clicked");
+  // ensure that modal doesn't open if active component has no HTML elements
+  // (also redirects tab to 'New HTML Section')
+  if (!Object.keys(htmlList.value).length) {
+    setComponentDetailsTab("newhtml");
+    return;
+  }
+
   setComponentDetailsTab("code");
   inspectComponentModal.value = !inspectComponentModal.value;
-  console.log("inspect component modal value", inspectComponentModal.value);
 };
 </script>
 
