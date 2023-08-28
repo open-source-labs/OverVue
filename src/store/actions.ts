@@ -516,6 +516,9 @@ const actions: Store<"main", State, {}, Actions> = {
     // }
   },
 
+  setComponentDetailsTab(payload) {
+    this.componentDetailsTab = payload;
+  },
 
   setActiveHTML(payload) {
     if (payload[0] === "") {

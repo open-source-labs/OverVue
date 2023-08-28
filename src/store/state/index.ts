@@ -47,7 +47,7 @@ const newState: types.State = {
     id: "",
     lineage: [],
   },
-
+  componentDetailsTab: "newhtml",
   selectedProps: [],
   selectedState: [],
   selectedActions: [],
