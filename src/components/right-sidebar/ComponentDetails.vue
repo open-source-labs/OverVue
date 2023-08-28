@@ -33,18 +33,26 @@ Description:
           <HTMLQueue />
         </q-tab-panel> -->
         <q-tab-panel name="state">
+          {{
+            activeComponent
+              ? `${activeRoute} / ${activeComponent}.vue`
+              : "Select a component to see its state variables, actions, and props."
+          }}
           <div class="componentProperties">
             <q-expansion-item default-closed label="Component State">
               <p v-if="!(activeComponentObj as Component)?.state?.length">
                 {{
                   activeComponent
-                    ? `No state in ${activeComponent}`
-                    : "Select a component."
+                    ? `Add state variables to ${activeComponent}.vue to see them here.`
+                    : null
                 }}
               </p>
-              <p v-else>State in {{ activeComponent }}:</p>
+              <!-- <p v-else>State in {{ activeComponent }}:</p> -->
               <ul id="stateList">
-                <li v-for="comp in (activeComponentObj as Component).state" :key="comp">
+                <li
+                  v-for="comp in (activeComponentObj as Component).state"
+                  :key="comp"
+                >
                   {{ comp }}
                 </li>
               </ul>
@@ -55,13 +63,16 @@ Description:
               <p v-if="!(activeComponentObj as Component)?.actions?.length">
                 {{
                   activeComponent
-                    ? `No actions in ${activeComponent}`
-                    : "Select a component."
+                    ? `Add actions to ${activeComponent}.vue to see them here.`
+                    : null
                 }}
               </p>
-              <p v-else>Actions in {{ activeComponent }}:</p>
+              <!-- <p v-else>Actions in {{ activeComponent }}:</p> -->
               <ul id="actionList">
-                <li v-for="comp in (activeComponentObj as Component)?.actions" :key="comp">
+                <li
+                  v-for="comp in (activeComponentObj as Component)?.actions"
+                  :key="comp"
+                >
                   {{ comp }}
                 </li>
               </ul>
@@ -72,13 +83,16 @@ Description:
               <p v-if="!(activeComponentObj as Component)?.props?.length">
                 {{
                   activeComponent
-                    ? `No props in ${activeComponent}`
-                    : "Select a component."
+                    ? `Add props to ${activeComponent}.vue to see them here.`
+                    : null
                 }}
               </p>
-              <p v-else>Props in {{ activeComponent }}:</p>
+              <!-- <p v-else>Props in {{ activeComponent }}:</p> -->
               <ul id="propsList">
-                <li v-for="comp in (activeComponentObj as Component)?.props" :key="comp">
+                <li
+                  v-for="comp in (activeComponentObj as Component)?.props"
+                  :key="comp"
+                >
                   {{ comp }}
                 </li>
               </ul>
@@ -114,8 +128,12 @@ const tab = computed({
   get: () => store.componentDetailsTab,
   set: (newTab) => {
     setComponentDetailsTab(newTab);
-  }
+  },
 });
+const htmlList = computed(
+  () => store.componentMap[store.activeComponent].htmlList
+);
+const activeRoute = computed(() => store.activeRoute);
 
 const compObj = activeComponentObj.value as Component;
 </script>

@@ -1,9 +1,19 @@
 <template>
   <div class="top-p" v-if="activeComponent === ''">
-    Select a component to see your HTML elements.
+    Select a component to see its underlying HTML elements.
   </div>
   <div v-else>
-    <DraggableWrapper v-if="renderComponent" :htmlList="htmlList"/>
+    <!-- {{ if (Object.keys(htmlList).length) {
+      if (routes[activeRoute].children.length) return 'test';
+      else return `${activeRoute} / ${activeComponent}.vue`;
+    } else return "Add HTML elements to this component to see them here."
+    } }} -->
+    {{
+      Object.keys(htmlList).length
+        ? `${activeRoute} / ${activeComponent}.vue`
+        : "Add HTML elements to this component to see them here."
+    }}
+    <DraggableWrapper v-if="renderComponent" :htmlList="htmlList" />
   </div>
 </template>
 
@@ -18,21 +28,26 @@ const store = useStore();
 /* DATA */
 const renderComponent = ref(true);
 
-const forceRender = async () => {
-  renderComponent.value = false;
-  await nextTick();
-  renderComponent.value = true;
-}
-
+/* COMPUTED VALUES */
 const htmlList = computed({
   get: () => {
     if (store.componentMap[store.activeComponent]) {
       forceRender();
       return store.componentMap[store.activeComponent].htmlList;
     }
-  }
-})
+  },
+});
 
+const activeComponent = computed(() => store.activeComponent);
+const activeRoute = computed(() => store.activeRoute);
+const routes = computed(() => store.routes);
+
+/* FUNCTIONS */
+const forceRender = async () => {
+  renderComponent.value = false;
+  await nextTick();
+  renderComponent.value = true;
+};
 </script>
 
 <style lang="scss">
