@@ -124,9 +124,18 @@ Description:
               <AttributesSubMenu />
             </q-expansion-item>
 
+            <q-expansion-item group="accordion" label="State">
+              <StateSubMenu />
+            </q-expansion-item>
+            <q-expansion-item group="accordion" label="Actions">
+              <ActionsSubMenu />
+            </q-expansion-item>
+
             <q-expansion-item group="accordion" label="Props">
               <PropsSubMenu />
-              <p v-if="(activeComponentObj as Component) && !(activeComponentObj as Component).props.length">
+              <p
+                v-if="(activeComponentObj as Component) && !(activeComponentObj as Component).props.length"
+              >
                 No props in component
               </p>
               <div v-else>
@@ -153,13 +162,6 @@ Description:
                   </q-list>
                 </a>
               </div>
-            </q-expansion-item>
-
-            <q-expansion-item group="accordion" label="State">
-              <StateSubMenu />
-            </q-expansion-item>
-            <q-expansion-item group="accordion" label="Actions">
-              <ActionsSubMenu />
             </q-expansion-item>
           </q-list>
           <q-btn

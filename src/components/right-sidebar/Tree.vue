@@ -17,7 +17,7 @@ import HTMLQueue from "./HTMLQueue.vue";
 import V10HTMLQueue from "./V10HTMLQueue.vue";
 
 import { useStore } from "../../store/main.js";
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 
 const store = useStore();
 
@@ -32,10 +32,19 @@ const inspectComponentModal = ref(false);
 const componentMap = computed(() => store.componentMap);
 const activeComponent = computed(() => store.activeComponent); // handles collapsing child nodes
 const activeTreeNode = computed(() => store.activeTreeNode); // handles drag & drop functionality within main Tree UI
+const htmlList = computed(
+  () => store.componentMap[store.activeComponent].htmlList
+);
 
 // routes
 const routes = computed(() => store.routes);
 const activeRoute = computed(() => store.activeRoute);
+
+/* ON MOUNT */
+onMounted(() => {
+  // Sets tree view to origin on initial render
+  tree.value.setToOrigin();
+})
 
 /* FUNCTIONS */
 
@@ -70,9 +79,8 @@ const activateNode = (nodeToActivate: string) => {
   for (const key in routes.value) {
     if (nodeToActivate === key) {
       store.setActiveRoute(nodeToActivate);
-      if (routes.value[key].length > 0) {
-        store.setActiveComponent("");
-      }
+      store.setActiveComponent("");
+
       return;
     }
   }
@@ -200,10 +208,15 @@ const endDrag = (event: Event, activeTreeNode: string) => {
 /* [OverVue v.10.0] INSPECT COMPONENT MODAL FEATURE */
 
 const inspectComponent = (event: Event) => {
-  console.log("double clicked");
+  // ensure that modal doesn't open if active component has no HTML elements
+  // (also redirects tab to 'New HTML Section')
+  if (!Object.keys(htmlList.value).length) {
+    setComponentDetailsTab("newhtml");
+    return;
+  }
+
   setComponentDetailsTab("code");
   inspectComponentModal.value = !inspectComponentModal.value;
-  console.log("inspect component modal value", inspectComponentModal.value);
 };
 </script>
 

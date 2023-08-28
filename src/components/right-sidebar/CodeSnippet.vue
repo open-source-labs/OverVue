@@ -8,8 +8,10 @@ Description:
 
 <template>
   <div class="codesnippet-container">
-    <div class="top-p" v-if="activeComponent === ''">Select a component</div>
-    <div v-else>{{ `${activeComponent}.vue` }}</div>
+    <div class="top-p" v-if="activeComponent !== ''">
+      {{ `${activeRoute} / ${activeComponent}.vue` }}
+    </div>
+    <!-- <div v-else>{{ `${activeComponent}.vue` }}</div> -->
     <prism-editor
       v-model="code"
       :highlight="highlighter"
@@ -44,7 +46,7 @@ import {
 const store = useStore(); // template
 
 // data
-const code = ref("Your component boilerplate will be displayed here.");
+const code = ref("Select a component to see its boilerplate code.");
 const lineNumbers = ref(true);
 const height: Ref<null | number> = ref(null);
 
@@ -53,6 +55,7 @@ const componentMap = computed(() => store.componentMap);
 const activeComponent = computed(() => store.activeComponent);
 const activeComponentObj = computed(() => store.activeComponentObj);
 const exportAsTypescript = computed(() => store.exportAsTypescript);
+const activeRoute = computed(() => store.activeRoute);
 
 // methods
 const snippetInvoke = () => {
@@ -62,7 +65,7 @@ const snippetInvoke = () => {
       componentMap.value[activeComponent.value].children
     );
   } else {
-    code.value = "Your component boilerplate will be displayed here.";
+    code.value = "Select a component to see its boilerplate code.";
   }
 };
 
@@ -98,23 +101,34 @@ const createTemplate = (componentName: string) => {
     routeStr += `    <${childName}${childNameClassFullStr}></${childName}>\n`;
   });
   const activeCompObj = activeComponentObj.value as Component; // typed this to fix activeComponentObj.value "is possibly null" error
-  if (activeComponentObj.value && (activeComponentObj.value as Component).htmlAttributes) {
+  if (
+    activeComponentObj.value &&
+    (activeComponentObj.value as Component).htmlAttributes
+  ) {
     //if/else statement to determine if there are class and id attributes present in the html element
     if (
       (activeComponentObj.value as Component).htmlAttributes.class !== "" &&
       (activeComponentObj.value as Component).htmlAttributes.id !== ""
     ) {
-      return `<template>\n  <div id = "${(activeComponentObj.value as Component).htmlAttributes.id}" class = "${(activeComponentObj.value as Component).htmlAttributes.class}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
+      return `<template>\n  <div id = "${
+        (activeComponentObj.value as Component).htmlAttributes.id
+      }" class = "${
+        (activeComponentObj.value as Component).htmlAttributes.class
+      }">\n${templateTagStr}${routeStr}  </div>\n</template>`;
     } else if (
       (activeComponentObj.value as Component).htmlAttributes.class !== "" &&
       (activeComponentObj.value as Component).htmlAttributes.id === ""
     ) {
-      return `<template>\n  <div class = "${(activeComponentObj.value as Component).htmlAttributes.class}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
+      return `<template>\n  <div class = "${
+        (activeComponentObj.value as Component).htmlAttributes.class
+      }">\n${templateTagStr}${routeStr}  </div>\n</template>`;
     } else if (
       (activeComponentObj.value as Component).htmlAttributes.class === "" &&
       (activeComponentObj.value as Component).htmlAttributes.id !== ""
     )
-      return `<template>\n  <div id = "${(activeComponentObj.value as Component).htmlAttributes.id}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
+      return `<template>\n  <div id = "${
+        (activeComponentObj.value as Component).htmlAttributes.id
+      }">\n${templateTagStr}${routeStr}  </div>\n</template>`;
     else {
       return `<template>\n  <div>\n${templateTagStr}${routeStr}  </div>\n</template>`;
     }
@@ -387,8 +401,8 @@ const createBoiler = (componentName: string, children: string[]) => {
       data += "\n";
     }
     //checks if there is binding in it's html child's child and will add to code snippet
-    // console.log('element: ', el);
-    // console.log('element children: ', el.children);
+    console.log('element: ', el);
+    console.log('element children: ', el.children);
     // if (el.children.length !== 0) {
     //   el.children.forEach((el1) => {
     //     if (el1.binding !== "") {
@@ -428,9 +442,20 @@ const createBoiler = (componentName: string, children: string[]) => {
   let htmlArray = componentMap.value[componentName].htmlList;
   let styleString = "";
   const activeCompObj = activeComponentObj.value as Component; // typed this to fix activeComponentObj.value "is possibly null" error
-  if (activeComponentObj.value && (activeComponentObj.value as Component).htmlAttributes.class !== "") {
-    styleString += `.${(activeComponentObj.value as Component).htmlAttributes.class} { \n\tbackground-color: ${(activeComponentObj.value as Component).color};
-\tgrid-area: ${(activeComponentObj.value as Component).htmlAttributes.gridArea[0]} / ${(activeComponentObj.value as Component).htmlAttributes.gridArea[1]} / ${(activeComponentObj.value as Component).htmlAttributes.gridArea[2]} / ${(activeComponentObj.value as Component).htmlAttributes.gridArea[3]};
+  if (
+    activeComponentObj.value &&
+    (activeComponentObj.value as Component).htmlAttributes.class !== ""
+  ) {
+    styleString += `.${
+      (activeComponentObj.value as Component).htmlAttributes.class
+    } { \n\tbackground-color: ${(activeComponentObj.value as Component).color};
+\tgrid-area: ${
+      (activeComponentObj.value as Component).htmlAttributes.gridArea[0]
+    } / ${
+      (activeComponentObj.value as Component).htmlAttributes.gridArea[1]
+    } / ${
+      (activeComponentObj.value as Component).htmlAttributes.gridArea[2]
+    } / ${(activeComponentObj.value as Component).htmlAttributes.gridArea[3]};
 \tz-index: ${(activeComponentObj.value as Component).z};
 } \n`;
   }
