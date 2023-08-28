@@ -9,7 +9,7 @@
     <div v-if="routes[activeRoute].length">
       <div v-if="Object.keys(htmlList).length">
         {{ activeRoute }} / {{ `${activeComponent}.vue` }}
-        <DraggableWrapper v-if="renderComponent" :htmlList="htmlList" />
+        <DraggableWrapper v-if="renderComponent" @delete="forceRender" :htmlList="htmlList" />
       </div>
 
       <div v-else>Add HTML elements to this component to see them here.</div>
