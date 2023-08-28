@@ -485,7 +485,6 @@ const actions: Store<"main", State, {}, Actions> = {
 
     deleteNested(htmlList);
   },
-
   setComponentDetailsTab(payload) {
     this.componentDetailsTab = payload;
   },
@@ -1062,6 +1061,7 @@ const actions: Store<"main", State, {}, Actions> = {
   },
 
   addActiveComponentNote(payload) {
+    console.log("in addActiveComponent payload", payload);
     const active = this.componentMap[this.activeComponent] as Component;
     if (!this.componentMap[this.activeComponent].hasOwnProperty("noteList")) {
       active.noteList = [];
@@ -1094,14 +1094,60 @@ const actions: Store<"main", State, {}, Actions> = {
     this.attributeModalOpen = !this.attributeModalOpen;
   },
 
+ 
+  addAttributes(payload) {
+    // console.log("current payload:", payload);
+    //get the active component
+    let added = false;
+    const addRecursively = (htmlElement: HtmlElement) => {
+      const attributeString: string = Object.keys(payload)[0];
+      if (htmlElement.id === payload.id) {
+        added = true;
+        // callback(payload, htmlElement);
+        console.log(attributeString);
+        htmlElement[attributeString] = payload[attributeString];
+        return;
+      }
+
+      //base case: if the html list doesn't have children, return;
+      if (!htmlElement.children) {
+        console.log("there is no children (type: htmlList)");
+        return;
+      } else {
+        //iterate through the htmlList of activeComponent children
+        for (let i = 0; i < htmlElement.children.length; i++) {
+          if (added === false) {
+            addRecursively(htmlElement.children[i]);
+          } else return;
+        }
+      }
+    };
+
+    if ((this.activeComponentObj as Component).htmlList) {
+      console.log('current html list', this.componentMap[this.activeComponent].htmlList)
+      this.componentMap[this.activeComponent].htmlList.forEach(
+        (htmlElement) => {
+          if (added === false) {
+            //console.log('we actually got to recursively call it! line 1165')
+            addRecursively(htmlElement);
+          } else return;
+        }
+      );
+    }
+  },
+
+
   addActiveComponentClass(payload) {
     const active = this.activeComponentObj as Component;
     if (active.htmlList)
       this.componentMap[this.activeComponent].htmlList.forEach((el) => {
+        console.log("addActiveComponentClass htmlList", el);
         //adding class into it's child 1st layer
+        //if our element has children,
         if (el.children.length !== 0) {
           el.children.forEach(
             (element: { id: string | number; class: string }) => {
+              console.log("addActiveComponentClass element", element);
               if (payload.id === element.id) {
                 element.class = payload.class;
               }
@@ -1114,11 +1160,14 @@ const actions: Store<"main", State, {}, Actions> = {
       });
   },
 
+  //payload: addBinding(bindingText, activeHTML as number)
   addBindingText(payload) {
     const active = this.activeComponentObj as Component;
     //access the htmlList, add payload to the empty bind obj
     if (payload.binding === "") return;
     else {
+      //if the active component has an html list, iterate through the htmlList
+      //check if each element in the html list has a
       if (active.htmlList)
         this.componentMap[this.activeComponent].htmlList.forEach((el) => {
           if (el.children.length !== 0) {
@@ -1150,7 +1199,7 @@ const actions: Store<"main", State, {}, Actions> = {
   addActiveComponentHeight(payload) {
     this.componentMap[this.activeComponent].htmlList.forEach((el) => {
       if (payload.id === el.id) {
-        el.h = payload.height;
+        el.h = payload.height; //height = h on HtmlElement type
       }
     });
   },
