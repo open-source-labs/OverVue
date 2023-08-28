@@ -13,7 +13,7 @@
         ? `${activeRoute} / ${activeComponent}.vue`
         : "Add HTML elements to this component to see them here."
     }}
-    <DraggableWrapper v-if="renderComponent" :htmlList="htmlList" />
+    <DraggableWrapper v-if="renderComponent" @delete="forceRender" :htmlList="htmlList" />
   </div>
 </template>
 

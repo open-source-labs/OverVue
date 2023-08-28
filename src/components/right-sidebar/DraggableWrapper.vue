@@ -24,6 +24,8 @@ import { Draggable } from "@he-tree/vue";
 
 const store = useStore();
 
+const emit = defineEmits(['delete']);
+
 const attributeModal = ref(false);
 
 /* COMPUTED VALUES */
@@ -34,7 +36,10 @@ const setActiveHTML = (payload) => store.setActiveHTML(payload);
 const openAttributeModal = () => store.openAttributeModal();
 const clearActiveHTML = () => store.clearActiveHTML();
 const deleteElement = (id) => store.deleteFromElementHtmlList(id);
-const deleteSelectedNode = (node) => deleteElement(node.id);
+const deleteSelectedNode = (node) => {
+  deleteElement(node.id);
+  emit('delete');
+}
 
 const closeMenu = () => {
   if (activeComponent.value !== "") {
