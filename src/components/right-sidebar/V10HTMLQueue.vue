@@ -1,19 +1,19 @@
 <template>
   <div class="top-p" v-if="activeComponent === ''">
-    Select a component to see its underlying HTML elements.
+    <div v-if="!routes[activeRoute].length">
+      Add a component to this route to see its underlying HTML elements.
+    </div>
+    <div v-else>Select a component to see its underlying HTML elements.</div>
   </div>
   <div v-else>
-    <!-- {{ if (Object.keys(htmlList).length) {
-      if (routes[activeRoute].children.length) return 'test';
-      else return `${activeRoute} / ${activeComponent}.vue`;
-    } else return "Add HTML elements to this component to see them here."
-    } }} -->
-    {{
-      Object.keys(htmlList).length
-        ? `${activeRoute} / ${activeComponent}.vue`
-        : "Add HTML elements to this component to see them here."
-    }}
-    <DraggableWrapper v-if="renderComponent" :htmlList="htmlList" />
+    <div v-if="routes[activeRoute].length">
+      <div v-if="Object.keys(htmlList).length">
+        {{ activeRoute }} / {{ `${activeComponent}.vue` }}
+        <DraggableWrapper v-if="renderComponent" :htmlList="htmlList" />
+      </div>
+
+      <div v-else>Add HTML elements to this component to see them here.</div>
+    </div>
   </div>
 </template>
 
