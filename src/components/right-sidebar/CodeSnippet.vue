@@ -33,6 +33,7 @@ import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism-tomorrow.css"; // import syntax highlighting styles
 import { useStore } from "../../store/main.js";
 import { Component, HtmlElement, HtmlElementMap } from "../../../types";
+import { vtIcons } from "src/store/state/icons";
 import {
   ref,
   computed,
@@ -160,12 +161,12 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
     h6: ["<h6", "</h6>"],
 
     // [OverVue v.10.0] –– Vuetensils elements :)
-    alert: [
+    VAlert: [
       `<VAlert class="info" dismissible`,
       `\n\t\t <a href="https://vuetensils.com/components/Alert.html">How to use Alert</a> \n\t\t This is an alert \n\t </VAlert>`,
     ],
-    date: ["<VDate", ""],
-    dialog: [
+    VDate: ["<VDate", ""],
+    VDialog: [
       `<VDialog class="test" :classes="{ bg: 'bg-black-alpha' }"`,
       `\n\t\t <template #toggle="{ bind, on }">
         <button v-bind="bind" v-on="on">
@@ -176,7 +177,7 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
         This is the dialog content.
       </div> \n\t  </VDialog>`,
     ],
-    drawer: [
+    VDrawer: [
       `<VDrawer transition="slide-right" bg-transition="fade">      
         <template #toggle="{ bind, on }">
         <button v-bind="bind" v-on="on">
@@ -185,15 +186,15 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
       </template`,
       `\n\t\t My drawer content\n\t\t</VDrawer>`,
     ],
-    dropdown: [
+    VDropdown: [
       `<VDropdown text="This is the dropdown."`,
       ` \n    <div>
         <p>Dropdown content</p>
         <div/> \n\t </VDropdown>`,
     ],
-    file: ["<VFile", ""],
-    notifications: ["<VNotifications", ""],
-    resize: [
+    VFile: ["<VFile", ""],
+    VNotifications: ["<VNotifications", ""],
+    VResize: [
       `<VResize>
       <template #default="{ width } ">
         <div
@@ -210,7 +211,7 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
       </template`,
       `\n    </VResize>`,
     ],
-    skip: [
+    VSkip: [
       `<div>
       <button>click here to focus</button>
 
@@ -240,7 +241,7 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
       </main`,
       `\n    </div>`,
     ],
-    tab: [
+    VTabs: [
       `<VTabs class="styled">
       <template #tab-1>Tab 1</template>
       <template #panel-1>
@@ -258,7 +259,7 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
       </template`,
       `\n    </VTabs>`,
     ],
-    toggle: [
+    VToggle: [
       `<VToggle label="Toggle label"`,
       `\n\t\tcontent here \n    </VToggle>`,
     ],
@@ -483,6 +484,29 @@ const createBoiler = (componentName: string, children: string[]) => {
   }
 
   const htmlBinding = componentMap.value[activeComponent.value].htmlList;
+  console.log("htmlbinding in codesnippet: ", htmlBinding);
+
+  // [OverVue v.10.0] add Vuetensils import statements to <script setup>
+
+  const vuetensilsSet = new Set(Object.keys(vtIcons));
+
+  let vuetensilsImports = "";
+
+  const vtComponents: string[] = [];
+
+  htmlBinding.forEach((el) => {
+    if (vuetensilsSet.has(el.text)) {
+      // Add import statement for Vuetensils components
+      vtComponents.push(el.text);
+    }
+  });
+
+  if (vtComponents.length) {
+    vuetensilsImports += `import { ${vtComponents.join(
+      ", "
+    )} } from 'vuetensils/src/components';\n`;
+  }
+
   data += "  data() {\n    return {\n";
   htmlBinding.forEach((el) => {
     if (el.binding !== "") {
@@ -563,13 +587,19 @@ const createBoiler = (componentName: string, children: string[]) => {
   if (exportAsTypescript.value === "on") {
     output = "\n\n<script lang='ts'>\n";
     output +=
+      vuetensilsImports +
       imports +
       "\nexport default defineComponent ({\n  name: '" +
       componentName +
       "';";
   } else {
     output = "\n\n<script>\n";
-    output += imports + "\nexport default {\n  name: '" + componentName + "'";
+    output +=
+      vuetensilsImports +
+      imports +
+      "\nexport default {\n  name: '" +
+      componentName +
+      "'";
   }
   output += ",\n  components: {\n";
   output += childrenComponentNames + "  },\n";
@@ -582,6 +612,8 @@ const createBoiler = (componentName: string, children: string[]) => {
   } else {
     output += `}; \n <\/script>\n\n<style scoped>\n${styleString}</style > `;
   }
+
+  console.log("output in codesnippet: ", output);
   return output;
 };
 
