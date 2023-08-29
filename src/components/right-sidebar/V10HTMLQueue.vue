@@ -9,7 +9,11 @@
     <div v-if="routes[activeRoute].length">
       <div v-if="Object.keys(htmlList).length">
         {{ activeRoute }} / {{ `${activeComponent}.vue` }}
-        <DraggableWrapper v-if="renderComponent" @delete="forceRender" :htmlList="htmlList" />
+        <DraggableWrapper
+          v-if="renderComponent"
+          @delete="forceRender"
+          :htmlList="htmlList"
+        />
       </div>
 
       <div v-else>Add HTML elements to this component to see them here.</div>
@@ -60,11 +64,13 @@ const forceRender = async () => {
 }
 
 .he-tree--drag-overing {
-  background: $subprimary;
+  // background: $subprimary;
+  background: #ffffff00;
 }
 
 .he-tree-drag-placeholder {
-  background: #72d096;
+  // background: #72d096;
+  background: #ffffff00;
   /* border:1px dashed #00ff80; */
   height: 40px;
 }

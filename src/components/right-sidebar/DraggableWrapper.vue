@@ -5,7 +5,7 @@
         <span class="pencil-icon">
           <i
             class="fa-solid fa-pencil fa-2xs"
-            @click="setActiveElement([node.text, node.id])"
+            @click="setActiveElement([node.text, node.id], stat)"
           ></i>
         </span>
         {{ node.text }}
@@ -21,10 +21,11 @@
 import { ref, computed, watch } from "vue";
 import { useStore } from "src/store/main";
 import { Draggable } from "@he-tree/vue";
+import "@he-tree/vue/style/default.css";
 
 const store = useStore();
 
-const emit = defineEmits(['delete']);
+const emit = defineEmits(["delete"]);
 
 const attributeModal = ref(false);
 
@@ -38,8 +39,8 @@ const clearActiveHTML = () => store.clearActiveHTML();
 const deleteElement = (id) => store.deleteFromElementHtmlList(id);
 const deleteSelectedNode = (node) => {
   deleteElement(node.id);
-  emit('delete');
-}
+  emit("delete");
+};
 
 const closeMenu = () => {
   if (activeComponent.value !== "") {
@@ -48,12 +49,12 @@ const closeMenu = () => {
   }
 };
 
-const setActiveElement = (element) => {
-  // console.log("render list: ", renderList.value);
-  console.log("element in html queue: ", element);
+const setActiveElement = (element, stat) => {
+  // console.log("event", event);
+  //console.log("element in html queue: ", element);
   if (activeComponent.value !== "") {
+    console.log(stat);
     setActiveHTML(element);
-    // element.classList.add('currentHtmlElement')
     if (attributeModal.value === false) {
       openAttributeModal();
     } else {
@@ -62,33 +63,34 @@ const setActiveElement = (element) => {
   }
 };
 
-const props = defineProps(['htmlList']);
+const props = defineProps(["htmlList"]);
 
 watch(attributeModalOpen, () => {
   attributeModal.value = attributeModalOpen.value;
 });
-
 </script>
 <style lang="scss" scoped>
 .vtlist .he-tree {
   cursor: pointer;
 }
-//background-color: #59a476;
 
 // .tree-node {
 //   background-color: #59a476
-// } 
+// }
 
 .he-tree--rtl {
   direction: rtl;
 }
 
 .he-tree--drag-overing {
-  background: $subprimary;
+  // background: $subprimary;
+  background: #ffffff00;
 }
 
 .he-tree-drag-placeholder {
-  background: #72d096;
+  // background: #72d096;
+  // background: #ffffff00;
+  background: red;
   /* border:1px dashed #00ff80; */
   height: 40px;
 }
@@ -117,8 +119,4 @@ watch(attributeModalOpen, () => {
   display: flex;
 }
 */
-
-
-
-
 </style>

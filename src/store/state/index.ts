@@ -6,6 +6,7 @@ import * as types from "../../../types";
 const cloneDeep = require("lodash.clonedeep");
 
 const newState: types.State = {
+  mode: "tree",
   clicked: false,
   icons,
   vtIcons,
