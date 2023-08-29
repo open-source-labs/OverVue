@@ -26,17 +26,17 @@ const icons: Icons = {
 const vuetensilIcon = "fa-solid fa-utensils fa-lg";
 
 const vtIcons: Icons = {
-  alert: [vuetensilIcon],
-  date: [vuetensilIcon],
-  dialog: [vuetensilIcon],
-  drawer: [vuetensilIcon],
-  dropdown: [vuetensilIcon],
-  file: [vuetensilIcon],
-  notifications: [vuetensilIcon],
-  resize: [vuetensilIcon],
-  skip: [vuetensilIcon],
-  tab: [vuetensilIcon],
-  toggle: [vuetensilIcon],
+  VAlert: [vuetensilIcon],
+  VDate: [vuetensilIcon],
+  VDialog: [vuetensilIcon],
+  VDrawer: [vuetensilIcon],
+  VDropdown: [vuetensilIcon],
+  VFile: [vuetensilIcon],
+  VNotifications: [vuetensilIcon],
+  VResize: [vuetensilIcon],
+  VSkip: [vuetensilIcon],
+  VTabs: [vuetensilIcon],
+  VToggle: [vuetensilIcon],
 };
 
 export { icons, vtIcons };
