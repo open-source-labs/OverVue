@@ -25,8 +25,9 @@
     >
       <!-- This is the actual component box -->
       <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
-      <p class="cssContainerText">{{ activeRoute }} Preview</p>
       <!--each component box in canvas will have these properties-->
+      <br />
+      <p class="cssContainerText">{{ activeRoute }} Preview</p>
       <vue-draggable-resizable
         class-name="component-box"
         v-for="componentData in activeRouteArray"
@@ -76,6 +77,21 @@
           :key="element.id as string + new Date()"
         >
           <div
+            class="htmlDiv"
+            :style="[
+              element.x !== 0 ? { top: element.x + '%' } : { top: '10%' },
+              element.y !== 0 ? { left: element.y + '%' } : { left: '10%' },
+              element.w !== 0 ? { width: element.w + '%' } : { width: '80%' },
+              element.h !== 0 ? { height: element.h + '%' } : { height: '75%' },
+              element.z !== 0 ? { 'z-index': element.z as number } : { 'z-index': 0 },
+              { 'background-color': componentData.color },
+            ]"
+          >
+            <p class="innerHtmlText" style="font-size: 3em">
+              {{ element.note !== "" ? element.note : element.text }}
+            </p>
+          </div>
+          <div
             v-if="element.text === 'button'"
             class="htmlButton"
             :style="[
@@ -99,7 +115,7 @@
             :style="[
               element.x !== 0 ? { top: element.x + '%' } : { top: '10%' },
               element.y !== 0 ? { left: element.y + '%' } : { left: '10%' },
-              element.w !== 0 ? { width: element.w + '%' } : { width: '80%' },
+              element.w !== 0 ? { width: element.w + '%' } : { width: '30%' },
               element.h !== 0 ? { height: element.h + '%' } : { height: '75%' },
               element.z !== 0 ? { 'z-index': element.z as number } : { 'z-index': 0 },
               { 'background-color': componentData.color },
@@ -1424,6 +1440,8 @@ li:hover {
 }
 
 .cssContainer {
+  display: flex;
+  flex-direction: column;
   margin: 6.1%;
   border: 1px solid black;
   width: 1280px;
@@ -1595,6 +1613,7 @@ li:hover {
 }
 
 .htmlDiv {
+  display: flex;
   position: absolute;
   margin: 0.5em;
   border-radius: 1.5%;

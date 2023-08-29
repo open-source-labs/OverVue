@@ -2,6 +2,7 @@
 
 // TS type for State (index.ts) in state folder
 export type State = {
+  mode: string;
   clicked: boolean;
   icons: Icons;
   vtIcons: Icons;
@@ -85,6 +86,7 @@ export type Actions = {
   addRouteToRouteMap: (payload: string) => void;
   ExportAsTypescript: (payload: "on" | "off") => void;
   ExportOauth: (payload: "on" | "off") => void;
+  toggleMode: (payload: "tree" | "canvas") => void; ///
   ExportOauthGithub: (payload: "on" | "off") => void;
   exportTest: (payload: string) => void;
   createAction: (payload: string) => void;
@@ -105,6 +107,7 @@ export type Actions = {
   updatePasteTimer: () => void;
   pasteActiveComponent: () => void;
   editComponentName: (payload: string) => void;
+
   //Linden
   addNestedHTML: (payload: { elementName: string; date: number }) => void;
   clearActiveHTML: () => void;
@@ -197,12 +200,10 @@ export type Actions = {
   openNoteModal: () => void;
   openAttributeModal: () => void;
   addAttributes: (
-    payload: { id: number, [key: string]:any } ///**** */
+    payload: { id: number; [key: string]: any } ///**** */
   ) => void;
-  
-  addActiveComponentClass: (
-    payload: { id: number; class: string }
-  ) => void;
+
+  addActiveComponentClass: (payload: { id: number; class: string }) => void;
   addBindingText: (payload: { id: number; binding: string }) => void;
   deleteActiveComponentClass: (payload: string) => void;
   addActiveComponentHeight: (payload: {
@@ -277,7 +278,7 @@ export type HtmlElement = {
   children: HtmlElement[];
   class: string;
   x: number | string; //top
-  y: number | string; 
+  y: number | string;
   z: number | string; //width
   w: number | string; //width
   h: number | string; //height

@@ -119,6 +119,10 @@ const actions: Store<"main", State, {}, Actions> = {
     this.exportOauthGithub = payload;
   },
 
+  toggleMode(payload) {
+    // console.log("toggled", payload);
+    this.mode = payload;
+  },
   exportTest(payload) {
     this.importTest = payload;
   },
@@ -1094,7 +1098,6 @@ const actions: Store<"main", State, {}, Actions> = {
     this.attributeModalOpen = !this.attributeModalOpen;
   },
 
- 
   addAttributes(payload) {
     // console.log("current payload:", payload);
     //get the active component
@@ -1124,7 +1127,10 @@ const actions: Store<"main", State, {}, Actions> = {
     };
 
     if ((this.activeComponentObj as Component).htmlList) {
-      console.log('current html list', this.componentMap[this.activeComponent].htmlList)
+      console.log(
+        "current html list",
+        this.componentMap[this.activeComponent].htmlList
+      );
       this.componentMap[this.activeComponent].htmlList.forEach(
         (htmlElement) => {
           if (added === false) {
@@ -1135,7 +1141,6 @@ const actions: Store<"main", State, {}, Actions> = {
       );
     }
   },
-
 
   addActiveComponentClass(payload) {
     const active = this.activeComponentObj as Component;

@@ -44,7 +44,7 @@ const activeRoute = computed(() => store.activeRoute);
 onMounted(() => {
   // Sets tree view to origin on initial render
   tree.value.setToOrigin();
-})
+});
 
 /* FUNCTIONS */
 

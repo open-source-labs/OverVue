@@ -28,8 +28,8 @@ Description:
                 @click="clickedUndo"
               ></i>
               <i v-else class="fa fa-undo unavailable" aria-hidden="true"></i>
-            </q-btn> -->
-            <!-- <q-btn>
+            </q-btn>
+            <q-btn>
               <i
                 v-if="undoneAction.length"
                 class="fa fa-redo"
@@ -38,7 +38,9 @@ Description:
               ></i>
               <i v-else class="fa fa-redo unavailable" aria-hidden="true"></i>
             </q-btn> -->
-            <!-- <GridDensity /> -->
+            <div v-if="mode === 'canvas'">
+              <GridDensity />
+            </div>
           </div>
         </q-toolbar-title>
         <div></div>
@@ -57,8 +59,37 @@ Description:
                 no-caps
                 @click="toggleTutorial"
               />
-
-              <SlackLoginWindow />
+              <div class="typescript">
+                <p class="typescript-text"><b>Mode:</b></p>
+                <label for="mode" class="switch">
+                  <input
+                    v-if="mode === 'tree'"
+                    class="switch-input"
+                    type="checkbox"
+                    name="mode"
+                    id="mode"
+                    :value="mode"
+                    @change="changeMode"
+                    checked
+                  />
+                  <input
+                    v-else-if="mode === 'canvas'"
+                    class="switch-input"
+                    type="checkbox"
+                    name="mode"
+                    id="mode"
+                    :value="mode"
+                    @change="changeMode"
+                  />
+                  <span
+                    class="switch-label"
+                    :value="mode"
+                    data-on="tree"
+                    data-off="Grid"
+                  ></span>
+                  <span class="switch-handle" :value="mode"></span>
+                </label>
+              </div>
               <div class="typescript">
                 <p class="typescript-text"><b>TypeScript: </b></p>
                 <label for="typescript" class="switch">
@@ -125,7 +156,7 @@ Description:
                   <span class="switch-handle" :value="importTest"></span>
                 </label>
               </div>
-
+              <SlackLoginWindow />
               <div class="drawer">
                 <q-expansion-item group="accordion" label="Create Oauth">
                   <div class="Oauth">
@@ -278,7 +309,7 @@ Description:
 
 <!-- COMPOSITION API -->
 <script setup lang="ts">
-import { ref, computed, Ref } from "vue";
+import { ref, computed } from "vue";
 import { useStore } from "../store/main";
 
 import RightSidebar from "../components/right-sidebar/RightSidebar.vue";
@@ -319,8 +350,8 @@ const exportAsTypescript = computed(() => store.exportAsTypescript);
 const exportOauth = computed(() => store.exportOauth);
 const exportOauthGithub = computed(() => store.exportOauthGithub);
 const importTest = computed(() => store.importTest);
-
 const toggleTutorial = () => store.toggleTutorial();
+const mode = computed(() => store.mode); //grid or tree mode
 
 const hideRight = () => {
   right.value = !right.value;
@@ -331,7 +362,19 @@ const hideRight = () => {
   }
 };
 // @ts-ignore
-const handlePan = ({ evt, ...newInfo }) => {
+
+const changeMode = (e: Event) => {
+  // console.log(e.target);
+  let currMode: "tree" | "canvas";
+  if ((e.target as HTMLInputElement).value === "tree") {
+    currMode = "canvas";
+  } else {
+    currMode = "tree";
+  }
+  store.toggleMode(currMode);
+};
+
+const handlePan = ({ ...newInfo }) => {
   if (right.value) {
     if (newInfo.isFirst) {
       originalWidth.value = dashWidth.value;
@@ -412,6 +455,7 @@ const clickedRedo = () => emit("redo");
 .q-page-container {
   // Overriding original q-page-container padding
   padding-top: 0px !important;
+  margin: 0px;
 }
 
 // .q-header {
