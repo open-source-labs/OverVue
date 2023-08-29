@@ -160,25 +160,108 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
     h6: ["<h6", "</h6>"],
 
     // [OverVue v.10.0] –– Vuetensils elements :)
-    alert: ["<VAlert", "</VAlert>"],
+    alert: [
+      `<VAlert class="info" dismissible`,
+      `\n\t\t <a href="https://vuetensils.com/components/Alert.html">How to use Alert</a> \n\t\t This is an alert \n\t </VAlert>`,
+    ],
     date: ["<VDate", ""],
-    dialog: ["<VDialog", "</VDialog>"],
+    dialog: [
+      `<VDialog class="test" :classes="{ bg: 'bg-black-alpha' }"`,
+      `\n\t\t <template #toggle="{ bind, on }">
+        <button v-bind="bind" v-on="on">
+         Show the dialog
+        </button>
+      </template>
+      <div class="color-black bg-white">
+        This is the dialog content.
+      </div> \n\t  </VDialog>`,
+    ],
     drawer: [
-      `<VDrawer>      
-      <template #toggle="{ bind, on }">
+      `<VDrawer transition="slide-right" bg-transition="fade">      
+        <template #toggle="{ bind, on }">
         <button v-bind="bind" v-on="on">
           Toggle Drawer
         </button>
       </template`,
       `\n\t\t My drawer content\n\t\t</VDrawer>`,
     ],
-    dropdown: ["<VDropdown", "</VDropdown>"],
+    dropdown: [
+      `<VDropdown text="This is the dropdown."`,
+      ` \n    <div>
+        <p>Dropdown content</p>
+        <div/> \n\t </VDropdown>`,
+    ],
     file: ["<VFile", ""],
     notifications: ["<VNotifications", ""],
-    resize: ["<VResize", "</VResize>"],
-    skip: ["<VSkip", "</VSkip>"],
-    tab: ["<VTabs", "</VTabs>"],
-    toggle: ["<VToggle", "</VToggle>"],
+    resize: [
+      `<VResize>
+      <template #default="{ width } ">
+        <div
+          class="resize-example"
+          :class="{
+            lg: width > 500,
+            md: width > 300 && width < 500,
+            sm: width < 300,
+          }"
+        >
+          <img src="https://fillmurray.lucidinternets.com/200/200" alt="description" />
+          <p>This content is {{ width }}px wide.</p>
+        </div>
+      </template`,
+      `\n    </VResize>`,
+    ],
+    skip: [
+      `<div>
+      <button>click here to focus</button>
+
+      <p>Tab to get to the skip component then press enter to skip to main content</p>
+
+      <VSkip to="#main">
+        Skip To Main Content
+      </VSkip>
+
+      <!-- perhaps a nav here -->
+      <nav>
+        <ul class="fake-nav">
+          <li><a href="#">Example 1</a></li>
+          <li><a href="#">Example 2</a></li>
+          <li><a href="#">Example 3</a></li>
+          <li><a href="#">Example 4</a></li>
+          <li><a href="#">Example 5</a></li>
+          <li><a href="#">Example 6</a></li>
+        </ul>
+      </nav>
+
+      <main id="main">
+        <p>This is the main content section</p>
+        <p>It could even be a router-link.</p>
+        <p>We're adding some extra paragraphs here.</p>
+        <p>Because otherwise the header blocks this content :)</p>
+      </main`,
+      `\n    </div>`,
+    ],
+    tab: [
+      `<VTabs class="styled">
+      <template #tab-1>Tab 1</template>
+      <template #panel-1>
+        Here's the content for tabpanel 1.
+      </template>
+
+      <template #tab-2>Tab 2</template>
+      <template #panel-2>
+        Here's the content for tabpanel 2.
+      </template>
+
+      <template #tab-3>Tab 3</template>
+      <template #panel-3>
+        Here's the content for tabpanel 3.
+      </template`,
+      `\n    </VTabs>`,
+    ],
+    toggle: [
+      `<VToggle label="Toggle label"`,
+      `\n\t\tcontent here \n    </VToggle>`,
+    ],
 
     // deprecated by OV10.0: Elements+ elements
     "e-button": [`<el-button type="info"`, `</el-button>`],
@@ -290,6 +373,10 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
           nestedString += ">";
         }
 
+        if (child.note !== "") {
+          nestedString += `${child.note}`;
+        }
+
         if (child.children.length) {
           nestedString += "\n";
           nestedString += writeNested(child.children, indented);
@@ -333,7 +420,9 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
       ) {
         outputStr += "/";
       }
+
       outputStr += ">";
+
       if (el.note !== "") {
         outputStr += `${el.note}`;
       }
@@ -401,8 +490,8 @@ const createBoiler = (componentName: string, children: string[]) => {
       data += "\n";
     }
     //checks if there is binding in it's html child's child and will add to code snippet
-    console.log('element: ', el);
-    console.log('element children: ', el.children);
+    console.log("element: ", el);
+    console.log("element children: ", el.children);
     // if (el.children.length !== 0) {
     //   el.children.forEach((el1) => {
     //     if (el1.binding !== "") {
