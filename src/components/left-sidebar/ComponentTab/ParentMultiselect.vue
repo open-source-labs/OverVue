@@ -1,8 +1,10 @@
-<!--
-Description:
-  Displays multiselect dropdown for already existing components in CreateComponent
-  Functionality includes: selects parent for created component
-  -->
+<!-- 
+  LOCATION IN APP:
+  [left sidebar] COMPONENT > default view > Set parent component (dropdown)
+
+  FUNCTIONALITY:
+  - Enables user to set a parent component for the component they are creating
+-->
 
 <template>
   <div id="parent-select">
@@ -18,35 +20,41 @@ Description:
       :option-height="20"
       :searchable="true"
     >
-      <template v-slot:noResult>No components found.</template>
+      <template v-slot:noResult>No components found</template>
     </VueMultiselect>
   </div>
 </template>
 
 <script setup lang="ts">
+/* IMPORTS */
+import { ref, computed, watch } from "vue";
 import VueMultiselect from "vue-multiselect";
 import { useStore } from "../../../store/main";
-import { ref, computed, watch } from "vue";
 
-const store = useStore();
-
+/* EMITS */
 const emit = defineEmits(["addparent"]);
+
+/* DATA */
 const value = ref("");
+
+/* COMPUTED VALUES */
+const store = useStore();
 
 const componentMap = computed(() => store.componentMap);
 const activeComponent = computed(() => store.activeComponent);
 const routes = computed(() => store.routes);
 const activeRoute = computed(() => store.activeRoute);
-
 const options = routes.value[activeRoute.value].map(
   (component) => component.componentName
 );
 
+/* STORE ACTIONS */
 const parentSelect: typeof store.parentSelect = (payload) =>
   store.parentSelect(payload);
 const setActiveComponent: typeof store.setActiveComponent = (payload) =>
   store.setActiveComponent(payload);
 
+/* METHODS */
 const selectParent = (value: string) => {
   parentSelect(value);
   emit("addparent", value);
@@ -56,59 +64,9 @@ const resetActiveComponent = (): void => {
   if (activeComponent.value !== "") setActiveComponent("");
 };
 
+/* WATCHES */
 watch(componentMap, () => (value.value = ""));
 </script>
-
-// OLD SCRIPT CODE USING OPTIONS API
-<!-- <script>
-import { mapState, mapActions } from "vuex";
-import VueMultiselect from "vue-multiselect";
-
-export default {
-  name: "ParentMultiselect",
-  components: {
-    VueMultiselect,
-  },
-  data() {
-    return { value: "" };
-  },
-  computed: {
-    ...mapState([
-      "routes",
-      "componentMap",
-      "activeComponent",
-      "activeRoute",
-      // 'routes'
-    ]),
-    options() {
-      return this.routes[this.activeRoute].map(
-        (component) => component.componentName
-      );
-    },
-  },
-  methods: {
-    ...mapActions(["parentSelected", "setActiveComponent"]),
-    selectParent(value) {
-      this.parentSelected(value);
-      this.$emit("addparent", value);
-    },
-    // when multiselect is opened activeComponent is deselected to allow for parentSelected action
-    resetActiveComponent() {
-      if (this.activeComponent !== "") {
-        this.setActiveComponent("");
-      }
-    },
-  },
-  // clears out selected in mutiselect on creation of component
-  watch: {
-    componentMap: {
-      handler() {
-        this.value = "";
-      },
-    },
-  },
-};
-</script> -->
 
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>
 <style scoped lang="scss">

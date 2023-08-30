@@ -1,8 +1,11 @@
-<!--
-Description:
-  Displays all Vuetensils element icons that can be added to component in createComponent
-  Functionality includes: Adding (nesting) html elements to components
-  -->
+<!-- 
+  LOCATION IN APP:
+  [left sidebar] COMPONENT > default view > VUETENSILS
+
+  FUNCTIONALITY:
+  - Displays Vuetensils components from Vuetensils library
+  - Enables user to select Vuetensils components and add them to current active component
+-->
 
 <template>
   <section class="icon-grid">
@@ -11,38 +14,27 @@ Description:
       v-for="([elementName, iconString], idx) in Object.entries(vtIcons)"
       :key="idx + Date.now()"
     >
+      <!-- number badge -->
       <span class="badge"> {{ elementStorage[elementName] }}</span>
       <br />
+
+      <!-- icon -->
       <i :class="iconString"></i>
       <br />
-      <span>{{ elementName }}</span>
-    </button>
-    <!-- Icons for activeComponent's Child Components-->
-    <button
-      @click.prevent="changeState(elementName)"
-      v-for="(elementName, idx) in childrenComp"
-      :key="idx + Date.now()"
-    >
-      <span class="badge"> {{ elementStorage[elementName] }}</span>
-      <br />
-      <i :class="childIcon"></i>
-      <br />
+
+      <!-- element name -->
       <span>{{ elementName }}</span>
     </button>
   </section>
 </template>
 
 <script setup lang="ts">
-// new script for Composition API
-import { HtmlElement } from "app/types";
+/* IMPORTS */
 import { computed, ref } from "vue";
 import { useStore } from "../../../store/main.js";
-const store = useStore();
+import { HtmlElement } from "app/types";
 
-//to give the child componenets of the active components icons
-const childIcon = ref(["fas fa-code fa-lg"]);
-
-//emits
+/* EMITS */
 const emit = defineEmits([
   "getClickedIcon",
   "activeElement",
@@ -50,6 +42,8 @@ const emit = defineEmits([
   "activeHTML",
 ]);
 
+/* COMPUTED VALUES */
+const store = useStore();
 const vtIcons = computed(() => store.vtIcons);
 // const icons = computed(() => store.icons);
 const activeComponent = computed(() => store.activeComponent);
@@ -58,13 +52,13 @@ const selectedElementList = computed(() => store.selectedElementList);
 const activeHTML = computed(() => store.activeHTML);
 const activeLayer = computed(() => store.activeLayer);
 
-//it increments html elements when creating component
+// increments number badge when elements are added to component
 const elementStorage = computed(() => {
   let computedElementalStorage: { [key: string]: number } = {};
+
   if (activeComponent.value) {
     computedElementalStorage = {};
 
-    //function searches through HtmlList and is invoke recursively to search its children(Html Elements that are nested)
     const checkHtmlElements = (array: HtmlElement[]) => {
       for (let html of array) {
         if (html.children === undefined) continue;
@@ -77,11 +71,11 @@ const elementStorage = computed(() => {
         }
       }
     };
-    //invoke the recursive function
+
     checkHtmlElements(componentMap.value[activeComponent.value].htmlList);
   } else if (activeComponent.value === "") {
-    // if component was switched from existing component to '', reset cache and update items
     computedElementalStorage = {};
+
     selectedElementList.value.forEach((el) => {
       if (!computedElementalStorage[el.text]) {
         computedElementalStorage[el.text] = 1;
@@ -90,21 +84,11 @@ const elementStorage = computed(() => {
       }
     });
   }
+
   return computedElementalStorage;
 });
 
-//Compute Child Components of the activeComponent to include them as icons
-const childrenComp = computed(() => {
-  let childrenAvailable: string[] = [];
-  if (activeComponent.value) {
-    childrenAvailable = componentMap.value[activeComponent.value].children;
-  }
-  return childrenAvailable;
-});
-
-//methods
-
-// Logic to decide where to place selected html element
+/* METHODS */
 const changeState = (elementName: string) => {
   // if no active component & creating a new component: add html to selectedElement list
   if (activeComponent.value === "") {
