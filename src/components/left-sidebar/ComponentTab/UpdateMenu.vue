@@ -1,19 +1,26 @@
-<!--
-Description:
-  Contains edit functionality for selected component
-  Functionality includes: delete component, set active component, search for component, change name of component,adjust layer of component,
-  delete props, state, actions, HTML elements, or children of component.
-  -->
+<!-- 
+  LOCATION IN APP:
+  [left sidebar] COMPONENT > Update Component (conditional: current active component selected)
+
+  FUNCTIONALITY:
+  - Enables user to:
+    - Update component name
+    - Add underlying HTML elements or Vuetensils components [OverVue v.10.0 feature]
+    - Add class & id to parent div of component
+    - Map state & actions to component
+    - Add props to component
+-->
 
 <template>
   <div class="edit-component-div">
     <div>
       <button class="menu-link" @click="resetActiveComponent">
-        <i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp; &nbsp; Create
-        Component Menu
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp; &nbsp; go back
+        & create a new component
       </button>
       <q-card class="no-shadow" dark flat>
-        <q-expansion-item default-opened label="Update Component">
+        <q-expansion-item default-opened label="UPDATE COMPONENT">
+          <!-- rename component -->
           <q-input
             @keyup.enter="editCompName(newName)"
             v-on:keyup.delete.stop
@@ -39,29 +46,20 @@ Description:
               },
             ]"
           ></q-input>
+          <p class="update-component-name">
+            press 'enter' to rename your component
+          </p>
 
-          <!-- <VueMultiselect
-            v-model="childrenSelected"
-            placeholder="Add/remove children"
-            :multiple="true"
-            :close-on-select="false"
-            :options="options"
-            :show-labels="false"
-            @remove="handleAddChild"
-            @select="handleAddChild"
-            :max-height="300"
-            :option-height="20"
-            :searchable="false"
-          /> -->
           <q-list
             class="accordBorder no-shadow"
             active-color="secondary"
             indicator-color="secondary"
           >
+            <!-- HTML elements + Vuetensils components -->
             <q-expansion-item group="accordion" label="HTML Elements">
               <div class="subsection">
-                <!-- [OverVue v.10.0] NEW TAB SECTION:
-                (separates standard HTML elements/components from Vuetensils components -->
+                <!-- [OverVue v.10.0] NEW TAB SECTION
+                separates standard HTML elements from Vuetensils components -->
 
                 <!-- tabs -->
                 <q-tabs
@@ -87,8 +85,8 @@ Description:
 
                 <!-- tab panels -->
                 <q-tab-panels v-model="tab" animated>
+                  <!-- standard HTML elements -->
                   <q-tab-panel name="standard-elements">
-                    <!-- <div class="icon-container"> -->
                     <Icons
                       class="icons"
                       @getClickedIcon="addToSelectedElementList"
@@ -96,8 +94,9 @@ Description:
                       @activeHTML="addNestedHTML"
                       @activeLayer="addNestedNoActive"
                     />
-                    <!-- </div> -->
                   </q-tab-panel>
+
+                  <!-- Vuetensils components -->
                   <q-tab-panel name="vuetensils">
                     <Vuetensils
                       class="icons"
@@ -109,36 +108,35 @@ Description:
                   </q-tab-panel>
                 </q-tab-panels>
               </div>
-
-              <!-- <div class="componentHTML">
-                <HTMLQueue />
-              </div> -->
               <br />
             </q-expansion-item>
+
+            <!-- update attributes modal -->
             <InputHTMLMenu
               v-model="attributeModal"
               v-if="attributeModal === true && activeLayer.lineage.length === 0"
               class="htmlElement-selected"
             />
+
+            <!-- component attributes -->
             <q-expansion-item group="accordion" label="Component Attributes">
               <AttributesSubMenu />
             </q-expansion-item>
 
+            <!-- state -->
             <q-expansion-item group="accordion" label="State">
               <StateSubMenu />
             </q-expansion-item>
+
+            <!-- actions -->
             <q-expansion-item group="accordion" label="Actions">
               <ActionsSubMenu />
             </q-expansion-item>
 
+            <!-- props -->
             <q-expansion-item group="accordion" label="Props">
               <PropsSubMenu />
-              <p
-                v-if="(activeComponentObj as Component) && !(activeComponentObj as Component).props.length"
-              >
-                No props in component
-              </p>
-              <div v-else>
+              <div>
                 <a
                   v-for="prop in (componentMap[activeComponent] as Component).props"
                   :key="prop"
@@ -164,24 +162,26 @@ Description:
               </div>
             </q-expansion-item>
           </q-list>
+
+          <!-- update, export, and delete buttons -->
           <q-btn
             id="create-component-btn"
             class="sidebar-btn"
             color="secondary"
-            label="Done"
+            label="Update Component"
             @click="resetActiveComponent"
           />
           <q-btn
             id="exportButton"
             class="sidebar-btn"
             @click="useExportComponent"
-            label="Export currently selected"
+            label="Export Current Component"
           />
           <q-btn
             id="deleteButton"
             class="sidebar-btn deleteAction"
             @click="deleteSelectedComp(activeComponentData)"
-            label="Delete currently selected"
+            label="Delete Current Component"
           />
         </q-expansion-item>
       </q-card>
@@ -190,96 +190,46 @@ Description:
 </template>
 
 <script setup lang="ts">
-import { useExportComponent } from "../../composables/useExportComponent.js";
-import VueMultiselect from "vue-multiselect";
-import HTMLQueue from "../../right-sidebar/HTMLQueue.vue";
-import Icons from "./Icons.vue";
-import Vuetensils from "./Vuetensils.vue";
-import PropsSubMenu from "./PropsSubMenu.vue";
-import StateSubMenu from "./StateSubMenu.vue";
-import ActionsSubMenu from "./ActionsSubMenu.vue";
-import AttributesSubMenu from "./AttributesSubMenu.vue";
-import InputHTMLMenu from "./InputHTMLMenu.vue";
-import { Component, HtmlElement } from "../../../../types";
-
+/* IMPORTS */
 import { ref, computed, watch } from "vue";
 import { useStore } from "../../../store/main";
-
-const store = useStore();
-
+import { Component } from "../../../../types";
+import { useExportComponent } from "../../composables/useExportComponent.js";
+import Icons from "./Icons.vue";
+import Vuetensils from "./Vuetensils.vue";
+import AttributesSubMenu from "./AttributesSubMenu.vue";
+import StateSubMenu from "./StateSubMenu.vue";
+import ActionsSubMenu from "./ActionsSubMenu.vue";
+import PropsSubMenu from "./PropsSubMenu.vue";
+import InputHTMLMenu from "./InputHTMLMenu.vue";
 const cloneDeep = require("lodash.clonedeep");
 
+/* DATA */
 const value = ref("");
 const newName = ref("");
 const childrenSelected = ref([""]);
 const attributeModal = ref(false);
 const tab = ref("standard-elements");
 
+/* COMPUTED VALUES */
+const store = useStore();
 const routes = computed(() => store.routes);
 const activeRoute = computed(() => store.activeRoute);
 const activeComponent = computed(() => store.activeComponent);
-const activeHTML = computed(() => store.activeHTML);
 const activeLayer = computed(() => store.activeLayer);
 const activeComponentObj = computed(() => store.activeComponentObj);
 const componentMap = computed(() => store.componentMap);
-const exportAsTypescript = computed(() => store.exportAsTypescript);
 const attributeModalOpen = computed(() => store.attributeModalOpen);
-
 const activeRouteDisplay = computed(() => routes.value[activeRoute.value]);
-
 const activeComponentData = cloneDeep(activeComponentObj.value);
 
-const options = computed(() => {
-  if (activeComponent.value !== "") {
-    newName.value = (activeComponentObj.value as Component).componentName;
-    childrenSelected.value = [];
-    childrenSelected.value = componentMap.value[activeComponent.value].children;
-  } else {
-    childrenSelected.value = [];
-  }
-
-  const compMap = componentMap.value;
-  const activeComp = activeComponent.value;
-  const val = activeRouteDisplay.value.map(
-    (component) => component.componentName
-  );
-
-  const relatives = [...val];
-
-  let parentalLineage: string[] = [];
-
-  const findLineage = (children: string[]) => {
-    children.forEach((el) => {
-      parentalLineage.push(el);
-      if (compMap[el].children.length > 0) {
-        findLineage(compMap[el].children);
-      }
-      if (el !== activeComp) parentalLineage.pop();
-      else return;
-    });
-  };
-
-  findLineage(relatives);
-
-  const optionOutput = val
-    .filter((el) => !parentalLineage.includes(el))
-    .filter((el) => el !== activeComp);
-
-  return optionOutput;
-});
-
+/* STORE ACTIONS */
 const setActiveComponent: typeof store.setActiveComponent = (payload) =>
   store.setActiveComponent(payload);
-// const deleteComponent: typeof store.deleteComponent = (payload) =>
-//   store.deleteComponent(payload);
 const deleteActiveComponent: typeof store.deleteActiveComponent = () =>
   store.deleteActiveComponent();
 const editComponentName: typeof store.editComponentName = (payload) =>
   store.editComponentName(payload);
-const updateComponentLayer: typeof store.updateComponentLayer = (payload) =>
-  store.updateComponentLayer(payload);
-const updateActiveComponentChildrenValue: typeof store.updateActiveComponentChildrenValue =
-  (payload) => store.updateActiveComponentChildrenValue(payload);
 const addToSelectedElementList: typeof store.addToSelectedElementList = (
   payload
 ) => store.addToSelectedElementList(payload);
@@ -290,47 +240,17 @@ const addNestedHTML: typeof store.addNestedHTML = (payload) =>
   store.addNestedHTML(payload);
 const addNestedNoActive: typeof store.addNestedNoActive = (payload) =>
   store.addNestedNoActive(payload);
-const openAttributeModal: typeof store.openAttributeModal = () =>
-  store.openAttributeModal();
 const deleteProp: typeof store.deletePropsFromComponent = (payload) =>
   store.deletePropsFromComponent(payload);
-
-const useExportComponentBound = () => {
-  useExportComponent.bind(this)();
-};
-
-const handleAddChild = (value: string) => {
-  updateActiveComponentChildrenValue(value);
-};
-
 const onActivated = (componentData: string) => {
   setActiveComponent(componentData);
   activeComponentData.isActive = true;
 };
-
 const deleteSelectedComp = (componentData: Component) => {
   if (componentData) deleteActiveComponent();
 };
 
-const handleLayer = (e: MouseEvent) => {
-  e.preventDefault();
-  const payload = {
-    activeComponent: activeComponent.value,
-    routeArray: activeRouteDisplay.value,
-    activeComponentData: activeComponentData,
-    z: activeComponentData.z,
-  };
-  if ((e.target as HTMLElement).innerText === "+") payload.z++;
-  if ((e.target as HTMLElement).innerText === "-" && payload.z > 0) payload.z--;
-  updateComponentLayer(payload);
-};
-
-const handleSelect = (componentName: string) => {
-  setActiveComponent(componentName);
-  value.value = "";
-  activeComponentData.isActive = true;
-};
-
+/* METHODS */
 const resetActiveComponent = () => {
   if (activeComponent.value !== "") setActiveComponent("");
 };
@@ -348,12 +268,17 @@ const editCompName = (name: string) => {
   }
 };
 
+/* WATCHES */
 watch(attributeModalOpen, () => {
   attributeModal.value = attributeModalOpen.value;
 });
 </script>
 
 <style lang="scss" scoped>
+.update-component-name {
+  margin-top: -25px;
+  text-align: center;
+}
 .subsection {
   border-top: 1px solid rgba(245, 245, 245, 0.3);
   padding: 10px 0 0;
