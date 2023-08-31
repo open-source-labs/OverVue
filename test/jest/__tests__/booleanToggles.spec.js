@@ -3,7 +3,7 @@ import { createApp } from "vue";
 import { createTestingPinia } from "@pinia/testing";
 import * as All from "quasar";
 const { Quasar, date } = All;
-import { useStore } from "../../../store/main.js";
+import { useStore } from "../../../src/store/main.js";
 
 const store = useStore();
 //testing that export as typescript on/off, showTutorial, all update properly

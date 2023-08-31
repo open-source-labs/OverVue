@@ -5,7 +5,7 @@ import * as All from "quasar";
 const { Quasar, date } = All;
 
 import { createTestingPinia } from "@pinia/testing"; // *
-import { useStore } from "../../src/store/main"; // *
+import { useStore } from "../../../src/store/main"; // *
 const piniaStore = useStore(); // *
 
 const components = Object.keys(All).reduce((object, key) => {

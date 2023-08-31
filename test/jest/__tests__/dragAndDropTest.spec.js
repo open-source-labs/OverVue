@@ -5,7 +5,7 @@
  import { mount, createLocalVue, shallowMount } from "@vue/test-utils";
  import * as All from "quasar";
  import { iterate } from "localforage";
- import { useStore } from "../../../store/main.js";
+ import { useStore } from "../../../src/store/main.js";
  import { createTestingPinia } from "@pinia/testing";
  const { Quasar, date } = All;
  

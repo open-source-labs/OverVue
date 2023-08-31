@@ -4,7 +4,7 @@
  */
 // import mutations from "../../../src/store/options/mutations";
 import { setActivePinia, createPinia } from 'pinia'
-import { useStore } from "src/store/main.js";
+import { useStore } from "../../../src/store/main.js";
 
 
 /**
