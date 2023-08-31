@@ -48,29 +48,6 @@ import { ref } from "vue";
 const tutorialPage = ref("landing");
 </script>
 
-<!-- OLD OPTIONS API SYNTAX -->
-<!-- <script lang="ts">
-import BasicFunctions from './tutorial/BasicFunctions.vue'
-import AdvancedFunctions from './tutorial/AdvancedFunctions.vue'
-import Landing from './tutorial/Landing.vue'
-import NewVersionInfo from './tutorial/NewVersionInfo.vue'
-import { defineComponent } from "vue";
-
-export default defineComponent({
-  components: {
-    BasicFunctions,
-    AdvancedFunctions,
-    Landing,
-    NewVersionInfo
-  },
-  data() {
-    return {
-      tutorialPage: 'landing' as string,
-    }
-  }
-});
-</script> -->
-
 <style lang="scss" scoped>
 .q-btn {
   font-size: 8px;
