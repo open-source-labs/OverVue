@@ -1,54 +1,61 @@
 <template>
   <section id="newFeatures">
-    <h6 class="infoHeading">What's New in OverVue?</h6>
+    <h6 class="infoHeading">What's New in OverVue 10.0?</h6>
     <p class="info-sub-heading">
-      Interactive 
+      Interactive Tree View
     </p>
     <p class="infoContent">
-      Level up your prototyping with snap to grid positioning and component
-      sizing that is exported as CSS grid styling in exported SFC's. Click on
-      these buttons below to access this feature!
+      Drag and drop tree nodes to change the component structure!
+      Changes made in the tree view will be reflected in the exported code, 
+      as can be seen from the Code Snippet.
     </p>
-    <img src="../../../assets/snaptogrid.jpg" class="tut-image" />
+    <img
+      alt="Interactive Tree View"
+      src="../../../assets/interactive-tree.png"
+      class="tut-screenshot"
+    />
     <p class="info-sub-heading">
-      Augmented Component Creation with Element+ Component Library
+      Updated HTML Elements Section
     </p>
     <p class="infoContent">
-      Take advantage of the popular Vue 3.0 compatible component library,
-      Element+. Manipulate these components in app, and rest easy knowing
-      exported code includes both the library elements, and their necessary
-      dependencies.
+      OverVue 10.0 comes with a new and revamped HTML elements section. You can now
+      change the order of and nest the HTML elements that are within your components by
+      interacting with the tree list structure. From this section, you can also delete and
+      edit the elements.
     </p>
-
+    <img
+      alt="HTML Elements Section"
+      src="../../../assets/nested-elements.png"
+      class="tut-screenshot"
+    />
     <p class="info-sub-heading">
-      Migrated Codebase to Composition API and Pinia State Management
+      Component Focus Modal
     </p>
-
     <p class="infoContent">
-      With the move of Vuex to maintanenace mode, Pinia has now become Vue's
-      official state management library. In addition, Composition API allows for
-      an efficient transition from Vuex to Pinia. Pinia provides SSR support,
-      Hot Module Replacement, and integration with the Vue Devtools.
+      If you're going to be spending a lot of time organizing HTML elements in any one 
+      component, you can use the component focus modal. The modal can be opened by
+      double-clicking on a component on the main tree view.
     </p>
-    <p class="info-sub-heading">Added Typescript Support</p>
+    <img
+      alt="Component Focus Modal"
+      src="../../../assets/modal.png"
+      class="tut-screenshot"
+    />
+    <p class="info-sub-heading">
+      Easily Add Accessible HTML Elements with the Vuetensils Component Library
+    </p>
     <p class="infoContent">
-      Typescript has been taking the world by storm, and aptly so. With the
-      added benefit of Pinia having strong type inference, every component and
-      piece of state has been typed to allow for a better developer experience
-      and scalability.
+      Quickly create accessible HTML elements by adding components from the Vuetensils
+      Component Library! These naked components are designed to have bare minimum styles, 
+      to avoid bloat while including accessibility. Learn more about Vuetensils in the 
+      <!-- <a class="link" href="https://vuetensils.com/Introduction.html">documentation</a>. -->
+      documentation: <span class="dead-link">https://vuetensils.com/Introduction.html</span>.
     </p>
-
-    <p class="info-sub-heading">Parent and Child Component Relationship</p>
-    <p class="infoContent">
-      Exported code now properly shows the relationship between parent and child
-      components. Child components are declared in Parent script and appear
-      correctly in templates.
-    </p>
-    <p class="info-sub-heading">HTML Element Nesting</p>
-    <p class="infoContent">
-      HTML elements now account for nesting in the exported code. Also the
-      ability to include inner text has been added to the HTML elements.
-    </p>
+    <img
+      alt="Vuetensils"
+      src="../../../assets/vuetensils.png"
+      class="tut-screenshot"
+    />
     <q-btn
       class="tut-btn"
       color="secondary"
@@ -64,7 +71,6 @@
   </section>
 </template>
 
-<!-- COMPOSITION API SYNTAX -->
 <script setup lang="ts">
 import { useStore } from "../../../store/main.js";
 
@@ -75,21 +81,6 @@ const toggleTutorial = () => store.toggleTutorial();
 const nextTab = () => emit("nextTab");
 </script>
 
-<!-- OLD OPTIONS API SYNTAX -->
-<!-- <script>
-import { mapActions } from 'vuex';
-
-export default {
-  emits: ['nextTab'],
-  methods: {
-    ...mapActions(["toggleTutorial"]),
-    nextTab() {
-      this.$emit('nextTab')
-    }
-  }
-}
-</script> -->
-
 <style scoped lang="scss">
 #newFeatures {
   display: flex;
@@ -97,6 +88,14 @@ export default {
   justify-content: center;
   align-items: center;
   margin: 10px;
+}
+
+.link {
+  color: $secondary;
+}
+
+.dead-link {
+  color: greenyellow;
 }
 
 .infoHeading {

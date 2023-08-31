@@ -1,5 +1,4 @@
 <template>
-  <!--Basic functionality here, add component, copy/paste, undo/redo, add html, saving, loading, exporting-->
   <section id="basicFunctions">
     <h6 class="tutorialHeading">Getting Started in OverVue</h6>
     <p class="tutorialContent">
@@ -115,22 +114,6 @@
       src="../../../assets/routes.png"
       class="tut-screenshot"
     />
-    <!-- <h class="tutorial-sub-heading">Uploading mockups</h>
-    <p class="tutorialContent">You can upload a design mockup in the Routes tab of the right sidebar menu (one mockup
-      per route). Select the route in the Routes tab, open the ‘Upload Mockup’ sub-menu and click ‘Upload Mockup’. To
-      clear the image, click the ‘Clear Image’ button.
-    </p>
-    <img alt="Upload Mockup buttons" src="../../../assets/upload-mockups.png" class="tut-screenshot">
-    <h class="tutorial-sub-heading">Project Tree</h>
-    <p class="tutorialContent">You can find a visualization of your app hierarchy in the Project Tree tab of the right
-      sidebar. Routes are blue, components are green. You can also navigate to a component or route by clicking on it in
-      the project tree.
-    </p> -->
-    <!-- <img
-      alt="Project Tree"
-      src="../../../assets/project-tree.png"
-      class="tut-screenshot"
-    /> -->
     <h class="tutorial-sub-heading">Saving or Exporting Your Project</h>
     <p class="tutorialContent">
       When you are satisfied with your project, you can save it or export it
@@ -173,7 +156,6 @@
   </section>
 </template>
 
-<!-- COMPOSITION API SYNTAX -->
 <script setup lang="ts">
 import { useStore } from "../../../store/main.js";
 
@@ -183,21 +165,6 @@ const emit = defineEmits(["nextTab"]);
 const toggleTutorial = () => store.toggleTutorial();
 const nextTab = () => emit("nextTab");
 </script>
-
-<!-- OLD OPTIONS API SYNTAX -->
-<!-- <script>
-import { mapActions } from 'vuex';
-
-export default {
-  emits: ['nextTab'],
-  methods: {
-    ...mapActions(["toggleTutorial"]),
-    nextTab() {
-      this.$emit('nextTab')
-    }
-  }
-}
-</script> -->
 
 <style scoped lang="scss">
 #basicFunctions {

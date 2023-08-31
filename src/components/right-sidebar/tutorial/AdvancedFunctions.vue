@@ -1,5 +1,4 @@
 <template>
-  <!--Typescript option, mock image?, nested HTML elements, import component/limitations -->
   <section id="advancedFunctions">
     <h6 class="tutorialHeading">Advanced Functionality</h6>
     <h class="tutorial-sub-heading">Importing an existing component</h>
@@ -10,11 +9,6 @@
       formats is not currently supported.
     </p>
     <h class="tutorial-sub-heading">Adding Props</h>
-    <img
-      alt="Props sub-menu"
-      src="../../../assets/props.png"
-      class="tut-screenshot"
-    />
     <p class="tutorialContent">
       To add props, select the component and click the Props sub-menu in the
       Update Component menu in the left sidebar. Enter the name of the prop you
@@ -24,7 +18,7 @@
     </p>
     <img
       alt="Add Props"
-      src="../../../assets/add-props.png"
+      src="../../../assets/props.png"
       class="tut-screenshot"
     />
     <h class="tutorial-sub-heading">Adding State or Actions</h>
@@ -41,21 +35,6 @@
     <img
       alt="Store Tab"
       src="../../../assets/state-actions.png"
-      class="tut-screenshot"
-    />
-    <h class="tutorial-sub-heading">Navigating HTML elements</h>
-    <p class="tutorialContent">
-      To nest HTML elements, select a component, click the double down arrow
-      icon on an HTML element (either in the HTML Elements sub-menu of the
-      Update Component menu in the left sidebar or the HTML Elements sub-menu of
-      the Component Details tab in the right sidebar). Click the icons to add
-      additional HTML elements. To navigate back up a layer, click the up arrow
-      icon. (Note: Certain types of HTML elements cannot be nested, these will
-      not have a double arrow icon.)
-    </p>
-    <img
-      alt="HTML Queue"
-      src="../../../assets/html-queue.png"
       class="tut-screenshot"
     />
     <h class="tutorial-sub-heading">TypeScript Mode</h>
@@ -86,17 +65,6 @@ const store = useStore();
 
 const toggleTutorial = () => store.toggleTutorial();
 </script>
-
-<!-- OLD OPTIONS API SYNTAX -->
-<!-- <script>
-import { mapActions } from "vuex";
-
-export default {
-  methods: {
-    ...mapActions(["toggleTutorial"]),
-  },
-};
-</script> -->
 
 <style lang="scss" scoped>
 #advancedFunctions {

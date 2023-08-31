@@ -1,5 +1,4 @@
 <template>
-  <!--Landing page-->
   <section id="welcomeTab">
     <h6 class="tutorialHeading">Welcome to</h6>
     <img
@@ -31,10 +30,8 @@
   </section>
 </template>
 
-<!-- COMPOSITION API SYNTAX -->
 <script setup lang="ts">
-// @ts-nocheck
-// No check for the shell
+
 import { useStore } from "../../../store/main.js";
 
 const { shell } = window;
@@ -46,24 +43,6 @@ const toggleTutorial = () => store.toggleTutorial();
 const nextTab = () => emit("nextTab");
 const openUrl = (url: string) => shell.openExternal(url, { activate: true });
 </script>
-
-<!-- OLD OPTIONS API SYNTAX -->
-<!-- <script>
-const { ipcRenderer, shell } = window;
-import { mapActions } from 'vuex';
-export default {
-  emits: ['nextTab', 'versionTab'],
-  methods: {
-    ...mapActions(["toggleTutorial"]),
-    nextTab() {
-      this.$emit('nextTab')
-    },
-    openUrl(url) {
-      shell.openExternal(url, { activate: true });
-    }
-  }
-}
-</script> -->
 
 <style lang="scss" scoped>
 #logo {
