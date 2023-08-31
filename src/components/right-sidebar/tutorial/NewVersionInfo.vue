@@ -2,9 +2,8 @@
   <section id="newFeatures">
     <h6 class="infoHeading">What's New in OverVue?</h6>
     <p class="info-sub-heading">
-      Improved Prototyping with Snap to Grid Positioning
+      Interactive 
     </p>
-
     <p class="infoContent">
       Level up your prototyping with snap to grid positioning and component
       sizing that is exported as CSS grid styling in exported SFC's. Click on

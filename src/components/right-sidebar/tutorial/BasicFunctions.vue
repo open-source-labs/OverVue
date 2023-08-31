@@ -20,17 +20,6 @@
       in the top navigation bar, all the way to the right, and select "Getting
       Started" to return to the landing page.
     </p>
-    <p class="tutorialContent">
-      Almost any action in OverVue can be reversed with 'undo' or recreated with
-      'redo'
-      <img
-        style="vertical-align: middle"
-        alt="Undo-redo"
-        src="../../../assets/undo_redo.png"
-        class="tut-image"
-      />
-      found on the left side of the top navigation bar.
-    </p>
     <h class="tutorial-sub-heading">Setting Up Your Project</h>
     <p class="tutorialContent">
       Begin by clicking the gear icon
@@ -46,11 +35,6 @@
       Github. Boilerplate for these configurations will be reflected in your
       exported project.
     </p>
-    <p class="tutorialContent">
-      Next, customize your canvas grid by choosing a density for your width and
-      height in the upper left corner of the page. Once you begin prototyping,
-      elements will snap to the grid for easy positioning.
-    </p>
     <h class="tutorial-sub-heading">Creating Components</h>
     <p class="tutorialContent">
       Under the Create Component menu in the left sidebar, set a component name
@@ -64,10 +48,8 @@
       class="tut-screenshot"
     />
     <p class="tutorialContent">
-      To use components from the Vue 3 compatible library, ElementPlus+, you can
-      select elements from the dropdown menu, or search for them by element
-      name. You will then select the corresponding html tag, designated with a
-      prefix of 'e'. Finally, click create component!
+      To use components from the Vue 3 compatible library, Vuetensils, you can 
+      switch the tab from Elements to Vuetensils. Finally, click create component!
     </p>
     <h class="tutorial-sub-heading">Customizing Your Components</h>
     <p class="tutorialContent">
@@ -75,19 +57,32 @@
       further customize your components in the sidebar by adding an id, parents,
       children, props, state, or actions - all of which will be included in your
       exported code. To update a component after its creation, select the
-      component on the canvas and the Update Component Menu will appear in the
+      component on the tree and the Update Component Menu will appear in the
       left sidebar.
     </p>
     <h class="tutorial-sub-heading">Building Out Your Prototype</h>
     <p class="tutorialContent">
-      To manipuilate your prototype, you can drag and drop your components on
-      the grid, and resize them by pulling at the corners. To add comments,
-      click the notepad icon in the left corner of the component. To change
-      color, click the canvas icon and select your color of choice.
+      To manipulate your prototype, you can drag and drop your components on
+      the tree. This will alter the component relationships and the code will
+      reflect the changes. To control the tree view, you focus on the tree background
+      by clicking it, and use keyboard controls to move around and zoom in.
     </p>
+    <h class="controls">Controls:</h>
+    <p class="tutorialContent">
+      Directional Movement: Arrow Keys
+      <br/>
+      Zoom: Scroll Wheel | Comma ( , ) | Period ( . )
+      <br/>
+      Return to Root: Slash ( / )
+    </p>
+    <img
+      alt="Tree View"
+      src="../../../assets/tree.png"
+      class="tut-screenshot"
+    />
     <h class="tutorial-sub-heading">Deleting Components</h>
     <p class="tutorialContent">
-      To delete a component, select it and click ‘Delete Currently Selected’ in
+      To delete a component, select it and click ‘Delete Current Component’ in
       the Update Component menu.
     </p>
     <img
@@ -131,11 +126,11 @@
       sidebar. Routes are blue, components are green. You can also navigate to a component or route by clicking on it in
       the project tree.
     </p> -->
-    <img
+    <!-- <img
       alt="Project Tree"
       src="../../../assets/project-tree.png"
       class="tut-screenshot"
-    />
+    /> -->
     <h class="tutorial-sub-heading">Saving or Exporting Your Project</h>
     <p class="tutorialContent">
       When you are satisfied with your project, you can save it or export it
@@ -230,6 +225,13 @@ export default {
   margin: 0.75rem;
   align-self: flex-start;
   font-size: 1rem;
+}
+
+.controls {
+  align-self: flex-start;
+  font-size: 1.2rem;
+  margin: 0.75rem;
+  margin-bottom: 0px;
 }
 
 .tut-btn {
