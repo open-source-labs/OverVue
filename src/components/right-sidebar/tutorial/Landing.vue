@@ -31,7 +31,8 @@
 </template>
 
 <script setup lang="ts">
-
+// @ts-nocheck
+// No check for the shell
 import { useStore } from "../../../store/main.js";
 
 const { shell } = window;

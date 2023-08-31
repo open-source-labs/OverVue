@@ -48,8 +48,7 @@
       Quickly create accessible HTML elements by adding components from the Vuetensils
       Component Library! These naked components are designed to have bare minimum styles, 
       to avoid bloat while including accessibility. Learn more about Vuetensils in the 
-      <!-- <a class="link" href="https://vuetensils.com/Introduction.html">documentation</a>. -->
-      documentation: <span class="dead-link">https://vuetensils.com/Introduction.html</span>.
+      <a class="link" @click="openUrl('https://vuetensils.com/Introduction.html')"> <u>documentation</u> </a>.
     </p>
     <img
       alt="Vuetensils"
@@ -72,13 +71,18 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
+// No check for the shell
 import { useStore } from "../../../store/main.js";
+
+const { shell } = window;
 
 const store = useStore();
 const emit = defineEmits(["nextTab"]);
 
 const toggleTutorial = () => store.toggleTutorial();
 const nextTab = () => emit("nextTab");
+const openUrl = (url: string) => shell.openExternal(url, { activate: true });
 </script>
 
 <style scoped lang="scss">
