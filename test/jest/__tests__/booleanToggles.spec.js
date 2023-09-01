@@ -1,10 +1,12 @@
 import { mount, shallowMount } from "@vue/test-utils";
 import { createApp } from "vue";
 import { createTestingPinia } from "@pinia/testing";
+import { setActivePinia, createPinia } from "pinia";
 import * as All from "quasar";
 const { Quasar, date } = All;
 import { useStore } from "../../../src/store/main.js";
 
+setActivePinia(createPinia());
 const store = useStore();
 //testing that export as typescript on/off, showTutorial, all update properly
 describe("Test for exportAsTypescript flag to flip when mutation committed", () => {
@@ -15,16 +17,16 @@ describe("Test for exportAsTypescript flag to flip when mutation committed", () 
   //tests that the export as typescript mutation properly updates state to on/off
   test('"store.ExportAsTypescript" to update state successfully', () => {
     store.ExportAsTypescript("on");
-    expect(this.ExportAsTypescript).toEqual("on");
+    expect(store.exportAsTypescript).toEqual("on");
     store.ExportAsTypescript("off");
-    expect(this.exportAsTypescript).toEqual("off");
+    expect(store.exportAsTypescript).toEqual("off");
   });
 
   test('"store.toggleTutorial" to mutate state true/false', () => {
     store.toggleTutorial();
-    expect(this.showTutorial).toBe(false);
+    expect(store.showTutorial).toBe(false);
     store.toggleTutorial();
-    expect(this.showTutorial).toBe(true);
+    expect(store.showTutorial).toBe(true);
   });
 });
 

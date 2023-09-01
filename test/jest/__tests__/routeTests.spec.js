@@ -160,17 +160,20 @@ describe("Test Suite for route actions and related mutations", () => {
   // });
 
   test('"function deleteRoute to update state by removing a route', () => {
+    // Type: deleteRoute: (payload: string) => void;
     const payload = "testRoute";
     let flag = false;
     // pre mutation tests
     expect(store.routes[payload]).not.toBe(undefined);
     expect(store.componentMap[payload]).not.toBe(undefined);
     expect(store.imagePath[payload]).not.toBe(undefined);
+
+    // expect(store.activeRoute).toEqual(payload);
+
     if (store.activeRoute === payload) {
-      flag = true;
+      flag = true; 
     }
     store.deleteRoute(payload);
-
     // post mutation tests
     expect(store.routes[payload]).toBe(undefined);
     expect(store.componentMap[payload]).toBe(undefined);

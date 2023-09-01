@@ -73,7 +73,7 @@ const actions: Store<"main", State, {}, Actions> = {
       (route: string) => route !== payload
     );
 
-    if (this.routes[this.activeRoute]) this.activeRoute = "HomeView";
+    if (!this.routes[this.activeRoute]) this.activeRoute = "";
   },
 
   setActiveRoute(payload) {
@@ -724,7 +724,7 @@ const actions: Store<"main", State, {}, Actions> = {
       // this.updateComponentChildrenMultiselectValue([]);
       this.updateComponentNameInputValue("");
       this.setSelectedElementList([]);
-      this.setActiveComponent("");
+      this.setActiveComponent(componentName);
       this.parentSelect("");
     }
   },
