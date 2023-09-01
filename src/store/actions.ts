@@ -551,10 +551,6 @@ const actions: Store<"main", State, {}, Actions> = {
   },
 
   moveNode(payload) {
-    console.log(
-      "component map in moveNode",
-      JSON.parse(JSON.stringify(this.componentMap))
-    );
     if (payload === this.potentialParentNode) return; //edge case: current component cannot drag onto itself
     console.log("potential parent node", this.potentialParentNode);
     // current node being dragged is payload
@@ -563,11 +559,13 @@ const actions: Store<"main", State, {}, Actions> = {
     const componentMapAtPayload = JSON.parse(
       JSON.stringify(this.componentMap[payload])
     );
+
+    console.log('componentMapAtPayload: ', componentMapAtPayload);
+
     // store parent in variable
     const oldParent = componentMapAtPayload.parent.componentName;
-    console.log("oldParent: ", oldParent);
 
-    // console.log("componentMapAtPayload: ", componentMapAtPayload);
+    console.log('old parent: ', oldParent);
 
     // Do nothing if dragging to current parent
     if (oldParent === this.potentialParentNode) return;
