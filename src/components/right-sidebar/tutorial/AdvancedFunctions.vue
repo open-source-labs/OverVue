@@ -48,6 +48,20 @@
       src="../../../assets/typescript.png"
       class="tut-screenshot"
     />
+    <h class="tutorial-sub-heading">Toggle Main View</h>
+    <p class="tutorialContent">
+      To revert the main view to the grid view used in previous OverVue versions, click on 
+      the Settings gear icon in the right corner of the nav bar and toggle from Tree to Grid.
+      <br/>
+      <br/>
+      Please note that some functionality may be disabled or broken, as this view is now considered
+      deprecated.
+    </p>
+    <img
+      alt="Main View Toggle"
+      src="../../../assets/grid-mode.png"
+      class="tut-screenshot"
+    />
     <q-btn
       class="tut-btn"
       id="getstarted-btn"

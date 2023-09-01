@@ -7,7 +7,9 @@
     <p class="infoContent">
       Drag and drop tree nodes to change the component structure!
       Changes made in the tree view will be reflected in the exported code, 
-      as can be seen from the Code Snippet.
+      as can be seen from the Code Snippet. This view replaces the previous
+      main Grid view. Although the Grid view is considered deprecated, it can 
+      still be found within the application (See Advanced Functionality).
     </p>
     <img
       alt="Interactive Tree View"
