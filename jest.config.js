@@ -11,6 +11,11 @@ module.exports = {
       pug: { doctype: 'html' },
     }
   },
+  modulePaths: [ "<rootDir>", "/home/some/other/path" ],
+  moduleDirectories: [ "node_modules" ],
+  testEnvironmentOptions: {
+    customExportConditions: ["node", "node-addons"],
+ },
   // noStackTrace: true,
   // bail: true,
   // cache: false,
@@ -37,7 +42,7 @@ module.exports = {
     '<rootDir>/test/jest/__tests__/**/*.(spec|test).js',
     '<rootDir>/src/**/*.jest.(spec|test).js',
   ],
-  moduleFileExtensions: ['vue', 'js', 'jsx', 'json'],
+  moduleFileExtensions: ['vue', 'js', 'jsx', 'json', 'ts'],
   moduleNameMapper: {
     '^quasar$': 'quasar/dist/quasar.esm.prod.js',
     '^~/(.*)$': '<rootDir>/$1',
@@ -50,7 +55,10 @@ module.exports = {
     '^boot/(.*)$': '<rootDir>/src/boot/$1',
     '.*css$': '@quasar/quasar-app-extension-testing-unit-jest/stub.css',
   },
+  preset: 'ts-jest',
   transform: {
+    '^.+\\.(ts|tsx)?$': 'ts-jest',
+    // '^.+\\.(js|jsx)$": "babel-jest',
     // '.*\\.vue$': 'vue-jest',
     '.*\\.vue$': '@vue/vue3-jest',
     '.*\\.js$': 'babel-jest',

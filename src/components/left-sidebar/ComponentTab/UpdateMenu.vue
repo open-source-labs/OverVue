@@ -164,13 +164,13 @@
           </q-list>
 
           <!-- update, export, and delete buttons -->
-          <q-btn
+          <!-- <q-btn
             id="create-component-btn"
             class="sidebar-btn"
             color="secondary"
             label="Update Component"
             @click="resetActiveComponent"
-          />
+          /> -->
           <q-btn
             id="exportButton"
             class="sidebar-btn"
