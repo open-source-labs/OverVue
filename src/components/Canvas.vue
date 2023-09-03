@@ -1,10 +1,12 @@
-<!--
-  Description:
-  Handles display grid functionality
-  Functionality includes: resizing/dragging component boxes, display grid image, active component
-  -->
+<!-- 
+  LOCATION IN APP:
+  to enable ==> [top-right corner] gear icon > Mode: Grid
+  shows in center UI
 
-<!-- beneath line 419, we deleted :hint="hint" -->
+  FUNCTIONALITY:
+  - Displays previous 'Canvas' grid functionality
+  - Deprecated by OverVue v.10.0 but left as option for users who wish to use it
+-->
 
 <template>
   <!-- the background Canvas grid -->
@@ -525,7 +527,6 @@
 
 <script setup lang="ts">
 import { useExportComponent } from "./composables/useExportComponent.js";
-import { mapState, mapActions } from "vuex";
 import VueDraggableResizable from "vue-draggable-resizable/src/components/vue-draggable-resizable.vue";
 import VueMultiselect from "vue-multiselect";
 import "vue-draggable-resizable/src/components/vue-draggable-resizable.css";
@@ -533,11 +534,7 @@ import "vue3-draggable-resizable/dist/Vue3DraggableResizable.css";
 import { ColorPicker } from "vue-accessible-color-picker";
 import { useStore } from "../store/main.js";
 import { ref, computed, onMounted, watch } from "vue";
-import * as fs from "fs";
 import { ResizePayload, Component } from "../../types";
-// @ts-ignore
-// const { ipcRenderer } = window;
-// ipcRenderer is not used
 
 const cloneDeep = require("lodash.clonedeep");
 
@@ -545,16 +542,13 @@ const store = useStore();
 const modalOpen = ref(false);
 const noteText = ref("");
 const wasDragged = ref(false);
-const testModel = ref([]);
 const noteModal = ref(false);
 const colorModal = ref(false);
-const mockImg = ref(false);
-const htmlElements = ref([]);
 const childrenSelected = ref<typeof VueMultiselect>([]);
 const boxes = ref<typeof VueDraggableResizable>(null);
 
 //emitter
-const emit = defineEmits(["deactivated", "update:active", "activated"]);
+defineEmits(["deactivated", "update:active", "activated"]);
 defineExpose({ boxes });
 
 //mount
@@ -578,16 +572,10 @@ const routes = computed(() => store.routes);
 const activeRoute = computed(() => store.activeRoute);
 const activeComponent = computed(() => store.activeComponent);
 const componentMap = computed(() => store.componentMap);
-// const componentChildrenMultiselectValue = computed(
-//   () => store.componentChildrenMultiselectValue
-// );
 const imagePath = computed(() => store.imagePath);
 const activeComponentObj = computed(() => store.activeComponentObj);
-const exportAsTypescript = computed(() => store.exportAsTypescript);
 const noteModalOpen = computed(() => store.noteModalOpen);
 const activeRouteDisplay = computed(() => routes.value[activeRoute.value]);
-const selectedElementList = computed(() => store.selectedElementList);
-const activeLayer = computed(() => store.activeLayer);
 const colorModalOpen = computed(() => store.colorModalOpen);
 const gridLayout = computed(() => store.gridLayout);
 const containerH = computed(() => store.containerH);
@@ -649,16 +637,6 @@ const userImage = computed(() => {
   return imgSrc;
 });
 
-// updates display with mockup image
-const mockBg = computed(() => {
-  return imagePath.value[activeRoute.value]
-    ? {
-        background: `url("${userImage}") no-repeat rgba(223, 218, 218, 0.886) top left`,
-        "background-size": "contain",
-      }
-    : {};
-});
-
 // find the amount of grid lines for width
 const gridWidth = computed(() => {
   return containerW.value / gridLayout.value[0];
@@ -667,33 +645,6 @@ const gridWidth = computed(() => {
 // find the amount of grid lines for height
 const gridHeight = computed(() => {
   return containerH.value / gridLayout.value[1];
-});
-
-const updated = computed(() => {
-  // if there are no active components, all boxes are unhighlighted
-  if (activeComponent.value === "") {
-    if (boxes.value) {
-      boxes.value.forEach((element: typeof VueDraggableResizable) => {
-        element.enabled = false;
-        element.emit("deactivated");
-        element.emit("update:active", false);
-      });
-    }
-  } else {
-    // if a component is set to active, highlight it
-    (boxes.value as typeof VueDraggableResizable).forEach(
-      (element: typeof VueDraggableResizable) => {
-        if (
-          activeComponent.value === element.$attrs.id &&
-          element.enabled === false
-        ) {
-          element.enabled = true;
-          element.emit("activated");
-          element.emit("update:active", true);
-        }
-      }
-    );
-  }
 });
 
 //methods
@@ -726,10 +677,6 @@ const updateColor: typeof store.updateColor = (payload) =>
 const updateComponentGridPosition: typeof store.updateComponentGridPosition = (
   payload
 ) => store.updateComponentGridPosition(payload);
-
-const useExportComponentBound = () => {
-  useExportComponent();
-};
 
 const isElementPlus = (htmlList: { text: string }[]) => {
   return htmlList.find(({ text }) => text[0] === "e");

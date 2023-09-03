@@ -1,13 +1,13 @@
-<!--
-Description:
-  Displays Tree
-  Functionality includes: N/A
-  -->
+<!-- 
+  LOCATION IN APP:
+  central UI
+
+  FUNCTIONALITY:
+  - Renders either Tree UI or Grid UI depending on mode selected (gear icon dropdown)
+-->
 
 <template>
-  <!-- <Tree /> -->
   <q-page id="compDisplay">
-    <!-- <q-page class="flex flex-center" id="compDisplay"> -->
     <div v-if="mode === 'canvas'">
       <Canvas />
     </div>
@@ -32,9 +32,7 @@ const mode = computed(() => store.mode);
   overflow-x: scroll;
   overflow-y: scroll;
   margin: 0px;
-  /* padding: 0px; */
   padding-top: 20px;
   height: 100vh;
-  /* width: 100%; */
 }
 </style>
