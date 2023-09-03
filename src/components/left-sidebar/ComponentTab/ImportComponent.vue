@@ -1,9 +1,6 @@
 <!-- 
-  LOCATION IN APP:
-  [top right corner] Import button
-
-  FUNCTIONALITY:
-  - Enables user to import existing component tree structure from .json file
+  NOTE:
+  [OverVue v.10.0] Functionality is disabled; past iterations had intended to implement this functionality though hasn't actually been incorporated yet
 
   EXTRA INFO:
   - Errors are only TypeScript related; does not affect functionality

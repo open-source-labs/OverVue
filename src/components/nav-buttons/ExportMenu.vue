@@ -1,19 +1,20 @@
-<!--
-Description:
-  Displays Export Project button and allows users to export project
-  Functionality includes: export prompts, creating folders and code, exporting images
-  -->
+<!-- 
+  LOCATION IN APP:
+  [top-right corner] 'Export' button
+
+  FUNCTIONALITY:
+  - Allows user to export current project and/or current active component to folder on their local machine
+-->
 
 <template>
   <q-btn class="nav-btn" color="secondary" label="Export">
-    <q-menu class="dropdown" :offset="[0, 15]">
+    <q-menu class="dropdown">
       <div class="column items-center">
-        <p class="center">Export:</p>
         <q-btn
           class="menu-btn"
           no-caps
           color="secondary"
-          label="Vue Project"
+          label="Current Project"
           @click="exportProject"
         />
         <q-btn
@@ -21,7 +22,7 @@ Description:
           id="export-component-nav-btn"
           no-caps
           color="secondary"
-          label="Active Component"
+          label="Current Active Component"
           @click="useExportComponent"
           :disabled="!activeComponent.trim()"
         />
@@ -31,22 +32,22 @@ Description:
 </template>
 
 <script setup lang="ts">
+/* IMPORTS */
 import { computed } from "vue";
 import { useStore } from "../../store/main";
-import { useExportComponent } from "../composables/useExportComponent";
-// import * as fs from "fs";
-// import path from "path";
 import {
   Component,
   HtmlElement,
   HtmlElementMap,
   RouteComponentMap,
 } from "../../../types";
+import { useExportComponent } from "../composables/useExportComponent";
 
-const store = useStore();
 // @ts-ignore
 const { fs, ipcRenderer, path } = window;
 
+/* COMPUTED VALUES */
+const store = useStore();
 const componentMap = computed(() => store.componentMap);
 const imagePath = computed(() => store.imagePath);
 const routes = computed(() => store.routes);
@@ -55,11 +56,11 @@ const activeComponent = computed(() => store.activeComponent);
 const userState = computed(() => store.userState);
 const userActions = computed(() => store.userActions);
 const gridLayout = computed(() => store.gridLayout);
-const containerW = computed(() => store.containerW);
-const containerH = computed(() => store.containerH);
 const exportOauth = computed(() => store.exportOauth);
 const exportOauthGithub = computed(() => store.exportOauthGithub);
 const importTest = computed(() => store.importTest);
+
+/* METHODS */
 
 const showExportProjectDialog = () => {
   ipcRenderer
