@@ -1,9 +1,16 @@
-<script>
-import { useExportComponent } from "../composables/useExportComponent.js";
-import { mapState } from "vuex";
-const { fs, ipcRenderer } = window;
+<!-- 
+  LOCATION IN APP:
+  [top-right corner] 'Export' > Current Project || Current Active Component
 
-// import writeNested from "../../mixins/writeNested";
+  FUNCTIONALITY:
+  - Designs export dialog box for current project / current active component
+-->
+
+<script>
+/* IMPORTS */
+import { mapState } from "vuex";
+import { useExportComponent } from "../composables/useExportComponent.js";
+const { fs, ipcRenderer } = window;
 
 export default {
   name: "ExportProjectComponent",

@@ -1,12 +1,13 @@
 <!-- 
-Description:
-  Displays routes in home-sidebar Routes dropdown
-  Functionality includes: selects active route || deletes route on click
-  -->
+  LOCATION IN APP:
+  [right sidebar] ROUTES > under 'Add a route' input field
+
+  FUNCTIONALITY:
+  - Displays user-created routes
+-->
 
 <template>
   <div>
-    <p>Click to view route</p>
     <a
       v-for="route in Object.keys(routes)"
       :key="route"
@@ -45,51 +46,31 @@ Description:
 </template>
 
 <script setup lang="ts">
-import { useStore } from "../../store/main.js";
+/* IMPORTS */
 import { computed } from "vue";
+import { useStore } from "../../store/main.js";
 
+/* COMPUTED VALUES */
 const store = useStore();
-
 const routes = computed(() => store.routes);
 const activeRoute = computed(() => store.activeRoute);
 
+/* STORE ACTIONS */
 const setActiveRoute: typeof store.setActiveRoute = (payload) =>
   store.setActiveRoute(payload);
 const deleteRoute: typeof store.deleteRoute = (payload) =>
   store.deleteRoute(payload);
 
+/* METHODS */
+
 const selectRoute = (route: string) => {
   setActiveRoute(route);
 };
-// deletes route
+
 const deleteSelectedRoute = (route: string) => {
   deleteRoute(route);
 };
 </script>
-
-<!-- old options API script -->
-
-<!-- <script>
-  import { mapState, mapActions } from 'vuex'
-  
-  export default {
-    name: 'Routes',
-    computed: {
-      ...mapState(['routes', 'activeRoute'])
-    },
-    methods: {
-      ...mapActions(['setActiveRoute', 'deleteRoute']),
-      // selects active route
-      selectRoute (route) {
-        this.setActiveRoute(route)
-      },
-      // deletes route
-      deleteSelectedRoute (route) {
-        this.deleteRoute(route)
-      }
-    }
-  }
-  </script> -->
 
 <style lang="scss" scoped>
 .panel-block {

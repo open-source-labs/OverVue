@@ -1,25 +1,30 @@
-<!--
-Description:
-  Displays project tree in Dashboard
-  Functionality includes: formatting componentMap object to displaying in tree form
-  -->
+<!-- 
+  LOCATION IN APP:
+  central tree UI
+
+  FUNCTIONALITY:
+  - Displays working drag-and-droppable project tree
+  - Drag & drop functionality developed by OverVue v.10.0
+-->
 
 <script setup lang="ts">
-// import VueTree from "@ssthouse/vue3-tree-chart";
-// import "@ssthouse/vue3-tree-chart/dist/vue3-tree-chart.css";
+/* IMPORTS */
+import { ref, computed, watch, onMounted } from "vue";
+import { useStore } from "../../store/main.js";
 
-// [OverVue v.10.0] refactored @sst-house library files to de-activate background drag functionality
-// we 'forked', published, and installed our own npm packages
+// [OverVue v.10.0]
+// we 'forked', published, and installed our own npm packages based on:
+// https://github.com/ssthouse/tree-chart
 import VueTree from "@overvue/vue3-tree-chart";
 import "@overvue/vue3-tree-chart/dist/vue3-tree-chart.css";
 
-import HTMLQueue from "./HTMLQueue.vue";
 import V10HTMLQueue from "./V10HTMLQueue.vue";
 
-import { useStore } from "../../store/main.js";
-import { ref, computed, watch, onMounted } from "vue";
-
-const store = useStore();
+/* LIFECYCLE HOOKS */
+onMounted(() => {
+  // Sets tree view to origin on initial render
+  tree.value.setToOrigin();
+});
 
 /* DATA */
 const treeConfig = ref({ nodeWidth: 175, nodeHeight: 100, levelHeight: 200 });
@@ -29,24 +34,25 @@ defineExpose({ tree }); // makes tree available through template refs
 const inspectComponentModal = ref(false);
 
 /* COMPUTED */
+const store = useStore();
 const componentMap = computed(() => store.componentMap);
 const activeComponent = computed(() => store.activeComponent); // handles collapsing child nodes
-const activeTreeNode = computed(() => store.activeTreeNode); // handles drag & drop functionality within main Tree UI
 const htmlList = computed(
   () => store.componentMap[store.activeComponent].htmlList
 );
-
-// routes
 const routes = computed(() => store.routes);
 const activeRoute = computed(() => store.activeRoute);
 
-/* ON MOUNT */
-onMounted(() => {
-  // Sets tree view to origin on initial render
-  tree.value.setToOrigin();
-});
+/* STORE ACTIONS */
+const setActiveTreeNode: typeof store.setActiveTreeNode = (payload) =>
+  store.setActiveTreeNode(payload);
+const setPotentialParentNode: typeof store.setPotentialParentNode = (payload) =>
+  store.setPotentialParentNode(payload);
+const moveNode: typeof store.moveNode = (payload) => store.moveNode(payload);
+const setComponentDetailsTab: typeof store.setComponentDetailsTab = (payload) =>
+  store.setComponentDetailsTab(payload);
 
-/* FUNCTIONS */
+/* METHODS */
 
 const zoom = (event: WheelEvent) => {
   if (event.deltaY < 0) {
@@ -85,7 +91,6 @@ const activateNode = (nodeToActivate: string) => {
     }
   }
 
-  //if we click a component, check which route, and then if needed dispatch the route THEN the component
   for (const view of treeData.value.children) {
     if (view.children.length > 0) {
       view.children.forEach((el: typeof VueTree.treeData.value) => {
@@ -109,8 +114,6 @@ const activateNode = (nodeToActivate: string) => {
 };
 
 const buildTree = (componentData: typeof VueTree.treeData) => {
-  // console.log("componentData in buildTree", componentData);
-
   const treeData: {
     value: string;
     children: { value: string; children: string[] }[];
@@ -118,10 +121,8 @@ const buildTree = (componentData: typeof VueTree.treeData) => {
     value: "App",
     children: [],
   };
-  // console.log("tree data", treeData);
 
-  // Views come after the root, as its children. No components will be children of App.
-  // ONLY Views will have components as children.
+  // only routes have component as children
   for (const child of componentData.App.children) {
     treeData.children.push({
       value: child,
@@ -133,8 +134,6 @@ const buildTree = (componentData: typeof VueTree.treeData) => {
 };
 
 const buildTreeChildren = (array: string[]) => {
-  // console.log("array in buildTreeChildren", array);
-
   if (array.length === 0) return [];
   else {
     const outputArray: [] = [];
@@ -162,31 +161,11 @@ const buildTreeChildren = (array: string[]) => {
   }
 };
 
-// invoke + watch buildTree
-treeData.value = buildTree(componentMap.value);
-watch(componentMap, () => (treeData.value = buildTree(componentMap.value)), {
-  deep: true,
-});
-
-/* [OverVue v.10.0] STORE METHODS (STATE UPDATERS) */
-
-const setActiveTreeNode: typeof store.setActiveTreeNode = (payload) =>
-  store.setActiveTreeNode(payload);
-
-const setPotentialParentNode: typeof store.setPotentialParentNode = (payload) =>
-  store.setPotentialParentNode(payload);
-
-const moveNode: typeof store.moveNode = (payload) => store.moveNode(payload);
-
-const setComponentDetailsTab: typeof store.setComponentDetailsTab = (payload) =>
-  store.setComponentDetailsTab(payload);
-
 /* [OverVue v.10.0] DRAG & DROP METHODS (TREE UI) */
 
 const startDrag = (event: Event, activeTreeNode: string) => {
   // update class to make activeTreeNode transparent while being dragged
   (event.target as HTMLElement).classList.add("currentlyDragging");
-  // event.target.style.transform="scale(1.1);"
   setActiveTreeNode(activeTreeNode); // set active tree node
 };
 
@@ -196,7 +175,6 @@ const dragEnter = (event: Event, node: string) => {
 
 const dragOver = (event: Event) => {
   // needed to invoke endDrag automatically
-  // event.preventDefault(); --> handled in <template>
 };
 
 const endDrag = (event: Event, activeTreeNode: string) => {
@@ -218,10 +196,17 @@ const inspectComponent = (event: Event) => {
   setComponentDetailsTab("code");
   inspectComponentModal.value = !inspectComponentModal.value;
 };
+
+/* WATCHES */
+treeData.value = buildTree(componentMap.value);
+watch(componentMap, () => (treeData.value = buildTree(componentMap.value)), {
+  deep: true,
+});
 </script>
 
 <template>
   <div class="container">
+    <!-- main tree UI -->
     <vue-tree
       style="width: 100%; height: 100vh; border: 1px solid rgb(96, 96, 96)"
       :dataset="treeData"
@@ -266,6 +251,8 @@ const inspectComponent = (event: Event) => {
       </template>
     </vue-tree>
   </div>
+
+  <!-- inspect component modal feature -->
   <q-dialog v-model="inspectComponentModal">
     <div class="modal-box-container">
       <div class="modal-box-title">

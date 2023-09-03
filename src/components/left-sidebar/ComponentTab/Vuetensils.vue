@@ -45,7 +45,6 @@ const emit = defineEmits([
 /* COMPUTED VALUES */
 const store = useStore();
 const vtIcons = computed(() => store.vtIcons);
-// const icons = computed(() => store.icons);
 const activeComponent = computed(() => store.activeComponent);
 const componentMap = computed(() => store.componentMap);
 const selectedElementList = computed(() => store.selectedElementList);

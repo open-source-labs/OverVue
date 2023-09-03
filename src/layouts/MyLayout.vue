@@ -364,7 +364,6 @@ const hideRight = () => {
 // @ts-ignore
 
 const changeMode = (e: Event) => {
-  // console.log(e.target);
   let currMode: "tree" | "canvas";
   if ((e.target as HTMLInputElement).value === "tree") {
     currMode = "canvas";

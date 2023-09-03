@@ -1,10 +1,14 @@
-<!--
-Description:
-  Displays Grid Density Buttons
-  Functionality includes: drop down menu for both height and width to increase or decrease grid lines by a set amount
+<!-- 
+  LOCATION IN APP:
+  [top bar, when 'GRID' mode enabled] WIDTH // HEIGHT buttons
+
+  FUNCTIONALITY:
+  - Enables user to alter grid density of containers within grid
 -->
+
 <template>
   <div id="gridDensity">
+    <!-- width -->
     <q-btn-dropdown class="q-btn" color="secondary" label="Width">
       <q-list>
         <q-item clickable v-close-popup @click="pickGridDensity('width', 5)">
@@ -38,6 +42,8 @@ Description:
         </q-item>
       </q-list>
     </q-btn-dropdown>
+
+    <!-- height -->
     <q-btn-dropdown color="secondary" label="Height">
       <q-list>
         <q-item clickable v-close-popup @click="pickGridDensity('height', 5)">
@@ -75,12 +81,12 @@ Description:
 </template>
 
 <script setup lang="ts">
+/* IMPORTS */
 import { useStore } from "../../store/main";
-import { computed } from "vue";
 
 const store = useStore();
 
-const gridLayout = computed(() => store.gridLayout);
+/* METHODS */
 
 const changeGridDensity: typeof store.changeGridDensity = (payload) =>
   store.changeGridDensity(payload);
@@ -90,28 +96,6 @@ const pickGridDensity = (direction: string, densityNum: number) => {
   changeGridDensity(payload);
 };
 </script>
-
-<!-- <script lang="ts">
-import { mapState, mapActions } from "vuex";
-import { defineComponent } from "vue";
-
-export default defineComponent({
-  name: "GridDensity" as string,
-  computed: {
-    ...mapState(["gridLayout"]),
-  },
-  methods: {
-    ...mapActions(["changeGridDensity"]),
-    pickGridDensity(direction: string, densityNum: number): void {
-      let payload: object = {
-        direction: direction,
-        densityNum: densityNum,
-      };
-      this.changeGridDensity(payload);
-    },
-  },
-});
-</script> -->
 
 <style scoped lang="scss">
 #gridDensity {

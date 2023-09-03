@@ -1,15 +1,15 @@
-<!--
-Description:
-  Located in the Dashboard
-  Contains the Code Snippet, HTMLQueue Components, and the Component state, actions, and props as well
-  Functionality includes: Contains the Code Snippet and HTMLQueue Components,
-  as well as tabs to show the Component state, actions, and props
+<!-- 
+  LOCATION IN APP:
+  [right sidebar] COMPONENT DETAILS
 
-  -->
+  FUNCTIONALITY:
+  - Displays HTML elements, code preview, and properties of current active component in sub-tabs
+-->
 
 <template>
   <div class="inner-div">
     <q-card id="code-window" class="no-shadow" v-if="activeComponentObj">
+      <!-- sub-tab labels -->
       <q-tabs
         v-model="tab"
         class="bg-subaccent text-white"
@@ -17,29 +17,35 @@ Description:
         indicator-color="secondary"
         align="left"
       >
-        <q-tab name="newhtml" label="New HTML Section" class="label-text" />
-        <q-tab name="code" label="Code Snippet" class="label-text" />
-        <!-- <q-tab name="html" label="HTML Elements" class="label-text" /> -->
-        <q-tab name="state" label="Component Properties" class="label-text" />
+        <q-tab name="newhtml" label="HTML Elements" class="label-text" />
+        <q-tab name="code" label="Code Preview" class="label-text" />
+        <q-tab name="state" label="Properties" class="label-text" />
       </q-tabs>
+
+      <!-- tab panels (where components are rendered) -->
       <q-tab-panels v-model="tab" animated class="html-bg text-white">
+        <!-- HTML Elements -->
         <q-tab-panel name="newhtml">
           <V10HTMLQueue />
         </q-tab-panel>
+
+        <!-- Code Preview -->
         <q-tab-panel name="code">
           <CodeSnippet />
         </q-tab-panel>
-        <!-- <q-tab-panel name="html">
-          <HTMLQueue />
-        </q-tab-panel> -->
+
+        <!-- Properties -->
         <q-tab-panel name="state">
           {{
             activeComponent
               ? `${activeRoute} / ${activeComponent}.vue`
               : "Select a component to see its state variables, actions, and props."
           }}
+
+          <!-- State Variables -->
           <div class="componentProperties">
-            <q-expansion-item default-closed label="Component State">
+            <br />
+            <q-expansion-item default-closed label="State Variables">
               <p v-if="!(activeComponentObj as Component)?.state?.length">
                 {{
                   activeComponent
@@ -47,7 +53,6 @@ Description:
                     : null
                 }}
               </p>
-              <!-- <p v-else>State in {{ activeComponent }}:</p> -->
               <ul id="stateList">
                 <li
                   v-for="comp in (activeComponentObj as Component).state"
@@ -58,8 +63,10 @@ Description:
               </ul>
             </q-expansion-item>
           </div>
+
+          <!-- Actions -->
           <div class="componentProperties">
-            <q-expansion-item default-closed label="Component Actions">
+            <q-expansion-item default-closed label="Actions">
               <p v-if="!(activeComponentObj as Component)?.actions?.length">
                 {{
                   activeComponent
@@ -67,7 +74,6 @@ Description:
                     : null
                 }}
               </p>
-              <!-- <p v-else>Actions in {{ activeComponent }}:</p> -->
               <ul id="actionList">
                 <li
                   v-for="comp in (activeComponentObj as Component)?.actions"
@@ -78,8 +84,10 @@ Description:
               </ul>
             </q-expansion-item>
           </div>
+
+          <!-- Props -->
           <div class="componentProperties">
-            <q-expansion-item default-closed label="Component Props">
+            <q-expansion-item default-closed label="Props">
               <p v-if="!(activeComponentObj as Component)?.props?.length">
                 {{
                   activeComponent
@@ -102,40 +110,34 @@ Description:
       </q-tab-panels>
     </q-card>
     <q-card id="blank-card" v-else
-      >Create or Select a Component to See Details</q-card
+      >Create a component to see its details</q-card
     >
   </div>
 </template>
 
-<!-- COMPOSITION API SYNTAX -->
 <script setup lang="ts">
-import HTMLQueue from "./HTMLQueue.vue";
+/* IMPORTS */
+import { computed } from "vue";
+import { useStore } from "../../store/main.js";
+import { Component } from "../../../types";
 import V10HTMLQueue from "./V10HTMLQueue.vue";
 import CodeSnippet from "./CodeSnippet.vue";
-import { useStore } from "../../store/main.js";
-import { ref, computed, watch } from "vue";
-import { Component } from "../../../types";
 
+/* COMPUTED VALUES */
 const store = useStore();
-// const tab = ref("newhtml");
-
-const setComponentDetailsTab: typeof store.setComponentDetailsTab = (payload) =>
-  store.setComponentDetailsTab(payload);
-
 const activeComponentObj = computed(() => store.activeComponentObj);
 const activeComponent = computed(() => store.activeComponent);
+const activeRoute = computed(() => store.activeRoute);
 const tab = computed({
   get: () => store.componentDetailsTab,
   set: (newTab) => {
     setComponentDetailsTab(newTab);
   },
 });
-const htmlList = computed(
-  () => store.componentMap[store.activeComponent].htmlList
-);
-const activeRoute = computed(() => store.activeRoute);
 
-const compObj = activeComponentObj.value as Component;
+/* STORE ACTIONS */
+const setComponentDetailsTab: typeof store.setComponentDetailsTab = (payload) =>
+  store.setComponentDetailsTab(payload);
 </script>
 
 <style lang="scss" scoped>
