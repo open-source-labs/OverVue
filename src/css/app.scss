@@ -1,23 +1,11 @@
-// app global css in SCSS form
-// app global css
-
-// html {
-//   margin: 0 !important;
-//   padding: 0 !important;
-//   box-sizing: border-box !important;
-//   overflow: none !important;
-// }
-
 body {
   font-family: "Mukta", sans-serif;
   color: $menutext;
   height: 100vh;
   width: 100vw;
-  // overflow-y: hidden; // prevents vertical scrollbar on ENTIRE app
-  // (this feature brought to you by OverVue v.10.0)
 }
 
-// Override css properties for utensils icon
+// override CSS properties for utensils icon (Vuetensils elements)
 i.fa-utensils {
   font-size: 18px;
   top: 0px;
@@ -96,7 +84,6 @@ i.fa-pencil {
   color: $menutext;
 }
 
-// TO DO: update component-container in store tab and remove block container
 .block-container {
   display: flex;
   flex-direction: row;
@@ -114,7 +101,6 @@ i.fa-pencil {
 
 ::-webkit-scrollbar {
   display: none; // prevents horizontal scrollbar on ENTIRE app
-  // width: 10px;
   background-color: $subsecondary;
   z-index: 15;
 }

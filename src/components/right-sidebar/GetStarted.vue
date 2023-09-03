@@ -53,7 +53,6 @@
   </q-card>
 </template>
 
-<!-- COMPOSITION API SYNTAX -->
 <script setup lang="ts">
 /* IMPORTS */
 import { ref } from "vue";

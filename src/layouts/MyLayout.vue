@@ -1,66 +1,56 @@
-<!-- ************* FROM OVERVUE4.0 ***********
-Description:
-  Displays OverVue application layout including undo/redo button, openProject, saveProject, and exportProject, side panels, and dashboard
-  Functionality includes: Toolbar to the left that can be toggled open/closed and undo/redo functionality
-  -->
+<!--
+  ************* FROM OVERVUE4.0 ***********
+  Description:
+    Displays OverVue application layout including undo/redo button, openProject, saveProject, and exportProject, side panels, and dashboard
+  Functionality:
+    Toolbar to the left that can be toggled open/closed and undo/redo functionality
+-->
 
 <template>
-  <!-- original layout: <q-layout view="hHh LpR lFf"> -->
   <q-layout view="hHh lpr fFf">
+    <!-- right-side drawer functionality -->
     <div v-if="!right" class="resizeDragTwo" @mousedown="hideRight">
       <div class="dragLineTwo"></div>
     </div>
-    <!-- the top header of OverVue -->
+
+    <!-- HEADER -->
     <q-header elevated class="gradient">
       <q-toolbar>
-        <q-toolbar-title
-          ><img
+        <q-toolbar-title>
+          <!-- top-left corner: LOGO -->
+          <img
             alt="OverVue"
             src="../assets/OverVue_navLogo.png"
             id="nav-logo"
           />
           <div id="undo-redo">
-            <!-- <q-btn>
-              <i
-                v-if="doneAction.length"
-                class="fa fa-undo"
-                aria-hidden="true"
-                @click="clickedUndo"
-              ></i>
-              <i v-else class="fa fa-undo unavailable" aria-hidden="true"></i>
-            </q-btn>
-            <q-btn>
-              <i
-                v-if="undoneAction.length"
-                class="fa fa-redo"
-                aria-hidden="true"
-                @click="clickedRedo"
-              ></i>
-              <i v-else class="fa fa-redo unavailable" aria-hidden="true"></i>
-            </q-btn> -->
             <div v-if="mode === 'canvas'">
+              <!-- shows Width + Height buttons if Grid Mode enabled -->
               <GridDensity />
             </div>
           </div>
         </q-toolbar-title>
-        <div></div>
 
+        <!-- save, import, and export buttons -->
         <SaveProject />
         <ImportMenu />
         <ExportMenu />
 
         <q-btn class="nav-btn" icon="fas fa-cog" unelevated size="sm">
-          <q-menu :offset="[0, 15]" class="dropdown">
+          <q-menu :offset="[0, 10]" class="dropdown">
+            <!-- toggle button -->
             <div class="column items-center">
               <q-btn
                 class="tut-btn"
                 color="secondary"
-                label="Getting Started"
+                :label="startingOrBuilding"
                 no-caps
                 @click="toggleTutorial"
               />
+
+              <!-- Tree or Grid mode -->
               <div class="typescript">
-                <p class="typescript-text"><b>Mode:</b></p>
+                <p class="typescript-text"><b>Mode</b></p>
                 <label for="mode" class="switch">
                   <input
                     v-if="mode === 'tree'"
@@ -90,8 +80,10 @@ Description:
                   <span class="switch-handle" :value="mode"></span>
                 </label>
               </div>
+
+              <!-- enable TypeScript -->
               <div class="typescript">
-                <p class="typescript-text"><b>TypeScript: </b></p>
+                <p class="typescript-text"><b>TypeScript</b></p>
                 <label for="typescript" class="switch">
                   <input
                     v-if="exportAsTypescript === 'on'"
@@ -125,8 +117,11 @@ Description:
                 </label>
               </div>
 
+              <!-- the below has been deprecated by OverVue v.10.0 due to lack of functionality. feel free to comment this back in if/when you wish to flesh it out -->
+
+              <!-- Vue Test -->
               <div class="Test">
-                <p class="Test-text"><b> Vue Test: </b></p>
+                <p class="Test-text"><b> Vue Test</b></p>
                 <label for="Test" class="switch">
                   <input
                     v-if="importTest === 'on'"
@@ -156,9 +151,12 @@ Description:
                   <span class="switch-handle" :value="importTest"></span>
                 </label>
               </div>
-              <SlackLoginWindow />
+
+              <!-- <SlackLoginWindow /> -->
+
+              <!-- OAuth -->
               <div class="drawer">
-                <q-expansion-item group="accordion" label="Create Oauth">
+                <q-expansion-item group="accordion" label="OAuth">
                   <div class="Oauth">
                     <p class="Oauth-text">
                       <b>
@@ -236,12 +234,12 @@ Description:
                 </q-expansion-item>
               </div>
             </div>
-            <i id="btn"></i>
           </q-menu>
         </q-btn>
       </q-toolbar>
     </q-header>
 
+    <!-- left sidebar -->
     <q-drawer v-model="left" side="left" behavior="desktop" bordered>
       <q-scroll-area
         visible
@@ -250,6 +248,7 @@ Description:
         bar-style="{ left: '10px' }"
       >
         <q-card class="no-shadow">
+          <!-- COMPONENT & STORE tabs -->
           <q-tabs
             v-model="tab"
             dense
@@ -260,13 +259,15 @@ Description:
             <q-tab name="component" label="Component"></q-tab>
             <q-tab name="store" label="Store"></q-tab>
           </q-tabs>
-          <!-- individual tab panel's setup -->
+
+          <!-- tab panels (where components are rendered) -->
           <q-tab-panels v-model="tab" animated class="html-bg text-white fit">
-            <!--component tab will have creator and editor components -->
+            <!-- COMPONENT -->
             <q-tab-panel name="component" class="left-panel fit">
               <ComponentTab />
             </q-tab-panel>
-            <!-- store will display store elements -->
+
+            <!-- STORE -->
             <q-tab-panel name="store" class="left-panel fit">
               <StoreTab />
             </q-tab-panel>
@@ -275,8 +276,7 @@ Description:
       </q-scroll-area>
     </q-drawer>
 
-    <!-- rendering dashboard as right sidebar instead of as a footer -->
-
+    <!-- right sidebar -->
     <q-drawer
       right-side
       show-if-above
@@ -295,42 +295,37 @@ Description:
         <div class="dragLine"></div>
       </div>
       <div class="displayCanClose" ref="displayClose"></div>
+
+      <!-- rendered component -->
       <q-list class="q-list-drawer">
         <RightSidebar />
       </q-list>
     </q-drawer>
 
-    <!-- THIS ENABLES THE GRID -->
+    <!-- THIS ENABLES THE CENTRAL UI -->
     <q-page-container>
       <router-view />
     </q-page-container>
   </q-layout>
 </template>
 
-<!-- COMPOSITION API -->
 <script setup lang="ts">
+/* IMPORTS */
 import { ref, computed } from "vue";
 import { useStore } from "../store/main";
-
+import ComponentTab from "../components/left-sidebar/ComponentTab/ComponentTab.vue";
+import StoreTab from "../components/left-sidebar/StoreTab/StoreTab.vue";
 import RightSidebar from "../components/right-sidebar/RightSidebar.vue";
 import ExportMenu from "../components/nav-buttons/ExportMenu.vue";
 import SaveProject from "../components/nav-buttons/SaveProject.vue";
 import ImportMenu from "../components/nav-buttons/ImportMenu.vue";
-import SlackLoginWindow from "../components/slack_login/SlackLoginWindow.vue";
-import ComponentTab from "../components/left-sidebar/ComponentTab/ComponentTab.vue";
-import StoreTab from "../components/left-sidebar/StoreTab/StoreTab.vue";
 import GridDensity from "../components/nav-buttons/GridDensity.vue";
 
-const store = useStore();
+/* EMITS & PROPS */
 const emit = defineEmits(["undo", "redo"]);
-const props = defineProps([
-  "doneAction",
-  "undoneAction",
-  "undoTrigger",
-  "redoTrigger",
-]);
+defineProps(["doneAction", "undoneAction", "undoTrigger", "redoTrigger"]);
 
-const OauthVal = ref(true);
+/* DATA */
 const tab = ref("component");
 const left = ref(true);
 const right = ref(true);
@@ -346,12 +341,19 @@ defineExpose({
   displayClose,
 });
 
+/* COMPUTED VALUES */
+const store = useStore();
 const exportAsTypescript = computed(() => store.exportAsTypescript);
 const exportOauth = computed(() => store.exportOauth);
 const exportOauthGithub = computed(() => store.exportOauthGithub);
 const importTest = computed(() => store.importTest);
 const toggleTutorial = () => store.toggleTutorial();
 const mode = computed(() => store.mode); //grid or tree mode
+const startingOrBuilding = computed(() => {
+  return store.showTutorial ? "Start Building Now" : "Welcome Page";
+});
+
+/* METHODS */
 
 const hideRight = () => {
   right.value = !right.value;
@@ -445,9 +447,6 @@ const syncOauthGitFlag = (e: Event) => {
   }
   store.ExportOauthGithub(checkboxValue);
 };
-
-const clickedUndo = () => emit("undo");
-const clickedRedo = () => emit("redo");
 </script>
 
 <style lang="scss">
@@ -456,10 +455,6 @@ const clickedRedo = () => emit("redo");
   padding-top: 0px !important;
   margin: 0px;
 }
-
-// .q-header {
-//   position: relative;
-// }
 
 .q-toolbar {
   height: 50px;
@@ -646,6 +641,7 @@ q-btn > i {
   overflow: visible;
   background: rgba(#000000, 0.8);
 }
+
 /* Typescript toggle
 ========================== */
 
@@ -664,6 +660,7 @@ q-btn > i {
   cursor: pointer;
   box-sizing: content-box;
 }
+
 .switch-input {
   position: absolute;
   top: 0;
@@ -671,6 +668,7 @@ q-btn > i {
   opacity: 0;
   box-sizing: content-box;
 }
+
 .switch-label {
   position: relative;
   display: block;
@@ -683,6 +681,7 @@ q-btn > i {
     inset 0 0 2px rgba(0, 0, 0, 0.15);
   box-sizing: content-box;
 }
+
 .switch-label:before,
 .switch-label:after {
   position: absolute;
@@ -695,12 +694,14 @@ q-btn > i {
   transition: inherit;
   box-sizing: content-box;
 }
+
 .switch-label:before {
   content: attr(data-off);
   right: 11px;
   color: #000000;
   text-shadow: 0 1px rgba(255, 255, 255, 0.5);
 }
+
 .switch-label:after {
   content: attr(data-on);
   left: 11px;
@@ -708,17 +709,21 @@ q-btn > i {
   text-shadow: 0 1px rgba(0, 0, 0, 0.2);
   opacity: 0;
 }
+
 .switch-input:checked ~ .switch-label {
   background: $secondary;
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15),
     inset 0 0 3px rgba(0, 0, 0, 0.2);
 }
+
 .switch-input:checked ~ .switch-label:before {
   opacity: 0;
 }
+
 .switch-input:checked ~ .switch-label:after {
   opacity: 1;
 }
+
 .switch-handle {
   position: absolute;
   top: 4px;
@@ -730,6 +735,7 @@ q-btn > i {
   border-radius: 100%;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
 }
+
 .switch-handle:before {
   content: "";
   position: absolute;
@@ -743,6 +749,7 @@ q-btn > i {
   border-radius: 6px;
   box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
 }
+
 .switch-input:checked ~ .switch-handle {
   left: 40px;
   box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
@@ -764,9 +771,11 @@ q-btn > i {
   margin: 10px;
   flex-direction: row;
 }
+
 .typescript-text {
   margin-right: 10px;
 }
+
 .Oauth {
   display: flex;
   align-items: center;
@@ -774,6 +783,7 @@ q-btn > i {
   margin: 10px;
   flex-direction: row;
 }
+
 .Oauth-text {
   margin-right: 10px;
 }
@@ -782,6 +792,7 @@ q-btn > i {
   font-size: 15px;
   font-weight: bold;
 }
+
 #google {
   width: 100px;
   margin-top: 10px;
@@ -793,12 +804,14 @@ q-btn > i {
 
   margin-left: 25px;
 }
+
 .Test {
   display: flex;
   align-items: flex-end;
   margin: 10px;
   flex-direction: row;
 }
+
 .Test-text {
   margin-right: 10px;
 }

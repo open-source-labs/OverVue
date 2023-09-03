@@ -95,7 +95,6 @@
                     : null
                 }}
               </p>
-              <!-- <p v-else>Props in {{ activeComponent }}:</p> -->
               <ul id="propsList">
                 <li
                   v-for="comp in (activeComponentObj as Component)?.props"
