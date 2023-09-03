@@ -1,10 +1,22 @@
+<!-- 
+  LOCATION IN APP:
+  [right sidebar] COMPONENT DETAILS > HTML Elements
+
+  FUNCTIONALITY:
+  - Displays enclosed HTML elements of current active component
+  - Enables user to add attributes to, re-position & nest, and/or delete HTML elements
+-->
+
 <template>
+  <!-- if no active component selected -->
   <div class="top-p" v-if="activeComponent === ''">
     <div v-if="!routes[activeRoute].length">
       Add a component to this route to see its underlying HTML elements.
     </div>
     <div v-else>Select a component to see its underlying HTML elements.</div>
   </div>
+
+  <!-- if active component selected -->
   <div v-else>
     <div v-if="routes[activeRoute].length">
       <div v-if="Object.keys(htmlList).length">
@@ -22,17 +34,18 @@
 </template>
 
 <script setup>
-import { useStore } from "src/store/main";
 import { ref, computed, nextTick } from "vue";
-
+import { useStore } from "src/store/main";
 import DraggableWrapper from "./DraggableWrapper.vue";
-
-const store = useStore();
 
 /* DATA */
 const renderComponent = ref(true);
 
 /* COMPUTED VALUES */
+const store = useStore();
+const activeComponent = computed(() => store.activeComponent);
+const activeRoute = computed(() => store.activeRoute);
+const routes = computed(() => store.routes);
 const htmlList = computed({
   get: () => {
     if (store.componentMap[store.activeComponent]) {
@@ -42,11 +55,7 @@ const htmlList = computed({
   },
 });
 
-const activeComponent = computed(() => store.activeComponent);
-const activeRoute = computed(() => store.activeRoute);
-const routes = computed(() => store.routes);
-
-/* FUNCTIONS */
+/* METHODS */
 const forceRender = async () => {
   renderComponent.value = false;
   await nextTick();
@@ -75,22 +84,9 @@ const forceRender = async () => {
   height: 40px;
 }
 
-/* .he-tree {
-
-} */
-
 .vtlist {
   display: flex;
 }
-
-/* .vtlist-inner {
-  display: flex;
-}
-
-.tree-node {
-  display: flex;
-  justify-content: space-around;
-} */
 
 .tree-node-inner {
   box-sizing: border-box;

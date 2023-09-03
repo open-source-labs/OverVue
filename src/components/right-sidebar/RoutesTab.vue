@@ -1,11 +1,15 @@
-<!--
-Description: container for route component.
-Includes functionality to:
-  update route name, update route map, and reset active component upon route creation
+<!-- 
+  LOCATION IN APP:
+  [right sidebar] ROUTES > Add a route (input field)
+
+  FUNCTIONALITY:
+  - Enables user to add routes to project structure
+  - Displays user-created routes
 -->
 
 <template>
   <div class="route-display">
+    <!-- input field: add a route -->
     <q-input
       @keyup.enter="handleEnterKeyPress"
       color="white"
@@ -13,7 +17,7 @@ Includes functionality to:
       outlined
       bottom-slots
       v-model="newRoute"
-      label="Add new route"
+      label="Add a route"
       dense
       no-error-icon
       class="input-add"
@@ -29,29 +33,34 @@ Includes functionality to:
         <q-btn flat icon="add" @click="handleEnterKeyPress" />
       </template>
     </q-input>
-    <Routes></Routes>
-    <!-- <UploadMockup></UploadMockup>  -->
+
+    <!-- created routes -->
+    <Routes />
   </div>
 </template>
 
 <script setup lang="ts">
-import Routes from "./Routes.vue";
-import { mapState, mapActions } from "vuex";
-import UploadMockup from "./UploadMockup.vue";
-import { useStore } from "../../store/main.js";
+/* IMPORTS */
 import { ref, computed } from "vue";
+import { useStore } from "../../store/main.js";
+import Routes from "./Routes.vue";
 
-const store = useStore();
+/* DATA */
 const newRoute = ref("");
 const activeComponent = ref("");
 
+/* COMPUTED VALUES */
+const store = useStore();
 const routes = computed(() => store.routes);
 const componentMap = computed(() => store.componentMap);
-// const activeComponent = computed(() => store.state.activeComponent)
 
-const addRouteToRouteMap: typeof store.addRouteToRouteMap = (payload) => store.addRouteToRouteMap(payload);
-const setRoutes: typeof store.setRoutes = (payload) => store.setRoutes(payload);
-const setActiveComponent: typeof store.setActiveComponent = (payload) => store.setActiveComponent(payload);
+/* STORE ACTIONS */
+const addRouteToRouteMap: typeof store.addRouteToRouteMap = (payload) =>
+  store.addRouteToRouteMap(payload);
+const setActiveComponent: typeof store.setActiveComponent = (payload) =>
+  store.setActiveComponent(payload);
+
+/* METHODS */
 
 const handleEnterKeyPress = (event: Event) => {
   const newRouteName = newRoute.value.replace(/[^a-z0-9-_.]/gi, "");
@@ -63,60 +72,16 @@ const handleEnterKeyPress = (event: Event) => {
     event.preventDefault();
     return false;
   }
-  addRouteToRouteMap(newRouteName)
-    newRoute.value = "";
+  addRouteToRouteMap(newRouteName);
+  newRoute.value = "";
 };
+
 const resetActiveComponent = () => {
   if (activeComponent.value !== "") {
     setActiveComponent("");
   }
 };
 </script>
-
-<!-- Old options API script -->
-<!-- <script>
-import Routes from "./Routes";
-import { mapState, mapActions } from "vuex";
-import UploadMockup from "./UploadMockup.vue";
-
-export default {
-  name: "RoutesTab",
-  components: {
-    Routes,
-    UploadMockup
-},
-  computed: {
-    ...mapState(["routes", "componentMap"]),
-  },
-  data() {
-    return {
-      newRoute: "",
-    };
-  },
-  methods: {
-    ...mapActions(["addRouteToRouteMap", "setRoutes", "setActiveComponent"]),
-    handleEnterKeyPress() {
-      const newRouteName = this.newRoute.replace(/[^a-z0-9-_.]/gi, "");
-      if (
-        !newRouteName.trim() ||
-        this.routes[newRouteName] ||
-        this.componentMap[newRouteName]
-      ) {
-        event.preventDefault();
-        return false;
-      }
-      this.addRouteToRouteMap(newRouteName).then(() => {
-        this.newRoute = "";
-      });
-    },
-    resetActiveComponent() {
-      if (this.activeComponent !== "") {
-        this.setActiveComponent("");
-      }
-    },
-  },
-};
-</script> -->
 
 <style scoped>
 .route-display {

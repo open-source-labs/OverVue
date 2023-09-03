@@ -1,14 +1,27 @@
+<!--
+  LOCATION IN APP:
+  [right sidebar] COMPONENT DETAILS > HTML Elements
+
+  FUNCTIONALITY:
+  - Displays he-tree component 'Draggable' (to render draggable HTML Element tree)
+-->
+
 <template>
   <div>
     <Draggable v-model="props.htmlList">
       <template #default="{ node, stat }">
+        <!-- edit button (pencil icon) -->
         <span class="pencil-icon">
           <i
             class="fa-solid fa-pencil fa-2xs"
             @click="setActiveElement([node.text, node.id], stat)"
           ></i>
         </span>
+
+        <!-- HTML element -->
         {{ node.text }}
+
+        <!-- delete button (trash can icon) -->
         <span @click="deleteSelectedNode(node)">
           <i class="fas fa fa-trash fa-md"></i>
         </span>
@@ -18,25 +31,32 @@
 </template>
 
 <script setup>
+/* IMPORTS */
 import { ref, computed, watch } from "vue";
-import { useStore } from "src/store/main";
 import { Draggable } from "@he-tree/vue";
 import "@he-tree/vue/style/default.css";
+import { useStore } from "src/store/main";
 
-const store = useStore();
-
+/* EMITS & PROPS */
 const emit = defineEmits(["delete"]);
+const props = defineProps(["htmlList"]);
 
+/* DATA */
 const attributeModal = ref(false);
 
 /* COMPUTED VALUES */
+const store = useStore();
 const attributeModalOpen = computed(() => store.attributeModalOpen);
 const activeComponent = computed(() => store.activeComponent);
 
+/* STORE ACTIONS */
 const setActiveHTML = (payload) => store.setActiveHTML(payload);
 const openAttributeModal = () => store.openAttributeModal();
 const clearActiveHTML = () => store.clearActiveHTML();
 const deleteElement = (id) => store.deleteFromElementHtmlList(id);
+
+/* METHODS */
+
 const deleteSelectedNode = (node) => {
   deleteElement(node.id);
   emit("delete");
@@ -50,10 +70,7 @@ const closeMenu = () => {
 };
 
 const setActiveElement = (element, stat) => {
-  // console.log("event", event);
-  //console.log("element in html queue: ", element);
   if (activeComponent.value !== "") {
-    console.log(stat);
     setActiveHTML(element);
     if (attributeModal.value === false) {
       openAttributeModal();
@@ -63,20 +80,16 @@ const setActiveElement = (element, stat) => {
   }
 };
 
-const props = defineProps(["htmlList"]);
-
+/* WATCHES */
 watch(attributeModalOpen, () => {
   attributeModal.value = attributeModalOpen.value;
 });
 </script>
+
 <style lang="scss" scoped>
 .vtlist .he-tree {
   cursor: pointer;
 }
-
-// .tree-node {
-//   background-color: #59a476
-// }
 
 .he-tree--rtl {
   direction: rtl;
@@ -115,8 +128,4 @@ watch(attributeModalOpen, () => {
   display: flex;
   justify-content: space-around;
 }
-/* .vtlist-inner {
-  display: flex;
-}
-*/
 </style>

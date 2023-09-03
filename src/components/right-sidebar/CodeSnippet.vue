@@ -1,17 +1,17 @@
-/* eslint-disable no-unused-vars */
-<!--
-Description:
-  Located under Component Details in Dashboard
-  Dynamically renders Code Snippet in Dashboard
-  Functionality includes: Displays children components and (nested) HTML elements in order of selection.
-  -->
+<!-- 
+  LOCATION IN APP:
+  [right sidebar] COMPONENT DETAILS > Code Preview
+
+  FUNCTIONALITY:
+  - Displays working code preview of current active component
+  - Dynamically updates based on user-added HTML elements, attributes, state, actions, props, etc.
+-->
 
 <template>
   <div class="codesnippet-container">
     <div class="top-p" v-if="activeComponent !== ''">
       {{ `${activeRoute} / ${activeComponent}.vue` }}
     </div>
-    <!-- <div v-else>{{ `${activeComponent}.vue` }}</div> -->
     <prism-editor
       v-model="code"
       :highlight="highlighter"
@@ -22,18 +22,8 @@ Description:
   </div>
 </template>
 
-<!-- COMPOSITION API SYNTAX -->
 <script setup lang="ts">
-import { PrismEditor } from "vue-prism-editor";
-import "vue-prism-editor/dist/prismeditor.min.css";
-import { highlight, languages } from "prismjs/components/prism-core";
-import styleClassMap from "../../store/state/styleClassMap";
-import "prismjs/components/prism-clike";
-import "prismjs/components/prism-javascript";
-import "prismjs/themes/prism-tomorrow.css"; // import syntax highlighting styles
-import { useStore } from "../../store/main.js";
-import { Component, HtmlElement, HtmlElementMap } from "../../../types";
-import { vtIcons } from "src/store/state/icons";
+/* IMPORTS */
 import {
   ref,
   computed,
@@ -43,22 +33,40 @@ import {
   nextTick,
   Ref,
 } from "vue";
+import { PrismEditor } from "vue-prism-editor";
+import { highlight, languages } from "prismjs/components/prism-core";
+import "prismjs/components/prism-clike";
+import "prismjs/components/prism-javascript";
+import "prismjs/themes/prism-tomorrow.css"; // import syntax highlighting styles
+import "vue-prism-editor/dist/prismeditor.min.css";
+import { useStore } from "../../store/main.js";
+import { vtIcons } from "src/store/state/icons";
+import { Component, HtmlElement, HtmlElementMap } from "../../../types";
 
-const store = useStore(); // template
+/* LIFECYCLE HOOKS */
+onMounted(() => {
+  snippetInvoke(); // generates code preview on mount
+  nextTick(() => {
+    window.addEventListener("resize", getWindowHeight);
+    getWindowHeight();
+  });
+});
+onBeforeUnmount(() => window.removeEventListener("resize", getWindowHeight));
 
-// data
+/* DATA */
 const code = ref("Select a component to see its boilerplate code.");
-const lineNumbers = ref(true);
 const height: Ref<null | number> = ref(null);
 
-// computed
+/* COMPUTED VALUES */
+const store = useStore(); // template
 const componentMap = computed(() => store.componentMap);
 const activeComponent = computed(() => store.activeComponent);
 const activeComponentObj = computed(() => store.activeComponentObj);
 const exportAsTypescript = computed(() => store.exportAsTypescript);
 const activeRoute = computed(() => store.activeRoute);
 
-// methods
+/* METHODS */
+
 const snippetInvoke = () => {
   if (activeComponent.value !== "") {
     code.value = createCodeSnippet(
@@ -80,7 +88,6 @@ const getWindowHeight = () => {
   height.value = minHeight; // height.value here?
 };
 
-// Calls createTemplate and createBoiler to generate snippet
 const createCodeSnippet = (componentName: string, children: string[]) => {
   let result = `${createTemplate(componentName /*, children*/)}${createBoiler(
     componentName,
@@ -89,7 +96,7 @@ const createCodeSnippet = (componentName: string, children: string[]) => {
   return result;
 };
 
-// Creates beginner boilerplate
+// creates default boilerplate
 const createTemplate = (componentName: string) => {
   let templateTagStr = writeTemplateTag(componentName, activeComponent.value); // testing 2nd arg
   let routeStr = "";
@@ -136,9 +143,10 @@ const createTemplate = (componentName: string) => {
   }
 };
 
-// Creates <template> boilerplate
+// creates <template> boilerplate
 const writeTemplateTag = (componentName: string, activeComponent: string) => {
   const htmlElementMap: HtmlElementMap = {
+    // standard HTML elements
     div: ["<div", "</div>"],
     button: ["<button", "</button>"],
     form: ["<form", "</form>"],
@@ -160,7 +168,7 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
     h5: ["<h5", "</h5>"],
     h6: ["<h6", "</h6>"],
 
-    // [OverVue v.10.0] –– Vuetensils elements :)
+    // [OverVue v.10.0] Vuetensils elements
     VAlert: [
       `<VAlert class="info" dismissible`,
       `\n\t\t <a href="https://vuetensils.com/components/Alert.html">How to use Alert</a> \n\t\t This is an alert \n\t </VAlert>`,
@@ -338,7 +346,7 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
     htmlElementMap[child] = [`<${child}`, ""]; //single
   });
 
-  function writeNested(childrenArray: HtmlElement[], indent: string) {
+  const writeNested = (childrenArray: HtmlElement[], indent: string) => {
     if (!childrenArray.length) {
       return "";
     }
@@ -389,7 +397,7 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
       }
     });
     return nestedString;
-  }
+  };
 
   // Iterates through active component's HTML elements list and adds to code snippet
   let htmlArr = componentMap.value[componentName].htmlList;
@@ -484,7 +492,6 @@ const createBoiler = (componentName: string, children: string[]) => {
   }
 
   const htmlBinding = componentMap.value[activeComponent.value].htmlList;
-  console.log("htmlbinding in codesnippet: ", htmlBinding);
 
   // [OverVue v.10.0] add Vuetensils import statements to <script setup>
 
@@ -513,17 +520,6 @@ const createBoiler = (componentName: string, children: string[]) => {
       data += `      ${el.binding}: "PLACEHOLDER FOR VALUE", `;
       data += "\n";
     }
-    //checks if there is binding in it's html child's child and will add to code snippet
-    console.log("element: ", el);
-    console.log("element children: ", el.children);
-    // if (el.children.length !== 0) {
-    //   el.children.forEach((el1) => {
-    //     if (el1.binding !== "") {
-    //       data += `      "${el1.binding}": "PLACEHOLDER FOR VALUE", `;
-    //       data += "\n";
-    //     }
-    //   });
-    // }
   });
   data += `    }`;
   data += ` \n  },  \n `;
@@ -613,46 +609,26 @@ const createBoiler = (componentName: string, children: string[]) => {
     output += `}; \n <\/script>\n\n<style scoped>\n${styleString}</style > `;
   }
 
-  console.log("output in codesnippet: ", output);
   return output;
 };
 
-// watch:
-// watches activeComponentObj for changes to make it reactive upon mutation
-// watches componentMap for changes to make it reactive upon mutation
+/* WATCHES */
 watch(
   () => [activeComponent.value, componentMap.value, exportAsTypescript.value],
   () => snippetInvoke(),
   { deep: true }
 );
-
-// mounted()
-// https://vuejs.org/v2/api/#Vue-nextTick
-// kinda like a promise, used for the window resize
-onMounted(() => {
-  snippetInvoke(); // generates the code snippet whenever this is mounted
-  nextTick(() => {
-    window.addEventListener("resize", getWindowHeight);
-
-    getWindowHeight();
-  });
-});
-
-// beforeUnmount()
-onBeforeUnmount(() => window.removeEventListener("resize", getWindowHeight));
 </script>
 
 <style lang="scss">
-// Had scoped before, but could not get rid of outline with scoped style
-
 // resize handled by vue lifecycle methods
 .my-editor {
-  font-size: 12px;
+  font-size: 14px;
   background: #2d2d2d;
   color: #ccc;
   max-height: 100%;
   /* you must provide font-family font-size line-height. Example: */
-  font-family: Fira code, Fira Mono, Consolas, Menlo, Courier, monospace;
+  font-family: Fira Code, Fira Mono, Consolas, Menlo, Courier, monospace;
   line-height: 1.5;
   padding: 5px;
 }
