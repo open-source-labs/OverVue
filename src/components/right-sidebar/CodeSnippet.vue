@@ -195,10 +195,11 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
       `\n\t\t My drawer content\n\t\t</VDrawer>`,
     ],
     VDropdown: [
-      `<VDropdown text="This is the dropdown."`,
-      ` \n    <div>
-        <p>Dropdown content</p>
-        <div/> \n\t </VDropdown>`,
+      `<VDropdown text="This is the dropdown."
+        <div>
+          <p>Dropdown content</p>
+        </div`,
+      `\n    </VDropdown>`,
     ],
     VFile: ["<VFile", ""],
     VNotifications: ["<VNotifications", ""],
@@ -372,12 +373,12 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
           child.text === "img" ||
           child.text === "input" ||
           child.text === "link" ||
-          child.text === "date" ||
-          child.text === "file" ||
-          child.text === "notifications" ||
+          child.text === "VDate" ||
+          child.text === "VFile" ||
+          child.text === "VNotifications" ||
           childComponents.includes(child.text)
         ) {
-          nestedString += "/>";
+          nestedString += " />";
         } else {
           nestedString += ">";
         }
@@ -423,11 +424,11 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
         el.text === "img" ||
         el.text === "input" ||
         el.text === "link" ||
-        el.text === "date" ||
-        el.text === "file" ||
-        el.text === "notifications"
+        el.text === "VDate" ||
+        el.text === "VFile" ||
+        el.text === "VNotifications"
       ) {
-        outputStr += "/";
+        outputStr += " /";
       }
 
       outputStr += ">";

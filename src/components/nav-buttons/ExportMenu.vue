@@ -235,6 +235,113 @@ const writeTemplateTag = (componentName: string) => {
     h4: ["<h4", "</h4>"],
     h5: ["<h5", "</h5>"],
     h6: ["<h6", "</h6>"],
+
+    // [OverVue v.10.0] Vuetensils elements
+    VAlert: [
+      `<VAlert class="info" dismissible`,
+      `\n\t\t <a href="https://vuetensils.com/components/Alert.html">How to use Alert</a> \n\t\t This is an alert \n\t </VAlert>`,
+    ],
+    VDate: ["<VDate", ""],
+    VDialog: [
+      `<VDialog class="test" :classes="{ bg: 'bg-black-alpha' }"`,
+      `\n\t\t <template #toggle="{ bind, on }">
+        <button v-bind="bind" v-on="on">
+         Show the dialog
+        </button>
+      </template>
+      <div class="color-black bg-white">
+        This is the dialog content.
+      </div> \n\t  </VDialog>`,
+    ],
+    VDrawer: [
+      `<VDrawer transition="slide-right" bg-transition="fade">
+        <template #toggle="{ bind, on }">
+        <button v-bind="bind" v-on="on">
+          Toggle Drawer
+        </button>
+      </template`,
+      `\n\t\t My drawer content\n\t\t</VDrawer>`,
+    ],
+    VDropdown: [
+      `<VDropdown text="This is the dropdown."
+        <div>
+          <p>Dropdown content</p>
+        </div`,
+      `\n    </VDropdown>`,
+    ],
+    VFile: ["<VFile", ""],
+    VNotifications: ["<VNotifications", ""],
+    VResize: [
+      `<VResize>
+      <template #default="{ width } ">
+        <div
+          class="resize-example"
+          :class="{
+            lg: width > 500,
+            md: width > 300 && width < 500,
+            sm: width < 300,
+          }"
+        >
+          <img src="https://fillmurray.lucidinternets.com/200/200" alt="description" />
+          <p>This content is {{ width }}px wide.</p>
+        </div>
+      </template`,
+      `\n    </VResize>`,
+    ],
+    VSkip: [
+      `<div>
+      <button>click here to focus</button>
+
+      <p>Tab to get to the skip component then press enter to skip to main content</p>
+
+      <VSkip to="#main">
+        Skip To Main Content
+      </VSkip>
+
+      <!-- perhaps a nav here -->
+      <nav>
+        <ul class="fake-nav">
+          <li><a href="#">Example 1</a></li>
+          <li><a href="#">Example 2</a></li>
+          <li><a href="#">Example 3</a></li>
+          <li><a href="#">Example 4</a></li>
+          <li><a href="#">Example 5</a></li>
+          <li><a href="#">Example 6</a></li>
+        </ul>
+      </nav>
+
+      <main id="main">
+        <p>This is the main content section</p>
+        <p>It could even be a router-link.</p>
+        <p>We're adding some extra paragraphs here.</p>
+        <p>Because otherwise the header blocks this content :)</p>
+      </main`,
+      `\n    </div>`,
+    ],
+    VTabs: [
+      `<VTabs class="styled">
+      <template #tab-1>Tab 1</template>
+      <template #panel-1>
+        Here's the content for tabpanel 1.
+      </template>
+
+      <template #tab-2>Tab 2</template>
+      <template #panel-2>
+        Here's the content for tabpanel 2.
+      </template>
+
+      <template #tab-3>Tab 3</template>
+      <template #panel-3>
+        Here's the content for tabpanel 3.
+      </template`,
+      `\n    </VTabs>`,
+    ],
+    VToggle: [
+      `<VToggle label="Toggle label"`,
+      `\n\t\tcontent here \n    </VToggle>`,
+    ],
+
+    // deprecated by OV10.0: Elements+ elements
     "e-button": [`<el-button type="info"`, `</el-button>`],
     "e-input": ["<el-input", "</el-input>"],
     "e-link": [
@@ -300,6 +407,14 @@ const writeTemplateTag = (componentName: string) => {
     ],
   };
 
+  // Helper function that recursively iterates through the given html element's children and their children's children.
+  // also adds proper indentation to code snippet
+  // add childComponents of the activeCompnent to the htmlElementMap
+  const childComponents = componentMap.value[activeComponent.value].children;
+  // childComponents.forEach((child) => {
+  //   htmlElementMap[child] = [`<${child}`, ""]; //single
+  // });
+
   const writeNested = (childrenArray: HtmlElement[], indent: string) => {
     if (!childrenArray.length) {
       return "";
@@ -312,7 +427,8 @@ const writeTemplateTag = (componentName: string) => {
       if (!child.text) {
         nestedString += `<${child}/>\n`;
       } else {
-        nestedString += htmlElementMap[child.text][0];
+        if (htmlElementMap[child.text])
+          nestedString += htmlElementMap[child.text][0];
         if (child.class !== "") {
           nestedString += " " + "class = " + `"${child.class}"`;
         }
@@ -322,9 +438,12 @@ const writeTemplateTag = (componentName: string) => {
         if (
           child.text === "img" ||
           child.text === "input" ||
-          child.text === "link"
+          child.text === "link" ||
+          child.text === "VDate" ||
+          child.text === "VFile" ||
+          child.text === "VNotifications"
         ) {
-          nestedString += "/>";
+          nestedString += " `/>";
         } else {
           nestedString += ">";
         }
@@ -332,10 +451,12 @@ const writeTemplateTag = (componentName: string) => {
         if (child.children.length) {
           nestedString += "\n";
           nestedString += writeNested(child.children, indented);
-          nestedString += indented + htmlElementMap[child.text][1];
+          if (htmlElementMap[child.text])
+            nestedString += indented + htmlElementMap[child.text][1];
           nestedString += "\n";
         } else {
-          nestedString += htmlElementMap[child.text][1] + "\n";
+          if (htmlElementMap[child.text])
+            nestedString += htmlElementMap[child.text][1] + "\n";
         }
       }
     });
@@ -351,7 +472,7 @@ const writeTemplateTag = (componentName: string) => {
       outputStr += `    <${el}/>\n`;
     } else {
       outputStr += `    `;
-      outputStr += htmlElementMap[el.text][0];
+      if (htmlElementMap[el.text]) outputStr += htmlElementMap[el.text][0];
       //if conditional to check class
       if (el.class !== "") {
         outputStr += " " + "class = " + `"${el.class}"`;
@@ -359,6 +480,20 @@ const writeTemplateTag = (componentName: string) => {
       if (el.binding !== "") {
         outputStr += " " + "v-model = " + `"${el.binding}"`;
       }
+
+      // add an extra slash at the end for child Components and single tags
+      if (
+        childComponents.includes(el.text) ||
+        el.text === "img" ||
+        el.text === "input" ||
+        el.text === "link" ||
+        el.text === "VDate" ||
+        el.text === "VFile" ||
+        el.text === "VNotifications"
+      ) {
+        outputStr += " /";
+      }
+
       outputStr += ">";
       if (el.note !== "") {
         outputStr += `${el.note}`;
@@ -367,10 +502,11 @@ const writeTemplateTag = (componentName: string) => {
         outputStr += "\n";
         outputStr += writeNested(el.children, `    `);
         outputStr += `    `;
-        outputStr += htmlElementMap[el.text][1];
+        if (htmlElementMap[el.text]) outputStr += htmlElementMap[el.text][1];
         outputStr += `  \n`;
       } else {
-        outputStr += htmlElementMap[el.text][1] + "\n";
+        if (htmlElementMap[el.text])
+          outputStr += htmlElementMap[el.text][1] + "\n";
       }
     }
   }
@@ -638,7 +774,7 @@ const writeStyle = (componentName: string) => {
     routes.value[componentName].forEach((element) => {
       let styleSelector =
         element.htmlAttributes.class === ""
-          ? element.htmlList[0].text
+          ? element.htmlList[0]?.text
           : "." + element.htmlAttributes.class;
       styleString += `${styleSelector} {\n\tbackground-color: ${element.color};
 \tgrid-area: ${element.htmlAttributes.gridArea[0]} / ${element.htmlAttributes.gridArea[1]} / ${element.htmlAttributes.gridArea[2]} / ${element.htmlAttributes.gridArea[3]};
