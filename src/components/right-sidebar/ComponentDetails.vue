@@ -1,15 +1,15 @@
-<!--
-Description:
-  Located in the Dashboard
-  Contains the Code Snippet, HTMLQueue Components, and the Component state, actions, and props as well
-  Functionality includes: Contains the Code Snippet and HTMLQueue Components,
-  as well as tabs to show the Component state, actions, and props
+<!-- 
+  LOCATION IN APP:
+  [right sidebar] COMPONENT DETAILS
 
-  -->
+  FUNCTIONALITY:
+  - Displays HTML elements, code preview, and properties of current active component in sub-tabs
+-->
 
 <template>
   <div class="inner-div">
     <q-card id="code-window" class="no-shadow" v-if="activeComponentObj">
+      <!-- sub-tab labels -->
       <q-tabs
         v-model="tab"
         class="bg-subaccent text-white"
@@ -17,64 +17,89 @@ Description:
         indicator-color="secondary"
         align="left"
       >
-        <q-tab name="code" label="Code Snippet" class="label-text" />
-        <q-tab name="html" label="HTML Elements" class="label-text" />
-        <q-tab name="state" label="Component Properties" class="label-text" />
+        <q-tab name="newhtml" label="HTML Elements" class="label-text" />
+        <q-tab name="code" label="Code Preview" class="label-text" />
+        <q-tab name="state" label="Properties" class="label-text" />
       </q-tabs>
+
+      <!-- tab panels (where components are rendered) -->
       <q-tab-panels v-model="tab" animated class="html-bg text-white">
+        <!-- HTML Elements -->
+        <q-tab-panel name="newhtml">
+          <V10HTMLQueue />
+        </q-tab-panel>
+
+        <!-- Code Preview -->
         <q-tab-panel name="code">
           <CodeSnippet />
         </q-tab-panel>
-        <q-tab-panel name="html">
-          <HTMLQueue />
-        </q-tab-panel>
+
+        <!-- Properties -->
         <q-tab-panel name="state">
+          {{
+            activeComponent
+              ? `${activeRoute} / ${activeComponent}.vue`
+              : "Select a component to see its state variables, actions, and props."
+          }}
+
+          <!-- State Variables -->
           <div class="componentProperties">
-            <q-expansion-item default-closed label="Component State">
+            <br />
+            <q-expansion-item default-closed label="State Variables">
               <p v-if="!(activeComponentObj as Component)?.state?.length">
                 {{
                   activeComponent
-                    ? `No state in ${activeComponent}`
-                    : "Select a component."
+                    ? `Add state variables to ${activeComponent}.vue to see them here.`
+                    : null
                 }}
               </p>
-              <p v-else>State in {{ activeComponent }}:</p>
               <ul id="stateList">
-                <li v-for="comp in compObj.state" :key="comp">
+                <li
+                  v-for="comp in (activeComponentObj as Component).state"
+                  :key="comp"
+                >
                   {{ comp }}
                 </li>
               </ul>
             </q-expansion-item>
           </div>
+
+          <!-- Actions -->
           <div class="componentProperties">
-            <q-expansion-item default-closed label="Component Actions">
+            <q-expansion-item default-closed label="Actions">
               <p v-if="!(activeComponentObj as Component)?.actions?.length">
                 {{
                   activeComponent
-                    ? `No actions in ${activeComponent}`
-                    : "Select a component."
+                    ? `Add actions to ${activeComponent}.vue to see them here.`
+                    : null
                 }}
               </p>
-              <p v-else>Actions in {{ activeComponent }}:</p>
               <ul id="actionList">
-                <li v-for="comp in compObj?.actions" :key="comp">
+                <li
+                  v-for="comp in (activeComponentObj as Component)?.actions"
+                  :key="comp"
+                >
                   {{ comp }}
                 </li>
               </ul>
             </q-expansion-item>
           </div>
+
+          <!-- Props -->
           <div class="componentProperties">
-            <q-expansion-item default-closed label="Component Props">
+            <q-expansion-item default-closed label="Props">
               <p v-if="!(activeComponentObj as Component)?.props?.length">
                 {{
                   activeComponent
-                    ? `No props in ${activeComponent}`
-                    : "Select a component."
+                    ? `Add props to ${activeComponent}.vue to see them here.`
+                    : null
                 }}
               </p>
-              <p v-else>Props in {{ activeComponent }}:</p>
               <ul id="propsList">
-                <li v-for="comp in compObj?.props" :key="comp">
+                <li
+                  v-for="comp in (activeComponentObj as Component)?.props"
+                  :key="comp"
+                >
                   {{ comp }}
                 </li>
               </ul>
@@ -84,60 +109,35 @@ Description:
       </q-tab-panels>
     </q-card>
     <q-card id="blank-card" v-else
-      >Create or Select a Component to See Details</q-card
+      >Create a component to see its details</q-card
     >
   </div>
 </template>
 
-<!-- COMPOSITION API SYNTAX -->
 <script setup lang="ts">
-import HTMLQueue from "./HTMLQueue.vue";
-import CodeSnippet from "./CodeSnippet.vue";
+/* IMPORTS */
+import { computed } from "vue";
 import { useStore } from "../../store/main.js";
-import { ref, computed } from "vue";
 import { Component } from "../../../types";
+import V10HTMLQueue from "./V10HTMLQueue.vue";
+import CodeSnippet from "./CodeSnippet.vue";
 
+/* COMPUTED VALUES */
 const store = useStore();
-const tab = ref("code");
-
 const activeComponentObj = computed(() => store.activeComponentObj);
 const activeComponent = computed(() => store.activeComponent);
+const activeRoute = computed(() => store.activeRoute);
+const tab = computed({
+  get: () => store.componentDetailsTab,
+  set: (newTab) => {
+    setComponentDetailsTab(newTab);
+  },
+});
 
-// const compObj: Component = computed({
-//   get() {
-//     return activeComponentObj.value;
-//   },
-// });
-const compObj = activeComponentObj.value as Component;
+/* STORE ACTIONS */
+const setComponentDetailsTab: typeof store.setComponentDetailsTab = (payload) =>
+  store.setComponentDetailsTab(payload);
 </script>
-
-<!-- OLD OPTIONS API SYNTAX -->
-<!-- <script>
-import { mapState } from "vuex";
-import HTMLQueue from "./HTMLQueue";
-import CodeSnippet from "./CodeSnippet";
-
-export default {
-  name: "ComponentDetails",
-  components: {
-    HTMLQueue,
-    CodeSnippet,
-  },
-  computed: {
-    ...mapState(["activeComponentObj", "activeComponent"]),
-    compObj: {
-      get() {
-        return this.activeComponentObj;
-      },
-    },
-  },
-  data() {
-    return {
-      tab: "code",
-    };
-  },
-};
-</script> -->
 
 <style lang="scss" scoped>
 i {

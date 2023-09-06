@@ -39,7 +39,7 @@ To run electron app in dev mode (note: Vue Devtools will launch automatically)
 npm run dev
 ```
 
-To build a new .dmg / windows .exe
+To build a new .zip / .deb
 
 ```
 npm run build
@@ -96,10 +96,8 @@ quasar dev -m electron
 
 **NOTE**:
 
-<ul>
-<li>Electron-deeplink currently does not work on our WSL2 computers and output an error during installing the dependency which prevented the application to open in dev mode. Go to /src-electron/electron-main.js and comment out line 3/import line to bypass error. The developers did not find any impacts on application so far.</li>
-<li>There might be an npm install error despite all instructions. Try the following command below:</li>
-</ul>
+
+There might be an npm install error despite all instructions. Try the following command below:</li>
 
 ```
 sudo apt install libgconf-2-4 libatk1.0-0 libatk-bridge2.0-0 libgdk-pixbuf2.0-0 libgtk-3-0 libgbm-dev libnss3-dev libxss-dev
@@ -197,7 +195,7 @@ Run in dev mode using:
 npm run dev
 ```
 
-[↥Back to top](#table-of-contents)
+[↥ Back to top](#table-of-contents)
 <br/>
 
 ## How to use
@@ -206,29 +204,22 @@ npm run dev
 
 - To add a new component, type its name in the component name box and select any HTML elements that should be rendered by that component.
 - HTML elements can also be added after creation by selecting the component in the display, then selecting HTML elements.
-- You may nest HTML elements by clicking the chevron and selecting the nested HTML elements. Return to the parent HTML element by clicking clicking the carrot above the HTML element.
+- You may nest HTML elements by dragging and dropping elements in the list tree view in either the right sidebar or the component modal (which can be opened by double clicking on a component node in the tree)
 
 - Select a parent component for the new component if needed.
-- After creating the component, you can move, resize, and recolor the component in the display. For advanced styling options, double click on the desired HTML element to modify. Here, you may add attributes such as class, ID, and v-model.
+- After creating the component, you can drag the component node to reassign its parent and change the tree structure. For advanced styling options, double click on the desired HTML element to modify. Here, you may add attributes such as class, ID, and v-model.
   ![](./src/assets/readme/v4Creating_Component.gif)
 
-- You can also duplicate components with Ctrl/Cmd C & V and see the component tree updated in real time.
-- Duplicate components will appear offset from their original and retain the same state and route assignments.
-  ![](./src/assets/readme/v4Copy_Child_Components.gif)
-
-- Child components will inherit the same parents, but parent components will not inherit duplicate children.
-  ![](./src/assets/readme/v4Copy_Parent_Component.gif)
-
-- The right-side, Component Details > Code Snippet Tab displays live code snippets for the selected component.
+- The right-side, Component Details > Code Preview Tab displays live code preview for the selected component.
   ![](./src/assets/readme/v4Code_Snippet.gif)
 
-- You can view and add new routes and associated components in the right-side, Routes Gab. The newly created routes will be visible in the Project Tree Tab.
+- You can view, add, and delete new routes and associated components in the right-side, Routes Tab.
   ![](./src/assets/readme/v4Copying_Route.gif)
 
 - State and actions can be created, edited, and assigned to components.
   ![](./src/assets/readme/v4State_and_actions.gif)
 
-- When finished creating, view your code snippet under the code snippet tab and you can export to a file location of your choice. Below is the exported file structure:
+- When finished creating, view your code preview under the code preview tab and you can export to a file location of your choice. Below is the exported file structure:
 
 ```
 public/
@@ -252,41 +243,11 @@ babel.config.js
 package.json
 ```
 
+- To get a better look at the features and how to use OverVue, take a look at the in-app tutorial!
+
 <br/>
 
-[↥Back to top](#table-of-contents)
-
-## BETA
-
-### Slack OAuth
-
-For the Slack OAuth, you will need to create a Slack app through their website (https://api.slack.com/apps?new_app=1), so that you have your own Client Secret and Client ID. Then create two .env files (one for development and one for production).
-
-1. Create a Slack App from the link above. Copy your Client ID and Client Secret somewhere safe.
-2. Create two .env files in the main root of this repository. Name them:
-
-```
-.env
-.env.development
-```
-
-3. Open .env and add these three environment variables. Replace <client secret> and <client id> with the client id and client secret given to you when you created your Slack App.
-
-```
-SLACK_CLIENT_SECRET = "<client secret>"
-SLACK_CLIENT_ID = "<client id>"
-SLACK_REDIRECT_URI = "overvue://slack"
-```
-
-4. Next, open .env.development and do the same, just note that the SLACK_REDIRECT_URI will be different here:
-
-```
-SLACK_CLIENT_SECRET = "<client secret>"
-SLACK_CLIENT_ID = "<client id>"
-SLACK_REDIRECT_URI = "overvuedev://test"
-```
-
-[↥Back to top](#table-of-contents)
+[↥ Back to top](#table-of-contents)
 
 ### Changelog
 
@@ -463,6 +424,30 @@ SLACK_REDIRECT_URI = "overvuedev://test"
 </details>
 <br/>
 
+### Changelog 10.0
+
+<details><summary>OverVue 10.0</summary>
+<ul>
+<li>Overhauled main view to be an interactive and intuitive tree view</li>
+<li>Updated HTML Elements list to have nested elements</li>
+<li>Created a focused component modal</li>
+<li>Integrated a11y-friendly Vuetensils component library</li>
+<li>Added unit testing for main tree view feature</li>
+<li>Refactored codebase, removing unneeded comments, unused files, console logs</li>
+<li>Cleaned UI of side bars</li>
+<li>Added previous main grid view to toggle (in top right settings)</li>
+<br>
+<h4><strong>Bug Fixes</strong></h4>
+<li>Fixed HTML elements not live rendering</li>
+<li>Fixed delete HTML element functionality being inconsistent</li>
+<li>Fixed Code Preview having unexpected code (i.e. v-model=undefined)</li>
+<li>Fixed various bugs related to empty HTML lists or routes with no children</li>
+<li>Fixed import statements and nesting in Code Preview and exported code</li>
+<li>Fixed entire testing suite</li>
+</ul>
+</details>
+<br/>
+
 [↥Back to top](#table-of-contents)
 
 ## Contributing
@@ -470,13 +455,18 @@ SLACK_REDIRECT_URI = "overvuedev://test"
 We'd love for you to test out the application and submit any issues you encounter. Also feel free to fork to your own repo and submit PRs.
 Here are some features we're thinking about adding:
 
-- Ability to choose options or composition API for code snippet and exported code
-- Ability to choose Vuex or Pinia for code snippet and exported code
+- Ability to choose options or composition API for code preview and exported code
+- Ability to choose Vuex or Pinia for code preview and exported code
 - Ability to add two-way binding to input elements
-- Make snap-to-grid optional with a toggle feature
 - Expand testing suite and add more dynamic tests
+- Reincorporate Slack OAuth
+- Add styling and script tags to Vuetensils boilerplate
 
-If you make changes and wish to update the website, here is the link to the repo: https://github.com/OverVue9/OverVueWebsite
+Smaller changes that can be worked on:
+
+- Removing ghost image when dragging HTML elements
+- Highlight active HTML element when selected/updating
+- Remove duplicate imports and account for nested components in Vuetensils import statement
 
 <br/>
 
@@ -524,6 +514,10 @@ Jigar Patel @jigarxp
 Linden Young @lindenyoung
 Chris Davis @chdavis0917
 Ji Kim @dwejikim
+Janica Abagat @janicaa1
+Jaime de Venecia @jdvplus
+Trisha Duong @trishanduong
+David Lee @GomDave
 ```
 
 Inspired by [PreVue](https://github.com/open-source-labs/PreVue)

@@ -1,60 +1,58 @@
-<!--
-Description:
-  Displays project tree in Dashboard
-  Functionality includes: formatting componentMap object to displaying in tree form
-  -->
+<!-- 
+  LOCATION IN APP:
+  central tree UI
 
-<template>
-  <div class="container">
-    <vue-tree
-      style="width: 100%; height: 80vh; border: 1px solid gray"
-      :dataset="treeData"
-      :config="treeConfig"
-      ref="tree"
-      @wheel="zoom"
-    >
-      <template v-slot:node="{ node }">
-        <span v-if="activeComponent === node.value" class="tree-node-active">
-          {{ node.value }}
-        </span>
-        <span
-          v-else-if="activeRoute === node.value"
-          class="tree-node-activeRoute"
-        >
-          {{ node.value }}
-        </span>
-        <span v-else class="tree-node" @click="activateNode(node.value)">
-          {{ node.value }}
-        </span>
-      </template>
-    </vue-tree>
-  </div>
-</template>
+  FUNCTIONALITY:
+  - Displays working drag-and-droppable project tree
+  - Drag & drop functionality developed by OverVue v.10.0
+-->
 
 <script setup lang="ts">
-import VueTree from "@ssthouse/vue3-tree-chart";
-import "@ssthouse/vue3-tree-chart/dist/vue3-tree-chart.css";
+/* IMPORTS */
+import { ref, computed, watch, onMounted } from "vue";
 import { useStore } from "../../store/main.js";
-import { ref, computed, watch } from "vue";
-import { Component, RouteComponentMap } from "../../../types";
 
-const store = useStore();
+// [OverVue v.10.0]
+// we 'forked', published, and installed our own npm packages based on:
+// https://github.com/ssthouse/tree-chart
+import VueTree from "@overvue/vue3-tree-chart";
+import "@overvue/vue3-tree-chart/dist/vue3-tree-chart.css";
 
+import V10HTMLQueue from "./V10HTMLQueue.vue";
+
+/* LIFECYCLE HOOKS */
+onMounted(() => {
+  // Sets tree view to origin on initial render
+  tree.value.setToOrigin();
+});
+
+/* DATA */
 const treeConfig = ref({ nodeWidth: 175, nodeHeight: 100, levelHeight: 200 });
 const treeData = ref<typeof VueTree.treeData>(null);
+const tree = ref<typeof VueTree>(null); // ref to htmlelement
+defineExpose({ tree }); // makes tree available through template refs
+const inspectComponentModal = ref(false);
 
-//ref to htmlelement
-const tree = ref<typeof VueTree>(null);
-
-defineExpose({ tree });
-
-//computed
-const activeComponent = computed(() => store.activeComponent);
-const activeRoute = computed(() => store.activeRoute);
-const routes = computed(() => store.routes);
+/* COMPUTED */
+const store = useStore();
 const componentMap = computed(() => store.componentMap);
+const activeComponent = computed(() => store.activeComponent); // handles collapsing child nodes
+const htmlList = computed(
+  () => store.componentMap[store.activeComponent].htmlList
+);
+const routes = computed(() => store.routes);
+const activeRoute = computed(() => store.activeRoute);
 
-const componentData = componentMap;
+/* STORE ACTIONS */
+const setActiveTreeNode: typeof store.setActiveTreeNode = (payload) =>
+  store.setActiveTreeNode(payload);
+const setPotentialParentNode: typeof store.setPotentialParentNode = (payload) =>
+  store.setPotentialParentNode(payload);
+const moveNode: typeof store.moveNode = (payload) => store.moveNode(payload);
+const setComponentDetailsTab: typeof store.setComponentDetailsTab = (payload) =>
+  store.setComponentDetailsTab(payload);
+
+/* METHODS */
 
 const zoom = (event: WheelEvent) => {
   if (event.deltaY < 0) {
@@ -71,7 +69,6 @@ const evalChildren = (
 ) => {
   children.forEach((el: typeof VueTree.treeData.value) => {
     if (el.value === targetString) {
-      /// do we need to remove view.value???
       store.setActiveRoute(view.value);
       return;
     } else if (el.children.length > 0) {
@@ -84,23 +81,21 @@ const activateNode = (nodeToActivate: string) => {
   if (nodeToActivate === "App") {
     return;
   }
-  //check first, activating a route? if so, activate that route and then dispatch no active component.
+
   for (const key in routes.value) {
     if (nodeToActivate === key) {
       store.setActiveRoute(nodeToActivate);
-      if (routes.value[key].length > 0) {
-        store.setActiveComponent("");
-      }
+      store.setActiveComponent("");
+
       return;
     }
   }
 
-  //if we click a component, check which route, and then if needed dispatch the route THEN the component
   for (const view of treeData.value.children) {
     if (view.children.length > 0) {
       view.children.forEach((el: typeof VueTree.treeData.value) => {
+        // check where the view.value is NOT the active route
         if (view.value !== activeRoute.value) {
-          //only check where the view.value is NOT the active route
           if (nodeToActivate === el.value) {
             store.setActiveRoute(view.value);
             return;
@@ -112,203 +107,205 @@ const activateNode = (nodeToActivate: string) => {
       });
     }
   }
+
   if (activeComponent.value !== nodeToActivate) {
     store.setActiveComponent(nodeToActivate);
   }
 };
 
 const buildTree = (componentData: typeof VueTree.treeData) => {
-  //App is always the root of the tree.
-  const treeData : {value: string; children:{value: string; children: string[]}[]} = {
+  const treeData: {
+    value: string;
+    children: { value: string; children: string[] }[];
+  } = {
     value: "App",
     children: [],
   };
-  //Views come after the root, as its children. No components will be children of App.
-  //ONLY Views will have components as children.
+
+  // only routes have component as children
   for (const child of componentData.App.children) {
     treeData.children.push({
       value: child,
       children: buildTreeChildren(componentData[child].children),
     });
   }
+
   return treeData;
 };
 
-function buildTreeChildren(array: string[]) {
-  if (array.length === 0) {
-    return [];
-  } else {
+const buildTreeChildren = (array: string[]) => {
+  if (array.length === 0) return [];
+  else {
     const outputArray: [] = [];
+
     array.forEach((el) => {
       const outputObj = {
         value: el,
         children: [],
       };
-      for (const component in componentData.value) {
+
+      for (const component in componentMap.value) {
         if (component === el) {
-          if (componentData.value[component].children.length > 0) {
+          if (componentMap.value[component].children.length > 0) {
             outputObj.children = buildTreeChildren(
-              componentData.value[component].children
+              componentMap.value[component].children
             );
           }
         }
       }
-      (outputArray as { value: string; children: string[]}[]).push(outputObj);
+
+      (outputArray as { value: string; children: string[] }[]).push(outputObj);
     });
+
     return outputArray;
   }
-}
+};
 
-//data
+/* [OverVue v.10.0] DRAG & DROP METHODS (TREE UI) */
+
+const startDrag = (event: Event, activeTreeNode: string) => {
+  // update class to make activeTreeNode transparent while being dragged
+  (event.target as HTMLElement).classList.add("currentlyDragging");
+  setActiveTreeNode(activeTreeNode); // set active tree node
+};
+
+const dragEnter = (event: Event, node: string) => {
+  setPotentialParentNode(node); // set potential parent node to node being hovered over
+};
+
+const dragOver = (event: Event) => {
+  // needed to invoke endDrag automatically
+};
+
+const endDrag = (event: Event, activeTreeNode: string) => {
+  // set currently dragged component as child of current potential parent
+  // remove component from children list of previous parent
+  moveNode(activeTreeNode);
+};
+
+/* [OverVue v.10.0] INSPECT COMPONENT MODAL FEATURE */
+
+const inspectComponent = (event: Event) => {
+  // ensure that modal doesn't open if active component has no HTML elements
+  // (also redirects tab to 'New HTML Section')
+  if (!Object.keys(htmlList.value).length) {
+    setComponentDetailsTab("newhtml");
+    return;
+  }
+
+  setComponentDetailsTab("code");
+  inspectComponentModal.value = !inspectComponentModal.value;
+};
+
+/* WATCHES */
 treeData.value = buildTree(componentMap.value);
-
-//watch
-watch(
-  componentMap,
-  () => {
-    treeData.value = buildTree(componentMap.value);
-  },
-
-  { deep: true }
-);
+watch(componentMap, () => (treeData.value = buildTree(componentMap.value)), {
+  deep: true,
+});
 </script>
 
-<!-- Old Options API Script -->
+<template>
+  <div class="container">
+    <!-- main tree UI -->
+    <vue-tree
+      style="width: 100%; height: 100vh; border: 1px solid rgb(96, 96, 96)"
+      :dataset="treeData"
+      :config="treeConfig"
+      ref="tree"
+      @wheel="zoom"
+      @dragover.prevent="dragOver($event), false"
+    >
+      <template v-slot:node="{ node }">
+        <span
+          v-if="activeComponent === node.value"
+          class="tree-node-active"
+          @dblclick="inspectComponent($event)"
+          @dragstart="startDrag($event, node.value)"
+          draggable="true"
+          :stop-propagation="true"
+          @dragend.prevent="endDrag($event, node.value)"
+          @dragenter.prevent="dragEnter($event, node.value)"
+        >
+          {{ node.value }}
+        </span>
+        <span
+          v-else-if="activeRoute === node.value"
+          class="tree-node-activeRoute"
+          @dragenter.prevent="dragEnter($event, node.value)"
+        >
+          {{ node.value }}
+        </span>
+        <span
+          v-else
+          class="tree-node"
+          @click="activateNode(node.value)"
+          @dblclick="inspectComponent($event)"
+          @dragstart="startDrag($event, node.value)"
+          draggable="true"
+          :stop-propagation="true"
+          @dragend="endDrag($event, node.value)"
+          @dragenter.prevent="dragEnter($event, node.value)"
+        >
+          {{ node.value }}
+        </span>
+      </template>
+    </vue-tree>
+  </div>
 
-<!-- <script>
-  import { mapState } from "vuex";
-  import VueTree from "@ssthouse/vue3-tree-chart";
-  import "@ssthouse/vue3-tree-chart/dist/vue3-tree-chart.css";
-  
-  export default {
-    name: "Tree",
-    components: { VueTree },
-    computed: {
-      ...mapState([
-      'activeComponent',
-      'activeRoute',
-      'routes',
-      'componentMap',
-      ])
-    },
-    methods: {
-      zoom(){
-        if (event.deltaY < 0){
-          console.log(this.$refs.tree, "this is tree")
-          this.$refs.tree.zoomIn();
-        } else {
-          this.$refs.tree.zoomOut();
-        }
-      },
-      activateNode(nodeToActivate){
-        if (nodeToActivate === "App"){
-          return;
-        }
-        //check first, activating a route? if so, activate that route and then dispatch no active component.
-        for (const key in this.routes){
-          if (nodeToActivate === key){
-            this.$store.dispatch('setActiveRoute', nodeToActivate)
-            if (this.routes[key].length > 0){
-              this.$store.dispatch('setActiveComponent', '')
-            }
-            return;
-          }
-        }
-        
-        //if we click a component, check which route, and then if needed dispatch the route THEN the component
-        for (const view of this.treeData.children){
-          if (view.children.length > 0){
-            view.children.forEach((el)=>{
-              if (view.value !== this.activeRoute){ //only check where the view.value is NOT the active route
-                if (nodeToActivate === el.value){
-                  this.$store.dispatch('setActiveRoute', view.value)
-                  return;
-                }
-                if (el.children.length > 0){
-                  this.evalChildren(el.children, nodeToActivate, view);
-                }
-              }
-            })
-          }
-        }
-        if (this.activeComponent !== nodeToActivate) {
-          this.$store.dispatch('setActiveComponent', nodeToActivate);
-        }
-      },
-      evalChildren(children, targetString, view){
-          children.forEach((el)=>{
-            if (el.value === targetString){
-              this.$store.dispatch('setActiveRoute', view.value)
-              return;
-            } else if (el.children.length >0){
-              return this.evalChildren(el.children, targetString, view)
-          }
-        })
-      },
-  
-      buildTree(componentData){
-        //App is always the root of the tree.  
-        const treeData = {     
-          value: 'App',
-          children: []
-        }
-        console.log(treeData, "hello i am treeData inside buildtree")
-        //Views come after the root, as its children. No components will be children of App.
-        //ONLY Views will have components as children.
-        for (const child of componentData.App.children){
-          treeData.children.push({
-            value: child,
-            children: buildTreeChildren(componentData[child].children),
-          })
-        }
-        
-        function buildTreeChildren (array){
-          if (array.length === 0){
-            return [];
-          } else {
-            const outputArray = [];
-            array.forEach((el)=>{
-              const outputObj = {
-              value: el,
-              children: []
-              }
-              for (const component in componentData){
-                if (component === el){
-                  if (componentData[component].children.length > 0){
-                    outputObj.children = buildTreeChildren(componentData[component].children);
-                  }
-                }
-              }
-              outputArray.push(outputObj);
-            })
-            return outputArray;
-          }
-        }
-        return treeData;
-      }
-    },
-    watch: {
-      componentMap: {
-        handler(){
-          this.treeData = this.buildTree(this.componentMap);
-        },
-        deep: true,
-      },
-    },
-    data() { 
-      return {
-        treeData: this.buildTree(this.$store.state.componentMap),
-        treeConfig: { nodeWidth: 175, nodeHeight: 100, levelHeight: 200},
-        componentData: this.$store.state.componentMap,
-      }
-    }
-  }
-</script> -->
+  <!-- inspect component modal feature -->
+  <q-dialog v-model="inspectComponentModal">
+    <div class="modal-box-container">
+      <div class="modal-box-title">
+        {{ activeComponent }}
+      </div>
+      <div class="modal-box">
+        <!-- <HTMLQueue /> -->
+        <V10HTMLQueue />
+      </div>
+    </div>
+  </q-dialog>
+</template>
 
 <style lang="scss" scoped>
+.currentlyDragging {
+  // opacity: 0.5;
+  transform: scale(1.1);
+}
+
+.modal-box {
+  background: $subprimary;
+  min-width: 400px;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  // padding: 10em;
+  border-radius: 5px;
+  border: 1px solid white;
+  box-shadow: inset 0 0 0.5px 1px hsla(0, 0%, 100%, 0.075),
+    /* shadow ring 👇 */ 0 0 0 1px hsla(0, 0%, 0%, 0.05),
+    /* multiple soft shadows 👇 */ 0 0.3px 0.4px hsla(0, 0%, 0%, 0.02),
+    0 0.9px 1.5px hsla(0, 0%, 0%, 0.045), 0 3.5px 6px hsla(0, 0%, 0%, 0.09);
+  // box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+  //   rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+  //   rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+
+  position: relative;
+}
+
+.modal-box-title {
+  font-size: 2.5em;
+  margin: 0 auto;
+  font-weight: bold;
+  text-align: center;
+}
+
 .container {
   height: 100%;
   width: 100%;
+  text-shadow: -2px 0px 10px rgba(0, 0, 0, 0.16);
+  background-color: rgb(26, 26, 26);
 }
 
 .container:hover {

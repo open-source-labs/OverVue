@@ -1,34 +1,38 @@
- <!--
-Description:
-  Displays Canvas
-  Functionality includes: N/A
-  -->
+<!-- 
+  LOCATION IN APP:
+  central UI
+
+  FUNCTIONALITY:
+  - Renders either Tree UI or Grid UI depending on mode selected (gear icon dropdown)
+-->
 
 <template>
-  <q-page class="flex flex-center" id="compDisplay">
-    <Canvas />
+  <q-page id="compDisplay">
+    <div v-if="mode === 'canvas'">
+      <Canvas />
+    </div>
+    <div v-else="mode === 'tree'">
+      <Tree />
+    </div>
   </q-page>
 </template>
 
-<style>
-</style>
+<script setup>
+import { computed } from "vue";
+import { useStore } from "../../src/store/main";
+import Tree from "../components/right-sidebar/Tree.vue";
+import Canvas from "../components/Canvas.vue";
 
-<script>
-import Canvas from '../components/Canvas.vue'
-
-export default {
-  name: 'PageIndex',
-  components: {
-    Canvas
-}
-}
+const store = useStore();
+const mode = computed(() => store.mode);
 </script>
 
 <style scoped>
- #compDisplay{
-   overflow-x: scroll;
-   overflow-y: scroll;
-   margin: 0px;
-   padding: 0px;
- }
+#compDisplay {
+  overflow-x: scroll;
+  overflow-y: scroll;
+  margin: 0px;
+  padding-top: 20px;
+  height: 100vh;
+}
 </style>

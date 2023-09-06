@@ -1,12 +1,22 @@
+/**
+ * @description: Testing functionality of the openProject action and following mutations
+ * `actions:` `openProject'
+ * `mutations: `SET_IMAGE_PATH`, `SET_COMPONENT_PATH`, `SET_ROUTES`
+ * `state:` `imagePath`, `Component_Map`, `routes`
+ */
+
 // * = added to convert tests to OverVue 9.0, using Pinia instead of Vuex
 import { mount, createLocalVue, shallowMount } from "@vue/test-utils";
 import { createApp } from "vue";
+import { setActivePinia, createPinia } from "pinia";
 import * as All from "quasar";
 const { Quasar, date } = All;
 
 import { createTestingPinia } from "@pinia/testing"; // *
-import { useStore } from "../../src/store/main"; // *
-const piniaStore = useStore(); // *
+import { useStore } from "../../../src/store/main"; // *
+
+setActivePinia(createPinia());
+const store = useStore(); // *
 
 const components = Object.keys(All).reduce((object, key) => {
   const val = All[key];
@@ -22,17 +32,11 @@ import * as types from "../../../src/store/options/types";
 // import Vuex from "vuex";
 // import store from "../../../src/store/state/index";
 
-/**
- * @description: Testing functionality of the openProject action and following mutations
- * `actions:` `openProject'
- * `mutations: `SET_IMAGE_PATH`, `SET_COMPONENT_PATH`, `SET_ROUTES`
- * `state:` `imagePath`, `Component_Map`, `routes`
- */
+const App = {};
+const app = createApp(App);
+app.use(Quasar, store, { components }); // *
 
 describe("Test Suite for Image Upload", () => {
-  const App = {};
-  const app = createApp(App);
-  app.use(Quasar, piniaStore, { components }); // *
   // app.use(Quasar, Vuex, { components });
   const payload = {
     icons: {
@@ -139,8 +143,8 @@ describe("Test Suite for Image Upload", () => {
         HomeView: "",
       },
     };
-    piniaStore.setImagePath(payload.imagePath);
-    expect(piniaStore.imagePath).toMatchObject({
+    store.setImagePath(payload.imagePath);
+    expect(store.imagePath).toMatchObject({
       ...openState.imagePath,
       ...payload.imagePath,
     });
@@ -174,8 +178,8 @@ describe("Test Suite for Image Upload", () => {
         },
       },
     };
-    piniaStore.setComponentMap(payload.componentMap);
-    expect(piniaStore.componentMap).toMatchObject(payload.componentMap);
+    store.setComponentMap(payload.componentMap);
+    expect(store.componentMap).toMatchObject(payload.componentMap);
   });
 
   // test('"[types.SET_COMPONENT_MAP]" mutation expect state.componentMap object to match payload.componentMap', () => {
@@ -203,8 +207,8 @@ describe("Test Suite for Image Upload", () => {
         HomeView: [],
       },
     };
-    piniaStore.setRoutes(payload.routes);
-    expect(piniaStore.routes).toMatchObject(payload.routes);
+    store.setRoutes(payload.routes);
+    expect(store.routes).toMatchObject(payload.routes);
   });
 
   // test('"[types.SET_ROUTES]" mutation expect state.routes object to match payload.routes ', () => {

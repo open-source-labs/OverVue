@@ -1,14 +1,24 @@
-<!--
-Description:
-  Displays Open Project Button
-  Functionality includes: opening saved json file and storing data in state
-  -->
+<!-- 
+  LOCATION IN APP:
+  [top-right corner] 'Import' button
+
+  FUNCTIONALITY:
+  - Allows user to import saved project from .json file
+
+  NOTE:
+  - Errors do not affect functionality
+-->
 
 <template>
-  <q-btn class="nav-btn" color="secondary" label="Import">
-    <q-menu :offset="[0, 15]" class="dropdown">
+  <q-btn
+    class="nav-btn"
+    color="secondary"
+    label="Import"
+    @click="openProjectJSON"
+  >
+    <!-- moved this functionality (click event) to <q-btn> above -->
+    <!-- <q-menu class="dropdown">
       <div class="column items-center">
-        <p class="center">Import:</p>
         <q-btn
           class="menu-btn"
           no-caps
@@ -16,35 +26,31 @@ Description:
           label="Project JSON"
           @click="openProjectJSON"
         />
-        <ImportComponent
-          class="import-comp menu-btn"
-          no-caps
-          title="Vue Component (coming soon)"
-          :disable="true"
-        />
       </div>
-    </q-menu>
+    </q-menu> -->
   </q-btn>
 </template>
 
 <script setup lang="ts">
-import { useStore } from "../../store/main";
-import ImportComponent from "../left-sidebar/ComponentTab/ImportComponent.vue";
-import { Component } from "../../../types";
-// import * as fs from "fs";
+/* IMPORTS */
 const Mousetrap = require("mousetrap");
+import { useStore } from "../../store/main";
+// import * as fs from "fs";
+
 // @ts-ignore
 const { fs, ipcRenderer } = window;
 
-const store = useStore();
-
-// ON CREATED
 Mousetrap.bind(["command+o", "ctrl+o"], () => {
   openProjectJSON();
 });
 
+const store = useStore();
+
+/* STORE ACTIONS */
 const openProject: typeof store.openProject = (payload) =>
   store.openProject(payload);
+
+/* METHODS */
 
 const openJSONFile = (data: fs.PathOrFileDescriptor[]) => {
   if (!data) return;
@@ -73,53 +79,6 @@ const openProjectJSON = () => {
   showOpenJSONDialog();
 };
 </script>
-
-<!-- <script>
-import { mapActions } from "vuex";
-import ImportComponent from "../left-sidebar/ComponentTab/ImportComponent.vue";
-const Mousetrap = require("mousetrap");
-const { fs, ipcRenderer } = window;
-
-export default {
-  name: "ImportMenu",
-  components: {
-    ImportComponent,
-  },
-  methods: {
-    ...mapActions(["openProject"]),
-    // opens project
-    openJSONFile(data) {
-      if (data === undefined) return;
-      const jsonFile = JSON.parse(fs.readFileSync(data[0], "utf8"));
-      this.openProject(jsonFile);
-    },
-    showOpenJSONDialog() {
-      ipcRenderer
-        .invoke("openProject", {
-          properties: ["openFile"],
-          filters: [
-            {
-              name: "JSON Files",
-              extensions: ["json"],
-            },
-          ],
-        })
-        .then((res) => this.openJSONFile(res.filePaths))
-        .catch((err) => console.log(err));
-    },
-
-    openProjectJSON() {
-      this.showOpenJSONDialog();
-    },
-  },
-  // on components creation these key presses will trigger open project
-  created() {
-    Mousetrap.bind(["command+o", "ctrl+o"], () => {
-      this.openProjectJSON();
-    });
-  },
-};
-</script> -->
 
 <style scoped>
 .mr-sm {

@@ -1,17 +1,17 @@
 <!-- 
   LOCATION IN APP:
-  [left sidebar] COMPONENT > default view > ELEMENTS
+  [left sidebar] COMPONENT > default view > VUETENSILS
 
   FUNCTIONALITY:
-  - Displays HTML element icons
-  - Enables user to select HTML elements and add them to current active component
+  - Displays Vuetensils components from Vuetensils library
+  - Enables user to select Vuetensils components and add them to current active component
 -->
 
 <template>
   <section class="icon-grid">
     <button
       @click.prevent="changeState(elementName)"
-      v-for="([elementName, iconString], idx) in Object.entries(icons)"
+      v-for="([elementName, iconString], idx) in Object.entries(vtIcons)"
       :key="idx + Date.now()"
     >
       <!-- number badge -->
@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 /* IMPORTS */
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useStore } from "../../../store/main.js";
 import { HtmlElement } from "app/types";
 
@@ -44,7 +44,7 @@ const emit = defineEmits([
 
 /* COMPUTED VALUES */
 const store = useStore();
-const icons = computed(() => store.icons);
+const vtIcons = computed(() => store.vtIcons);
 const activeComponent = computed(() => store.activeComponent);
 const componentMap = computed(() => store.componentMap);
 const selectedElementList = computed(() => store.selectedElementList);

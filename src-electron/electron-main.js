@@ -1,6 +1,4 @@
 import { app, BrowserWindow, nativeTheme, dialog, ipcMain } from "electron";
-//import deeplink currently did not work in our WSL2 computers - commented out line 3 fixed our issue to be able to run in dev mode
-import { Deeplink } from "electron-deeplink";
 import isDev from "electron-is-dev";
 import path from "path";
 import os from "os";
@@ -26,19 +24,6 @@ let mainWindow;
 // Added
 let authCode;
 const protocol = isDev ? "overvuedev" : "overvue";
-
-// Used to console log for main process in production mode
-// ** Only works on production level application; throws errors if you run quasar dev
-if (process.env.PROD) {
-  const deeplink = new Deeplink({
-    app,
-    mainWindow,
-    protocol,
-    isDev,
-    debugLogging: true,
-    // electronPath: '/node_modules/electron/dist/Electron.app'
-  });
-}
 
 // Handle dialogs for ExportProjectComponent
 ipcMain.handle("exportProject", async (event, arg) => {
@@ -152,17 +137,6 @@ function getSlackUser(token, userId) {
   request.end();
 }
 
-function setOauthListener() {
-
-  if (process.env.PROD) {
-    return deeplink.on("received", (link) => {
-      // Extracts Slack authorization code from deep link
-      authCode = link.split("=")[1];
-      sendTokenRequest();
-    });
-  }
-}
-
 function createWindow() {
   /**
    * Initial window options
@@ -203,7 +177,6 @@ app
   .whenReady()
   .then(() => {
     createWindow();
-    setOauthListener();
   })
   .catch((err) => {
     console.log(err);
@@ -218,6 +191,5 @@ app.on("window-all-closed", () => {
 app.on("activate", () => {
   if (mainWindow === null) {
     createWindow();
-    setOauthListener();
   }
 });

@@ -1169,54 +1169,6 @@ const mutations = {
         updatedComponent.x;
     });
   },
-  // *** INACTIVE MUTATIONS - kept for reference *** //////////////////////////////////////////////
-
-  // [types.SET_STATE]: (state, payload) => {
-  //   Object.assign(state, payload)
-  // },
-  // [types.DELETE_USER_ACTIONS]: (state, payload) => {
-  //   // payload should be a string of the name of the action to remove
-  //   let index = state.userActions.indexOf(payload)
-  //   state.userActions.splice(index, 1)
-  // },
-  // [types.ADD_USER_ACTION]: (state, payload) => {
-  //   if (typeof payload === 'string') state.userActions.push(payload)
-  // },
-  // [types.ADD_TO_USER_STORE]: (state, payload) => {
-  //   const key = Object.keys(payload)
-  //   state.userStore[key] = payload[key]
-  // },
-  // [types.DELETE_USER_STATE]: (state, payload) => {
-  //   delete state.userStore[payload]
-  // },
-  // [types.REMOVE_ACTION_FROM_COMPONENT]: (state, payload) => {
-  //   let index = state.componentMap[state.activeComponent].mapActions.indexOf(
-  //     payload
-  //   )
-  //   state.componentMap[state.activeComponent].mapActions.splice(index, 1)
-  // },
-  // [types.ADD_TO_COMPONENT_ACTIONS]: (state, payload) => {
-  //   state.componentMap[state.activeComponent].componentActions.push(payload)
-  // },
-  // [types.ADD_TO_COMPONENT_STATE]: (state, payload) => {
-  //   state.componentMap[state.activeComponent].componentState.push(payload)
-  // },
-  // [types.REMOVE_STATE_FROM_COMPONENT]: (state, payload) => {
-  //   let prop = state.componentMap[state.activeComponent].componentState
-  //   prop.splice(prop.indexOf(payload), 1)
-  // },
-  // [types.DELETE_COMPONENT]: (state, payload) => {
-  //   const stateCopy = state
-  //   let compArr = stateCopy.routes[stateCopy.activeRoute]
-  //   for (let i = 0; i < compArr.length; i++) {
-  //     if (compArr[i].componentName == payload.componentName) {
-  //       compArr.splice(i, 1)
-  //     }
-  //   }
-  //   delete state.componentMap[payload.componentName]
-  //   state.routes[state.activeRoute] = compArr
-  //   // console.log('new state', state)
-  // }
 };
 
 export default mutations;
