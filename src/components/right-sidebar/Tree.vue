@@ -18,7 +18,7 @@ import { useStore } from "../../store/main.js";
 import VueTree from "@overvue/vue3-tree-chart";
 import "@overvue/vue3-tree-chart/dist/vue3-tree-chart.css";
 
-import V10HTMLQueue from "./V10HTMLQueue.vue";
+import HTMLElementsList from "./HTMLElementsList.vue";
 
 /* LIFECYCLE HOOKS */
 onMounted(() => {
@@ -259,8 +259,7 @@ watch(componentMap, () => (treeData.value = buildTree(componentMap.value)), {
         {{ activeComponent }}
       </div>
       <div class="modal-box">
-        <!-- <HTMLQueue /> -->
-        <V10HTMLQueue />
+        <HTMLElementsList />
       </div>
     </div>
   </q-dialog>

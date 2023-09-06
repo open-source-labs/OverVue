@@ -3,14 +3,8 @@ import {
   breadthFirstSearchParent,
 } from "src/utils/search.util";
 
-import { isProxy, toRaw } from "vue";
-import {
-  State,
-  Actions,
-  Component,
-  RouteComponentMap,
-  HtmlElement,
-} from "../../types";
+import { toRaw } from "vue";
+import { State, Actions, Component, HtmlElement } from "../../types";
 import { Store } from "pinia";
 import localforage from "localforage";
 // *** GLOBAL *** //////////////////////////////////////////////
