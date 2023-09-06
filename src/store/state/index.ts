@@ -1,6 +1,5 @@
 import { icons, vtIcons } from "./icons";
 import htmlElementMap from "./htmlElementMap";
-import styleClassmap from "./styleClassMap";
 import * as types from "../../../types";
 
 const cloneDeep = require("lodash.clonedeep");
@@ -36,11 +35,9 @@ const newState: types.State = {
   projects: [{ filename: "Untitled-1", lastSavedLocation: "" }],
 
   activeTreeNode: "", // OverVue v.10.0 –– Node that is being dragged in tree UI
-  potentialParentNode: "",
-  // inspectComponentModal: false,
+  potentialParentNode: "", // OverVue v.10.0 –– Node that may become the parent of currently dragged node
 
   activeRoute: "HomeView",
-  // need to change to activeComponentName
   activeComponent: "",
   activeComponentObj: null,
   activeHTML: "",
@@ -57,15 +54,12 @@ const newState: types.State = {
   selectedIdDrop: "",
   projectNumber: 2,
   activeTab: 0,
-  // componentChildrenMultiselectValue: [],
   modalOpen: false,
   attributeModalOpen: false,
   noteModalOpen: false,
-  //test
   noteAttributeOpen: false,
   colorModalOpen: false,
   parentSelected: "",
-  // for storing copied component
   copiedComponent: {},
   copyNumber: 0,
   pastedComponent: {},
@@ -81,7 +75,6 @@ const newState: types.State = {
   importLibraries: [],
   displaylibComponent: false,
   importTest: "off",
-  //push libraries string to the array
 };
 
 // closured method to ensure we only ever write the default state ONCE

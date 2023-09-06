@@ -14,7 +14,8 @@
     />
     <p id="new-text"></p>
     <p id="new-text"></p>
-    <p id="new-text">New To Overvue?</p>
+    <p id="new-text">New to Overvue?</p>
+    <br />
     <q-btn
       class="tut-btn"
       color="secondary"
@@ -34,14 +35,14 @@
 // @ts-nocheck
 // No check for the shell
 import { useStore } from "../../../store/main.js";
-
 const { shell } = window;
 
-const store = useStore();
 const emit = defineEmits(["nextTab", "versionTab"]);
-
-const toggleTutorial = () => store.toggleTutorial();
 const nextTab = () => emit("nextTab");
+
+const store = useStore();
+const toggleTutorial = () => store.toggleTutorial();
+
 const openUrl = (url: string) => shell.openExternal(url, { activate: true });
 </script>
 
