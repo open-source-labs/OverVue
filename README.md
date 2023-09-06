@@ -422,7 +422,6 @@ package.json
 <li>Eliminated code redundancy by implementing Composition API and Pinia</li>
 </ul>
 </details>
-<br/>
 
 ### Changelog 10.0
 
