@@ -1,6 +1,9 @@
-<template>
+<!--
+  NOTE: This component was formerly rendered in MyLayout.vue prior to OverVue v.10.0, but this feature has been deprecated for the time being.
+-->
+
+<!-- <template>
   <q-btn class="menu-btn" color="purple" no-caps @click="openLogin">
-    <!-- Slack logo -->
     <svg
       xmlns="http://www.w3.org/2000/svg"
       style="height: 20px; width: 20px; margin-right: 12px"
@@ -135,75 +138,6 @@ const openLogin = () => {
 };
 </script>
 
-<!-- old options api script -->
-<!-- <script>
-import localforage from "localforage";
-const { ipcRenderer, shell } = window;
-
-export default {
-  name: "SlackLoginWindow",
-  data() {
-    return {
-      isAuthenticating: false,
-      showLogin: false,
-      errorMessage: "",
-    };
-  },
-  created() {
-    ipcRenderer.on("tokenReceived", (event, data) => {
-      return this.saveToLocalForage(
-        "slackWebhookURL",
-        data.incoming_webhook.url
-      );
-    });
-    ipcRenderer.on("slackUser", (event, user) => {
-      return this.saveToLocalForage("slackUser", user);
-    });
-    ipcRenderer.on("slackError", (event, err) => {
-      this.printErrorMessage();
-    });
-  },
-  methods: {
-    slackOauth: function () {
-      const slackBaseUrl = "https://slack.com/oauth/v2/authorize";
-      // const responseType = 'code'
-      const scope = "incoming-webhook";
-      const redirectUri = process.env.SLACK_REDIRECT_URI;
-      const clientId = process.env.SLACK_CLIENT_ID;
-
-      this.isAuthenticating = true;
-
-      const trimmedUri = redirectUri.slice(1, redirectUri.length - 1);
-      const trimmedClientId = clientId.slice(1, clientId.length - 1);
-
-      shell.openExternal(
-        `${slackBaseUrl}?scope=${scope}&redirect_uri=${trimmedUri}&client_id=${trimmedClientId}`,
-        { activate: true }
-      );
-    },
-    saveToLocalForage: function (key, value) {
-      localforage.setItem(key, value);
-      this.closeLogin();
-    },
-    printErrorMessage: function () {
-      this.errorMessage = "Failed to Connect to Slack";
-    },
-    setErrorMessage: function (err) {
-      this.errorMessage = err;
-    },
-    closeLogin: function () {
-      console.log(this.showLogin, "this is showlogin")
-      this.showLogin = false;
-      this.errorMessage = "";
-    },
-    openLogin: function () {
-      console.log(this.showLogin, "inopenlogin")
-      this.showLogin = true;
-    },
-  },
-};
-</script> -->
-
 <style lang="scss" scoped>
 .slackLogin {
   display: flex;
@@ -252,4 +186,4 @@ export default {
   width: 80%;
   margin: 10px 0px;
 }
-</style>
+</style> -->

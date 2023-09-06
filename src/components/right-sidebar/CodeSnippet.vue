@@ -1,15 +1,17 @@
-/* eslint-disable no-unused-vars */
-<!--
-Description:
-  Located under Component Details in Dashboard
-  Dynamically renders Code Snippet in Dashboard
-  Functionality includes: Displays children components and (nested) HTML elements in order of selection.
-  -->
+<!-- 
+  LOCATION IN APP:
+  [right sidebar] COMPONENT DETAILS > Code Preview
+
+  FUNCTIONALITY:
+  - Displays working code preview of current active component
+  - Dynamically updates based on user-added HTML elements, attributes, state, actions, props, etc.
+-->
 
 <template>
   <div class="codesnippet-container">
-    <div class="top-p" v-if="activeComponent === ''">Select a component</div>
-    <div v-else>{{ `${activeComponent}.vue` }}</div>
+    <div class="top-p" v-if="activeComponent !== ''">
+      {{ `${activeRoute} / ${activeComponent}.vue` }}
+    </div>
     <prism-editor
       v-model="code"
       :highlight="highlighter"
@@ -20,17 +22,8 @@ Description:
   </div>
 </template>
 
-<!-- COMPOSITION API SYNTAX -->
 <script setup lang="ts">
-import { PrismEditor } from "vue-prism-editor";
-import "vue-prism-editor/dist/prismeditor.min.css";
-import { highlight, languages } from "prismjs/components/prism-core";
-import styleClassMap from "../../store/state/styleClassMap";
-import "prismjs/components/prism-clike";
-import "prismjs/components/prism-javascript";
-import "prismjs/themes/prism-tomorrow.css"; // import syntax highlighting styles
-import { useStore } from "../../store/main.js";
-import { Component, HtmlElement, HtmlElementMap } from "../../../types";
+/* IMPORTS */
 import {
   ref,
   computed,
@@ -40,21 +33,40 @@ import {
   nextTick,
   Ref,
 } from "vue";
+import { PrismEditor } from "vue-prism-editor";
+import { highlight, languages } from "prismjs/components/prism-core";
+import "prismjs/components/prism-clike";
+import "prismjs/components/prism-javascript";
+import "prismjs/themes/prism-tomorrow.css"; // import syntax highlighting styles
+import "vue-prism-editor/dist/prismeditor.min.css";
+import { useStore } from "../../store/main.js";
+import { vtIcons } from "src/store/state/icons";
+import { Component, HtmlElement, HtmlElementMap } from "../../../types";
 
-const store = useStore(); // template
+/* LIFECYCLE HOOKS */
+onMounted(() => {
+  snippetInvoke(); // generates code preview on mount
+  nextTick(() => {
+    window.addEventListener("resize", getWindowHeight);
+    getWindowHeight();
+  });
+});
+onBeforeUnmount(() => window.removeEventListener("resize", getWindowHeight));
 
-// data
-const code = ref("Your component boilerplate will be displayed here.");
-const lineNumbers = ref(true);
+/* DATA */
+const code = ref("Select a component to see its boilerplate code.");
 const height: Ref<null | number> = ref(null);
 
-// computed
+/* COMPUTED VALUES */
+const store = useStore(); // template
 const componentMap = computed(() => store.componentMap);
 const activeComponent = computed(() => store.activeComponent);
 const activeComponentObj = computed(() => store.activeComponentObj);
 const exportAsTypescript = computed(() => store.exportAsTypescript);
+const activeRoute = computed(() => store.activeRoute);
 
-// methods
+/* METHODS */
+
 const snippetInvoke = () => {
   if (activeComponent.value !== "") {
     code.value = createCodeSnippet(
@@ -62,7 +74,7 @@ const snippetInvoke = () => {
       componentMap.value[activeComponent.value].children
     );
   } else {
-    code.value = "Your component boilerplate will be displayed here.";
+    code.value = "Select a component to see its boilerplate code.";
   }
 };
 
@@ -76,7 +88,6 @@ const getWindowHeight = () => {
   height.value = minHeight; // height.value here?
 };
 
-// Calls createTemplate and createBoiler to generate snippet
 const createCodeSnippet = (componentName: string, children: string[]) => {
   let result = `${createTemplate(componentName /*, children*/)}${createBoiler(
     componentName,
@@ -85,7 +96,7 @@ const createCodeSnippet = (componentName: string, children: string[]) => {
   return result;
 };
 
-// Creates beginner boilerplate
+// creates default boilerplate
 const createTemplate = (componentName: string) => {
   let templateTagStr = writeTemplateTag(componentName, activeComponent.value); // testing 2nd arg
   let routeStr = "";
@@ -98,32 +109,44 @@ const createTemplate = (componentName: string) => {
     routeStr += `    <${childName}${childNameClassFullStr}></${childName}>\n`;
   });
   const activeCompObj = activeComponentObj.value as Component; // typed this to fix activeComponentObj.value "is possibly null" error
-  if (activeCompObj.htmlAttributes) {
+  if (
+    activeComponentObj.value &&
+    (activeComponentObj.value as Component).htmlAttributes
+  ) {
     //if/else statement to determine if there are class and id attributes present in the html element
     if (
-      activeCompObj.htmlAttributes.class !== "" &&
-      activeCompObj.htmlAttributes.id !== ""
+      (activeComponentObj.value as Component).htmlAttributes.class !== "" &&
+      (activeComponentObj.value as Component).htmlAttributes.id !== ""
     ) {
-      return `<template>\n  <div id = "${activeCompObj.htmlAttributes.id}" class = "${activeCompObj.htmlAttributes.class}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
+      return `<template>\n  <div id = "${
+        (activeComponentObj.value as Component).htmlAttributes.id
+      }" class = "${
+        (activeComponentObj.value as Component).htmlAttributes.class
+      }">\n${templateTagStr}${routeStr}  </div>\n</template>`;
     } else if (
-      activeCompObj.htmlAttributes.class !== "" &&
-      activeCompObj.htmlAttributes.id === ""
+      (activeComponentObj.value as Component).htmlAttributes.class !== "" &&
+      (activeComponentObj.value as Component).htmlAttributes.id === ""
     ) {
-      return `<template>\n  <div class = "${activeCompObj.htmlAttributes.class}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
+      return `<template>\n  <div class = "${
+        (activeComponentObj.value as Component).htmlAttributes.class
+      }">\n${templateTagStr}${routeStr}  </div>\n</template>`;
     } else if (
-      activeCompObj.htmlAttributes.class === "" &&
-      activeCompObj.htmlAttributes.id !== ""
+      (activeComponentObj.value as Component).htmlAttributes.class === "" &&
+      (activeComponentObj.value as Component).htmlAttributes.id !== ""
     )
-      return `<template>\n  <div id = "${activeCompObj.htmlAttributes.id}">\n${templateTagStr}${routeStr}  </div>\n</template>`;
+      return `<template>\n  <div id = "${
+        (activeComponentObj.value as Component).htmlAttributes.id
+      }">\n${templateTagStr}${routeStr}  </div>\n</template>`;
     else {
       return `<template>\n  <div>\n${templateTagStr}${routeStr}  </div>\n</template>`;
     }
   }
 };
 
-// Creates <template> boilerplate
+// creates <template> boilerplate
 const writeTemplateTag = (componentName: string, activeComponent: string) => {
   const htmlElementMap: HtmlElementMap = {
+    // standard HTML elements
     div: ["<div", "</div>"],
     button: ["<button", "</button>"],
     form: ["<form", "</form>"],
@@ -144,6 +167,113 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
     h4: ["<h4", "</h4>"],
     h5: ["<h5", "</h5>"],
     h6: ["<h6", "</h6>"],
+
+    // [OverVue v.10.0] Vuetensils elements
+    VAlert: [
+      `<VAlert class="info" dismissible`,
+      `\n\t\t <a href="https://vuetensils.com/components/Alert.html">How to use Alert</a> \n\t\t This is an alert \n\t </VAlert>`,
+    ],
+    VDate: ["<VDate", ""],
+    VDialog: [
+      `<VDialog class="test" :classes="{ bg: 'bg-black-alpha' }"`,
+      `\n\t\t <template #toggle="{ bind, on }">
+        <button v-bind="bind" v-on="on">
+         Show the dialog
+        </button>
+      </template>
+      <div class="color-black bg-white">
+        This is the dialog content.
+      </div> \n\t  </VDialog>`,
+    ],
+    VDrawer: [
+      `<VDrawer transition="slide-right" bg-transition="fade">      
+        <template #toggle="{ bind, on }">
+        <button v-bind="bind" v-on="on">
+          Toggle Drawer
+        </button>
+      </template`,
+      `\n\t\t My drawer content\n\t\t</VDrawer>`,
+    ],
+    VDropdown: [
+      `<VDropdown text="This is the dropdown."
+        <div>
+          <p>Dropdown content</p>
+        </div`,
+      `\n    </VDropdown>`,
+    ],
+    VFile: ["<VFile", ""],
+    VNotifications: ["<VNotifications", ""],
+    VResize: [
+      `<VResize>
+      <template #default="{ width } ">
+        <div
+          class="resize-example"
+          :class="{
+            lg: width > 500,
+            md: width > 300 && width < 500,
+            sm: width < 300,
+          }"
+        >
+          <img src="https://fillmurray.lucidinternets.com/200/200" alt="description" />
+          <p>This content is {{ width }}px wide.</p>
+        </div>
+      </template`,
+      `\n    </VResize>`,
+    ],
+    VSkip: [
+      `<div>
+      <button>click here to focus</button>
+
+      <p>Tab to get to the skip component then press enter to skip to main content</p>
+
+      <VSkip to="#main">
+        Skip To Main Content
+      </VSkip>
+
+      <!-- perhaps a nav here -->
+      <nav>
+        <ul class="fake-nav">
+          <li><a href="#">Example 1</a></li>
+          <li><a href="#">Example 2</a></li>
+          <li><a href="#">Example 3</a></li>
+          <li><a href="#">Example 4</a></li>
+          <li><a href="#">Example 5</a></li>
+          <li><a href="#">Example 6</a></li>
+        </ul>
+      </nav>
+
+      <main id="main">
+        <p>This is the main content section</p>
+        <p>It could even be a router-link.</p>
+        <p>We're adding some extra paragraphs here.</p>
+        <p>Because otherwise the header blocks this content :)</p>
+      </main`,
+      `\n    </div>`,
+    ],
+    VTabs: [
+      `<VTabs class="styled">
+      <template #tab-1>Tab 1</template>
+      <template #panel-1>
+        Here's the content for tabpanel 1.
+      </template>
+
+      <template #tab-2>Tab 2</template>
+      <template #panel-2>
+        Here's the content for tabpanel 2.
+      </template>
+
+      <template #tab-3>Tab 3</template>
+      <template #panel-3>
+        Here's the content for tabpanel 3.
+      </template`,
+      `\n    </VTabs>`,
+    ],
+    VToggle: [
+      `<VToggle label="Toggle label"`,
+      `\n\t\tcontent here \n    </VToggle>`,
+    ],
+
+    // deprecated by OV10.0: Elements+ elements
     "e-button": [`<el-button type="info"`, `</el-button>`],
     "e-input": ["<el-input", "</el-input>"],
     "e-link": [
@@ -217,7 +347,7 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
     htmlElementMap[child] = [`<${child}`, ""]; //single
   });
 
-  function writeNested(childrenArray: HtmlElement[], indent: string) {
+  const writeNested = (childrenArray: HtmlElement[], indent: string) => {
     if (!childrenArray.length) {
       return "";
     }
@@ -243,11 +373,18 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
           child.text === "img" ||
           child.text === "input" ||
           child.text === "link" ||
+          child.text === "VDate" ||
+          child.text === "VFile" ||
+          child.text === "VNotifications" ||
           childComponents.includes(child.text)
         ) {
-          nestedString += "/>";
+          nestedString += " />";
         } else {
           nestedString += ">";
+        }
+
+        if (child.note !== "") {
+          nestedString += `${child.note}`;
         }
 
         if (child.children.length) {
@@ -261,7 +398,7 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
       }
     });
     return nestedString;
-  }
+  };
 
   // Iterates through active component's HTML elements list and adds to code snippet
   let htmlArr = componentMap.value[componentName].htmlList;
@@ -286,11 +423,16 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
         childComponents.includes(el.text) ||
         el.text === "img" ||
         el.text === "input" ||
-        el.text === "link"
+        el.text === "link" ||
+        el.text === "VDate" ||
+        el.text === "VFile" ||
+        el.text === "VNotifications"
       ) {
-        outputStr += "/";
+        outputStr += " /";
       }
+
       outputStr += ">";
+
       if (el.note !== "") {
         outputStr += `${el.note}`;
       }
@@ -351,20 +493,33 @@ const createBoiler = (componentName: string, children: string[]) => {
   }
 
   const htmlBinding = componentMap.value[activeComponent.value].htmlList;
+
+  // [OverVue v.10.0] add Vuetensils import statements to <script setup>
+
+  const vuetensilsSet = new Set(Object.keys(vtIcons));
+
+  let vuetensilsImports = "";
+
+  const vtComponents: string[] = [];
+
+  htmlBinding.forEach((el) => {
+    if (vuetensilsSet.has(el.text)) {
+      // Add import statement for Vuetensils components
+      vtComponents.push(el.text);
+    }
+  });
+
+  if (vtComponents.length) {
+    vuetensilsImports += `import { ${vtComponents.join(
+      ", "
+    )} } from 'vuetensils/src/components';\n`;
+  }
+
   data += "  data() {\n    return {\n";
   htmlBinding.forEach((el) => {
     if (el.binding !== "") {
       data += `      ${el.binding}: "PLACEHOLDER FOR VALUE", `;
       data += "\n";
-    }
-    //checks if there is binding in it's html child's child and will add to code snippet
-    if (el.children.length !== 0) {
-      el.children.forEach((el1) => {
-        if (el1.binding !== "") {
-          data += `      "${el1.binding}": "PLACEHOLDER FOR VALUE", `;
-          data += "\n";
-        }
-      });
     }
   });
   data += `    }`;
@@ -397,10 +552,21 @@ const createBoiler = (componentName: string, children: string[]) => {
   let htmlArray = componentMap.value[componentName].htmlList;
   let styleString = "";
   const activeCompObj = activeComponentObj.value as Component; // typed this to fix activeComponentObj.value "is possibly null" error
-  if (activeCompObj.htmlAttributes.class !== "") {
-    styleString += `.${activeCompObj.htmlAttributes.class} { \n\tbackground-color: ${activeCompObj.color};
-\tgrid-area: ${activeCompObj.htmlAttributes.gridArea[0]} / ${activeCompObj.htmlAttributes.gridArea[1]} / ${activeCompObj.htmlAttributes.gridArea[2]} / ${activeCompObj.htmlAttributes.gridArea[3]};
-\tz-index: ${activeCompObj.z};
+  if (
+    activeComponentObj.value &&
+    (activeComponentObj.value as Component).htmlAttributes.class !== ""
+  ) {
+    styleString += `.${
+      (activeComponentObj.value as Component).htmlAttributes.class
+    } { \n\tbackground-color: ${(activeComponentObj.value as Component).color};
+\tgrid-area: ${
+      (activeComponentObj.value as Component).htmlAttributes.gridArea[0]
+    } / ${
+      (activeComponentObj.value as Component).htmlAttributes.gridArea[1]
+    } / ${
+      (activeComponentObj.value as Component).htmlAttributes.gridArea[2]
+    } / ${(activeComponentObj.value as Component).htmlAttributes.gridArea[3]};
+\tz-index: ${(activeComponentObj.value as Component).z};
 } \n`;
   }
 
@@ -418,13 +584,19 @@ const createBoiler = (componentName: string, children: string[]) => {
   if (exportAsTypescript.value === "on") {
     output = "\n\n<script lang='ts'>\n";
     output +=
+      vuetensilsImports +
       imports +
       "\nexport default defineComponent ({\n  name: '" +
       componentName +
       "';";
   } else {
     output = "\n\n<script>\n";
-    output += imports + "\nexport default {\n  name: '" + componentName + "'";
+    output +=
+      vuetensilsImports +
+      imports +
+      "\nexport default {\n  name: '" +
+      componentName +
+      "'";
   }
   output += ",\n  components: {\n";
   output += childrenComponentNames + "  },\n";
@@ -437,517 +609,27 @@ const createBoiler = (componentName: string, children: string[]) => {
   } else {
     output += `}; \n <\/script>\n\n<style scoped>\n${styleString}</style > `;
   }
+
   return output;
 };
 
-// watch:
-// watches activeComponentObj for changes to make it reactive upon mutation
-// watches componentMap for changes to make it reactive upon mutation
+/* WATCHES */
 watch(
   () => [activeComponent.value, componentMap.value, exportAsTypescript.value],
   () => snippetInvoke(),
   { deep: true }
 );
-
-// mounted()
-// https://vuejs.org/v2/api/#Vue-nextTick
-// kinda like a promise, used for the window resize
-onMounted(() => {
-  snippetInvoke(); // generates the code snippet whenever this is mounted
-  nextTick(() => {
-    window.addEventListener("resize", getWindowHeight);
-
-    getWindowHeight();
-  });
-});
-
-// beforeUnmount()
-onBeforeUnmount(() => window.removeEventListener("resize", getWindowHeight));
 </script>
 
-<!-- <script>
-import { mapState } from "vuex";
-
-import { PrismEditor } from "vue-prism-editor";
-import "vue-prism-editor/dist/prismeditor.min.css";
-import { highlight, languages } from "prismjs/components/prism-core";
-import styleClassMap from "../../store/state/styleClassMap";
-import "prismjs/components/prism-clike";
-import "prismjs/components/prism-javascript";
-import "prismjs/themes/prism-tomorrow.css"; // import syntax highlighting styles
-
-// import writeNested from "../../mixins/writeNested";
-
-export default {
-  data() {
-    return {
-      code: `Your component boilerplate will be displayed here.`,
-      lineNumbers: true,
-      height: null,
-    };
-  },
-  components: {
-    PrismEditor,
-  },
-  computed: {
-    //add
-    // needs access to current component aka activeComponent
-    ...mapState([
-      "componentMap",
-      "activeComponent",
-      "activeComponentObj",
-      "exportAsTypescript",
-    ]),
-  },
-  methods: {
-    snippetInvoke() {
-      console.log(this.activeComponent);
-      console.log(this.componentMap);
-      if (this.activeComponent !== "") {
-        this.code = this.createCodeSnippet(
-          this.componentMap[this.activeComponent].componentName,
-          this.componentMap[this.activeComponent].children
-        );
-      } else {
-        this.code = "Your component boilerplate will be displayed here.";
-      }
-    },
-    //highlighter does not work: OverVue 6.0;
-    highlighter(myCode) {
-      return highlight(myCode, languages.js);
-    },
-    getWindowHeight(e) {
-      let minHeight =
-        window.outerHeight < 900 ? 22 : window.outerHeight < 1035 ? 24 : 27.5;
-      this.height = minHeight;
-    },
-    // Calls createTemplate and createBoiler to generate snippet
-    createCodeSnippet(componentName, children) {
-      let result = `${this.createTemplate(
-        componentName,
-        children
-      )}${this.createBoiler(componentName, children)}`;
-      return result;
-    },
-    // Creates beginner boilerplate
-    createTemplate(componentName) {
-      let templateTagStr = this.writeTemplateTag(componentName);
-      if (this.activeComponentObj.htmlAttributes) {
-        //if/else statement to determine if there are class and id attributes present in the html element
-        if (
-          this.activeComponentObj.htmlAttributes.class !== "" &&
-          this.activeComponentObj.htmlAttributes.id !== ""
-        ) {
-          return `<template>\n  <div id = "${this.activeComponentObj.htmlAttributes.id}" class = "${this.activeComponentObj.htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
-        } else if (
-          this.activeComponentObj.htmlAttributes.class !== "" &&
-          this.activeComponentObj.htmlAttributes.id === ""
-        ) {
-          return `<template>\n  <div class = "${this.activeComponentObj.htmlAttributes.class}">\n${templateTagStr}  </div>\n</template>`;
-        } else if (
-          this.activeComponentObj.htmlAttributes.class === "" &&
-          this.activeComponentObj.htmlAttributes.id !== ""
-        )
-          return `<template>\n  <div id = "${this.activeComponentObj.htmlAttributes.id}">\n${templateTagStr}  </div>\n</template>`;
-        else {
-          let routeStr = "";
-          const arrOfChildComp = this.componentMap[componentName].children;
-          arrOfChildComp.forEach((childName) => {
-            let childNameClass =
-              this.componentMap[childName].htmlAttributes.class;
-            let childNameClassFullStr =
-              childNameClass === "" ? "" : ` class = '${childNameClass}'`;
-            routeStr += `    <${childName}${childNameClassFullStr}></${childName}>\n`;
-          });
-
-          return `<template>\n  <div>\n${templateTagStr}${routeStr}  </div>\n</template>`;
-        }
-      } else
-        return `<template>\n  <div>\n${templateTagStr}  </div>\n</template>`;
-    },
-    // Creates <template> boilerplate
-    writeTemplateTag(componentName, activeComponent) {
-      const htmlElementMap = {
-        div: ["<div", "</div>"],
-        button: ["<button", "</button>"],
-        form: ["<form", "</form>"],
-        img: ["<img", ""], //single
-        link: ['<a href="#"', ""], //single
-        list: ["<li", "</li>"],
-        paragraph: ["<p", "</p>"],
-        "list-ol": ["<ol", "</ol>"],
-        "list-ul": ["<ul", "</ul>"],
-        input: ["<input", ""], //single
-        navbar: ["<nav", "</nav>"],
-        header: ["<header", "</header>"],
-        footer: ["<footer", "</footer>"],
-        meta: ["<meta", "</meta>"],
-        h1: ["<h1", "</h1>"],
-        h2: ["<h2", "</h2>"],
-        h3: ["<h3", "</h3>"],
-        h4: ["<h4", "</h4>"],
-        h5: ["<h5", "</h5>"],
-        h6: ["<h6", "</h6>"],
-        "e-button": [`<el-button type="info"`, `</el-button>`],
-        "e-input": ["<el-input", "</el-input>"],
-        "e-link": [
-          `<el-link type="primary">primary</el-link>
-          <el-link type="success">success</el-link>
-          <el-link type="info">info</el-link>
-          <el-link type="warning">warning</el-link>
-          <el-link type="danger"`,
-          `danger</el-link>`,
-        ],
-        "e-form": ["<el-form", "</el-form>"],
-        "e-checkbox": ["<el-checkbox", "</el-checkbox>"],
-        "e-checkbox-button": ["<el-checkbox-button", "</el-checkbox-button>"],
-        "e-date-picker": ["<el-date-picker", "</el-date-picker>"],
-        "e-slider": ["<el-slider", "</el-slider>"],
-        "e-card": ["<el-card", "</el-card>"],
-        "e-alert": [
-          `<el-alert title="success alert" type="success"></el-alert>
-          <el-alert title="info alert" type="info"></el-alert>
-          <el-alert title="warning alert" type="warning"></el-alert>
-          <el-alert title="danger alert" type="danger"`,
-          `</el-alert>`,
-        ],
-        "e-dropdown": [
-          `<el-dropdown split-button type="primary" @click="handleClick">
-          Dropdown List
-          <template #dropdown>
-           <el-dropdown-menu>
-            <el-dropdown-item>
-            Action 1
-          </el-dropdown-item>
-          <el-dropdown-item>
-          Action 2
-        </el-dropdown-item>
-          </el-dropdown-menu>
-          </template`,
-          `
-          </el-dropdown>`,
-        ],
-        "e-tag": [
-          `<el-tag>Tag 1</el-tag>
-     <el-tag class="ml-2" type="success">Tag 2</el-tag>
-     <el-tag class="ml-2" type="info">Tag 3</el-tag>
-     <el-tag class="ml-2" type="warning">Tag 4</el-tag>
-     <el-tag class="ml-2" type="danger"`,
-          `Tag 5</el-tag>`,
-        ],
-
-        "e-badge": [
-          `<el-badge :value="12" class="item">
-     <el-button>comments</el-button>
-   </el-badge>
-   <el-badge :value="3" class="item">
-     <el-button>replies</el-button>
-   </el-badge>
-   <el-badge :value="1" class="item" type="primary">
-     <el-button>comments</el-button>
-   </el-badge>
-   <el-badge :value="2" class="item" type="warning">
-     <el-button>replies</el-button`,
-          `
-     </el-badge>`,
-        ],
-      };
-
-      // Helper function that recursively iterates through the given html element's children and their children's children.
-      // also adds proper indentation to code snippet
-      //add childComponents of the activeCompnent to the htmlElementMap
-      const childComponents = this.componentMap[this.activeComponent].children;
-      childComponents.forEach((child) => {
-        htmlElementMap[child] = [`<${child}`, ""]; //single
-      });
-
-      function writeNested(childrenArray, indent) {
-        if (!childrenArray.length) {
-          return "";
-        }
-        let indented = indent + "  ";
-        let nestedString = "";
-
-        childrenArray.forEach((child) => {
-          nestedString += indented;
-          if (!child.text) {
-            nestedString += `<${child}/>\n`;
-          } else {
-            nestedString += htmlElementMap[child.text][0];
-            if (child.class !== "") {
-              nestedString += " " + "class=" + `"${child.class}"`;
-            }
-            if (child.binding !== "") {
-              if (child.text !== "img" || child.text !== "link") {
-                nestedString += ` v-model="${child.binding}"`;
-              }
-            }
-            if (
-              child.text === "img" ||
-              child.text === "input" ||
-              child.text === "link" ||
-              childComponents.includes(child.text)
-            ) {
-              nestedString += "/>";
-            } else {
-              nestedString += ">";
-            }
-
-            if (child.children.length) {
-              nestedString += "\n";
-              nestedString += writeNested(child.children, indented);
-              nestedString += indented + htmlElementMap[child.text][1];
-              nestedString += "\n";
-            } else {
-              nestedString += htmlElementMap[child.text][1] + "\n";
-            }
-          }
-        });
-        return nestedString;
-      }
-      // Iterates through active component's HTML elements list and adds to code snippet
-      let htmlArr = this.componentMap[componentName].htmlList;
-      let outputStr = ``;
-      // eslint-disable-next-line no-unused-vars
-      for (let el of htmlArr) {
-        if (!el.text) {
-          outputStr += `    <${el}/>\n`;
-        } else {
-          outputStr += `    `;
-          outputStr += htmlElementMap[el.text][0];
-          //if conditional to check class
-          if (el.class !== "") {
-            outputStr += " " + "class=" + `"${el.class}"`;
-          }
-
-          if (el.binding !== "") {
-            outputStr += ` v-model="${el.binding}"`;
-          }
-          // add an extra slash at the end for child Components and single tags
-          if (
-            childComponents.includes(el.text) ||
-            el.text === "img" ||
-            el.text === "input" ||
-            el.text === "link"
-          ) {
-            outputStr += "/";
-          }
-          outputStr += ">";
-          if (el.children.length) {
-            outputStr += "\n";
-            outputStr += writeNested(el.children, `    `);
-            outputStr += `    `;
-            outputStr += htmlElementMap[el.text][1];
-            outputStr += `  \n`;
-          } else {
-            outputStr += htmlElementMap[el.text][1] + "\n";
-          }
-        }
-      }
-      return outputStr;
-    },
-    // Creates boiler text for <script> and <style>
-    createBoiler(componentName, children) {
-      // add import mapstate and mapactions if they exist
-      let imports = "";
-      if (
-        this.componentMap[this.activeComponent].actions.length ||
-        this.componentMap[this.activeComponent].state.length
-      ) {
-        imports += "import { ";
-        if (
-          this.componentMap[this.activeComponent].actions.length &&
-          this.componentMap[this.activeComponent].state.length
-        ) {
-          imports += "mapState, mapActions";
-        } else if (this.componentMap[this.activeComponent].state.length)
-          imports += "mapState";
-        else imports += "mapActions";
-        imports += ' } from "vuex";\n';
-      }
-
-      // if Typescript toggle is on, import defineComponent
-      if (this.exportAsTypescript === "on") {
-        imports += 'import { defineComponent } from "vue";\n';
-      }
-
-      // add imports for children
-      children.forEach((name) => {
-        imports += `import ${name} from '@/components/${name}.vue';\n`;
-      });
-
-      // add components section
-      let childrenComponentNames = "";
-      children.forEach((name) => {
-        childrenComponentNames += `    ${name},\n`;
-      });
-      // if true add data section and populate with props
-      let data = "";
-      if (this.componentMap[this.activeComponent].props.length) {
-        data += "  props: {";
-        this.componentMap[this.activeComponent].props.forEach((prop) => {
-          data += `\n    ${prop}: "PLACEHOLDER FOR VALUE",`;
-        });
-        data += "\n";
-        //data += "    }\n";
-        data += "  },\n";
-      }
-      const htmlBinding = this.componentMap[this.activeComponent].htmlList;
-      data += "  data() {\n    return {\n";
-      htmlBinding.forEach((el) => {
-        if (el.binding !== "") {
-          data += `      ${el.binding}: "PLACEHOLDER FOR VALUE", `;
-          data += "\n";
-        }
-        //checks if there is binding in it's html child's child and will add to code snippet
-        if (el.children.length !== 0) {
-          el.children.forEach((el1) => {
-            if (el1.binding !== "") {
-              data += `      "${el1.binding}": "PLACEHOLDER FOR VALUE", `;
-              data += "\n";
-            }
-          });
-        }
-      });
-      data += `    }`;
-      data += ` \n  },  \n `;
-
-      // if true add computed section and populate with state
-      let computed = "";
-      if (this.componentMap[this.activeComponent].state.length) {
-        computed += " computed: {";
-        computed += "\n    ...mapState([";
-        this.componentMap[this.activeComponent].state.forEach((state) => {
-          computed += `\n      "${state}", `;
-        });
-        computed += "\n    ]),\n";
-        computed += "  },\n";
-      }
-
-      // if true add methods section and populate with actions
-      let methods = "";
-      if (this.componentMap[this.activeComponent].actions.length) {
-        methods += "  methods: {";
-        methods += "\n    ...mapActions([";
-        this.componentMap[this.activeComponent].actions.forEach((action) => {
-          methods += `\n      "${action}", `;
-        });
-        methods += "\n    ]),\n";
-        methods += "  },\n";
-      }
-
-      let htmlArray = this.componentMap[componentName].htmlList;
-      let styleString = "";
-
-      if (this.activeComponentObj.htmlAttributes.class !== "") {
-        styleString += `.${this.activeComponentObj.htmlAttributes.class} { \n background-color: ${this.activeComponentObj.color};
- grid-area: ${this.activeComponentObj.htmlAttributes.gridArea[0]} / ${this.activeComponentObj.htmlAttributes.gridArea[1]} / ${this.activeComponentObj.htmlAttributes.gridArea[2]} / ${this.activeComponentObj.htmlAttributes.gridArea[3]};
- z-index: ${this.activeComponentObj.z};
-} \n`;
-      }
-
-      for (const html of htmlArray) {
-        if (html.class === " ") styleString = "";
-        if (html.class) {
-          styleString += `.${html.class} {\n height: ${html.h}%; \n width: ${html.w}%; \n top: ${html.x}%; \n left: ${html.y}%; \n z-index: ${html.z};
-}\n`;
-        }
-      }
-
-      // concat all code within script tags
-      // if exportAsTypescript is on, out should be <script lang="ts">
-      let output;
-      if (this.exportAsTypescript === "on") {
-        output = "\n\n<script lang='ts'>\n";
-        output +=
-          imports +
-          "\nexport default defineComponent ({\n  name: '" +
-          componentName +
-          "';";
-      } else {
-        output = "\n\n<script>\n";
-        output +=
-          imports + "\nexport default {\n  name: '" + componentName + "'";
-      }
-      output += ",\n  components: {\n";
-      output += childrenComponentNames + "  },\n";
-      output += data;
-      output += computed;
-      output += methods;
-
-      if (this.exportAsTypescript === "on") {
-        output += "});\n<\/script>\n\n<style scoped>\n</style>";
-      } else {
-        output += `}; \n <\/script>\n\n<style scoped>\n${styleString}</style > `;
-      }
-      return output;
-    },
-  },
-  /*
-  watch((activeComponent) => snippetInvoke());
-  how to watch multiple things at once?
-  watch([first, second, third], () => snippetInvoke(), { deep: true });
-  */
-  watch: {
-    // watches activeComponentObj for changes to make it reactive upon mutation
-    // // // watches componentMap for changes to make it reactive upon mutation
-    activeComponent: {
-      handler() {
-        this.snippetInvoke();
-      },
-      deep: true,
-    },
-    componentMap: {
-      handler() {
-        this.snippetInvoke();
-      },
-      deep: true,
-    },
-    exportAsTypescript: {
-      handler() {
-        this.snippetInvoke();
-      },
-    },
-  },
-  /*
-  onMounted(() => {
-    snippetInvoke();
-    nextTick(() => {
-      window.addEventListener("resize", getWindowHeight);
-      getWindowHeight();
-    });
-  });
-  */
-  mounted() {
-    // https://vuejs.org/v2/api/#Vue-nextTick
-    // kinda like a promise, used for the window resize
-    this.snippetInvoke(); //generates the code snippet whenever this is mounted
-    this.$nextTick(() => {
-      window.addEventListener("resize", this.getWindowHeight);
-
-      this.getWindowHeight();
-    });
-  },
-  /*
-  onBeforeUnmount(() => window.removeEventListener("resize", getWindowHeight));
-  */
-  beforeUnmount() {
-    window.removeEventListener("resize", this.getWindowHeight);
-  },
-};
-</script> -->
-
 <style lang="scss">
-// Had scoped before, but could not get rid of outline with scoped style
-
 // resize handled by vue lifecycle methods
 .my-editor {
-  font-size: 12px;
+  font-size: 14px;
   background: #2d2d2d;
   color: #ccc;
   max-height: 100%;
   /* you must provide font-family font-size line-height. Example: */
-  font-family: Fira code, Fira Mono, Consolas, Menlo, Courier, monospace;
+  font-family: Fira Code, Fira Mono, Consolas, Menlo, Courier, monospace;
   line-height: 1.5;
   padding: 5px;
 }

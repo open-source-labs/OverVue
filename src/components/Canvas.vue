@@ -1,10 +1,12 @@
-<!--
-  Description:
-  Handles display grid functionality
-  Functionality includes: resizing/dragging component boxes, display grid image, active component
-  -->
+<!-- 
+  LOCATION IN APP:
+  to enable ==> [top-right corner] gear icon > Mode: Grid
+  shows in center UI
 
-<!-- beneath line 419, we deleted :hint="hint" -->
+  FUNCTIONALITY:
+  - Displays previous 'Canvas' grid functionality
+  - Soft-deprecated by OverVue v.10.0 but left as option for users who wish to use it
+-->
 
 <template>
   <!-- the background Canvas grid -->
@@ -25,8 +27,9 @@
     >
       <!-- This is the actual component box -->
       <!-- https://www.npmjs.com/package/vue-draggable-resizable -->
-      <p class="cssContainerText">{{ activeRoute }} Preview</p>
       <!--each component box in canvas will have these properties-->
+      <br />
+      <p class="cssContainerText">{{ activeRoute }} Preview</p>
       <vue-draggable-resizable
         class-name="component-box"
         v-for="componentData in activeRouteArray"
@@ -76,6 +79,21 @@
           :key="element.id as string + new Date()"
         >
           <div
+            class="htmlDiv"
+            :style="[
+              element.x !== 0 ? { top: element.x + '%' } : { top: '10%' },
+              element.y !== 0 ? { left: element.y + '%' } : { left: '10%' },
+              element.w !== 0 ? { width: element.w + '%' } : { width: '80%' },
+              element.h !== 0 ? { height: element.h + '%' } : { height: '75%' },
+              element.z !== 0 ? { 'z-index': element.z as number } : { 'z-index': 0 },
+              { 'background-color': componentData.color },
+            ]"
+          >
+            <p class="innerHtmlText" style="font-size: 3em">
+              {{ element.note !== "" ? element.note : element.text }}
+            </p>
+          </div>
+          <div
             v-if="element.text === 'button'"
             class="htmlButton"
             :style="[
@@ -99,7 +117,7 @@
             :style="[
               element.x !== 0 ? { top: element.x + '%' } : { top: '10%' },
               element.y !== 0 ? { left: element.y + '%' } : { left: '10%' },
-              element.w !== 0 ? { width: element.w + '%' } : { width: '80%' },
+              element.w !== 0 ? { width: element.w + '%' } : { width: '30%' },
               element.h !== 0 ? { height: element.h + '%' } : { height: '75%' },
               element.z !== 0 ? { 'z-index': element.z as number } : { 'z-index': 0 },
               { 'background-color': componentData.color },
@@ -509,7 +527,6 @@
 
 <script setup lang="ts">
 import { useExportComponent } from "./composables/useExportComponent.js";
-import { mapState, mapActions } from "vuex";
 import VueDraggableResizable from "vue-draggable-resizable/src/components/vue-draggable-resizable.vue";
 import VueMultiselect from "vue-multiselect";
 import "vue-draggable-resizable/src/components/vue-draggable-resizable.css";
@@ -517,11 +534,7 @@ import "vue3-draggable-resizable/dist/Vue3DraggableResizable.css";
 import { ColorPicker } from "vue-accessible-color-picker";
 import { useStore } from "../store/main.js";
 import { ref, computed, onMounted, watch } from "vue";
-import * as fs from "fs";
 import { ResizePayload, Component } from "../../types";
-// @ts-ignore
-// const { ipcRenderer } = window;
-// ipcRenderer is not used
 
 const cloneDeep = require("lodash.clonedeep");
 
@@ -529,16 +542,13 @@ const store = useStore();
 const modalOpen = ref(false);
 const noteText = ref("");
 const wasDragged = ref(false);
-const testModel = ref([]);
 const noteModal = ref(false);
 const colorModal = ref(false);
-const mockImg = ref(false);
-const htmlElements = ref([]);
 const childrenSelected = ref<typeof VueMultiselect>([]);
 const boxes = ref<typeof VueDraggableResizable>(null);
 
 //emitter
-const emit = defineEmits(["deactivated", "update:active", "activated"]);
+defineEmits(["deactivated", "update:active", "activated"]);
 defineExpose({ boxes });
 
 //mount
@@ -562,16 +572,10 @@ const routes = computed(() => store.routes);
 const activeRoute = computed(() => store.activeRoute);
 const activeComponent = computed(() => store.activeComponent);
 const componentMap = computed(() => store.componentMap);
-// const componentChildrenMultiselectValue = computed(
-//   () => store.componentChildrenMultiselectValue
-// );
 const imagePath = computed(() => store.imagePath);
 const activeComponentObj = computed(() => store.activeComponentObj);
-const exportAsTypescript = computed(() => store.exportAsTypescript);
 const noteModalOpen = computed(() => store.noteModalOpen);
 const activeRouteDisplay = computed(() => routes.value[activeRoute.value]);
-const selectedElementList = computed(() => store.selectedElementList);
-const activeLayer = computed(() => store.activeLayer);
 const colorModalOpen = computed(() => store.colorModalOpen);
 const gridLayout = computed(() => store.gridLayout);
 const containerH = computed(() => store.containerH);
@@ -633,16 +637,6 @@ const userImage = computed(() => {
   return imgSrc;
 });
 
-// updates display with mockup image
-const mockBg = computed(() => {
-  return imagePath.value[activeRoute.value]
-    ? {
-        background: `url("${userImage}") no-repeat rgba(223, 218, 218, 0.886) top left`,
-        "background-size": "contain",
-      }
-    : {};
-});
-
 // find the amount of grid lines for width
 const gridWidth = computed(() => {
   return containerW.value / gridLayout.value[0];
@@ -653,48 +647,16 @@ const gridHeight = computed(() => {
   return containerH.value / gridLayout.value[1];
 });
 
-const updated = computed(() => {
-  // if there are no active components, all boxes are unhighlighted
-  if (activeComponent.value === "") {
-    if (boxes.value) {
-      boxes.value.forEach((element: typeof VueDraggableResizable) => {
-        element.enabled = false;
-        element.emit("deactivated");
-        element.emit("update:active", false);
-      });
-    }
-  } else {
-    // if a component is set to active, highlight it
-    (boxes.value as typeof VueDraggableResizable).forEach(
-      (element: typeof VueDraggableResizable) => {
-        if (
-          activeComponent.value === element.$attrs.id &&
-          element.enabled === false
-        ) {
-          element.enabled = true;
-          element.emit("activated");
-          element.emit("update:active", true);
-        }
-      }
-    );
-  }
-});
-
 //methods
 const setActiveComponent: typeof store.setActiveComponent = (payload) =>
   store.setActiveComponent(payload);
-// const updateComponentChildrenMultiselectValue: typeof store.updateComponentChildrenMultiselectValue = (payload) =>
-//   store.updateComponentChildrenMultiselectValue(payload);
 const updateActiveComponentChildrenValue: typeof store.updateActiveComponentChildrenValue =
   (payload) => store.updateActiveComponentChildrenValue(payload);
 const updateComponentPosition: typeof store.updateComponentPosition = (
   payload
 ) => store.updateComponentPosition(payload);
-// const updateStartingPosition: typeof store.updateStartingPosition = (payload) =>
-// (payload);
 const updateComponentLayer: typeof store.updateComponentLayer = (payload) =>
   store.updateComponentLayer(payload);
-// const updateStartingSize: typeof store.updateStartingSize = (payload) => store.updateStartingSize(payload);
 const updateComponentSize: typeof store.updateComponentSize = (payload) =>
   store.updateComponentSize(payload);
 const addActiveComponentNote: typeof store.addActiveComponentNote = (payload) =>
@@ -710,10 +672,6 @@ const updateColor: typeof store.updateColor = (payload) =>
 const updateComponentGridPosition: typeof store.updateComponentGridPosition = (
   payload
 ) => store.updateComponentGridPosition(payload);
-
-const useExportComponentBound = () => {
-  useExportComponent();
-};
 
 const isElementPlus = (htmlList: { text: string }[]) => {
   return htmlList.find(({ text }) => text[0] === "e");
@@ -912,357 +870,6 @@ watch(
 );
 </script>
 
-<!-- old options API script  -->
-<!-- <script>
-import { useExportComponent } from "./composables/useExportComponent.js";
-import { mapState, mapActions } from "vuex";
-import VueDraggableResizable from "vue-draggable-resizable/src/components/vue-draggable-resizable.vue";
-import VueMultiselect from "vue-multiselect";
-import "vue-draggable-resizable/src/components/vue-draggable-resizable.css";
-import 'vue3-draggable-resizable/dist/Vue3DraggableResizable.css'
-import { ColorPicker } from 'vue-accessible-color-picker'
-
-const { fs, ipcRenderer } = window;
-
-const cloneDeep = require("lodash.clonedeep");
-
-export default {
-  name: "Canvas",
-  components: {
-    VueDraggableResizable,
-    VueMultiselect,
-    ColorPicker,
-  },
-  data() {
-    return {
-      modalOpen: false,
-      noteText: '',
-      wasDragged: false,
-      testModel: [],
-      noteModal: false,
-      colorModal: false,
-      mockImg: false,
-      htmlElements: [],
-      childrenSelected: [],
-    };
-  },
-  mounted() {
-    // console.log(this.$refs.boxes, "this is this.refs.boxes mounted")
-    // listener for the copy
-    window.addEventListener("copy", () => {
-      // if there is an activeComponent, copy info to state using dispatch
-      if (this.activeComponent !== '' && this.noteModalOpen === false) {
-        this.$store.dispatch("copyActiveComponent");
-      }
-    });
-    window.addEventListener("paste", () => {
-      if (this.noteModalOpen === false) {
-        this.$store.dispatch("pasteActiveComponent");
-      }
-    });
-  },
-  computed: {
-    ...mapState([
-      "routes",
-      "activeRoute",
-      "activeComponent",
-      "componentMap",
-      "componentChildrenMultiselectValue",
-      "imagePath",
-      "activeComponentObj",
-      "exportAsTypescript",
-      "noteModalOpen",
-      "activeRouteDisplay",
-      'selectedElementList',
-      'activeLayer',
-      "colorModalOpen",
-      "activeRouteDisplay",
-      "gridLayout",
-      "containerH",
-      "containerW",
-    ]),
-    // used in VueDraggableResizeable component
-    activeRouteArray() {
-      return this.routes[this.activeRoute];
-    },
-    // used to delete active component
-    activeComponentData() {
-      // Must deep clone this so we are not directly mutating state
-      // return this.activeComponentObj;
-      return cloneDeep(this.activeComponentObj);
-    },
-    options() {
-      if (this.activeComponent !== '') {
-        this.childrenSelected = [];
-        this.childrenSelected = this.componentMap[this.activeComponent].children;
-      } else {
-        this.childrenSelected = [];
-      }
-      const compMap = this.componentMap;
-      const activeComp = this.activeComponent;
-      const val = this.routes[this.activeRoute].map(
-        (component) => component.componentName
-      );
-      const relatives = [...val]
-      //also need to filter out any parents
-      let parentalLineage = [];
-      findLineage(relatives)
-      function findLineage(children) {
-        children.forEach((el) => {
-          parentalLineage.push(el);
-          if (compMap[el].children.length > 0) {
-            findLineage(compMap[el].children);
-          }
-          if (el !== activeComp) {
-            parentalLineage.pop();
-          } else {
-            return;
-          }
-        })
-      }
-      const optionOutput = val.filter(el => !parentalLineage.includes(el)).filter(el => el !== this.activeComponent);
-      return optionOutput;
-    },
-    userImage() {
-      const imgSrc = `file://` + this.imagePath[this.activeRoute];
-      return imgSrc;
-    },
-    // updates display with mockup image
-    mockBg() {
-      return this.imagePath[this.activeRoute]
-        ? {
-          background: `url("${this.userImage}") no-repeat rgba(223, 218, 218, 0.886) top left`,
-          "background-size": "contain"
-        }
-        : {};
-    },
-    // find the amount of grid lines for width
-    gridWidth() {
-      return this.containerW / this.gridLayout[0];
-    },
-    // find the amount of grid lines for height
-    gridHeight() {
-      return this.containerH / this.gridLayout[1];
-    },
-  },
-  updated() {
-    // if there are no active components, all boxes are unhighlighted
-    if (this.activeComponent === "") {
-      if (this.$refs.boxes) {
-        this.$refs.boxes.forEach((element) => {
-          element.enabled = false;
-          element.$emit("deactivated");
-          element.$emit("update:active", false);
-        });
-      }
-    } else {
-      // if a component is set to active, highlight it
-      this.$refs.boxes.forEach((element) => {
-        if (
-          this.activeComponent === element.$attrs.id &&
-          element.enabled === false
-        ) {
-          element.enabled = true;
-          element.$emit("activated");
-          element.$emit("update:active", true);
-        }
-      });
-    }
-  },
-
-  methods: {
-    ...mapActions([
-      "setActiveComponent",
-      "updateComponentChildrenMultiselectValue",
-      "updateActiveComponentChildrenValue",
-      "updateComponentPosition",
-      "updateStartingPosition",
-      "updateComponentLayer",
-      "updateStartingSize",
-      "updateComponentSize",
-      "addActiveComponentNote",
-      "deleteActiveComponentNote",
-      "openNoteModal",
-      "openColorModal",
-      "updateColor",
-      "updateComponentGridPosition"
-    ]),
-    useExportComponentBound() {
-      useExportComponent.bind(this)();
-    },
-    isElementPlus(htmlList) {
-      return htmlList.find(({ text }) => text[0] === 'e');
-    },
-    //color change function
-    updateColors(data) {
-      let payload = {
-        color: data.cssColor,
-        activeComponent: this.activeComponent,
-        routeArray: this.routes[this.activeRoute],
-        activeComponentData: this.activeComponentData,
-      }
-      this.updateColor(payload)
-      this.refresh();
-    },
-    // sets component's ending size/position
-    finishedResize: function (x, y, w, h) {
-      let payload = {
-        x: x,
-        y: y,
-        w: w,
-        h: h,
-        activeComponent: this.activeComponent,
-        routeArray: this.routes[this.activeRoute],
-        activeComponentData: this.activeComponentData,
-      };
-      this.updateComponentSize(payload);
-      this.updateComponentGridPosition(payload);
-      this.refresh();
-    },
-
-    // refresh function
-    refresh() {
-      const payload = {
-        activeComponent: this.activeComponent,
-        routeArray: this.routes[this.activeRoute],
-        activeComponentData: this.activeComponentData,
-        z: this.activeComponentData.z,
-      };
-      payload.z++;
-      this.updateComponentLayer(payload);
-      payload.z--;
-      this.updateComponentLayer(payload);
-    },
-    // drag and drop function
-    finishedDrag: function (x, y) {
-      let payload = {
-        x: x,
-        y: y,
-        activeComponent: this.activeComponent,
-        routeArray: this.routes[this.activeRoute],
-        activeComponentData: this.activeComponentData,
-      };
-      this.updateComponentPosition(payload);
-      this.updateComponentGridPosition(payload);
-      this.wasDragged = true;
-      setTimeout(() => this.wasDragged = false, 100)
-      this.refresh();
-    },
-    onActivated(componentData) {
-      if (!componentData) {
-        return;
-      }
-      if (this.$refs.boxes) {
-        this.$refs.boxes.forEach((element) => {
-          if (element.$attrs.id !== componentData.componentName) {
-            element.enabled = false;
-            element.$emit("deactivated");
-            element.$emit("update:active", false);
-          }
-          if (
-            this.activeComponent === element.$attrs.id &&
-            element.enabled === false
-            ) {
-              element.enabled = true;
-              element.$emit("activated");
-              element.$emit("update:active", true);
-            }
-          });
-        }
-        if (!(componentData.componentName === this.activeComponent)) {
-        this.setActiveComponent(componentData.componentName);
-      }
-      if (componentData && componentData.hasOwnProperty('componentName')) {
-        this.activeComponentData.isActive = true;
-      }
-    },
-    // deactivated is emitted before activated
-    onDeactivated() {
-      if (this.activeComponent !== "") {
-        this.activeComponentData.isActive = false;
-      }
-    },
-
-    // renders modal with Update Children and Layer in it
-    handleAddNotes() {
-      if (this.wasDragged === false && this.activeComponent !== '') {
-        this.openNoteModal();
-      }
-    },
-    //color editor - opens the pop up
-    handleEditColor() {
-      if (this.wasDragged === false && this.activeComponent !== '') {
-        this.openColorModal();
-      }
-    },
-
-    handleAddChild() {
-      this.modalOpen = true;
-    },
-    submitNote(e) {
-      e.preventDefault()
-      if (this.noteText === '') {
-        return;
-      }
-      this.addActiveComponentNote(this.noteText);
-      this.noteText = '';
-    },
-    deleteNote(e) {
-      this.deleteActiveComponentNote(e.target.previousElementSibling.innerText);
-    },
-    // used when user selects to add child from dropdown
-    handleSelect(value) { //actually handles adding or deleting
-      this.updateActiveComponentChildrenValue(value);
-    },
-    // user can change component's layer order
-    handleLayer(e) {
-      e.preventDefault();
-      const payload = {
-        activeComponent: this.activeComponent,
-        routeArray: this.routes[this.activeRoute],
-        activeComponentData: this.activeComponentData,
-        z: this.activeComponentData.z,
-      };
-
-      if (e.target.innerText === "+") payload.z++;
-      if (e.target.innerText === "–" && payload.z > 0) payload.z--;
-      this.updateComponentLayer(payload);
-    },
-    // if user clicks on display grid, resets active component to ''
-    handleClick(event) {
-      if (event.target.className === "component-display grid-bg") {
-        this.setActiveComponent("");
-      }
-    },
-    handleRight(event) {
-      if (event.target.className === "component-display grid-bg") {
-        //right click modal to make a component?
-      }
-    },
-  },
-  watch: {
-    noteModalOpen() {
-      this.noteModal = this.noteModalOpen;
-    },
-    colorModalOpen() {
-      this.colorModal = this.colorModalOpen;
-    },
-    activeComponent: {
-      handler() {
-        if (this.activeComponent !== '' &&
-          this.$store.state.showTutorial === true &&
-          this.$store.state.tutorialFirstOpen === true) {
-          this.$store.commit("TOGGLE_TUTORIAL");
-        }
-        this.onActivated(this.activeComponentObj);
-      },
-      deep: true,
-    },
-  },
-};
-
-</script> -->
-
 <style scoped lang="scss">
 .addChild {
   width: 25vh;
@@ -1403,27 +1010,12 @@ li:hover {
   background-color: rgba(223, 218, 218, 0.613);
   background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
   background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
-  //   background-image: -webkit-linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px),
-  //     -webkit-linear-gradient(0, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
-  //     -webkit-linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
-  //     -webkit-linear-gradient(0, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
-  //   background-image: -moz-linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px),
-  //     -moz-linear-gradient(0, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
-  //     -moz-linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
-  //     -moz-linear-gradient(0, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
-  //   background-image: linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px),
-  //     linear-gradient(90deg, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
-  //     linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
-  //     linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
-  //   -pie-background: linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px) -2px -2px / 100px,
-  //     linear-gradient(90deg, rgba(255, 255, 255, 0.8) 1px, transparent 1px) -2px -2px / 100px,
-  //     linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px) -1px -1px / 20px,
-  //     linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px) -1px -1px / 20px,
-  //     $secondary;
   behavior: url(/pie/PIE.htc);
 }
 
 .cssContainer {
+  display: flex;
+  flex-direction: column;
   margin: 6.1%;
   border: 1px solid black;
   width: 1280px;
@@ -1466,9 +1058,6 @@ li:hover {
 }
 
 .cssContainerText {
-  // display: flex;
-  // justify-content: center;
-  // align-content: center;
   position: absolute;
   text-align: center;
   font-size: 4em;
@@ -1595,6 +1184,7 @@ li:hover {
 }
 
 .htmlDiv {
+  display: flex;
   position: absolute;
   margin: 0.5em;
   border-radius: 1.5%;

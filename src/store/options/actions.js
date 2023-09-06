@@ -321,7 +321,7 @@ const actions = {
     commit(types.ADD_NESTED_NO_ACTIVE, payload);
   },
 
-  [types.deleteFromComponentHtmlList]: ({ commit }, payload) => {
+  [types.deleteFromElementHtmlList]: ({ commit }, payload) => {
     commit(types.DELETE_FROM_COMPONENT_HTML_LIST, payload);
   },
 
@@ -429,74 +429,5 @@ const actions = {
 
   // end of loading///////////////////////////////////////////////////
 };
-
-// Action Graveyard/////////////////////////////////////////
-// These actions are either not called or have been removed, maybe you have use for them so we kept them here
-
-/*
-[types.updateStartingPosition]: ({ commit }, payload) => {
-  // does the same as update component position
-  // but needed to record the initial spot of the ."draggable-resizeable" in Canvas.vue
-  // or else undo/redo won't work
-    commit(types.UPDATE_COMPONENT_POSITION, payload)
-  },
-
-  [types.updateStartingSize]: ({ commit }, payload) => {
-    commit(types.UPDATE_COMPONENT_SIZE, payload)
-  },
-
-   [types.deleteUserActions]: ({ state, commit }, payload) => {
-    console.log('invoking deleteUserActions')
-    if (state.activeComponent) {
-      commit(types.REMOVE_ACTION_FROM_COMPONENT, payload)
-    }
-    commit(types.DELETE_USER_ACTIONS, payload)
-  },
-
-  [types.removeActionFromComponent]: ({ state, commit }, payload) => {
-    console.log('invoking removeActionFromComponent')
-    commit(types.REMOVE_ACTION_FROM_COMPONENT, payload)
-  },
-
-  [types.removeStateFromComponent]: ({ commit }, payload) => {
-    console.log('removeStateFromComponent invoked')
-    commit(types.REMOVE_STATE_FROM_COMPONENT, payload)
-  },
-
-  [types.deleteUserState]: ({ state, commit }, payload) => {
-    console.log('deleteUserState invoked')
-    if (state.activeComponent) {
-      commit(types.REMOVE_STATE_FROM_COMPONENT, payload)
-    }
-    // loops through component map and deletes all props
-    Object.keys(state.componentMap).forEach(prop => {
-      commit(types.SET_ACTIVE_COMPONENT, prop.componentName)
-      commit(types.REMOVE_ACTION_FROM_COMPONENT, payload)
-    })
-    commit(types.DELETE_USER_STATE, payload)
-  },
-
-    [types.updateOpenModal]: ({ commit }, payload) => {
-    commit(types.UPDATE_OPEN_MODAL, payload)
-  },
-
-   [types.addProject]: ({ commit }, payload) => {
-    commit(types.ADD_PROJECT, payload)
-  },
-
-  [types.setState]: ({ commit }, payload) => {
-    commit(types.SET_STATE, payload)
-  },
-
-  [types.deleteProjectTab]: ({ commit }, payload) => {
-    commit(types.DELETE_PROJECT_TAB, payload)
-  },
-
-  [types.deleteComponent]: ({ state, commit }, payload) => {
-    console.log('payload in actions:', payload)
-    commit(types.DELETE_COMPONENT, payload)
-  },
-
-*/
 
 export default actions;

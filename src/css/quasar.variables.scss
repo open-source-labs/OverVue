@@ -1,32 +1,23 @@
-// Quasar SCSS (& Sass) Variables
-// --------------------------------------------------
-// To customize the look and feel of this app, you can override
-// the Sass/SCSS variables found in Quasar's source Sass/SCSS files.
+/*
+Quasar SCSS (& Sass) Variables
+--------------------------------------------------
+To customize the look and feel of this app, you can override
+the Sass/SCSS variables found in Quasar's source Sass/SCSS files.
 
-// Check documentation for full list of Quasar variables
+Check documentation for full list of Quasar variables
 
-// Your own variables (that are declared here) and Quasar's own
-// ones will be available out of the box in your .vue/.scss/.sass files
+Your own variables (that are declared here) and Quasar's own
+ones will be available out of the box in your .vue/.scss/.sass files
 
-// It's highly recommended to change the default colors
-// to match your app's branding.
-// Tip: Use the "Theme Builder" on Quasar's documentation website.
+It's highly recommended to change the default colors
+to match your app's branding.
 
-// ************** Default colors from Quasar ************
-// $primary   : #1976D2;
-// $secondary : #26A69A;
-// $accent    : #9C27B0;
+Tip: Use the "Theme Builder" on Quasar's documentation website.
+*/
 
-// $dark      : #1D1D1D;
-
-// $positive  : #21BA45;
-// $negative  : #C10015;
-// $info      : #31CCEC;
-// $warning   : #F2C037;
-
-// **************** Taken from OverVue *******************
 $primary: #737578;
-$secondary: #72d096;
+// $secondary: #61d18c; // old color
+$secondary: #34ab83;
 $accent: #a1ddc2;
 $subaccent: #0d0d0d;
 $subaccentbtn: #2c384d;
@@ -41,5 +32,3 @@ $positive: #21ba45;
 $negative: #f15567;
 $info: #31ccec;
 $warning: #f2c037;
-
-// C10015

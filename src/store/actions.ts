@@ -3,6 +3,7 @@ import {
   breadthFirstSearchParent,
 } from "src/utils/search.util";
 
+import { isProxy, toRaw } from "vue";
 import {
   State,
   Actions,
@@ -72,7 +73,7 @@ const actions: Store<"main", State, {}, Actions> = {
       (route: string) => route !== payload
     );
 
-    if (this.routes[this.activeRoute]) this.activeRoute = "HomeView";
+    if (!this.routes[this.activeRoute]) this.activeRoute = "";
   },
 
   setActiveRoute(payload) {
@@ -118,6 +119,9 @@ const actions: Store<"main", State, {}, Actions> = {
     this.exportOauthGithub = payload;
   },
 
+  toggleMode(payload) {
+    this.mode = payload;
+  },
   exportTest(payload) {
     this.importTest = payload;
   },
@@ -336,10 +340,8 @@ const actions: Store<"main", State, {}, Actions> = {
       if (item.parent) {
         const objectCheck = Object.keys(item.parent);
         if (objectCheck[0] === temp) {
-          item.parent[payload] = this.componentMap[
-            this.activeComponent
-          ] as Component;
-          delete item.parent[temp];
+          item.parent = this.componentMap[this.activeComponent] as Component;
+          // delete item.parent[temp];
         }
       }
     }
@@ -378,6 +380,7 @@ const actions: Store<"main", State, {}, Actions> = {
 
   // HTML ELEMENTS
 
+  // assigned as to a function
   addNestedHTML(payload) {
     const componentName = this.activeComponent;
     const { activeHTML } = this;
@@ -467,41 +470,33 @@ const actions: Store<"main", State, {}, Actions> = {
     });
   },
 
-  deleteFromComponentHtmlList(id) {
+  deleteFromElementHtmlList(payload): void {
+    // find ID of html element in htmlList (of activeComponent)
     const componentName = this.activeComponent;
-    const htmlList = this.componentMap[componentName].htmlList.slice(0);
-    // splice out selected element and return resulting array
-    if (this.activeLayer.id === "") {
-      for (let i = 0; i < htmlList.length; i++) {
-        if (htmlList[i].id === id.toString()) {
-          htmlList.splice(i, 1);
-          break;
+    const htmlList = toRaw(this.componentMap[componentName].htmlList);
+
+    const deleteNested = (array: HtmlElement[]): void => {
+      for (let i = 0; i < array.length; i++) {
+        if (array[i].id === payload) {
+          array.splice(i, 1);
+        } else {
+          if (array[i].children.length) deleteNested(array[i].children);
         }
       }
-    } else {
-      const element = breadthFirstSearchParent(htmlList, id) as {
-        evaluated: HtmlElement;
-        index: number;
-      };
-      element.evaluated.children.splice(element.index, 1);
-    }
-    if (id.toString() === this.activeHTML) {
-      this.activeHTML = "";
-    }
-    let newCompMap = this.componentMap;
-    newCompMap[componentName].htmlList = htmlList;
-    this.componentMap = Object.assign({}, newCompMap);
-  },
+    };
 
-  deleteSelectedElement(payload) {
-    this.selectedElementList.splice(payload, 1);
+    deleteNested(htmlList);
+  },
+  setComponentDetailsTab(payload) {
+    this.componentDetailsTab = payload;
   },
 
   setActiveHTML(payload) {
     if (payload[0] === "") {
       this.activeHTML = "";
     } else {
-      this.activeHTML = payload[2];
+      // changed from payload[2] after deprecating HTMLQueue
+      this.activeHTML = payload[1];
     }
   },
 
@@ -543,6 +538,44 @@ const actions: Store<"main", State, {}, Actions> = {
       this.activeLayer = newLayer;
     }
     this.activeHTML = "";
+  },
+  // OverVue v.10.0 –– Drag and Drop for Tree Nodes
+  setActiveTreeNode(payload) {
+    this.activeTreeNode = payload;
+  },
+
+  setPotentialParentNode(payload) {
+    this.potentialParentNode = payload;
+  },
+
+  moveNode(payload) {
+    if (payload === this.potentialParentNode) return; //edge case: current component cannot drag onto itself
+
+    // current node being dragged is payload
+    // potential parent this.potentialParentNode
+
+    const componentMapAtPayload = JSON.parse(
+      JSON.stringify(this.componentMap[payload])
+    );
+
+    // store parent in variable
+    const oldParent = componentMapAtPayload.parent.componentName;
+
+    // Do nothing if dragging to current parent
+    if (oldParent === this.potentialParentNode) return;
+
+    // remove payload inside oldParent children array
+    const index = this.componentMap[oldParent].children.indexOf(payload);
+    if (index !== -1) this.componentMap[oldParent].children.splice(index, 1);
+
+    this.componentMap[this.potentialParentNode].children.push(payload);
+
+    // Change parent of payload
+    this.componentMap[payload].parent =
+      this.componentMap[this.potentialParentNode];
+
+    // remember to clear potential parent
+    this.potentialParentNode = "";
   },
 
   // !Drag-andDrop
@@ -671,19 +704,12 @@ const actions: Store<"main", State, {}, Actions> = {
 
       this.addComponentToActiveRouteInRouteMap(payload);
 
-      // const value = this.componentChildrenMultiselectValue.map(
-      //   (component) => this.componentMap[component]
-      // );
-
       if (this.parentSelected.length) {
         this.addParent(payload);
       }
-
-      // this.updateComponentChildrenValue({ componentName, value });
-      // this.updateComponentChildrenMultiselectValue([]);
       this.updateComponentNameInputValue("");
       this.setSelectedElementList([]);
-      this.setActiveComponent("");
+      this.setActiveComponent(componentName);
       this.parentSelect("");
     }
   },
@@ -739,15 +765,14 @@ const actions: Store<"main", State, {}, Actions> = {
   },
 
   addParent(payload) {
-    const a = this.componentMap[payload.componentName].parent as {
-      [key: string]: Component | RouteComponentMap;
-    };
-    a[this.parentSelected] = this.componentMap[this.parentSelected];
+    this.componentMap[payload.componentName].parent =
+      this.componentMap[this.parentSelected];
     this.componentMap[this.parentSelected].children.push(payload.componentName);
   },
 
+  // Used in Canvas.vue (untested)
   addCopiedParent(payload) {
-    const parentSelected = Object.values(payload.parent)[0].componentName;
+    const parentSelected: string = payload.parent.componentName;
     // push into parent's children array
     this.componentMap[parentSelected].children.push(payload.componentName);
   },
@@ -763,7 +788,8 @@ const actions: Store<"main", State, {}, Actions> = {
     const activeObjChildrenArray = newObj[activeComponent].children;
 
     activeObjChildrenArray.forEach((child) => {
-      delete (newObj[child] as Component).parent[activeComponent];
+      // delete (newObj[child] as Component).parent[activeComponent];
+      newObj[child].parent = this.componentMap[activeRoute];
     });
 
     delete newObj[activeComponent];
@@ -811,9 +837,9 @@ const actions: Store<"main", State, {}, Actions> = {
       };
     } else {
       this.activeComponent = payload;
-      this.activeComponentObj = this.routes[this.activeRoute].filter(
-        (comp) => comp.componentName === this.activeComponent
-      )[0];
+      this.activeComponentObj = this.componentMap[
+        this.activeComponent
+      ] as Component;
     }
     this.activeHTML = "";
     this.activeLayer = {
@@ -825,21 +851,6 @@ const actions: Store<"main", State, {}, Actions> = {
   setComponentMap(payload) {
     this.componentMap = payload;
   },
-
-  // executed when a new component is made
-  // also invoked when a child is added to the parent from the sidebar (EditSidebar or HomeSidebar?)
-  // also invoked when clicked on invoking the modal-view
-  // event: @ VueMultiselect
-  // updateComponentChildrenMultiselectValue(payload) {
-  //   this.componentChildrenMultiselectValue = payload;
-  // },
-
-  // executed when a new component is made
-  // additionally adds children to the component
-  // updateComponentChildrenValue(payload) {
-  //   const { componentName, value } = payload;
-  //   this.componentMap[componentName].children = value;
-  // },
 
   updateComponentNameInputValue(payload) {
     this.componentNameInputValue = payload;
@@ -950,8 +961,6 @@ const actions: Store<"main", State, {}, Actions> = {
     // delete block
     if (temp.filter((el) => payload === el).length > 0) {
       //commented stuff below does not seem necessary for the functionality of this if block.
-      //children will be current children EXCLUDING payload
-      // const child = temp.filter((el) => payload.includes(el));
       let childCount = 0;
       const components = Object.values(this.componentMap);
       for (const comp of components) {
@@ -965,12 +974,6 @@ const actions: Store<"main", State, {}, Actions> = {
           ...temp.filter((el) => payload === el)
         );
       }
-      // const newHTMLList = state.componentMap[
-      //   state.activeComponent
-      // ].htmlList.filter((el) => el !== child[0]);
-      // state.componentMap[state.activeComponent].htmlList = newHTMLList;
-      // const newMap = { ...state.componentMap };
-      // state.componentMap = { ...newMap };
 
       //delete the instances of the Child Component in the activeComponent's htmlList
       const componentName = this.activeComponent;
@@ -992,12 +995,6 @@ const actions: Store<"main", State, {}, Actions> = {
       const active = this.componentMap[payload] as Component;
       //updates the htmlList with the child components deleted
       this.componentMap[componentName].htmlList = htmlList;
-
-      //delete the parent because the payload is no longer a child to the acitive component
-
-      delete active.parent[this.activeComponent];
-
-      // add block
     } else {
       const child = temp;
       child.push(payload);
@@ -1005,9 +1002,8 @@ const actions: Store<"main", State, {}, Actions> = {
       this.componentMap[this.activeRoute].children = this.componentMap[
         this.activeRoute
       ].children.filter((el) => payload !== el);
-      (this.componentMap[child[child.length - 1]] as Component).parent[
-        this.activeComponent
-      ] = this.componentMap[this.activeComponent] as Component;
+      (this.componentMap[child[child.length - 1]] as Component).parent = this
+        .componentMap[this.activeComponent] as Component;
     }
   },
 
@@ -1048,11 +1044,48 @@ const actions: Store<"main", State, {}, Actions> = {
     this.attributeModalOpen = !this.attributeModalOpen;
   },
 
+  addAttributes(payload) {
+    //get the active component
+    let added = false;
+    const addRecursively = (htmlElement: HtmlElement) => {
+      const attributeString: string = Object.keys(payload)[0];
+      if (htmlElement.id === payload.id) {
+        added = true;
+        // callback(payload, htmlElement);
+        htmlElement[attributeString] = payload[attributeString];
+        return;
+      }
+
+      //base case: if the html list doesn't have children, return;
+      if (!htmlElement.children) {
+        return;
+      } else {
+        //iterate through the htmlList of activeComponent children
+        for (let i = 0; i < htmlElement.children.length; i++) {
+          if (added === false) {
+            addRecursively(htmlElement.children[i]);
+          } else return;
+        }
+      }
+    };
+
+    if ((this.activeComponentObj as Component).htmlList) {
+      this.componentMap[this.activeComponent].htmlList.forEach(
+        (htmlElement) => {
+          if (added === false) {
+            addRecursively(htmlElement);
+          } else return;
+        }
+      );
+    }
+  },
+
   addActiveComponentClass(payload) {
     const active = this.activeComponentObj as Component;
     if (active.htmlList)
       this.componentMap[this.activeComponent].htmlList.forEach((el) => {
         //adding class into it's child 1st layer
+        //if our element has children,
         if (el.children.length !== 0) {
           el.children.forEach(
             (element: { id: string | number; class: string }) => {
@@ -1068,11 +1101,14 @@ const actions: Store<"main", State, {}, Actions> = {
       });
   },
 
+  //payload: addBinding(bindingText, activeHTML as number)
   addBindingText(payload) {
     const active = this.activeComponentObj as Component;
     //access the htmlList, add payload to the empty bind obj
     if (payload.binding === "") return;
     else {
+      //if the active component has an html list, iterate through the htmlList
+      //check if each element in the html list has a
       if (active.htmlList)
         this.componentMap[this.activeComponent].htmlList.forEach((el) => {
           if (el.children.length !== 0) {
@@ -1104,7 +1140,7 @@ const actions: Store<"main", State, {}, Actions> = {
   addActiveComponentHeight(payload) {
     this.componentMap[this.activeComponent].htmlList.forEach((el) => {
       if (payload.id === el.id) {
-        el.h = payload.height;
+        el.h = payload.height; //height = h on HtmlElement type
       }
     });
   },
@@ -1181,14 +1217,6 @@ const actions: Store<"main", State, {}, Actions> = {
     this.setRoutes(payload.routes);
     this.setActiveComponent("");
   },
-
-  // updateStartingPosition (payload) {
-
-  // },
-
-  // updateStartingSize (payload) {
-
-  // },
 
   // *** END PROJECTS *** //////////////////////////////////////////////
 
@@ -1270,57 +1298,6 @@ const actions: Store<"main", State, {}, Actions> = {
         updatedComponent.x;
     });
   },
-
-  // *** END IMAGES *** //////////////////////////////////////////////
-
-  // INACTIVE MUTATIONS - kept for reference
-
-  // [types.SET_STATE]: (state, payload) => {
-  //   Object.assign(state, payload)
-  // },
-  // [types.DELETE_USER_ACTIONS]: (state, payload) => {
-  //   // payload should be a string of the name of the action to remove
-  //   let index = state.userActions.indexOf(payload)
-  //   state.userActions.splice(index, 1)
-  // },
-  // [types.ADD_USER_ACTION]: (state, payload) => {
-  //   if (typeof payload === 'string') state.userActions.push(payload)
-  // },
-  // [types.ADD_TO_USER_STORE]: (state, payload) => {
-  //   const key = Object.keys(payload)
-  //   state.userStore[key] = payload[key]
-  // },
-  // [types.DELETE_USER_STATE]: (state, payload) => {
-  //   delete state.userStore[payload]
-  // },
-  // [types.REMOVE_ACTION_FROM_COMPONENT]: (state, payload) => {
-  //   let index = state.componentMap[state.activeComponent].mapActions.indexOf(
-  //     payload
-  //   )
-  //   state.componentMap[state.activeComponent].mapActions.splice(index, 1)
-  // },
-  // [types.ADD_TO_COMPONENT_ACTIONS]: (state, payload) => {
-  //   state.componentMap[state.activeComponent].componentActions.push(payload)
-  // },
-  // [types.ADD_TO_COMPONENT_STATE]: (state, payload) => {
-  //   state.componentMap[state.activeComponent].componentState.push(payload)
-  // },
-  // [types.REMOVE_STATE_FROM_COMPONENT]: (state, payload) => {
-  //   let prop = state.componentMap[state.activeComponent].componentState
-  //   prop.splice(prop.indexOf(payload), 1)
-  // },
-  // [types.DELETE_COMPONENT]: (state, payload) => {
-  //   const stateCopy = state
-  //   let compArr = stateCopy.routes[stateCopy.activeRoute]
-  //   for (let i = 0; i < compArr.length; i++) {
-  //     if (compArr[i].componentName == payload.componentName) {
-  //       compArr.splice(i, 1)
-  //     }
-  //   }
-  //   delete state.componentMap[payload.componentName]
-  //   state.routes[state.activeRoute] = compArr
-  //   // console.log('new state', state)
-  // }
 };
 
 export default actions;
