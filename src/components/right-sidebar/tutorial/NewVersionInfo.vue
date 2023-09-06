@@ -1,56 +1,54 @@
 <template>
   <section id="newFeatures">
     <h6 class="infoHeading">What's New in OverVue 10.0?</h6>
-    <p class="info-sub-heading">
-      Interactive Tree View
-    </p>
+    <p class="info-sub-heading">Interactive Tree View</p>
     <p class="infoContent">
-      Drag and drop tree nodes to change the component structure!
-      Changes made in the tree view will be reflected in the exported code, 
-      as can be seen from the Code Snippet. This view replaces the previous
-      main Grid view. Although the Grid view is considered deprecated, it can 
-      still be found within the application (See Advanced Functionality).
+      Drag and drop tree nodes to change the component structure! Changes made
+      within the tree view will be reflected in the Code Preview. This view
+      replaces the previous grid view. Although Grid Mode is considered
+      deprecated, it can still be found within the application (see Advanced
+      Functionality).
     </p>
     <img
       alt="Interactive Tree View"
       src="../../../assets/interactive-tree.png"
       class="tut-screenshot"
     />
-    <p class="info-sub-heading">
-      Updated HTML Elements Section
-    </p>
+    <p class="info-sub-heading">Updated HTML Elements Section</p>
     <p class="infoContent">
-      OverVue 10.0 comes with a new and revamped HTML elements section. You can now
-      change the order of and nest the HTML elements that are within your components by
-      interacting with the tree list structure. From this section, you can also delete and
-      edit the elements.
+      OverVue 10.0 comes with a new and revamped HTML elements section. You can
+      now change the order of and nest the HTML elements that are within your
+      components by interacting with its tree list structure. From this section,
+      you can also delete and edit HTML elements.
     </p>
     <img
       alt="HTML Elements Section"
       src="../../../assets/nested-elements.png"
       class="tut-screenshot"
     />
-    <p class="info-sub-heading">
-      Component Focus Modal
-    </p>
+    <p class="info-sub-heading">Component Focus Modal</p>
     <p class="infoContent">
-      If you're going to be spending a lot of time organizing HTML elements in any one 
-      component, you can use the component focus modal. The modal can be opened by
-      double-clicking on a component on the main tree view.
+      If you're going to be spending a lot of time organizing HTML elements in
+      any one component, use the component focus modal. The modal can be opened
+      by double-clicking on a component within the main tree view.
     </p>
     <img
       alt="Component Focus Modal"
       src="../../../assets/modal.png"
       class="tut-screenshot"
     />
-    <p class="info-sub-heading">
-      Easily Add Accessible HTML Elements with the Vuetensils Component Library
-    </p>
+    <p class="info-sub-heading">Vuetensils Component Library</p>
     <p class="infoContent">
-      Quickly create accessible HTML elements by adding components from the Vuetensils
-      Component Library! These naked components are designed to have bare minimum styles, 
-      to avoid bloat while including accessibility. Learn more about Vuetensils in the 
-      <a class="link" @click="openUrl('https://vuetensils.com/Introduction.html')"> <u>documentation</u> </a>.
+      Quickly create accessible HTML elements by adding components from the
+      Vuetensils Component Library! These naked components are designed to have
+      bare minimum styles, to avoid bloat while including accessibility. Learn
+      more about Vuetensils in their official
+      <a
+        class="link"
+        @click="openUrl('https://vuetensils.com/Introduction.html')"
+      >
+        <u>documentation</u> </a
+      >.
     </p>
     <img
       alt="Vuetensils"
@@ -61,7 +59,7 @@
       class="tut-btn"
       color="secondary"
       id="advanced-btn"
-      label="Investigate Advanced Functionality"
+      label="Advanced Functionality"
       @click="nextTab"
     />
     <q-btn
@@ -153,6 +151,6 @@ const openUrl = (url: string) => shell.openExternal(url, { activate: true });
 
 #advanced-btn {
   margin-top: 30px !important;
-  margin-bottom: 50px !important;
+  margin-bottom: 0.75rem !important;
 }
 </style>

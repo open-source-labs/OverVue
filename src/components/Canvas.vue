@@ -5,7 +5,7 @@
 
   FUNCTIONALITY:
   - Displays previous 'Canvas' grid functionality
-  - Deprecated by OverVue v.10.0 but left as option for users who wish to use it
+  - Soft-deprecated by OverVue v.10.0 but left as option for users who wish to use it
 -->
 
 <template>
@@ -650,18 +650,13 @@ const gridHeight = computed(() => {
 //methods
 const setActiveComponent: typeof store.setActiveComponent = (payload) =>
   store.setActiveComponent(payload);
-// const updateComponentChildrenMultiselectValue: typeof store.updateComponentChildrenMultiselectValue = (payload) =>
-//   store.updateComponentChildrenMultiselectValue(payload);
 const updateActiveComponentChildrenValue: typeof store.updateActiveComponentChildrenValue =
   (payload) => store.updateActiveComponentChildrenValue(payload);
 const updateComponentPosition: typeof store.updateComponentPosition = (
   payload
 ) => store.updateComponentPosition(payload);
-// const updateStartingPosition: typeof store.updateStartingPosition = (payload) =>
-// (payload);
 const updateComponentLayer: typeof store.updateComponentLayer = (payload) =>
   store.updateComponentLayer(payload);
-// const updateStartingSize: typeof store.updateStartingSize = (payload) => store.updateStartingSize(payload);
 const updateComponentSize: typeof store.updateComponentSize = (payload) =>
   store.updateComponentSize(payload);
 const addActiveComponentNote: typeof store.addActiveComponentNote = (payload) =>
@@ -1015,23 +1010,6 @@ li:hover {
   background-color: rgba(223, 218, 218, 0.613);
   background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
   background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
-  //   background-image: -webkit-linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px),
-  //     -webkit-linear-gradient(0, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
-  //     -webkit-linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
-  //     -webkit-linear-gradient(0, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
-  //   background-image: -moz-linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px),
-  //     -moz-linear-gradient(0, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
-  //     -moz-linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
-  //     -moz-linear-gradient(0, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
-  //   background-image: linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px),
-  //     linear-gradient(90deg, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
-  //     linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
-  //     linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
-  //   -pie-background: linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px) -2px -2px / 100px,
-  //     linear-gradient(90deg, rgba(255, 255, 255, 0.8) 1px, transparent 1px) -2px -2px / 100px,
-  //     linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px) -1px -1px / 20px,
-  //     linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px) -1px -1px / 20px,
-  //     $secondary;
   behavior: url(/pie/PIE.htc);
 }
 
@@ -1080,9 +1058,6 @@ li:hover {
 }
 
 .cssContainerText {
-  // display: flex;
-  // justify-content: center;
-  // align-content: center;
   position: absolute;
   text-align: center;
   font-size: 4em;
