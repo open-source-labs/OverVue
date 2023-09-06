@@ -39,7 +39,7 @@ To run electron app in dev mode (note: Vue Devtools will launch automatically)
 npm run dev
 ```
 
-To build a new .dmg / windows .exe
+To build a new .zip / .deb
 
 ```
 npm run build
