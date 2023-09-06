@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="src/assets/overvue_256x256.png">
+  <img src="src/assets/overvue_256x256_old.png">
 </h1>
 
 <p align="center"><b>Prototyping Development Tool for Vue Developers</b></p>
@@ -422,7 +422,6 @@ package.json
 <li>Eliminated code redundancy by implementing Composition API and Pinia</li>
 </ul>
 </details>
-<br/>
 
 ### Changelog 10.0
 
@@ -467,6 +466,7 @@ Smaller changes that can be worked on:
 - Removing ghost image when dragging HTML elements
 - Highlight active HTML element when selected/updating
 - Remove duplicate imports and account for nested components in Vuetensils import statement
+- HTML elements list occasionally does not render properly after component is dragged
 
 <br/>
 
