@@ -14,7 +14,6 @@ export type State = {
   };
   activeTreeNode: string;
   potentialParentNode: string;
-  // inspectComponentModal: boolean;
   routes: {
     [key: string]: Component[];
   };
@@ -41,18 +40,17 @@ export type State = {
   selectedProps: string[];
   selectedState: string[];
   selectedActions: string[];
-  selectedElementList: HtmlElement[]; // ?? actions function addToSelectedElementList
+  selectedElementList: HtmlElement[];
   selectedIdDrag: string | number;
   selectedIdDrop: string | number;
   projectNumber: number;
   activeTab: number;
-  // componentChildrenMultiselectValue: string[];
   modalOpen: boolean;
   attributeModalOpen: boolean;
   noteModalOpen: boolean;
   noteAttributeOpen: boolean;
   colorModalOpen: boolean;
-  parentSelected: string; // need to look deeper into parentSelected - it seems to take many data types
+  parentSelected: string;
   copiedComponent: Component | {};
   copyNumber: number;
   pastedComponent: Component | {};
@@ -108,7 +106,6 @@ export type Actions = {
   pasteActiveComponent: () => void;
   editComponentName: (payload: string) => void;
 
-  //Linden
   addNestedHTML: (payload: { elementName: string; date: number }) => void;
   clearActiveHTML: () => void;
   addNestedNoActive: (payload: { elementName: string; date: string }) => void;
@@ -129,15 +126,14 @@ export type Actions = {
   upOneLayer: (payload: string) => void;
   setIdDrag: (payload: string) => void; // idDrag error line 534 of actions.ts
   setIdDrop: (payload: string) => void; // idDrag error line 540 of actions.ts
+
   //Overvue v10.0: drag n drop tree
   setActiveTreeNode: (payload: string) => void;
   moveNode: (payload: string) => void;
   setPotentialParentNode: (payload: string) => void;
-  ///////
   setSelectedIdDrag: (payload: string) => void;
   setSelectedIdDrop: (payload: string) => void;
   dragDropSortHtmlElements: () => void;
-  //Chris
   dragDropSortSelectedHtmlElements: () => void;
   registerComponent: (payload: Component) => void;
   addComponentToActiveRouteChildren: (payload: string) => void;
@@ -192,16 +188,13 @@ export type Actions = {
     z: number;
   }) => void;
   updateActiveComponentChildrenValue: (payload: string) => void;
-  //Ji line 1002
   updateOpenModal: (payload: boolean) => void;
   addActiveComponentNote: (payload: string) => void;
   deleteActiveComponentNote: (payload: string) => void;
   openColorModal: () => void;
   openNoteModal: () => void;
   openAttributeModal: () => void;
-  addAttributes: (
-    payload: { id: number; [key: string]: any } ///**** */
-  ) => void;
+  addAttributes: (payload: { id: number; [key: string]: any }) => void;
 
   addActiveComponentClass: (payload: { id: number; class: string }) => void;
   addBindingText: (payload: { id: number; binding: string }) => void;
@@ -222,7 +215,6 @@ export type Actions = {
     id: number | string;
     left: string;
   }) => void;
-  //unsure of below
   addActiveComponentElementNote: (payload: {
     id: number | string;
     note: number | string;
@@ -233,7 +225,6 @@ export type Actions = {
   }) => void;
   changeActiveTab: (payload: number) => void;
   deleteProjectTab: (payload: number) => void;
-  //unsure of below
   openProject: (payload: {
     userProps: string[];
     userActions: string[];
@@ -252,13 +243,11 @@ export type Actions = {
   }) => void;
   importImage: (payload: { route: string; img: string }) => void;
   clearImage: (payload: { route: string }) => void;
-  //unsure of below
   setImagePath: (payload: { [x: string]: string }) => void;
   changeLib: (payload: { libName: string }) => void;
   changeLibComponentDisplay: (payload: {
     displaylibComponent: boolean;
   }) => void;
-  //unsure of below
   addLibComponents: (payload: { [x: string]: string | string[] }) => void;
   changeGridDensity: (payload: {
     direction: string;
@@ -319,7 +308,6 @@ export type Component = {
   w: number;
   h: number;
   id: number;
-  // look into html List any create type
   htmlList: HtmlElement[];
   noteList: string[];
   classList: string[];
@@ -327,7 +315,7 @@ export type Component = {
   actions: string[];
   props: string[];
   state: string[];
-  parent: Component | RouteComponentMap; // fix this later
+  parent: Component | RouteComponentMap;
   isActive: boolean;
   idDrag: string | number;
   idDrop: string | number;
@@ -343,8 +331,4 @@ export type HtmlAttributes = {
 
 export type Icons = {
   [type: string]: string | string[];
-};
-
-export type StyleClassMap = {
-  // insert here for style class map when implenting more
 };

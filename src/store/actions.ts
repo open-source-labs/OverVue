@@ -704,16 +704,9 @@ const actions: Store<"main", State, {}, Actions> = {
 
       this.addComponentToActiveRouteInRouteMap(payload);
 
-      // const value = this.componentChildrenMultiselectValue.map(
-      //   (component) => this.componentMap[component]
-      // );
-
       if (this.parentSelected.length) {
         this.addParent(payload);
       }
-
-      // this.updateComponentChildrenValue({ componentName, value });
-      // this.updateComponentChildrenMultiselectValue([]);
       this.updateComponentNameInputValue("");
       this.setSelectedElementList([]);
       this.setActiveComponent(componentName);
@@ -844,9 +837,6 @@ const actions: Store<"main", State, {}, Actions> = {
       };
     } else {
       this.activeComponent = payload;
-      // this.activeComponentObj = this.routes[this.activeRoute].filter(
-      //   (comp) => comp.componentName === this.activeComponent
-      // )[0];
       this.activeComponentObj = this.componentMap[
         this.activeComponent
       ] as Component;
@@ -861,21 +851,6 @@ const actions: Store<"main", State, {}, Actions> = {
   setComponentMap(payload) {
     this.componentMap = payload;
   },
-
-  // executed when a new component is made
-  // also invoked when a child is added to the parent from the sidebar (EditSidebar or HomeSidebar?)
-  // also invoked when clicked on invoking the modal-view
-  // event: @ VueMultiselect
-  // updateComponentChildrenMultiselectValue(payload) {
-  //   this.componentChildrenMultiselectValue = payload;
-  // },
-
-  // executed when a new component is made
-  // additionally adds children to the component
-  // updateComponentChildrenValue(payload) {
-  //   const { componentName, value } = payload;
-  //   this.componentMap[componentName].children = value;
-  // },
 
   updateComponentNameInputValue(payload) {
     this.componentNameInputValue = payload;
@@ -986,8 +961,6 @@ const actions: Store<"main", State, {}, Actions> = {
     // delete block
     if (temp.filter((el) => payload === el).length > 0) {
       //commented stuff below does not seem necessary for the functionality of this if block.
-      //children will be current children EXCLUDING payload
-      // const child = temp.filter((el) => payload.includes(el));
       let childCount = 0;
       const components = Object.values(this.componentMap);
       for (const comp of components) {
@@ -1001,12 +974,6 @@ const actions: Store<"main", State, {}, Actions> = {
           ...temp.filter((el) => payload === el)
         );
       }
-      // const newHTMLList = state.componentMap[
-      //   state.activeComponent
-      // ].htmlList.filter((el) => el !== child[0]);
-      // state.componentMap[state.activeComponent].htmlList = newHTMLList;
-      // const newMap = { ...state.componentMap };
-      // state.componentMap = { ...newMap };
 
       //delete the instances of the Child Component in the activeComponent's htmlList
       const componentName = this.activeComponent;
@@ -1028,12 +995,6 @@ const actions: Store<"main", State, {}, Actions> = {
       const active = this.componentMap[payload] as Component;
       //updates the htmlList with the child components deleted
       this.componentMap[componentName].htmlList = htmlList;
-
-      //delete the parent because the payload is no longer a child to the active component
-
-      // delete active.parent[this.activeComponent];
-
-      // add block
     } else {
       const child = temp;
       child.push(payload);
@@ -1256,14 +1217,6 @@ const actions: Store<"main", State, {}, Actions> = {
     this.setRoutes(payload.routes);
     this.setActiveComponent("");
   },
-
-  // updateStartingPosition (payload) {
-
-  // },
-
-  // updateStartingSize (payload) {
-
-  // },
 
   // *** END PROJECTS *** //////////////////////////////////////////////
 

@@ -66,7 +66,6 @@
     "vue-multiselect": "^3.0.0-alpha.2",
     "vue-prism-editor": "^2.0.0-alpha.2",
     "vue-router": "4.0.13",
-    "vue-sfc-parser": "^0.1.2",
     "vue3-draggable-resizable": "^1.6.4",
     "vue3-tree": "^0.11.0",
     "vued3tree": "^5.1.0",

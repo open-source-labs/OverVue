@@ -1,6 +1,9 @@
-<template>
+<!--
+  NOTE: This component was formerly rendered in MyLayout.vue prior to OverVue v.10.0, but this feature has been deprecated for the time being.
+-->
+
+<!-- <template>
   <q-btn class="menu-btn" color="purple" no-caps @click="openLogin">
-    <!-- Slack logo -->
     <svg
       xmlns="http://www.w3.org/2000/svg"
       style="height: 20px; width: 20px; margin-right: 12px"
@@ -183,4 +186,4 @@ const openLogin = () => {
   width: 80%;
   margin: 10px 0px;
 }
-</style>
+</style> -->
