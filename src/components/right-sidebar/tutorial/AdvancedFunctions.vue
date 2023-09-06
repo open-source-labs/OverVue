@@ -1,61 +1,61 @@
 <template>
   <section id="advancedFunctions">
     <h6 class="tutorialHeading">Advanced Functionality</h6>
-    <h class="tutorial-sub-heading">Importing an existing component</h>
+    <h class="tutorial-sub-heading">Import an existing component</h>
     <p class="tutorialContent">
       To import an existing Vue component file, click the import button in the
-      upper right hand corner. Please note: this feature is specifically
-      intended for import of json files saved in-app. Import of other file
-      formats is not currently supported.
+      upper right hand corner. Note: this feature is specifically intended for
+      import of .json files saved in-app. Imports of other file formats is not
+      currently supported.
     </p>
-    <h class="tutorial-sub-heading">Adding Props</h>
+    <h class="tutorial-sub-heading">Add props</h>
     <p class="tutorialContent">
-      To add props, select the component and click the Props sub-menu in the
+      To add props, select the component and click on the Props sub-menu in the
       Update Component menu in the left sidebar. Enter the name of the prop you
-      want to add and click ‘+’ or press enter. Then select the added prop(s)
+      want to add and click ‘+’ or press enter. Then, select the added prop(s)
       from the dropdown and click the 'Add' Prop(s)’ button. To remove a prop,
       click the ‘x’ icon on the right side of the prop.
     </p>
     <img
-      alt="Add Props"
+      alt="Add props"
       src="../../../assets/props.png"
       class="tut-screenshot"
     />
-    <h class="tutorial-sub-heading">Adding State or Actions</h>
+    <h class="tutorial-sub-heading">Add state variables or actions</h>
     <p class="tutorialContent">
-      To add state or actions to a component, they must first be added to the
-      store. Under the Store tab, click on Store State or Store Actions, enter
-      the name and click the ‘+’ or press enter. Then, select the component to
-      which you want to add state or actions. In the State or Actions sub-menus
-      in the Update Component menu of the left sidebar, select your desired
-      state(s) or action(s) from the dropdown and click ‘Map State’ or ‘Map
-      Actions’. To remove them, click the ‘x’ icon on the right side of the
-      state or action.
+      To add state variables or actions to a component, first add them to the
+      store. Under the Store tab, click on State or Actions, enter a label, and
+      click the ‘+’ or press enter. Then, select the component to which you want
+      to add state variables or actions. In the State or Actions sub-menus
+      within the Update Component menu in the left sidebar, select your desired
+      state variable(s) or action(s) from the dropdown and click on ‘Map State’
+      or ‘Map Action(s)’. To remove any, click the ‘x’ icon on the right side of
+      the state variable or action.
     </p>
     <img
-      alt="Store Tab"
+      alt="Store tab"
       src="../../../assets/state-actions.png"
       class="tut-screenshot"
     />
-    <h class="tutorial-sub-heading">TypeScript Mode</h>
+    <h class="tutorial-sub-heading">Enable TypeScript</h>
     <p class="tutorialContent">
-      To turn TypeScript mode on or off, click on the Settings gear icon in the
-      right corner of the nav bar and click the toggle at the bottom of the
-      menu.
+      To enable TypeScript, click on the Settings gear icon in the upper-right
+      corner of the nav bar and toggle the "TypeScript" switch.
     </p>
     <img
-      alt="TypeScript Toggle"
+      alt="Enable TypeScript"
       src="../../../assets/typescript.png"
       class="tut-screenshot"
     />
-    <h class="tutorial-sub-heading">Toggle Main View</h>
+    <h class="tutorial-sub-heading">Toggle between Tree Mode & Grid Mode</h>
     <p class="tutorialContent">
-      To revert the main view to the grid view used in previous OverVue versions, click on 
-      the Settings gear icon in the right corner of the nav bar and toggle from Tree to Grid.
-      <br/>
-      <br/>
-      Please note that some functionality may be disabled or broken, as this view is now considered
-      deprecated.
+      To revert the central user interface to the grid view used in previous
+      OverVue versions, click on the Settings gear icon in the upper-right
+      corner of the nav bar and toggle "Mode" from Tree to Grid.
+      <br />
+      <br />
+      Disclaimer: some functionality may be disabled or broken, as this view is
+      now considered deprecated.
     </p>
     <img
       alt="Main View Toggle"
@@ -72,11 +72,10 @@
   </section>
 </template>
 
-<!-- COMPOSITION API SYNTAX -->
 <script setup lang="ts">
 import { useStore } from "../../../store/main.js";
-const store = useStore();
 
+const store = useStore();
 const toggleTutorial = () => store.toggleTutorial();
 </script>
 
