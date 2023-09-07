@@ -26,7 +26,7 @@
       <q-tab-panels v-model="tab" animated class="html-bg text-white">
         <!-- HTML Elements -->
         <q-tab-panel name="newhtml">
-          <V10HTMLQueue />
+          <HTMLElementsList />
         </q-tab-panel>
 
         <!-- Code Preview -->
@@ -119,7 +119,7 @@
 import { computed } from "vue";
 import { useStore } from "../../store/main.js";
 import { Component } from "../../../types";
-import V10HTMLQueue from "./V10HTMLQueue.vue";
+import HTMLElementsList from "./HTMLElementsList.vue";
 import CodeSnippet from "./CodeSnippet.vue";
 
 /* COMPUTED VALUES */
