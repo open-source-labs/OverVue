@@ -31,3 +31,9 @@ yarn-error.log*
 *.ntvs*
 *.njsproj
 *.sln
+
+# Jest coverage reports
+coverage/
+
+# Electron build directories
+dist/electron/

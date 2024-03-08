@@ -1,11 +1,11 @@
  ## Disclaimer: These notes were created at the beginning of iteration to understand the codebase and may be inaccurate or outdated. 8/14/2023 OverVue 10.0
- 
+
   ```json
-  
+
   "dependencies": {
     "@quasar/cli": "^1.3.2", // Quasar CLI tool that allows dev, build, etc. (uses webpack/vite under the hood)
     "@quasar/extras": "^1.12.5", // Material fonts, icons, designs, etc.
-    "@ssthouse/vue3-tree-chart": "^0.2.3", // Current library (https://github.com/ssthouse/tree-chart) used to display the tree in Tree view, working to bring this to main view and make it interactive 
+    "@ssthouse/vue3-tree-chart": "^0.2.3", // Current library (https://github.com/ssthouse/tree-chart) used to display the tree in Tree view, working to bring this to main view and make it interactive
     "@types/node": "^18.8.0", // Used to load all type definitions for TypeScript in node app
     "@typescript-eslint/eslint-plugin": "^5.36.2", // ESLint plugin that provides linting rules for TypeScript codebases
     "@typescript-eslint/parser": "^5.36.2", // ESLint parser that leverages TypeScript ESTree to allow ESLint to lint TypeScript source code
@@ -48,7 +48,7 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.17.0", // Linting for all valid babel code
     "@pinia/testing": "^0.0.14", // Testing module for pinia
-    "@quasar/app": "^3.3.3", // Not a lot of documentation on this
+    "@quasar/app-webpack": "^3.3.3", // Not a lot of documentation on this
     "@quasar/quasar-app-extension-testing-unit-jest": "^3.0.0-alpha.7", // Quasar and Jest integration for both JS and TS
     "@vue/devtools": "^6.0.12", // Vue Dev Tools
     "@vue/test-utils": "^2.0.0-rc.18", // Component testing utils for Vue 3
