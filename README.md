@@ -435,20 +435,20 @@ Smaller changes that can be worked on:
 
 | OverVue 11.0 | LinkedIn | GitHub |
 |------|----------|--------|
-| Anthony Herrera | [LinkedIn](https://www.linkedin.com/in/GomDave) | [GitHub](https://www.linkedin.com/in/GomDave) |
-| Daniel Garan | [LinkedIn](https://www.linkedin.com/in/trishanduong) | [GitHub](https://www.linkedin.com/in/trishanduong) |
-| Kevin Can | [LinkedIn](https://www.linkedin.com/in/jdvplus) | [GitHub](https://www.linkedin.com/in/jdvplus) |
-| Robery Sinizieri | [LinkedIn](https://www.linkedin.com/in/janicaa1) | [GitHub](https://www.linkedin.com/in/janicaa1) |
-| Roderick de Leon | [LinkedIn](https://www.linkedin.com/in/janicaa1) | [GitHub](https://www.linkedin.com/in/janicaa1) |
+| Anthony Herrera | [LinkedIn](https://www.linkedin.com/in/anthony-herrera-686ba0183/) | [GitHub](https://github.com/anthonyHerr) |
+| Daniel Garan | LinkedIn | [GitHub](https://github.com/DanielGaran02) |
+| Kevin Can | [LinkedIn](https://www.linkedin.com/in/kevincan/) | [GitHub](https://github.com/Kelementz916) |
+| Robery Sinizieri | LinkedIn | [GitHub](https://github.com/robsinz) |
+| Roderick de Leon | [LinkedIn](https://www.linkedin.com/in/roderickdeleon/) | [GitHub](https://github.com/RoderickXii) |
 
 <br>
 
-| OverVue 10.0 | LinkedIn | GitHub |
-|------|----------|--------|
-| David Lee | [LinkedIn](https://www.linkedin.com/in/GomDave) | [GitHub](https://www.linkedin.com/in/GomDave) |
-| Trisha Duong | [LinkedIn](https://www.linkedin.com/in/trishanduong) | [GitHub](https://www.linkedin.com/in/trishanduong) |
-| Jaime de Venecia | [LinkedIn](https://www.linkedin.com/in/jdvplus) | [GitHub](https://www.linkedin.com/in/jdvplus) |
-| Janica Abagat | [LinkedIn](https://www.linkedin.com/in/janicaa1) | [GitHub](https://www.linkedin.com/in/janicaa1) |
+| OverVue 10.0  | GitHub |
+|------|-------------|
+| David Lee  | @GomDave|
+| Trisha Duong  | @trishanduong |
+| Jaime de Venecia  | @jdvplus |
+| Janica Abagat  | @janicaa1 |
 
 <br>
 

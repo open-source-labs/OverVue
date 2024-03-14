@@ -1,6 +1,6 @@
 <template>
   <section id="newFeatures">
-    <h6 class="infoHeading">What's New in OverVue 10.0?</h6>
+    <h6 class="infoHeading">What's New in OverVue 11.0?</h6>
     <p class="info-sub-heading">Interactive Tree View</p>
     <p class="infoContent">
       Drag and drop tree nodes to change the component structure! Changes made
