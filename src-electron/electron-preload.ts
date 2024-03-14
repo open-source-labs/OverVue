@@ -1,3 +1,11 @@
+import { contextBridge, ipcRenderer } from 'electron'
+
+contextBridge.exposeInMainWorld('ipcRenderer', { //exposes to main script for global access via electron
+  invoke: ipcRenderer.invoke,
+  on: ipcRenderer.on,
+  // add other methods you need
+})
+
 /**
  * This file is used specifically for security reasons.
  * Here you can access Nodejs stuff and inject functionality into
