@@ -1,4 +1,4 @@
-<!-- 
+<!--
   LOCATION IN APP:
   [top-right corner] 'Import' button
 
@@ -35,10 +35,10 @@
 /* IMPORTS */
 const Mousetrap = require("mousetrap");
 import { useStore } from "../../store/main";
-// import * as fs from "fs";
+import * as fs from "fs";
 
 // @ts-ignore
-const { fs, ipcRenderer } = window;
+const { ipcRenderer } = window;
 
 Mousetrap.bind(["command+o", "ctrl+o"], () => {
   openProjectJSON();
@@ -51,10 +51,13 @@ const openProject: typeof store.openProject = (payload) =>
   store.openProject(payload);
 
 /* METHODS */
-
 const openJSONFile = (data: fs.PathOrFileDescriptor[]) => {
+  console.log('data in openJSONFile is', data)
   if (!data) return;
+  const readData = fs.readFileSync(data[0], "utf8")
+  console.log('readData is', readData)
   const jsonFile = JSON.parse(fs.readFileSync(data[0], "utf8"));
+  console.log('jsonFile is', jsonFile)
   openProject(jsonFile);
 };
 
@@ -69,9 +72,10 @@ const showOpenJSONDialog = () => {
         },
       ],
     })
-    .then((res: { filePaths: fs.PathOrFileDescriptor[] }) =>
+    .then((res: { filePaths: fs.PathOrFileDescriptor[] }) =>{
+      console.log('res is', res, 'res.filePaths is', res.filePaths)
       openJSONFile(res.filePaths)
-    )
+      })
     .catch((e: Error) => console.log(e));
 };
 

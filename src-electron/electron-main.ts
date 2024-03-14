@@ -13,7 +13,7 @@ function createWindow() {
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    icon: path.resolve(__dirname, 'icons/icon.png'), // tray icon
+    icon: path.resolve(__dirname, "icons/icon.png"), // tray icon
     width: 1000,
     height: 600,
     useContentSize: true,
@@ -59,7 +59,6 @@ app.on('activate', () => {
 
 //handler for Save functionality
 ipcMain.handle('showSaveDialog', async (event, options) => {
-  const { dialog } = require('electron');
   const { filePath } = await dialog.showSaveDialog(options);
   return { filePath };
 });
@@ -69,7 +68,15 @@ ipcMain.handle('writeFile', async (event, { filePath, data }) => {
 });
 
 // //handler for Import
-// ipcMain.handle('importProject', async (event, options) => {
+ipcMain.handle('openProject', async (event, options) => {
+if (mainWindow) {
+  //{ filePaths } destructured comes fromdialog.showOpenDialog() function.
+const { filePaths } = await dialog.showOpenDialog(mainWindow, options);
+return { filePaths };
+}
+});
+
+//START: OLD import code block below
 //   try {
 //     if (mainWindow) {
 //       const { filePaths } = await dialog.showOpenDialog(mainWindow, options);
@@ -84,22 +91,12 @@ ipcMain.handle('writeFile', async (event, { filePath, data }) => {
 //   } catch (error) {
 //     console.error('Failed to import project:', error);
 //   }
-// });
+//END
+
 
 // //handler for Export
-// ipcMain.handle('exportProject', async (event, options) => {
-//   try {
-//     if (mainWindow) {
-//       const { filePath } = await dialog.showSaveDialog(mainWindow, options);
-//       console.log('Export dialog result:', filePath); // Log the filePath
-//       if (filePath) {
-//         const data = JSON.stringify(store.state); // Replace this with your actual data
-//         fs.writeFileSync(filePath, data);
-//       }
-//     } else {
-//       console.error('Main window is undefined');
-//     }
-//   } catch (error) {
-//     console.error('Failed to export project:', error);
-//   }
-// });
+ipcMain.handle("exportProject", async (event, options) => {
+  const { dialog } = require("electron");
+  const { filePath } = await dialog.showSaveDialog(options);
+  return { filePath };
+});

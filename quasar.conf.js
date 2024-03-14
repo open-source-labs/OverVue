@@ -259,12 +259,19 @@ module.exports = configure(function (ctx) {
           .use(ESLintPlugin, [{ extensions: ["js"] }]);
       },
 
+      extendWebpackMain(cfg) {
+        /* ... */
+      },
+
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
       chainWebpackPreload(chain) {
         chain
           .plugin("eslint-webpack-plugin")
           .use(ESLintPlugin, [{ extensions: ["js"] }]);
       },
+      extendWebpackPreload(cfg) {
+        /* ... */
+      }
     },
   };
 });

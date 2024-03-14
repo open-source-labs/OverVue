@@ -1,4 +1,4 @@
-<!-- 
+<!--
   LOCATION IN APP:
   [top-right corner] 'Export' button
 
@@ -70,6 +70,7 @@ const showExportProjectDialog = () => {
       nameFieldLabel: "Application Name",
     })
     .then((result: { filePath: string }) => {
+      console.log('result', result, 'result.filePath', result.filePath)
       exportFile(result.filePath);
       alert("Successfully Exported");
     })
