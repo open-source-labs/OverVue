@@ -9,8 +9,22 @@
 
 <template>
   <div class="codesnippet-container">
-    <div class="top-p" v-if="activeComponent !== ''">
-      {{ `${activeRoute} / ${activeComponent}.vue` }}
+    <div class="top-p-container">  
+      <div class="top-p" v-if="activeComponent !== ''">
+        {{ `${activeRoute} / ${activeComponent}.vue` }}
+      </div>
+      <div class="switch-container">
+        <p class="api">Options API</p>
+        <label class="code-switch">
+          <input
+            :checked="checked"
+            @change="changeInput"
+            type="checkbox"
+          >
+          <span class="slider round"/>
+        </label>
+        <p class="api">Composition API</p>
+      </div>
     </div>
     <prism-editor
       v-model="code"
@@ -31,7 +45,8 @@ import {
   onMounted,
   onBeforeUnmount,
   nextTick,
-  Ref,
+  Ref, 
+  defineEmits 
 } from "vue";
 import { PrismEditor } from "vue-prism-editor";
 import { highlight, languages } from "prismjs/components/prism-core";
@@ -42,6 +57,27 @@ import "vue-prism-editor/dist/prismeditor.min.css";
 import { useStore } from "../../store/main.js";
 import { vtIcons } from "src/store/state/icons";
 import { Component, HtmlElement, HtmlElementMap } from "../../../types";
+// import { createBoiler }  from './createBoilerFuncs/createBoilerFalse'
+
+// Declaring emits
+const emit = defineEmits(['input']);
+
+// Data ref equivalent
+const checked = ref(false);
+
+// Method equivalent in Composition API
+const changeInput = (event: Event) => {
+  // Perform a type assertion here to let TypeScript know you're dealing with an input element
+  const input = event.target as HTMLInputElement;
+  // Now TypeScript knows that input is an HTMLInputElement, which does have a 'checked' property
+  checked.value = input.checked;
+  emit('input', input.checked);
+};
+
+watch(checked, () => {
+  snippetInvoke(); // This will update code.value based on the new state of checked.value
+});
+
 
 /* LIFECYCLE HOOKS */
 onMounted(() => {
@@ -66,10 +102,15 @@ const exportAsTypescript = computed(() => store.exportAsTypescript);
 const activeRoute = computed(() => store.activeRoute);
 
 /* METHODS */
-
+/* ------------------------ write logic to switch between options & composostion api ------------------------*/
 const snippetInvoke = () => {
-  if (activeComponent.value !== "") {
-    code.value = createCodeSnippet(
+  if (activeComponent.value !== "" && checked.value === false) {
+    code.value = createCodeSnippetOptions(
+      componentMap.value[activeComponent.value].componentName,
+      componentMap.value[activeComponent.value].children
+    );
+  } else if (activeComponent.value !== "" && checked.value === true) {
+       code.value = createCodeSnippetComposition(
       componentMap.value[activeComponent.value].componentName,
       componentMap.value[activeComponent.value].children
     );
@@ -88,15 +129,24 @@ const getWindowHeight = () => {
   height.value = minHeight; // height.value here?
 };
 
-const createCodeSnippet = (componentName: string, children: string[]) => {
-  let result = `${createTemplate(componentName /*, children*/)}${createBoiler(
+/*------------------- Options & Composition switch -------------------*/
+const createCodeSnippetOptions = (componentName: string, children: string[]) => {
+  let result = `${createTemplate(componentName /*, children*/)}${createBoilerOptions(
     componentName,
     children
   )}`;
   return result;
 };
 
-// creates default boilerplate
+const createCodeSnippetComposition = (componentName: string, children: string[]) => {
+  let result = `${createTemplate(componentName /*, children*/)}${createBoilerComposition(
+    componentName,
+    children
+  )}`;
+  return result;
+};
+
+/* --------------- creates default boilerplate --------------- */
 const createTemplate = (componentName: string) => {
   let templateTagStr = writeTemplateTag(componentName, activeComponent.value); // testing 2nd arg
   let routeStr = "";
@@ -143,7 +193,7 @@ const createTemplate = (componentName: string) => {
   }
 };
 
-// creates <template> boilerplate
+/* --------------- creates <template> boilerplate --------------- */
 const writeTemplateTag = (componentName: string, activeComponent: string) => {
   const htmlElementMap: HtmlElementMap = {
     // standard HTML elements
@@ -272,71 +322,6 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
       `<VToggle label="Toggle label"`,
       `\n\t\tcontent here \n    </VToggle>`,
     ],
-
-    // deprecated by OV10.0: Elements+ elements
-    "e-button": [`<el-button type="info"`, `</el-button>`],
-    "e-input": ["<el-input", "</el-input>"],
-    "e-link": [
-      `<el-link type="primary">primary</el-link>
-      <el-link type="success">success</el-link>
-      <el-link type="info">info</el-link>
-      <el-link type="warning">warning</el-link>
-      <el-link type="danger"`,
-      `danger</el-link>`,
-    ],
-    "e-form": ["<el-form", "</el-form>"],
-    "e-checkbox": ["<el-checkbox", "</el-checkbox>"],
-    "e-checkbox-button": ["<el-checkbox-button", "</el-checkbox-button>"],
-    "e-date-picker": ["<el-date-picker", "</el-date-picker>"],
-    "e-slider": ["<el-slider", "</el-slider>"],
-    "e-card": ["<el-card", "</el-card>"],
-    "e-alert": [
-      `<el-alert title="success alert" type="success"></el-alert>
-      <el-alert title="info alert" type="info"></el-alert>
-      <el-alert title="warning alert" type="warning"></el-alert>
-      <el-alert title="danger alert" type="danger"`,
-      `</el-alert>`,
-    ],
-    "e-dropdown": [
-      `<el-dropdown split-button type="primary" @click="handleClick">
-      Dropdown List
-      <template #dropdown>
-        <el-dropdown-menu>
-        <el-dropdown-item>
-        Action 1
-      </el-dropdown-item>
-      <el-dropdown-item>
-      Action 2
-    </el-dropdown-item>
-      </el-dropdown-menu>
-      </template`,
-      `
-      </el-dropdown>`,
-    ],
-    "e-tag": [
-      `<el-tag>Tag 1</el-tag>
-  <el-tag class="ml-2" type="success">Tag 2</el-tag>
-  <el-tag class="ml-2" type="info">Tag 3</el-tag>
-  <el-tag class="ml-2" type="warning">Tag 4</el-tag>
-  <el-tag class="ml-2" type="danger"`,
-      `Tag 5</el-tag>`,
-    ],
-
-    "e-badge": [
-      `<el-badge :value="12" class="item">
-  <el-button>comments</el-button>
-  </el-badge>
-  <el-badge :value="3" class="item">
-  <el-button>replies</el-button>
-  </el-badge>
-  <el-badge :value="1" class="item" type="primary">
-  <el-button>comments</el-button>
-  </el-badge>
-  <el-badge :value="2" class="item" type="warning">
-  <el-button>replies</el-button`,
-      `
-  </el-badge>`,
-    ],
   };
 
   // Helper function that recursively iterates through the given html element's children and their children's children.
@@ -450,20 +435,21 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
   return outputStr;
 };
 
-// Creates boiler text for <script> and <style>
-const createBoiler = (componentName: string, children: string[]) => {
+/* --------------- creates boiler text for <script> and <style> --------------- */
+const createBoilerOptions = (componentName: string, children: string[]) => {
   // add import mapstate and mapactions if they exist
   let imports = "";
   const activeComp = componentMap.value[activeComponent.value] as Component;
-  if (activeComp.actions.length || activeComp.state.length) {
-    imports += "import { ";
-    if (activeComp.actions.length && activeComp.state.length) {
-      imports += "mapState, mapActions";
-    } else if (activeComp.state.length) imports += "mapState";
-    else imports += "mapActions";
-    imports += ' } from "vuex";\n';
-  }
-
+  // if (checked.value === false) {
+    if (activeComp.actions.length || activeComp.state.length) {
+      imports += "import { ";
+      if (activeComp.actions.length && activeComp.state.length) {
+        imports += "mapState, mapActions";
+      } else if (activeComp.state.length) imports += "mapState";
+      else imports += "mapActions";
+      imports += ` } from "pinia";\nimport { /* store */} from '/* ./store */'`; // changed from 'vuex' pinia
+    }
+  // }
   // if Typescript toggle is on, import defineComponent
   if (exportAsTypescript.value === "on") {
     imports += 'import { defineComponent } from "vue";\n';
@@ -471,7 +457,7 @@ const createBoiler = (componentName: string, children: string[]) => {
 
   // add imports for children
   children.forEach((name) => {
-    imports += `import ${name} from '@/components/${name}.vue';\n`;
+    imports += `import ${name} from './components/${name}.vue';\n`;
   });
 
   // add components section
@@ -529,7 +515,7 @@ const createBoiler = (componentName: string, children: string[]) => {
   let computed = "";
   if (activeComp.state.length) {
     computed += " computed: {";
-    computed += "\n    ...mapState([";
+    computed += "\n    ...mapState(/* store */, [";
     activeComp.state.forEach((state) => {
       computed += `\n      "${state}", `;
     });
@@ -541,7 +527,7 @@ const createBoiler = (componentName: string, children: string[]) => {
   let methods = "";
   if (activeComp.actions.length) {
     methods += "  methods: {";
-    methods += "\n    ...mapActions([";
+    methods += "\n    ...mapActions(/* store */, [";
     activeComp.actions.forEach((action) => {
       methods += `\n      "${action}", `;
     });
@@ -573,8 +559,171 @@ const createBoiler = (componentName: string, children: string[]) => {
   for (const html of htmlArray) {
     if (html.class === " ") styleString = "";
     if (html.class) {
-      styleString += `.${html.class} {\n height: ${html.h}%; \n width: ${html.w}%; \n top: ${html.x}%; \n left: ${html.y}%; \n z-index: ${html.z};
-}\n`;
+      styleString += `.${html.class} {\n height: ${html.h}%; \n width: ${html.w}%; \n top: ${html.x}%;
+       \n left: ${html.y}%; \n z-index: ${html.z};}\n`;
+    }
+  }
+
+  // concat all code within script tags
+  // if exportAsTypescript is on, out should be <script lang="ts">
+  let output;
+  if (exportAsTypescript.value === "on") {
+    output = "\n\n<script lang='ts'>\n";
+    output +=
+      vuetensilsImports +
+      imports +
+      "\nexport default defineComponent ({\n  name: '" +
+      componentName +
+      "';";
+  } else {
+    output = "\n\n<script>\n";
+    output +=
+      vuetensilsImports +
+      imports +
+      "\nexport default {\n  name: '" +
+      componentName +
+      "'";
+  }
+  output += ",\n  components: {\n";
+  output += childrenComponentNames + "  },\n";
+  output += data;
+  output += computed;
+  output += methods;
+
+  if (exportAsTypescript.value === "on") {
+    output += "});\n<\/script>\n\n<style scoped>\n</style>";
+  } else {
+    output += `}; \n <\/script>\n\n<style scoped>\n${styleString}</style > `;
+  }
+
+  return output;
+};
+
+const createBoilerComposition = (componentName: string, children: string[]) => {
+  // add import mapstate and mapactions if they exist
+  let imports = "";
+  const activeComp = componentMap.value[activeComponent.value] as Component;
+  // if (checked.value === false) {
+    if (activeComp.actions.length || activeComp.state.length) {
+      imports += "import { ";
+      if (activeComp.actions.length && activeComp.state.length) {
+        imports += "mapState, mapActions";
+      } else if (activeComp.state.length) imports += "mapState";
+      else imports += "mapActions";
+      imports += ` } from "pinia";\nimport { /* store */} from '/* ./store */'`; // changed from 'vuex' pinia
+    }
+  // }
+  // if Typescript toggle is on, import defineComponent
+  if (exportAsTypescript.value === "on") {
+    imports += 'import { defineComponent } from "vue";\n';
+  }
+
+  // add imports for children
+  children.forEach((name) => {
+    imports += `import ${name} from './components/${name}.vue';\n`;
+  });
+
+  // add components section
+  let childrenComponentNames = "";
+  children.forEach((name) => {
+    childrenComponentNames += `    ${name},\n`;
+  });
+
+  // if true add data section and populate with props
+  let data = "";
+  if (activeComp.props.length) {
+    data += "  props: {";
+    activeComp.props.forEach((prop) => {
+      data += `\n    ${prop}: "PLACEHOLDER FOR VALUE",`;
+    });
+    data += "\n";
+    //data += "    }\n";
+    data += "  },\n";
+  }
+
+  const htmlBinding = componentMap.value[activeComponent.value].htmlList;
+
+  // [OverVue v.10.0] add Vuetensils import statements to <script setup>
+
+  const vuetensilsSet = new Set(Object.keys(vtIcons));
+
+  let vuetensilsImports = "";
+
+  const vtComponents: string[] = [];
+
+  htmlBinding.forEach((el) => {
+    if (vuetensilsSet.has(el.text)) {
+      // Add import statement for Vuetensils components
+      vtComponents.push(el.text);
+    }
+  });
+
+  if (vtComponents.length) {
+    vuetensilsImports += `import { ${vtComponents.join(
+      ", "
+    )} } from 'vuetensils/src/components';\n`;
+  }
+/*------------- setup() function -------------*/
+  data += "  setup() {\n    return {\n";
+  htmlBinding.forEach((el) => {
+    if (el.binding !== "") {
+      data += `      ${el.binding}: "PLACEHOLDER FOR VALUE", `;
+      data += "\n";
+    }
+  });
+  data += `    }`;
+  data += ` \n  },  \n `;
+
+  // if true add computed section and populate with state
+  let computed = "";
+  if (activeComp.state.length) {
+    // data += " data: {";
+    // computed += "\n    ...mapState(/* store */, ["; `${activeComp.state}`
+    activeComp.state.forEach((state) => {
+      data += `\n      /* store*/.${state}, `;
+    });
+    computed += "\n    ]),\n";
+    computed += "  },\n";
+  }
+
+  // if true add methods section and populate with actions
+  let methods = "";
+  if (activeComp.actions.length) {
+    methods += "  methods: {";
+    methods += "\n    ...mapActions(/* store */, [";
+    activeComp.actions.forEach((action) => {
+      methods += `\n      /*store*/.${action}, `;
+    });
+    methods += "\n    ]),\n";
+    methods += "  },\n";
+  }
+
+  let htmlArray = componentMap.value[componentName].htmlList;
+  let styleString = "";
+  const activeCompObj = activeComponentObj.value as Component; // typed this to fix activeComponentObj.value "is possibly null" error
+  if (
+    activeComponentObj.value &&
+    (activeComponentObj.value as Component).htmlAttributes.class !== ""
+  ) {
+    styleString += `.${
+      (activeComponentObj.value as Component).htmlAttributes.class
+    } { \n\tbackground-color: ${(activeComponentObj.value as Component).color};
+\tgrid-area: ${
+      (activeComponentObj.value as Component).htmlAttributes.gridArea[0]
+    } / ${
+      (activeComponentObj.value as Component).htmlAttributes.gridArea[1]
+    } / ${
+      (activeComponentObj.value as Component).htmlAttributes.gridArea[2]
+    } / ${(activeComponentObj.value as Component).htmlAttributes.gridArea[3]};
+\tz-index: ${(activeComponentObj.value as Component).z};
+} \n`;
+  }
+
+  for (const html of htmlArray) {
+    if (html.class === " ") styleString = "";
+    if (html.class) {
+      styleString += `.${html.class} {\n height: ${html.h}%; \n width: ${html.w}%; \n top: ${html.x}%;
+       \n left: ${html.y}%; \n z-index: ${html.z};}\n`;
     }
   }
 
@@ -643,5 +792,86 @@ watch(
 
 .prism-editor__textarea:focus {
   outline: none;
+}
+
+.top-p-container{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+// ---------------------- styling for slider ----------------------
+.switch-container {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+.code-switch {
+  position: relative;
+  display: inline-block;
+  width: 35px; // was 35px
+  height: 22px;
+  margin: 8px;
+}
+
+.code-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: transparent;
+  -webkit-transition: 0.7s;
+  transition: 0.7s;
+  border: 1px solid #ffffff;
+  background-size: 30px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 0px;
+  bottom: 0px;
+  background-color: #34ab83;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  border: solid 1px #fff;
+}
+
+input:checked + .slider {
+  background-color: transparent;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2567A2;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(31px);
+  -ms-transform: translateX(31px);
+  transform: translateX(15px);
+  background: #34ab83;
+  -webkit-transition: 0.7s;
+  transition: 0.7s;
+  border: solid 1px #fff;
+}
+
+.slider.round {
+  border-radius: 24px;
+  border-color: #ffffff;
+}
+
+.slider.round:before {
+  border-radius: 50px; // was 50%
+  border-color: #ffffff;
 }
 </style>
