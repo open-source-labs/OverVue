@@ -605,12 +605,7 @@ const createBoilerComposition = (componentName: string, children: string[]) => {
   const activeComp = componentMap.value[activeComponent.value] as Component;
   // if (checked.value === false) {
     if (activeComp.actions.length || activeComp.state.length) {
-      imports += "import { ";
-      if (activeComp.actions.length && activeComp.state.length) {
-        imports += "mapState, mapActions";
-      } else if (activeComp.state.length) imports += "mapState";
-      else imports += "mapActions";
-      imports += ` } from "pinia";\nimport { /* store */} from '/* ./store */'`; // changed from 'vuex' pinia
+      imports += `import { /* useStore */ } from '/* ./store */';\n`; // changed from 'vuex' pinia
     }
   // }
   // if Typescript toggle is on, import defineComponent
@@ -624,7 +619,7 @@ const createBoilerComposition = (componentName: string, children: string[]) => {
   });
 
   // add components section
-  let childrenComponentNames = "";
+  let childrenComponentNames = "\n";
   children.forEach((name) => {
     childrenComponentNames += `    ${name},\n`;
   });
@@ -640,6 +635,7 @@ const createBoilerComposition = (componentName: string, children: string[]) => {
     //data += "    }\n";
     data += "  },\n";
   }
+ 
 
   const htmlBinding = componentMap.value[activeComponent.value].htmlList;
 
@@ -664,38 +660,45 @@ const createBoilerComposition = (componentName: string, children: string[]) => {
     )} } from 'vuetensils/src/components';\n`;
   }
 /*------------- setup() function -------------*/
-  data += "  setup() {\n    return {\n";
+data = " setup() {"
+if(activeComp.state.length || activeComp.actions.length){
+  data += "   \n   const /* testStore */ = useStore();  ";
+}
   htmlBinding.forEach((el) => {
     if (el.binding !== "") {
       data += `      ${el.binding}: "PLACEHOLDER FOR VALUE", `;
       data += "\n";
     }
   });
-  data += `    }`;
-  data += ` \n  },  \n `;
+
+  let returnStatement = "";
+
+  if (activeComp.state.length || activeComp.actions.length) {
+    returnStatement = "\n  return { \n";
+  }
+
 
   // if true add computed section and populate with state
   let computed = "";
   if (activeComp.state.length) {
-    // data += " data: {";
-    // computed += "\n    ...mapState(/* store */, ["; `${activeComp.state}`
+    const currState = 
     activeComp.state.forEach((state) => {
-      data += `\n      /* store*/.${state}, `;
+      data += `\n   const ${state} = computed(() => /* testStore */.${state}); `;
+      returnStatement += `   ${state}, \n`
+      
     });
-    computed += "\n    ]),\n";
-    computed += "  },\n";
+    // line 22
   }
+
+  data += '\n };'
 
   // if true add methods section and populate with actions
   let methods = "";
   if (activeComp.actions.length) {
-    methods += "  methods: {";
-    methods += "\n    ...mapActions(/* store */, [";
     activeComp.actions.forEach((action) => {
-      methods += `\n      /*store*/.${action}, `;
+      methods += `\n   const ${action} = () => /* testStore */.${action}();`;
+      returnStatement += `   ${action}, \n`
     });
-    methods += "\n    ]),\n";
-    methods += "  },\n";
   }
 
   let htmlArray = componentMap.value[componentName].htmlList;
@@ -747,7 +750,7 @@ const createBoilerComposition = (componentName: string, children: string[]) => {
       componentName +
       "'";
   }
-  output += ",\n  components: {\n";
+  output += ",\n  components: {";
   output += childrenComponentNames + "  },\n";
   output += data;
   output += computed;
@@ -755,8 +758,12 @@ const createBoilerComposition = (componentName: string, children: string[]) => {
 
   if (exportAsTypescript.value === "on") {
     output += "});\n<\/script>\n\n<style scoped>\n</style>";
+  } else if (activeComp.state.length || activeComp.actions.length) {
+    output += `   \n}; \n  ${returnStatement}  };
+    \n<\/script>\n\n<style scoped>\n${styleString}</style > `;
   } else {
-    output += `}; \n <\/script>\n\n<style scoped>\n${styleString}</style > `;
+    output += `   \n}; \n  
+    \n<\/script>\n\n<style scoped>\n${styleString}</style > `;
   }
 
   return output;
