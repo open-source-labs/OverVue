@@ -18,6 +18,9 @@ function createWindow() {
     height: 600,
     useContentSize: true,
     webPreferences: {
+      // JAIME: i tried adding these two below to make window.require('fs') work
+      // nodeIntegration: true,
+      // contextIsolation: false,
       contextIsolation: true,
       // More info: https://v2.quasar.dev/quasar-cli-webpack/developing-electron-apps/electron-preload-script
       preload: path.resolve(__dirname, process.env.QUASAR_ELECTRON_PRELOAD),
@@ -63,40 +66,95 @@ ipcMain.handle('showSaveDialog', async (event, options) => {
   return { filePath };
 });
 
-ipcMain.handle('writeFile', async (event, { filePath, data }) => {
+ipcMain.handle('writeJSON', async (event, { filePath, data }) => {
   fs.writeFileSync(filePath, data);
 });
 
-// //handler for Import
+//handler for Import
+
 ipcMain.handle('openProject', async (event, options) => {
 if (mainWindow) {
   //{ filePaths } destructured comes fromdialog.showOpenDialog() function.
-const { filePaths } = await dialog.showOpenDialog(mainWindow, options);
-return { filePaths };
+  const { filePaths } = await dialog.showOpenDialog(mainWindow, options);
+
+  console.log("filePaths from main is", filePaths);
+  if (!filePaths) return;
+    const readData = await fs.readFileSync(filePaths[0], "utf8");
+    console.log("readData is", readData);
+    const jsonFile = JSON.parse(readData);
+    console.log("jsonFile is", jsonFile);
+  return { jsonFile };
 }
+
+//Kevin: I think calling readFileSync here in electron main is actually what we're supposed to do
+//and then we send the received data back to Import
+//because in here, readFileSync should be a function that has access to the res data
+
 });
 
-//START: OLD import code block below
-//   try {
-//     if (mainWindow) {
-//       const { filePaths } = await dialog.showOpenDialog(mainWindow, options);
-//       console.log('Import dialog result:', filePaths); // Log the filePaths
-//       if (filePaths.length > 0) {
-//         const data = fs.readFileSync(filePaths[0], 'utf8');
-//         return JSON.parse(data); // Return the imported data
-//       }
-//     } else {
-//       console.error('Main window is undefined');
-//     }
-//   } catch (error) {
-//     console.error('Failed to import project:', error);
-//   }
-//END
 
 
-// //handler for Export
+
+//handlers for Export
 ipcMain.handle("exportProject", async (event, options) => {
   const { dialog } = require("electron");
   const { filePath } = await dialog.showSaveDialog(options);
+  if (filePath === '') {
+    throw new Error('No file path selected');
+  }
   return { filePath };
 });
+
+ipcMain.handle('writeFile', async (event, filePath, content) => { //possibly merge this with 'writeJSON' handle
+  // console.log('writeFile filePath:', filePath, '\n content:', content);
+  console.log("writeFile filePath:", filePath);
+  await fs.writeFile(filePath, content, (err) => {
+      if (err) {
+        console.log(`${err} in fs.writeFile`);
+      } else {
+        console.log("File written successfully");
+      }
+    });
+    console.log('finished fs.writeSync')
+  return { status: "success" };
+  // return new Promise(async (resolve, reject) => {
+  //   await fs.writeFile(filePath, content, (err) => {
+  //     if (err) {
+  //       reject(err);
+  //     } else {
+  //       resolve("File written successfully");
+  //     }
+  //   });
+  // });
+});
+
+// ipcMain.handle('existSync',(event, { path }) => {
+//   return fs.existsSync(path)
+// });
+
+ipcMain.handle('check-file-exists', async (event, path) => {
+  const fileExists = await fs.existsSync(path);
+  console.log("fileExists", fileExists);
+
+  if (fileExists) return { status: true };
+  return { status: false };
+});
+
+ipcMain.handle('mkdirSync', async (event, args: string[] ) => {
+  console.log('about to make new directory')
+  console.log("args", args);
+  const mkdirPath = await path.join(...args);
+  console.log("mkdirPath", mkdirPath);
+  await fs.mkdirSync(mkdirPath);
+  console.log("finished making new directory");
+  return { status: 'success' };
+});
+
+ipcMain.handle('pathJoin', (event, ...args: any[]) => {//should expect args and output to be string
+  // for(const arg:any of [...args])
+  console.log('pathJoin args:', ...args);
+  const newPath:string = path.join(...args);
+  console.log('newPath', newPath)
+  return newPath; //return string directly instead of object
+});
+

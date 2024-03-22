@@ -108,7 +108,7 @@ const saveJSONLocation = (filePath: string) => {
     console.log('Project data:', stateRef);
 
     ipcRenderer
-      .invoke('writeFile', { filePath, data: JSON.stringify(stateRef) })
+      .invoke('writeJSON', { filePath, data: JSON.stringify(stateRef) })
       .then(() => {
         if (fileName) {
           localforage.setItem(fileName, stateRef);

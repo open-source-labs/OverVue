@@ -1,10 +1,11 @@
+import { reactive } from 'vue';
 import { icons, vtIcons } from "./icons";
 import htmlElementMap from "./htmlElementMap";
 import * as types from "../../../types";
-
+ 
 const cloneDeep = require("lodash.clonedeep");
 
-const newState: types.State = {
+const state = reactive ({
   mode: "tree",
   clicked: false,
   icons,
@@ -75,7 +76,9 @@ const newState: types.State = {
   importLibraries: [],
   displaylibComponent: false,
   importTest: "off",
-};
+});
+
+const newState = cloneDeep(state);
 
 // closured method to ensure we only ever write the default state ONCE
 const writeTheDefault = (): any => {

@@ -42,6 +42,9 @@ import {
   RouteComponentMap,
 } from "../../../types";
 import { useExportComponent } from "../composables/useExportComponent";
+// import * as fs from "fs"
+// import { fs } from "electron";
+// import { path } from 'path';
 
 // @ts-ignore
 const { fs, ipcRenderer, path } = window;
@@ -61,21 +64,86 @@ const exportOauthGithub = computed(() => store.exportOauthGithub);
 const importTest = computed(() => store.importTest);
 
 /* METHODS */
-
 const showExportProjectDialog = () => {
   ipcRenderer
-    .invoke("exportProject", {
-      title: "Choose location to save folder in",
-      message: "Choose location to save folder in",
-      nameFieldLabel: "Application Name",
-    })
-    .then((result: { filePath: string }) => {
-      console.log('result', result, 'result.filePath', result.filePath)
+  .invoke("exportProject", {
+    title: "Choose location to save folder in",
+    message: "Choose location to save folder in",
+    nameFieldLabel: "Application Name",
+  })
+  .then((result: { filePath: string }) => {
+    console.log('results from showExportProjectDialog are', result, 'result.filePath', result.filePath)
+    if (result.filePath) {
       exportFile(result.filePath);
       alert("Successfully Exported");
-    })
-    .catch((err: Error) => console.log(err));
+    } else {
+      console.error('No file path selected');
+    }
+  })
+  .catch((err: Error) => console.log(err));
 };
+
+const writeFile = async(filePath: any, content: any) => {
+  if (!filePath) {
+    console.error('filePath is undefined');
+    return;
+  }
+  await ipcRenderer.invoke('writeFile', filePath, content )
+    .then((response: any) => console.log('writeFile response is', response))
+    .catch((error:any) => console.error(error));
+}
+
+async function checkFileExists(path:string) {
+  console.log('checkFileExist fx invoked');
+  const fileExistBool = await ipcRenderer.invoke('check-file-exists', path);
+  console.log("fileExistBool is", fileExistBool.status)
+  return fileExistBool.status;
+};
+// const existSync = (filePath: any) => {
+//   ipcRenderer.invoke('existSync', { filePath })
+//     .then((response: any) => console.log('existSync response is', response))
+//     .catch((error:any) => console.error(error));
+
+
+const mkdirSync = async (...args:string[]) => {
+  console.log('mkdirSync args in client-side is', args)
+  await ipcRenderer.invoke('mkdirSync', [...args ])
+    .then((response: any) => console.log('mkdirSync response is', response))
+    .catch((error:any) => console.error(error));
+}
+
+const pathJoin = (...args:string[]) => {
+  if (args.some(arg => arg === undefined)) { //undefined handler for if any args are undefined
+    console.error('arguments are undefined)');
+    return;
+  }
+
+  return ipcRenderer.invoke('pathJoin',  ...args )
+    .then((response: any) => {
+        console.log('PathJoin response is', response);
+        return response;
+    })
+    .catch((error:any) => {
+        console.error(error);
+        throw error;
+    });
+}
+
+// //promise method for pathJoin
+// const pathJoin = (...args:string[]) => {
+//   return new Promise((resolve, reject) => {
+//     ipcRenderer.invoke('pathJoin', ...args)
+//       .then((response: any) => {
+//         console.log('response.data is', response.data);
+//         resolve(response.data);
+//       })
+//       .catch((error: any) => {
+//         console.error(error);
+//         reject(error);
+//       });
+//   });
+// }
+
 
 const exportProject = () => showExportProjectDialog();
 
@@ -86,17 +154,25 @@ const exportProject = () => showExportProjectDialog();
  *          createExport(this.componentMap['App'].children)
  *  */
 
-const createRouter = (location: string) => {
+const createRouter = async (location: string) => {
   if (exportAsTypescript.value === "on") {
-    fs.writeFileSync(
-      path.join(location, "src", "router", "index.ts"),
+    // fs.writeFileSync(
+      console.log('about to write createRouter')
+      await writeFile(
+      // path.join(location, "src", "router", "index.ts"),
+      await pathJoin(location, "src", "router", "index.ts"),
       createRouterImports(routes.value) + createExport(routes.value)
     );
+    console.log('finished write createRouter')
   } else {
-    fs.writeFileSync(
-      path.join(location, "src", "router", "index.js"),
+    // fs.writeFileSync(
+      console.log('about to write createRouter')
+      await writeFile(
+      // path.join(location, "src", "router", "index.js"),
+      await pathJoin(location, "src", "router", "index.js"),
       createRouterImports(routes.value) + createExport(routes.value)
     );
+    console.log('finished write createRouter')
   }
 };
 
@@ -163,7 +239,7 @@ test('renders ${componentName}', () => {
   return results.reduce((acc, ele) => (acc += ele), "");
 };
 
-const createComponentTestCode = (
+const createComponentTestCode = async(
   componentLocation: string,
   componentName: string,
   componentMap: {
@@ -172,7 +248,9 @@ const createComponentTestCode = (
     [key: string]: RouteComponentMap | Component;
   }
 ) => {
-  fs.writeFileSync(
+  // fs.writeFileSync(
+    console.log('about to write createComponentTestCode')
+      await writeFile(
     componentLocation,
     writeRenderUnitTestString(
       componentName,
@@ -181,7 +259,7 @@ const createComponentTestCode = (
   );
 };
 
-const createComponentCode = (
+const createComponentCode = async(
   componentLocation: string,
   componentName: string,
   children: {
@@ -191,27 +269,34 @@ const createComponentCode = (
   }
 ) => {
   if (componentName === "App") {
-    fs.writeFileSync(
+    // fs.writeFileSync(
+      console.log('about to write createComponentCode')
+      await writeFile(
       componentLocation + ".vue",
       writeTemplate(componentName, children, routes.value) +
         writeStyle(componentName)
     );
+    console.log('finished write createComponent code')
   } else {
-    fs.writeFileSync(
+    // fs.writeFileSync(
+      console.log('about to write createComponent code')
+      await writeFile(
       componentLocation + ".vue",
       writeComments(componentName) +
         writeTemplate(componentName, children, routes.value) +
         writeScript(componentName, children) +
         writeStyle(componentName)
     );
+    console.log('finished to write createComponent code')
   }
 };
 
-const createAssetFile = (targetLocation: string, assetLocation: string) => {
+const createAssetFile = async (targetLocation: string, assetLocation: string) => {
   // @ts-ignore
   let saved = remote.nativeImage.createFromPath(assetLocation);
   let urlData = saved.toPNG();
-  fs.writeFileSync(targetLocation + ".png", urlData);
+  // fs.writeFileSync(targetLocation + ".png", urlData);
+  await writeFile(targetLocation + ".png", urlData);
 };
 
 const writeTemplateTag = (componentName: string) => {
@@ -807,7 +892,7 @@ const writeStyle = (componentName: string) => {
   } else return `\n\n<style scoped>\n${styleString}</style >`;
 };
 
-const createFirebaseConfigFile = (location: string) => {
+const createFirebaseConfigFile = async(location: string) => {
   if (exportOauth.value === "on") {
     let str = `import { initializeApp } from 'firebase/app';`;
     str += `\n\tconst firebaseConfig = {`;
@@ -822,31 +907,40 @@ const createFirebaseConfigFile = (location: string) => {
     str += `\nconst firebaseApp = initializeApp(firebaseConfig);`;
     str += `\nexport default firebaseApp`;
 
-    fs.writeFileSync(path.join(location, "firebaseConfig.js"), str);
+    // fs.writeFileSync(path.join(location, "firebaseConfig.js"), str);
+    // fs.writeFileSync(
+      // writeFile(path.join(location, "firebaseConfig.js"), str);
+    await writeFile(await pathJoin(location, "firebaseConfig.js"), str);
   }
 };
 
-const createjestConfigFile = (location: string) => {
+const createjestConfigFile = async(location: string) => {
   if (importTest.value === "on") {
     let str = `module.exports = {`;
     str += `\n\tpreset: '@vue/cli-plugin-unit-jest'`;
     str += `\n}`;
-    fs.writeFileSync(path.join(location, "jest.config.js"), str);
+    // fs.writeFileSync(path.join(location, "jest.config.js"), str);
+    // fs.writeFileSync(
+      // writeFile(path.join(location, "jest.config.js"), str);
+    await writeFile(await pathJoin(location, "jest.config.js"), str);
   }
 };
 
-const createbabelConfigFile = (location: string) => {
+const createbabelConfigFile = async(location: string) => {
   if (importTest.value === "on") {
     let str = `module.exports = {`;
     str += `\n\tpresets: [`;
     str += `\n\t\t'@vue/cli-plugin-babel/preset'`;
     str += `\n\t]`;
     str += `\n}`;
-    fs.writeFileSync(path.join(location, "babel.config.js"), str);
+    // fs.writeFileSync(path.join(location, "babel.config.js"), str);
+    // fs.writeFileSync(
+      // writeFile(path.join(location, "babel.config.js"), str);
+    await writeFile(await pathJoin(location, "babel.config.js"), str);
   }
 };
 
-const createOauthFile = (location: string) => {
+const createOauthFile = async (location: string) => {
   if (exportOauth.value === "on" || exportOauthGithub.value === "on") {
     let str = `<template>`;
     str += `\n\t<!-- you can see the username when you log in -->`;
@@ -927,14 +1021,16 @@ const createOauthFile = (location: string) => {
     str += `\n<\/script>`;
     str += `\n<style scoped>`;
     str += `\n</style>`;
-    fs.writeFileSync(
-      path.join(location, "src", "components", "oauth.vue"),
+    // fs.writeFileSync(
+    await writeFile(
+      // path.join(location, "src", "components", "oauth.vue"),
+      await pathJoin(location, "src", "components", "oauth.vue"),
       str
     );
   }
 };
 
-const createIndexFile = (location: string) => {
+const createIndexFile = async (location: string) => {
   let str = `<!DOCTYPE html>\n<html lang="en">\n\n<head>`;
   str += `\n\t<meta charset="utf-8">`;
   str += `\n\t<meta http-equiv="X-UA-Compatible" content="IE=edge">`;
@@ -955,10 +1051,13 @@ const createIndexFile = (location: string) => {
   }
   str += `\n</body>\n\n`;
   str += `</html>\n`;
-  fs.writeFileSync(path.join(location, "index.html"), str);
+  // fs.writeFileSync(path.join(location, "index.html"), str);
+  // fs.writeFileSync(
+    // writeFile(path.join(location, "index.html"), str);
+  await writeFile(await pathJoin(location, "index.html"), str);
 };
 
-const createMainFile = (location: string) => {
+const createMainFile = async (location: string) => {
   let str = `import { createApp } from 'vue';`;
   str += `\nimport store from './store'`;
   str += `\nimport App from './App.vue';`;
@@ -973,13 +1072,17 @@ const createMainFile = (location: string) => {
 
   // if using typescript, export with .ts extension
   if (exportAsTypescript.value === "on") {
-    fs.writeFileSync(path.join(location, "src", "main.ts"), str);
+    // fs.writeFileSync(path.join(location, "src", "main.ts"), str);
+    // writeFile(path.join(location, "src", "main.ts"), str);
+    await writeFile(await pathJoin(await location, "src", "main.ts"), str);
   } else {
-    fs.writeFileSync(path.join(location, "src", "main.js"), str);
+    // fs.writeFileSync(path.join(location, "src", "main.js"), str);
+    // writeFile(path.join(location, "src", "main.js"), str);
+     await writeFile(await pathJoin(location, "src", "main.js"), str);
   }
 };
 
-const createViteConfig = (location: string) => {
+const createViteConfig = async (location: string) => {
   let str = `import { fileURLToPath, URL } from 'url';\n\n`;
   str += `import { defineConfig } from 'vite';\n`;
   str += `import vue from '@vitejs/plugin-vue';\n\n`;
@@ -992,13 +1095,17 @@ const createViteConfig = (location: string) => {
 
   // if using typescript, export with .ts extension
   if (exportAsTypescript.value === "on") {
-    fs.writeFileSync(path.join(location, "vite.config.ts"), str);
+    // fs.writeFileSync(path.join(location, "vite.config.ts"), str);
+    // writeFile(path.join(location, "vite.config.ts"), str);
+    await writeFile(await pathJoin(location, "vite.config.ts"), str);
   } else {
-    fs.writeFileSync(path.join(location, "vite.config.js"), str);
+    // fs.writeFileSync(path.join(location, "vite.config.js"), str);
+    // writeFile(path.join(location, "vite.config.js"), str);
+    await writeFile(await pathJoin(location, "vite.config.js"), str);
   }
 };
 
-const createESLintRC = (location: string) => {
+const createESLintRC = async (location: string) => {
   let str = "";
   if (exportAsTypescript.value === "on") {
     str += `require("@rushstack/eslint-patch/modern-module-resolution");\n\n`;
@@ -1015,39 +1122,46 @@ const createESLintRC = (location: string) => {
   str += `\t"env": {\n`;
   str += `\t\t"vue/setup-compiler-macros": true\n`;
   str += `\t}\n}`;
-  fs.writeFileSync(path.join(location, ".eslintrc.cjs"), str);
+  // fs.writeFileSync(path.join(location, ".eslintrc.cjs"), str);
+  await writeFile(await pathJoin(location, ".eslintrc.cjs"), str);
 };
 
-const createTSConfig = (location: string) => {
+const createTSConfig = async(location: string) => {
   if (exportAsTypescript.value === "on") {
     let str = `{\n\t"extends": "@vue/tsconfig/tsconfig.web.json",\n\t"include": ["env.d.ts", "src/**/*", "src/**/*.vue"],\n\t"compilerOptions": {\n\t\t"baseUrl": ".",\n\t\t"paths": {\n\t\t\t"@/*": ["./src/*"]\n\t\t}\n\t},`;
     str += `\t"references": [\n`;
     str += `\t\t{\n\t\t\t"path": "./tsconfig.vite-config.json"\n\t\t}\n\t]\n}`;
-    fs.writeFileSync(path.join(location, "tsconfig.json"), str);
+    // fs.writeFileSync(path.join(location, "tsconfig.json"), str);
+    // writeFile(path.join(location, "tsconfig.json"), str);
+    await writeFile(await pathJoin(location, "tsconfig.json"), str);
   } else {
     return;
   }
 };
 
-const createTSViteConfig = (location: string) => {
+const createTSViteConfig = async (location: string) => {
   if (exportAsTypescript.value === "on") {
     let str = `{\n\t"extends": "@vue/tsconfig/tsconfig.node.json",\n\t"include": ["vite.config.*"],\n\t"compilerOptions": {\n\t\t"composite": true,\n\t\t"types": ["node", "viteset"]\n\t}\n}`;
-    fs.writeFileSync(path.join(location, "tsconfig.vite-config.json"), str);
+    // fs.writeFileSync(path.join(location, "tsconfig.vite-config.json"), str);
+    // writeFile(path.join(location, "tsconfig.vite-config.json"), str);
+    await writeFile(await pathJoin(location, "tsconfig.vite-config.json"), str);
   } else {
     return;
   }
 };
 
-const createTSDeclaration = (location: string) => {
+const createTSDeclaration = async(location: string) => {
   if (exportAsTypescript.value === "on") {
     let str = `/// <reference types="vite/client" />`;
-    fs.writeFileSync(path.join(location, "env.d.ts"), str);
+    // fs.writeFileSync(path.join(location, "env.d.ts"), str);
+    // writeFile(path.join(location, "env.d.ts"), str);
+    await writeFile(await pathJoin(location, "env.d.ts"), str);
   } else {
     return;
   }
 };
 
-const createStore = (location: string) => {
+const createStore = async(location: string) => {
   let str = `import { createStore } from 'vuex';\n`;
   str += `\nconst store = createStore({`;
   str += `\n\tstate () {`;
@@ -1092,13 +1206,17 @@ const createStore = (location: string) => {
   str += "\n})\n";
   str += `\nexport default store;`;
   if (exportAsTypescript.value === "on") {
-    fs.writeFileSync(path.join(location, "src", "store", "index.ts"), str);
+    // fs.writeFileSync(path.join(location, "src", "store", "index.ts"), str);
+    // writeFile(path.join(location, "src", "store", "index.ts"), str);
+    await writeFile(await pathJoin(location, "src", "store", "index.ts"), str);
   } else {
-    fs.writeFileSync(path.join(location, "src", "store", "index.js"), str);
+    // fs.writeFileSync(path.join(location, "src", "store", "index.js"), str);
+    // writeFile(path.join(location, "src", "store", "index.js"), str);
+    await writeFile(await pathJoin(location, "src", "store", "index.js"), str);
   }
 };
 
-const createPackage = (location: string) => {
+const createPackage = async(location: string) => {
   let str = `{`;
   str += `\n\t"name": "My-OverVue-Project",`;
   str += `\n\t"version": "0.0.0",`;
@@ -1157,76 +1275,115 @@ const createPackage = (location: string) => {
     str += `\n\t\t"@vue/eslint-config-typescript": "^10.0.0"`;
   }
   str += `\n\t}\n}`;
-  fs.writeFileSync(path.join(location, "package.json"), str);
+  // fs.writeFileSync(path.join(location, "package.json"), str);
+  // writeFile(path.join(location, "package.json"), str);
+  await writeFile(await pathJoin(location, "package.json"), str);
 };
 
-const exportFile = (data: string) => {
+const exportFile = async (data: string) => {
   if (data === undefined) return;
-  if (!fs.existsSync(data)) {
-    fs.mkdirSync(data);
-    fs.mkdirSync(path.join(data, "public"));
-    fs.mkdirSync(path.join(data, "src"));
-    fs.mkdirSync(path.join(data, "src", "assets"));
-    fs.mkdirSync(path.join(data, "src", "components"));
-    fs.mkdirSync(path.join(data, "src", "views"));
-    fs.mkdirSync(path.join(data, "src", "router"));
-    fs.mkdirSync(path.join(data, "src", "store"));
-    fs.mkdirSync(path.join(data, "tests"));
-    fs.mkdirSync(path.join(data, "tests", "unit"));
+  console.log('exportFile data is', data)
+  // if (!fs.existsSync(data)) {
+  const existBool = await checkFileExists(data)
+  console.log( 'existBool', existBool);
+  if (!existBool) {
+    console.log('checkFileExist function came back false')
+    // fs.mkdirSync(data);
+    // fs.mkdirSync(path.join(data, "public"));
+    // fs.mkdirSync(path.join(data, "src"));
+    // fs.mkdirSync(path.join(data, "src", "assets"));
+    // fs.mkdirSync(path.join(data, "src", "components"));
+    // fs.mkdirSync(path.join(data, "src", "views"));
+    // fs.mkdirSync(path.join(data, "src", "router"));
+    // fs.mkdirSync(path.join(data, "src", "store"));
+    // fs.mkdirSync(path.join(data, "tests"));
+    // fs.mkdirSync(path.join(data, "tests", "unit"));
+    await mkdirSync(data);
+    await mkdirSync(data, "public");
+    await mkdirSync(data, "src");
+    await mkdirSync(data, "src", 'assets');
+    await mkdirSync(data, "src", 'components');
+    await mkdirSync(data, "src", 'views');
+    await mkdirSync(data, "src", 'router');
+    await mkdirSync(data, "src", 'store');
+    await mkdirSync(data, "tests");
+    await mkdirSync(data, "tests", 'units');
   }
+  console.log('checkFileExist function came back true')
   // creating basic boilerplate for vue app
-  createIndexFile(data);
-  createMainFile(data);
-  createViteConfig(data);
-  createESLintRC(data);
-  createTSConfig(data);
-  createTSViteConfig(data);
-  createTSDeclaration(data);
-  createPackage(data);
-  createStore(data);
-  createFirebaseConfigFile(data);
-  createOauthFile(data);
-  createjestConfigFile(data);
-  createbabelConfigFile(data);
+  await createIndexFile(data);
+  console.log('finished create index')
+  await createMainFile(data);
+    console.log('finished create main')
+  await createViteConfig(data);
+    console.log('finished create vite')
+  await createESLintRC(data);
+    console.log('finished create ESLint')
+  await createTSConfig(data);
+    console.log('finished create TSConfig')
+  await createTSViteConfig(data);
+    console.log('finished create TSVite')
+  await createTSDeclaration(data);
+    console.log('finished create TSDeclare')
+  await createPackage(data);
+    console.log('finished create package')
+  await createStore(data);
+    console.log('finished create store')
+  await createFirebaseConfigFile(data);
+    console.log('finished create firebase')
+  await createOauthFile(data);
+    console.log('finished create OAuth')
+  await createjestConfigFile(data);
+    console.log('finished create jest')
+  await createbabelConfigFile(data);
   // exports images to the /assets folder
   // eslint-disable-next-line no-unused-vars
+  console.log('finished all the create funcs blocks and about to start loop')
   for (let [routeImage, imageLocation] of Object.entries(imagePath.value)) {
     if (imageLocation !== "") {
-      createAssetFile(
-        path.join(data, "src", "assets", routeImage),
+      await createAssetFile(
+        // path.join(data, "src", "assets", routeImage),
+        await pathJoin(data, "src", "assets", routeImage),
         imageLocation
       );
     }
   }
+  console.log('finished loop')
   // main logic below for creating components
-  createRouter(data);
+  await createRouter(data);
   // eslint-disable-next-line no-unused-vars
+  console.log('created Router')
   for (const componentName in componentMap.value) {
     // if componentName is a route:
+    console.log('inside next loop')
     if (componentName !== "App") {
       if (routes.value[componentName]) {
-        createComponentCode(
-          path.join(data, "src", "views", componentName),
+        await createComponentCode(
+          // path.join(data, "src", "views", componentName),
+          await pathJoin(data, "src", "views", componentName),
           componentName,
           componentMap.value
         );
         // if componentName is a just a component
       } else {
-        createComponentCode(
-          path.join(data, "src", "components", componentName),
+        await createComponentCode(
+          // path.join(data, "src", "components", componentName),
+          await pathJoin(data, "src", "components", componentName),
           componentName,
           componentMap.value
         );
-        createComponentTestCode(
-          path.join(data, "tests", "unit", componentName + ".spec.js"),
+        await createComponentTestCode(
+          // path.join(data, "tests", "unit", componentName + ".spec.js"),
+          await pathJoin(data, "tests", "unit", componentName + ".spec.js"),
           componentName,
           componentMap.value
         );
       }
       // if componentName is App
     } else {
-      createComponentCode(
-        path.join(data, "src", componentName),
+      await createComponentCode(
+        // path.join(data, "src", componentName),
+        await pathJoin(data, "src", componentName),
         componentName,
         componentMap.value
       );

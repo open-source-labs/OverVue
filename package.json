@@ -1,6 +1,6 @@
 {
   "name": "overvue",
-  "version": "10.0.0",
+  "version": "11.0.0",
   "main": "dist/electron/UnPackaged/electron-main.js",
   "description": "Vue Prototype DevTool",
   "productName": "OverVue",
@@ -72,8 +72,7 @@
     "vue3-tree": "^0.11.0",
     "vued3tree": "^5.1.0",
     "vuedraggable": "^4.1.0",
-    "vuetensils": "^0.13.2",
-    "vuex": "^4.0.2"
+    "vuetensils": "^0.13.2"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.17.0",
@@ -99,7 +98,7 @@
   },
   "browser": {
     "crypto": false
-},
+  },
   "browserslist": [
     "last 10 Chrome versions",
     "last 10 Firefox versions",
@@ -111,9 +110,9 @@
     "last 10 iOS versions",
     "last 5 Opera versions"
   ],
-"engines": {
-  "node": ">= 16.13.0",
-  "npm": ">= 8.1.0",
-  "yarn": ">= 1.22.10"
-}
+  "engines": {
+    "node": ">= 16.13.0",
+    "npm": ">= 8.1.0",
+    "yarn": ">= 1.22.10"
+  }
 }
