@@ -291,13 +291,14 @@ const createComponentCode = async(
   }
 };
 
-const createAssetFile = async (targetLocation: string, assetLocation: string | unknown) => {
-  // @ts-ignore
-  let saved = remote.nativeImage.createFromPath(assetLocation);
-  let urlData = saved.toPNG();
-  // fs.writeFileSync(targetLocation + ".png", urlData);
-  await writeFile(targetLocation + ".png", urlData);
-};
+
+// const createAssetFile = async (targetLocation: string, assetLocation: string | unknown) => {
+//   // @ts-ignore
+//   let saved = remote.nativeImage.createFromPath(assetLocation);
+//   let urlData = saved.toPNG();
+//   // fs.writeFileSync(targetLocation + ".png", urlData);
+//   await writeFile(targetLocation + ".png", urlData);
+// };
 
 const writeTemplateTag = (componentName: string) => {
   const htmlElementMap: HtmlElementMap = {
@@ -1339,15 +1340,15 @@ const exportFile = async (data: string) => {
   // exports images to the /assets folder
   // eslint-disable-next-line no-unused-vars
   console.log('finished all the create funcs blocks and about to start loop')
-  for (let [routeImage, imageLocation] of Object.entries(imagePath.value)) {
-    if (imageLocation !== "") {
-      await createAssetFile(
-        // path.join(data, "src", "assets", routeImage),
-        await pathJoin(data, "src", "assets", routeImage),
-        imageLocation
-      );
-    }
-  }
+  // for (let [routeImage, imageLocation] of Object.entries(imagePath.value)) {
+  //   if (imageLocation !== "") {
+  //     await createAssetFile(
+  //       // path.join(data, "src", "assets", routeImage),
+  //       await pathJoin(data, "src", "assets", routeImage),
+  //       imageLocation
+  //     );
+  //   }
+  // }
   console.log('finished loop')
   // main logic below for creating components
   await createRouter(data);
