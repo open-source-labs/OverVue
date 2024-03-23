@@ -687,10 +687,9 @@ if(activeComp.state.length || activeComp.actions.length){
       returnStatement += `   ${state}, \n`
       
     });
-    // line 22
   }
 
-  data += '\n };'
+  data += '\n'
 
   // if true add methods section and populate with actions
   let methods = "";
@@ -757,16 +756,14 @@ if(activeComp.state.length || activeComp.actions.length){
   output += methods;
 
   if (exportAsTypescript.value === "on") {
-    output += "});\n<\/script>\n\n<style scoped>\n</style>";
-  } else if (activeComp.state.length || activeComp.actions.length) {
-    output += `   \n}; \n  ${returnStatement}  };
-    \n<\/script>\n\n<style scoped>\n${styleString}</style > `;
-  } else {
-    output += `   \n}; \n  
-    \n<\/script>\n\n<style scoped>\n${styleString}</style > `;
-  }
+  output += `    \n  ${returnStatement}  };  \n }; \n});\n<\/script>\n\n<style scoped>\n</style>`;
+} else if (activeComp.state.length || activeComp.actions.length) {
+  output += `    \n  ${returnStatement}  }; \n };\n<\/script>\n\n<style scoped>\n${styleString}</style > `;
+} else {
+  output += `   \n}; \n\n<\/script>\n\n<style scoped>\n${styleString}</style > `;
+}
 
-  return output;
+return output;
 };
 
 /* WATCHES */
