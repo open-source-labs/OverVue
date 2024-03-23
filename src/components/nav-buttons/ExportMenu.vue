@@ -291,7 +291,7 @@ const createComponentCode = async(
   }
 };
 
-const createAssetFile = async (targetLocation: string, assetLocation: string) => {
+const createAssetFile = async (targetLocation: string, assetLocation: string | unknown) => {
   // @ts-ignore
   let saved = remote.nativeImage.createFromPath(assetLocation);
   let urlData = saved.toPNG();
