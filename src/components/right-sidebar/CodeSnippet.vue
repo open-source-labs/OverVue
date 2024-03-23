@@ -57,8 +57,8 @@ import "vue-prism-editor/dist/prismeditor.min.css";
 import { useStore } from "../../store/main.js";
 import { vtIcons } from "src/store/state/icons";
 import { Component, HtmlElement, HtmlElementMap } from "../../../types";
-// import { createBoiler }  from './createBoilerFuncs/createBoilerFalse'
 
+/* Logic for toggle functionality between Options API and Composition API */
 // Declaring emits
 const emit = defineEmits(['input']);
 
@@ -102,7 +102,7 @@ const exportAsTypescript = computed(() => store.exportAsTypescript);
 const activeRoute = computed(() => store.activeRoute);
 
 /* METHODS */
-/* ------------------------ write logic to switch between options & composostion api ------------------------*/
+/* ------------------------ Logic to check if Options or Composition API is selected ------------------------*/
 const snippetInvoke = () => {
   if (activeComponent.value !== "" && checked.value === false) {
     code.value = createCodeSnippetOptions(
@@ -129,7 +129,7 @@ const getWindowHeight = () => {
   height.value = minHeight; // height.value here?
 };
 
-/*------------------- Options & Composition switch -------------------*/
+/*------------------- Template and Boiler code snippet invocations-------------------*/
 const createCodeSnippetOptions = (componentName: string, children: string[]) => {
   let result = `${createTemplate(componentName /*, children*/)}${createBoilerOptions(
     componentName,
@@ -435,21 +435,21 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
   return outputStr;
 };
 
-/* --------------- creates boiler text for <script> and <style> --------------- */
+/* --------------- creates boiler text for <script> and <style> in Options API --------------- */
 const createBoilerOptions = (componentName: string, children: string[]) => {
   // add import mapstate and mapactions if they exist
   let imports = "";
   const activeComp = componentMap.value[activeComponent.value] as Component;
-  // if (checked.value === false) {
+
     if (activeComp.actions.length || activeComp.state.length) {
       imports += "import { ";
       if (activeComp.actions.length && activeComp.state.length) {
         imports += "mapState, mapActions";
       } else if (activeComp.state.length) imports += "mapState";
       else imports += "mapActions";
-      imports += ` } from "pinia";\nimport { /* store */} from '/* ./store */'`; // changed from 'vuex' pinia
+      imports += ` } from "pinia";\nimport { /* store */} from '/* ./store */'\n`; // changed from 'vuex' pinia
     }
-  // }
+
   // if Typescript toggle is on, import defineComponent
   if (exportAsTypescript.value === "on") {
     imports += 'import { defineComponent } from "vue";\n';
@@ -599,15 +599,14 @@ const createBoilerOptions = (componentName: string, children: string[]) => {
   return output;
 };
 
+/* --------------- creates boiler text for <script> and <style> in Composition API --------------- */
 const createBoilerComposition = (componentName: string, children: string[]) => {
-  // add import mapstate and mapactions if they exist
   let imports = "";
   const activeComp = componentMap.value[activeComponent.value] as Component;
-  // if (checked.value === false) {
     if (activeComp.actions.length || activeComp.state.length) {
       imports += `import { /* useStore */ } from '/* ./store */';\n`; // changed from 'vuex' pinia
     }
-  // }
+ 
   // if Typescript toggle is on, import defineComponent
   if (exportAsTypescript.value === "on") {
     imports += 'import { defineComponent } from "vue";\n';
