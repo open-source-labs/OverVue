@@ -1,11 +1,11 @@
-<!-- 
+<!--
   LOCATION IN APP:
   [top-right corner] 'Export' > Current Project || Current Active Component
 
   FUNCTIONALITY:
   - Designs export dialog box for current project / current active component
 -->
-
+<!--
 <script>
 /* IMPORTS */
 import { mapState } from "vuex";
@@ -1014,3 +1014,4 @@ test('renders ${componentName}', () => {
   },
 };
 </script>
+-->
