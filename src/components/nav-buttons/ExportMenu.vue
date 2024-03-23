@@ -1315,6 +1315,7 @@ const exportFile = async (data: string) => {
   // exports images to the /assets folder
   // broken function. OverVue 10 and 11 did not have function to import imgs. Left in, if future iterations would like to work on in.
   // eslint-disable-next-line no-unused-vars
+  console.log('finished all the create funcs blocks and about to start loop')
   // for (let [routeImage, imageLocation] of Object.entries(imagePath.value)) {
   //   if (imageLocation !== "") {
   //     await createAssetFile(
@@ -1324,7 +1325,7 @@ const exportFile = async (data: string) => {
   //     );
   //   }
   // }
-
+  console.log('finished loop')
   // main logic below for creating components
   await createRouter(data);
   // eslint-disable-next-line no-unused-vars
