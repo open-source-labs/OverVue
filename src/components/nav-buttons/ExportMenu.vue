@@ -65,6 +65,7 @@ const importTest = computed(() => store.importTest);
 
 /* METHODS */
 const showExportProjectDialog = () => {
+  if (activeComponent.value === '') return alert('At least one component needs to be created');
   ipcRenderer
   .invoke("exportProject", {
     title: "Choose location to save folder in",
@@ -89,24 +90,15 @@ const writeFile = async(filePath: any, content: any) => {
     return;
   }
   await ipcRenderer.invoke('writeFile', filePath, content )
-    .then((response: any) => console.log('writeFile response is', response))
     .catch((error:any) => console.error(error));
 }
 
 async function checkFileExists(path:string) {
-  console.log('checkFileExist fx invoked');
   const fileExistBool = await ipcRenderer.invoke('check-file-exists', path);
-  console.log("fileExistBool is", fileExistBool.status)
   return fileExistBool.status;
 };
-// const existSync = (filePath: any) => {
-//   ipcRenderer.invoke('existSync', { filePath })
-//     .then((response: any) => console.log('existSync response is', response))
-//     .catch((error:any) => console.error(error));
-
 
 const mkdirSync = async (...args:string[]) => {
-  console.log('mkdirSync args in client-side is', args)
   await ipcRenderer.invoke('mkdirSync', [...args ])
     .then((response: any) => console.log('mkdirSync response is', response))
     .catch((error:any) => console.error(error));
@@ -120,7 +112,6 @@ const pathJoin = (...args:string[]) => {
 
   return ipcRenderer.invoke('pathJoin',  ...args )
     .then((response: any) => {
-        console.log('PathJoin response is', response);
         return response;
     })
     .catch((error:any) => {
@@ -128,22 +119,6 @@ const pathJoin = (...args:string[]) => {
         throw error;
     });
 }
-
-// //promise method for pathJoin
-// const pathJoin = (...args:string[]) => {
-//   return new Promise((resolve, reject) => {
-//     ipcRenderer.invoke('pathJoin', ...args)
-//       .then((response: any) => {
-//         console.log('response.data is', response.data);
-//         resolve(response.data);
-//       })
-//       .catch((error: any) => {
-//         console.error(error);
-//         reject(error);
-//       });
-//   });
-// }
-
 
 const exportProject = () => showExportProjectDialog();
 
@@ -220,6 +195,7 @@ const writeRenderUnitTestString = (
   componentName: string,
   htmlList: HtmlElement[]
 ) => {
+  console.log('in writeRenderUnitTestString')
   const imports = `import { mount } from '@vue/test-utils'
 import ${componentName} from '../../src/components/${componentName}.vue'
 `;
@@ -268,24 +244,25 @@ const createComponentCode = async(
     HomeView: RouteComponentMap;
   }
 ) => {
+  console.log('children is', children)
   if (componentName === "App") {
     // fs.writeFileSync(
-      console.log('about to write createComponentCode')
+      console.log('about to write createComponentCode for App')
       await writeFile(
       componentLocation + ".vue",
-      writeTemplate(componentName, children, routes.value) +
-        writeStyle(componentName)
+      await writeTemplate(componentName, children, routes.value) +
+        await writeStyle(componentName)
     );
     console.log('finished write createComponent code')
   } else {
     // fs.writeFileSync(
-      console.log('about to write createComponent code')
+      console.log('about to write createComponent code for not App')
       await writeFile(
       componentLocation + ".vue",
-      writeComments(componentName) +
-        writeTemplate(componentName, children, routes.value) +
-        writeScript(componentName, children) +
-        writeStyle(componentName)
+      await writeComments(componentName) +
+        await writeTemplate(componentName, children, routes.value) +
+        await writeScript(componentName, children) +
+        await writeStyle(componentName)
     );
     console.log('finished to write createComponent code')
   }
@@ -301,6 +278,7 @@ const createComponentCode = async(
 // };
 
 const writeTemplateTag = (componentName: string) => {
+  console.log('in writeTemplateTag')
   const htmlElementMap: HtmlElementMap = {
     div: ["<div", "</div>"],
     button: ["<button", "</button>"],
@@ -497,12 +475,16 @@ const writeTemplateTag = (componentName: string) => {
   // Helper function that recursively iterates through the given html element's children and their children's children.
   // also adds proper indentation to code snippet
   // add childComponents of the activeCompnent to the htmlElementMap
+  console.log('activeComponent.value', activeComponent.value)
+  console.log('activeComponent', activeComponent)
   const childComponents = componentMap.value[activeComponent.value].children;
   // childComponents.forEach((child) => {
   //   htmlElementMap[child] = [`<${child}`, ""]; //single
   // });
-
+  console.log('childComponents is', childComponents)
   const writeNested = (childrenArray: HtmlElement[], indent: string) => {
+    console.log('in writeNested')
+    console.log('childrenArray', childrenArray, '\nindent', indent)
     if (!childrenArray.length) {
       return "";
     }
@@ -628,6 +610,7 @@ const writeTemplate = (
   },
   routes: { [key: string]: Component[] }
 ) => {
+  console.log('children in writeTemplate is', children)
   let str = "";
   let routeStr = "";
 
@@ -1355,10 +1338,14 @@ const exportFile = async (data: string) => {
   // eslint-disable-next-line no-unused-vars
   console.log('created Router')
   for (const componentName in componentMap.value) {
+    console.log('componentMap.value', componentMap.value)
+    console.log('componentName', componentName)
     // if componentName is a route:
     console.log('inside next loop')
     if (componentName !== "App") {
+      console.log('inside componentName !== "App"')
       if (routes.value[componentName]) {
+        console.log('inside routes.value[componentName]')
         await createComponentCode(
           // path.join(data, "src", "views", componentName),
           await pathJoin(data, "src", "views", componentName),
@@ -1367,6 +1354,7 @@ const exportFile = async (data: string) => {
         );
         // if componentName is a just a component
       } else {
+        console.log('inside [else] routes.value[componentName]')
         await createComponentCode(
           // path.join(data, "src", "components", componentName),
           await pathJoin(data, "src", "components", componentName),
@@ -1382,6 +1370,7 @@ const exportFile = async (data: string) => {
       }
       // if componentName is App
     } else {
+      console.log('in [else] componentName !== "App"')
       await createComponentCode(
         // path.join(data, "src", componentName),
         await pathJoin(data, "src", componentName),
