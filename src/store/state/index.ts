@@ -6,6 +6,9 @@ import * as types from "../../../types";
 const cloneDeep = require("lodash.clonedeep");
 
 const state = reactive ({
+  // state for options/compodition API
+  options: false,
+
   mode: "tree",
   clicked: false,
   icons,
