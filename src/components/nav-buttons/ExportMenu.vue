@@ -65,6 +65,7 @@ const importTest = computed(() => store.importTest);
 
 /* METHODS */
 const showExportProjectDialog = () => {
+  if (activeComponent.value === '') return alert('At least one component needs to be created');
   ipcRenderer
   .invoke("exportProject", {
     title: "Choose location to save folder in",
@@ -89,24 +90,15 @@ const writeFile = async(filePath: any, content: any) => {
     return;
   }
   await ipcRenderer.invoke('writeFile', filePath, content )
-    .then((response: any) => console.log('writeFile response is', response))
     .catch((error:any) => console.error(error));
 }
 
 async function checkFileExists(path:string) {
-  console.log('checkFileExist fx invoked');
   const fileExistBool = await ipcRenderer.invoke('check-file-exists', path);
-  console.log("fileExistBool is", fileExistBool.status)
   return fileExistBool.status;
 };
-// const existSync = (filePath: any) => {
-//   ipcRenderer.invoke('existSync', { filePath })
-//     .then((response: any) => console.log('existSync response is', response))
-//     .catch((error:any) => console.error(error));
-
 
 const mkdirSync = async (...args:string[]) => {
-  console.log('mkdirSync args in client-side is', args)
   await ipcRenderer.invoke('mkdirSync', [...args ])
     .then((response: any) => console.log('mkdirSync response is', response))
     .catch((error:any) => console.error(error));
@@ -120,7 +112,6 @@ const pathJoin = (...args:string[]) => {
 
   return ipcRenderer.invoke('pathJoin',  ...args )
     .then((response: any) => {
-        console.log('PathJoin response is', response);
         return response;
     })
     .catch((error:any) => {
@@ -128,22 +119,6 @@ const pathJoin = (...args:string[]) => {
         throw error;
     });
 }
-
-// //promise method for pathJoin
-// const pathJoin = (...args:string[]) => {
-//   return new Promise((resolve, reject) => {
-//     ipcRenderer.invoke('pathJoin', ...args)
-//       .then((response: any) => {
-//         console.log('response.data is', response.data);
-//         resolve(response.data);
-//       })
-//       .catch((error: any) => {
-//         console.error(error);
-//         reject(error);
-//       });
-//   });
-// }
-
 
 const exportProject = () => showExportProjectDialog();
 
@@ -220,6 +195,7 @@ const writeRenderUnitTestString = (
   componentName: string,
   htmlList: HtmlElement[]
 ) => {
+  console.log('in writeRenderUnitTestString')
   const imports = `import { mount } from '@vue/test-utils'
 import ${componentName} from '../../src/components/${componentName}.vue'
 `;
@@ -268,38 +244,41 @@ const createComponentCode = async(
     HomeView: RouteComponentMap;
   }
 ) => {
+  console.log('children is', children)
   if (componentName === "App") {
     // fs.writeFileSync(
-      console.log('about to write createComponentCode')
+      console.log('about to write createComponentCode for App')
       await writeFile(
       componentLocation + ".vue",
-      writeTemplate(componentName, children, routes.value) +
-        writeStyle(componentName)
+      await writeTemplate(componentName, children, routes.value) +
+        await writeStyle(componentName)
     );
     console.log('finished write createComponent code')
   } else {
     // fs.writeFileSync(
-      console.log('about to write createComponent code')
+      console.log('about to write createComponent code for not App')
       await writeFile(
       componentLocation + ".vue",
-      writeComments(componentName) +
-        writeTemplate(componentName, children, routes.value) +
-        writeScript(componentName, children) +
-        writeStyle(componentName)
+      await writeComments(componentName) +
+        await writeTemplate(componentName, children, routes.value) +
+        await writeScript(componentName, children) +
+        await writeStyle(componentName)
     );
     console.log('finished to write createComponent code')
   }
 };
 
-const createAssetFile = async (targetLocation: string, assetLocation: string) => {
-  // @ts-ignore
-  let saved = remote.nativeImage.createFromPath(assetLocation);
-  let urlData = saved.toPNG();
-  // fs.writeFileSync(targetLocation + ".png", urlData);
-  await writeFile(targetLocation + ".png", urlData);
-};
+
+// const createAssetFile = async (targetLocation: string, assetLocation: string | unknown) => {
+//   // @ts-ignore
+//   let saved = remote.nativeImage.createFromPath(assetLocation);
+//   let urlData = saved.toPNG();
+//   // fs.writeFileSync(targetLocation + ".png", urlData);
+//   await writeFile(targetLocation + ".png", urlData);
+// };
 
 const writeTemplateTag = (componentName: string) => {
+  console.log('in writeTemplateTag')
   const htmlElementMap: HtmlElementMap = {
     div: ["<div", "</div>"],
     button: ["<button", "</button>"],
@@ -496,12 +475,16 @@ const writeTemplateTag = (componentName: string) => {
   // Helper function that recursively iterates through the given html element's children and their children's children.
   // also adds proper indentation to code snippet
   // add childComponents of the activeCompnent to the htmlElementMap
+  console.log('activeComponent.value', activeComponent.value)
+  console.log('activeComponent', activeComponent)
   const childComponents = componentMap.value[activeComponent.value].children;
   // childComponents.forEach((child) => {
   //   htmlElementMap[child] = [`<${child}`, ""]; //single
   // });
-
+  console.log('childComponents is', childComponents)
   const writeNested = (childrenArray: HtmlElement[], indent: string) => {
+    console.log('in writeNested')
+    console.log('childrenArray', childrenArray, '\nindent', indent)
     if (!childrenArray.length) {
       return "";
     }
@@ -600,6 +583,8 @@ const writeTemplateTag = (componentName: string) => {
 };
 
 const writeComments = (componentName: string) => {
+  console.log('componentName  in writeComments is', componentName)
+  console.log('componentMap.value[componentName] in writeComments  is', componentMap.value[componentName])
   if ((componentMap.value[componentName] as Component).noteList) {
     let commentStr = "<!--";
     (componentMap.value[componentName] as Component).noteList.forEach((el) => {
@@ -627,6 +612,7 @@ const writeTemplate = (
   },
   routes: { [key: string]: Component[] }
 ) => {
+  console.log('children in writeTemplate is', children)
   let str = "";
   let routeStr = "";
 
@@ -722,7 +708,7 @@ const writeScript = (
       } else {
         imports += "mapActions";
       }
-      imports += ' } from "vuex";\n';
+      imports += ' } from "pinia";\n';
     }
     // if in Typescript mode, import defineComponent
     if (exportAsTypescript.value === "on") {
@@ -1128,7 +1114,7 @@ const createESLintRC = async (location: string) => {
 
 const createTSConfig = async(location: string) => {
   if (exportAsTypescript.value === "on") {
-    let str = `{\n\t"extends": "@vue/tsconfig/tsconfig.web.json",\n\t"include": ["env.d.ts", "src/**/*", "src/**/*.vue"],\n\t"compilerOptions": {\n\t\t"baseUrl": ".",\n\t\t"paths": {\n\t\t\t"@/*": ["./src/*"]\n\t\t}\n\t},`;
+    let str = `{\n\t"include": ["env.d.ts", "src/**/*", "src/**/*.vue"],\n\t"compilerOptions": {\n\t\t"baseUrl": ".",\n\t\t"paths": {\n\t\t\t"@/*": ["./src/*"]\n\t\t}\n\t},`;
     str += `\t"references": [\n`;
     str += `\t\t{\n\t\t\t"path": "./tsconfig.vite-config.json"\n\t\t}\n\t]\n}`;
     // fs.writeFileSync(path.join(location, "tsconfig.json"), str);
@@ -1218,8 +1204,9 @@ const createStore = async(location: string) => {
 
 const createPackage = async(location: string) => {
   let str = `{`;
-  str += `\n\t"name": "My-OverVue-Project",`;
+  str += `\n\t"name": "my-overvue-project",`;
   str += `\n\t"version": "0.0.0",`;
+  str += `\n\t"type": "module",`;
   str += `\n\t"scripts": {`;
   str += `\n\t\t"dev": "vite",`;
   if (exportAsTypescript.value === "on") {
@@ -1240,7 +1227,7 @@ const createPackage = async(location: string) => {
   str += `\n\t\t"preview": "vite preview --port 5050"`;
   str += `\n\t},`;
   str += `\n\t"dependencies": {`;
-  str += `\n\t\t"vue": "^3.2.31",`;
+  str += `\n\t\t"vue": "^3.4.21",`;
   str += `\n\t\t"vue-router": "^4.0.12",`;
   str += `\n\t\t"vuex": "^4.0.2"`;
   str += `,\n\t\t"element-plus": "^2.2.16"`;
@@ -1250,10 +1237,10 @@ const createPackage = async(location: string) => {
   }
   str += `\n\t},`;
   str += `\n\t"devDependencies": {`;
-  str += `\n\t\t"@vitejs/plugin-vue": "^2.2.2",`;
+  str += `\n\t\t"@vitejs/plugin-vue": "^5.0.4",`;
   str += `\n\t\t"eslint": "^8.5.0",`;
   str += `\n\t\t"eslint-plugin-vue": "^8.2.0",`;
-  str += `\n\t\t"vite": "^2.8.4"`;
+  str += `\n\t\t"vite": "^5.2.0"`;
   if (importTest.value === "on") {
     str += `,\n\t\t"@babel/core": "^7.12.16",`;
     str += `\n\t\t"@babel/eslint-parser": "^7.12.16",`;
@@ -1269,8 +1256,8 @@ const createPackage = async(location: string) => {
   if (exportAsTypescript.value === "on") {
     str += `,\n\t\t"@rushstack/eslint-patch": "^1.1.0",`;
     str += `\n\t\t"@vue/tsconfig": "^0.1.3",`;
-    str += `\n\t\t"typescript": "~4.5.5",`;
-    str += `\n\t\t"vue-tsc": "^0.31.4",`;
+    str += `\n\t\t"typescript": "^5.2.2",`;
+    str += `\n\t\t"vue-tsc": "^2.0.6",`;
     str += `\n\t\t"@types/node": "^16.11.25",`;
     str += `\n\t\t"@vue/eslint-config-typescript": "^10.0.0"`;
   }
@@ -1312,52 +1299,44 @@ const exportFile = async (data: string) => {
   console.log('checkFileExist function came back true')
   // creating basic boilerplate for vue app
   await createIndexFile(data);
-  console.log('finished create index')
   await createMainFile(data);
-    console.log('finished create main')
   await createViteConfig(data);
-    console.log('finished create vite')
   await createESLintRC(data);
-    console.log('finished create ESLint')
   await createTSConfig(data);
-    console.log('finished create TSConfig')
   await createTSViteConfig(data);
-    console.log('finished create TSVite')
   await createTSDeclaration(data);
-    console.log('finished create TSDeclare')
   await createPackage(data);
-    console.log('finished create package')
   await createStore(data);
-    console.log('finished create store')
   await createFirebaseConfigFile(data);
-    console.log('finished create firebase')
   await createOauthFile(data);
-    console.log('finished create OAuth')
   await createjestConfigFile(data);
-    console.log('finished create jest')
   await createbabelConfigFile(data);
+
   // exports images to the /assets folder
+  // broken function. OverVue 10 and 11 did not have function to import imgs. Left in, if future iterations would like to work on in.
   // eslint-disable-next-line no-unused-vars
-  console.log('finished all the create funcs blocks and about to start loop')
-  for (let [routeImage, imageLocation] of Object.entries(imagePath.value)) {
-    if (imageLocation !== "") {
-      await createAssetFile(
-        // path.join(data, "src", "assets", routeImage),
-        await pathJoin(data, "src", "assets", routeImage),
-        imageLocation
-      );
-    }
-  }
-  console.log('finished loop')
+  // for (let [routeImage, imageLocation] of Object.entries(imagePath.value)) {
+  //   if (imageLocation !== "") {
+  //     await createAssetFile(
+  //       // path.join(data, "src", "assets", routeImage),
+  //       await pathJoin(data, "src", "assets", routeImage),
+  //       imageLocation
+  //     );
+  //   }
+  // }
+
   // main logic below for creating components
   await createRouter(data);
   // eslint-disable-next-line no-unused-vars
   console.log('created Router')
   for (const componentName in componentMap.value) {
+    console.log('componentMap.value', componentMap.value)
+    console.log('componentName', componentName)
     // if componentName is a route:
-    console.log('inside next loop')
     if (componentName !== "App") {
+      console.log('inside componentName !== "App"')
       if (routes.value[componentName]) {
+        console.log('inside routes.value[componentName]')
         await createComponentCode(
           // path.join(data, "src", "views", componentName),
           await pathJoin(data, "src", "views", componentName),
@@ -1366,6 +1345,7 @@ const exportFile = async (data: string) => {
         );
         // if componentName is a just a component
       } else {
+        console.log('inside [else] routes.value[componentName]')
         await createComponentCode(
           // path.join(data, "src", "components", componentName),
           await pathJoin(data, "src", "components", componentName),
@@ -1381,6 +1361,7 @@ const exportFile = async (data: string) => {
       }
       // if componentName is App
     } else {
+      console.log('in [else] componentName !== "App"')
       await createComponentCode(
         // path.join(data, "src", componentName),
         await pathJoin(data, "src", componentName),

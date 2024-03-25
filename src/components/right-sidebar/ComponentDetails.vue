@@ -1,4 +1,4 @@
-<!-- 
+<!--
   LOCATION IN APP:
   [right sidebar] COMPONENT DETAILS
 
@@ -199,7 +199,7 @@ i {
 }
 
 .toolbar-background {
-  background: black;
+  background: $subprimary;
 }
 
 #code-window {

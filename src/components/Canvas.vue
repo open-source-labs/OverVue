@@ -1,4 +1,4 @@
-<!-- 
+<!--
   LOCATION IN APP:
   to enable ==> [top-right corner] gear icon > Mode: Grid
   shows in center UI
@@ -19,7 +19,7 @@
     <div
       class="cssContainer"
       :style="{
-        'background-size': `${gridWidth}px ${gridHeight}px, 
+        'background-size': `${gridWidth}px ${gridHeight}px,
       ${gridWidth}px ${gridHeight}px`,
         height: `${containerH}px`,
         width: `${containerW}px`,
