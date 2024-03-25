@@ -583,6 +583,8 @@ const writeTemplateTag = (componentName: string) => {
 };
 
 const writeComments = (componentName: string) => {
+  console.log('componentName  in writeComments is', componentName)
+  console.log('componentMap.value[componentName] in writeComments  is', componentMap.value[componentName])
   if ((componentMap.value[componentName] as Component).noteList) {
     let commentStr = "<!--";
     (componentMap.value[componentName] as Component).noteList.forEach((el) => {
@@ -706,7 +708,7 @@ const writeScript = (
       } else {
         imports += "mapActions";
       }
-      imports += ' } from "vuex";\n';
+      imports += ' } from "pinia";\n';
     }
     // if in Typescript mode, import defineComponent
     if (exportAsTypescript.value === "on") {
