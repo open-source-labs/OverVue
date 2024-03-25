@@ -155,7 +155,7 @@
               <!-- <SlackLoginWindow /> -->
 
               <!-- OAuth -->
-              <div class="drawer">
+              <!-- <div class="drawer">
                 <q-expansion-item group="accordion" label="OAuth">
                   <div class="Oauth">
                     <p class="Oauth-text">
@@ -232,7 +232,7 @@
                     </label>
                   </div>
                 </q-expansion-item>
-              </div>
+              </div> -->
             </div>
           </q-menu>
         </q-btn>

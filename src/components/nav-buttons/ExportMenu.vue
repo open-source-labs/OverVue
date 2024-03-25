@@ -1112,7 +1112,7 @@ const createESLintRC = async (location: string) => {
 
 const createTSConfig = async(location: string) => {
   if (exportAsTypescript.value === "on") {
-    let str = `{\n\t"extends": "@vue/tsconfig/tsconfig.web.json",\n\t"include": ["env.d.ts", "src/**/*", "src/**/*.vue"],\n\t"compilerOptions": {\n\t\t"baseUrl": ".",\n\t\t"paths": {\n\t\t\t"@/*": ["./src/*"]\n\t\t}\n\t},`;
+    let str = `{\n\t"include": ["env.d.ts", "src/**/*", "src/**/*.vue"],\n\t"compilerOptions": {\n\t\t"baseUrl": ".",\n\t\t"paths": {\n\t\t\t"@/*": ["./src/*"]\n\t\t}\n\t},`;
     str += `\t"references": [\n`;
     str += `\t\t{\n\t\t\t"path": "./tsconfig.vite-config.json"\n\t\t}\n\t]\n}`;
     // fs.writeFileSync(path.join(location, "tsconfig.json"), str);
@@ -1202,8 +1202,9 @@ const createStore = async(location: string) => {
 
 const createPackage = async(location: string) => {
   let str = `{`;
-  str += `\n\t"name": "My-OverVue-Project",`;
+  str += `\n\t"name": "my-overvue-project",`;
   str += `\n\t"version": "0.0.0",`;
+  str += `\n\t"type": "module",`;
   str += `\n\t"scripts": {`;
   str += `\n\t\t"dev": "vite",`;
   if (exportAsTypescript.value === "on") {
@@ -1224,7 +1225,7 @@ const createPackage = async(location: string) => {
   str += `\n\t\t"preview": "vite preview --port 5050"`;
   str += `\n\t},`;
   str += `\n\t"dependencies": {`;
-  str += `\n\t\t"vue": "^3.2.31",`;
+  str += `\n\t\t"vue": "^3.4.21",`;
   str += `\n\t\t"vue-router": "^4.0.12",`;
   str += `\n\t\t"vuex": "^4.0.2"`;
   str += `,\n\t\t"element-plus": "^2.2.16"`;
@@ -1234,10 +1235,10 @@ const createPackage = async(location: string) => {
   }
   str += `\n\t},`;
   str += `\n\t"devDependencies": {`;
-  str += `\n\t\t"@vitejs/plugin-vue": "^2.2.2",`;
+  str += `\n\t\t"@vitejs/plugin-vue": "^5.0.4",`;
   str += `\n\t\t"eslint": "^8.5.0",`;
   str += `\n\t\t"eslint-plugin-vue": "^8.2.0",`;
-  str += `\n\t\t"vite": "^2.8.4"`;
+  str += `\n\t\t"vite": "^5.2.0"`;
   if (importTest.value === "on") {
     str += `,\n\t\t"@babel/core": "^7.12.16",`;
     str += `\n\t\t"@babel/eslint-parser": "^7.12.16",`;
@@ -1253,8 +1254,8 @@ const createPackage = async(location: string) => {
   if (exportAsTypescript.value === "on") {
     str += `,\n\t\t"@rushstack/eslint-patch": "^1.1.0",`;
     str += `\n\t\t"@vue/tsconfig": "^0.1.3",`;
-    str += `\n\t\t"typescript": "~4.5.5",`;
-    str += `\n\t\t"vue-tsc": "^0.31.4",`;
+    str += `\n\t\t"typescript": "^5.2.2",`;
+    str += `\n\t\t"vue-tsc": "^2.0.6",`;
     str += `\n\t\t"@types/node": "^16.11.25",`;
     str += `\n\t\t"@vue/eslint-config-typescript": "^10.0.0"`;
   }
@@ -1296,33 +1297,22 @@ const exportFile = async (data: string) => {
   console.log('checkFileExist function came back true')
   // creating basic boilerplate for vue app
   await createIndexFile(data);
-  console.log('finished create index')
   await createMainFile(data);
-    console.log('finished create main')
   await createViteConfig(data);
-    console.log('finished create vite')
   await createESLintRC(data);
-    console.log('finished create ESLint')
   await createTSConfig(data);
-    console.log('finished create TSConfig')
   await createTSViteConfig(data);
-    console.log('finished create TSVite')
   await createTSDeclaration(data);
-    console.log('finished create TSDeclare')
   await createPackage(data);
-    console.log('finished create package')
   await createStore(data);
-    console.log('finished create store')
   await createFirebaseConfigFile(data);
-    console.log('finished create firebase')
   await createOauthFile(data);
-    console.log('finished create OAuth')
   await createjestConfigFile(data);
-    console.log('finished create jest')
   await createbabelConfigFile(data);
+
   // exports images to the /assets folder
+  // broken function. OverVue 10 and 11 did not have function to import imgs. Left in, if future iterations would like to work on in.
   // eslint-disable-next-line no-unused-vars
-  console.log('finished all the create funcs blocks and about to start loop')
   // for (let [routeImage, imageLocation] of Object.entries(imagePath.value)) {
   //   if (imageLocation !== "") {
   //     await createAssetFile(
@@ -1332,7 +1322,7 @@ const exportFile = async (data: string) => {
   //     );
   //   }
   // }
-  console.log('finished loop')
+
   // main logic below for creating components
   await createRouter(data);
   // eslint-disable-next-line no-unused-vars
@@ -1341,7 +1331,6 @@ const exportFile = async (data: string) => {
     console.log('componentMap.value', componentMap.value)
     console.log('componentName', componentName)
     // if componentName is a route:
-    console.log('inside next loop')
     if (componentName !== "App") {
       console.log('inside componentName !== "App"')
       if (routes.value[componentName]) {
