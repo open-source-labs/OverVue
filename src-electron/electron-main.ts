@@ -104,6 +104,15 @@ ipcMain.handle("exportProject", async (event, options) => {
   return { filePath };
 });
 
+ipcMain.handle("exportComponent", async (event, options) => {
+  const { dialog } = require("electron");
+  const { filePath } = await dialog.showSaveDialog(options);
+  if (filePath === "") {
+    throw new Error("No file path selected");
+  }
+  return { filePath };
+});
+
 ipcMain.handle('writeFile', async (event, filePath, content) => { //possibly merge this with 'writeJSON' handle
   // console.log('writeFile filePath:', filePath, '\n content:', content);
   console.log("writeFile filePath:", filePath);
