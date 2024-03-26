@@ -1014,10 +1014,10 @@ const createStore = async(location: string) => {
 
     str += `\n\tstate: () => ({`;
     if (!userState.value.length) {
-      str += `\n\t\t\t//placeholder for state`;
+      str += `\n\t\t//PLACE YOUR STATE OBJECT HERE`;
     }
     for (let i = 0; i < userState.value.length; i++) {
-      str += `\n\t\t\t${userState.value[i]}: "PLACEHOLDER FOR VALUE",`;
+      str += `\n\t\t${userState.value[i]}: "PLACE YOUR STATE'S VALUE HERE",`;
       if (i === userState.value.length - 1) {
         str = str.slice(0, -1);
       }
@@ -1029,8 +1029,10 @@ const createStore = async(location: string) => {
     }
     for (let i = 0; i < userActions.value.length; i++) {
       str += `\n\t\t${userActions.value[i]} () {`;
-      for (let j = 0; j < userState.value.length; j++) {
-        str += `\n\t\t\tthis.${userState.value[j]}('${userActions.value[i]}')`;
+     if (userState.value[0]) {
+        str += `\n\t\t\t// EX. this.${userState.value[0]} += 1`;
+      } else {
+        str += `\n\t\t\t// EX. this.firstStateProperty += 1')`;
       }
       str += `\n\t\t},`;
       if (i === userActions.value.length - 1) {
@@ -1044,10 +1046,10 @@ const createStore = async(location: string) => {
     str += `\n\tstate: {`;
 
     if (!userState.value.length) {
-      str += `\n\t\t\t//PLACE YOUR STATE OBJECT HERE`;
+      str += `\n\t\t//PLACE YOUR STATE OBJECT HERE`;
     }
     for (let i = 0; i < userState.value.length; i++) {
-      str += `\n\t\t\t${userState.value[i]}: "PLACE YOUR STATE'S VALUE HERE",`;
+      str += `\n\t\t${userState.value[i]}: "PLACE YOUR STATE'S VALUE HERE",`;
       if (i === userState.value.length - 1) {
         str = str.slice(0, -1);
       }
