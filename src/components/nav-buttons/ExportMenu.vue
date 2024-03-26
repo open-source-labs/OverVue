@@ -42,7 +42,7 @@ import {
   RouteComponentMap,
 } from "../../../types";
 import { useExportComponent } from "../composables/useExportComponent";
-import { createBoilerOptions, createBoilerComposition } from "../dfdas/createBoilerFuncs"
+import { createBoilerOptions, createBoilerComposition } from "../right-sidebar/createBoilerFuncs"
 // import * as fs from "fs"
 // import { fs } from "electron";
 // import { path } from 'path';
@@ -101,7 +101,7 @@ async function checkFileExists(path:string) {
 
 const mkdirSync = async (...args:string[]) => {
   await ipcRenderer.invoke('mkdirSync', [...args ])
-    .then((response: any) => console.log('mkdirSync response is', response))
+
     .catch((error:any) => console.error(error));
 }
 
@@ -252,23 +252,31 @@ const createComponentCode = async(
       await writeFile(
       componentLocation + ".vue",
       await writeTemplate(componentName, children, routes.value) +
-        await writeStyle(componentName)
+      await writeStyle(componentName)
     );
     console.log('finished write createComponent code')
+    // fs.writeFileSync()      console.log('about to write createComponent code for not App')
   } else {
-    // fs.writeFileSync(
-      console.log('about to write createComponent code for not App')
-      await writeFile(
-      componentLocation + ".vue",
-      await writeComments(componentName) +
-        await writeTemplate(componentName, children, routes.value) +
-        await writeScript(componentName, children) +
-        await writeStyle(componentName)
-    );
-    console.log('finished to write createComponent code')
+      if (store.options === false) {
+        await writeFile(
+            componentLocation + ".vue",
+            await writeComments(componentName) +
+            await writeTemplate(componentName, children, routes.value) +
+            await createBoilerOptions(componentName, children)
+            // + await writeStyle(componentName)
+          );
+        console.log('finished to write createComponent code')
+      } else {
+        await writeFile(
+          componentLocation + ".vue",
+          await writeComments(componentName) +
+          await writeTemplate(componentName, children, routes.value) +
+          await createBoilerComposition(componentName, children)
+          // + await writeStyle(componentName)
+        );
+      }
+    };
   }
-};
-
 
 // const createAssetFile = async (targetLocation: string, assetLocation: string | unknown) => {
 //   // @ts-ignore

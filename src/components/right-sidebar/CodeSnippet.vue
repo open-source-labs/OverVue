@@ -1,4 +1,4 @@
-<!-- 
+<!--
   LOCATION IN APP:
   [right sidebar] COMPONENT DETAILS > Code Preview
 
@@ -9,7 +9,7 @@
 
 <template>
   <div class="codesnippet-container">
-    <div class="top-p-container">  
+    <div class="top-p-container">
       <div class="top-p" v-if="activeComponent !== ''">
         {{ `${activeRoute} / ${activeComponent}.vue` }}
       </div>
@@ -45,8 +45,8 @@ import {
   onMounted,
   onBeforeUnmount,
   nextTick,
-  Ref, 
-  defineEmits 
+  Ref,
+  defineEmits
 } from "vue";
 import { PrismEditor } from "vue-prism-editor";
 import { highlight, languages } from "prismjs/components/prism-core";
@@ -69,7 +69,7 @@ const activeRoute = computed(() => store.activeRoute);
 
 /* This will update code.value based on the new state of options */
 watch(() => store.options, () => {
-  snippetInvoke(); 
+  snippetInvoke();
 });
 
 
@@ -91,16 +91,16 @@ const height: Ref<null | number> = ref(null);
 /* METHODS */
 /* ------------------------ Logic to check if Options or Composition API is selected ------------------------*/
 const snippetInvoke = () => {
-  if (activeComponent.value !== "" && store.options === false) {
-    code.value = createCodeSnippetOptions(
+  if (activeComponent.value !== "") {
+    code.value = createCodeSnippet(
       componentMap.value[activeComponent.value].componentName,
       componentMap.value[activeComponent.value].children
     );
-  } else if (activeComponent.value !== "" && store.options === true) {
-       code.value = createCodeSnippetComposition(
-      componentMap.value[activeComponent.value].componentName,
-      componentMap.value[activeComponent.value].children
-    );
+  // } else if (activeComponent.value !== "" && store.options === true) {
+  //      code.value = createCodeSnippetComposition(
+  //     componentMap.value[activeComponent.value].componentName,
+  //     componentMap.value[activeComponent.value].children
+  //   );
   } else {
     code.value = "Select a component to see its boilerplate code.";
   }
@@ -117,21 +117,29 @@ const getWindowHeight = () => {
 };
 
 /*------------------- Template and Boiler code snippet invocations-------------------*/
-const createCodeSnippetOptions = (componentName: string, children: string[]) => {
-  let result = `${createTemplate(componentName /*, children*/)}${createBoilerOptions(
+const createCodeSnippet = (componentName: string, children: string[]) => {
+  if (store.options === false) {
+    let result = `${createTemplate(componentName /*, children*/)}${createBoilerOptions(
+      componentName,
+      children
+    )}`;
+    return result;
+  } else {
+    let result = `${createTemplate(componentName /*, children*/)}${createBoilerComposition(
     componentName,
     children
   )}`;
   return result;
+  }
 };
 
-const createCodeSnippetComposition = (componentName: string, children: string[]) => {
-  let result = `${createTemplate(componentName /*, children*/)}${createBoilerComposition(
-    componentName,
-    children
-  )}`;
-  return result;
-};
+// const createCodeSnippetComposition = (componentName: string, children: string[]) => {
+//   let result = `${createTemplate(componentName /*, children*/)}${createBoilerComposition(
+//     componentName,
+//     children
+//   )}`;
+//   return result;
+// };
 
 /* --------------- creates default boilerplate --------------- */
 const createTemplate = (componentName: string) => {
@@ -223,7 +231,7 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
       </div> \n\t  </VDialog>`,
     ],
     VDrawer: [
-      `<VDrawer transition="slide-right" bg-transition="fade">      
+      `<VDrawer transition="slide-right" bg-transition="fade">
         <template #toggle="{ bind, on }">
         <button v-bind="bind" v-on="on">
           Toggle Drawer
@@ -593,7 +601,7 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
 //     if (activeComp.actions.length || activeComp.state.length) {
 //       imports += `import { /* useStore */ } from '/* ./store */';\n`; // changed from 'vuex' pinia
 //     }
- 
+
 //   // if Typescript toggle is on, import defineComponent
 //   if (exportAsTypescript.value === "on") {
 //     imports += 'import { defineComponent } from "vue";\n';
@@ -621,7 +629,7 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
 //     //data += "    }\n";
 //     data += "  },\n";
 //   }
- 
+
 
 //   const htmlBinding = componentMap.value[activeComponent.value].htmlList;
 
@@ -646,7 +654,7 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
 //     )} } from 'vuetensils/src/components';\n`;
 //   }
 // /*------------- setup() function -------------*/
-// data = " setup() {"
+// data += " setup() {"
 // if(activeComp.state.length || activeComp.actions.length){
 //   data += "   \n   const /* testStore */ = useStore();  ";
 // }
@@ -667,11 +675,11 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
 //   // if true add computed section and populate with state
 //   let computed = "";
 //   if (activeComp.state.length) {
-//     const currState = 
+//     const currState =
 //     activeComp.state.forEach((state) => {
 //       data += `\n   const ${state} = computed(() => /* testStore */.${state}); `;
 //       returnStatement += `   ${state}, \n`
-      
+
 //     });
 //     // line 22
 //   }
@@ -748,7 +756,7 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
 //     output += `   \n}; \n  ${returnStatement}  };
 //     \n<\/script>\n\n<style scoped>\n${styleString}</style > `;
 //   } else {
-//     output += `   \n}; \n  
+//     output += `   \n}; \n
 //     \n<\/script>\n\n<style scoped>\n${styleString}</style > `;
 //   }
 

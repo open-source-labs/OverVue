@@ -18,10 +18,9 @@ function createWindow() {
     height: 600,
     useContentSize: true,
     webPreferences: {
-      // JAIME: i tried adding these two below to make window.require('fs') work
-      // nodeIntegration: true,
-      // contextIsolation: false,
+      nodeIntegration: false,
       contextIsolation: true,
+      allowRunningInsecureContent: false,
       // More info: https://v2.quasar.dev/quasar-cli-webpack/developing-electron-apps/electron-preload-script
       preload: path.resolve(__dirname, process.env.QUASAR_ELECTRON_PRELOAD),
     },
