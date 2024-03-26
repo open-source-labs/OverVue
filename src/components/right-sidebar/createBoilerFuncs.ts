@@ -1,24 +1,14 @@
 import { computed } from 'vue';
 import { useStore } from "../../store/main.js";
 import { vtIcons } from "src/store/state/icons";
-import { Component, HtmlElement, HtmlElementMap, RouteComponentMap } from "../../../types";
+import { Component, RouteComponentMap } from "../../../types";
 
-export function useComputedStore() {
-  const store = useStore();
-  const componentMap = computed(() => store.componentMap);
-  const activeComponent = computed(() => store.activeComponent);
-  const activeComponentObj = computed(() => store.activeComponentObj);
-  const exportAsTypescript = computed(() => store.exportAsTypescript);
-  const activeRoute = computed(() => store.activeRoute);
-
-  return {
-    componentMap,
-    activeComponent,
-    activeComponentObj,
-    exportAsTypescript,
-    activeRoute
-  };
-}
+const store = useStore(); // template
+const componentMap = computed(() => store.componentMap);
+const activeComponent = computed(() => store.activeComponent);
+const activeComponentObj = computed(() => store.activeComponentObj);
+const exportAsTypescript = computed(() => store.exportAsTypescript);
+const activeRoute = computed(() => store.activeRoute);
 
 
 export const createBoilerOptions = (componentName: string, children: string[] | {
@@ -26,24 +16,18 @@ export const createBoilerOptions = (componentName: string, children: string[] | 
   App: RouteComponentMap;
   HomeView: RouteComponentMap;
 }) => {
-  const {
-    componentMap,
-    activeComponent,
-    exportAsTypescript,
-    activeComponentObj,
-  } = useComputedStore();
   // add import mapstate and mapactions if they exist
   let imports = "";
   const activeComp = componentMap.value[activeComponent.value] as Component;
   // if (checked.value === false) {
-  if (activeComp.actions.length || activeComp.state.length) {
-    imports += "import { ";
-    if (activeComp.actions.length && activeComp.state.length) {
-      imports += "mapState, mapActions";
-    } else if (activeComp.state.length) imports += "mapState";
-    else imports += "mapActions";
-    imports += ` } from "pinia";\nimport { /* store */} from '/* ./store */'`; // changed from 'vuex' pinia
-  }
+    if (activeComp.actions.length || activeComp.state.length) {
+      imports += "import { ";
+      if (activeComp.actions.length && activeComp.state.length) {
+        imports += "mapState, mapActions";
+      } else if (activeComp.state.length) imports += "mapState";
+      else imports += "mapActions";
+      imports += ` } from "pinia";\nimport { /* store */} from '/* ./store */'`; // changed from 'vuex' pinia
+    }
   // }
   // if Typescript toggle is on, import defineComponent
   if (exportAsTypescript.value === "on") {
@@ -57,7 +41,7 @@ export const createBoilerOptions = (componentName: string, children: string[] | 
       imports += `import ${name} from './components/${name}.vue';\n`;
     });
 
-    // add components section
+  // add components section
     children.forEach((name) => {
       childrenComponentNames += `    ${name},\n`;
     });
@@ -85,7 +69,7 @@ export const createBoilerOptions = (componentName: string, children: string[] | 
 
   const vtComponents: string[] = [];
 
-  htmlBinding.forEach((el: { text: string }) => {
+  htmlBinding.forEach((el) => {
     if (vuetensilsSet.has(el.text)) {
       // Add import statement for Vuetensils components
       vtComponents.push(el.text);
@@ -94,19 +78,19 @@ export const createBoilerOptions = (componentName: string, children: string[] | 
 
   if (vtComponents.length) {
     vuetensilsImports += `import { ${vtComponents.join(
-      ", ",
+      ", "
     )} } from 'vuetensils/src/components';\n`;
   }
 
   data += "  data() {\n    return {\n";
-  htmlBinding.forEach((el: { binding: string }) => {
+  htmlBinding.forEach((el) => {
     if (el.binding !== "") {
       data += `      ${el.binding}: "PLACEHOLDER FOR VALUE", `;
       data += "\n";
     }
   });
   data += `    }`;
-  data += ` \n  },  \n `;
+  data += ` \n  },  \n`;
 
   // if true add computed section and populate with state
   let computed = "";
@@ -188,7 +172,7 @@ export const createBoilerOptions = (componentName: string, children: string[] | 
   output += methods;
 
   if (exportAsTypescript.value === "on") {
-    output += "});\n</script>\n\n<style scoped>\n</style>";
+    output += "});\n<\/script>\n\n<style scoped>\n</style>";
   } else {
     output += `}; \n <\/script>\n\n<style scoped>\n${styleString}</style > `;
   }
@@ -196,20 +180,18 @@ export const createBoilerOptions = (componentName: string, children: string[] | 
   return output;
 };
 
-export const createBoilerComposition = (componentName: string, children: string[]) => {
-  const {
-    componentMap,
-    activeComponent,
-    activeComponentObj,
-    exportAsTypescript,
-  } = useComputedStore();
+export const createBoilerComposition = (componentName: string, children: string[] | {
+  [key: string]: RouteComponentMap | Component;
+  App: RouteComponentMap;
+  HomeView: RouteComponentMap;
+}) => {
   // add import mapstate and mapactions if they exist
   let imports = "";
   const activeComp = componentMap.value[activeComponent.value] as Component;
   // if (checked.value === false) {
-  if (activeComp.actions.length || activeComp.state.length) {
-    imports += `import { /* useStore */ } from '/* ./store */';\n`; // changed from 'vuex' pinia
-  }
+    if (activeComp.actions.length || activeComp.state.length) {
+      imports += `import { /* useStore */ } from '/* ./store */';\n`; // changed from 'vuex' pinia
+    }
   // }
   // if Typescript toggle is on, import defineComponent
   if (exportAsTypescript.value === "on") {
@@ -241,6 +223,7 @@ export const createBoilerComposition = (componentName: string, children: string[
     data += "  },\n";
   }
 
+
   const htmlBinding = componentMap.value[activeComponent.value].htmlList;
 
   // [OverVue v.10.0] add Vuetensils import statements to <script setup>
@@ -251,7 +234,7 @@ export const createBoilerComposition = (componentName: string, children: string[
 
   const vtComponents: string[] = [];
 
-  htmlBinding.forEach((el: { text: string }) => {
+  htmlBinding.forEach((el) => {
     if (vuetensilsSet.has(el.text)) {
       // Add import statement for Vuetensils components
       vtComponents.push(el.text);
@@ -260,15 +243,15 @@ export const createBoilerComposition = (componentName: string, children: string[
 
   if (vtComponents.length) {
     vuetensilsImports += `import { ${vtComponents.join(
-      ", ",
+      ", "
     )} } from 'vuetensils/src/components';\n`;
   }
-  /*------------- setup() function -------------*/
-  data += "  setup() {";
-  if (activeComp.state.length || activeComp.actions.length) {
-    data += "   \n    const /* testStore */ = useStore();  ";
-  }
-  htmlBinding.forEach((el: { binding: string }) => {
+/*------------- setup() function -------------*/
+data += "  setup() {"
+if(activeComp.state.length || activeComp.actions.length){
+  data += "   \n    const /* testStore */ = useStore();  ";
+}
+  htmlBinding.forEach((el) => {
     if (el.binding !== "") {
       data += `      ${el.binding}: "PLACEHOLDER FOR VALUE", `;
       data += "\n";
@@ -281,23 +264,26 @@ export const createBoilerComposition = (componentName: string, children: string[
     returnStatement = "\n    return { \n";
   }
 
+
   // if true add computed section and populate with state
   let computed = "";
   if (activeComp.state.length) {
-    const currState = activeComp.state.forEach((state) => {
+    const currState =
+    activeComp.state.forEach((state) => {
       data += `\n    const ${state} = computed(() => /* testStore */.${state}); `;
-      returnStatement += `      ${state}, \n`;
+      returnStatement += `      ${state}, \n`
+
     });
   }
 
-  data += "\n";
+  data += '\n'
 
   // if true add methods section and populate with actions
   let methods = "";
   if (activeComp.actions.length) {
     activeComp.actions.forEach((action) => {
       methods += `\n    const ${action} = () => /* testStore */.${action}();`;
-      returnStatement += `      ${action}, \n`;
+      returnStatement += `      ${action}, \n`
     });
   }
 
@@ -357,12 +343,16 @@ export const createBoilerComposition = (componentName: string, children: string[
   output += methods;
 
   if (exportAsTypescript.value === "on") {
-    output += `    \n  ${returnStatement}    };  \n  }; \n});\n<\/script>\n\n<style scoped>\n</style>`;
-  } else if (activeComp.state.length || activeComp.actions.length) {
-    output += `    \n  ${returnStatement}    }; \n  };\n};\n<\/script>\n\n<style scoped>\n${styleString}</style > `;
-  } else {
-    output += `   \n}; \n\n<\/script>\n\n<style scoped>\n${styleString}</style > `;
-  }
+    if (activeComp.state.length || activeComp.actions.length) {
+      output += `    \n  ${returnStatement}    };\n  }, \n});\n<\/script>\n\n<style scoped>\n</style>`;
+    } else {
+      output += `    \n  ${returnStatement}      \n  }, \n});\n<\/script>\n\n<style scoped>\n</style>`;
+    }
+} else if (activeComp.state.length || activeComp.actions.length) {
+    output += `    \n  ${returnStatement}    }; \n  },\n};\n<\/script>\n\n<style scoped>\n${styleString}</style > `;
+} else {
+    output += `  },\n}; \n\n<\/script>\n\n<style scoped>\n${styleString}</style > `;
+}
 
-  return output;
+return output;
 };

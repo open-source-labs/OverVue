@@ -18,7 +18,6 @@ function createWindow() {
     height: 600,
     useContentSize: true,
     webPreferences: {
-      // JAIME: i tried adding these two below to make window.require('fs') work
       // nodeIntegration: true,
       // contextIsolation: false,
       contextIsolation: true,
@@ -85,11 +84,6 @@ if (mainWindow) {
     console.log("jsonFile is", jsonFile);
   return { jsonFile };
 }
-
-//Kevin: I think calling readFileSync here in electron main is actually what we're supposed to do
-//and then we send the received data back to Import
-//because in here, readFileSync should be a function that has access to the res data
-
 });
 
 
@@ -105,6 +99,16 @@ ipcMain.handle("exportProject", async (event, options) => {
   return { filePath };
 });
 
+ipcMain.handle("useExportComponent", async (event, options) => {
+  const { dialog } = require("electron");
+  const { filePath } = await dialog.showSaveDialog(options);
+  if (filePath === "") {
+    throw new Error("No file path selected");
+  }
+  return { filePath };
+});
+
+
 ipcMain.handle('writeFile', async (event, filePath, content) => { //possibly merge this with 'writeJSON' handle
   // console.log('writeFile filePath:', filePath, '\n content:', content);
   console.log("writeFile filePath:", filePath);
@@ -117,32 +121,19 @@ ipcMain.handle('writeFile', async (event, filePath, content) => { //possibly mer
     });
     console.log('finished fs.writeSync')
   return { status: "success" };
-  // return new Promise(async (resolve, reject) => {
-  //   await fs.writeFile(filePath, content, (err) => {
-  //     if (err) {
-  //       reject(err);
-  //     } else {
-  //       resolve("File written successfully");
-  //     }
-  //   });
-  // });
+
 });
 
-// ipcMain.handle('existSync',(event, { path }) => {
-//   return fs.existsSync(path)
-// });
+
 
 ipcMain.handle('check-file-exists', async (event, path) => {
   const fileExists = await fs.existsSync(path);
   console.log("fileExists", fileExists);
-
   if (fileExists) return { status: true };
   return { status: false };
 });
 
 ipcMain.handle('mkdirSync', async (event, args: string[] ) => {
-  console.log('about to make new directory')
-  console.log("args", args);
   const mkdirPath = await path.join(...args);
   console.log("mkdirPath", mkdirPath);
   await fs.mkdirSync(mkdirPath);
@@ -151,10 +142,7 @@ ipcMain.handle('mkdirSync', async (event, args: string[] ) => {
 });
 
 ipcMain.handle('pathJoin', (event, ...args: any[]) => {//should expect args and output to be string
-  // for(const arg:any of [...args])
-  console.log('pathJoin args:', ...args);
   const newPath:string = path.join(...args);
-  console.log('newPath', newPath)
   return newPath; //return string directly instead of object
 });
 

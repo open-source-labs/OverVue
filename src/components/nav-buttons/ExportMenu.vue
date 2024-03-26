@@ -42,7 +42,7 @@ import {
   RouteComponentMap,
 } from "../../../types";
 import { useExportComponent } from "../composables/useExportComponent";
-import { createBoilerOptions, createBoilerComposition } from "../right-sidebar/createBoilerFuncs";
+import { createBoilerOptions, createBoilerComposition } from "../right-sidebar/createBoilerFuncs"
 // import * as fs from "fs"
 // import { fs } from "electron";
 // import { path } from 'path';
@@ -256,27 +256,29 @@ const createComponentCode = async(
     );
     console.log('finished write createComponent code')
   } else {
-    // fs.writeFileSync(
-      console.log('about to write createComponent code for not App')
-      /*
-      // if (store.options) {
-           await writeFile(
-           componentLocation + ".vue",
-           await writeComments(componentName) +
-             await writeTemplate(componentName, children, routes.value) +
-             await writeScript(componentName, children) +
-             await writeStyle(componentName)
-        // );
-      // }
-      */
-    //   await writeFile(
-    //   componentLocation + ".vue",
-    //   await writeComments(componentName) +
-    //     await writeTemplate(componentName, children, routes.value) +
-    //     await writeScript(componentName, children) +
-    //     await writeStyle(componentName)
-    // );
-    console.log('finished to write createComponent code')
+      if (store.composition === false) {
+        // fs.writeFileSync(
+        console.log('about to write createComponent code for not App')
+        await writeFile(
+        componentLocation + ".vue",
+        await writeComments(componentName) +
+          await writeTemplate(componentName, children, routes.value) +
+          await createBoilerOptions(componentName, children)
+          // + await writeStyle(componentName)
+      );
+        console.log('finished to write createComponent code')
+      } else {
+          // fs.writeFileSync(
+        console.log('about to write createComponent code for not App')
+        await writeFile(
+        componentLocation + ".vue",
+        await writeComments(componentName) +
+          await writeTemplate(componentName, children, routes.value) +
+          await createBoilerComposition(componentName, children)
+          // + await writeStyle(componentName)
+      );
+        console.log('finished to write createComponent code')
+      }
   }
 };
 
@@ -690,163 +692,6 @@ const writeTemplate = (
  * @description imports child components into <script>
  */
 
-const writeScript = (
-  componentName: string,
-  children: {
-    [key: string]: RouteComponentMap | Component;
-    App: RouteComponentMap;
-    HomeView: RouteComponentMap;
-  }
-) => {
-  // add import mapstate and mapactions if they exist
-  const currentComponent = componentMap.value[componentName];
-  const route = Object.keys(routes.value);
-
-  // Writes script boilerplate for non-route components
-  if (!route.includes(componentName)) {
-    let imports = "";
-    if (
-      (currentComponent as Component).actions.length ||
-      (currentComponent as Component).state.length
-    ) {
-      imports += "import { ";
-      if (
-        (currentComponent as Component).actions.length &&
-        (currentComponent as Component).state.length
-      ) {
-        imports += "mapState, mapActions";
-      } else if ((currentComponent as Component).state.length) {
-        imports += "mapState";
-      } else {
-        imports += "mapActions";
-      }
-      imports += ' } from "pinia";\n';
-    }
-    // if in Typescript mode, import defineComponent
-    if (exportAsTypescript.value === "on") {
-      imports += 'import { defineComponent } from "vue";\n';
-    }
-
-    let childrenComponentNames = "";
-    let childComponentImportNames = "";
-
-    const arrOfChildComp = componentMap.value[componentName].children;
-
-    arrOfChildComp.forEach((childName) => {
-      // Build child component text string
-      if (childName !== arrOfChildComp[arrOfChildComp.length - 1]) {
-        childrenComponentNames += "    " + childName + ",\n";
-      } else {
-        childrenComponentNames += "    " + childName + "\n";
-      }
-      childComponentImportNames += `import ${childName} from '../components/${childName}.vue';\n`;
-    });
-
-    let data = "";
-    data += "  data () {\n    return {";
-    if ((currentComponent as Component).props.length) {
-      (currentComponent as Component).props.forEach((prop) => {
-        data += `\n      ${prop}: "PLACEHOLDER FOR VALUE",`;
-      });
-    }
-    routes.value.HomeView.forEach((element) => {
-      element.htmlList.forEach((html) => {
-        if (html.binding !== "") {
-          data += `\n      ${html.binding}: "PLACEHOLDER FOR VALUE",`;
-        }
-      });
-    });
-    data += "\n";
-    data += "    }\n";
-    data += "  },\n";
-
-    // if true add computed section and populate with state
-    let computed = "";
-    if ((currentComponent as Component).state.length) {
-      computed += "  computed: {";
-      computed += "\n    ...mapState([";
-      (currentComponent as Component).state.forEach((state) => {
-        computed += `\n      "${state}",`;
-      });
-      computed += "\n    ]),\n";
-      computed += "  },\n";
-    }
-    // if true add methods section and populate with actions
-    let methods = "";
-    if ((currentComponent as Component).actions.length) {
-      methods += "  methods: {";
-      methods += "\n    ...mapActions([";
-      (currentComponent as Component).actions.forEach((action) => {
-        methods += `\n      "${action}",`;
-      });
-      methods += "\n    ]),\n";
-      methods += "  },\n";
-    }
-    // concat all code within script tags
-    let output;
-    if (exportAsTypescript.value === "on") {
-      output = "\n\n<script lang='ts'>\n";
-
-      output +=
-        imports +
-        "\nexport default defineComponent ({\n  name: '" +
-        componentName +
-        "'";
-    } else {
-      output = "\n\n<script>\n";
-
-      output += `\n${childComponentImportNames}`;
-
-      output += imports + "\nexport default {\n  name: '" + componentName + "'";
-    }
-    output += ",\n  components: {\n";
-
-    output += childrenComponentNames + "  },\n";
-    output += data;
-    output += computed;
-    output += methods;
-    // eslint-disable-next-line no-useless-escape
-    if (exportAsTypescript.value === "on") {
-      output += "});\n<\/script>";
-    } else {
-      output += "};\n<\/script>";
-    }
-    return output;
-  }
-  // Write script for route components.
-  else {
-    let str = "";
-    let childrenComponentNames = "";
-    let childComponentImportNames = "";
-    const arrOfChildComp = componentMap.value[componentName].children;
-
-    if (componentName !== "App") {
-      arrOfChildComp.forEach((childName) => {
-        // Build child component text string
-        if (childName !== arrOfChildComp[arrOfChildComp.length - 1]) {
-          childrenComponentNames += "    " + childName + ",\n";
-        } else {
-          childrenComponentNames += "    " + childName + "\n";
-        }
-
-        // Build child component import text string
-        childComponentImportNames += `import ${childName} from '../components/${childName}.vue';\n`;
-      });
-    }
-
-    // eslint-disable-next-line no-useless-escape
-    if (exportAsTypescript.value === "on") {
-      return `\n\n<script lang="ts">\nimport { defineComponent } from "vue";\n ${str}\nexport default defineComponent ({\n  name: '${componentName}',\n  components: {\n${childrenComponentNames}  }\n});\n<\/script>`;
-    }
-    str += "\n\n<script>";
-    str += `\n${childComponentImportNames}`;
-    str += `\n\nexport default {`;
-    str += `\n  components: {`;
-    str += `\n${childrenComponentNames}  }\n};`;
-    str += `\n<\/script>`;
-    return str;
-  }
-};
 
 const writeStyle = (componentName: string) => {
   let htmlArray = componentMap.value[componentName].htmlList;
@@ -1160,47 +1005,91 @@ const createTSDeclaration = async(location: string) => {
 };
 
 const createStore = async(location: string) => {
-  let str = `import { createStore } from 'vuex';\n`;
+  let str = `import { createStore } from 'pinia';\n`;
   str += `\nconst store = createStore({`;
-  str += `\n\tstate () {`;
-  str += `\n\t\treturn {`;
-  if (!userState.value.length) {
-    str += `\n\t\t\t//placeholder for state`;
-  }
-  for (let i = 0; i < userState.value.length; i++) {
-    str += `\n\t\t\t${userState.value[i]}: "PLACEHOLDER FOR VALUE",`;
-    if (i === userState.value.length - 1) {
-      str = str.slice(0, -1);
+
+
+  if (store.composition) { //in composition API
+
+
+    str += `\n\tstate: () => ({`;
+    if (!userState.value.length) {
+      str += `\n\t\t\t//placeholder for state`;
     }
-  }
-  str += `\n\t\t}`;
-  str += `\n\t},`;
-  str += `\n\tmutations: {`;
-  if (!userActions.value.length) {
-    str += `\n\t\t\t//placeholder for mutations`;
-  }
-  for (let i = 0; i < userActions.value.length; i++) {
-    str += `\n\t\t${userActions.value[i]} (state) {`;
-    str += `\n\t\t\t//placeholder for your mutation`;
+    for (let i = 0; i < userState.value.length; i++) {
+      str += `\n\t\t\t${userState.value[i]}: "PLACEHOLDER FOR VALUE",`;
+      if (i === userState.value.length - 1) {
+        str = str.slice(0, -1);
+      }
+    }
+    str += `\n\t}),`;
+    str += `\n\tactions: {`;
+    if (!userActions.value.length) {
+      str += `\n\t\t\t//PLACE YOUR ACTIONS OBJECT HERE`;
+    }
+    for (let i = 0; i < userActions.value.length; i++) {
+      str += `\n\t\t${userActions.value[i]} () {`;
+      for (let j = 0; j < userState.value.length; j++) {
+        str += `\n\t\t\tthis.${userState.value[j]}('${userActions.value[i]}')`;
+      }
+      str += `\n\t\t},`;
+      if (i === userActions.value.length - 1) {
+        str = str.slice(0, -1);
+      }
+    }
+    str += `\n\t}`;
+
+  } else { //in options API
+
+    str += `\n\tstate: {`;
+
+    if (!userState.value.length) {
+      str += `\n\t\t\t//PLACE YOUR STATE OBJECT HERE`;
+    }
+    for (let i = 0; i < userState.value.length; i++) {
+      str += `\n\t\t\t${userState.value[i]}: "PLACE YOUR STATE'S VALUE HERE",`;
+      if (i === userState.value.length - 1) {
+        str = str.slice(0, -1);
+      }
+    }
     str += `\n\t\t},`;
-    if (i === userActions.value.length - 1) {
-      str = str.slice(0, -1);
+
+
+    str += `\n\tmutations: {`;
+      if (!userActions.value.length) {
+        str += `\n\t\t\t//PLACE YOUR MUTATIONS OBJECT HERE`;
+      }
+      for (let i = 0; i < userActions.value.length; i++) {
+        str += `\n\t\t${userActions.value[i]} (state) {`;
+        str += `\n\t\t\t//placeholder for your mutation`;
+        str += `\n\t\t},`;
+        if (i === userActions.value.length - 1) {
+          str = str.slice(0, -1);
+        }
+      }
+    str += `\n\t},`;
+    str += `\n\tactions: {`;
+    if (!userActions.value.length) {
+      str += `\n\t\t\t//PLACE YOUR ACTIONS OBJECT HERE`;
     }
-  }
-  str += `\n\t},`;
-  str += `\n\tactions: {`;
-  if (!userActions.value.length) {
-    str += `\n\t\t\t//placeholder for actions`;
-  }
-  for (let i = 0; i < userActions.value.length; i++) {
-    str += `\n\t\t${userActions.value[i]} () {`;
-    str += `\n\t\t\tstore.commit('${userActions.value[i]}')`;
-    str += `\n\t\t},`;
-    if (i === userActions.value.length - 1) {
-      str = str.slice(0, -1);
+    for (let i = 0; i < userActions.value.length; i++) {
+      str += `\n\t\t${userActions.value[i]} () {`;
+      str += `\n\t\t\tstore.commit('${userActions.value[i]}')`;
+      str += `\n\t\t},`;
+      if (i === userActions.value.length - 1) {
+        str = str.slice(0, -1);
+      }
     }
+    str += `\n\t}`;
   }
-  str += `\n\t}`;
+
+
+
+
+
+
+
+
   str += "\n})\n";
   str += `\nexport default store;`;
   if (exportAsTypescript.value === "on") {
@@ -1241,7 +1130,7 @@ const createPackage = async(location: string) => {
   str += `\n\t"dependencies": {`;
   str += `\n\t\t"vue": "^3.4.21",`;
   str += `\n\t\t"vue-router": "^4.0.12",`;
-  str += `\n\t\t"vuex": "^4.0.2"`;
+  str += `\n\t\t"pinia": "^2.1.7"`;
   str += `,\n\t\t"element-plus": "^2.2.16"`;
 
   if (exportOauth.value === "on" || exportOauthGithub.value === "on") {
@@ -1327,7 +1216,6 @@ const exportFile = async (data: string) => {
   // exports images to the /assets folder
   // broken function. OverVue 10 and 11 did not have function to import imgs. Left in, if future iterations would like to work on in.
   // eslint-disable-next-line no-unused-vars
-  console.log('finished all the create funcs blocks and about to start loop')
   // for (let [routeImage, imageLocation] of Object.entries(imagePath.value)) {
   //   if (imageLocation !== "") {
   //     await createAssetFile(
@@ -1337,7 +1225,7 @@ const exportFile = async (data: string) => {
   //     );
   //   }
   // }
-  console.log('finished loop')
+
   // main logic below for creating components
   await createRouter(data);
   // eslint-disable-next-line no-unused-vars
