@@ -2,6 +2,8 @@
 
 // TS type for State (index.ts) in state folder
 export type State = {
+  // options/composition API check
+  options: boolean,
   mode: string;
   clicked: boolean;
   icons: Icons;
@@ -69,6 +71,9 @@ export type State = {
 };
 
 export type Actions = {
+  // changes state of options API and composition API
+  optionsToggle: () => void;
+
   emptyState: () => void;
   removeAllStatePropsActions: () => void;
   toggleTutorial: () => void;

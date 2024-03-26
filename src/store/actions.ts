@@ -14,6 +14,11 @@ const actions: Store<"main", State, {}, Actions> = {
     this.$reset();
   },
 
+// action for changing state of options API and composition API
+  optionsToggle() {
+    this.options = !this.options;
+  },
+
   removeAllStatePropsActions() {
     this.$patch({
       userProps: [],

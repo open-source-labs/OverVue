@@ -42,6 +42,7 @@ import {
   RouteComponentMap,
 } from "../../../types";
 import { useExportComponent } from "../composables/useExportComponent";
+import { createBoilerOptions, createBoilerComposition } from "../right-sidebar/createBoilerFuncs";
 // import * as fs from "fs"
 // import { fs } from "electron";
 // import { path } from 'path';
@@ -257,13 +258,24 @@ const createComponentCode = async(
   } else {
     // fs.writeFileSync(
       console.log('about to write createComponent code for not App')
-      await writeFile(
-      componentLocation + ".vue",
-      await writeComments(componentName) +
-        await writeTemplate(componentName, children, routes.value) +
-        await writeScript(componentName, children) +
-        await writeStyle(componentName)
-    );
+      /*
+      // if (store.options) {
+           await writeFile(
+           componentLocation + ".vue",
+           await writeComments(componentName) +
+             await writeTemplate(componentName, children, routes.value) +
+             await writeScript(componentName, children) +
+             await writeStyle(componentName)
+        // );
+      // }
+      */
+    //   await writeFile(
+    //   componentLocation + ".vue",
+    //   await writeComments(componentName) +
+    //     await writeTemplate(componentName, children, routes.value) +
+    //     await writeScript(componentName, children) +
+    //     await writeStyle(componentName)
+    // );
     console.log('finished to write createComponent code')
   }
 };
