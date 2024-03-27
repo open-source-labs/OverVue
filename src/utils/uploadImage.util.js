@@ -5,7 +5,7 @@ const { ipcRenderer } = window;
 const types = [
   {
     name: 'images',
-    extensions: ['jpg', 'jpeg', 'png']
+    extensions: ['jpg', 'jpeg', 'png', 'svg']
   }
 ]
 

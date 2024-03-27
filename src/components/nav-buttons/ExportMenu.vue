@@ -1131,9 +1131,9 @@ const createPackage = async(location: string) => {
   str += `\n\t},`;
   str += `\n\t"dependencies": {`;
   str += `\n\t\t"vue": "^3.4.21",`;
-  str += `\n\t\t"vue-router": "^4.0.12",`;
+  str += `\n\t\t"vue-router": "^4.3.0",`;
   str += `\n\t\t"pinia": "^2.1.7"`;
-  str += `,\n\t\t"element-plus": "^2.2.16"`;
+  str += `,\n\t\t"element-plus": "^2.6.2"`;
 
   if (exportOauth.value === "on" || exportOauthGithub.value === "on") {
     str += `,\n\t\t "firebase": "^9.6.9"`;
@@ -1142,8 +1142,8 @@ const createPackage = async(location: string) => {
   str += `\n\t"devDependencies": {`;
   str += `\n\t\t"@vitejs/plugin-vue": "^5.0.4",`;
   str += `\n\t\t"eslint": "^8.5.0",`;
-  str += `\n\t\t"eslint-plugin-vue": "^8.2.0",`;
-  str += `\n\t\t"vite": "^5.2.0"`;
+  str += `\n\t\t"eslint-plugin-vue": "^9.24.0",`;
+  str += `\n\t\t"vite": "^5.2.6"`;
   if (importTest.value === "on") {
     str += `,\n\t\t"@babel/core": "^7.12.16",`;
     str += `\n\t\t"@babel/eslint-parser": "^7.12.16",`;
@@ -1157,12 +1157,12 @@ const createPackage = async(location: string) => {
     str += `\n\t\t"jest": "^27.0.5"`;
   }
   if (exportAsTypescript.value === "on") {
-    str += `,\n\t\t"@rushstack/eslint-patch": "^1.1.0",`;
+    str += `,\n\t\t"@rushstack/eslint-patch": "^1.8.0",`;
     str += `\n\t\t"@vue/tsconfig": "^0.1.3",`;
-    str += `\n\t\t"typescript": "^5.2.2",`;
-    str += `\n\t\t"vue-tsc": "^2.0.6",`;
-    str += `\n\t\t"@types/node": "^16.11.25",`;
-    str += `\n\t\t"@vue/eslint-config-typescript": "^10.0.0"`;
+    str += `\n\t\t"typescript": "^5.4.3",`;
+    str += `\n\t\t"vue-tsc": "^2.0.7",`;
+    str += `\n\t\t"@types/node": "^20.11.30",`;
+    str += `\n\t\t"@vue/eslint-config-typescript": "^13.0.0"`;
   }
   str += `\n\t}\n}`;
   // fs.writeFileSync(path.join(location, "package.json"), str);

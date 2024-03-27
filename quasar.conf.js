@@ -251,7 +251,14 @@ module.exports = configure(function (ctx) {
           },
         ],
       },
-
+      extendWebpack (cfg) {
+        cfg.module.rules.push({
+          test: /\.svg$/,
+          use: [
+            'file-loader'
+          ]
+        })
+      },
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
       chainWebpackMain(chain) {
         chain

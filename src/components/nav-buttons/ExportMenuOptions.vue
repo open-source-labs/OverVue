@@ -316,9 +316,9 @@ test('renders ${componentName}', () => {
         return "";
       }
     },
-    /**
-     * @description creates the <router-link> boilerplate for /views/components
-     * also creates the <template></template> tag for each component
+    /*
+     @description creates the <router-link> boilerplate for /views/components
+     also creates the <template></template> tag for each component
      */
     writeTemplate(componentName, children, routes) {
       let str = "";
@@ -382,6 +382,8 @@ test('renders ${componentName}', () => {
       } else {
         return `<template>\n<div>\n\t${str}${templateTagStr}${routeStr}\t</div>\n</template>`;
       }
+
+    -->
     },
     /*
      <!-- @description imports child components into <script> -->
