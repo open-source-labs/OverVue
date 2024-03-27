@@ -146,7 +146,7 @@
       class="tut-btn"
       color="secondary"
       id="version-btn"
-      label="New Features in Version 10"
+      label="ADVANCED FUNCTIONALITY"
       @click="nextTab"
     />
     <q-btn

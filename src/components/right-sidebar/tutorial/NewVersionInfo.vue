@@ -1,65 +1,40 @@
 <template>
   <section id="newFeatures">
     <h6 class="infoHeading">What's New in OverVue 11.0?</h6>
-    <p class="info-sub-heading">Interactive Tree View</p>
+    <p class="info-sub-heading">Toggle between Options/Composition API</p>
     <p class="infoContent">
-      Drag and drop tree nodes to change the component structure! Changes made
-      within the tree view will be reflected in the Code Preview. This view
-      replaces the previous grid view. Although Grid Mode is considered
-      deprecated, it can still be found within the application (see Advanced
-      Functionality).
+      OverVue 11.0 adds the ability to display your code generated in the code 
+      preview in both options and composition API, taking advantage of the pinia
+      state management library. You can now toggle back and forth between each
+      API format.
     </p>
     <img
-      alt="Interactive Tree View"
-      src="../../../assets/interactive-tree.png"
+      alt="Toggle between Options/Composition API"
+      src="../../../assets/options-composition-API.png"
       class="tut-screenshot"
     />
-    <p class="info-sub-heading">Updated HTML Elements Section</p>
+    <p class="info-sub-heading">Updated Export Functionality</p>
     <p class="infoContent">
-      OverVue 10.0 comes with a new and revamped HTML elements section. You can
-      now change the order of and nest the HTML elements that are within your
-      components by interacting with its tree list structure. From this section,
-      you can also delete and edit HTML elements.
+      Export now provides support for the pinia state management library. Now, you 
+      can choose which API formtat you want exported to your local machine, just 
+      select the desired format, hit export, and voilà!
+
     </p>
     <img
-      alt="HTML Elements Section"
-      src="../../../assets/nested-elements.png"
+      alt="Updated Export Functionality"
+      src="../../../assets/export-API.png"
       class="tut-screenshot"
     />
-    <p class="info-sub-heading">Component Focus Modal</p>
+    <p class="info-sub-heading">Patched Save Functionality</p>
     <p class="infoContent">
-      If you're going to be spending a lot of time organizing HTML elements in
-      any one component, use the component focus modal. The modal can be opened
-      by double-clicking on a component within the main tree view.
+      You can now save the current state of your entire application into a JSON file 
+      on your local machine.
     </p>
-    <img
-      alt="Component Focus Modal"
-      src="../../../assets/modal.png"
-      class="tut-screenshot"
-    />
-    <p class="info-sub-heading">Vuetensils Component Library</p>
-    <p class="infoContent">
-      Quickly create accessible HTML elements by adding components from the
-      Vuetensils Component Library! These naked components are designed to have
-      bare minimum styles, to avoid bloat while including accessibility. Learn
-      more about Vuetensils in their official
-      <a
-        class="link"
-        @click="openUrl('https://vuetensils.com/Introduction.html')"
-      >
-        <u>documentation</u> </a
-      >.
-    </p>
-    <img
-      alt="Vuetensils"
-      src="../../../assets/vuetensils.png"
-      class="tut-screenshot"
-    />
     <q-btn
       class="tut-btn"
       color="secondary"
       id="advanced-btn"
-      label="Advanced Functionality"
+      label="The Basics"
       @click="nextTab"
     />
     <q-btn

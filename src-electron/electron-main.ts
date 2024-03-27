@@ -21,6 +21,7 @@ function createWindow() {
       // nodeIntegration: true,
       // contextIsolation: false,
       contextIsolation: true,
+      allowRunningInsecureContent: false,
       // More info: https://v2.quasar.dev/quasar-cli-webpack/developing-electron-apps/electron-preload-script
       preload: path.resolve(__dirname, process.env.QUASAR_ELECTRON_PRELOAD),
     },
@@ -104,7 +105,6 @@ ipcMain.handle("exportComponent", async (event, options) => {
   }
   return { filePath };
 });
-
 
 ipcMain.handle('writeFile', async (event, filePath, content) => { //possibly merge this with 'writeJSON' handle
 
