@@ -30,13 +30,13 @@ describe('CodeSnippet', () => {
     const store = useStore();
 
     // the initial value of store.options is false using the expect function.
-    expect(store.options).toBe(false);
+    expect(store.composition).toBe(false);
 
     // Find the checkbox input with the class compositiontoggle in the wrapper, trigger a change event on it, and wait for any potential DOM updates using the nextTick method.
     await wrapper.find('input.compositiontoggle').trigger('change');
     await wrapper.vm.$nextTick(); //wait for any potential DOM updates
 
     //the final value of store.options is true using the expect function.
-    expect(store.options).toBe(true);
+    expect(store.composition).toBe(true);
   });
 });

@@ -19,7 +19,7 @@
           <input
             :checked="store.composition"
             @change="store.compositionToggle"
-            type="checkbox"
+            type="checkbox" class="compositiontoggle"
           >
           <span class="slider round"/>
         </label>
