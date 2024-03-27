@@ -23,7 +23,7 @@
           no-caps
           color="secondary"
           label="Current Active Component"
-          @click="useExportComponent"
+          @click="exportActiveComponent"
           :disabled="!activeComponent.trim()"
         />
       </div>
@@ -42,7 +42,8 @@ import {
   RouteComponentMap,
 } from "../../../types";
 import { useExportComponent } from "../composables/useExportComponent";
-import { createBoilerOptions, createBoilerComposition } from "../right-sidebar/createBoilerFuncs"
+import { createBoilerOptions, createBoilerComposition } from "../right-sidebar/createBoilerFuncs";
+import { showExportProjectDialog, exportComponent, writeFile, checkFileExists, mkdirSync, pathJoin } from '../composables/useExportComponent.ts';
 // import * as fs from "fs"
 // import { fs } from "electron";
 // import { path } from 'path';
@@ -65,63 +66,101 @@ const exportOauthGithub = computed(() => store.exportOauthGithub);
 const importTest = computed(() => store.importTest);
 
 /* METHODS */
-const showExportProjectDialog = () => {
-  if (activeComponent.value === '') return alert('At least one component needs to be created');
-  ipcRenderer
-  .invoke("exportProject", {
-    title: "Choose location to save folder in",
-    message: "Choose location to save folder in",
-    nameFieldLabel: "Application Name",
-  })
-  .then((result: { filePath: string }) => {
-    console.log('results from showExportProjectDialog are', result, 'result.filePath', result.filePath)
-    if (result.filePath) {
-      exportFile(result.filePath);
-      alert("Successfully Exported");
-    } else {
-      console.error('No file path selected');
-    }
-  })
-  .catch((err: Error) => console.log(err));
-};
-
-const writeFile = async(filePath: any, content: any) => {
-  if (!filePath) {
-    console.error('filePath is undefined');
-    return;
-  }
-  await ipcRenderer.invoke('writeFile', filePath, content )
-    .catch((error:any) => console.error(error));
-}
-
-async function checkFileExists(path:string) {
-  const fileExistBool = await ipcRenderer.invoke('check-file-exists', path);
-  return fileExistBool.status;
-};
-
-const mkdirSync = async (...args:string[]) => {
-  await ipcRenderer.invoke('mkdirSync', [...args ])
-    .then((response: any) => console.log('mkdirSync response is', response))
-    .catch((error:any) => console.error(error));
-}
-
-const pathJoin = (...args:string[]) => {
-  if (args.some(arg => arg === undefined)) { //undefined handler for if any args are undefined
-    console.error('arguments are undefined)');
-    return;
-  }
-
-  return ipcRenderer.invoke('pathJoin',  ...args )
-    .then((response: any) => {
-        return response;
+const exportProject = () => {
+  showExportProjectDialog()
+    .then((result: { filePath: string }) => {
+      console.log('results from showExportProjectDialog are', result, 'result.filePath', result.filePath)
+      if (result.filePath) {
+        exportFile(result.filePath);
+        alert("Successfully Exported");
+      } else {
+        console.error('No file path selected');
+      }
     })
-    .catch((error:any) => {
-        console.error(error);
-        throw error;
-    });
+    .catch((err: Error) => console.log(err));
 }
 
-const exportProject = () => showExportProjectDialog();
+const exportActiveComponent = () => {
+  exportComponent()
+    .then((result: { filePath: string }) => {
+        exportComponentFile(result.filePath);
+        alert("Successfully Exported");
+      })
+      .catch((err) => console.log(err));
+};
+// const showExportProjectDialog = () => {
+//   if (activeComponent.value === '') return alert('At least one component needs to be created');
+//   ipcRenderer
+//   .invoke("exportProject", {
+//     title: "Choose location to save folder in",
+//     message: "Choose location to save folder in",
+//     nameFieldLabel: "Application Name",
+//   })
+//   .then((result: { filePath: string }) => {
+//     console.log('results from showExportProjectDialog are', result, 'result.filePath', result.filePath)
+//     if (result.filePath) {
+//       exportFile(result.filePath);
+//       alert("Successfully Exported");
+//     } else {
+//       console.error('No file path selected');
+//     }
+//   })
+//   .catch((err: Error) => console.log(err));
+// };
+
+const exportComponent = () => {
+  ipcRenderer
+    .invoke("exportComponent", {
+      title: "Choose location to save folder in",
+      message: "Choose location to save folder in",
+      nameFieldLabel: "Component Name",
+    })
+    .then((result) => {
+      exportComponentFile(result.filePath);
+      alert("Successfully Exported");
+    })
+    .catch((err) => console.log(err));
+};
+
+// const writeFile = async(filePath: any, content: any) => {
+//   if (!filePath) {
+//     console.error('filePath is undefined');
+//     return;
+//   }
+//   await ipcRenderer.invoke('writeFile', filePath, content )
+//     .catch((error:any) => console.error(error));
+// }
+
+// async function checkFileExists(path:string) {
+//   const fileExistBool = await ipcRenderer.invoke('check-file-exists', path);
+//   return fileExistBool.status;
+// };
+
+// const mkdirSync = async (...args:string[]) => {
+//   await ipcRenderer.invoke('mkdirSync', [...args ])
+//     .then((response: any) => console.log('mkdirSync response is', response))
+//     .catch((error:any) => console.error(error));
+// }
+
+// const pathJoin = (...args:string[]) => {
+//   if (args.some(arg => arg === undefined)) { //undefined handler for if any args are undefined
+//     console.error('arguments are undefined)');
+//     return;
+//   }
+
+//   return ipcRenderer.invoke('pathJoin',  ...args )
+//     .then((response: any) => {
+//         return response;
+//     })
+//     .catch((error:any) => {
+//         console.error(error);
+//         throw error;
+//     });
+// }
+
+// const exportProject = () => showExportProjectDialog();
+// const exportActiveComponent = () => exportComponent();
+
 
 /**
  * @description creates the .js file
@@ -1170,6 +1209,22 @@ const createPackage = async(location: string) => {
   await writeFile(await pathJoin(location, "package.json"), str);
 };
 
+ const exportComponentFile = async (data: string) => {
+    if (data === undefined) return;
+    const existBool = await checkFileExists(data)
+    console.log( 'existBool', existBool);
+    if (!existBool) {
+      mkdirSync(data);
+    }
+    // main logic below for creating single component
+    // eslint-disable-next-line no-unused-vars
+    await createComponentCode(
+      await pathJoin(data, store.activeComponent),
+      store.activeComponent,
+      store.componentMap[store.activeComponent].children
+    );
+  };
+
 const exportFile = async (data: string) => {
   if (data === undefined) return;
   console.log('exportFile data is', data)
@@ -1287,3 +1342,5 @@ const exportFile = async (data: string) => {
   max-height: 55px !important;
 }
 </style>
+
+<!-- export { pathJoin, writeFile, mkdirSync, checkFileExists }; -->

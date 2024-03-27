@@ -1,4 +1,4 @@
-<!-- 
+<!--
   LOCATION IN APP:
   [left sidebar] COMPONENT > Update Component (conditional: current active component selected)
 
@@ -164,6 +164,7 @@
           </q-list>
 
           <!-- update, export, and delete buttons -->
+          <!-- update and export btn are not currently functional and is hidden from the public -->
           <!-- <q-btn
             id="create-component-btn"
             class="sidebar-btn"
@@ -194,7 +195,8 @@
 import { ref, computed, watch } from "vue";
 import { useStore } from "../../../store/main";
 import { Component } from "../../../../types";
-import { useExportComponent } from "../../composables/useExportComponent.js";
+// import { useExportComponent } from "../../composables/useExportComponent.js";
+import { writeFile, checkFileExists, mkdirSync, pathJoin } from "../../composables/useExportComponent.ts";
 import Icons from "./Icons.vue";
 import Vuetensils from "./Vuetensils.vue";
 import AttributesSubMenu from "./AttributesSubMenu.vue";

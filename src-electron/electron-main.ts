@@ -99,7 +99,7 @@ ipcMain.handle("exportProject", async (event, options) => {
   return { filePath };
 });
 
-ipcMain.handle("useExportComponent", async (event, options) => {
+ipcMain.handle("exportComponent", async (event, options) => {
   const { dialog } = require("electron");
   const { filePath } = await dialog.showSaveDialog(options);
   if (filePath === "") {

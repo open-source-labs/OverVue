@@ -374,7 +374,8 @@
                 <q-icon color="primary" name="edit_note" />
               </q-item-section>
             </q-item>
-            <q-item
+            <!-- export requires an updated function -->
+            <!-- <q-item
               clickable
               v-ripple
               v-close-popup
@@ -384,7 +385,7 @@
               <q-item-section avatar>
                 <q-icon color="primary" name="upload" />
               </q-item-section>
-            </q-item>
+            </q-item> -->
             <q-item clickable v-ripple v-close-popup @click="handleEditColor">
               <q-item-section>Edit Color</q-item-section>
               <q-item-section avatar>
