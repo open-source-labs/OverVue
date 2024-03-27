@@ -19,7 +19,7 @@
           <input
             :checked="store.composition"
             @change="store.compositionToggle"
-            type="checkbox"
+            type="checkbox" class="compositiontoggle"
           >
           <span class="slider round"/>
         </label>
@@ -45,8 +45,7 @@ import {
   onMounted,
   onBeforeUnmount,
   nextTick,
-  Ref,
-  defineEmits
+  Ref
 } from "vue";
 import { PrismEditor } from "vue-prism-editor";
 import { highlight, languages } from "prismjs/components/prism-core";
@@ -69,7 +68,7 @@ const activeRoute = computed(() => store.activeRoute);
 
 /* This will update code.value based on the new state of options */
 watch(() => store.composition, () => {
-  snippetInvoke(); 
+  snippetInvoke();
 });
 
 

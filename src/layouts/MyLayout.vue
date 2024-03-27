@@ -20,7 +20,7 @@
           <!-- top-left corner: LOGO -->
           <img
             alt="OverVue"
-            src="../assets/OverVue_navLogo.png"
+            src="../assets/app_logo106x23.svg"
             id="nav-logo"
           />
           <div id="undo-redo">
@@ -466,7 +466,8 @@ const syncOauthGitFlag = (e: Event) => {
 }
 
 #nav-logo {
-  margin-right: 95px;
+  height: 40px;
+  margin-left: 8px;
 }
 
 q-btn > i {

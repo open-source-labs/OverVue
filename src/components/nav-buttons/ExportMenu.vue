@@ -23,7 +23,7 @@
           no-caps
           color="secondary"
           label="Current Active Component"
-          @click="useExportComponent"
+          @click="exportActiveComponent"
           :disabled="!activeComponent.trim()"
         />
       </div>
@@ -41,11 +41,9 @@ import {
   HtmlElementMap,
   RouteComponentMap,
 } from "../../../types";
-import { useExportComponent } from "../composables/useExportComponent";
-import { createBoilerOptions, createBoilerComposition } from "../right-sidebar/createBoilerFuncs"
-// import * as fs from "fs"
-// import { fs } from "electron";
-// import { path } from 'path';
+import { createBoilerOptions, createBoilerComposition } from "../right-sidebar/createBoilerFuncs";
+import { showExportProjectDialog, exportComponent, writeFile, checkFileExists, mkdirSync, pathJoin } from '../composables/useExportComponent';
+
 
 // @ts-ignore
 const { fs, ipcRenderer, path } = window;
@@ -65,63 +63,32 @@ const exportOauthGithub = computed(() => store.exportOauthGithub);
 const importTest = computed(() => store.importTest);
 
 /* METHODS */
-const showExportProjectDialog = () => {
-  if (activeComponent.value === '') return alert('At least one component needs to be created');
-  ipcRenderer
-  .invoke("exportProject", {
-    title: "Choose location to save folder in",
-    message: "Choose location to save folder in",
-    nameFieldLabel: "Application Name",
-  })
-  .then((result: { filePath: string }) => {
-    console.log('results from showExportProjectDialog are', result, 'result.filePath', result.filePath)
-    if (result.filePath) {
-      exportFile(result.filePath);
-      alert("Successfully Exported");
-    } else {
-      console.error('No file path selected');
-    }
-  })
-  .catch((err: Error) => console.log(err));
-};
-
-const writeFile = async(filePath: any, content: any) => {
-  if (!filePath) {
-    console.error('filePath is undefined');
-    return;
-  }
-  await ipcRenderer.invoke('writeFile', filePath, content )
-    .catch((error:any) => console.error(error));
-}
-
-async function checkFileExists(path:string) {
-  const fileExistBool = await ipcRenderer.invoke('check-file-exists', path);
-  return fileExistBool.status;
-};
-
-const mkdirSync = async (...args:string[]) => {
-  await ipcRenderer.invoke('mkdirSync', [...args ])
-    .then((response: any) => console.log('mkdirSync response is', response))
-    .catch((error:any) => console.error(error));
-}
-
-const pathJoin = (...args:string[]) => {
-  if (args.some(arg => arg === undefined)) { //undefined handler for if any args are undefined
-    console.error('arguments are undefined)');
-    return;
-  }
-
-  return ipcRenderer.invoke('pathJoin',  ...args )
-    .then((response: any) => {
-        return response;
+const exportProject = async () => {
+  await showExportProjectDialog()
+    .then((result: { filePath: string }) => {
+      if (result.filePath) {
+        exportFile(result.filePath);
+        alert("Successfully Exported");
+      } else {
+        console.error('No file path selected');
+      }
     })
-    .catch((error:any) => {
-        console.error(error);
-        throw error;
-    });
+    .catch((err: Error) => console.log(err));
 }
 
-const exportProject = () => showExportProjectDialog();
+const exportActiveComponent = async () => {
+  await exportComponent()
+    .then((result: { filePath: string }) => {
+      if (result.filePath) {
+        exportComponentFile(result.filePath);
+        alert("Successfully Exported");
+      } else {
+        console.error('No file path selected');
+      }
+    })
+    .catch((err: Error) => console.log(err));
+  }
+
 
 /**
  * @description creates the .js file
@@ -132,23 +99,18 @@ const exportProject = () => showExportProjectDialog();
 
 const createRouter = async (location: string) => {
   if (exportAsTypescript.value === "on") {
-    // fs.writeFileSync(
-      console.log('about to write createRouter')
+
       await writeFile(
-      // path.join(location, "src", "router", "index.ts"),
       await pathJoin(location, "src", "router", "index.ts"),
       createRouterImports(routes.value) + createExport(routes.value)
     );
-    console.log('finished write createRouter')
+
   } else {
-    // fs.writeFileSync(
-      console.log('about to write createRouter')
+
       await writeFile(
-      // path.join(location, "src", "router", "index.js"),
       await pathJoin(location, "src", "router", "index.js"),
       createRouterImports(routes.value) + createExport(routes.value)
     );
-    console.log('finished write createRouter')
   }
 };
 
@@ -196,20 +158,20 @@ const writeRenderUnitTestString = (
   componentName: string,
   htmlList: HtmlElement[]
 ) => {
-  console.log('in writeRenderUnitTestString')
+
   const imports = `import { mount } from '@vue/test-utils'
-import ${componentName} from '../../src/components/${componentName}.vue'
-`;
+    import ${componentName} from '../../src/components/${componentName}.vue'
+    `;
 
   const results = [imports];
 
   for (const el of htmlList) {
     const test = `
-test('renders ${componentName}', () => {
-  const wrapper = mount(${componentName})
+      test('renders ${componentName}', () => {
+        const wrapper = mount(${componentName})
 
-  // customize your tests here; for more info please visit: https://github.com/vuejs/test-utils/
-})`;
+        // customize your tests here; for more info please visit: https://github.com/vuejs/test-utils/
+      })`;
     results.push(test);
   }
 
@@ -225,15 +187,13 @@ const createComponentTestCode = async(
     [key: string]: RouteComponentMap | Component;
   }
 ) => {
-  // fs.writeFileSync(
-    console.log('about to write createComponentTestCode')
       await writeFile(
-    componentLocation,
-    writeRenderUnitTestString(
-      componentName,
-      componentMap[componentName].htmlList
-    )
-  );
+        componentLocation,
+        writeRenderUnitTestString(
+          componentName,
+          componentMap[componentName].htmlList
+        )
+      );
 };
 
 const createComponentCode = async(
@@ -245,44 +205,33 @@ const createComponentCode = async(
     HomeView: RouteComponentMap;
   }
 ) => {
-  console.log('children is', children)
+
   if (componentName === "App") {
-    // fs.writeFileSync(
-      console.log('about to write createComponentCode for App')
       await writeFile(
       componentLocation + ".vue",
       await writeTemplate(componentName, children, routes.value) +
         await writeStyle(componentName)
     );
-    console.log('finished write createComponent code')
   } else {
       if (store.composition === false) {
-        // fs.writeFileSync(
-        console.log('about to write createComponent code for not App')
         await writeFile(
-        componentLocation + ".vue",
-        await writeComments(componentName) +
-          await writeTemplate(componentName, children, routes.value) +
-          await createBoilerOptions(componentName, children)
-          // + await writeStyle(componentName)
-      );
-        console.log('finished to write createComponent code')
+          componentLocation + ".vue",
+          await writeComments(componentName) +
+            await writeTemplate(componentName, children, routes.value) +
+            await createBoilerOptions(componentName, children)
+        );
       } else {
-          // fs.writeFileSync(
-        console.log('about to write createComponent code for not App')
         await writeFile(
-        componentLocation + ".vue",
-        await writeComments(componentName) +
-          await writeTemplate(componentName, children, routes.value) +
-          await createBoilerComposition(componentName, children)
-          // + await writeStyle(componentName)
-      );
-        console.log('finished to write createComponent code')
+          componentLocation + ".vue",
+          await writeComments(componentName) +
+            await writeTemplate(componentName, children, routes.value) +
+            await createBoilerComposition(componentName, children)
+        );
       }
   }
 };
 
-
+// Team 11.0 found this broken function to upload asset, but there is not a place for users to upload assets in the app
 // const createAssetFile = async (targetLocation: string, assetLocation: string | unknown) => {
 //   // @ts-ignore
 //   let saved = remote.nativeImage.createFromPath(assetLocation);
@@ -292,7 +241,7 @@ const createComponentCode = async(
 // };
 
 const writeTemplateTag = (componentName: string) => {
-  console.log('in writeTemplateTag')
+
   const htmlElementMap: HtmlElementMap = {
     div: ["<div", "</div>"],
     button: ["<button", "</button>"],
@@ -489,16 +438,10 @@ const writeTemplateTag = (componentName: string) => {
   // Helper function that recursively iterates through the given html element's children and their children's children.
   // also adds proper indentation to code snippet
   // add childComponents of the activeCompnent to the htmlElementMap
-  console.log('activeComponent.value', activeComponent.value)
-  console.log('activeComponent', activeComponent)
   const childComponents = componentMap.value[activeComponent.value].children;
-  // childComponents.forEach((child) => {
-  //   htmlElementMap[child] = [`<${child}`, ""]; //single
-  // });
-  console.log('childComponents is', childComponents)
+
+
   const writeNested = (childrenArray: HtmlElement[], indent: string) => {
-    console.log('in writeNested')
-    console.log('childrenArray', childrenArray, '\nindent', indent)
     if (!childrenArray.length) {
       return "";
     }
@@ -597,8 +540,6 @@ const writeTemplateTag = (componentName: string) => {
 };
 
 const writeComments = (componentName: string) => {
-  console.log('componentName  in writeComments is', componentName)
-  console.log('componentMap.value[componentName] in writeComments  is', componentMap.value[componentName])
   if ((componentMap.value[componentName] as Component).noteList) {
     let commentStr = "<!--";
     (componentMap.value[componentName] as Component).noteList.forEach((el) => {
@@ -626,7 +567,7 @@ const writeTemplate = (
   },
   routes: { [key: string]: Component[] }
 ) => {
-  console.log('children in writeTemplate is', children)
+
   let str = "";
   let routeStr = "";
 
@@ -706,9 +647,9 @@ const writeStyle = (componentName: string) => {
           ? element.htmlList[0]?.text
           : "." + element.htmlAttributes.class;
       styleString += `${styleSelector} {\n\tbackground-color: ${element.color};
-\tgrid-area: ${element.htmlAttributes.gridArea[0]} / ${element.htmlAttributes.gridArea[1]} / ${element.htmlAttributes.gridArea[2]} / ${element.htmlAttributes.gridArea[3]};
-\tz-index: ${element.z};
-}\n`;
+        \tgrid-area: ${element.htmlAttributes.gridArea[0]} / ${element.htmlAttributes.gridArea[1]} / ${element.htmlAttributes.gridArea[2]} / ${element.htmlAttributes.gridArea[3]};
+        \tz-index: ${element.z};
+        }\n`;
     });
   }
 
@@ -750,9 +691,6 @@ const createFirebaseConfigFile = async(location: string) => {
     str += `\nconst firebaseApp = initializeApp(firebaseConfig);`;
     str += `\nexport default firebaseApp`;
 
-    // fs.writeFileSync(path.join(location, "firebaseConfig.js"), str);
-    // fs.writeFileSync(
-      // writeFile(path.join(location, "firebaseConfig.js"), str);
     await writeFile(await pathJoin(location, "firebaseConfig.js"), str);
   }
 };
@@ -762,9 +700,7 @@ const createjestConfigFile = async(location: string) => {
     let str = `module.exports = {`;
     str += `\n\tpreset: '@vue/cli-plugin-unit-jest'`;
     str += `\n}`;
-    // fs.writeFileSync(path.join(location, "jest.config.js"), str);
-    // fs.writeFileSync(
-      // writeFile(path.join(location, "jest.config.js"), str);
+
     await writeFile(await pathJoin(location, "jest.config.js"), str);
   }
 };
@@ -776,9 +712,7 @@ const createbabelConfigFile = async(location: string) => {
     str += `\n\t\t'@vue/cli-plugin-babel/preset'`;
     str += `\n\t]`;
     str += `\n}`;
-    // fs.writeFileSync(path.join(location, "babel.config.js"), str);
-    // fs.writeFileSync(
-      // writeFile(path.join(location, "babel.config.js"), str);
+
     await writeFile(await pathJoin(location, "babel.config.js"), str);
   }
 };
@@ -864,12 +798,8 @@ const createOauthFile = async (location: string) => {
     str += `\n<\/script>`;
     str += `\n<style scoped>`;
     str += `\n</style>`;
-    // fs.writeFileSync(
-    await writeFile(
-      // path.join(location, "src", "components", "oauth.vue"),
-      await pathJoin(location, "src", "components", "oauth.vue"),
-      str
-    );
+
+    await writeFile(await pathJoin(location, "src", "components", "oauth.vue"),str);
   }
 };
 
@@ -894,9 +824,7 @@ const createIndexFile = async (location: string) => {
   }
   str += `\n</body>\n\n`;
   str += `</html>\n`;
-  // fs.writeFileSync(path.join(location, "index.html"), str);
-  // fs.writeFileSync(
-    // writeFile(path.join(location, "index.html"), str);
+
   await writeFile(await pathJoin(location, "index.html"), str);
 };
 
@@ -915,12 +843,8 @@ const createMainFile = async (location: string) => {
 
   // if using typescript, export with .ts extension
   if (exportAsTypescript.value === "on") {
-    // fs.writeFileSync(path.join(location, "src", "main.ts"), str);
-    // writeFile(path.join(location, "src", "main.ts"), str);
     await writeFile(await pathJoin(await location, "src", "main.ts"), str);
   } else {
-    // fs.writeFileSync(path.join(location, "src", "main.js"), str);
-    // writeFile(path.join(location, "src", "main.js"), str);
      await writeFile(await pathJoin(location, "src", "main.js"), str);
   }
 };
@@ -938,12 +862,8 @@ const createViteConfig = async (location: string) => {
 
   // if using typescript, export with .ts extension
   if (exportAsTypescript.value === "on") {
-    // fs.writeFileSync(path.join(location, "vite.config.ts"), str);
-    // writeFile(path.join(location, "vite.config.ts"), str);
     await writeFile(await pathJoin(location, "vite.config.ts"), str);
   } else {
-    // fs.writeFileSync(path.join(location, "vite.config.js"), str);
-    // writeFile(path.join(location, "vite.config.js"), str);
     await writeFile(await pathJoin(location, "vite.config.js"), str);
   }
 };
@@ -965,7 +885,6 @@ const createESLintRC = async (location: string) => {
   str += `\t"env": {\n`;
   str += `\t\t"vue/setup-compiler-macros": true\n`;
   str += `\t}\n}`;
-  // fs.writeFileSync(path.join(location, ".eslintrc.cjs"), str);
   await writeFile(await pathJoin(location, ".eslintrc.cjs"), str);
 };
 
@@ -974,8 +893,7 @@ const createTSConfig = async(location: string) => {
     let str = `{\n\t"include": ["env.d.ts", "src/**/*", "src/**/*.vue"],\n\t"compilerOptions": {\n\t\t"baseUrl": ".",\n\t\t"paths": {\n\t\t\t"@/*": ["./src/*"]\n\t\t}\n\t},`;
     str += `\t"references": [\n`;
     str += `\t\t{\n\t\t\t"path": "./tsconfig.vite-config.json"\n\t\t}\n\t]\n}`;
-    // fs.writeFileSync(path.join(location, "tsconfig.json"), str);
-    // writeFile(path.join(location, "tsconfig.json"), str);
+
     await writeFile(await pathJoin(location, "tsconfig.json"), str);
   } else {
     return;
@@ -985,8 +903,6 @@ const createTSConfig = async(location: string) => {
 const createTSViteConfig = async (location: string) => {
   if (exportAsTypescript.value === "on") {
     let str = `{\n\t"extends": "@vue/tsconfig/tsconfig.node.json",\n\t"include": ["vite.config.*"],\n\t"compilerOptions": {\n\t\t"composite": true,\n\t\t"types": ["node", "viteset"]\n\t}\n}`;
-    // fs.writeFileSync(path.join(location, "tsconfig.vite-config.json"), str);
-    // writeFile(path.join(location, "tsconfig.vite-config.json"), str);
     await writeFile(await pathJoin(location, "tsconfig.vite-config.json"), str);
   } else {
     return;
@@ -996,8 +912,6 @@ const createTSViteConfig = async (location: string) => {
 const createTSDeclaration = async(location: string) => {
   if (exportAsTypescript.value === "on") {
     let str = `/// <reference types="vite/client" />`;
-    // fs.writeFileSync(path.join(location, "env.d.ts"), str);
-    // writeFile(path.join(location, "env.d.ts"), str);
     await writeFile(await pathJoin(location, "env.d.ts"), str);
   } else {
     return;
@@ -1008,9 +922,7 @@ const createStore = async(location: string) => {
   let str = `import { createStore } from 'pinia';\n`;
   str += `\nconst store = createStore({`;
 
-
-  if (store.composition) { //in composition API
-
+  if (store.composition) { //if in composition API
 
     str += `\n\tstate: () => ({`;
     if (!userState.value.length) {
@@ -1041,7 +953,7 @@ const createStore = async(location: string) => {
     }
     str += `\n\t}`;
 
-  } else { //in options API
+  } else { // if in options API
 
     str += `\n\tstate: {`;
 
@@ -1085,22 +997,11 @@ const createStore = async(location: string) => {
     str += `\n\t}`;
   }
 
-
-
-
-
-
-
-
   str += "\n})\n";
   str += `\nexport default store;`;
   if (exportAsTypescript.value === "on") {
-    // fs.writeFileSync(path.join(location, "src", "store", "index.ts"), str);
-    // writeFile(path.join(location, "src", "store", "index.ts"), str);
     await writeFile(await pathJoin(location, "src", "store", "index.ts"), str);
   } else {
-    // fs.writeFileSync(path.join(location, "src", "store", "index.js"), str);
-    // writeFile(path.join(location, "src", "store", "index.js"), str);
     await writeFile(await pathJoin(location, "src", "store", "index.js"), str);
   }
 };
@@ -1165,29 +1066,30 @@ const createPackage = async(location: string) => {
     str += `\n\t\t"@vue/eslint-config-typescript": "^13.0.0"`;
   }
   str += `\n\t}\n}`;
-  // fs.writeFileSync(path.join(location, "package.json"), str);
-  // writeFile(path.join(location, "package.json"), str);
   await writeFile(await pathJoin(location, "package.json"), str);
 };
 
+ const exportComponentFile = async (data: string) => {
+    if (data === undefined) return;
+    const existBool = await checkFileExists(data)
+    if (!existBool) {
+      mkdirSync(data);
+    }
+    // main logic below for creating single component
+    // eslint-disable-next-line no-unused-vars
+    await createComponentCode(
+      await pathJoin(data, store.activeComponent),
+      store.activeComponent,
+      store.componentMap[store.activeComponent].children
+    );
+  };
+
 const exportFile = async (data: string) => {
   if (data === undefined) return;
-  console.log('exportFile data is', data)
-  // if (!fs.existsSync(data)) {
+
+  //checks your comp. directory if a file exist; if it doesn't, it will create a new folder
   const existBool = await checkFileExists(data)
-  console.log( 'existBool', existBool);
   if (!existBool) {
-    console.log('checkFileExist function came back false')
-    // fs.mkdirSync(data);
-    // fs.mkdirSync(path.join(data, "public"));
-    // fs.mkdirSync(path.join(data, "src"));
-    // fs.mkdirSync(path.join(data, "src", "assets"));
-    // fs.mkdirSync(path.join(data, "src", "components"));
-    // fs.mkdirSync(path.join(data, "src", "views"));
-    // fs.mkdirSync(path.join(data, "src", "router"));
-    // fs.mkdirSync(path.join(data, "src", "store"));
-    // fs.mkdirSync(path.join(data, "tests"));
-    // fs.mkdirSync(path.join(data, "tests", "unit"));
     await mkdirSync(data);
     await mkdirSync(data, "public");
     await mkdirSync(data, "src");
@@ -1199,8 +1101,8 @@ const exportFile = async (data: string) => {
     await mkdirSync(data, "tests");
     await mkdirSync(data, "tests", 'units');
   }
-  console.log('checkFileExist function came back true')
-  // creating basic boilerplate for vue app
+
+  // creating basic boilerplate for vue app, but needs the correct folder to write into
   await createIndexFile(data);
   await createMainFile(data);
   await createViteConfig(data);
@@ -1216,7 +1118,8 @@ const exportFile = async (data: string) => {
   await createbabelConfigFile(data);
 
   // exports images to the /assets folder
-  // broken function. OverVue 10 and 11 did not have function to import imgs. Left in, if future iterations would like to work on in.
+  // broken function. OverVue 10 and 11 did not have function to import imgs. Left in if future iterations would like to work on in.
+
   // eslint-disable-next-line no-unused-vars
   // for (let [routeImage, imageLocation] of Object.entries(imagePath.value)) {
   //   if (imageLocation !== "") {
@@ -1231,42 +1134,35 @@ const exportFile = async (data: string) => {
   // main logic below for creating components
   await createRouter(data);
   // eslint-disable-next-line no-unused-vars
-  console.log('created Router')
   for (const componentName in componentMap.value) {
-    console.log('componentMap.value', componentMap.value)
-    console.log('componentName', componentName)
+
     // if componentName is a route:
     if (componentName !== "App") {
-      console.log('inside componentName !== "App"')
+
       if (routes.value[componentName]) {
-        console.log('inside routes.value[componentName]')
         await createComponentCode(
-          // path.join(data, "src", "views", componentName),
           await pathJoin(data, "src", "views", componentName),
           componentName,
           componentMap.value
         );
+
         // if componentName is a just a component
       } else {
-        console.log('inside [else] routes.value[componentName]')
         await createComponentCode(
-          // path.join(data, "src", "components", componentName),
           await pathJoin(data, "src", "components", componentName),
           componentName,
           componentMap.value
         );
         await createComponentTestCode(
-          // path.join(data, "tests", "unit", componentName + ".spec.js"),
           await pathJoin(data, "tests", "unit", componentName + ".spec.js"),
           componentName,
           componentMap.value
         );
       }
+
       // if componentName is App
     } else {
-      console.log('in [else] componentName !== "App"')
       await createComponentCode(
-        // path.join(data, "src", componentName),
         await pathJoin(data, "src", componentName),
         componentName,
         componentMap.value
@@ -1287,3 +1183,4 @@ const exportFile = async (data: string) => {
   max-height: 55px !important;
 }
 </style>
+

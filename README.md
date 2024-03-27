@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="src/assets/overvue_256x256_old.png">
+  <img width="235 height ="235" src="src/assets/right_sidebar325x325.svg">
 </h1>
 
 <p align="center"><b>Prototyping Development Tool for Vue Developers</b></p>

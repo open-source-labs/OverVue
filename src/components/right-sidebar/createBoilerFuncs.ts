@@ -3,19 +3,35 @@ import { useStore } from "../../store/main.js";
 import { vtIcons } from "src/store/state/icons";
 import { Component, RouteComponentMap } from "../../../types";
 
-const store = useStore(); // template
-const componentMap = computed(() => store.componentMap);
-const activeComponent = computed(() => store.activeComponent);
-const activeComponentObj = computed(() => store.activeComponentObj);
-const exportAsTypescript = computed(() => store.exportAsTypescript);
-const activeRoute = computed(() => store.activeRoute);
+// const store = useStore(); // template
+// const componentMap = computed(() => store.componentMap);
+// const activeComponent = computed(() => store.activeComponent);
+// const activeComponentObj = computed(() => store.activeComponentObj);
+// const exportAsTypescript = computed(() => store.exportAsTypescript);
+// const activeRoute = computed(() => store.activeRoute);
+export function useComputedStore() {
+  const store = useStore();
+  const componentMap = computed(() => store.componentMap);
+  const activeComponent = computed(() => store.activeComponent);
+  const activeComponentObj = computed(() => store.activeComponentObj);
+  const exportAsTypescript = computed(() => store.exportAsTypescript);
+  const activeRoute = computed(() => store.activeRoute);
 
+  return {
+    componentMap,
+    activeComponent,
+    activeComponentObj,
+    exportAsTypescript,
+    activeRoute
+  };
+}
 
 export const createBoilerOptions = (componentName: string, children: string[] | {
   [key: string]: RouteComponentMap | Component;
   App: RouteComponentMap;
   HomeView: RouteComponentMap;
 }) => {
+  const { componentMap, activeComponent, exportAsTypescript, activeComponentObj } = useComputedStore();
   // add import mapstate and mapactions if they exist
   let imports = "";
   const activeComp = componentMap.value[activeComponent.value] as Component;
@@ -69,7 +85,7 @@ export const createBoilerOptions = (componentName: string, children: string[] | 
 
   const vtComponents: string[] = [];
 
-  htmlBinding.forEach((el) => {
+  htmlBinding.forEach((el: {text: string}) => {
     if (vuetensilsSet.has(el.text)) {
       // Add import statement for Vuetensils components
       vtComponents.push(el.text);
@@ -83,7 +99,7 @@ export const createBoilerOptions = (componentName: string, children: string[] | 
   }
 
   data += "  data() {\n    return {\n";
-  htmlBinding.forEach((el) => {
+  htmlBinding.forEach((el: { binding: string }) => {
     if (el.binding !== "") {
       data += `      ${el.binding}: "PLACEHOLDER FOR VALUE", `;
       data += "\n";
@@ -185,6 +201,7 @@ export const createBoilerComposition = (componentName: string, children: string[
   App: RouteComponentMap;
   HomeView: RouteComponentMap;
 }) => {
+  const { componentMap, activeComponent, activeComponentObj, exportAsTypescript } = useComputedStore();
   // add import mapstate and mapactions if they exist
   let imports = "";
   const activeComp = componentMap.value[activeComponent.value] as Component;
@@ -234,7 +251,7 @@ export const createBoilerComposition = (componentName: string, children: string[
 
   const vtComponents: string[] = [];
 
-  htmlBinding.forEach((el) => {
+  htmlBinding.forEach((el: { text: string }) => {
     if (vuetensilsSet.has(el.text)) {
       // Add import statement for Vuetensils components
       vtComponents.push(el.text);
@@ -251,7 +268,7 @@ data += "  setup() {"
 if(activeComp.state.length || activeComp.actions.length){
   data += "   \n    const /* testStore */ = useStore();  ";
 }
-  htmlBinding.forEach((el) => {
+  htmlBinding.forEach((el: { binding: string }) => {
     if (el.binding !== "") {
       data += `      ${el.binding}: "PLACEHOLDER FOR VALUE", `;
       data += "\n";

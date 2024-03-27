@@ -14,7 +14,7 @@ const actions: Store<"main", State, {}, Actions> = {
     this.$reset();
   },
 
-  // action for changing state of options API and composition API
+// action for changing state of options API and composition API
   compositionToggle() {
     this.composition = !this.composition;
   },

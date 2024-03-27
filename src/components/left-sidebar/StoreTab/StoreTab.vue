@@ -259,7 +259,7 @@ i {
 
 .html-bg {
   // give html background color of grey
-  background-color: #202122;
+  background-color: $subprimary;
 }
 
 .component-container {

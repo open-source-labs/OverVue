@@ -53,15 +53,6 @@ const openProject: typeof store.openProject = (payload) =>
   store.openProject(payload);
 
 /* METHODS */
-// const openJSONFile = (data: any) => {
-//   console.log('data in openJSONFile is', data)
-//   if (!data) return;
-//   const readData = fs.readFileSync(data, "utf8")
-//   console.log('readData is', readData)
-//   const jsonFile = JSON.parse(fs.readFileSync(data, "utf8"));
-//   console.log('jsonFile is', jsonFile)
-//   openProject(jsonFile);
-// };
 
 const showOpenJSONDialog = () => {
   ipcRenderer
@@ -75,7 +66,6 @@ const showOpenJSONDialog = () => {
       ],
     })
     .then((res: { jsonFile: any }) =>{
-      console.log('res is', res)
       openProject(res.jsonFile)
       })
     .catch((e: Error) => console.log(e));
