@@ -312,7 +312,7 @@
 <script setup lang="ts">
 /* IMPORTS */
 import { ref, computed } from "vue";
-import { useStore } from "../stores/main";
+import { useStore } from "../stores/main.js";
 import ComponentTab from "../components/left-sidebar/ComponentTab/ComponentTab.vue";
 import StoreTab from "../components/left-sidebar/StoreTab/StoreTab.vue";
 import RightSidebar from "../components/right-sidebar/RightSidebar.vue";
