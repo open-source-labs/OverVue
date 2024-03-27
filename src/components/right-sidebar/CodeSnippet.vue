@@ -45,8 +45,7 @@ import {
   onMounted,
   onBeforeUnmount,
   nextTick,
-  Ref,
-  defineEmits
+  Ref
 } from "vue";
 import { PrismEditor } from "vue-prism-editor";
 import { highlight, languages } from "prismjs/components/prism-core";

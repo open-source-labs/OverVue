@@ -48,7 +48,7 @@
           Math.floor(100 * gridHeight) / 100,
         ]"
         @activated="onActivated(componentData)"
-        @deactivated="onDeactivated(componentData)"
+        @deactivated="onDeactivated()"
         @dragstop="finishedDrag"
         @resizestop="finishedResize"
         :style="{
