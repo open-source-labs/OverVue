@@ -1,5 +1,6 @@
 import { openHtmlElementMap } from "src/store/state/htmlElementMap";
 import { useStore } from "src/store/main";
+import { writeFile, checkFileExists, mkdirSync, pathJoin } from '../nav-buttons/ExportMenu.vue'
 export function useExportComponent() {
   // OVERVUE 8.0: export active component
   /**
@@ -32,7 +33,7 @@ export function useExportComponent() {
    */
 
   const createComponentCode = (componentLocation, componentName, children) => {
-    fs.writeFileSync(
+    writeFile(
       componentLocation + ".vue",
       // writeComments(componentName) +
       writeTemplate(componentName, children) +

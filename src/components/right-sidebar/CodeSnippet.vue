@@ -1,4 +1,4 @@
-<!-- 
+<!--
   LOCATION IN APP:
   [right sidebar] COMPONENT DETAILS > Code Preview
 
@@ -9,7 +9,7 @@
 
 <template>
   <div class="codesnippet-container">
-    <div class="top-p-container">  
+    <div class="top-p-container">
       <div class="top-p" v-if="activeComponent !== ''">
         {{ `${activeRoute} / ${activeComponent}.vue` }}
       </div>
@@ -45,8 +45,8 @@ import {
   onMounted,
   onBeforeUnmount,
   nextTick,
-  Ref, 
-  defineEmits 
+  Ref,
+  defineEmits
 } from "vue";
 import { PrismEditor } from "vue-prism-editor";
 import { highlight, languages } from "prismjs/components/prism-core";
@@ -219,7 +219,7 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
       </div> \n\t  </VDialog>`,
     ],
     VDrawer: [
-      `<VDrawer transition="slide-right" bg-transition="fade">      
+      `<VDrawer transition="slide-right" bg-transition="fade">
         <template #toggle="{ bind, on }">
         <button v-bind="bind" v-on="on">
           Toggle Drawer

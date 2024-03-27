@@ -43,6 +43,7 @@ import {
 } from "../../../types";
 import { useExportComponent } from "../composables/useExportComponent";
 import { createBoilerOptions, createBoilerComposition } from "../right-sidebar/createBoilerFuncs"
+import { createBoilerOptions, createBoilerComposition } from "../right-sidebar/createBoilerFuncs"
 // import * as fs from "fs"
 // import { fs } from "electron";
 // import { path } from 'path';
@@ -85,7 +86,7 @@ const showExportProjectDialog = () => {
   .catch((err: Error) => console.log(err));
 };
 
-const writeFile = async(filePath: any, content: any) => {
+export const writeFile = async(filePath: any, content: any) => {
   if (!filePath) {
     console.error('filePath is undefined');
     return;
@@ -94,18 +95,18 @@ const writeFile = async(filePath: any, content: any) => {
     .catch((error:any) => console.error(error));
 }
 
-async function checkFileExists(path:string) {
+export async function checkFileExists(path:string) {
   const fileExistBool = await ipcRenderer.invoke('check-file-exists', path);
   return fileExistBool.status;
 };
 
-const mkdirSync = async (...args:string[]) => {
+export const mkdirSync = async (...args:string[]) => {
   await ipcRenderer.invoke('mkdirSync', [...args ])
-    .then((response: any) => console.log('mkdirSync response is', response))
+
     .catch((error:any) => console.error(error));
 }
 
-const pathJoin = (...args:string[]) => {
+export const pathJoin = (...args:string[]) => {
   if (args.some(arg => arg === undefined)) { //undefined handler for if any args are undefined
     console.error('arguments are undefined)');
     return;
@@ -252,9 +253,10 @@ const createComponentCode = async(
       await writeFile(
       componentLocation + ".vue",
       await writeTemplate(componentName, children, routes.value) +
-        await writeStyle(componentName)
+      await writeStyle(componentName)
     );
     console.log('finished write createComponent code')
+    // fs.writeFileSync()      console.log('about to write createComponent code for not App')
   } else {
       if (store.composition === false) {
         // fs.writeFileSync(
@@ -1005,7 +1007,7 @@ const createTSDeclaration = async(location: string) => {
 };
 
 const createStore = async(location: string) => {
-  let str = `import { createStore } from 'vuex';\n`;
+  let str = `import { createStore } from 'pinia';\n`;
   str += `\nconst store = createStore({`;
   str += `\n\tstate () {`;
   str += `\n\t\treturn {`;
@@ -1086,6 +1088,7 @@ const createPackage = async(location: string) => {
   str += `\n\t"dependencies": {`;
   str += `\n\t\t"vue": "^3.4.21",`;
   str += `\n\t\t"vue-router": "^4.0.12",`;
+  str += `\n\t\t"pinia": "^2.1.7"`;
   str += `\n\t\t"vuex": "^4.0.2"`;
   str += `,\n\t\t"element-plus": "^2.2.16"`;
 

@@ -18,10 +18,9 @@ function createWindow() {
     height: 600,
     useContentSize: true,
     webPreferences: {
-      // JAIME: i tried adding these two below to make window.require('fs') work
-      // nodeIntegration: true,
-      // contextIsolation: false,
+      nodeIntegration: false,
       contextIsolation: true,
+      allowRunningInsecureContent: false,
       // More info: https://v2.quasar.dev/quasar-cli-webpack/developing-electron-apps/electron-preload-script
       preload: path.resolve(__dirname, process.env.QUASAR_ELECTRON_PRELOAD),
     },
@@ -101,6 +100,15 @@ ipcMain.handle("exportProject", async (event, options) => {
   const { filePath } = await dialog.showSaveDialog(options);
   if (filePath === '') {
     throw new Error('No file path selected');
+  }
+  return { filePath };
+});
+
+ipcMain.handle("exportComponent", async (event, options) => {
+  const { dialog } = require("electron");
+  const { filePath } = await dialog.showSaveDialog(options);
+  if (filePath === "") {
+    throw new Error("No file path selected");
   }
   return { filePath };
 });
