@@ -1,4 +1,4 @@
-<!-- 
+<!--
   LOCATION IN APP:
   [left sidebar] COMPONENT > default view > Set parent component (dropdown)
 
@@ -29,7 +29,7 @@
 /* IMPORTS */
 import { ref, computed, watch } from "vue";
 import VueMultiselect from "vue-multiselect";
-import { useStore } from "../../../store/main";
+import { useStore } from "../../../stores/main";
 
 /* EMITS */
 const emit = defineEmits(["addparent"]);
@@ -112,3 +112,4 @@ watch(componentMap, () => (value.value = ""));
   color: $menutext;
 }
 </style>
+../../../stores/main

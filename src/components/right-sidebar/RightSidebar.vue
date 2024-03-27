@@ -66,7 +66,7 @@
 <script setup lang="ts">
 /* IMPORTS */
 import { ref, computed, watch } from "vue";
-import { useStore } from "../../store/main.js";
+import { useStore } from "../../stores/main.js";
 import GetStarted from "./GetStarted.vue";
 import ComponentDetails from "./ComponentDetails.vue";
 import Tree from "./Tree.vue";
@@ -156,3 +156,4 @@ watch(selectedElementList, () => {
   height: 100%;
 }
 </style>
+../../stores/main.js

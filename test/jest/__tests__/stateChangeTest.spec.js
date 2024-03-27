@@ -1,5 +1,5 @@
 // Import the useStore function from the main.js file in the store directory.
-import { useStore } from '@/store/main';
+import { useStore } from '@/stores/main';
 
 // Import the mount function from Vue Test Utils, which is a library for testing Vue components.
 import { mount } from '@vue/test-utils';

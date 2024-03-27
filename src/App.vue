@@ -10,11 +10,11 @@
 <script setup>
 /* IMPORTS */
 import { onMounted, ref } from "vue";
-import { useStore } from "./store/main.js";
+import { useStore } from "./stores/main.js";
 const deepEqual = require("lodash.isequal");
 const cloneDeep = require("lodash.clonedeep");
 const throttle = require("lodash.throttle");
-
+const store = useStore();
 /* LIFECYCLE HOOKS */
 
 onMounted(() => {
@@ -50,7 +50,7 @@ const doneAction = ref([]);
 const undoneAction = ref([]);
 const isTimetraveling = ref(false);
 
-const store = useStore();
+
 
 store.$onAction((action) => {
   if (typeof action.args[0] === "object") {
@@ -118,7 +118,7 @@ const redo = () => {
     store[actionName](cloneDeep(action.args[0]));
   }
   isTimetraveling.value = false;
-  
+
   if (action && ignoredActions.has(action.name)) {
     redo();
   }

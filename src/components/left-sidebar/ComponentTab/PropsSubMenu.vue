@@ -1,4 +1,4 @@
-<!-- 
+<!--
   LOCATION IN APP:
   [left sidebar] COMPONENT > Update Component > Props
 
@@ -64,7 +64,7 @@
 /* IMPORTS */
 import { ref, computed } from "vue";
 import VueMultiselect from "vue-multiselect";
-import { useStore } from "../../../store/main";
+import { useStore } from "../../../stores/main";
 
 /* DATA */
 const textProps = ref("");
@@ -111,3 +111,4 @@ const addPropsToComp = () => addPropsToComponent([...selectedProps.value]);
   margin: 30px 0 10px;
 }
 </style>
+../../../stores/main

@@ -53,8 +53,8 @@ import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism-tomorrow.css"; // import syntax highlighting styles
 import "vue-prism-editor/dist/prismeditor.min.css";
-import { useStore } from "../../store/main.js";
-import { vtIcons } from "src/store/state/icons";
+import { useStore } from "../../stores/main.js";
+import { vtIcons } from "src/stores/state/icons";
 import { Component, HtmlElement, HtmlElementMap } from "../../../types";
 import { createBoilerOptions, createBoilerComposition } from "./createBoilerFuncs"
 
@@ -531,3 +531,4 @@ input:checked + .slider:before {
   border-color: #ffffff;
 }
 </style>
+../../stores/main.jssrc/stores/state/icons.js

@@ -158,7 +158,7 @@
 </template>
 
 <script setup lang="ts">
-import { useStore } from "../../../store/main.js";
+import { useStore } from "../../../stores/main.js";
 
 const emit = defineEmits(["nextTab"]);
 const nextTab = () => emit("nextTab");
@@ -224,3 +224,4 @@ const toggleTutorial = () => store.toggleTutorial();
   margin-bottom: 50px !important;
 }
 </style>
+../../../stores/main.js

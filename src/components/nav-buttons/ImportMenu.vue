@@ -34,7 +34,7 @@
 <script setup lang="ts">
 /* IMPORTS */
 const Mousetrap = require("mousetrap");
-import { useStore } from "../../store/main";
+import { useStore } from "../../stores/main";
 import fs from 'fs'
 // import { ipcRenderer } from 'electron';
 // const fs = window.require('fs');
@@ -91,3 +91,4 @@ const openProjectJSON = () => {
   margin: 10px 0 20px 0 !important;
 }
 </style>
+../../stores/main

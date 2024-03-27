@@ -1,6 +1,6 @@
-import { openHtmlElementMap } from "src/store/state/htmlElementMap";
+import { openHtmlElementMap } from "src/stores/state/htmlElementMap";
 import { computed } from "vue";
-import { useStore } from "src/store/main";
+import { useStore } from "src/stores/main";
 // @ts-ignore
 const { ipcRenderer } = window;
 

@@ -13,7 +13,7 @@ import * as All from "quasar";
 const { Quasar, date } = All;
 
 import { createTestingPinia } from "@pinia/testing"; // *
-import { useStore } from "../../../src/store/main"; // *
+import { useStore } from "../../../src/stores/main"; // *
 
 setActivePinia(createPinia());
 const store = useStore(); // *
@@ -26,11 +26,11 @@ const components = Object.keys(All).reduce((object, key) => {
   return object;
 }, {});
 
-// import actions from "../../../src/store/options/actions";
-// import mutations from "../../../src/store/options/mutations";
-import * as types from "../../../src/store/options/types";
+// import actions from "../../../src/stores/options/actions";
+// import mutations from "../../../src/stores/options/mutations";
+import * as types from "../../../src/stores/options/types";
 // import Vuex from "vuex";
-// import store from "../../../src/store/state/index";
+// import store from "../../../src/stores/state/index";
 
 const App = {};
 const app = createApp(App);

@@ -533,7 +533,7 @@ import VueMultiselect from "vue-multiselect";
 import "vue-draggable-resizable/src/components/vue-draggable-resizable.css";
 import "vue3-draggable-resizable/dist/Vue3DraggableResizable.css";
 import { ColorPicker } from "vue-accessible-color-picker";
-import { useStore } from "../store/main.js";
+import { useStore } from "../stores/main.js";
 import { ref, computed, onMounted, watch } from "vue";
 import { ResizePayload, Component } from "../../types";
 
@@ -1255,3 +1255,4 @@ li:hover {
   background: black;
 }
 </style>
+../stores/main.js

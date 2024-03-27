@@ -1,4 +1,4 @@
-<!-- 
+<!--
   LOCATION IN APP:
   [right sidebar] ROUTES > Add a route (input field)
 
@@ -42,7 +42,7 @@
 <script setup lang="ts">
 /* IMPORTS */
 import { ref, computed } from "vue";
-import { useStore } from "../../store/main.js";
+import { useStore } from "../../stores/main.js";
 import Routes from "./Routes.vue";
 
 /* DATA */
@@ -92,3 +92,4 @@ i:hover {
   cursor: pointer;
 }
 </style>
+../../stores/main.js

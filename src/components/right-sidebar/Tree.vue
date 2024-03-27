@@ -10,7 +10,7 @@
 <script setup lang="ts">
 /* IMPORTS */
 import { ref, computed, watch, onMounted } from "vue";
-import { useStore } from "../../store/main.js";
+import { useStore } from "../../stores/main.js";
 
 // [OverVue v.10.0]
 // we 'forked', published, and installed our own npm packages based on:
@@ -338,3 +338,4 @@ watch(componentMap, () => (treeData.value = buildTree(componentMap.value)), {
   border: 2px solid $menutext;
 }
 </style>
+../../stores/main.js

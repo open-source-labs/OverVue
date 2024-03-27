@@ -35,7 +35,7 @@
 import { ref, computed, watch } from "vue";
 import { Draggable } from "@he-tree/vue";
 import "@he-tree/vue/style/default.css";
-import { useStore } from "src/store/main";
+import { useStore } from "src/stores/main";
 
 /* EMITS & PROPS */
 const emit = defineEmits(["delete"]);
@@ -129,3 +129,4 @@ watch(attributeModalOpen, () => {
   justify-content: space-around;
 }
 </style>
+src/stores/main

@@ -34,7 +34,7 @@
 <script setup lang="ts">
 /* IMPORTS */
 import { computed } from "vue";
-import { useStore } from "../../store/main";
+import { useStore } from "../../stores/main";
 import {
   Component,
   HtmlElement,
@@ -1184,3 +1184,4 @@ const exportFile = async (data: string) => {
 }
 </style>
 
+../../stores/main

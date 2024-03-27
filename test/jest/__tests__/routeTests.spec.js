@@ -16,14 +16,14 @@ const components = Object.keys(All).reduce((object, key) => {
   return object;
 }, {});
 
-// import actions from "../../../src/store/options/actions";
-// import mutations from "../../../src/store/options/mutations";
-// import * as types from "../../../src/store/options/types";
+// import actions from "../../../src/stores/options/actions";
+// import mutations from "../../../src/stores/options/mutations";
+// import * as types from "../../../src/stores/options/types";
 // import Vuex from "vuex";
-// import store from "../../../src/store/state/index";
+// import store from "../../../src/stores/state/index";
 import { setActivePinia, createPinia } from 'pinia'
 import * as types from "../../../types";
-import { useStore } from "src/store/main.js";
+import { useStore } from "src/stores/main.js";
 
 
 /**
@@ -171,7 +171,7 @@ describe("Test Suite for route actions and related mutations", () => {
     // expect(store.activeRoute).toEqual(payload);
 
     if (store.activeRoute === payload) {
-      flag = true; 
+      flag = true;
     }
     store.deleteRoute(payload);
     // post mutation tests

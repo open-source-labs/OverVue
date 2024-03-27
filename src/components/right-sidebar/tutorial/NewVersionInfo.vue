@@ -48,7 +48,7 @@
 <script setup lang="ts">
 // @ts-nocheck
 // No check for the shell
-import { useStore } from "../../../store/main.js";
+import { useStore } from "../../../stores/main.js";
 
 const { shell } = window;
 
@@ -129,3 +129,4 @@ const openUrl = (url: string) => shell.openExternal(url, { activate: true });
   margin-bottom: 0.75rem !important;
 }
 </style>
+../../../stores/main.js
