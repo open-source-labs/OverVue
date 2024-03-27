@@ -172,12 +172,12 @@
             label="Update Component"
             @click="resetActiveComponent"
           /> -->
-          <q-btn
+          <!-- <q-btn
             id="exportButton"
             class="sidebar-btn"
             @click="useExportComponent"
             label="Export Current Component"
-          />
+          /> -->
           <q-btn
             id="deleteButton"
             class="sidebar-btn deleteAction"
@@ -195,8 +195,7 @@
 import { ref, computed, watch } from "vue";
 import { useStore } from "../../../store/main";
 import { Component } from "../../../../types";
-// import { useExportComponent } from "../../composables/useExportComponent.js";
-import { writeFile, checkFileExists, mkdirSync, pathJoin } from "../../composables/useExportComponent.ts";
+// import { exportComponent, checkFileExists, mkdirSync, pathJoin } from "../../composables/useExportComponent";
 import Icons from "./Icons.vue";
 import Vuetensils from "./Vuetensils.vue";
 import AttributesSubMenu from "./AttributesSubMenu.vue";
@@ -256,6 +255,7 @@ const deleteSelectedComp = (componentData: Component) => {
 const resetActiveComponent = () => {
   if (activeComponent.value !== "") setActiveComponent("");
 };
+
 
 const editCompName = (name: string) => {
   if (

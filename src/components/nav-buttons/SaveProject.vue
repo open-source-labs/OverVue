@@ -86,7 +86,6 @@ const parseAndDelete = (htmlList: any[]) => {
 const saveProjectJSON = () => showSaveJSONDialog();
 
 const saveJSONLocation = (filePath: string) => {
-  console.log('File path:', filePath);
 
   let deleteKey = projects.value[activeTab.value].filename;
   localforage
@@ -105,7 +104,6 @@ const saveJSONLocation = (filePath: string) => {
     });
 
     let stateRef = JSON.parse(JSON.stringify(stateComputed.value));
-    console.log('Project data:', stateRef);
 
     ipcRenderer
       .invoke('writeJSON', { filePath, data: JSON.stringify(stateRef) })

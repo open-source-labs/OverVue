@@ -76,12 +76,9 @@ if (mainWindow) {
   //{ filePaths } destructured comes fromdialog.showOpenDialog() function.
   const { filePaths } = await dialog.showOpenDialog(mainWindow, options);
 
-  console.log("filePaths from main is", filePaths);
   if (!filePaths) return;
     const readData = await fs.readFileSync(filePaths[0], "utf8");
-    console.log("readData is", readData);
     const jsonFile = JSON.parse(readData);
-    console.log("jsonFile is", jsonFile);
   return { jsonFile };
 }
 });
@@ -110,8 +107,7 @@ ipcMain.handle("exportComponent", async (event, options) => {
 
 
 ipcMain.handle('writeFile', async (event, filePath, content) => { //possibly merge this with 'writeJSON' handle
-  // console.log('writeFile filePath:', filePath, '\n content:', content);
-  console.log("writeFile filePath:", filePath);
+
   await fs.writeFile(filePath, content, (err) => {
       if (err) {
         console.log(`${err} in fs.writeFile`);
@@ -119,7 +115,6 @@ ipcMain.handle('writeFile', async (event, filePath, content) => { //possibly mer
         console.log("File written successfully");
       }
     });
-    console.log('finished fs.writeSync')
   return { status: "success" };
 
 });
@@ -128,16 +123,13 @@ ipcMain.handle('writeFile', async (event, filePath, content) => { //possibly mer
 
 ipcMain.handle('check-file-exists', async (event, path) => {
   const fileExists = await fs.existsSync(path);
-  console.log("fileExists", fileExists);
   if (fileExists) return { status: true };
   return { status: false };
 });
 
 ipcMain.handle('mkdirSync', async (event, args: string[] ) => {
   const mkdirPath = await path.join(...args);
-  console.log("mkdirPath", mkdirPath);
   await fs.mkdirSync(mkdirPath);
-  console.log("finished making new directory");
   return { status: 'success' };
 });
 
