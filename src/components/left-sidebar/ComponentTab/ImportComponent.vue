@@ -1,4 +1,4 @@
-<!-- 
+<!--
   NOTE:
   [OverVue v.10.0] Functionality is disabled; past iterations had intended to implement this functionality though hasn't actually been incorporated yet
 
@@ -20,7 +20,7 @@
 /* IMPORTS */
 import { computed } from "vue";
 const { fs, ipcRenderer } = window as any;
-import { useStore } from "../../../store/main.js";
+import { useStore } from "../../../stores/main.js";
 import { Component, HtmlElement, HtmlElementMap } from "../../../../types";
 import { useCreateComponent } from "../../composables/useCreateComponent.js";
 
@@ -418,3 +418,4 @@ const openVueFile = (data: any) => {
   margin: 30px 0px;
 }
 </style>
+../../../stores/main.js

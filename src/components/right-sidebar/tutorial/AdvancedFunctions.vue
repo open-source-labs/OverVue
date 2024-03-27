@@ -73,7 +73,7 @@
 </template>
 
 <script setup lang="ts">
-import { useStore } from "../../../store/main.js";
+import { useStore } from "../../../stores/main.js";
 
 const store = useStore();
 const toggleTutorial = () => store.toggleTutorial();
@@ -123,3 +123,4 @@ const toggleTutorial = () => store.toggleTutorial();
   margin-bottom: 50px !important;
 }
 </style>
+../../../stores/main.js

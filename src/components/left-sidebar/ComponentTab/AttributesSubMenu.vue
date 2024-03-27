@@ -1,4 +1,4 @@
-<!-- 
+<!--
   LOCATION IN APP:
   [left sidebar] COMPONENT > Update Component > Component Attributes
 
@@ -84,7 +84,7 @@
 <script setup lang="ts">
 /* IMPORTS */
 import { computed, ref } from "vue";
-import { useStore } from "../../../store/main.js";
+import { useStore } from "../../../stores/main.js";
 import { Component } from "../../../../types";
 const cloneDeep = require("lodash.clonedeep");
 
@@ -156,3 +156,4 @@ const deleteAttribute = (attribute: "id" | "class") => {
   cursor: pointer;
 }
 </style>
+../../../stores/main.js

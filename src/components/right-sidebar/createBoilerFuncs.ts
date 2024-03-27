@@ -1,6 +1,6 @@
 import { computed } from 'vue';
-import { useStore } from "../../store/main.js";
-import { vtIcons } from "src/store/state/icons";
+import { useStore } from "../../stores/main";
+import { vtIcons } from "src/stores/state/icons";
 import { Component, RouteComponentMap } from "../../../types";
 
 // const store = useStore(); // template

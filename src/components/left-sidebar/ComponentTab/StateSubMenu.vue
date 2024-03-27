@@ -1,4 +1,4 @@
-<!-- 
+<!--
   LOCATION IN APP:
   [left sidebar] COMPONENT > Update Component > State
 
@@ -62,7 +62,7 @@
 /* IMPORTS */
 import { computed } from "vue";
 import VueMultiselect from "vue-multiselect";
-import { useStore } from "../../../store/main";
+import { useStore } from "../../../stores/main";
 import { Component } from "../../../../types";
 
 /* COMPUTED VALUES */
@@ -112,3 +112,4 @@ const deleteState = (state: string) => deleteStateFromComponent(state);
   align-items: center;
 }
 </style>
+../../../stores/main

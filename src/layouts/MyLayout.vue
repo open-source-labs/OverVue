@@ -312,7 +312,7 @@
 <script setup lang="ts">
 /* IMPORTS */
 import { ref, computed } from "vue";
-import { useStore } from "../store/main";
+import { useStore } from "../stores/main";
 import ComponentTab from "../components/left-sidebar/ComponentTab/ComponentTab.vue";
 import StoreTab from "../components/left-sidebar/StoreTab/StoreTab.vue";
 import RightSidebar from "../components/right-sidebar/RightSidebar.vue";
@@ -817,3 +817,4 @@ q-btn > i {
   margin-right: 10px;
 }
 </style>
+../stores/main

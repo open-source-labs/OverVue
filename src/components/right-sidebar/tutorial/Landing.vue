@@ -34,7 +34,7 @@
 <script setup lang="ts">
 // @ts-nocheck
 // No check for the shell
-import { useStore } from "../../../store/main.js";
+import { useStore } from "../../../stores/main.js";
 const { shell } = window;
 
 const emit = defineEmits(["nextTab", "versionTab"]);
@@ -83,3 +83,4 @@ p {
   height: auto;
 }
 </style>
+../../../stores/main.js

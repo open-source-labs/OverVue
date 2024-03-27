@@ -117,7 +117,7 @@
 <script setup lang="ts">
 /* IMPORTS */
 import { computed } from "vue";
-import { useStore } from "../../store/main.js";
+import { useStore } from "../../stores/main.js";
 import { Component } from "../../../types";
 import HTMLElementsList from "./HTMLElementsList.vue";
 import CodeSnippet from "./CodeSnippet.vue";
@@ -232,3 +232,4 @@ i {
   margin-bottom: 2em;
 }
 </style>
+../../stores/main.js

@@ -139,7 +139,7 @@
 <script setup lang="ts">
 /* IMPORTS */
 import { computed, ref } from "vue";
-import { useStore } from "../../../store/main";
+import { useStore } from "../../../stores/main";
 
 /* DATA */
 const tab = ref("state");
@@ -269,3 +269,4 @@ i {
   align-items: center;
 }
 </style>
+../../../stores/main

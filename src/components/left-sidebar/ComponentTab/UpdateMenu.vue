@@ -193,7 +193,7 @@
 <script setup lang="ts">
 /* IMPORTS */
 import { ref, computed, watch } from "vue";
-import { useStore } from "../../../store/main";
+import { useStore } from "../../../stores/main";
 import { Component } from "../../../../types";
 // import { exportComponent, checkFileExists, mkdirSync, pathJoin } from "../../composables/useExportComponent";
 import Icons from "./Icons.vue";
@@ -423,3 +423,4 @@ p {
   height: 100%;
 }
 </style>
+../../../stores/main
