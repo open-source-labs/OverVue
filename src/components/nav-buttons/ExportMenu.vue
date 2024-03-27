@@ -43,7 +43,6 @@ import {
 } from "../../../types";
 import { useExportComponent } from "../composables/useExportComponent";
 import { createBoilerOptions, createBoilerComposition } from "../right-sidebar/createBoilerFuncs"
-import { createBoilerOptions, createBoilerComposition } from "../right-sidebar/createBoilerFuncs"
 // import * as fs from "fs"
 // import { fs } from "electron";
 // import { path } from 'path';
@@ -86,7 +85,7 @@ const showExportProjectDialog = () => {
   .catch((err: Error) => console.log(err));
 };
 
-export const writeFile = async(filePath: any, content: any) => {
+const writeFile = async(filePath: any, content: any) => {
   if (!filePath) {
     console.error('filePath is undefined');
     return;
@@ -95,18 +94,18 @@ export const writeFile = async(filePath: any, content: any) => {
     .catch((error:any) => console.error(error));
 }
 
-export async function checkFileExists(path:string) {
+async function checkFileExists(path:string) {
   const fileExistBool = await ipcRenderer.invoke('check-file-exists', path);
   return fileExistBool.status;
 };
 
-export const mkdirSync = async (...args:string[]) => {
+const mkdirSync = async (...args:string[]) => {
   await ipcRenderer.invoke('mkdirSync', [...args ])
-
+    .then((response: any) => console.log('mkdirSync response is', response))
     .catch((error:any) => console.error(error));
 }
 
-export const pathJoin = (...args:string[]) => {
+const pathJoin = (...args:string[]) => {
   if (args.some(arg => arg === undefined)) { //undefined handler for if any args are undefined
     console.error('arguments are undefined)');
     return;
@@ -253,10 +252,9 @@ const createComponentCode = async(
       await writeFile(
       componentLocation + ".vue",
       await writeTemplate(componentName, children, routes.value) +
-      await writeStyle(componentName)
+        await writeStyle(componentName)
     );
     console.log('finished write createComponent code')
-    // fs.writeFileSync()      console.log('about to write createComponent code for not App')
   } else {
       if (store.composition === false) {
         // fs.writeFileSync(
@@ -265,9 +263,9 @@ const createComponentCode = async(
         componentLocation + ".vue",
         await writeComments(componentName) +
           await writeTemplate(componentName, children, routes.value) +
-          await createBoilerOptions(componentName, children) 
+          await createBoilerOptions(componentName, children)
           // + await writeStyle(componentName)
-        );
+      );
         console.log('finished to write createComponent code')
       } else {
           // fs.writeFileSync(
@@ -276,7 +274,7 @@ const createComponentCode = async(
         componentLocation + ".vue",
         await writeComments(componentName) +
           await writeTemplate(componentName, children, routes.value) +
-          await createBoilerComposition(componentName, children) 
+          await createBoilerComposition(componentName, children)
           // + await writeStyle(componentName)
       );
         console.log('finished to write createComponent code')
@@ -1009,45 +1007,91 @@ const createTSDeclaration = async(location: string) => {
 const createStore = async(location: string) => {
   let str = `import { createStore } from 'pinia';\n`;
   str += `\nconst store = createStore({`;
-  str += `\n\tstate () {`;
-  str += `\n\t\treturn {`;
-  if (!userState.value.length) {
-    str += `\n\t\t\t//placeholder for state`;
-  }
-  for (let i = 0; i < userState.value.length; i++) {
-    str += `\n\t\t\t${userState.value[i]}: "PLACEHOLDER FOR VALUE",`;
-    if (i === userState.value.length - 1) {
-      str = str.slice(0, -1);
+
+
+  if (store.composition) { //in composition API
+
+
+    str += `\n\tstate: () => ({`;
+    if (!userState.value.length) {
+      str += `\n\t\t//PLACE YOUR STATE OBJECT HERE`;
     }
-  }
-  str += `\n\t\t}`;
-  str += `\n\t},`;
-  str += `\n\tmutations: {`;
-  if (!userActions.value.length) {
-    str += `\n\t\t\t//placeholder for mutations`;
-  }
-  for (let i = 0; i < userActions.value.length; i++) {
-    str += `\n\t\t${userActions.value[i]} (state) {`;
-    str += `\n\t\t\t//placeholder for your mutation`;
+    for (let i = 0; i < userState.value.length; i++) {
+      str += `\n\t\t${userState.value[i]}: "PLACE YOUR STATE'S VALUE HERE",`;
+      if (i === userState.value.length - 1) {
+        str = str.slice(0, -1);
+      }
+    }
+    str += `\n\t}),`;
+    str += `\n\tactions: {`;
+    if (!userActions.value.length) {
+      str += `\n\t\t\t//PLACE YOUR ACTIONS OBJECT HERE`;
+    }
+    for (let i = 0; i < userActions.value.length; i++) {
+      str += `\n\t\t${userActions.value[i]} () {`;
+     if (userState.value[0]) {
+        str += `\n\t\t\t// EX. this.${userState.value[0]} += 1`;
+      } else {
+        str += `\n\t\t\t// EX. this.firstStateProperty += 1')`;
+      }
+      str += `\n\t\t},`;
+      if (i === userActions.value.length - 1) {
+        str = str.slice(0, -1);
+      }
+    }
+    str += `\n\t}`;
+
+  } else { //in options API
+
+    str += `\n\tstate: {`;
+
+    if (!userState.value.length) {
+      str += `\n\t\t//PLACE YOUR STATE OBJECT HERE`;
+    }
+    for (let i = 0; i < userState.value.length; i++) {
+      str += `\n\t\t${userState.value[i]}: "PLACE YOUR STATE'S VALUE HERE",`;
+      if (i === userState.value.length - 1) {
+        str = str.slice(0, -1);
+      }
+    }
     str += `\n\t\t},`;
-    if (i === userActions.value.length - 1) {
-      str = str.slice(0, -1);
+
+
+    str += `\n\tmutations: {`;
+      if (!userActions.value.length) {
+        str += `\n\t\t\t//PLACE YOUR MUTATIONS OBJECT HERE`;
+      }
+      for (let i = 0; i < userActions.value.length; i++) {
+        str += `\n\t\t${userActions.value[i]} (state) {`;
+        str += `\n\t\t\t//placeholder for your mutation`;
+        str += `\n\t\t},`;
+        if (i === userActions.value.length - 1) {
+          str = str.slice(0, -1);
+        }
+      }
+    str += `\n\t},`;
+    str += `\n\tactions: {`;
+    if (!userActions.value.length) {
+      str += `\n\t\t\t//PLACE YOUR ACTIONS OBJECT HERE`;
     }
-  }
-  str += `\n\t},`;
-  str += `\n\tactions: {`;
-  if (!userActions.value.length) {
-    str += `\n\t\t\t//placeholder for actions`;
-  }
-  for (let i = 0; i < userActions.value.length; i++) {
-    str += `\n\t\t${userActions.value[i]} () {`;
-    str += `\n\t\t\tstore.commit('${userActions.value[i]}')`;
-    str += `\n\t\t},`;
-    if (i === userActions.value.length - 1) {
-      str = str.slice(0, -1);
+    for (let i = 0; i < userActions.value.length; i++) {
+      str += `\n\t\t${userActions.value[i]} () {`;
+      str += `\n\t\t\tstore.commit('${userActions.value[i]}')`;
+      str += `\n\t\t},`;
+      if (i === userActions.value.length - 1) {
+        str = str.slice(0, -1);
+      }
     }
+    str += `\n\t}`;
   }
-  str += `\n\t}`;
+
+
+
+
+
+
+
+
   str += "\n})\n";
   str += `\nexport default store;`;
   if (exportAsTypescript.value === "on") {
@@ -1087,10 +1131,9 @@ const createPackage = async(location: string) => {
   str += `\n\t},`;
   str += `\n\t"dependencies": {`;
   str += `\n\t\t"vue": "^3.4.21",`;
-  str += `\n\t\t"vue-router": "^4.0.12",`;
+  str += `\n\t\t"vue-router": "^4.3.0",`;
   str += `\n\t\t"pinia": "^2.1.7"`;
-  str += `\n\t\t"vuex": "^4.0.2"`;
-  str += `,\n\t\t"element-plus": "^2.2.16"`;
+  str += `,\n\t\t"element-plus": "^2.6.2"`;
 
   if (exportOauth.value === "on" || exportOauthGithub.value === "on") {
     str += `,\n\t\t "firebase": "^9.6.9"`;
@@ -1099,8 +1142,8 @@ const createPackage = async(location: string) => {
   str += `\n\t"devDependencies": {`;
   str += `\n\t\t"@vitejs/plugin-vue": "^5.0.4",`;
   str += `\n\t\t"eslint": "^8.5.0",`;
-  str += `\n\t\t"eslint-plugin-vue": "^8.2.0",`;
-  str += `\n\t\t"vite": "^5.2.0"`;
+  str += `\n\t\t"eslint-plugin-vue": "^9.24.0",`;
+  str += `\n\t\t"vite": "^5.2.6"`;
   if (importTest.value === "on") {
     str += `,\n\t\t"@babel/core": "^7.12.16",`;
     str += `\n\t\t"@babel/eslint-parser": "^7.12.16",`;
@@ -1114,12 +1157,12 @@ const createPackage = async(location: string) => {
     str += `\n\t\t"jest": "^27.0.5"`;
   }
   if (exportAsTypescript.value === "on") {
-    str += `,\n\t\t"@rushstack/eslint-patch": "^1.1.0",`;
+    str += `,\n\t\t"@rushstack/eslint-patch": "^1.8.0",`;
     str += `\n\t\t"@vue/tsconfig": "^0.1.3",`;
-    str += `\n\t\t"typescript": "^5.2.2",`;
-    str += `\n\t\t"vue-tsc": "^2.0.6",`;
-    str += `\n\t\t"@types/node": "^16.11.25",`;
-    str += `\n\t\t"@vue/eslint-config-typescript": "^10.0.0"`;
+    str += `\n\t\t"typescript": "^5.4.3",`;
+    str += `\n\t\t"vue-tsc": "^2.0.7",`;
+    str += `\n\t\t"@types/node": "^20.11.30",`;
+    str += `\n\t\t"@vue/eslint-config-typescript": "^13.0.0"`;
   }
   str += `\n\t}\n}`;
   // fs.writeFileSync(path.join(location, "package.json"), str);
