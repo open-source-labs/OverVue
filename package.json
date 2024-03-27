@@ -5,12 +5,13 @@
   "description": "Vue Prototype DevTool",
   "productName": "OverVue",
   "cordovaId": "org.cordova.quasar.app",
-  "author": "Team OverVue, Team Vuetiful, Team Vuelociraptors, TeamVueTopia, OverVue10.0",
+  "author": "Team OverVue, Team Vuetiful, Team Vuelociraptors, TeamVueTopia, OverVue10.0, VueDragons 11.0",
   "private": true,
   "bugs": {
     "url": "https://github.com/TeamOverVue/OverVue/issues"
   },
   "homepage": "https://github.com/TeamOverVue/OverVue",
+
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
     "test": "echo \"See package.json => scripts for available tests.\" && exit 0",
@@ -23,7 +24,11 @@
     "test:unit:watch": "jest --watch",
     "test:unit:watchAll": "jest --watchAll",
     "serve:test:coverage": "quasar serve test/jest/coverage/lcov-report/ --port 8788",
-    "concurrently:dev:jest": "concurrently \"quasar dev\" \"jest --watch\""
+    "concurrently:dev:jest": "concurrently \"quasar dev\" \"jest --watch\"",
+    "build:all": "npm run build && npm run build:win && npm run build:mac && npm run build:linux",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux"
   },
   "dependencies": {
     "@babel/preset-env": "^7.22.14",

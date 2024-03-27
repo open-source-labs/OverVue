@@ -220,6 +220,7 @@ module.exports = configure(function (ctx) {
     electron: {
       // bundler: 'packager', // 'packager' or 'builder'
       bundler: "builder",
+      main: 'src-electron/electron-main.ts',
       packager: {
         // protocols: ["overvue"],
         protocol: "overvue",
@@ -233,24 +234,29 @@ module.exports = configure(function (ctx) {
         // Windows only
         // win32metadata: { ... }
       },
-
-      builder: {
-        // https://www.electron.build/configuration/configuration
-
-        appId: "com.electron.OverVue",
-        win: {
-          target: "nsis",
-        },
-        mac: {
-          target: "zip",
-        },
-        protocols: [
-          {
-            name: "overvue",
-            schemes: ["overvue"],
-          },
-        ],
-      },
+      //currently, builder (for electron builder) is being configured in seperate 'electron-builder.yml' file in the root.
+      // builder: {
+      //   // https://www.electron.build/configuration/configuration
+      //   appId: "com.electron.OverVue",
+      //   win: {
+      //     target: "nsis",
+      //     icon: "src-electron/icons/tileIconWin.ico"
+      //   },
+      //   mac: {
+      //     target: "zip",
+      //     icon: "src-electron/icons/tileIconMac.icns"
+      //   },
+      //   linux: {
+      //     target: "AppImage",
+      //     icon: "src-electron/icons/tileIconLinux.png"
+      //   },
+      //   protocols: [
+      //     {
+      //       name: "overvue",
+      //       schemes: ["overvue"],
+      //     },
+      //   ],
+      // },
       extendWebpack (cfg) {
         cfg.module.rules.push({
           test: /\.svg$/,

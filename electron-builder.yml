@@ -1,0 +1,13 @@
+appId: com.electron.OverVue
+productName: OverVue 11.0
+directories:
+  app: "./dist/electron/UnPackaged"
+mac:
+  target: zip
+  icon: "src-electron/icons/tileIconMac.icns"
+win:
+  target: nsis
+  icon: "src-electron/icons/tileIconWin.ico"
+linux:
+  target: AppImage
+  icon: "src-electron/icons/tileIconLinux.png"
