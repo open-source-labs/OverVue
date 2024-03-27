@@ -7,7 +7,7 @@ const cloneDeep = require("lodash.clonedeep");
 
 const state = reactive ({
   // state for options/compodition API
-  options: false,
+  composition: false,
 
   mode: "tree",
   clicked: false,

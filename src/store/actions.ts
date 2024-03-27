@@ -15,8 +15,8 @@ const actions: Store<"main", State, {}, Actions> = {
   },
 
   // action for changing state of options API and composition API
-  optionsToggle() {
-    this.options = !this.options;
+  compositionToggle() {
+    this.composition = !this.composition;
   },
 
   removeAllStatePropsActions() {

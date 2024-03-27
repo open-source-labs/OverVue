@@ -1,7 +1,7 @@
 import { computed } from 'vue';
 import { useStore } from "../../store/main.js";
 import { vtIcons } from "src/store/state/icons";
-import { Component, HtmlElement, HtmlElementMap } from "../../../types";
+import { Component, RouteComponentMap } from "../../../types";
 
 const store = useStore(); // template
 const componentMap = computed(() => store.componentMap);
@@ -11,7 +11,11 @@ const exportAsTypescript = computed(() => store.exportAsTypescript);
 const activeRoute = computed(() => store.activeRoute);
 
 
-export const createBoilerOptions = (componentName: string, children: string[]) => {
+export const createBoilerOptions = (componentName: string, children: string[] | {
+  [key: string]: RouteComponentMap | Component;
+  App: RouteComponentMap;
+  HomeView: RouteComponentMap;
+}) => {
   // add import mapstate and mapactions if they exist
   let imports = "";
   const activeComp = componentMap.value[activeComponent.value] as Component;
@@ -31,15 +35,17 @@ export const createBoilerOptions = (componentName: string, children: string[]) =
   }
 
   // add imports for children
-  children.forEach((name) => {
-    imports += `import ${name} from './components/${name}.vue';\n`;
-  });
+  let childrenComponentNames = "";
+  if (Array.isArray(children)) {
+    children.forEach((name) => {
+      imports += `import ${name} from './components/${name}.vue';\n`;
+    });
 
   // add components section
-  let childrenComponentNames = "";
-  children.forEach((name) => {
-    childrenComponentNames += `    ${name},\n`;
-  });
+    children.forEach((name) => {
+      childrenComponentNames += `    ${name},\n`;
+    });
+  }
 
   // if true add data section and populate with props
   let data = "";
@@ -84,7 +90,7 @@ export const createBoilerOptions = (componentName: string, children: string[]) =
     }
   });
   data += `    }`;
-  data += ` \n  },  \n `;
+  data += ` \n  },  \n`;
 
   // if true add computed section and populate with state
   let computed = "";
@@ -174,7 +180,11 @@ export const createBoilerOptions = (componentName: string, children: string[]) =
   return output;
 };
 
-export const createBoilerComposition = (componentName: string, children: string[]) => {
+export const createBoilerComposition = (componentName: string, children: string[] | {
+  [key: string]: RouteComponentMap | Component;
+  App: RouteComponentMap;
+  HomeView: RouteComponentMap;
+}) => {
   // add import mapstate and mapactions if they exist
   let imports = "";
   const activeComp = componentMap.value[activeComponent.value] as Component;
@@ -189,15 +199,17 @@ export const createBoilerComposition = (componentName: string, children: string[
   }
 
   // add imports for children
-  children.forEach((name) => {
-    imports += `import ${name} from './components/${name}.vue';\n`;
-  });
-
-  // add components section
   let childrenComponentNames = "\n";
-  children.forEach((name) => {
-    childrenComponentNames += `    ${name},\n`;
-  });
+  if (Array.isArray(children)) {
+    children.forEach((name) => {
+      imports += `import ${name} from './components/${name}.vue';\n`;
+    });
+
+    // add components section
+    children.forEach((name) => {
+      childrenComponentNames += `    ${name},\n`;
+    });
+  }
 
   // if true add data section and populate with props
   let data = "";
@@ -235,7 +247,7 @@ export const createBoilerComposition = (componentName: string, children: string[
     )} } from 'vuetensils/src/components';\n`;
   }
 /*------------- setup() function -------------*/
-data = "  setup() {"
+data += "  setup() {"
 if(activeComp.state.length || activeComp.actions.length){
   data += "   \n    const /* testStore */ = useStore();  ";
 }
@@ -331,11 +343,15 @@ if(activeComp.state.length || activeComp.actions.length){
   output += methods;
 
   if (exportAsTypescript.value === "on") {
-  output += `    \n  ${returnStatement}    };  \n  }; \n});\n<\/script>\n\n<style scoped>\n</style>`;
+    if (activeComp.state.length || activeComp.actions.length) {
+      output += `    \n  ${returnStatement}    };\n  }, \n});\n<\/script>\n\n<style scoped>\n</style>`;
+    } else {
+      output += `    \n  ${returnStatement}      \n  }, \n});\n<\/script>\n\n<style scoped>\n</style>`;
+    }
 } else if (activeComp.state.length || activeComp.actions.length) {
-  output += `    \n  ${returnStatement}    }; \n  };\n};\n<\/script>\n\n<style scoped>\n${styleString}</style > `;
+    output += `    \n  ${returnStatement}    }; \n  },\n};\n<\/script>\n\n<style scoped>\n${styleString}</style > `;
 } else {
-  output += `   \n}; \n\n<\/script>\n\n<style scoped>\n${styleString}</style > `;
+    output += `  },\n}; \n\n<\/script>\n\n<style scoped>\n${styleString}</style > `;
 }
 
 return output;
