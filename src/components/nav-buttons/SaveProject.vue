@@ -18,7 +18,7 @@
 <script setup lang="ts">
 /* IMPORTS */
 import { computed } from "vue";
-import { useStore } from "../../stores/main";
+import { useStore } from "../../stores/main.js";
 import localforage from "localforage";
 const Mousetrap = require("mousetrap");
 
@@ -86,7 +86,6 @@ const parseAndDelete = (htmlList: any[]) => {
 const saveProjectJSON = () => showSaveJSONDialog();
 
 const saveJSONLocation = (filePath: string) => {
-
   let deleteKey = projects.value[activeTab.value].filename;
   localforage
     .removeItem(deleteKey)
@@ -97,17 +96,28 @@ const saveJSONLocation = (filePath: string) => {
 
   let fileName: string | undefined = parseFileName(filePath);
 
+
   if (fileName) {
     addProject({
       filename: fileName,
       lastSavedLocation: filePath,
     });
 
-    let stateRef = JSON.parse(JSON.stringify(stateComputed.value));
+    let cache: Array<any> | null = [];
+    let stateRefString: string = JSON.stringify(stateComputed.value, (key: string, value: any) => {
+      if (typeof value === 'object' && value !== null) {
+        if (cache.includes(value)) return;
+        cache.push(value);
+      }
+      return value;
+    });
+    let stateRef = JSON.parse(stateRefString);
+    cache = null; // Enable garbage collection on cache
 
     ipcRenderer
       .invoke('writeJSON', { filePath, data: JSON.stringify(stateRef) })
       .then(() => {
+    
         if (fileName) {
           localforage.setItem(fileName, stateRef);
         }
@@ -157,4 +167,4 @@ Mousetrap.bind(["command+s", "ctrl+s"], () => {
   margin-right: 2px;
 }
 </style>
-../../stores/main
+

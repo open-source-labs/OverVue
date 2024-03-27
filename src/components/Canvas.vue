@@ -548,7 +548,7 @@ const colorModal = ref(false);
 const childrenSelected = ref<typeof VueMultiselect>([]);
 const boxes = ref<typeof VueDraggableResizable>(null);
 
-//emitter
+//emitters
 defineEmits(["deactivated", "update:active", "activated"]);
 defineExpose({ boxes });
 
