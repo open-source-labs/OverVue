@@ -2,10 +2,13 @@ import { reactive } from 'vue';
 import { icons, vtIcons } from "./icons";
 import htmlElementMap from "./htmlElementMap";
 import * as types from "../../../types";
- 
+
 const cloneDeep = require("lodash.clonedeep");
 
 const state = reactive ({
+// state for options/compodition API
+composition: false,
+
   mode: "tree",
   clicked: false,
   icons,

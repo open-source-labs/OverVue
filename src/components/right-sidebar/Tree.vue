@@ -1,4 +1,4 @@
-<!-- 
+<!--
   LOCATION IN APP:
   central tree UI
 
@@ -304,7 +304,7 @@ watch(componentMap, () => (treeData.value = buildTree(componentMap.value)), {
   height: 100%;
   width: 100%;
   text-shadow: -2px 0px 10px rgba(0, 0, 0, 0.16);
-  background-color: rgb(26, 26, 26);
+  background-color: $subtertiary;
 }
 
 .container:hover {

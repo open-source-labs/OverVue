@@ -1,4 +1,4 @@
-<!-- 
+<!--
   LOCATION IN APP:
   to enable ==> [top-right corner] gear icon > Mode: Grid
   shows in center UI
@@ -19,7 +19,7 @@
     <div
       class="cssContainer"
       :style="{
-        'background-size': `${gridWidth}px ${gridHeight}px, 
+        'background-size': `${gridWidth}px ${gridHeight}px,
       ${gridWidth}px ${gridHeight}px`,
         height: `${containerH}px`,
         width: `${containerW}px`,
@@ -48,7 +48,7 @@
           Math.floor(100 * gridHeight) / 100,
         ]"
         @activated="onActivated(componentData)"
-        @deactivated="onDeactivated(componentData)"
+        @deactivated="onDeactivated()"
         @dragstop="finishedDrag"
         @resizestop="finishedResize"
         :style="{
@@ -374,7 +374,8 @@
                 <q-icon color="primary" name="edit_note" />
               </q-item-section>
             </q-item>
-            <q-item
+            <!-- export requires an updated function -->
+            <!-- <q-item
               clickable
               v-ripple
               v-close-popup
@@ -384,7 +385,7 @@
               <q-item-section avatar>
                 <q-icon color="primary" name="upload" />
               </q-item-section>
-            </q-item>
+            </q-item> -->
             <q-item clickable v-ripple v-close-popup @click="handleEditColor">
               <q-item-section>Edit Color</q-item-section>
               <q-item-section avatar>
@@ -526,7 +527,7 @@
 </template>
 
 <script setup lang="ts">
-import { useExportComponent } from "./composables/useExportComponent.js";
+// import { useExportComponent } from "./composables/useExportComponent.js";
 import VueDraggableResizable from "vue-draggable-resizable/src/components/vue-draggable-resizable.vue";
 import VueMultiselect from "vue-multiselect";
 import "vue-draggable-resizable/src/components/vue-draggable-resizable.css";

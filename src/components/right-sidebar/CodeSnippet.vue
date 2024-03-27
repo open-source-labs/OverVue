@@ -1,4 +1,4 @@
-<!-- 
+<!--
   LOCATION IN APP:
   [right sidebar] COMPONENT DETAILS > Code Preview
 
@@ -9,7 +9,7 @@
 
 <template>
   <div class="codesnippet-container">
-    <div class="top-p-container">  
+    <div class="top-p-container">
       <div class="top-p" v-if="activeComponent !== ''">
         {{ `${activeRoute} / ${activeComponent}.vue` }}
       </div>
@@ -17,9 +17,9 @@
         <p class="api">Options API</p>
         <label class="code-switch">
           <input
-            :checked="checked"
-            @change="changeInput"
-            type="checkbox"
+            :checked="store.composition"
+            @change="store.compositionToggle"
+            type="checkbox" class="compositiontoggle"
           >
           <span class="slider round"/>
         </label>
@@ -45,8 +45,7 @@ import {
   onMounted,
   onBeforeUnmount,
   nextTick,
-  Ref, 
-  defineEmits 
+  Ref
 } from "vue";
 import { PrismEditor } from "vue-prism-editor";
 import { highlight, languages } from "prismjs/components/prism-core";
@@ -57,25 +56,19 @@ import "vue-prism-editor/dist/prismeditor.min.css";
 import { useStore } from "../../store/main.js";
 import { vtIcons } from "src/store/state/icons";
 import { Component, HtmlElement, HtmlElementMap } from "../../../types";
-// import { createBoiler }  from './createBoilerFuncs/createBoilerFalse'
+import { createBoilerOptions, createBoilerComposition } from "./createBoilerFuncs"
 
-// Declaring emits
-const emit = defineEmits(['input']);
+/* COMPUTED VALUES */
+const store = useStore(); // template
+const componentMap = computed(() => store.componentMap);
+const activeComponent = computed(() => store.activeComponent);
+const activeComponentObj = computed(() => store.activeComponentObj);
+const exportAsTypescript = computed(() => store.exportAsTypescript);
+const activeRoute = computed(() => store.activeRoute);
 
-// Data ref equivalent
-const checked = ref(false);
-
-// Method equivalent in Composition API
-const changeInput = (event: Event) => {
-  // Perform a type assertion here to let TypeScript know you're dealing with an input element
-  const input = event.target as HTMLInputElement;
-  // Now TypeScript knows that input is an HTMLInputElement, which does have a 'checked' property
-  checked.value = input.checked;
-  emit('input', input.checked);
-};
-
-watch(checked, () => {
-  snippetInvoke(); // This will update code.value based on the new state of checked.value
+/* This will update code.value based on the new state of options */
+watch(() => store.composition, () => {
+  snippetInvoke();
 });
 
 
@@ -93,24 +86,12 @@ onBeforeUnmount(() => window.removeEventListener("resize", getWindowHeight));
 const code = ref("Select a component to see its boilerplate code.");
 const height: Ref<null | number> = ref(null);
 
-/* COMPUTED VALUES */
-const store = useStore(); // template
-const componentMap = computed(() => store.componentMap);
-const activeComponent = computed(() => store.activeComponent);
-const activeComponentObj = computed(() => store.activeComponentObj);
-const exportAsTypescript = computed(() => store.exportAsTypescript);
-const activeRoute = computed(() => store.activeRoute);
 
 /* METHODS */
-/* ------------------------ write logic to switch between options & composostion api ------------------------*/
+/* ------------------------ Logic to check if Options or Composition API is selected ------------------------*/
 const snippetInvoke = () => {
-  if (activeComponent.value !== "" && checked.value === false) {
-    code.value = createCodeSnippetOptions(
-      componentMap.value[activeComponent.value].componentName,
-      componentMap.value[activeComponent.value].children
-    );
-  } else if (activeComponent.value !== "" && checked.value === true) {
-       code.value = createCodeSnippetComposition(
+  if (activeComponent.value !== "") {
+    code.value = createCodeSnippet(
       componentMap.value[activeComponent.value].componentName,
       componentMap.value[activeComponent.value].children
     );
@@ -129,21 +110,22 @@ const getWindowHeight = () => {
   height.value = minHeight; // height.value here?
 };
 
-/*------------------- Options & Composition switch -------------------*/
-const createCodeSnippetOptions = (componentName: string, children: string[]) => {
-  let result = `${createTemplate(componentName /*, children*/)}${createBoilerOptions(
+/*------------------- Template and Boiler code snippet invocations-------------------*/
+const createCodeSnippet = (componentName: string, children: string[]) => {
+  let result = '';
+  if (store.composition === false) {
+  result = `${createTemplate(componentName /*, children*/)}${createBoilerOptions(
     componentName,
     children
   )}`;
   return result;
-};
-
-const createCodeSnippetComposition = (componentName: string, children: string[]) => {
-  let result = `${createTemplate(componentName /*, children*/)}${createBoilerComposition(
+  } else {
+    result = `${createTemplate(componentName /*, children*/)}${createBoilerComposition(
     componentName,
     children
   )}`;
-  return result;
+  return result
+  }
 };
 
 /* --------------- creates default boilerplate --------------- */
@@ -236,7 +218,7 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
       </div> \n\t  </VDialog>`,
     ],
     VDrawer: [
-      `<VDrawer transition="slide-right" bg-transition="fade">      
+      `<VDrawer transition="slide-right" bg-transition="fade">
         <template #toggle="{ bind, on }">
         <button v-bind="bind" v-on="on">
           Toggle Drawer
@@ -435,336 +417,6 @@ const writeTemplateTag = (componentName: string, activeComponent: string) => {
   return outputStr;
 };
 
-/* --------------- creates boiler text for <script> and <style> --------------- */
-const createBoilerOptions = (componentName: string, children: string[]) => {
-  // add import mapstate and mapactions if they exist
-  let imports = "";
-  const activeComp = componentMap.value[activeComponent.value] as Component;
-  // if (checked.value === false) {
-    if (activeComp.actions.length || activeComp.state.length) {
-      imports += "import { ";
-      if (activeComp.actions.length && activeComp.state.length) {
-        imports += "mapState, mapActions";
-      } else if (activeComp.state.length) imports += "mapState";
-      else imports += "mapActions";
-      imports += ` } from "pinia";\nimport { /* store */} from '/* ./store */'`; // changed from 'vuex' pinia
-    }
-  // }
-  // if Typescript toggle is on, import defineComponent
-  if (exportAsTypescript.value === "on") {
-    imports += 'import { defineComponent } from "vue";\n';
-  }
-
-  // add imports for children
-  children.forEach((name) => {
-    imports += `import ${name} from './components/${name}.vue';\n`;
-  });
-
-  // add components section
-  let childrenComponentNames = "";
-  children.forEach((name) => {
-    childrenComponentNames += `    ${name},\n`;
-  });
-
-  // if true add data section and populate with props
-  let data = "";
-  if (activeComp.props.length) {
-    data += "  props: {";
-    activeComp.props.forEach((prop) => {
-      data += `\n    ${prop}: "PLACEHOLDER FOR VALUE",`;
-    });
-    data += "\n";
-    //data += "    }\n";
-    data += "  },\n";
-  }
-
-  const htmlBinding = componentMap.value[activeComponent.value].htmlList;
-
-  // [OverVue v.10.0] add Vuetensils import statements to <script setup>
-
-  const vuetensilsSet = new Set(Object.keys(vtIcons));
-
-  let vuetensilsImports = "";
-
-  const vtComponents: string[] = [];
-
-  htmlBinding.forEach((el) => {
-    if (vuetensilsSet.has(el.text)) {
-      // Add import statement for Vuetensils components
-      vtComponents.push(el.text);
-    }
-  });
-
-  if (vtComponents.length) {
-    vuetensilsImports += `import { ${vtComponents.join(
-      ", "
-    )} } from 'vuetensils/src/components';\n`;
-  }
-
-  data += "  data() {\n    return {\n";
-  htmlBinding.forEach((el) => {
-    if (el.binding !== "") {
-      data += `      ${el.binding}: "PLACEHOLDER FOR VALUE", `;
-      data += "\n";
-    }
-  });
-  data += `    }`;
-  data += ` \n  },  \n `;
-
-  // if true add computed section and populate with state
-  let computed = "";
-  if (activeComp.state.length) {
-    computed += " computed: {";
-    computed += "\n    ...mapState(/* store */, [";
-    activeComp.state.forEach((state) => {
-      computed += `\n      "${state}", `;
-    });
-    computed += "\n    ]),\n";
-    computed += "  },\n";
-  }
-
-  // if true add methods section and populate with actions
-  let methods = "";
-  if (activeComp.actions.length) {
-    methods += "  methods: {";
-    methods += "\n    ...mapActions(/* store */, [";
-    activeComp.actions.forEach((action) => {
-      methods += `\n      "${action}", `;
-    });
-    methods += "\n    ]),\n";
-    methods += "  },\n";
-  }
-
-  let htmlArray = componentMap.value[componentName].htmlList;
-  let styleString = "";
-  const activeCompObj = activeComponentObj.value as Component; // typed this to fix activeComponentObj.value "is possibly null" error
-  if (
-    activeComponentObj.value &&
-    (activeComponentObj.value as Component).htmlAttributes.class !== ""
-  ) {
-    styleString += `.${
-      (activeComponentObj.value as Component).htmlAttributes.class
-    } { \n\tbackground-color: ${(activeComponentObj.value as Component).color};
-\tgrid-area: ${
-      (activeComponentObj.value as Component).htmlAttributes.gridArea[0]
-    } / ${
-      (activeComponentObj.value as Component).htmlAttributes.gridArea[1]
-    } / ${
-      (activeComponentObj.value as Component).htmlAttributes.gridArea[2]
-    } / ${(activeComponentObj.value as Component).htmlAttributes.gridArea[3]};
-\tz-index: ${(activeComponentObj.value as Component).z};
-} \n`;
-  }
-
-  for (const html of htmlArray) {
-    if (html.class === " ") styleString = "";
-    if (html.class) {
-      styleString += `.${html.class} {\n height: ${html.h}%; \n width: ${html.w}%; \n top: ${html.x}%;
-       \n left: ${html.y}%; \n z-index: ${html.z};}\n`;
-    }
-  }
-
-  // concat all code within script tags
-  // if exportAsTypescript is on, out should be <script lang="ts">
-  let output;
-  if (exportAsTypescript.value === "on") {
-    output = "\n\n<script lang='ts'>\n";
-    output +=
-      vuetensilsImports +
-      imports +
-      "\nexport default defineComponent ({\n  name: '" +
-      componentName +
-      "';";
-  } else {
-    output = "\n\n<script>\n";
-    output +=
-      vuetensilsImports +
-      imports +
-      "\nexport default {\n  name: '" +
-      componentName +
-      "'";
-  }
-  output += ",\n  components: {\n";
-  output += childrenComponentNames + "  },\n";
-  output += data;
-  output += computed;
-  output += methods;
-
-  if (exportAsTypescript.value === "on") {
-    output += "});\n<\/script>\n\n<style scoped>\n</style>";
-  } else {
-    output += `}; \n <\/script>\n\n<style scoped>\n${styleString}</style > `;
-  }
-
-  return output;
-};
-
-const createBoilerComposition = (componentName: string, children: string[]) => {
-  // add import mapstate and mapactions if they exist
-  let imports = "";
-  const activeComp = componentMap.value[activeComponent.value] as Component;
-  // if (checked.value === false) {
-    if (activeComp.actions.length || activeComp.state.length) {
-      imports += `import { /* useStore */ } from '/* ./store */';\n`; // changed from 'vuex' pinia
-    }
-  // }
-  // if Typescript toggle is on, import defineComponent
-  if (exportAsTypescript.value === "on") {
-    imports += 'import { defineComponent } from "vue";\n';
-  }
-
-  // add imports for children
-  children.forEach((name) => {
-    imports += `import ${name} from './components/${name}.vue';\n`;
-  });
-
-  // add components section
-  let childrenComponentNames = "\n";
-  children.forEach((name) => {
-    childrenComponentNames += `    ${name},\n`;
-  });
-
-  // if true add data section and populate with props
-  let data = "";
-  if (activeComp.props.length) {
-    data += "  props: {";
-    activeComp.props.forEach((prop) => {
-      data += `\n    ${prop}: "PLACEHOLDER FOR VALUE",`;
-    });
-    data += "\n";
-    //data += "    }\n";
-    data += "  },\n";
-  }
- 
-
-  const htmlBinding = componentMap.value[activeComponent.value].htmlList;
-
-  // [OverVue v.10.0] add Vuetensils import statements to <script setup>
-
-  const vuetensilsSet = new Set(Object.keys(vtIcons));
-
-  let vuetensilsImports = "";
-
-  const vtComponents: string[] = [];
-
-  htmlBinding.forEach((el) => {
-    if (vuetensilsSet.has(el.text)) {
-      // Add import statement for Vuetensils components
-      vtComponents.push(el.text);
-    }
-  });
-
-  if (vtComponents.length) {
-    vuetensilsImports += `import { ${vtComponents.join(
-      ", "
-    )} } from 'vuetensils/src/components';\n`;
-  }
-/*------------- setup() function -------------*/
-data = " setup() {"
-if(activeComp.state.length || activeComp.actions.length){
-  data += "   \n   const /* testStore */ = useStore();  ";
-}
-  htmlBinding.forEach((el) => {
-    if (el.binding !== "") {
-      data += `      ${el.binding}: "PLACEHOLDER FOR VALUE", `;
-      data += "\n";
-    }
-  });
-
-  let returnStatement = "";
-
-  if (activeComp.state.length || activeComp.actions.length) {
-    returnStatement = "\n  return { \n";
-  }
-
-
-  // if true add computed section and populate with state
-  let computed = "";
-  if (activeComp.state.length) {
-    const currState = 
-    activeComp.state.forEach((state) => {
-      data += `\n   const ${state} = computed(() => /* testStore */.${state}); `;
-      returnStatement += `   ${state}, \n`
-      
-    });
-  }
-
-  data += '\n'
-
-  // if true add methods section and populate with actions
-  let methods = "";
-  if (activeComp.actions.length) {
-    activeComp.actions.forEach((action) => {
-      methods += `\n   const ${action} = () => /* testStore */.${action}();`;
-      returnStatement += `   ${action}, \n`
-    });
-  }
-
-  let htmlArray = componentMap.value[componentName].htmlList;
-  let styleString = "";
-  const activeCompObj = activeComponentObj.value as Component; // typed this to fix activeComponentObj.value "is possibly null" error
-  if (
-    activeComponentObj.value &&
-    (activeComponentObj.value as Component).htmlAttributes.class !== ""
-  ) {
-    styleString += `.${
-      (activeComponentObj.value as Component).htmlAttributes.class
-    } { \n\tbackground-color: ${(activeComponentObj.value as Component).color};
-\tgrid-area: ${
-      (activeComponentObj.value as Component).htmlAttributes.gridArea[0]
-    } / ${
-      (activeComponentObj.value as Component).htmlAttributes.gridArea[1]
-    } / ${
-      (activeComponentObj.value as Component).htmlAttributes.gridArea[2]
-    } / ${(activeComponentObj.value as Component).htmlAttributes.gridArea[3]};
-\tz-index: ${(activeComponentObj.value as Component).z};
-} \n`;
-  }
-
-  for (const html of htmlArray) {
-    if (html.class === " ") styleString = "";
-    if (html.class) {
-      styleString += `.${html.class} {\n height: ${html.h}%; \n width: ${html.w}%; \n top: ${html.x}%;
-       \n left: ${html.y}%; \n z-index: ${html.z};}\n`;
-    }
-  }
-
-  // concat all code within script tags
-  // if exportAsTypescript is on, out should be <script lang="ts">
-  let output;
-  if (exportAsTypescript.value === "on") {
-    output = "\n\n<script lang='ts'>\n";
-    output +=
-      vuetensilsImports +
-      imports +
-      "\nexport default defineComponent ({\n  name: '" +
-      componentName +
-      "';";
-  } else {
-    output = "\n\n<script>\n";
-    output +=
-      vuetensilsImports +
-      imports +
-      "\nexport default {\n  name: '" +
-      componentName +
-      "'";
-  }
-  output += ",\n  components: {";
-  output += childrenComponentNames + "  },\n";
-  output += data;
-  output += computed;
-  output += methods;
-
-  if (exportAsTypescript.value === "on") {
-  output += `    \n  ${returnStatement}  };  \n }; \n});\n<\/script>\n\n<style scoped>\n</style>`;
-} else if (activeComp.state.length || activeComp.actions.length) {
-  output += `    \n  ${returnStatement}  }; \n };\n<\/script>\n\n<style scoped>\n${styleString}</style > `;
-} else {
-  output += `   \n}; \n\n<\/script>\n\n<style scoped>\n${styleString}</style > `;
-}
-
-return output;
-};
 
 /* WATCHES */
 watch(
