@@ -1,9 +1,10 @@
-import { contextBridge, ipcRenderer } from 'electron'
+import { contextBridge, ipcRenderer, shell } from 'electron'
 
 contextBridge.exposeInMainWorld('ipcRenderer', { //exposes to main script for global access via electron
   invoke: ipcRenderer.invoke,
   on: ipcRenderer.on,
-  // add other methods you need
+  shell: shell
+  // add other methods to be used from electron that need to be exposed for use beforehand
 })
 
 /**

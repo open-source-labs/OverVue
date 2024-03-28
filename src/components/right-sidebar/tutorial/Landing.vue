@@ -43,7 +43,13 @@ const nextTab = () => emit("nextTab");
 const store = useStore();
 const toggleTutorial = () => store.toggleTutorial();
 
-const openUrl = (url: string) => shell.openExternal(url, { activate: true });
+const openUrl = (url: string) => {
+  if (window.ipcRenderer && window.ipcRenderer.shell) {
+    window.ipcRenderer.shell.openExternal(url);
+  } else {
+    window.open(url, '_blank');
+  }
+};
 </script>
 
 <style lang="scss" scoped>
