@@ -196,7 +196,7 @@ package.json
 <br>
 
 <h4><strong>Bug Fixes</strong></h4>
-<li> Fixed Save, Import, and Export functionalities </li>
+<li> Fixed Import and Export functionalities </li>
 <li> Removed unused and outdated dependencies which removed and introduced new bugs (if new bugs are found please mention this in the issues tab) </li>
 <li>  </li>
 
@@ -416,19 +416,20 @@ We'd love for you to test out the application and submit any issues you encounte
 
 Here are some features we're thinking about adding:
 
-- Ability to choose options or composition API for code preview and exported code
-- Ability to choose Vuex or Pinia for code preview and exported code
+
 - Ability to add two-way binding to input elements
-- Expand testing suite and add more dynamic tests
-- Reincorporate Slack OAuth
+- Add E2E testing suite like Cypress
+- Containerized the app to further support multi-platform distribution OR
+- Adjust platform to either a web app or an plugin extension on VSCode/Figma.
 
 
 Smaller changes that can be worked on:
 
-- Optimizing the codebase
+- Patch save functionality to save state correctly
 - Highlight active HTML element when selected/updating
 - HTML elements removal to re-render and update state count of elements used in components tree
 - HTML elements list occasionally does not render properly after component is dragged
+- Continue updating and rebalancing dependencies
 
 <br/>
 
