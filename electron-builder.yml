@@ -6,7 +6,7 @@ mac:
   target: zip
   icon: "src-electron/icons/tileIconMac.icns"
 win:
-  target: nsis
+  target: portable
   icon: "src-electron/icons/tileIconWin.ico"
 linux:
   target: AppImage
