@@ -191,19 +191,15 @@ vite.config.js/ts
 <li> Refactored codebase, clean-up unused old code, unused files for optimization of Electron build </li>
 <li> Optimize images displayed to take a smaller footprint and increase speeds or older systems </li>
 <li> Slack and Github OAuth feature has been hidden as currently the feature is not working, and is not seeing much use either </li>
-
+<li> Website has been updated with the latest OverVue 11.0 releases for the community to use  </li>
 
 <br>
 
 <h4><strong>Bug Fixes</strong></h4>
 <li> Fixed Import and Export functionalities </li>
 <li> Removed unused and outdated dependencies which removed and introduced new bugs (if new bugs are found please mention this in the issues tab) </li>
-<li>  </li>
-
-<h4><strong>Known Bugs</strong></h4>
-<li> Slack OAuth not working (currently disabled) </li>
-<li> Canvas tree can only be moved with arrow keys </li>
-<li> Not necessarily a bug, but certain peer dependencies are not updated by their maintainers (ie tesing vue with jest). To update to a new dependency, this requires ample amount of time that we unfortunately did not have</li>
+<li> Removed unused files and code to speed up build time</li>
+<li> Major update to dependencies which greatly sped up speed of application </li>
 
 
 </ul>
@@ -413,22 +409,27 @@ vite.config.js/ts
 
 We'd love for you to test out the application and submit any issues you encounter. Also feel free to fork to your own repo and submit PRs.
 
-Here are some features we're thinking about adding:
-
+<h4><strong>Here are some features we're thinking about adding:</strong></h4>
 
 - Ability to add two-way binding to input elements
 - Add E2E testing suite like Cypress
 - Containerized the app to further support multi-platform distribution OR
-- Adjust platform to either a web app or an plugin extension on VSCode/Figma.
+- Adjust application to either a web app or an plugin extension on VSCode/Figma.
 
 
-Smaller changes that can be worked on:
+<h4><strong>Smaller desired changes</strong></h4>
 
-- Patch save functionality to save state correctly
+- Patch save functionality to save state
 - Highlight active HTML element when selected/updating
 - HTML elements removal to re-render and update state count of elements used in components tree
 - HTML elements list occasionally does not render properly after component is dragged
 - Continue updating and rebalancing dependencies
+
+<h4><strong>Known Bugs</strong></h4>
+<li> Slack OAuth not working (currently disabled) </li>
+<li> Canvas tree can only be moved with arrow keys </li>
+<li> Not necessarily a bug, but certain peer dependencies are not updated by their maintainers (ie tesing vue with jest). To update to a new dependency, this requires ample amount of time that we unfortunately did not have</li>
+<li> There may be more bugs that we did not find. If so please mention this in the 'Issues' tab  </li>
 
 <br/>
 
