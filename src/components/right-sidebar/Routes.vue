@@ -84,4 +84,3 @@ const deleteSelectedRoute = (route: string) => {
   border: 2px solid $menutext !important;
 }
 </style>
-../../stores/main.js

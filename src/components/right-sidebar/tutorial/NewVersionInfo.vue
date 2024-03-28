@@ -3,7 +3,7 @@
     <h6 class="infoHeading">What's New in OverVue 11.0?</h6>
     <p class="info-sub-heading">Toggle between Options/Composition API</p>
     <p class="infoContent">
-      OverVue 11.0 adds the ability to display your code generated in the code 
+      OverVue 11.0 adds the ability to display your code generated in the code
       preview in both options and composition API, taking advantage of the pinia
       state management library. You can now toggle back and forth between each
       API format.
@@ -15,8 +15,8 @@
     />
     <p class="info-sub-heading">Updated Export Functionality</p>
     <p class="infoContent">
-      Export now provides support for the pinia state management library. Now, you 
-      can choose which API formtat you want exported to your local machine, just 
+      Export now provides support for the pinia state management library. Now, you
+      can choose which API formtat you want exported to your local machine, just
       select the desired format, hit export, and voilà!
 
     </p>
@@ -25,11 +25,11 @@
       src="../../../assets/export-API.png"
       class="tut-screenshot"
     />
-    <p class="info-sub-heading">Patched Save Functionality</p>
+    <!-- <p class="info-sub-heading">Patched Save Functionality</p>
     <p class="infoContent">
-      You can now save the current state of your entire application into a JSON file 
+      You can now save the current state of your entire application into a JSON file
       on your local machine.
-    </p>
+    </p> -->
     <q-btn
       class="tut-btn"
       color="secondary"
@@ -129,4 +129,4 @@ const openUrl = (url: string) => shell.openExternal(url, { activate: true });
   margin-bottom: 0.75rem !important;
 }
 </style>
-../../../stores/main.js
+

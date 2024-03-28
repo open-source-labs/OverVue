@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img width="235 height ="235" src="src/assets/right_sidebar325x325.svg">
+  <img width="235 height ="235" src="src/assets/ReadMe325x325.svg">
 </h1>
 
 <p align="center"><b>Prototyping Development Tool for Vue Developers</b></p>
@@ -23,27 +23,21 @@
 ![Quasar](https://img.shields.io/badge/Quasar-16B7FB?style=for-the-badge&logo=quasar&logoColor=black)
 ![Prism.js](https://img.shields.io/badge/Prism.js-A81C7D?style=for-the-badge)
 ![SASS](https://img.shields.io/badge/SASS-hotpink.svg?style=for-the-badge&logo=SASS&logoColor=white)
-![Vuex](https://img.shields.io/badge/Vuex-4A154B?style=for-the-badge)
 ![Babel](https://img.shields.io/badge/Babel-F9DC3e?style=for-the-badge&logo=babel&logoColor=black)
 ![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white)
-![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 ![Vuetensils](https://img.shields.io/badge/Vuetensils-00897B?style=for-the-badge)
 
 ## Table of Contents
 
 - [Installation](#installation)
-  - [Dev Installation](#dev-installation)
-  - [WSL Installation](#updated-WSL-Installation-and-Configuration-Guide)
 - [How to use OverVue](#how-to-use-OverVue)
-
-
 - [Changelogs](#changelogs-(recent))
 - [How to contribute](#contributing)
 - [Authors](#contributors)
 
 ## Installation
 
-To download the production version for windows or mac, please visit https://www.overvue.org
+To download the production version, please visit https://www.overvue.org
 <hr>
 
 ### Dev Installation
@@ -144,29 +138,37 @@ This streamlined approach helps you focus on building and visualizing your Vue.j
 
 ![AddStateActions](./src/assets/readme/AddStateActions.gif)
 
-  - When finished creating, view your code preview under the code preview tab and you can export to a file location of your choice. Below is the exported file structure:
+  - When finished creating, view your code preview under the code preview tab and you can export to a file location of your choice. Below is the exported file structure ('*' = only in typescript format, '**' = only in test format:
 
 
 ```
 public/
-  index.html
 src/
   assets/
   components/
-    UserCreatedComponent1.vue
-    UserCreatedComponent2.vue
+    (YourNewComponent1.vue)
+    (YourNewComponent2.vue)
     ...
   router/
-    index.js
+    index.js/ts
+  store/
+    index.js/ts
   views/
     HomeView.vue
-    UserCreatedRouteComponent1.vue
-    UserCreatedRouteComponent2.vue
+    (YourNewRoute1.vue)
+    (YourNewRoute2.vue)
     ...
   App.vue
-  main.js
-babel.config.js
+  main.js/ts
+tests/
+  units**
+.eslintrc.cjs
+env.d.ts*
+babel.config.js/ts
+jest.config.js/ts**
+index.html
 package.json
+vite.config.js/ts
 ```
 
 - To get a better look at the features and how to use OverVue, take a look at the in-app tutorial!
@@ -189,20 +191,17 @@ package.json
 <li> Refactored codebase, clean-up unused old code, unused files for optimization of Electron build </li>
 <li> Optimize images displayed to take a smaller footprint and increase speeds or older systems </li>
 <li> Slack and Github OAuth feature has been hidden as currently the feature is not working, and is not seeing much use either </li>
-<li>  </li>
-<li>  </li>
 
 
 <br>
 
 <h4><strong>Bug Fixes</strong></h4>
-<li> Fixed Save, Import, and Export functionalities </li>
+<li> Fixed Import and Export functionalities </li>
 <li> Removed unused and outdated dependencies which removed and introduced new bugs (if new bugs are found please mention this in the issues tab) </li>
 <li>  </li>
 
 <h4><strong>Known Bugs</strong></h4>
 <li> Slack OAuth not working (currently disabled) </li>
-
 <li> Canvas tree can only be moved with arrow keys </li>
 <li> Not necessarily a bug, but certain peer dependencies are not updated by their maintainers (ie tesing vue with jest). To update to a new dependency, this requires ample amount of time that we unfortunately did not have</li>
 
@@ -416,19 +415,20 @@ We'd love for you to test out the application and submit any issues you encounte
 
 Here are some features we're thinking about adding:
 
-- Ability to choose options or composition API for code preview and exported code
-- Ability to choose Vuex or Pinia for code preview and exported code
+
 - Ability to add two-way binding to input elements
-- Expand testing suite and add more dynamic tests
-- Reincorporate Slack OAuth
+- Add E2E testing suite like Cypress
+- Containerized the app to further support multi-platform distribution OR
+- Adjust platform to either a web app or an plugin extension on VSCode/Figma.
 
 
 Smaller changes that can be worked on:
 
-- Optimizing the codebase
+- Patch save functionality to save state correctly
 - Highlight active HTML element when selected/updating
 - HTML elements removal to re-render and update state count of elements used in components tree
 - HTML elements list occasionally does not render properly after component is dragged
+- Continue updating and rebalancing dependencies
 
 <br/>
 

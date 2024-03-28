@@ -269,4 +269,4 @@ i {
   align-items: center;
 }
 </style>
-../../../stores/main
+

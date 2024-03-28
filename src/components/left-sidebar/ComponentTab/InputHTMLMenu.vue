@@ -275,4 +275,4 @@ watch(attributeModalOpen, () => {
   padding-top: 5px;
 }
 </style>
-../../../stores/main.js
+

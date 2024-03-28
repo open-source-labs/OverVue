@@ -83,4 +83,4 @@ p {
   height: auto;
 }
 </style>
-../../../stores/main.js
+

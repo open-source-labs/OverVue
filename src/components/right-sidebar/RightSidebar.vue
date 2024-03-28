@@ -156,4 +156,4 @@ watch(selectedElementList, () => {
   height: 100%;
 }
 </style>
-../../stores/main.js
+

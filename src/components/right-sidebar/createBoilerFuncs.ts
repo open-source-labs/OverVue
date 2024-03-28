@@ -3,12 +3,6 @@ import { useStore } from "../../stores/main";
 import { vtIcons } from "src/stores/state/icons";
 import { Component, RouteComponentMap } from "../../../types";
 
-// const store = useStore(); // template
-// const componentMap = computed(() => store.componentMap);
-// const activeComponent = computed(() => store.activeComponent);
-// const activeComponentObj = computed(() => store.activeComponentObj);
-// const exportAsTypescript = computed(() => store.exportAsTypescript);
-// const activeRoute = computed(() => store.activeRoute);
 export function useComputedStore() {
   const store = useStore();
   const componentMap = computed(() => store.componentMap);
@@ -35,7 +29,7 @@ export const createBoilerOptions = (componentName: string, children: string[] | 
   // add import mapstate and mapactions if they exist
   let imports = "";
   const activeComp = componentMap.value[activeComponent.value] as Component;
-  // if (checked.value === false) {
+
     if (activeComp.actions.length || activeComp.state.length) {
       imports += "import { ";
       if (activeComp.actions.length && activeComp.state.length) {
@@ -44,7 +38,7 @@ export const createBoilerOptions = (componentName: string, children: string[] | 
       else imports += "mapActions";
       imports += ` } from "pinia";\nimport { /* store */} from '/* ./store */'`; // changed from 'vuex' pinia
     }
-  // }
+
   // if Typescript toggle is on, import defineComponent
   if (exportAsTypescript.value === "on") {
     imports += 'import { defineComponent } from "vue";\n';
@@ -71,7 +65,7 @@ export const createBoilerOptions = (componentName: string, children: string[] | 
       data += `\n    ${prop}: "PLACEHOLDER FOR VALUE",`;
     });
     data += "\n";
-    //data += "    }\n";
+
     data += "  },\n";
   }
 
@@ -205,11 +199,11 @@ export const createBoilerComposition = (componentName: string, children: string[
   // add import mapstate and mapactions if they exist
   let imports = "";
   const activeComp = componentMap.value[activeComponent.value] as Component;
-  // if (checked.value === false) {
+
     if (activeComp.actions.length || activeComp.state.length) {
       imports += `import { /* useStore */ } from '/* ./store */';\n`; // changed from 'vuex' pinia
     }
-  // }
+
   // if Typescript toggle is on, import defineComponent
   if (exportAsTypescript.value === "on") {
     imports += 'import { defineComponent } from "vue";\n';
@@ -236,7 +230,7 @@ export const createBoilerComposition = (componentName: string, children: string[
       data += `\n    ${prop}: "PLACEHOLDER FOR VALUE",`;
     });
     data += "\n";
-    //data += "    }\n";
+
     data += "  },\n";
   }
 
@@ -313,16 +307,16 @@ if(activeComp.state.length || activeComp.actions.length){
   ) {
     styleString += `.${
       (activeComponentObj.value as Component).htmlAttributes.class
-    } { \n\tbackground-color: ${(activeComponentObj.value as Component).color};
-\tgrid-area: ${
+        } { \n\tbackground-color: ${(activeComponentObj.value as Component).color};
+    \tgrid-area: ${
       (activeComponentObj.value as Component).htmlAttributes.gridArea[0]
     } / ${
       (activeComponentObj.value as Component).htmlAttributes.gridArea[1]
     } / ${
       (activeComponentObj.value as Component).htmlAttributes.gridArea[2]
     } / ${(activeComponentObj.value as Component).htmlAttributes.gridArea[3]};
-\tz-index: ${(activeComponentObj.value as Component).z};
-} \n`;
+    \tz-index: ${(activeComponentObj.value as Component).z};
+    } \n`;
   }
 
   for (const html of htmlArray) {

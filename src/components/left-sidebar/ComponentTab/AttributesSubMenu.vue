@@ -156,4 +156,4 @@ const deleteAttribute = (attribute: "id" | "class") => {
   cursor: pointer;
 }
 </style>
-../../../stores/main.js
+
