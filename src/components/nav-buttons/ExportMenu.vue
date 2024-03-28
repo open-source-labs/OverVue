@@ -1,4 +1,4 @@
-<!-- 
+<!--
   LOCATION IN APP:
   [top-right corner] 'Export' button
 
@@ -23,7 +23,7 @@
           no-caps
           color="secondary"
           label="Current Active Component"
-          @click="useExportComponent"
+          @click="exportActiveComponent"
           :disabled="!activeComponent.trim()"
         />
       </div>
@@ -34,14 +34,16 @@
 <script setup lang="ts">
 /* IMPORTS */
 import { computed } from "vue";
-import { useStore } from "../../store/main";
+import { useStore } from "../../stores/main";
 import {
   Component,
   HtmlElement,
   HtmlElementMap,
   RouteComponentMap,
 } from "../../../types";
-import { useExportComponent } from "../composables/useExportComponent";
+import { createBoilerOptions, createBoilerComposition } from "../right-sidebar/createBoilerFuncs";
+import { showExportProjectDialog, exportComponent, writeFile, checkFileExists, mkdirSync, pathJoin } from '../composables/useExportComponent';
+
 
 // @ts-ignore
 const { fs, ipcRenderer, path } = window;
@@ -61,22 +63,32 @@ const exportOauthGithub = computed(() => store.exportOauthGithub);
 const importTest = computed(() => store.importTest);
 
 /* METHODS */
-
-const showExportProjectDialog = () => {
-  ipcRenderer
-    .invoke("exportProject", {
-      title: "Choose location to save folder in",
-      message: "Choose location to save folder in",
-      nameFieldLabel: "Application Name",
-    })
+const exportProject = async () => {
+  await showExportProjectDialog()
     .then((result: { filePath: string }) => {
-      exportFile(result.filePath);
-      alert("Successfully Exported");
+      if (result.filePath) {
+        exportFile(result.filePath);
+        alert("Successfully Exported");
+      } else {
+        console.error('No file path selected');
+      }
     })
     .catch((err: Error) => console.log(err));
-};
+}
 
-const exportProject = () => showExportProjectDialog();
+const exportActiveComponent = async () => {
+  await exportComponent()
+    .then((result: { filePath: string }) => {
+      if (result.filePath) {
+        exportComponentFile(result.filePath);
+        alert("Successfully Exported");
+      } else {
+        console.error('No file path selected');
+      }
+    })
+    .catch((err: Error) => console.log(err));
+  }
+
 
 /**
  * @description creates the .js file
@@ -85,15 +97,18 @@ const exportProject = () => showExportProjectDialog();
  *          createExport(this.componentMap['App'].children)
  *  */
 
-const createRouter = (location: string) => {
+const createRouter = async (location: string) => {
   if (exportAsTypescript.value === "on") {
-    fs.writeFileSync(
-      path.join(location, "src", "router", "index.ts"),
+
+      await writeFile(
+      await pathJoin(location, "src", "router", "index.ts"),
       createRouterImports(routes.value) + createExport(routes.value)
     );
+
   } else {
-    fs.writeFileSync(
-      path.join(location, "src", "router", "index.js"),
+
+      await writeFile(
+      await pathJoin(location, "src", "router", "index.js"),
       createRouterImports(routes.value) + createExport(routes.value)
     );
   }
@@ -143,26 +158,27 @@ const writeRenderUnitTestString = (
   componentName: string,
   htmlList: HtmlElement[]
 ) => {
+
   const imports = `import { mount } from '@vue/test-utils'
-import ${componentName} from '../../src/components/${componentName}.vue'
-`;
+    import ${componentName} from '../../src/components/${componentName}.vue'
+    `;
 
   const results = [imports];
 
   for (const el of htmlList) {
     const test = `
-test('renders ${componentName}', () => {
-  const wrapper = mount(${componentName})
+      test('renders ${componentName}', () => {
+        const wrapper = mount(${componentName})
 
-  // customize your tests here; for more info please visit: https://github.com/vuejs/test-utils/
-})`;
+        // customize your tests here; for more info please visit: https://github.com/vuejs/test-utils/
+      })`;
     results.push(test);
   }
 
   return results.reduce((acc, ele) => (acc += ele), "");
 };
 
-const createComponentTestCode = (
+const createComponentTestCode = async(
   componentLocation: string,
   componentName: string,
   componentMap: {
@@ -171,16 +187,16 @@ const createComponentTestCode = (
     [key: string]: RouteComponentMap | Component;
   }
 ) => {
-  fs.writeFileSync(
-    componentLocation,
-    writeRenderUnitTestString(
-      componentName,
-      componentMap[componentName].htmlList
-    )
-  );
+      await writeFile(
+        componentLocation,
+        writeRenderUnitTestString(
+          componentName,
+          componentMap[componentName].htmlList
+        )
+      );
 };
 
-const createComponentCode = (
+const createComponentCode = async(
   componentLocation: string,
   componentName: string,
   children: {
@@ -189,31 +205,43 @@ const createComponentCode = (
     HomeView: RouteComponentMap;
   }
 ) => {
+
   if (componentName === "App") {
-    fs.writeFileSync(
+      await writeFile(
       componentLocation + ".vue",
-      writeTemplate(componentName, children, routes.value) +
-        writeStyle(componentName)
+      await writeTemplate(componentName, children, routes.value) +
+        await writeStyle(componentName)
     );
   } else {
-    fs.writeFileSync(
-      componentLocation + ".vue",
-      writeComments(componentName) +
-        writeTemplate(componentName, children, routes.value) +
-        writeScript(componentName, children) +
-        writeStyle(componentName)
-    );
+      if (store.composition === false) {
+        await writeFile(
+          componentLocation + ".vue",
+          await writeComments(componentName) +
+            await writeTemplate(componentName, children, routes.value) +
+            await createBoilerOptions(componentName, children)
+        );
+      } else {
+        await writeFile(
+          componentLocation + ".vue",
+          await writeComments(componentName) +
+            await writeTemplate(componentName, children, routes.value) +
+            await createBoilerComposition(componentName, children)
+        );
+      }
   }
 };
 
-const createAssetFile = (targetLocation: string, assetLocation: string) => {
-  // @ts-ignore
-  let saved = remote.nativeImage.createFromPath(assetLocation);
-  let urlData = saved.toPNG();
-  fs.writeFileSync(targetLocation + ".png", urlData);
-};
+// Team 11.0 found this broken function to upload asset, but there is not a place for users to upload assets in the app
+// const createAssetFile = async (targetLocation: string, assetLocation: string | unknown) => {
+//   // @ts-ignore
+//   let saved = remote.nativeImage.createFromPath(assetLocation);
+//   let urlData = saved.toPNG();
+//   // fs.writeFileSync(targetLocation + ".png", urlData);
+//   await writeFile(targetLocation + ".png", urlData);
+// };
 
 const writeTemplateTag = (componentName: string) => {
+
   const htmlElementMap: HtmlElementMap = {
     div: ["<div", "</div>"],
     button: ["<button", "</button>"],
@@ -411,9 +439,7 @@ const writeTemplateTag = (componentName: string) => {
   // also adds proper indentation to code snippet
   // add childComponents of the activeCompnent to the htmlElementMap
   const childComponents = componentMap.value[activeComponent.value].children;
-  // childComponents.forEach((child) => {
-  //   htmlElementMap[child] = [`<${child}`, ""]; //single
-  // });
+
 
   const writeNested = (childrenArray: HtmlElement[], indent: string) => {
     if (!childrenArray.length) {
@@ -541,6 +567,7 @@ const writeTemplate = (
   },
   routes: { [key: string]: Component[] }
 ) => {
+
   let str = "";
   let routeStr = "";
 
@@ -606,163 +633,6 @@ const writeTemplate = (
  * @description imports child components into <script>
  */
 
-const writeScript = (
-  componentName: string,
-  children: {
-    [key: string]: RouteComponentMap | Component;
-    App: RouteComponentMap;
-    HomeView: RouteComponentMap;
-  }
-) => {
-  // add import mapstate and mapactions if they exist
-  const currentComponent = componentMap.value[componentName];
-  const route = Object.keys(routes.value);
-
-  // Writes script boilerplate for non-route components
-  if (!route.includes(componentName)) {
-    let imports = "";
-    if (
-      (currentComponent as Component).actions.length ||
-      (currentComponent as Component).state.length
-    ) {
-      imports += "import { ";
-      if (
-        (currentComponent as Component).actions.length &&
-        (currentComponent as Component).state.length
-      ) {
-        imports += "mapState, mapActions";
-      } else if ((currentComponent as Component).state.length) {
-        imports += "mapState";
-      } else {
-        imports += "mapActions";
-      }
-      imports += ' } from "vuex";\n';
-    }
-    // if in Typescript mode, import defineComponent
-    if (exportAsTypescript.value === "on") {
-      imports += 'import { defineComponent } from "vue";\n';
-    }
-
-    let childrenComponentNames = "";
-    let childComponentImportNames = "";
-
-    const arrOfChildComp = componentMap.value[componentName].children;
-
-    arrOfChildComp.forEach((childName) => {
-      // Build child component text string
-      if (childName !== arrOfChildComp[arrOfChildComp.length - 1]) {
-        childrenComponentNames += "    " + childName + ",\n";
-      } else {
-        childrenComponentNames += "    " + childName + "\n";
-      }
-      childComponentImportNames += `import ${childName} from '../components/${childName}.vue';\n`;
-    });
-
-    let data = "";
-    data += "  data () {\n    return {";
-    if ((currentComponent as Component).props.length) {
-      (currentComponent as Component).props.forEach((prop) => {
-        data += `\n      ${prop}: "PLACEHOLDER FOR VALUE",`;
-      });
-    }
-    routes.value.HomeView.forEach((element) => {
-      element.htmlList.forEach((html) => {
-        if (html.binding !== "") {
-          data += `\n      ${html.binding}: "PLACEHOLDER FOR VALUE",`;
-        }
-      });
-    });
-    data += "\n";
-    data += "    }\n";
-    data += "  },\n";
-
-    // if true add computed section and populate with state
-    let computed = "";
-    if ((currentComponent as Component).state.length) {
-      computed += "  computed: {";
-      computed += "\n    ...mapState([";
-      (currentComponent as Component).state.forEach((state) => {
-        computed += `\n      "${state}",`;
-      });
-      computed += "\n    ]),\n";
-      computed += "  },\n";
-    }
-    // if true add methods section and populate with actions
-    let methods = "";
-    if ((currentComponent as Component).actions.length) {
-      methods += "  methods: {";
-      methods += "\n    ...mapActions([";
-      (currentComponent as Component).actions.forEach((action) => {
-        methods += `\n      "${action}",`;
-      });
-      methods += "\n    ]),\n";
-      methods += "  },\n";
-    }
-    // concat all code within script tags
-    let output;
-    if (exportAsTypescript.value === "on") {
-      output = "\n\n<script lang='ts'>\n";
-
-      output +=
-        imports +
-        "\nexport default defineComponent ({\n  name: '" +
-        componentName +
-        "'";
-    } else {
-      output = "\n\n<script>\n";
-
-      output += `\n${childComponentImportNames}`;
-
-      output += imports + "\nexport default {\n  name: '" + componentName + "'";
-    }
-    output += ",\n  components: {\n";
-
-    output += childrenComponentNames + "  },\n";
-    output += data;
-    output += computed;
-    output += methods;
-    // eslint-disable-next-line no-useless-escape
-    if (exportAsTypescript.value === "on") {
-      output += "});\n<\/script>";
-    } else {
-      output += "};\n<\/script>";
-    }
-    return output;
-  }
-  // Write script for route components.
-  else {
-    let str = "";
-    let childrenComponentNames = "";
-    let childComponentImportNames = "";
-    const arrOfChildComp = componentMap.value[componentName].children;
-
-    if (componentName !== "App") {
-      arrOfChildComp.forEach((childName) => {
-        // Build child component text string
-        if (childName !== arrOfChildComp[arrOfChildComp.length - 1]) {
-          childrenComponentNames += "    " + childName + ",\n";
-        } else {
-          childrenComponentNames += "    " + childName + "\n";
-        }
-
-        // Build child component import text string
-        childComponentImportNames += `import ${childName} from '../components/${childName}.vue';\n`;
-      });
-    }
-
-    // eslint-disable-next-line no-useless-escape
-    if (exportAsTypescript.value === "on") {
-      return `\n\n<script lang="ts">\nimport { defineComponent } from "vue";\n ${str}\nexport default defineComponent ({\n  name: '${componentName}',\n  components: {\n${childrenComponentNames}  }\n});\n<\/script>`;
-    }
-    str += "\n\n<script>";
-    str += `\n${childComponentImportNames}`;
-    str += `\n\nexport default {`;
-    str += `\n  components: {`;
-    str += `\n${childrenComponentNames}  }\n};`;
-    str += `\n<\/script>`;
-    return str;
-  }
-};
 
 const writeStyle = (componentName: string) => {
   let htmlArray = componentMap.value[componentName].htmlList;
@@ -777,9 +647,9 @@ const writeStyle = (componentName: string) => {
           ? element.htmlList[0]?.text
           : "." + element.htmlAttributes.class;
       styleString += `${styleSelector} {\n\tbackground-color: ${element.color};
-\tgrid-area: ${element.htmlAttributes.gridArea[0]} / ${element.htmlAttributes.gridArea[1]} / ${element.htmlAttributes.gridArea[2]} / ${element.htmlAttributes.gridArea[3]};
-\tz-index: ${element.z};
-}\n`;
+        \tgrid-area: ${element.htmlAttributes.gridArea[0]} / ${element.htmlAttributes.gridArea[1]} / ${element.htmlAttributes.gridArea[2]} / ${element.htmlAttributes.gridArea[3]};
+        \tz-index: ${element.z};
+        }\n`;
     });
   }
 
@@ -806,7 +676,7 @@ const writeStyle = (componentName: string) => {
   } else return `\n\n<style scoped>\n${styleString}</style >`;
 };
 
-const createFirebaseConfigFile = (location: string) => {
+const createFirebaseConfigFile = async(location: string) => {
   if (exportOauth.value === "on") {
     let str = `import { initializeApp } from 'firebase/app';`;
     str += `\n\tconst firebaseConfig = {`;
@@ -821,31 +691,33 @@ const createFirebaseConfigFile = (location: string) => {
     str += `\nconst firebaseApp = initializeApp(firebaseConfig);`;
     str += `\nexport default firebaseApp`;
 
-    fs.writeFileSync(path.join(location, "firebaseConfig.js"), str);
+    await writeFile(await pathJoin(location, "firebaseConfig.js"), str);
   }
 };
 
-const createjestConfigFile = (location: string) => {
+const createjestConfigFile = async(location: string) => {
   if (importTest.value === "on") {
     let str = `module.exports = {`;
     str += `\n\tpreset: '@vue/cli-plugin-unit-jest'`;
     str += `\n}`;
-    fs.writeFileSync(path.join(location, "jest.config.js"), str);
+
+    await writeFile(await pathJoin(location, "jest.config.js"), str);
   }
 };
 
-const createbabelConfigFile = (location: string) => {
+const createbabelConfigFile = async(location: string) => {
   if (importTest.value === "on") {
     let str = `module.exports = {`;
     str += `\n\tpresets: [`;
     str += `\n\t\t'@vue/cli-plugin-babel/preset'`;
     str += `\n\t]`;
     str += `\n}`;
-    fs.writeFileSync(path.join(location, "babel.config.js"), str);
+
+    await writeFile(await pathJoin(location, "babel.config.js"), str);
   }
 };
 
-const createOauthFile = (location: string) => {
+const createOauthFile = async (location: string) => {
   if (exportOauth.value === "on" || exportOauthGithub.value === "on") {
     let str = `<template>`;
     str += `\n\t<!-- you can see the username when you log in -->`;
@@ -926,14 +798,12 @@ const createOauthFile = (location: string) => {
     str += `\n<\/script>`;
     str += `\n<style scoped>`;
     str += `\n</style>`;
-    fs.writeFileSync(
-      path.join(location, "src", "components", "oauth.vue"),
-      str
-    );
+
+    await writeFile(await pathJoin(location, "src", "components", "oauth.vue"),str);
   }
 };
 
-const createIndexFile = (location: string) => {
+const createIndexFile = async (location: string) => {
   let str = `<!DOCTYPE html>\n<html lang="en">\n\n<head>`;
   str += `\n\t<meta charset="utf-8">`;
   str += `\n\t<meta http-equiv="X-UA-Compatible" content="IE=edge">`;
@@ -954,10 +824,11 @@ const createIndexFile = (location: string) => {
   }
   str += `\n</body>\n\n`;
   str += `</html>\n`;
-  fs.writeFileSync(path.join(location, "index.html"), str);
+
+  await writeFile(await pathJoin(location, "index.html"), str);
 };
 
-const createMainFile = (location: string) => {
+const createMainFile = async (location: string) => {
   let str = `import { createApp } from 'vue';`;
   str += `\nimport store from './store'`;
   str += `\nimport App from './App.vue';`;
@@ -972,13 +843,13 @@ const createMainFile = (location: string) => {
 
   // if using typescript, export with .ts extension
   if (exportAsTypescript.value === "on") {
-    fs.writeFileSync(path.join(location, "src", "main.ts"), str);
+    await writeFile(await pathJoin(await location, "src", "main.ts"), str);
   } else {
-    fs.writeFileSync(path.join(location, "src", "main.js"), str);
+     await writeFile(await pathJoin(location, "src", "main.js"), str);
   }
 };
 
-const createViteConfig = (location: string) => {
+const createViteConfig = async (location: string) => {
   let str = `import { fileURLToPath, URL } from 'url';\n\n`;
   str += `import { defineConfig } from 'vite';\n`;
   str += `import vue from '@vitejs/plugin-vue';\n\n`;
@@ -991,13 +862,13 @@ const createViteConfig = (location: string) => {
 
   // if using typescript, export with .ts extension
   if (exportAsTypescript.value === "on") {
-    fs.writeFileSync(path.join(location, "vite.config.ts"), str);
+    await writeFile(await pathJoin(location, "vite.config.ts"), str);
   } else {
-    fs.writeFileSync(path.join(location, "vite.config.js"), str);
+    await writeFile(await pathJoin(location, "vite.config.js"), str);
   }
 };
 
-const createESLintRC = (location: string) => {
+const createESLintRC = async (location: string) => {
   let str = "";
   if (exportAsTypescript.value === "on") {
     str += `require("@rushstack/eslint-patch/modern-module-resolution");\n\n`;
@@ -1014,93 +885,132 @@ const createESLintRC = (location: string) => {
   str += `\t"env": {\n`;
   str += `\t\t"vue/setup-compiler-macros": true\n`;
   str += `\t}\n}`;
-  fs.writeFileSync(path.join(location, ".eslintrc.cjs"), str);
+  await writeFile(await pathJoin(location, ".eslintrc.cjs"), str);
 };
 
-const createTSConfig = (location: string) => {
+const createTSConfig = async(location: string) => {
   if (exportAsTypescript.value === "on") {
-    let str = `{\n\t"extends": "@vue/tsconfig/tsconfig.web.json",\n\t"include": ["env.d.ts", "src/**/*", "src/**/*.vue"],\n\t"compilerOptions": {\n\t\t"baseUrl": ".",\n\t\t"paths": {\n\t\t\t"@/*": ["./src/*"]\n\t\t}\n\t},`;
+    let str = `{\n\t"include": ["env.d.ts", "src/**/*", "src/**/*.vue"],\n\t"compilerOptions": {\n\t\t"baseUrl": ".",\n\t\t"paths": {\n\t\t\t"@/*": ["./src/*"]\n\t\t}\n\t},`;
     str += `\t"references": [\n`;
     str += `\t\t{\n\t\t\t"path": "./tsconfig.vite-config.json"\n\t\t}\n\t]\n}`;
-    fs.writeFileSync(path.join(location, "tsconfig.json"), str);
+
+    await writeFile(await pathJoin(location, "tsconfig.json"), str);
   } else {
     return;
   }
 };
 
-const createTSViteConfig = (location: string) => {
+const createTSViteConfig = async (location: string) => {
   if (exportAsTypescript.value === "on") {
     let str = `{\n\t"extends": "@vue/tsconfig/tsconfig.node.json",\n\t"include": ["vite.config.*"],\n\t"compilerOptions": {\n\t\t"composite": true,\n\t\t"types": ["node", "viteset"]\n\t}\n}`;
-    fs.writeFileSync(path.join(location, "tsconfig.vite-config.json"), str);
+    await writeFile(await pathJoin(location, "tsconfig.vite-config.json"), str);
   } else {
     return;
   }
 };
 
-const createTSDeclaration = (location: string) => {
+const createTSDeclaration = async(location: string) => {
   if (exportAsTypescript.value === "on") {
     let str = `/// <reference types="vite/client" />`;
-    fs.writeFileSync(path.join(location, "env.d.ts"), str);
+    await writeFile(await pathJoin(location, "env.d.ts"), str);
   } else {
     return;
   }
 };
 
-const createStore = (location: string) => {
-  let str = `import { createStore } from 'vuex';\n`;
+const createStore = async(location: string) => {
+  let str = `import { createStore } from 'pinia';\n`;
   str += `\nconst store = createStore({`;
-  str += `\n\tstate () {`;
-  str += `\n\t\treturn {`;
-  if (!userState.value.length) {
-    str += `\n\t\t\t//placeholder for state`;
-  }
-  for (let i = 0; i < userState.value.length; i++) {
-    str += `\n\t\t\t${userState.value[i]}: "PLACEHOLDER FOR VALUE",`;
-    if (i === userState.value.length - 1) {
-      str = str.slice(0, -1);
+
+  if (store.composition) { //if in composition API
+
+    str += `\n\tstate: () => ({`;
+    if (!userState.value.length) {
+      str += `\n\t\t//PLACE YOUR STATE OBJECT HERE`;
     }
-  }
-  str += `\n\t\t}`;
-  str += `\n\t},`;
-  str += `\n\tmutations: {`;
-  if (!userActions.value.length) {
-    str += `\n\t\t\t//placeholder for mutations`;
-  }
-  for (let i = 0; i < userActions.value.length; i++) {
-    str += `\n\t\t${userActions.value[i]} (state) {`;
-    str += `\n\t\t\t//placeholder for your mutation`;
+    for (let i = 0; i < userState.value.length; i++) {
+      str += `\n\t\t${userState.value[i]}: "PLACE YOUR STATE'S VALUE HERE",`;
+      if (i === userState.value.length - 1) {
+        str = str.slice(0, -1);
+      }
+    }
+    str += `\n\t}),`;
+    str += `\n\tactions: {`;
+    if (!userActions.value.length) {
+      str += `\n\t\t\t//PLACE YOUR ACTIONS OBJECT HERE`;
+    }
+    for (let i = 0; i < userActions.value.length; i++) {
+      str += `\n\t\t${userActions.value[i]} () {`;
+     if (userState.value[0]) {
+        str += `\n\t\t\t// EX. this.${userState.value[0]} += 1`;
+      } else {
+        str += `\n\t\t\t// EX. this.firstStateProperty += 1')`;
+      }
+      str += `\n\t\t},`;
+      if (i === userActions.value.length - 1) {
+        str = str.slice(0, -1);
+      }
+    }
+    str += `\n\t}`;
+
+  } else { // if in options API
+
+    str += `\n\tstate: {`;
+
+    if (!userState.value.length) {
+      str += `\n\t\t//PLACE YOUR STATE OBJECT HERE`;
+    }
+    for (let i = 0; i < userState.value.length; i++) {
+      str += `\n\t\t${userState.value[i]}: "PLACE YOUR STATE'S VALUE HERE",`;
+      if (i === userState.value.length - 1) {
+        str = str.slice(0, -1);
+      }
+    }
     str += `\n\t\t},`;
-    if (i === userActions.value.length - 1) {
-      str = str.slice(0, -1);
+
+
+    str += `\n\tmutations: {`;
+      if (!userActions.value.length) {
+        str += `\n\t\t\t//PLACE YOUR MUTATIONS OBJECT HERE`;
+      }
+      for (let i = 0; i < userActions.value.length; i++) {
+        str += `\n\t\t${userActions.value[i]} (state) {`;
+        str += `\n\t\t\t//placeholder for your mutation`;
+        str += `\n\t\t},`;
+        if (i === userActions.value.length - 1) {
+          str = str.slice(0, -1);
+        }
+      }
+    str += `\n\t},`;
+    str += `\n\tactions: {`;
+    if (!userActions.value.length) {
+      str += `\n\t\t\t//PLACE YOUR ACTIONS OBJECT HERE`;
     }
-  }
-  str += `\n\t},`;
-  str += `\n\tactions: {`;
-  if (!userActions.value.length) {
-    str += `\n\t\t\t//placeholder for actions`;
-  }
-  for (let i = 0; i < userActions.value.length; i++) {
-    str += `\n\t\t${userActions.value[i]} () {`;
-    str += `\n\t\t\tstore.commit('${userActions.value[i]}')`;
-    str += `\n\t\t},`;
-    if (i === userActions.value.length - 1) {
-      str = str.slice(0, -1);
+    for (let i = 0; i < userActions.value.length; i++) {
+      str += `\n\t\t${userActions.value[i]} () {`;
+      str += `\n\t\t\tstore.commit('${userActions.value[i]}')`;
+      str += `\n\t\t},`;
+      if (i === userActions.value.length - 1) {
+        str = str.slice(0, -1);
+      }
     }
+    str += `\n\t}`;
   }
-  str += `\n\t}`;
+
   str += "\n})\n";
   str += `\nexport default store;`;
   if (exportAsTypescript.value === "on") {
-    fs.writeFileSync(path.join(location, "src", "store", "index.ts"), str);
+    await writeFile(await pathJoin(location, "src", "store", "index.ts"), str);
   } else {
-    fs.writeFileSync(path.join(location, "src", "store", "index.js"), str);
+    await writeFile(await pathJoin(location, "src", "store", "index.js"), str);
   }
 };
 
-const createPackage = (location: string) => {
+const createPackage = async(location: string) => {
   let str = `{`;
-  str += `\n\t"name": "My-OverVue-Project",`;
+  str += `\n\t"name": "my-overvue-project",`;
   str += `\n\t"version": "0.0.0",`;
+  str += `\n\t"type": "module",`;
   str += `\n\t"scripts": {`;
   str += `\n\t\t"dev": "vite",`;
   if (exportAsTypescript.value === "on") {
@@ -1121,20 +1031,20 @@ const createPackage = (location: string) => {
   str += `\n\t\t"preview": "vite preview --port 5050"`;
   str += `\n\t},`;
   str += `\n\t"dependencies": {`;
-  str += `\n\t\t"vue": "^3.2.31",`;
-  str += `\n\t\t"vue-router": "^4.0.12",`;
-  str += `\n\t\t"vuex": "^4.0.2"`;
-  str += `,\n\t\t"element-plus": "^2.2.16"`;
+  str += `\n\t\t"vue": "^3.4.21",`;
+  str += `\n\t\t"vue-router": "^4.3.0",`;
+  str += `\n\t\t"pinia": "^2.1.7"`;
+  str += `,\n\t\t"element-plus": "^2.6.2"`;
 
   if (exportOauth.value === "on" || exportOauthGithub.value === "on") {
     str += `,\n\t\t "firebase": "^9.6.9"`;
   }
   str += `\n\t},`;
   str += `\n\t"devDependencies": {`;
-  str += `\n\t\t"@vitejs/plugin-vue": "^2.2.2",`;
+  str += `\n\t\t"@vitejs/plugin-vue": "^5.0.4",`;
   str += `\n\t\t"eslint": "^8.5.0",`;
-  str += `\n\t\t"eslint-plugin-vue": "^8.2.0",`;
-  str += `\n\t\t"vite": "^2.8.4"`;
+  str += `\n\t\t"eslint-plugin-vue": "^9.24.0",`;
+  str += `\n\t\t"vite": "^5.2.6"`;
   if (importTest.value === "on") {
     str += `,\n\t\t"@babel/core": "^7.12.16",`;
     str += `\n\t\t"@babel/eslint-parser": "^7.12.16",`;
@@ -1148,84 +1058,112 @@ const createPackage = (location: string) => {
     str += `\n\t\t"jest": "^27.0.5"`;
   }
   if (exportAsTypescript.value === "on") {
-    str += `,\n\t\t"@rushstack/eslint-patch": "^1.1.0",`;
+    str += `,\n\t\t"@rushstack/eslint-patch": "^1.8.0",`;
     str += `\n\t\t"@vue/tsconfig": "^0.1.3",`;
-    str += `\n\t\t"typescript": "~4.5.5",`;
-    str += `\n\t\t"vue-tsc": "^0.31.4",`;
-    str += `\n\t\t"@types/node": "^16.11.25",`;
-    str += `\n\t\t"@vue/eslint-config-typescript": "^10.0.0"`;
+    str += `\n\t\t"typescript": "^5.4.3",`;
+    str += `\n\t\t"vue-tsc": "^2.0.7",`;
+    str += `\n\t\t"@types/node": "^20.11.30",`;
+    str += `\n\t\t"@vue/eslint-config-typescript": "^13.0.0"`;
   }
   str += `\n\t}\n}`;
-  fs.writeFileSync(path.join(location, "package.json"), str);
+  await writeFile(await pathJoin(location, "package.json"), str);
 };
 
-const exportFile = (data: string) => {
-  if (data === undefined) return;
-  if (!fs.existsSync(data)) {
-    fs.mkdirSync(data);
-    fs.mkdirSync(path.join(data, "public"));
-    fs.mkdirSync(path.join(data, "src"));
-    fs.mkdirSync(path.join(data, "src", "assets"));
-    fs.mkdirSync(path.join(data, "src", "components"));
-    fs.mkdirSync(path.join(data, "src", "views"));
-    fs.mkdirSync(path.join(data, "src", "router"));
-    fs.mkdirSync(path.join(data, "src", "store"));
-    fs.mkdirSync(path.join(data, "tests"));
-    fs.mkdirSync(path.join(data, "tests", "unit"));
-  }
-  // creating basic boilerplate for vue app
-  createIndexFile(data);
-  createMainFile(data);
-  createViteConfig(data);
-  createESLintRC(data);
-  createTSConfig(data);
-  createTSViteConfig(data);
-  createTSDeclaration(data);
-  createPackage(data);
-  createStore(data);
-  createFirebaseConfigFile(data);
-  createOauthFile(data);
-  createjestConfigFile(data);
-  createbabelConfigFile(data);
-  // exports images to the /assets folder
-  // eslint-disable-next-line no-unused-vars
-  for (let [routeImage, imageLocation] of Object.entries(imagePath.value)) {
-    if (imageLocation !== "") {
-      createAssetFile(
-        path.join(data, "src", "assets", routeImage),
-        imageLocation
-      );
+ const exportComponentFile = async (data: string) => {
+    if (data === undefined) return;
+    const existBool = await checkFileExists(data)
+    if (!existBool) {
+      mkdirSync(data);
     }
+    // main logic below for creating single component
+    // eslint-disable-next-line no-unused-vars
+    await createComponentCode(
+      await pathJoin(data, store.activeComponent),
+      store.activeComponent,
+      store.componentMap[store.activeComponent].children
+    );
+  };
+
+const exportFile = async (data: string) => {
+  if (data === undefined) return;
+
+  //checks your comp. directory if a file exist; if it doesn't, it will create a new folder
+  const existBool = await checkFileExists(data)
+  if (!existBool) {
+    await mkdirSync(data);
+    await mkdirSync(data, "public");
+    await mkdirSync(data, "src");
+    await mkdirSync(data, "src", 'assets');
+    await mkdirSync(data, "src", 'components');
+    await mkdirSync(data, "src", 'views');
+    await mkdirSync(data, "src", 'router');
+    await mkdirSync(data, "src", 'store');
+    await mkdirSync(data, "tests");
+    await mkdirSync(data, "tests", 'units');
   }
+
+  // creating basic boilerplate for vue app, but needs the correct folder to write into
+  await createIndexFile(data);
+  await createMainFile(data);
+  await createViteConfig(data);
+  await createESLintRC(data);
+  await createTSConfig(data);
+  await createTSViteConfig(data);
+  await createTSDeclaration(data);
+  await createPackage(data);
+  await createStore(data);
+  await createFirebaseConfigFile(data);
+  await createOauthFile(data);
+  await createjestConfigFile(data);
+  await createbabelConfigFile(data);
+
+  // exports images to the /assets folder
+  // broken function. OverVue 10 and 11 did not have function to import imgs. Left in if future iterations would like to work on in.
+
+  // eslint-disable-next-line no-unused-vars
+  // for (let [routeImage, imageLocation] of Object.entries(imagePath.value)) {
+  //   if (imageLocation !== "") {
+  //     await createAssetFile(
+  //       // path.join(data, "src", "assets", routeImage),
+  //       await pathJoin(data, "src", "assets", routeImage),
+  //       imageLocation
+  //     );
+  //   }
+  // }
+
   // main logic below for creating components
-  createRouter(data);
+  await createRouter(data);
   // eslint-disable-next-line no-unused-vars
   for (const componentName in componentMap.value) {
+
     // if componentName is a route:
     if (componentName !== "App") {
+
       if (routes.value[componentName]) {
-        createComponentCode(
-          path.join(data, "src", "views", componentName),
+        await createComponentCode(
+          await pathJoin(data, "src", "views", componentName),
           componentName,
           componentMap.value
         );
+
         // if componentName is a just a component
       } else {
-        createComponentCode(
-          path.join(data, "src", "components", componentName),
+        await createComponentCode(
+          await pathJoin(data, "src", "components", componentName),
           componentName,
           componentMap.value
         );
-        createComponentTestCode(
-          path.join(data, "tests", "unit", componentName + ".spec.js"),
+        await createComponentTestCode(
+          await pathJoin(data, "tests", "unit", componentName + ".spec.js"),
           componentName,
           componentMap.value
         );
       }
+
       // if componentName is App
     } else {
-      createComponentCode(
-        path.join(data, "src", componentName),
+      await createComponentCode(
+        await pathJoin(data, "src", componentName),
         componentName,
         componentMap.value
       );
@@ -1245,3 +1183,5 @@ const exportFile = (data: string) => {
   max-height: 55px !important;
 }
 </style>
+
+

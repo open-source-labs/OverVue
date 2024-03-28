@@ -1,4 +1,4 @@
-<!-- 
+<!--
   LOCATION IN APP:
   [left sidebar] COMPONENT > Update Component
   (in between HTML Elements & Component Attributes)
@@ -104,7 +104,7 @@
 <script setup lang="ts">
 /* IMPORTS */
 import { computed, ref, watch, onMounted } from "vue";
-import { useStore } from "../../../store/main.js";
+import { useStore } from "../../../stores/main.js";
 
 /* LIFECYCLE HOOKS */
 onMounted(() => {
@@ -275,3 +275,4 @@ watch(attributeModalOpen, () => {
   padding-top: 5px;
 }
 </style>
+

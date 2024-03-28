@@ -1,4 +1,4 @@
-<!-- 
+<!--
   LOCATION IN APP:
   [right sidebar] COMPONENT DETAILS > HTML Elements
 
@@ -35,7 +35,7 @@
 
 <script setup>
 import { ref, computed, nextTick } from "vue";
-import { useStore } from "src/store/main";
+import { useStore } from "src/stores/main";
 import DraggableWrapper from "./DraggableWrapper.vue";
 
 /* DATA */
@@ -105,3 +105,4 @@ const forceRender = async () => {
   justify-content: space-around;
 }
 </style>
+

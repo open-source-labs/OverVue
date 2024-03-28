@@ -53,7 +53,8 @@ module.exports = {
     '^pages/(.*)$': '<rootDir>/src/pages/$1',
     '^assets/(.*)$': '<rootDir>/src/assets/$1',
     '^boot/(.*)$': '<rootDir>/src/boot/$1',
-    '.*css$': '@quasar/quasar-app-extension-testing-unit-jest/stub.css',
+    '\\.(css)$': '<rootDir>/__mocks__/styleMock.js',
+    '^@/(.*)$': '<rootDir>/src/$1',
   },
   preset: 'ts-jest',
   transform: {

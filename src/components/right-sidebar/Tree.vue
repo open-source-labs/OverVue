@@ -1,4 +1,4 @@
-<!-- 
+<!--
   LOCATION IN APP:
   central tree UI
 
@@ -10,7 +10,7 @@
 <script setup lang="ts">
 /* IMPORTS */
 import { ref, computed, watch, onMounted } from "vue";
-import { useStore } from "../../store/main.js";
+import { useStore } from "../../stores/main.js";
 
 // [OverVue v.10.0]
 // we 'forked', published, and installed our own npm packages based on:
@@ -304,7 +304,7 @@ watch(componentMap, () => (treeData.value = buildTree(componentMap.value)), {
   height: 100%;
   width: 100%;
   text-shadow: -2px 0px 10px rgba(0, 0, 0, 0.16);
-  background-color: rgb(26, 26, 26);
+  background-color: $subtertiary;
 }
 
 .container:hover {
@@ -338,3 +338,4 @@ watch(componentMap, () => (treeData.value = buildTree(componentMap.value)), {
   border: 2px solid $menutext;
 }
 </style>
+

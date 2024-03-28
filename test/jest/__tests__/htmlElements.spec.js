@@ -2,15 +2,15 @@
 /**
  * @jest-environment jsdom
  */
-import mutations from "../../../src/store/options/mutations";
-import actions from "../../../src/store/options/actions";
-import * as types from "../../../src/store/options/types";
+import mutations from "../../../src/stores/options/mutations";
+import actions from "../../../src/stores/options/actions";
+import * as types from "../../../src/stores/options/types";
 import { mount, createLocalVue, shallowMount } from "@vue/test-utils";
 import * as All from "quasar";
 const { Quasar, date } = All;
 
 import { setActivePinia, createPinia } from "pinia";
-import { useStore } from "src/store/main";
+import { useStore } from "src/stores/main";
 
 /**
  * @description: Testing functionality of HTML element mutations and actions

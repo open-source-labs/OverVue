@@ -101,7 +101,7 @@ module.exports = configure(function (ctx) {
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
     devServer: {
       server: {
-        type: "http",
+        type: "https",
       },
       port: 8080,
       open: true, // opens browser window automatically
@@ -177,31 +177,31 @@ module.exports = configure(function (ctx) {
         background_color: "#ffffff",
         theme_color: "#027be3",
         icons: [
-          {
-            src: "statics/icons/icon-128x128.png",
-            sizes: "128x128",
-            type: "image/png",
-          },
-          {
-            src: "statics/icons/icon-192x192.png",
-            sizes: "192x192",
-            type: "image/png",
-          },
-          {
-            src: "statics/icons/icon-256x256.png",
-            sizes: "256x256",
-            type: "image/png",
-          },
-          {
-            src: "statics/icons/icon-384x384.png",
-            sizes: "384x384",
-            type: "image/png",
-          },
-          {
-            src: "statics/icons/icon-512x512.png",
-            sizes: "512x512",
-            type: "image/png",
-          },
+          // {
+          //   src: "statics/icons/icon-128x128.png",
+          //   sizes: "128x128",
+          //   type: "image/png",
+          // },
+          // {
+          //   src: "statics/icons/icon-192x192.png",
+          //   sizes: "192x192",
+          //   type: "image/png",
+          // },
+          // {
+          //   src: "statics/icons/icon-256x256.png",
+          //   sizes: "256x256",
+          //   type: "image/png",
+          // },
+          // {
+          //   src: "statics/icons/icon-384x384.png",
+          //   sizes: "384x384",
+          //   type: "image/png",
+          // },
+          // {
+          //   src: "statics/icons/icon-512x512.png",
+          //   sizes: "512x512",
+          //   type: "image/png",
+          // },
         ],
       },
     },
@@ -220,6 +220,7 @@ module.exports = configure(function (ctx) {
     electron: {
       // bundler: 'packager', // 'packager' or 'builder'
       bundler: "builder",
+      main: 'src-electron/electron-main.ts',
       packager: {
         // protocols: ["overvue"],
         protocol: "overvue",
@@ -233,30 +234,46 @@ module.exports = configure(function (ctx) {
         // Windows only
         // win32metadata: { ... }
       },
-
-      builder: {
-        // https://www.electron.build/configuration/configuration
-
-        appId: "com.electron.OverVue",
-        win: {
-          target: "nsis",
-        },
-        mac: {
-          target: "zip",
-        },
-        protocols: [
-          {
-            name: "overvue",
-            schemes: ["overvue"],
-          },
-        ],
+      //currently, builder (for electron builder) is being configured in seperate 'electron-builder.yml' file in the root.
+      // builder: {
+      //   // https://www.electron.build/configuration/configuration
+      //   appId: "com.electron.OverVue",
+      //   win: {
+      //     target: "nsis",
+      //     icon: "src-electron/icons/tileIconWin.ico"
+      //   },
+      //   mac: {
+      //     target: "zip",
+      //     icon: "src-electron/icons/tileIconMac.icns"
+      //   },
+      //   linux: {
+      //     target: "AppImage",
+      //     icon: "src-electron/icons/tileIconLinux.png"
+      //   },
+      //   protocols: [
+      //     {
+      //       name: "overvue",
+      //       schemes: ["overvue"],
+      //     },
+      //   ],
+      // },
+      extendWebpack (cfg) {
+        cfg.module.rules.push({
+          test: /\.svg$/,
+          use: [
+            'file-loader'
+          ]
+        })
       },
-
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
       chainWebpackMain(chain) {
         chain
           .plugin("eslint-webpack-plugin")
           .use(ESLintPlugin, [{ extensions: ["js"] }]);
+      },
+
+      extendWebpackMain(cfg) {
+        /* ... */
       },
 
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
@@ -265,6 +282,9 @@ module.exports = configure(function (ctx) {
           .plugin("eslint-webpack-plugin")
           .use(ESLintPlugin, [{ extensions: ["js"] }]);
       },
+      extendWebpackPreload(cfg) {
+        /* ... */
+      }
     },
   };
 });

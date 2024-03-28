@@ -13,12 +13,15 @@ function createWindow() {
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    icon: path.resolve(__dirname, 'icons/icon.png'), // tray icon
+    icon: path.resolve(__dirname, "icons/icon.png"), // tray icon
     width: 1000,
     height: 600,
     useContentSize: true,
     webPreferences: {
+      // nodeIntegration: true,
+      // contextIsolation: false,
       contextIsolation: true,
+      allowRunningInsecureContent: false,
       // More info: https://v2.quasar.dev/quasar-cli-webpack/developing-electron-apps/electron-preload-script
       preload: path.resolve(__dirname, process.env.QUASAR_ELECTRON_PRELOAD),
     },
@@ -59,47 +62,79 @@ app.on('activate', () => {
 
 //handler for Save functionality
 ipcMain.handle('showSaveDialog', async (event, options) => {
-  const { dialog } = require('electron');
   const { filePath } = await dialog.showSaveDialog(options);
   return { filePath };
 });
 
-ipcMain.handle('writeFile', async (event, { filePath, data }) => {
+ipcMain.handle('writeJSON', async (event, { filePath, data }) => {
   fs.writeFileSync(filePath, data);
 });
 
-// //handler for Import
-// ipcMain.handle('importProject', async (event, options) => {
-//   try {
-//     if (mainWindow) {
-//       const { filePaths } = await dialog.showOpenDialog(mainWindow, options);
-//       console.log('Import dialog result:', filePaths); // Log the filePaths
-//       if (filePaths.length > 0) {
-//         const data = fs.readFileSync(filePaths[0], 'utf8');
-//         return JSON.parse(data); // Return the imported data
-//       }
-//     } else {
-//       console.error('Main window is undefined');
-//     }
-//   } catch (error) {
-//     console.error('Failed to import project:', error);
-//   }
-// });
+//handler for Import
 
-// //handler for Export
-// ipcMain.handle('exportProject', async (event, options) => {
-//   try {
-//     if (mainWindow) {
-//       const { filePath } = await dialog.showSaveDialog(mainWindow, options);
-//       console.log('Export dialog result:', filePath); // Log the filePath
-//       if (filePath) {
-//         const data = JSON.stringify(store.state); // Replace this with your actual data
-//         fs.writeFileSync(filePath, data);
-//       }
-//     } else {
-//       console.error('Main window is undefined');
-//     }
-//   } catch (error) {
-//     console.error('Failed to export project:', error);
-//   }
-// });
+ipcMain.handle('openProject', async (event, options) => {
+if (mainWindow) {
+  //{ filePaths } destructured comes fromdialog.showOpenDialog() function.
+  const { filePaths } = await dialog.showOpenDialog(mainWindow, options);
+
+  if (!filePaths) return;
+  const readData = await fs.readFileSync(filePaths[0], "utf8");
+  const jsonFile = JSON.parse(readData);
+  return { jsonFile };
+}
+});
+
+
+
+
+//handlers for Export
+ipcMain.handle("exportProject", async (event, options) => {
+  const { dialog } = require("electron");
+  const { filePath } = await dialog.showSaveDialog(options);
+  if (filePath === '') {
+    throw new Error('No file path selected');
+  }
+  return { filePath };
+});
+
+ipcMain.handle("exportComponent", async (event, options) => {
+  const { dialog } = require("electron");
+  const { filePath } = await dialog.showSaveDialog(options);
+  if (filePath === "") {
+    throw new Error("No file path selected");
+  }
+  return { filePath };
+});
+
+ipcMain.handle('writeFile', async (event, filePath, content) => { //possibly merge this with 'writeJSON' handle
+
+  await fs.writeFile(filePath, content, (err) => {
+      if (err) {
+        console.log(`${err} in fs.writeFile`);
+      } else {
+        console.log("File written successfully");
+      }
+    });
+  return { status: "success" };
+
+});
+
+
+
+ipcMain.handle('check-file-exists', async (event, path) => {
+  const fileExists = await fs.existsSync(path);
+  if (fileExists) return { status: true };
+  return { status: false };
+});
+
+ipcMain.handle('mkdirSync', async (event, args: string[] ) => {
+  const mkdirPath = await path.join(...args);
+  await fs.mkdirSync(mkdirPath);
+  return { status: 'success' };
+});
+
+ipcMain.handle('pathJoin', (event, ...args: any[]) => {//should expect args and output to be string
+  const newPath:string = path.join(...args);
+  return newPath; //return string directly instead of object
+});
+

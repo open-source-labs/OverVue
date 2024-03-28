@@ -1,10 +1,10 @@
 body {
-  // font-family: "Archivo", sans-serif;
-  // font-weight: 500;
+  font-family: "Archivo", sans-serif;
+  font-weight: 500;
   // font-family: "Inter", sans-serif;
   // font-weight: 500;
 
-  font-family: "Mukta", sans-serif; // <-- old font (OverVue 9 and prior)
+  // font-family: "Mukta", sans-serif; // <-- old font (OverVue 9 and prior)
   color: $menutext;
   height: 100vh;
   width: 100vw;
@@ -101,7 +101,7 @@ i.fa-pencil {
 }
 
 .gradient {
-  background: rgb(34, 35, 36);
+  background: $subprimary;
 }
 
 ::-webkit-scrollbar {

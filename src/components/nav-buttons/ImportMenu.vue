@@ -1,4 +1,4 @@
-<!-- 
+<!--
   LOCATION IN APP:
   [top-right corner] 'Import' button
 
@@ -16,47 +16,26 @@
     label="Import"
     @click="openProjectJSON"
   >
-    <!-- moved this functionality (click event) to <q-btn> above -->
-    <!-- <q-menu class="dropdown">
-      <div class="column items-center">
-        <q-btn
-          class="menu-btn"
-          no-caps
-          color="secondary"
-          label="Project JSON"
-          @click="openProjectJSON"
-        />
-      </div>
-    </q-menu> -->
   </q-btn>
 </template>
 
 <script setup lang="ts">
 /* IMPORTS */
 const Mousetrap = require("mousetrap");
-import { useStore } from "../../store/main";
-// import * as fs from "fs";
+import { useStore } from "../../stores/main.js";
 
 // @ts-ignore
-const { fs, ipcRenderer } = window;
+const { ipcRenderer } = window;
+const store = useStore();
 
 Mousetrap.bind(["command+o", "ctrl+o"], () => {
   openProjectJSON();
 });
 
-const store = useStore();
-
 /* STORE ACTIONS */
-const openProject: typeof store.openProject = (payload) =>
-  store.openProject(payload);
+const openProject: typeof store.openProject = (payload: any) => store.openProject(payload);
 
 /* METHODS */
-
-const openJSONFile = (data: fs.PathOrFileDescriptor[]) => {
-  if (!data) return;
-  const jsonFile = JSON.parse(fs.readFileSync(data[0], "utf8"));
-  openProject(jsonFile);
-};
 
 const showOpenJSONDialog = () => {
   ipcRenderer
@@ -69,9 +48,9 @@ const showOpenJSONDialog = () => {
         },
       ],
     })
-    .then((res: { filePaths: fs.PathOrFileDescriptor[] }) =>
-      openJSONFile(res.filePaths)
-    )
+    .then((res: { jsonFile: any }) =>{
+      openProject(res.jsonFile)
+      })
     .catch((e: Error) => console.log(e));
 };
 
@@ -95,3 +74,4 @@ const openProjectJSON = () => {
   margin: 10px 0 20px 0 !important;
 }
 </style>
+

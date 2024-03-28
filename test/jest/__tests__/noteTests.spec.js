@@ -2,11 +2,11 @@ import { mount, shallowMount } from "@vue/test-utils";
 import { createApp } from "vue";
 import * as All from "quasar";
 const { Quasar, date } = All;
-import actions from "../../../src/store/options/actions";
-import mutations from "../../../src/store/options/mutations";
-import * as types from "../../../src/store/options/types";
+import actions from "../../../src/stores/options/actions";
+import mutations from "../../../src/stores/options/mutations";
+import * as types from "../../../src/stores/options/types";
 import Vuex from "vuex";
-import store from "../../../src/store/state/index";
+import store from "../../../src/stores/state/index";
 
 describe("Test for component note data population", () => {
   const App = {};

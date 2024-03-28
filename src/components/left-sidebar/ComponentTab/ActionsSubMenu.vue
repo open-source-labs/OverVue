@@ -1,4 +1,4 @@
-<!-- 
+<!--
   LOCATION IN APP:
   [left sidebar] COMPONENT > Update Component > Actions
 
@@ -62,7 +62,7 @@
 /* IMPORTS */
 import { computed } from "vue";
 import VueMultiselect from "vue-multiselect";
-import { useStore } from "../../../store/main.js";
+import { useStore } from "../../../stores/main.js";
 import { Component } from "../../../../types";
 
 /* COMPUTED VALUES */
@@ -115,3 +115,4 @@ const deleteAction = (action: string) => {
   align-items: center;
 }
 </style>
+
