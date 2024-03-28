@@ -1,4 +1,4 @@
-<!-- 
+<!--
   LOCATION IN APP:
   [right sidebar] ROUTES > under 'Add a route' input field
 
@@ -48,7 +48,7 @@
 <script setup lang="ts">
 /* IMPORTS */
 import { computed } from "vue";
-import { useStore } from "../../store/main.js";
+import { useStore } from "../../stores/main.js";
 
 /* COMPUTED VALUES */
 const store = useStore();

@@ -1,4 +1,4 @@
-<!-- 
+<!--
   LOCATION IN APP:
   [left sidebar] COMPONENT
 
@@ -16,7 +16,7 @@
 <script setup lang="ts">
 /* IMPORTS */
 import { computed } from "vue";
-import { useStore } from "../../../store/main.js";
+import { useStore } from "../../../stores/main.js";
 import CreateMenu from "./CreateMenu.vue";
 import UpdateMenu from "./UpdateMenu.vue";
 
@@ -56,3 +56,4 @@ const activeComponent = computed(() => store.activeComponent);
   padding: 10px 0;
 }
 </style>
+

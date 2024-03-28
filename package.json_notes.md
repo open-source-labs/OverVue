@@ -1,66 +1,76 @@
- ## Disclaimer: These notes were created at the beginning of iteration to understand the codebase and may be inaccurate or outdated. 8/14/2023 OverVue 10.0
- 
+ ## Disclaimer: These notes were created at the beginning of iteration to understand the codebase and may be inaccurate or outdated. 3/28/2024 OverVue 11.0
+
   ```json
-  
+
   "dependencies": {
-    "@quasar/cli": "^1.3.2", // Quasar CLI tool that allows dev, build, etc. (uses webpack/vite under the hood)
-    "@quasar/extras": "^1.12.5", // Material fonts, icons, designs, etc.
-    "@ssthouse/vue3-tree-chart": "^0.2.3", // Current library (https://github.com/ssthouse/tree-chart) used to display the tree in Tree view, working to bring this to main view and make it interactive 
-    "@types/node": "^18.8.0", // Used to load all type definitions for TypeScript in node app
-    "@typescript-eslint/eslint-plugin": "^5.36.2", // ESLint plugin that provides linting rules for TypeScript codebases
-    "@typescript-eslint/parser": "^5.36.2", // ESLint parser that leverages TypeScript ESTree to allow ESLint to lint TypeScript source code
-    "bootstrap": "^5.2.0", // Bootstrap, provides powerful components, designs, layouts, snippets, etc.
-    "bootstrap-vue": "^2.22.0", // Bootstrap, but for Vue
-    "core-js": "^3.21.1", // The standard library for JavaScript
-    "dotenv": "^16.0.0", // Allows access of environment variables in .env file through process.env
-    "electron-deeplink": "^1.0.10", // Sets the default handler for a given protocol (deep link) in Electron apps (need to understand how Electron works for this)
-    "element-plus": "^2.2.16", // Vue 3 component library
-    "fs-extra": "^10.0.0", // Replaces 'fs' with extra fs methods, fs methods now return promises if callback isn't passed
-    "http": "^0.0.1-security", // Docs seem to point towards this being unnecessary and potentially dangerous, http is built in to Node
-    "https": "^1.0.0", // Not a lot of information on this either, not sure if necessary, might be built in
-    "jest-cli": "^27.5.1", // CLI tool for running jest commands
-    "localforage": "^1.10.0", // Improves offline web app experience by providing localStorage-esque async storage
-    "lodash.clonedeep": "^4.5.0", // cloneDeep method (https://www.geeksforgeeks.org/lodash-_-clonedeep-method)
-    "lodash.isequal": "^4.5.0", // isEqual method (https://www.geeksforgeeks.org/lodash-_-isequal-method/), performs deep comparison
-    "lodash.throttle": "^4.1.1", // throttle method (https://www.geeksforgeeks.org/lodash-_-throttle-method/) to create a throttle-able function
-    "mousetrap": "^1.6.5", // for handling keyboard shortcuts (keypress event handling)
-    "net": "^1.0.2", // Globalizes the "net" module functions for convenience...? (https://github.com/sleeplessinc/net) it's like 3 lines of code and 1 line of testing.. not sure what it's used for
-    "node-gyp": "^8.4.1", // CLI tool for compiling native add-on modules (none of the build commands seem to be used in package.json scripts)
-    "pinia": "^2.0.23", // Store library for Vue, allowing for sharing of state
-    "prismjs": "^1.27.0", // Syntax highlighting library (highlights code?)
-    "quasar": "^2.5.5", // Vue framework package that helps deploy cross-platform (SPA, SSR, PWA, Electron, etc.) with one codebase
-    "quasar-dotenv": "^1.0.5", // Wraps dotenv for Quasar runtime to access process.env
-    "typescript": "^4.8.3", // Language that adds optional static typing to JavaScript, compiles to JavaScript
-    "vue": "^3.2.31", // JavaScript framework
-    "vue-accessible-color-picker": "^4.0.3", // Color picker component
-    "vue-draggable-resizable": "^2.3.0", // Vue2 Component for draggable and resizable elements
-    "vue-loader": "^17.0.0", // Webpack loader for Vue Single-File Components
-    "vue-multiselect": "^3.0.0-alpha.2", // Multiselect component
-    "vue-prism-editor": "^2.0.0-alpha.2", // Simple code editor (used in CodeSnippet.vue)
-    "vue-router": "4.0.13", // Routing library
-    "vue-sfc-parser": "^0.1.2", // Vue.js single file component parser for static analysis (seems like it was used for a feature that was being implemented, but not finished) (used in extractor.js)
-    "vue3-draggable-resizable": "^1.6.4", // Draggable and resizable component for Vue 3 (being imported in Canvas.vue, but not used. May have been transitioning to this component but not implemented)
-    "vue3-tree": "^0.11.0", // Tree viewer? Doesn't seem to be used, not much documentation
-    "vued3tree": "^5.1.0", // Different tree viewer based on D3 layout, also doesn't seem to be used
-    "vuedraggable": "^4.1.0", // 3rd Draggable element library, doesn't seem to be used
-    "vuex": "^4.0.2" // Old store/state management library, seems to be mostly just in comments or unused, but is in some tests and ExportMenu, ExportMenuOptions, CodeSnippet, so not sure if safe to remove
-  },
-  "devDependencies": {
-    "@babel/eslint-parser": "^7.17.0", // Linting for all valid babel code
-    "@pinia/testing": "^0.0.14", // Testing module for pinia
-    "@quasar/app": "^3.3.3", // Not a lot of documentation on this
-    "@quasar/quasar-app-extension-testing-unit-jest": "^3.0.0-alpha.7", // Quasar and Jest integration for both JS and TS
-    "@vue/devtools": "^6.0.12", // Vue Dev Tools
-    "@vue/test-utils": "^2.0.0-rc.18", // Component testing utils for Vue 3
-    "@vue/tsconfig": "^0.1.3", // tsconfig (typescript configurations) for Vue
-    "@vue/vue3-jest": "^27.0.0-alpha.4", // Jest transformer for Vue Single File Components
-    "electron": "^17.4.10", // Electron framework - allows creation of desktop applications
-    "electron-builder": "^23.0.2",
-    "electron-is-dev": "^2.0.0",
-    "electron-packager": "^15.4.0",
-    "eslint": "^8.23.0", // ESLint configs
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-jest": "^26.1.1",
-    "eslint-plugin-vue": "^8.4.1",
-    "eslint-webpack-plugin": "^3.1.1"
-  },
+  "@babel/preset-env": "^7.22.14", // A Babel preset that allows you to use the latest JavaScript features
+  "@he-tree/vue": "^2.4.2", // A Vue.js component for tree structure
+  "@overvue/vue3-tree-chart": "^0.7.6", // A Vue 3 component for creating tree charts
+  "@quasar/app-webpack": "^3.12.4", // Quasar's Webpack configuration for building apps
+  "@quasar/cli": "^2.4.0", // Quasar's command line interface
+  "@quasar/extras": "^1.16.9", // Extra resources for Quasar apps (fonts, icons)
+  "@ssthouse/vue3-tree-chart": "^0.2.3", // Another Vue 3 component for creating tree charts
+  "@types/node": "^20.11.25", // TypeScript definitions for Node.js
+  "@typescript-eslint/eslint-plugin": "^7.1.1", // ESLint plugin for TypeScript
+  "@typescript-eslint/parser": "^7.1.1", // The parser that allows ESLint to lint TypeScript code
+  "babel-jest": "^29.6.4", // A Jest plugin to use Babel for transformation
+  "bootstrap": "^5.2.0", // The Bootstrap framework
+  "bootstrap-vue": "^2.22.0", // Bootstrap for Vue.js
+  "core-js": "^3.21.1", // Modular standard library for JavaScript, includes polyfills
+  "dotenv": "^16.0.0", // Loads environment variables from a .env file
+  "element-plus": "^2.2.16", // A Vue 3.0 based component library
+  "file-loader": "^6.2.0", // A loader for webpack which can load file as a url
+  "fs-extra": "^11.2.0", // Extra methods for the fs (File System) module
+  "http": "^0.0.1-security", // HTTP networking module
+  "https": "^1.0.0", // HTTPS networking module
+  "jest": "^29.6.4", // JavaScript testing framework
+  "jest-cli": "^29.6.4", // The command line interface for Jest
+  "jest-environment-jsdom": "^29.6.4", // Jest environment for JSDOM
+  "jest-serializer-vue": "^3.1.0", // Vue snapshot serializer for Jest
+  "localforage": "^1.10.0", // Offline storage, improved APIs for localStorage, IndexedDB and WebSQL
+  "lodash.clonedeep": "^4.5.0", // Lodash function for deep cloning objects
+  "lodash.isequal": "^4.5.0", // Lodash function for deep comparison of objects
+  "lodash.throttle": "^4.1.1", // Lodash function for throttling function calls
+  "mousetrap": "^1.6.5", // Keyboard shortcut library
+  "net": "^1.0.2", // Networking module
+  "node-gyp": "^10.0.1", // Node.js native addon build tool
+  "pinia": "^2.0.23", // State management for Vue using the composition API
+  "prismjs": "^1.27.0", // Lightweight, extensible syntax highlighter
+  "quasar": "^2.14.6", // High performance Material Design component suite with builders for SPA, SSR, PWA, Mobile (Cordova & Capacitor), Desktop (Electron) and Browser extensions
+  "quasar-dotenv": "^1.0.5", // Quasar App Extension for dotenv
+  "ts-jest": "^29.1.1", // TypeScript preprocessor with source map support for Jest
+  "typescript": "^5.4.2", // TypeScript language
+  "vue": "^3.2.31", // Vue.js framework
+  "vue-accessible-color-picker": "^5.0.1", // An accessible color picker component for Vue
+  "vue-draggable-resizable": "^2.3.0", // A Vue component for draggable and resizable elements
+  "vue-loader": "^17.0.0", // Webpack loader for Vue.js components
+  "vue-multiselect": "^3.0.0-beta.3", // A custom select/multiselect component for Vue
+  "vue-prism-editor": "^2.0.0-alpha.2", // A Vue component for an editable code snippet with syntax highlighting
+  "vue-router": "^4.3.0", // The official router for Vue.js
+  "vue3-draggable-resizable": "^1.6.4", // A Vue 3 component for draggable and resizable elements
+  "vue3-tree": "^0.11.0", // A Vue 3 component for tree structure
+  "vued3tree": "^5.1.0", // A Vue component for tree structure using D3
+  "vuedraggable": "^4.1.0", // Vue directive for draggable elements
+  "vuetensils": "^0.13.2" // A lightweight Vue component library for creating accessible, responsive, and reusable components
+},
+"devDependencies": {
+  "@babel/eslint-parser": "^7.17.0", // Babel parser for ESLint
+  "@babel/preset-typescript": "^7.22.11", // Babel preset for TypeScript
+  "@electron/packager": "^18.1.3", // Customizes and packages your Electron app
+  "@pinia/testing": "^0.1.3", // Testing utilities for Pinia
+  "@quasar/quasar-app-extension-testing-unit-jest": "^3.0.0-beta.7", // Quasar app extension for unit testing with Jest
+  "@vue/cli-plugin-babel": "^5.0.8", // Babel plugin for Vue CLI
+  "@vue/devtools": "^7.0.16", // Browser devtools extension for debugging Vue.js applications
+  "@vue/test-utils": "^2.0.0-rc.18", // Utilities for testing Vue components
+  "@vue/tsconfig": "^0.5.1", // Shared TypeScript config for Vue projects
+  "@vue/vue3-jest": "^29.2.5", // Jest integration for Vue 3
+  "electron": "^29.1.1", // Framework for creating native applications with web technologies
+  "electron-is-dev": "^3.0.1", // Check if Electron is running in development
+  "eslint": "^8.23.0", // JavaScript and JSX linter
+  "eslint-config-prettier": "^9.1.0", // Config to disable ESLint rules that conflict with Prettier
+  "eslint-plugin-jest": "^27.9.0", // ESLint rules for Jest
+  "eslint-plugin-vue": "^9.22.0", // ESLint plugin for Vue.js
+  "eslint-webpack-plugin": "^4.0.1", // ESLint plugin for webpack
+  "install": "^0.13.0", // A package to help with installing Node.js modules
+  "npm": "^10.5.0" // Node Package Manager
+}

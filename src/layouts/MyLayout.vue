@@ -20,7 +20,7 @@
           <!-- top-left corner: LOGO -->
           <img
             alt="OverVue"
-            src="../assets/OverVue_navLogo.png"
+            src="../assets/app_logo106x23.svg"
             id="nav-logo"
           />
           <div id="undo-redo">
@@ -155,7 +155,7 @@
               <!-- <SlackLoginWindow /> -->
 
               <!-- OAuth -->
-              <div class="drawer">
+              <!-- <div class="drawer">
                 <q-expansion-item group="accordion" label="OAuth">
                   <div class="Oauth">
                     <p class="Oauth-text">
@@ -232,7 +232,7 @@
                     </label>
                   </div>
                 </q-expansion-item>
-              </div>
+              </div> -->
             </div>
           </q-menu>
         </q-btn>
@@ -312,7 +312,7 @@
 <script setup lang="ts">
 /* IMPORTS */
 import { ref, computed } from "vue";
-import { useStore } from "../store/main";
+import { useStore } from "../stores/main.js";
 import ComponentTab from "../components/left-sidebar/ComponentTab/ComponentTab.vue";
 import StoreTab from "../components/left-sidebar/StoreTab/StoreTab.vue";
 import RightSidebar from "../components/right-sidebar/RightSidebar.vue";
@@ -466,7 +466,8 @@ const syncOauthGitFlag = (e: Event) => {
 }
 
 #nav-logo {
-  margin-right: 95px;
+  height: 40px;
+  margin-left: 8px;
 }
 
 q-btn > i {
@@ -816,3 +817,4 @@ q-btn > i {
   margin-right: 10px;
 }
 </style>
+../stores/main

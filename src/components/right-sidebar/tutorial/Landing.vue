@@ -3,7 +3,7 @@
     <h6 class="tutorialHeading">Welcome to</h6>
     <img
       alt="OverVue"
-      src="../../../assets/overvue_layeredlogo.png"
+      src="../../../../src/assets/right_sidebar325x325.svg"
       id="logo"
     />
     <p id="new-text"></p>
@@ -34,7 +34,7 @@
 <script setup lang="ts">
 // @ts-nocheck
 // No check for the shell
-import { useStore } from "../../../store/main.js";
+import { useStore } from "../../../stores/main.js";
 const { shell } = window;
 
 const emit = defineEmits(["nextTab", "versionTab"]);
@@ -43,13 +43,21 @@ const nextTab = () => emit("nextTab");
 const store = useStore();
 const toggleTutorial = () => store.toggleTutorial();
 
-const openUrl = (url: string) => shell.openExternal(url, { activate: true });
+const openUrl = (url: string) => {
+  if (window.ipcRenderer && window.ipcRenderer.shell) {
+    window.ipcRenderer.shell.openExternal(url);
+  } else {
+    window.open(url, '_blank');
+  }
+};
 </script>
 
 <style lang="scss" scoped>
 #logo {
-  width: 325px;
-  height: 325px;
+  width: auto;
+  height: auto;
+  max-width: 18rem;
+  max-height: 18rem;
 }
 
 p {
@@ -81,3 +89,4 @@ p {
   height: auto;
 }
 </style>
+

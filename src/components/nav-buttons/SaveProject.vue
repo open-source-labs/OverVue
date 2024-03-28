@@ -1,4 +1,4 @@
-<!-- 
+<!--
   LOCATION IN APP:
   [top-right corner] 'Save' button
 
@@ -18,12 +18,13 @@
 <script setup lang="ts">
 /* IMPORTS */
 import { computed } from "vue";
-import { useStore } from "../../store/main";
+import { useStore } from "../../stores/main.js";
 import localforage from "localforage";
 const Mousetrap = require("mousetrap");
 
+
 // @ts-ignore
-const { fs, ipcRenderer } = window;
+const { ipcRenderer } = window; //  ipcRenderer is attached in the 'electron-preload.ts' file and is allowing ipcRenderer to be used instead of calling directly from electron module
 
 /* COMPUTED VALUES */
 const store = useStore();
@@ -40,7 +41,7 @@ const addProject: typeof store.addProject = (payload) =>
 
 const showSaveJSONDialog = () => {
   ipcRenderer
-    .invoke("saveProject", {
+    .invoke("showSaveDialog", {
       title: "Choose location to save JSON file in",
       message: "Choose location to save JSON file in",
       nameFieldLabel: "Application State Name",
@@ -84,8 +85,8 @@ const parseAndDelete = (htmlList: any[]) => {
 
 const saveProjectJSON = () => showSaveJSONDialog();
 
-const saveJSONLocation = (data: string) => {
-  let deleteKey = projects.value[activeTab.value].filename; // store.state.projects
+const saveJSONLocation = (filePath: string) => {
+  let deleteKey = projects.value[activeTab.value].filename;
   localforage
     .removeItem(deleteKey)
     .then(function () {})
@@ -93,24 +94,44 @@ const saveJSONLocation = (data: string) => {
       console.log(err);
     });
 
-  let fileName: string | undefined = parseFileName(data);
+  let fileName: string | undefined = parseFileName(filePath);
 
   if (fileName) {
     addProject({
       filename: fileName,
-      lastSavedLocation: data,
+      lastSavedLocation: filePath,
     });
 
-    let stateRef = stateComputed.value;
-    let routesRef = routes.value;
-
-    fs.writeFileSync(data, JSON.stringify(stateRef));
-    localforage.setItem(fileName, JSON.parse(fs.readFileSync(data, "utf8")));
-    localforage.getItem("slackWebhookURL", (err, value: any) => {
-      if (value) notifySlack(fileName, value);
+    let cache: Array<any> | null = [];
+    let stateRefString: string = JSON.stringify(stateComputed.value, (key: string, value: any) => {
+      if (typeof value === 'object' && value !== null) {
+        if (cache.includes(value)) return;
+        cache.push(value);
+      }
+      return value;
     });
+    let stateRef = JSON.parse(stateRefString);
+    cache = null; // Enable garbage collection on cache
+
+    ipcRenderer
+      .invoke('writeJSON', { filePath, data: JSON.stringify(stateRef) })
+      .then(() => {
+
+        if (fileName) {
+          localforage.setItem(fileName, stateRef);
+        }
+        localforage.getItem("slackWebhookURL", (err, value: any) => {
+          if (value) notifySlack(fileName, value);
+        });
+      })
+      .catch((error: Error) => {
+        console.error('Failed to write file:', error);
+      });
+  } else {
+    console.error('Failed to parse file name from file path:', filePath);
   }
 };
+
 
 const notifySlack = (fileName: string | undefined, url: RequestInfo | URL) => {
   // @ts-ignore
@@ -145,3 +166,4 @@ Mousetrap.bind(["command+s", "ctrl+s"], () => {
   margin-right: 2px;
 }
 </style>
+

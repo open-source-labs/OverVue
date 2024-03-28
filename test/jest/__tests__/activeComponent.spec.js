@@ -7,7 +7,7 @@ Tests that creating a component adds it to the componentMap object and sets the 
 
 // default imports
 import { describe, expect, it } from "@jest/globals";
-import { useStore } from "../../../src/store/main.js";
+import { useStore } from "../../../src/stores/main.js";
 import { setActivePinia, createPinia } from "pinia";
 // import { render, fireEvent, screen } from '@testing-library/vue';
 

@@ -1,4 +1,4 @@
-<!-- 
+<!--
   LOCATION IN APP:
   [left sidebar] COMPONENT > default view > ELEMENTS
 
@@ -31,7 +31,7 @@
 <script setup lang="ts">
 /* IMPORTS */
 import { computed } from "vue";
-import { useStore } from "../../../store/main.js";
+import { useStore } from "../../../stores/main.js";
 import { HtmlElement } from "app/types";
 
 /* EMITS */
@@ -157,3 +157,4 @@ button:active {
   color: $menutext;
 }
 </style>
+

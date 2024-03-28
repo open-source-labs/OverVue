@@ -1,4 +1,4 @@
-<!-- 
+<!--
   LOCATION IN APP:
   [left sidebar] STORE
 
@@ -139,7 +139,7 @@
 <script setup lang="ts">
 /* IMPORTS */
 import { computed, ref } from "vue";
-import { useStore } from "../../../store/main";
+import { useStore } from "../../../stores/main";
 
 /* DATA */
 const tab = ref("state");
@@ -259,7 +259,7 @@ i {
 
 .html-bg {
   // give html background color of grey
-  background-color: #202122;
+  background-color: $subprimary;
 }
 
 .component-container {
@@ -269,3 +269,4 @@ i {
   align-items: center;
 }
 </style>
+

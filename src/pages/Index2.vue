@@ -1,4 +1,4 @@
-<!-- 
+<!--
   LOCATION IN APP:
   central UI
 
@@ -19,7 +19,7 @@
 
 <script setup>
 import { computed } from "vue";
-import { useStore } from "../../src/store/main";
+import { useStore } from "../../src/stores/main";
 import Tree from "../components/right-sidebar/Tree.vue";
 import Canvas from "../components/Canvas.vue";
 
@@ -36,3 +36,4 @@ const mode = computed(() => store.mode);
   height: 100vh;
 }
 </style>
+../stores/main

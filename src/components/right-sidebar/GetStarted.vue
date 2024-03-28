@@ -18,13 +18,13 @@
       breakpoint="950"
     >
       <!-- tab labels -->
-      <q-tab name="landing" label="Welcome" id="label-text"></q-tab>
-      <q-tab name="version" label="What's New" id="label-text"></q-tab>
-      <q-tab name="basics" label="The Basics" id="label-text"></q-tab>
+      <q-tab name="landing" label="Welcome" id="getStartedLabels"></q-tab>
+      <q-tab name="version" label="What's New" id="getStartedLabels"></q-tab>
+      <q-tab name="basics" label="The Basics" id="getStartedLabels"></q-tab>
       <q-tab
         name="advanced"
         label="Advanced Functionality"
-        id="label-text"
+        id="getStartedLabels"
       ></q-tab>
     </q-tabs>
 
@@ -86,7 +86,7 @@ const tutorialPage = ref("landing");
 }
 
 /* // changes the tab label styling */
-#label-text {
+#getStartedLabels {
   font-size: 4px !important;
   text-transform: capitalize;
 }

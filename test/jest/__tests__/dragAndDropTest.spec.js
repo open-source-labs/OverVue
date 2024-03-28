@@ -4,7 +4,7 @@
 //  */
 //  import { mount, createLocalVue, shallowMount } from "@vue/test-utils";
 
-import { useStore } from "../../../src/store/main.js";
+import { useStore } from "../../../src/stores/main.js";
 import { describe, test } from "node:test";
 import { setActivePinia, createPinia } from "pinia";
 
@@ -74,7 +74,7 @@ import { setActivePinia, createPinia } from "pinia";
         }
       }
       store.componentMap = newComponentMap;
-      
+
     const potentialParent = 'testParent2';
     // store.potentialParentNode = potentialParent;
     store.setPotentialParentNode(potentialParent)

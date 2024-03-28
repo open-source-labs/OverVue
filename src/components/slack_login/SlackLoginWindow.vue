@@ -74,7 +74,7 @@
 <script setup lang="ts">
 // @ts-ignore
 import localforage from "localforage";
-import { useStore } from "../../store/main";
+import { useStore } from "../../stores/main";
 import { ref } from "vue";
 const { ipcRenderer, shell } = window;
 

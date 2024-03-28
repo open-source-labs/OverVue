@@ -1,12 +1,17 @@
 <h1 align="center">
-  <img src="src/assets/overvue_256x256_old.png">
+  <img width="235 height ="235" src="src/assets/ReadMe325x325.svg">
 </h1>
 
 <p align="center"><b>Prototyping Development Tool for Vue Developers</b></p>
 
 <p>OverVue is a prototyping tool that allows developers to dynamically create and visualize a Vue application, implementing a real-time intuitive tree display of component hierarchy and a live-generated code preview. The easy-to-use GUI allows you to add HTML attributes and CSS properties to help the developer envision their next project. The resulting boilerplate code can be exported as a template for further development in your IDE of choice.</p>
 
+<hr>
+
 <p>这个程序能帮你生成Vue 组件, 设置 routes , 也可以帮你显像Component Parent-Child组件树。你只要做一些小配置然后可以下载code boilerplate. 这样你就可以很方便简洁地生成Vue前台APP了！</p>
+<hr>
+
+<hr>
 
 ![Vue.js](https://img.shields.io/badge/vuejs-%2335495e.svg?style=for-the-badge&logo=vuedotjs&logoColor=%234FC08D)
 ![Pinia](https://img.shields.io/badge/Pinia-%23F8DC75.svg?style=for-the-badge)
@@ -19,246 +24,152 @@
 ![Quasar](https://img.shields.io/badge/Quasar-16B7FB?style=for-the-badge&logo=quasar&logoColor=black)
 ![Prism.js](https://img.shields.io/badge/Prism.js-A81C7D?style=for-the-badge)
 ![SASS](https://img.shields.io/badge/SASS-hotpink.svg?style=for-the-badge&logo=SASS&logoColor=white)
-![Vuex](https://img.shields.io/badge/Vuex-4A154B?style=for-the-badge)
 ![Babel](https://img.shields.io/badge/Babel-F9DC3e?style=for-the-badge&logo=babel&logoColor=black)
 ![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white)
-![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 ![Vuetensils](https://img.shields.io/badge/Vuetensils-00897B?style=for-the-badge)
-
-
-
 
 ## Table of Contents
 
-- [Table of Contents](#table-of-contents)
 - [Installation](#installation)
-  - [WSL Installation](#wsl-installation)
-  - [Running the Docker Image](#running-the-docker-image)
-- [How to use](#how-to-use)
-- [BETA](#beta)
-  - [Slack OAuth](#slack-oauth)
-- [Changelog](#changelog)
-- [Contributing](#contributing)
-- [Authors](#authors)
+- [How to use OverVue](#how-to-use-OverVue)
+- [Changelogs](#changelogs-(recent))
+- [How to contribute](#contributing)
+- [Authors](#contributors)
 
 ## Installation
 
-To download the production version for windows or mac, please visit https://www.overvue.org
+To download the production version, please visit https://www.overvue.org
+<hr>
 
-Install dependencies
+### Dev Installation
 
-```
-npm i
-```
+In your terminal:
+1. Install dependencies ``npm install``
 
-To run electron app in dev mode (note: Vue Devtools will launch automatically)
 
-```
-npm run dev
-```
+2. Build a new .zip / .deb:
+``
+  npm run build
+``
+*(Note: the build may take some time, but should display 'build finished' once it is done and ready to be run)*
 
-To build a new .zip / .deb
+3. Run electron app in dev mode: ``npm run dev``
 
-```
-npm run build
-```
 
-### WSL Installation
+<hr>
 
-**The ability to load the application and/or devtools requires a tool/application to run a linux display as WSL does not have any display drivers since it is based off of just a CLI.
-I recommend X410 (https://x410.dev/), althought it does cost \$15, for ease of use. There are free options such as VcXsrv(https://sourceforge.net/projects/vcxsrv/) that you can get, but requires more set up.**
+### Updated WSL Installation and Configuration Guide
 
-If you choose to use VcXsrv, you will need to select a couple options:
+This section has been updated to reflect the latest advancements with the Windows Subsystem for Linux (WSL), especially focusing on the integration of Linux GUI applications directly within WSL without the need for third-party X server tools like X410 or VcXsrv.
 
-<ul>
-<li>Launch XLaunch</li>
-<li>Select multiple windows and display number=0.</li>
-<li>Select no client.</li>
-<li>Select Clipboard, Primary Selection, Native opengl, and disable access control.</li>
-<li>If Windows firewall pops up - select Public for this server to work.</li>
-</ul>
+<details>
+  <summary><strong>Expand</strong></summary>
 
-If you choose to use x410, you will need to set the environment DISPLAY variable on each console:
+## Running Linux GUI Applications in WSL
 
-So, to open either the Vue devtools or OverVue in dev mode, first start your X Server then enter into the terminal:
-For WSL 1 :
+With the launch of WSLg (Windows Subsystem for Linux GUI), the process of running Linux GUI applications on Windows has been greatly simplified. WSLg integrates directly with WSL 2, offering native support for Linux GUI applications without the necessity for additional display server configurations.
 
-```
-export DISPLAY=:0
-```
+### Prerequisites
 
-For WSL 2 :
+- Windows 10 version 19044+ or Windows 11.
+- WSL 2 installed and set as the default version. Use `wsl --install` for new installations or `wsl --update` followed by `wsl --shutdown` to update and restart WSL.
 
-```
-export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
-export LIBGL_ALWAYS_INDIRECT=1
-```
+### Configuring Linux GUI Applications
 
-Then run the following command to run both OverVue and Vue developer tools.
+WSLg automatically configures the necessary environment, eliminating the need to manually set display variables for GUI applications. Linux GUI apps can now be launched directly from the Start menu or via the command line, without additional setup.
 
-```
-npm run dev
-```
+### Legacy Setup Notes (Deprecated)
 
-To launch the Vue devloper tool, use the following command.
+The previous guidance for setting up X410 or VcXsrv for Linux GUI applications in WSL is now deprecated. While these tools are no longer necessary for the majority of GUI applications in WSL, they remain available for those with specific requirements outside the scope of WSLg's capabilities.
 
-```
-./node_modules/.bin/vue-devtools
-```
+### Docker Integration
 
-Then to start only OverVue in developer mode, open a new terminal instance and set the DISPLAY value again (re-enter above command for DISPLAY):
+For Docker containers that require GUI applications, ensure Docker Desktop for Windows is configured to use the WSL 2 backend. This integration with WSLg provides a seamless experience for running GUI-based containers.
 
-```
-quasar dev -m electron
-```
+### Additional Setup for Mac Users (Docker)
 
-**NOTE**:
+Mac users running Linux containers or WSL in a virtualized environment should follow the XQuartz setup for X11 forwarding, applicable only to those operating outside direct WSL integration on Windows.
 
+1. Install XQuartz: `brew install --cask xquartz` and restart.
+2. In XQuartz Preferences > Security, enable "Allow connections from network clients."
+3. Allow localhost connections: `xhost +localhost`.
 
-There might be an npm install error despite all instructions. Try the following command below:</li>
+### Common Issues and Solutions
 
-```
-sudo apt install libgconf-2-4 libatk1.0-0 libatk-bridge2.0-0 libgdk-pixbuf2.0-0 libgtk-3-0 libgbm-dev libnss3-dev libxss-dev
-```
+- **WSLg not functioning as expected?** Verify your Windows version and WSL 2 installation and updates.
+- **Linux GUI app won't launch?** Ensure all components are up to date and the application is compatible with WSLg.
 
-## Running the Docker Image
+### Resources
 
-To run the built version, pull down the docker image from [Docker repo]
+- [WSLg Overview](https://aka.ms/wslg)
+- [Setting up Docker with WSL 2](https://docs.docker.com/desktop/windows/wsl/)
 
-In your terminal, run:
+This guide is designed to help streamline your development environment by utilizing the latest WSL features while minimizing complexity. For more information and detailed troubleshooting, refer to the [official WSL documentation](https://docs.microsoft.com/en-us/windows/wsl/).
+</details>
 
-```
-docker run -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY -v`pwd`/src:/app/src --rm -it overvue
-```
 
-### Running the dev environment on Docker as a Mac User
 
-To run OverVue through Docker on a Mac, you'll need to install XQuartz:
 
-```
-brew install --cask xquartz
-```
 
-<strong>Important:</strong> RESTART your computer.
+## How to use OverVue
 
-Update your PATH variable to /opt/x11/bin to your .zshrc. For example:
+OverVue kickstarts your project with a default root App component and a "HomeView" route. Here's a quick guide to navigating and utilizing OverVue to its fullest:
 
-```
-export PATH=/opt/X11/bin:$PATH
-```
+1. **Creating Components:**
+   - Enter a name for your new component in the component name box.
+   - Select any HTML elements to include within your component. These can be added or nested within each other by dragging and dropping elements in the tree view on the right sidebar or within the component modal (accessible by double-clicking a component node).
 
-Set up XQuartz:
+2. **Organizing Components:**
+   - Assign a parent component during or after creation to establish your desired hierarchy.
+   - Modify your component's structure and relationships anytime by dragging nodes in the tree view. Double-click an HTML element for advanced styling options, including adding attributes like `class`, `ID`, and `v-model`.
 
-<ul>
-<li>Launch XQuartz</li>
-<li>Under the XQuartz menu, select Preferences.</li>
-<li>Go to the security tab and ensure "Allow connections from network clients" is checked.</li>
-<li>Restart XQuartz</li>
-</ul>
+This streamlined approach helps you focus on building and visualizing your Vue.js application's component structure efficiently, with intuitive drag-and-drop functionality and easy access to advanced configuration options.
 
-Run the following command in your terminal (replacing localhostname with your local host name)
+![CreateComponents](./src/assets/readme/CreateComponents.gif)
 
-```
-xhost +localhostname
-```
+3. **Managing State and Actions:**
+    - Get a live preview of your component's code in the Component Details > Code Preview Tab.
 
-If you don't know your local host name, run the following command to find it:
 
-```
-echo $(hostname)
-```
+    - Handle routes and associated components using the Routes Tab.
 
-Build the image using Dockerfile-Mac:
 
-```
-docker build -t overvue -f Dockerfile-Mac .
-```
+    - Create, edit, and assign state and actions to your components.
 
-Run the image using the following command
 
-```
-docker run -it --env="DISPLAY=$(ifconfig en0 | grep inet | awk '$1=="inet" {print$2}'):0" --security-opt seccomp=./chrome.json overvue
-```
+![AddStateActions](./src/assets/readme/AddStateActions.gif)
 
-Run in dev mode using:
+  - When finished creating, view your code preview under the code preview tab and you can export to a file location of your choice. Below is the exported file structure ('*' = only in typescript format, '**' = only in test format:
 
-```
-npm run dev
-```
-
-For more information about running Electron through Docker on a Mac, check out these posts:
-
-<li><a href="https://jaked.org/blog/2021-02-18-How-to-run-Electron-on-Linux-on-Docker-on-Mac">How to run Electron on Linux on Docker on Mac</a></li>
-<li><a href="https://gist.github.com/paul-krohn/e45f96181b1cf5e536325d1bdee6c949">Workaround for sockets on Docker on macOS</a></li>
-<li><a href="https://blog.jessfraz.com/post/how-to-use-new-docker-seccomp-profiles/">How to use new Docker seccomp profiles</a></li>
-<br/>
-
-### Running the dev environment on Docker as a WSL user
-
-Build the image using Dockerfile-WSL:
-
-```
-docker build -t overvue -f Dockerfile-WSL .
-```
-
-To run
-
-```
-docker run -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY -v`pwd`/src:/app/src --rm -it overvue bash
-```
-
-Run in dev mode using:
-
-```
-npm run dev
-```
-
-[↥ Back to top](#table-of-contents)
-<br/>
-
-## How to use
-
-- OverVue will assign a default root App component and a default route called "HomeView"
-
-- To add a new component, type its name in the component name box and select any HTML elements that should be rendered by that component.
-- HTML elements can also be added after creation by selecting the component in the display, then selecting HTML elements.
-- You may nest HTML elements by dragging and dropping elements in the list tree view in either the right sidebar or the component modal (which can be opened by double clicking on a component node in the tree)
-
-- Select a parent component for the new component if needed.
-- After creating the component, you can drag the component node to reassign its parent and change the tree structure. For advanced styling options, double click on the desired HTML element to modify. Here, you may add attributes such as class, ID, and v-model.
-  ![](./src/assets/readme/v4Creating_Component.gif)
-
-- The right-side, Component Details > Code Preview Tab displays live code preview for the selected component.
-  ![](./src/assets/readme/v4Code_Snippet.gif)
-
-- You can view, add, and delete new routes and associated components in the right-side, Routes Tab.
-  ![](./src/assets/readme/v4Copying_Route.gif)
-
-- State and actions can be created, edited, and assigned to components.
-  ![](./src/assets/readme/v4State_and_actions.gif)
-
-- When finished creating, view your code preview under the code preview tab and you can export to a file location of your choice. Below is the exported file structure:
 
 ```
 public/
-  index.html
 src/
   assets/
   components/
-    UserCreatedComponent1.vue
-    UserCreatedComponent2.vue
+    (YourNewComponent1.vue)
+    (YourNewComponent2.vue)
     ...
   router/
-    index.js
+    index.js/ts
+  store/
+    index.js/ts
   views/
     HomeView.vue
-    UserCreatedRouteComponent1.vue
-    UserCreatedRouteComponent2.vue
+    (YourNewRoute1.vue)
+    (YourNewRoute2.vue)
     ...
   App.vue
-  main.js
-babel.config.js
+  main.js/ts
+tests/
+  units**
+.eslintrc.cjs
+env.d.ts*
+babel.config.js/ts
+jest.config.js/ts**
+index.html
 package.json
+vite.config.js/ts
 ```
 
 - To get a better look at the features and how to use OverVue, take a look at the in-app tutorial!
@@ -267,44 +178,168 @@ package.json
 
 [↥ Back to top](#table-of-contents)
 
-### Changelog
 
-### Changelog 2.0
+## Changelogs (recent)
 
-<details><summary>OverVue 2.0</summary>
+
+
+<details><summary>OverVue 11.0</summary>
+<ul>
+<li>UI redesign and overhaul - focus on accesibility features and increaesd contrast</li>
+
+<li> Major update to depenendencies since last version, increasing compatibility between multiplatform OS and re-establishing fix for Windows users </li>
+<li> Toggle switch from Vue 2 Options API code generation to Vue 3 Compositions API under 'Code Preview' </li>
+<li> Refactored codebase, clean-up unused old code, unused files for optimization of Electron build </li>
+<li> Optimize images displayed to take a smaller footprint and increase speeds or older systems </li>
+<li> Slack and Github OAuth feature has been hidden as currently the feature is not working, and is not seeing much use either </li>
+<li> Website has been updated with the latest OverVue 11.0 releases for the community to use  </li>
+
+<br>
+
+<h4><strong>Bug Fixes</strong></h4>
+<li> Fixed Import and Export functionalities </li>
+<li> Removed unused and outdated dependencies which removed and introduced new bugs (if new bugs are found please mention this in the issues tab) </li>
+<li> Removed unused files and code to speed up build time</li>
+<li> Major update to dependencies which greatly sped up speed of application </li>
+
+
+</ul>
+</details>
+
+
+
+<details><summary>OverVue 10.0</summary>
+<ul>
+<li>Overhauled main view to be an interactive and intuitive tree view</li>
+<li>Updated HTML Elements list to have nested elements</li>
+<li>Created a focused component modal</li>
+<li>Integrated a11y-friendly Vuetensils component library</li>
+<li>Added unit testing for main tree view feature</li>
+<li>Refactored codebase, removing unneeded comments, unused files, console logs</li>
+<li>Cleaned UI of side bars</li>
+<li>Added previous main grid view to toggle (in top right settings)</li>
+<br>
+<h4><strong>Bug Fixes</strong></h4>
+<li>Fixed HTML elements not live rendering</li>
+<li>Fixed delete HTML element functionality being inconsistent</li>
+<li>Fixed Code Preview having unexpected code (i.e. v-model=undefined)</li>
+<li>Fixed various bugs related to empty HTML lists or routes with no children</li>
+<li>Fixed import statements and nesting in Code Preview and exported code</li>
+<li>Fixed entire testing suite</li>
+</ul>
+</details>
+
+
+
+<details><summary>OverVue 9.0</summary>
+<ul>
+<li>Converted codebase (40+ components) from Options API to Composition API</li>
+<li>Migrated store from Vuex to Pinia</li>
+<li>Migrated codebase to TypeScript</li>
+<li>Implemented testing of Pinia store</li>
+<li>Updated Electron builder dependency</li>
+<li>UI overhaul</li>
+<br>
+<h4><strong>Bug Fixes</strong></h4>
+<li>Fixed nesting HTML elements functionality</li>
+<li>Fixed adding innerText functionality</li>
+<li>Fixed formatting of exported code</li>
+<li>Fixed parent child component relationship in code snippet and on export</li>
+<li>Fixed typing and initial values of store to match actions usage</li>
+<li>Eliminated code redundancy by implementing Composition API and Pinia</li>
+</ul>
+</details>
+
+
+### <summary>Changelogs 8.0 and older</summary>
+
+<details> <details><summary>OverVue 8.0</summary>
+<ul>
+<li>Added component snap to grid functionality with additional grid density drop down menu feature</li>
+<li>Code snippet reflects CSS grid area styling of components </li>
+<li>Ability to import components from Element Plus library</li>
+<li>Exported project template code now more accurately reflects component placement in app</li>
+<li>Improved canvas drag and deselect</li>
+<li>Improved WSL developer installation instructions</li>
+<li>Added TypeScipt to application</li>
+<li>Implemented component search bar feature</li>
+<li>Ability to add Google and Github OAuth to exported project</li>
+<li>Added unit testing and component testing boilerplate to exported project</li>
+<li>UI overhaul</li>
+<br>
+<h4><strong>Bug Fixes</strong></h4>
+<li>Fixed routing components in project exports </li>
+<li>Fixed component hierarchy in project exports </li>
+<li>Fixed import statements of route child components</li>
+<li>Fixed edge case HTML element bugs in project exports </li>
+<li>Fixed in app component movement bugs which caused position to not update correctly </li>
+<li>Fixed drag and drop HTML element on click bug</li>
+<li>Eliminated code redundancy by implementing mixins</li>
+</ul>
+</details>
+
+
+
+
+<details><summary>OverVue 7.0</summary>
+<ul>
+<li>Color customizability of components </li>
+<li>Code snippet reflects CSS styling of components </li>
+<li>Added more semantic HTML tags</li>
+<li>Options to add class, ID, and v-model attributes</li>
+<li>Added drag and drop feature when adding/altering HTML tags</li>
+<li>Ability to add child components to the code snippet of parent components </li>
+<li>Added scoped style tags - On class creation will create styling entry with positioning of component/html element</li>
+<li>Consolidated state/actions/props into one tab</li>
+<li>UI overhaul</li>
+<br>
+<h4><strong>Bug Fixes</strong></h4>
+<li>Fixed undo and redo capabilities </li>
+<li>Fixed badge number not rendering for nested HTML tags</li>
+</ul>
+</details>
+
+
+
+
+<details><summary>OverVue 6.0</summary>
   <ul>
-  <li>Improved hierarchy tree rendering</li>
-  <li>Improved Route addition and deletion</li>
-  <li>Able to search for components by name</li>
-  <li>Improved UI to be more informative</li>
-  <li>UI is more reactive, code snippets update dynamically </li>
-  <li>Component children menu is consistent with children list at time of creation</li>
-  <li>Children components can no longer choose any of their ancestors to be their children.</li>
-  <li>Can now use Quasar build -m electron to make windows .exe </li>
-  <li>Exporting projects now exports the mockup files as well into the assets folder</li>
-  <li>Saving projects now saves the mockup image url</li>
-  <li>Extensive bug fixing for Vue component and HTML element deletion behavior, exporting and saving.</li>
+    <li>Toggle to TypeScript mode to generate code snippets and export your project or individual components in TypeScript</li>
+    <li>An interactive and real-time tree display of your component hierarchy allows you to easily visualize parent-child component relationships and the Vue Router structure</li>
+    <li>Enhance your workflow by adding notes to your components. When you export your project or components into your favorite IDE, notes will be converted into comments within your Vue files.</li>
+    <li>Now with a “Get Started” tutorial, a visual queue of your HTML elements, and an overall simplified UI, OveVue is as intuitive as ever. </li>
+    <li>OverVue is now containerized with Docker to bring developers the same experience, regardless of your operating system.</li>
+    <br>
+    <h4><strong>Bug Fixes</strong></h4>
+    <li>Fixed drawer disappearing when the window size is smaller</li>
+    <li>Fixed inability to delete parent/child relationship</li>
+    <li>Fixed the inability to add multiple children to parent except when making a new component</li>
+    <li>Fixed CodeSnippet does not scroll when it overflows the container</li>
+    <li>Fixed clicking canvas does not fully deactivate active component</li>
+    <li>Fixed Error handling for 'pasting' component when no component is copied</li>
+    <li>Fixed dancing components</li>
+    <li>Fixed project tree visulization</li>
   </ul>
 </details>
 
-### Changelog 3.0
 
-<details><summary>OverVue 3.0</summary>
+
+<details><summary>OverVue 5.0</summary>
   <ul>
-  <li>Implemented full component edit functionality</li>
-  <li>Improved sidebar user interface to consolidate edit functionality</li>
-  <li>UI is more reactive, improved dashboard's ability to update dynamically </li>
-  <li>Added ability to incorporate Vuex in application</li>
-  <li>Updated component details section to better display all aspects of a component</li>
-  <li>Added action, state, and props section to component details dashboard</li>
-  <li>New Vuex store dashboard section</li>
-  <li>More robust code snippets with Vuex props, state, and actions included</li>
-  <li>Bug fixes for parent/child issues</li>
-  <li>Improved Documentation for easier onboarding of new contributors</li>
+    <li>Upgraded source code to Vue 3</li>
+    <li>Upgraded major dependencies to newest versions</li>
+    <ul>
+      <li>Upgraded from Vuex 3 to Vuex 4</li>
+      <li>Upgraded from Electron 5 to 16</li>
+      <li>Upgraded from Quasar 1 to 2</li>
+    </ul>
+    <li>Rewrote exports in Vue 3</li>
+    <li>Reconfigured Vue Devtools to launch and connect upon running quasar in dev mode</li>
+    <li>Note that due to breaking changes when upgrading to Vue 3, vued3tree had to be replaced with vue3-tree.Due to this, a bulleted list currently renders instead of a tree.  This is intended to be a short-term change, with the old package being utilized again once it is compatible.</li>
   </ul>
 </details>
 
-### Changelog 4.0
+
 
 <details><summary>OverVue 4.0</summary>
   <ul>
@@ -334,211 +369,186 @@ package.json
   </ul>
 </details>
 
-### Changelog 5.0
 
-<details><summary>OverVue 5.0</summary>
+
+<details><summary>OverVue 3.0</summary>
   <ul>
-    <li>Upgraded source code to Vue 3</li>
-    <li>Upgraded major dependencies to newest versions</li>
-    <ul>
-      <li>Upgraded from Vuex 3 to Vuex 4</li>
-      <li>Upgraded from Electron 5 to 16</li>
-      <li>Upgraded from Quasar 1 to 2</li>
-    </ul>
-    <li>Rewrote exports in Vue 3</li>
-    <li>Reconfigured Vue Devtools to launch and connect upon running quasar in dev mode</li>
-    <li>Note that due to breaking changes when upgrading to Vue 3, vued3tree had to be replaced with vue3-tree.Due to this, a bulleted list currently renders instead of a tree.  This is intended to be a short-term change, with the old package being utilized again once it is compatible.</li>
+  <li>Implemented full component edit functionality</li>
+  <li>Improved sidebar user interface to consolidate edit functionality</li>
+  <li>UI is more reactive, improved dashboard's ability to update dynamically </li>
+  <li>Added ability to incorporate Vuex in application</li>
+  <li>Updated component details section to better display all aspects of a component</li>
+  <li>Added action, state, and props section to component details dashboard</li>
+  <li>New Vuex store dashboard section</li>
+  <li>More robust code snippets with Vuex props, state, and actions included</li>
+  <li>Bug fixes for parent/child issues</li>
+  <li>Improved Documentation for easier onboarding of new contributors</li>
   </ul>
 </details>
 
-### Changelog 6.0
 
-<details><summary>OverVue 6.0</summary>
+
+<details><summary>OverVue 2.0</summary>
   <ul>
-    <li>Toggle to TypeScript mode to generate code snippets and export your project or individual components in TypeScript</li>
-    <li>An interactive and real-time tree display of your component hierarchy allows you to easily visualize parent-child component relationships and the Vue Router structure</li>
-    <li>Enhance your workflow by adding notes to your components. When you export your project or components into your favorite IDE, notes will be converted into comments within your Vue files.</li>
-    <li>Now with a “Get Started” tutorial, a visual queue of your HTML elements, and an overall simplified UI, OveVue is as intuitive as ever. </li>
-    <li>OverVue is now containerized with Docker to bring developers the same experience, regardless of your operating system.</li>
-    <br>
-    <h4><strong>Bug Fixes</strong></h4>
-    <li>Fixed drawer disappearing when the window size is smaller</li>
-    <li>Fixed inability to delete parent/child relationship</li>
-    <li>Fixed the inability to add multiple children to parent except when making a new component</li>
-    <li>Fixed CodeSnippet does not scroll when it overflows the container</li>
-    <li>Fixed clicking canvas does not fully deactivate active component</li>
-    <li>Fixed Error handling for 'pasting' component when no component is copied</li>
-    <li>Fixed dancing components</li>
-    <li>Fixed project tree visulization</li>
+  <li>Improved hierarchy tree rendering</li>
+  <li>Improved Route addition and deletion</li>
+  <li>Able to search for components by name</li>
+  <li>Improved UI to be more informative</li>
+  <li>UI is more reactive, code snippets update dynamically </li>
+  <li>Component children menu is consistent with children list at time of creation</li>
+  <li>Children components can no longer choose any of their ancestors to be their children.</li>
+  <li>Can now use Quasar build -m electron to make windows .exe </li>
+  <li>Exporting projects now exports the mockup files as well into the assets folder</li>
+  <li>Saving projects now saves the mockup image url</li>
+  <li>Extensive bug fixing for Vue component and HTML element deletion behavior, exporting and saving.</li>
   </ul>
-</details>
-
-### Changelog 7.0
-
-<details><summary>OverVue 7.0</summary>
-<ul>
-<li>Color customizability of components </li>
-<li>Code snippet reflects CSS styling of components </li>
-<li>Added more semantic HTML tags</li>
-<li>Options to add class, ID, and v-model attributes</li>
-<li>Added drag and drop feature when adding/altering HTML tags</li>
-<li>Ability to add child components to the code snippet of parent components </li>
-<li>Added scoped style tags - On class creation will create styling entry with positioning of component/html element</li>
-<li>Consolidated state/actions/props into one tab</li>
-<li>UI overhaul</li>
-<br>
-<h4><strong>Bug Fixes</strong></h4>
-<li>Fixed undo and redo capabilities </li>
-<li>Fixed badge number not rendering for nested HTML tags</li>
-</ul>
-</details>
-
-### Changelog 8.0
-
-<details><summary>OverVue 8.0</summary>
-<ul>
-<li>Added component snap to grid functionality with additional grid density drop down menu feature</li>
-<li>Code snippet reflects CSS grid area styling of components </li>
-<li>Ability to import components from Element Plus library</li>
-<li>Exported project template code now more accurately reflects component placement in app</li>
-<li>Improved canvas drag and deselect</li>
-<li>Improved WSL developer installation instructions</li>
-<li>Added TypeScipt to application</li>
-<li>Implemented component search bar feature</li>
-<li>Ability to add Google and Github OAuth to exported project</li>
-<li>Added unit testing and component testing boilerplate to exported project</li>
-<li>UI overhaul</li>
-<br>
-<h4><strong>Bug Fixes</strong></h4>
-<li>Fixed routing components in project exports </li>
-<li>Fixed component hierarchy in project exports </li>
-<li>Fixed import statements of route child components</li>
-<li>Fixed edge case HTML element bugs in project exports </li>
-<li>Fixed in app component movement bugs which caused position to not update correctly </li>
-<li>Fixed drag and drop HTML element on click bug</li>
-<li>Eliminated code redundancy by implementing mixins</li>
-</ul>
-</details>
-
-### Changelog 9.0
-
-<details><summary>OverVue 9.0</summary>
-<ul>
-<li>Converted codebase (40+ components) from Options API to Composition API</li>
-<li>Migrated store from Vuex to Pinia</li>
-<li>Migrated codebase to TypeScript</li>
-<li>Implemented testing of Pinia store</li>
-<li>Updated Electron builder dependency</li>
-<li>UI overhaul</li>
-<br>
-<h4><strong>Bug Fixes</strong></h4>
-<li>Fixed nesting HTML elements functionality</li>
-<li>Fixed adding innerText functionality</li>
-<li>Fixed formatting of exported code</li>
-<li>Fixed parent child component relationship in code snippet and on export</li>
-<li>Fixed typing and initial values of store to match actions usage</li>
-<li>Eliminated code redundancy by implementing Composition API and Pinia</li>
-</ul>
-</details>
-
-### Changelog 10.0
-
-<details><summary>OverVue 10.0</summary>
-<ul>
-<li>Overhauled main view to be an interactive and intuitive tree view</li>
-<li>Updated HTML Elements list to have nested elements</li>
-<li>Created a focused component modal</li>
-<li>Integrated a11y-friendly Vuetensils component library</li>
-<li>Added unit testing for main tree view feature</li>
-<li>Refactored codebase, removing unneeded comments, unused files, console logs</li>
-<li>Cleaned UI of side bars</li>
-<li>Added previous main grid view to toggle (in top right settings)</li>
-<br>
-<h4><strong>Bug Fixes</strong></h4>
-<li>Fixed HTML elements not live rendering</li>
-<li>Fixed delete HTML element functionality being inconsistent</li>
-<li>Fixed Code Preview having unexpected code (i.e. v-model=undefined)</li>
-<li>Fixed various bugs related to empty HTML lists or routes with no children</li>
-<li>Fixed import statements and nesting in Code Preview and exported code</li>
-<li>Fixed entire testing suite</li>
-</ul>
-</details>
-<br/>
+</details></details>
 
 [↥Back to top](#table-of-contents)
 
-## Contributing
+## How to contribute
+
+<details><summary>Expand</summary>
+<br/>
 
 We'd love for you to test out the application and submit any issues you encounter. Also feel free to fork to your own repo and submit PRs.
-Here are some features we're thinking about adding:
 
-- Ability to choose options or composition API for code preview and exported code
-- Ability to choose Vuex or Pinia for code preview and exported code
+<h4><strong>Here are some features we're thinking about adding:</strong></h4>
+
 - Ability to add two-way binding to input elements
-- Expand testing suite and add more dynamic tests
-- Reincorporate Slack OAuth
-- Add styling and script tags to Vuetensils boilerplate
+- Add E2E testing suite like Cypress
+- Containerized the app to further support multi-platform distribution OR
+- Adjust application to either a web app or an plugin extension on VSCode/Figma.
 
-Smaller changes that can be worked on:
 
-- Removing ghost image when dragging HTML elements
+<h4><strong>Smaller desired changes</strong></h4>
+
+- Patch save functionality to save state
 - Highlight active HTML element when selected/updating
-- Remove duplicate imports and account for nested components in Vuetensils import statement
+- HTML elements removal to re-render and update state count of elements used in components tree
 - HTML elements list occasionally does not render properly after component is dragged
+- Continue updating and rebalancing dependencies
 
+<h4><strong>Known Bugs</strong></h4>
+<li> Slack OAuth not working (currently disabled) </li>
+<li> Canvas tree can only be moved with arrow keys </li>
+<li> Not necessarily a bug, but certain peer dependencies are not updated by their maintainers (ie tesing vue with jest). To update to a new dependency, this requires ample amount of time that we unfortunately did not have</li>
+<li> There may be more bugs that we did not find. If so please mention this in the 'Issues' tab  </li>
+
+<br/>
+</details>
 <br/>
 
 [↥Back to top](#table-of-contents)
 
-## Authors
+## Contributors
 
-```
-Contributors:
-Joseph Eisele @jeisele2
-Dean Chung @deanfchung
-Dean Ohashi @dnohashi
-Drew Nguyen @drewngyen
-Alexander Havas @LOLDragoon
-Keriann Lin @keliphan
-Allison Pratt @allisons11
-Joju Olaode @JojuOlaode
-Sean Grace @ziggrace
-Nicholas Schillaci @schillaci767
-Terry Tilley @codeByCandlelight
-Faraz Moallemi @farazmoallemi
-Alex Lu @aleckslu
-Jeffrey Sul @jeffreysul
-Kenny Lee @kennyea
-Ryan Bender @rdbender
-Sonny Nguyen @sn163
-Gabriela Kokhabi @gkokhabi
-Ross Lamerson @lamerson28
-Shanon Lee @shanonlee541
-Zoew McGrath @Z-McGrath
-Aram Paparian @apaparian
-Bryan Bart @MrBeeAreWhy
-Julia Bakerink @jbbake
-Kerolos Nesem @Kerolos-Nesem
-Megan Nadkarni @megatera
-Johnny Chan @jchan444
-Jace Crowe @JaceCrowe
-Keyla Koizumi Nishimura @keylakoizumin
-Katherine Kim @katherinek123
-Chris Wong @Koregano73
-Honghao(Michael) Sun @sunhonghaoparis
-Alex Law @alexlaw528
-Emma Genesen @EGenesen
-Jigar Patel @jigarxp
-Linden Young @lindenyoung
-Chris Davis @chdavis0917
-Ji Kim @dwejikim
-Janica Abagat @janicaa1
-Jaime de Venecia @jdvplus
-Trisha Duong @trishanduong
-David Lee @GomDave
-```
+| OverVue 11.0 | LinkedIn | GitHub |
+|------|----------|--------|
+| Anthony Herrera | [LinkedIn](https://www.linkedin.com/in/anthony-herrera-686ba0183/) | [@anthonyHerr](https://github.com/anthonyHerr) |
+| Daniel Garan | [LinkedIn](https://www.linkedin.com/in/daniel-garan/) | [@DanielGaran02](https://github.com/DanielGaran02) |
+| Kevin Can | [LinkedIn](https://www.linkedin.com/in/kevincan/) | [@Kelementz916](https://github.com/Kelementz916) |
+| Robery Sinizieri | [LinkedIn](https://www.linkedin.com/in/rob-sinzieri/) | [@robsinz](https://github.com/robsinz) |
+| Roderick de Leon | [LinkedIn](https://www.linkedin.com/in/roderickdeleon/) | [@RoderickXii](https://github.com/RoderickXii) |
 
-Inspired by [PreVue](https://github.com/open-source-labs/PreVue)
+<br>
+
+| OverVue 10.0  | LinkedIn |GitHub |
+|------|-------|------|
+| David Lee  | [LinkedIn](https://www.linkedin.com/in/davidetlee/) | [@GomDave](https://github.com/GomDave)|
+| Trisha Duong  | [LinkedIn](https://www.linkedin.com/in/trisha-duong-444123195/) | [@trishanduong](https://github.com/trishanduong) |
+| Jaime de Venecia | [LinkedIn](https://www.linkedin.com/in/jaime-dv/) | [@jdvplus](https://github.com/jdvplus) |
+| Janica Abagat  | [LinkedIn](https://www.linkedin.com/in/janica-abagat/) | [@janicaa1](https://github.com/janicaa1) |
+
+<br>
+
+| OverVue 9.0 | GitHub |
+|------|--------|
+| Ji Kim | [@dwejikim](https://github.com/dwejikim) |
+| Chris Davis | [@chdavis0917](https://github.com/chdavis0917) |
+| Linden Young | [@lindenyoung](https://github.com/lindenyoung) |
+| Jigar Patel | [@jigarxp](https://github.com/jigarxp) |
+
+<br>
+
+| OverVue 8.0 | GitHub |
+|------|--------|
+| Emma Genesen | [@EGenesen](https://github.com/EGenesen) |
+| Alex Law | [@alexlaw528](https://github.com/alexlaw528) |
+| Honghao(Michael) Sun | [@sunhonghaoparis](https://github.com/sunhonghaoparis) |
+| Chris Wong | [@Koregano73](https://github.com/Koregano73) |
+
+<br>
+
+| OverVue 7.0 | GitHub |
+|------|--------|
+| Katherine Kim | [@katherinek123](https://github.com/katherinek123) |
+| Keyla Koizumi Nishimura | [@keylakoizumin](https://github.com/keylakoizumin) |
+| Jace Crowe | [@JaceCrowe](https://github.com/JaceCrowe) |
+| Johnny Chan | [@jchan444](https://github.com/jchan444) |
+
+<br>
+
+| OverVue 6.0 | GitHub |
+|------|--------|
+| Megan Nadkarni | [@megatera](https://github.com/megatera) |
+| Kerolos Nesem | [@Kerolos-Nesem](https://github.com/Kerolos-Nesem) |
+| Julia Bakerink | [@jbbake](https://github.com/jbbake) |
+| Bryan Bart | [@MrBeeAreWhy](https://github.com/MrBeeAreWhy) |
+| Aram Paparian | [@apaparian](https://github.com/apaparian) |
+
+<br>
+
+| OverVue 5.0 | GitHub |
+|------|--------|
+| Zoew McGrath | [@Z-McGrath](https://github.com/Z-McGrath) |
+| Shanon Lee | [@shanonlee541](https://github.com/shanonlee541) |
+| Ross Lamerson | [@lamerson28](https://github.com/lamerson28) |
+| Gabriela Kokhabi | [@gkokhabi](https://github.com/gkokhabi) |
+
+<br>
+
+| OverVue 4.0 | GitHub |
+|------|--------|
+| Sonny Nguyen | [@sn163](https://github.com/sn163) |
+| Ryan Bender | [@rdbender](https://github.com/rdbender) |
+| Kenny Lee | [@kennyea](https://github.com/kennyea) |
+| Jeffrey Sul | [@jeffreysul](https://github.com/jeffreysul) |
+| Alex Lu | [@aleckslu](https://github.com/aleckslu) |
+
+<br>
+
+| OverVue 3.0 | GitHub |
+|------|--------|
+| Faraz Moallemi | [@farazmoallemi](https://github.com/farazmoallemi) |
+| Terry Tilley | [@codeByCandlelight](https://github.com/codeByCandlelight) |
+| Nicholas Schillaci | [@schillaci767](https://github.com/schillaci767) |
+| Sean Grace | [@ziggrace](https://github.com/ziggrace) |
+
+<br>
+
+| OverVue 2.0| GitHub |
+|------|--------|
+| Joju Olaode | [@JojuOlaode](https://github.com/JojuOlaode) |
+| Allison Pratt | [@allisons11](https://github.com/allisons11) |
+| Keriann Lin | [@keliphan](https://github.com/keliphan) |
+| Alexander Havas | [@LOLDragoon](https://github.com/LOLDragoon) |
+
+<br>
+
+| OverVue 1.0| GitHub |
+|------|--------|
+| Drew Nguyen | [@drewngyen](https://github.com/drewngyen) |
+| Dean Ohashi | [@dnohashi](https://github.com/dnohashi) |
+| Dean Chung | [@deanfchung](https://github.com/deanfchung) |
+| Joseph Eisele | [@jeisele2](https://github.com/jeisele2) |
+
+
+
+
+<hr>
+
+OverVue was inspired by [PreVue](https://github.com/open-source-labs/PreVue)
 
 <br/>
 

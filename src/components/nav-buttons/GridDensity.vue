@@ -1,4 +1,4 @@
-<!-- 
+<!--
   LOCATION IN APP:
   [top bar, when 'GRID' mode enabled] WIDTH // HEIGHT buttons
 
@@ -82,7 +82,7 @@
 
 <script setup lang="ts">
 /* IMPORTS */
-import { useStore } from "../../store/main";
+import { useStore } from "../../stores/main";
 
 const store = useStore();
 
@@ -109,3 +109,4 @@ const pickGridDensity = (direction: string, densityNum: number) => {
   margin-bottom: 10px;
 }
 </style>
+

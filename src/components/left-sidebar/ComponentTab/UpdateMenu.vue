@@ -1,4 +1,4 @@
-<!-- 
+<!--
   LOCATION IN APP:
   [left sidebar] COMPONENT > Update Component (conditional: current active component selected)
 
@@ -164,6 +164,7 @@
           </q-list>
 
           <!-- update, export, and delete buttons -->
+          <!-- update and export btn are not currently functional and is hidden from the public -->
           <!-- <q-btn
             id="create-component-btn"
             class="sidebar-btn"
@@ -171,12 +172,12 @@
             label="Update Component"
             @click="resetActiveComponent"
           /> -->
-          <q-btn
+          <!-- <q-btn
             id="exportButton"
             class="sidebar-btn"
             @click="useExportComponent"
             label="Export Current Component"
-          />
+          /> -->
           <q-btn
             id="deleteButton"
             class="sidebar-btn deleteAction"
@@ -192,9 +193,9 @@
 <script setup lang="ts">
 /* IMPORTS */
 import { ref, computed, watch } from "vue";
-import { useStore } from "../../../store/main";
+import { useStore } from "../../../stores/main";
 import { Component } from "../../../../types";
-import { useExportComponent } from "../../composables/useExportComponent.js";
+// import { exportComponent, checkFileExists, mkdirSync, pathJoin } from "../../composables/useExportComponent";
 import Icons from "./Icons.vue";
 import Vuetensils from "./Vuetensils.vue";
 import AttributesSubMenu from "./AttributesSubMenu.vue";
@@ -254,6 +255,7 @@ const deleteSelectedComp = (componentData: Component) => {
 const resetActiveComponent = () => {
   if (activeComponent.value !== "") setActiveComponent("");
 };
+
 
 const editCompName = (name: string) => {
   if (
@@ -421,3 +423,4 @@ p {
   height: 100%;
 }
 </style>
+../../../stores/main

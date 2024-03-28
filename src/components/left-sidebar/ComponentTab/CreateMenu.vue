@@ -1,4 +1,4 @@
-<!-- 
+<!--
   LOCATION IN APP:
   [left sidebar] COMPONENT > default view
 
@@ -131,7 +131,7 @@
 <script setup lang="ts">
 /* IMPORTS */
 import { computed, ref, watch } from "vue";
-import { useStore } from "../../../store/main.js";
+import { useStore } from "../../../stores/main.js";
 import { Component } from "../../../../types";
 import { useCreateComponent } from "../../composables/useCreateComponent.js";
 import ParentMultiselect from "./ParentMultiselect.vue";
@@ -356,3 +356,4 @@ img {
   background: $subprimary;
 }
 </style>
+

@@ -17,11 +17,11 @@ const components = Object.keys(All).reduce((object, key) => {
   return object;
 }, {});
 
-import actions from "../../../src/store/options/actions";
-import mutations from "../../../src/store/options/mutations";
-import * as types from "../../../src/store/options/types";
+import actions from "../../../src/stores/options/actions";
+import mutations from "../../../src/stores/options/mutations";
+import * as types from "../../../src/stores/options/types";
 import Vuex from "vuex";
-import store from "../../../src/store/state/index";
+import store from "../../../src/stores/state/index";
 
 /**
  * @description: Testing functionality of the uploadImage mutations and actions
