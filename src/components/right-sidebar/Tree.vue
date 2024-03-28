@@ -338,4 +338,4 @@ watch(componentMap, () => (treeData.value = buildTree(componentMap.value)), {
   border: 2px solid $menutext;
 }
 </style>
-../../stores/main.js
+

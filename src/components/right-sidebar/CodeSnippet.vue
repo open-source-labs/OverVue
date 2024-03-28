@@ -531,4 +531,4 @@ input:checked + .slider:before {
   border-color: #ffffff;
 }
 </style>
-../../stores/main.jssrc/stores/state/icons.js
+

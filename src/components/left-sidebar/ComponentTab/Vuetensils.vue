@@ -157,4 +157,4 @@ button:active {
   color: $menutext;
 }
 </style>
-../../../stores/main.js
+

@@ -78,8 +78,8 @@ if (mainWindow) {
   const { filePaths } = await dialog.showOpenDialog(mainWindow, options);
 
   if (!filePaths) return;
-    const readData = await fs.readFileSync(filePaths[0], "utf8");
-    const jsonFile = JSON.parse(readData);
+  const readData = await fs.readFileSync(filePaths[0], "utf8");
+  const jsonFile = JSON.parse(readData);
   return { jsonFile };
 }
 });

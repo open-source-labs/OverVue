@@ -1255,4 +1255,3 @@ li:hover {
   background: black;
 }
 </style>
-../stores/main.js

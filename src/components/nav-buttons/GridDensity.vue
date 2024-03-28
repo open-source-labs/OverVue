@@ -109,4 +109,4 @@ const pickGridDensity = (direction: string, densityNum: number) => {
   margin-bottom: 10px;
 }
 </style>
-../../stores/main
+

@@ -129,4 +129,4 @@ watch(attributeModalOpen, () => {
   justify-content: space-around;
 }
 </style>
-src/stores/main
+

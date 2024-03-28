@@ -56,4 +56,4 @@ const activeComponent = computed(() => store.activeComponent);
   padding: 10px 0;
 }
 </style>
-../../../stores/main.js
+

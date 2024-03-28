@@ -92,4 +92,4 @@ i:hover {
   cursor: pointer;
 }
 </style>
-../../stores/main.js
+

@@ -224,4 +224,4 @@ const toggleTutorial = () => store.toggleTutorial();
   margin-bottom: 50px !important;
 }
 </style>
-../../../stores/main.js
+

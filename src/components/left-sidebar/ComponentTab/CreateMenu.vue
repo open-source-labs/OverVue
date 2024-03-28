@@ -356,4 +356,4 @@ img {
   background: $subprimary;
 }
 </style>
-../../../stores/main.js
+

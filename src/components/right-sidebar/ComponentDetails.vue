@@ -232,4 +232,4 @@ i {
   margin-bottom: 2em;
 }
 </style>
-../../stores/main.js
+

@@ -115,4 +115,4 @@ const deleteAction = (action: string) => {
   align-items: center;
 }
 </style>
-../../../stores/main.js
+

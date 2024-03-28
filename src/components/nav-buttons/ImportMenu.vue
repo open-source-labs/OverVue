@@ -16,41 +16,24 @@
     label="Import"
     @click="openProjectJSON"
   >
-    <!-- moved this functionality (click event) to <q-btn> above -->
-    <!-- <q-menu class="dropdown">
-      <div class="column items-center">
-        <q-btn
-          class="menu-btn"
-          no-caps
-          color="secondary"
-          label="Project JSON"
-          @click="openProjectJSON"
-        />
-      </div>
-    </q-menu> -->
   </q-btn>
 </template>
 
 <script setup lang="ts">
 /* IMPORTS */
 const Mousetrap = require("mousetrap");
-import { useStore } from "../../stores/main";
-import fs from 'fs'
-// import { ipcRenderer } from 'electron';
-// const fs = window.require('fs');
+import { useStore } from "../../stores/main.js";
 
 // @ts-ignore
 const { ipcRenderer } = window;
+const store = useStore();
 
 Mousetrap.bind(["command+o", "ctrl+o"], () => {
   openProjectJSON();
 });
 
-const store = useStore();
-
 /* STORE ACTIONS */
-const openProject: typeof store.openProject = (payload) =>
-  store.openProject(payload);
+const openProject: typeof store.openProject = (payload: any) => store.openProject(payload);
 
 /* METHODS */
 
@@ -91,4 +74,4 @@ const openProjectJSON = () => {
   margin: 10px 0 20px 0 !important;
 }
 </style>
-../../stores/main
+
