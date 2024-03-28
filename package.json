@@ -5,7 +5,7 @@
   "description": "Vue Prototype DevTool",
   "productName": "OverVue",
   "cordovaId": "org.cordova.quasar.app",
-  "author": "Team OverVue, Team Vuetiful, Team Vuelociraptors, TeamVueTopia, OverVue10.0, VueDragons 11.0",
+  "author": "Team DejaVue",
   "private": true,
   "bugs": {
     "url": "https://github.com/TeamOverVue/OverVue/issues"
@@ -92,7 +92,6 @@
     "@vue/tsconfig": "^0.5.1",
     "@vue/vue3-jest": "^29.2.5",
     "electron": "^29.1.1",
-    "electron-builder": "^24.13.3",
     "electron-is-dev": "^3.0.1",
     "eslint": "^8.23.0",
     "eslint-config-prettier": "^9.1.0",
