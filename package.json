@@ -105,9 +105,6 @@
   "browser": {
     "crypto": false
   },
-  "browser": {
-    "crypto": false
-},
   "browserslist": [
     "last 10 Chrome versions",
     "last 10 Firefox versions",
