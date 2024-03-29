@@ -1,5 +1,5 @@
 appId: com.electron.OverVue
-productName: OverVue 11.0
+productName: OverVue
 directories:
   app: "./dist/electron/UnPackaged"
 mac:

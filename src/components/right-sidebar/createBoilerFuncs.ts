@@ -36,7 +36,7 @@ export const createBoilerOptions = (componentName: string, children: string[] | 
         imports += "mapState, mapActions";
       } else if (activeComp.state.length) imports += "mapState";
       else imports += "mapActions";
-      imports += ` } from "pinia";\nimport { /* store */} from '/* ./store */'`; // changed from 'vuex' pinia
+      imports += ` } from "pinia";\nimport { /* store */} from '/* ./store */'\n`; // changed from 'vuex' pinia
     }
 
   // if Typescript toggle is on, import defineComponent
