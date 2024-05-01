@@ -448,7 +448,7 @@ We'd love for you to test out the application and submit any issues you encounte
 | Anthony Herrera | [LinkedIn](https://www.linkedin.com/in/anthony-herrera-686ba0183/) | [@anthonyHerr](https://github.com/anthonyHerr) |
 | Daniel Garan | [LinkedIn](https://www.linkedin.com/in/daniel-garan/) | [@DanielGaran02](https://github.com/DanielGaran02) |
 | Kevin Can | [LinkedIn](https://www.linkedin.com/in/kevincan/) | [@Kelementz916](https://github.com/Kelementz916) |
-| Robery Sinizieri | [LinkedIn](https://www.linkedin.com/in/rob-sinzieri/) | [@robsinz](https://github.com/robsinz) |
+| Robert Sinizieri | [LinkedIn](https://www.linkedin.com/in/rob-sinzieri/) | [@robsinz](https://github.com/robsinz) |
 | Roderick de Leon | [LinkedIn](https://www.linkedin.com/in/roderickdeleon/) | [@RoderickXii](https://github.com/RoderickXii) |
 
 <br>
